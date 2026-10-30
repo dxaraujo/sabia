@@ -105,7 +105,7 @@ trocar para a sessão padrão e pare.
    `.kiro/local/` → `.sabia/local/` (sem worktree aberta) e o padrão `.kiro/planejamento` → `.sabia/planejamento`;
    o hook e as receitas saem.
 5. **Pré-checagem** (tabela do W0): shell, `uv --version` (o gerador dos agentes precisa; sem ele → como instalar
-   e pare), `kiro-cli --version` (opcional), `elm_status(projeto=<raiz>)` (credencial do ELM; sem `pa` ainda, ele responde com `faltando`, o que é normal aqui) e se
+   e pare), `kiro-cli --version` (só com o Kiro nos alvos; opcional), `elm_status(projeto=<raiz>)` (credencial do ELM; sem `pa` ainda, ele responde com `faltando`, o que é normal aqui) e se
    `~/.config/mcp-gitlabpr/gitlabpr.properties` existe (sem abrir). Mostre o W0 e espere o "ok" antes do Passo 1.
 
 ## Passo 1 — Entender o projeto (cartão W1)
@@ -363,16 +363,16 @@ escrita de memória.
   rodaram um a um).
 - Claude Code nos alvos → `claude plugin validate .claude/agents` (passa ou aponta o arquivo). opencode nos alvos →
   `opencode debug agents` lista os `sa-*` (a primeira chamada num diretório novo pode voltar vazia: rode de novo).
-- `kiro-cli` disponível → para cada agente, `kiro-cli agent validate --path .kiro/agents/<agente>.json` (saída
+- Kiro nos alvos e `kiro-cli` disponível → para cada agente, `kiro-cli agent validate --path .kiro/agents/<agente>.json` (saída
   vazia = válido; erro aponta o campo); `kiro-cli agent list` (na raiz do repositório) lista os sete;
   `kiro-cli agent upgrade --dry-run .kiro/agents` diz `v3-only` para os sem subagentes e `out of sync (not rebuilt)`
   para os que têm — esperado (ver [references/agentes.md](references/agentes.md)). No CLI V3, `/config` mostra os agentes e as
   permissões carregados.
-- Herança: por padrão, agentes customizados recebem também o steering, as skills e o `AGENTS.md` padrão do
+- Kiro nos alvos → herança: por padrão, agentes customizados recebem também o steering, as skills e o `AGENTS.md` padrão do
   workspace e do usuário — as skills de `~/.kiro/skills` chegam a todos, além das escolhidas no Passo 6. Para que
   cada agente tenha só as suas, no CLI: `kiro-cli settings --workspace chat.disableInheritingDefaultResources
   true` (ofereça; a IDE não documenta essa opção).
-- Workspace não confiável → avise: até a pessoa confiar nele, o Kiro não carrega os agentes, o steering, as skills
+- Kiro nos alvos e workspace não confiável → avise: até a pessoa confiar nele, o Kiro não carrega os agentes, o steering, as skills
   e os workflows do projeto e pergunta antes de cada comando de shell.
 
 Sugira o commit — o comando pronto no shell da pessoa, no padrão de commit do projeto — (`.sabia/` sem `local/`, os agentes e ponteiros de cada ferramenta, `<produto>/` e `.gitignore`) — só com confirmação — e termine

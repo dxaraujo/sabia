@@ -90,7 +90,7 @@ independentes, PR lido por uma pessoa e o ELM como registro —, em sprints com 
 | 2 | Power sabia (Kiro) | <✅ `~/.kiro/powers/installed/sabia` | ❌ não achei — onde está? | ➖ sem o Kiro nos alvos> |
 | 3 | Shell | <✅ bash/zsh | ✅ fish — comandos compostos vão em `bash -c '…'`> |
 | 4 | `uv` (gera os agentes) | <✅ <versão> | ❌ instale: https://docs.astral.sh/uv/> |
-| 5 | `kiro-cli` (valida os agentes) | <✅ <versão> | ➖ sem ele, a validação da etapa 9 é só a do gerador> |
+| 5 | `kiro-cli` (valida os agentes) | <✅ <versão> | ➖ sem ele, a validação da etapa 9 é só a do gerador | ➖ sem o Kiro nos alvos> |
 | 6 | Credencial do ELM | <✅ responde como `<usuário>` | ⏸️ <motivo> | ➖ projeto sem ELM> |
 | 7 | Credencial do GitLab | <⏸️ arquivo existe — a conexão é testada na etapa 3 | ❌ sem arquivo — modelo na etapa 3> |
 | 8 | Ferramentas do time | <Kiro ✅ · Claude Code ✅ · opencode ➖> 🔍 <onde detectou> — <❌ <ferramenta>: skills do Sabiá não instaladas — `<comando>`> |
@@ -350,7 +350,7 @@ por engano, diga `regravar <arquivo>`.
 | # | Verificação | Status |
 |---|---|---|
 | 1 | Agentes gerados = os combinados (tabela do gerador) | <✅ | ❌ <diferença>> |
-| 2 | `kiro-cli agent validate` nos 7 | <✅ | ❌ <agente: campo> | ➖ sem kiro-cli> |
+| 2 | `kiro-cli agent validate` nos 7 | <✅ | ❌ <agente: campo> | ➖ sem kiro-cli | ➖ sem o Kiro nos alvos> |
 | 3 | `sh .sabia/verificar.sh` | <✅ ok | ❌ <primeiro comando que falhou> | ⏸️ não rodado | ➖> |
 | 4 | `pa` do ELM válido (`elm_status`) | <✅ | ❌ <faltando> | ➖> |
 | 5 | GitLab responde (`gitlab_listar_mrs`) | <✅ | ⏸️ <motivo> | ➖> |
