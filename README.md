@@ -176,12 +176,12 @@ sessão, por exemplo); concluir é da skill do papel, com o saldo. No AFK há a 
 
 ## Primeiros passos
 
-1. Instale na ferramenta do time:
-   - **Kiro:** pelo painel **Powers**, a partir de <https://github.com/dxaraujo/sabia> ou de uma cópia local (o
-     power é a raiz do repositório).
-   - **Claude Code e opencode:** o CLI `sabia` (em construção) baixa o Sabiá para `~/.sabia/`, copia as skills para
-     `~/.claude/skills/` ou `~/.config/opencode/skills/` e registra os MCPs do `mcp.json`, com um inventário para
-     atualizar e desinstalar. Até lá, copie `skills/sabia` e `skills/sa-*` para essa pasta e registre os MCPs à mão.
+1. Instale com o CLI (Node 18+): **`npx sabia-cli instalar`**. Ele baixa o Sabiá para `~/.sabia/framework/`,
+   pergunta as ferramentas do time e instala em cada uma no padrão dela — no Kiro, o power; no Claude Code e no
+   opencode, as skills em `~/.claude/skills/` ou `~/.config/opencode/skills/` e os MCPs do `mcp.json` —, registrando
+   tudo em `~/.sabia/inventario.json`. Depois: `sabia atualizar`, `sabia desinstalar` e `sabia toolkits
+   listar|baixar|instalar|atualizar|remover` (`npm i -g sabia-cli` deixa o comando `sabia`; `npx sabia-cli --ajuda`
+   mostra todos). O Kiro também aceita o power pelo painel **Powers**, a partir deste repositório.
 2. No projeto, peça **"configurar o Sabiá"** e confirme as propostas (os padrões vêm marcados; uma confirmação por bloco).
 3. Comece: **"nova demanda: …"** (a `sa-triar` faz a triagem e registra no backlog; épico → PRD), **"iniciar a
    FT-031"** ou **"minha próxima tarefa"** (o hub `sa-iniciar` diz a skill do papel), **"corrigir o defeito 4567"**

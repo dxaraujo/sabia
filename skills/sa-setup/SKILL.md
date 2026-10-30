@@ -78,7 +78,7 @@ trocar para a sessão padrão e pare.
    precisam estar (o CLI `sabia` as copia de `~/.sabia/framework/` e registra no `~/.sabia/inventario.json`): Kiro,
    o power (item 2); Claude Code, `~/.claude/skills/sa-setup/SKILL.md`; opencode,
    `~/.config/opencode/skills/sa-setup/SKILL.md`. Faltando numa ferramenta escolhida → ❌ na linha 8, com o comando
-   `npx <pacote> instalar --alvo <ferramenta>`.
+   `npx sabia-cli instalar --alvo <ferramenta>`.
 2. **Pasta do power instalado** (`power` do `agentes.json`; só com o Kiro nos alvos): o Kiro instala em `~/.kiro/powers/installed/sabia/`
    (conferido com o `kiro-cli` 2.31). Confirme que `skills/sa-setup/SKILL.md` existe ali; senão procure
    (`find ~/.kiro/powers -path '*sabia/skills/sa-setup/SKILL.md'`) ou use a pasta de onde esta skill foi

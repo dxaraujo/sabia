@@ -1,0 +1,25 @@
+{
+  "name": "sabia-cli",
+  "version": "1.1.0",
+  "description": "Instala, atualiza e desinstala o Sabiá e os toolkits dele no Kiro, no Claude Code e no opencode, com um inventário em ~/.sabia/.",
+  "type": "module",
+  "bin": {
+    "sabia": "sabia.mjs",
+    "sabia-cli": "sabia.mjs"
+  },
+  "files": ["sabia.mjs"],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxaraujo/sabia.git",
+    "directory": "cli"
+  },
+  "author": "Daniel Xavier Araújo <danielxaraujo@gmail.com>",
+  "license": "MIT",
+  "keywords": ["sabia", "kiro", "claude-code", "opencode", "skills", "agentes"]
+}
