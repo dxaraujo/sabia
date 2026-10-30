@@ -87,6 +87,7 @@ situação fica no `backlog.md`), o início e os créditos de cada sessão. A tr
 | [ESP] | <id \| pendente> |
 | Responsável | <login> |
 | Início | <AAAA-MM-DD> |
+| Toolkit | <nome \| nenhum> |
 
 <!-- Fases: rascunho → em-revisao → aprovado → fatiado → concluido · cancelado
      rascunho: triado, na entrevista e na escrita do PRD (sa-triar, sa-especificar) · em-revisao: PRD na revisão P
@@ -99,6 +100,8 @@ situação fica no `backlog.md`), o início e os créditos de cada sessão. A tr
 | Data | Papel | Login | Sessão Kiro | Power sabia | Créditos |
 |---|---|---|---|---|---|
 ```
+
+A linha `Toolkit` é escolhida aqui, uma vez por épico (ver [Toolkit na especificação](#toolkit-na-especificação)).
 
 O `rascunho.md` é o **caderno do levantamento**: o que o cliente contou, exemplos reais, dúvidas para a próxima
 reunião, com a data de cada sessão. Decisões vão para o `decisoes.md` (`D-nn`), nunca só para o rascunho.
@@ -166,6 +169,22 @@ A `sa-prd` e a `sa-fatiar` conduzem o GATE e gravam só o próprio artefato; o q
 Situação da linha do épico na seção Especificação ([situações](../sa-fatiar/references/backlog.md#situações)):
 `planejada` (`sa-planejamento`), `iniciada` (Passo 2) e `concluida` (GATE do backlog), estas duas gravadas aqui;
 `cancelada` com o épico cancelado (`sa-fatiar`).
+
+## Toolkit na especificação
+
+Passo `especificador` de [passos.md](../sabia/references/passos.md): uma skill de toolkit pode assumir a escrita do
+3.2 da `sa-prd` (os modelos de PRD e os extras de uma stack ou de um tipo de sistema).
+
+1. **Escolha (Passo 3).** A tabela **Passos de toolkit** do `sabia.md` tem linha do passo `especificador` e o
+   `status.md` do épico ainda não tem a linha `Toolkit` → mostre cada uma (toolkit e `para`) e pergunte se este
+   épico a usa; grave `Toolkit: <nome>` ou `nenhum`. Gravada, não pergunte de novo. Sem linha na tabela →
+   `nenhum`, sem perguntar.
+2. **Escrita (Passo 4, `sa-prd` 3.2).** Com `Toolkit: <nome>`: sem agente → carregue a skill do passo e escreva
+   por ela, no seu contexto; com agente → delegue com o briefing de especificação de
+   [passos.md](../sabia/references/passos.md#sem-agente-e-com-agente). O 3.1 (similares) vem antes e é seu.
+3. **Contrato, antes da revisão P.** `prd.md` com todas as H2 do template, `elm/` com os conceitos OKF quando há
+   ELM, extras só em `.md` na pasta de trabalho. Fora disso → como manda o `passos.md`. A revisão P e o GATE
+   continuam os do Sabiá.
 
 ## Regras
 

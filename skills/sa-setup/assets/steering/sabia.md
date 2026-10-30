@@ -159,12 +159,23 @@ regra vale pelo tipo de id, não pelo nome Sustentação.
 
 | Agente | Skills extras | Oferecidas e recusadas | MCP | Modelo | Subagentes |
 |---|---|---|---|---|---|
-| `sa-produto` | <…> | <…> | <…> | <padrão> | `sa-pesquisador`, `sa-revisor` |
+| `sa-produto` | <…> | <…> | <…> | <padrão> | `sa-pesquisador` |
+| `sa-especificador` | <…> | <…> | <…> | <padrão> | `sa-pesquisador`, `sa-revisor` <+ do toolkit> |
 | `sa-pesquisador` | <…> | <…> | <…> | <padrão> | — |
 | `sa-codificador` | <…> | <…> | <…> | <padrão> | `sa-pesquisador`, `sa-revisor`, `sa-verificador` <+ do projeto> |
 | `sa-revisor` | <…> | <…> | <…> | <padrão> | — |
 | `sa-verificador` | <…> | <…> | <…> | <padrão> | — |
 | `sa-orquestrador` | <…> | <…> | — | <padrão> | os `sa-*` <+ do projeto> |
+
+## Passos de toolkit
+
+Num passo de um agente do Sabiá, a skill de um toolkit assume o trabalho; o Sabiá continua dono da revisão, do
+GATE, do `verificar.sh` e do commit (`references/passos.md` da skill `sabia`).
+
+| Passo | Toolkit | Para | Skill | Agente |
+|---|---|---|---|---|
+| <`especificador` | `codificador`> | `<nome>` <versão> | <quando usar> | `<skill>` | <`<agente>` | —> |
+<nenhum — sem skill de toolkit com `passo`, ou nenhuma ligada>
 
 ## Regras aprendidas
 

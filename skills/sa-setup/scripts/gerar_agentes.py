@@ -48,10 +48,54 @@ def regra(cap, efeito, match=None, exclude=None):
     return r
 
 
-def agente(nome, p, base, cfg):
+def dentro(caminho, toolkit):
+    """Caminho do manifesto preso à pasta do toolkit: relativo, com `/`, sem `..`."""
+    if caminho.startswith(("/", "~")) or "\\" in caminho or re.match(r"^[A-Za-z]:", caminho) or ".." in caminho.split("/"):
+        raise ValueError(f"toolkit {toolkit}: caminho fora da pasta do toolkit: {caminho}")
+    return caminho
+
+
+def passos(projeto, cfg):
+    """Resolve os `passos` do agentes.json pelas skills com `passo` dos toolkit.json: por papel dono, as skills e os
+    subagentes (com o `para`) que ele ganha; e os agentes do toolkit a gerar (com os subagentes deles), cada um com
+    o papel do dono."""
+    por_papel, do_toolkit = {}, {}
+    for e in cfg.get("passos", []):
+        if e["toolkit"] not in cfg.get("toolkits", {}):
+            raise ValueError(f"agentes.json: passo de toolkit sem entrada em `toolkits`: {e['toolkit']}")
+        pasta = cfg["toolkits"][e["toolkit"]]["pasta"].rstrip("/")
+        real = Path.home() / pasta[2:] if pasta.startswith("~/") else projeto / pasta
+        man = json.loads((real / "toolkit.json").read_text(encoding="utf-8"))
+        ext = next((x["passo"] for x in man.get("skills", []) if x["caminho"] == e["skill"] and x.get("passo")), None)
+        if ext is None:
+            raise ValueError(f"toolkit {e['toolkit']}: não há skill com `passo` em {e['skill']}")
+        dono = por_papel.setdefault(ext["papel"], {"skills": [], "subagentes": []})
+        dono["skills"].append(f"skill://{pasta}/{dentro(e['skill'], e['toolkit'])}")
+        if not (e.get("agente") and ext.get("agente")):
+            continue
+        dono["subagentes"].append({"nome": ext["agente"], "para": ext["para"]})
+        defs, fila = {a["nome"]: a for a in man.get("agentes", [])}, [ext["agente"]]
+        while fila:  # o subagente de um agente do toolkit herda o papel de quem o chama
+            n = fila.pop()
+            if n in do_toolkit:
+                continue
+            if n.startswith("sa-") or n not in defs:
+                raise ValueError(f"toolkit {e['toolkit']}: agente {n} " + ("não pode começar com sa-" if n.startswith("sa-") else "não está em `agentes`"))
+            d = defs[n]
+            do_toolkit[n] = {"papel": ext["papel"], "nome": n, "descricao": d["descricao"],
+                             "prompt": (real / dentro(d["prompt"], e["toolkit"])).read_text(encoding="utf-8"),
+                             "skills": [f"skill://{pasta}/{dentro(x, e['toolkit'])}" for x in d.get("skills", [])],
+                             "subagentes": d.get("subagentes", [])}
+            fila += d.get("subagentes", [])
+    return por_papel, do_toolkit
+
+
+def agente(nome, p, base, cfg, ext=None, tk=None):
+    """O agente sa-<nome>; com `tk`, o agente do toolkit, com as regras do papel <nome>, dono do passo."""
     valores = {"POWER": cfg["power"], "PRODUTO": cfg["produto"], "GLOSSARIO": cfg.get("glossario"), "ADR": cfg.get("adr"),
                "BASE": cfg["base"], "BUNDLE": cfg.get("bundle"), "MASSA": cfg.get("massa")}
-    extra = cfg.get("agentes", {}).get(f"sa-{nome}", {})
+    extra = {} if tk else cfg.get("agentes", {}).get(f"sa-{nome}", {})
+    ext = ext or {"skills": [], "subagentes": []}
     grupos, sh = base["grupos"], base["shell"]
 
     libera = expandir(p.get("mcp_libera", []), grupos)
@@ -67,7 +111,8 @@ def agente(nome, p, base, cfg):
     if not cfg.get("elm", True):
         nega.append("elm/*")
 
-    subagentes = p.get("subagentes", []) + [s["nome"] for s in extra.get("subagentes", [])]
+    subs_projeto = extra.get("subagentes", []) + ext["subagentes"]
+    subagentes = (tk["subagentes"] if tk else p.get("subagentes", [])) + [s["nome"] for s in subs_projeto]
     mcp_extra = extra.get("mcp", [])
 
     regras = [regra("fs_read", "allow", preencher(base["ler"]["permitir"], valores) + extra.get("ler", [])),
@@ -104,23 +149,24 @@ def agente(nome, p, base, cfg):
         regras.append(regra("mcp", "allow", [m if "/" in m else f"{m}/*" for m in mcp_extra]))
     regras.append(regra("skill", "allow"))
 
-    skills_extras = [Path(s.removeprefix("skill://")).parent.name for s in extra.get("skills", [])]
-    prompt = (ASSETS / f"sa-{nome}.md").read_text(encoding="utf-8")
+    skills_projeto = tk["skills"] if tk else extra.get("skills", []) + ext["skills"]
+    skills_extras = [Path(s.removeprefix("skill://")).parent.name for s in skills_projeto]
+    prompt = tk["prompt"] if tk else (ASSETS / f"sa-{nome}.md").read_text(encoding="utf-8")
     prompt = prompt.replace("{{SKILLS_EXTRAS}}", f"Skills do projeto ligadas a você: {', '.join(f'`{s}`' for s in skills_extras)}"
                             " — carregue a do artefato antes de escrevê-lo." if skills_extras else "")
-    subs_projeto = extra.get("subagentes", [])
     prompt = prompt.replace("{{SUBAGENTES}}", "Subagentes do projeto: " + ", ".join(f"`{s['nome']}` ({s['para']})" for s in subs_projeto)
                             if subs_projeto else "")
     prompt = re.sub(r"\n{3,}", "\n\n", PH.sub(lambda m: valores.get(m.group(1)) or "não há", prompt)).rstrip() + "\n"
 
-    a = {"name": f"sa-{nome}", "description": p["description"], "prompt": prompt,
+    a = {"name": tk["nome"] if tk else f"sa-{nome}", "description": tk["descricao"] if tk else p["description"], "prompt": prompt,
          "tools": ["read"] + (["write"] if p["escrita"] != "nenhuma" else []) + (["shell"] if p["shell"] != "nenhum" else [])
                   + [f"subagent/{s}" for s in subagentes]
                   + [f"@{t}" for t in libera + pergunta] + [f"@{m}" for m in mcp_extra],
          "resources": ["file://.sabia/sabia.md"] + cfg.get("steering", [])
-                      + [f"skill://{cfg['power']}/skills/{s}/SKILL.md" for s in p["skills"]] + extra.get("skills", []),
-         "includeMcpJson": bool(mcp_extra), "includePowers": True, "welcomeMessage": p["welcomeMessage"],
-         "permissions": {"rules": regras}}
+                      + ([] if tk else [f"skill://{cfg['power']}/skills/{s}/SKILL.md" for s in p["skills"]]) + skills_projeto,
+         "includeMcpJson": bool(mcp_extra), "includePowers": True, "permissions": {"rules": regras}}
+    if not tk:
+        a["welcomeMessage"] = p["welcomeMessage"]
     if subagentes:  # o V3 ainda lê a lista de subagentes daqui (o resto do toolsSettings saiu)
         a["toolsSettings"] = {"subagent": {"availableAgents": subagentes, "trustedAgents": subagentes}}
     if extra.get("modelo"):
@@ -175,7 +221,13 @@ def gerar(projeto: Path, cfg: dict) -> dict:
     nomes = [f"sa-{n}" for n in base["papeis"]]
     if desconhecidos := sorted(set(cfg.get("agentes", {})) - set(nomes)):
         raise ValueError(f"agentes.json: agente desconhecido {desconhecidos}; use {nomes}")
-    return {f"sa-{n}.json": agente(n, p, base, cfg) for n, p in base["papeis"].items()}
+    por_papel, do_toolkit = passos(projeto, cfg)
+    if fora := sorted(set(por_papel) - set(base["papeis"])):
+        raise ValueError(f"toolkit: passo de papel desconhecido {fora}")
+    agentes = {f"sa-{n}.json": agente(n, p, base, cfg, por_papel.get(n)) for n, p in base["papeis"].items()}
+    for n, tk in do_toolkit.items():
+        agentes[f"{n}.json"] = agente(tk["papel"], base["papeis"][tk["papel"]], base, cfg, tk=tk)
+    return agentes
 
 
 def main(argv=None):

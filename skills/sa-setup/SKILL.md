@@ -192,7 +192,8 @@ do projeto (`.kiro/skills/*/SKILL.md`), do usuário (`~/.kiro/skills/*/SKILL.md`
 (`~/.kiro/powers/installed/*/skills/*/SKILL.md`; não achou nada ali → `~/.kiro/powers/**/skills/*/SKILL.md`),
 **exceto** as do fluxo (`sabia`, `sa-*`; e `sdd`, `sdd-*`, `sdd2`, `sdd2-*` de uma instalação antiga). Para cada uma:
 nome, início da `description`, origem e, se houver, toolkit e papéis. Toolkit cujo `deteccao` casa com o projeto
-→ "detectado". Liste também os **agentes do projeto** (`.kiro/agents/*.json` e `~/.kiro/agents/*.json`, exceto
+→ "detectado"; skill com `stack`/`deteccao` própria → a coluna Stack diz se casa. Skill com `passo` → a tabela de
+passos do W5 (passo, `para`, skill e agente), ligados no Passo 6. Liste também os **agentes do projeto** (`.kiro/agents/*.json` e `~/.kiro/agents/*.json`, exceto
 `sa-*`), com o "para quê" tirado da `description` — eles são oferecidos como subagentes no Passo 6, sem a pessoa
 precisar lembrar deles.
 
@@ -228,7 +229,8 @@ item. Pedido que não é marcar/desmarcar (ex.: "quando a tarefa for de batch, u
 que o fluxo tem (subagente com o "para quê" do pedido), mostre o cartão atualizado e confirme.
 
 Padrões da proposta:
-1. **Skills:** marcadas só as de toolkits **detectados** com o papel do agente; as outras aparecem desmarcadas —
+1. **Skills:** marcadas só as de toolkits **detectados** com o papel do agente (e, se a skill tem `deteccao`, só se
+   ela também casa); as outras aparecem desmarcadas —
    inclusive skill avulsa que pareça útil (recomende em texto, ex. "recomendo `pôr 1`") e skill que a pessoa marcou
    em **outro** agente: a escolha de um agente não passa para o seguinte.
 2. **MCPs:** o de banco entra como somente leitura em pesquisador, codificador, revisor e verificador — só a tool
@@ -243,6 +245,11 @@ Padrões da proposta:
    inventário (Passo 5) **sempre listados**, desmarcados, com o "para quê" — que vai em
    `agentes.sa-<papel>.subagentes[].para` e no prompt do agente. Agente com o campo `hooks` (mesmo vazio) é
    ignorado pela IDE: fica desmarcado, com o ⚠️.
+
+5. Só especificador e codificador: **passos de toolkit** do agente — a skill marcada se o toolkit foi detectado,
+   o agente sempre desmarcado (delegar é escolha da pessoa). Vão no `agentes.json` (`toolkits` e `passos`) e na
+   tabela **Passos de toolkit** do `sabia.md`; o gerador liga a skill ao agente dono e gera o agente do toolkit
+   com as permissões do dono ([references/toolkits.md](references/toolkits.md#passos)).
 
 Registre também as skills **oferecidas e recusadas** por agente (coluna própria no `sabia.md`): no modo
 atualização, só skill que não está em nenhuma das duas colunas é "nova".

@@ -77,6 +77,9 @@ virar arquivo. Projeto sem ELM → pule.
 
 ### 3.2 Escrever
 
+`status.md` do épico com `Toolkit: <nome>` → a escrita é a da skill do toolkit
+([`sa-especificar`](../sa-especificar/SKILL.md#toolkit-na-especificação)); o contrato abaixo continua.
+
 Preencha o template do `prd.md` e crie, em `elm/`, um arquivo por artefato (`HF-nn-<slug>.md`,
 `REG-nn-<slug>.md`, `GL-<termo>.md`), com `status: draft`, `sources` (PRD, decisões), `generated` e o corpo do tipo
 (formato em [references/okf-elm.md](references/okf-elm.md)), mais o `index.md` e uma entrada no `log.md`. O `prd.md`

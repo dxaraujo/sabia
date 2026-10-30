@@ -8,7 +8,7 @@ Os agentes são **gerados**, nunca editados à mão. Três fontes:
 | `sa-<papel>.md` | [../assets/agents/](../assets/agents/) (power) | o prompt de cada agente |
 | `agentes.json` | `.sabia/config/agentes.json` (projeto, versionado) | as escolhas do projeto: caminhos, comandos, skills e MCPs por agente |
 
-O script [../scripts/gerar_agentes.py](../scripts/gerar_agentes.py) junta as três e grava os sete agentes:
+O script [../scripts/gerar_agentes.py](../scripts/gerar_agentes.py) junta as três e grava os sete agentes, mais os agentes dos passos de toolkit ligados (`.kiro/agents/<nome>.json`):
 
 ```bash
 uv run --no-project python <power>/skills/sa-setup/scripts/gerar_agentes.py --projeto <raiz>            # mostra o diff e a tabela
@@ -44,6 +44,8 @@ rebuilt)` no `--dry-run` (por causa do `toolsSettings.subagent`, que a V3 ainda 
 | `agentes.sa-<papel>.mcp` | tools de MCP do projeto: `servidor/tool` (banco: só a de consulta) ou `servidor` (inteiro, ex.: browser) |
 | `agentes.sa-<papel>.subagentes` | `[{"nome", "para"}]` — agentes do projeto (codificador e orquestrador) |
 | `agentes.sa-<papel>.modelo` | o modelo, se não for o padrão |
+| `toolkits.<nome>` | `{"pasta", "versao", "sha"}` de cada toolkit com passo ligado — `pasta` relativa ao home (`~/.sabia/toolkits/<nome>`) ou ao projeto |
+| `passos` | `[{"toolkit", "skill", "agente"}]` — a skill do `toolkit.json` que tem `passo`; `agente: true` gera o agente do passo e o liga ao dono |
 
 Todo papel com shell `trabalho` recebe `build`, `verificacao`, o `sh .sabia/verificar.sh` e, com `http_sh`, o
 `sh .sabia/http.sh *`.

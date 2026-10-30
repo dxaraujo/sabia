@@ -1,6 +1,6 @@
 # Toolkits — como a `sa-setup` encontra as skills de cada tipo de projeto
 
-O fluxo Sabiá não sabe programar em nenhuma stack: ele organiza **o quê** (produto), **o como** (plano) e **a
+O Sabiá é o fluxo; os toolkits são extensões dos agentes dele. O fluxo não sabe programar em nenhuma stack: ele organiza **o quê** (produto), **o como** (plano) e **a
 verificação**. O conhecimento de stack — Java, Spring Batch, Angular, React, Python, mainframe — vem de
 **toolkits**: pacotes de skills mantidos **fora** do power, um por tipo de projeto ou stack. A `sa-setup` é a
 única parte do fluxo que sabe procurá-los; depois de configurado, cada agente só enxerga as skills que a pessoa
@@ -33,14 +33,16 @@ e quais verificações a `sa-verificar` usa para executar os cenários de aceite
 
 ## Onde procurar (nesta ordem)
 
-1. **Projeto:** `.sabia/toolkits/*/toolkit.json`
-2. **Usuário:** `~/.sabia/toolkits/*/toolkit.json`
+1. **Usuário (CLI `sabia`):** `~/.sabia/toolkits/*/toolkit.json` — instalados por `sabia toolkits instalar`, com a
+   origem (índice, url, ref, sha e versão) em `.origem.json`
+2. **Projeto:** `.sabia/toolkits/*/toolkit.json` (o toolkit do próprio projeto, versionado)
 3. **Powers instalados:** `~/.kiro/powers/installed/*/toolkit.json` (um toolkit pode ser distribuído como power;
    não achou nada ali → `~/.kiro/powers/**/toolkit.json`)
-4. **Sem manifesto** (toolkit implícito): skills em `.kiro/skills/*/SKILL.md`, `~/.kiro/skills/*/SKILL.md` e
-   `~/.kiro/powers/installed/*/skills/*/SKILL.md` cujo frontmatter traga `metadata.toolkit` (nome do toolkit) —
-   e, opcionalmente, `metadata.papeis` e `metadata.tipos-de-projeto`. Skills com o mesmo `metadata.toolkit` formam
-   um toolkit.
+4. **Sem manifesto** (toolkit implícito): skills em `.kiro/skills/`, `.claude/skills/`, `.opencode/skills/` e
+   `.agents/skills/` (no projeto e no home) e em `~/.kiro/powers/installed/*/skills/`, cada uma `*/SKILL.md`, cujo
+   frontmatter traga `metadata.toolkit` (nome do toolkit) — e, opcionalmente, `metadata.papeis` e
+   `metadata.tipos-de-projeto`. Skills com o mesmo `metadata.toolkit` formam um toolkit (sem passos nem agentes:
+   esses só existem com manifesto).
 5. **Skills avulsas** (sem toolkit): entram no inventário geral; a pessoa decide por agente, como qualquer outra.
 
 Ficam de fora do inventário: as skills deste power (`sabia`, `sa-*`) e `sdd`, `sdd-*`, `sdd2`, `sdd2-*` de uma instalação antiga.
@@ -65,7 +67,8 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
     "contem": ["spring-batch-core", "org.springframework.batch"]
   },
   "skills": [
-    { "caminho": "skills/spring-batch-job/SKILL.md", "papeis": ["codificador", "revisor"] },
+    { "caminho": "skills/spring-batch-job/SKILL.md", "papeis": ["codificador", "revisor"], "stack": ["spring-batch 5"],
+      "passo": { "papel": "codificador", "para": "tarefa que cria ou altera um job ou step", "agente": "batch-job" } },
     { "caminho": "skills/spring-batch-teste/SKILL.md", "papeis": ["codificador", "verificador"] },
     { "caminho": "skills/java/SKILL.md", "papeis": ["codificador", "revisor", "pesquisador"] }
   ],
@@ -79,7 +82,13 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
     "cobertura": "mvn -q verify",
     "lint": "mvn -q checkstyle:check"
   },
-  "verificacao": "Executar o job pelo teste de integração (JobLauncherTestUtils) ou pela linha de comando do projeto com a massa de teste; conferir BATCH_JOB_EXECUTION e as contagens nas tabelas de destino"
+  "verificacao": "Executar o job pelo teste de integração (JobLauncherTestUtils) ou pela linha de comando do projeto com a massa de teste; conferir BATCH_JOB_EXECUTION e as contagens nas tabelas de destino",
+  "agentes": [
+    { "nome": "batch-job", "descricao": "Codifica um job Spring Batch e dispara um batch-step por step independente",
+      "prompt": "agentes/batch-job.md", "skills": ["skills/spring-batch-job/SKILL.md"], "subagentes": ["batch-step"] },
+    { "nome": "batch-step", "descricao": "Codifica um step Spring Batch (reader, processor, writer) e os testes dele",
+      "prompt": "agentes/batch-step.md", "skills": ["skills/spring-batch-teste/SKILL.md"] }
+  ]
 }
 ```
 
@@ -87,10 +96,28 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
 |---|---|
 | `tipos-de-projeto` | casa com o tipo detectado → o toolkit vira **sugestão** (nunca é ligado sem a pessoa dizer sim) |
 | `deteccao` | `arquivos` existe na raiz (ou em módulos) **e** algum `contem` aparece nele → toolkit "detectado" |
-| `skills[].papeis` | pré-seleciona a skill na proposta de cada agente (`pesquisador`, `codificador`, `revisor`, `verificador`, `produto`, `orquestrador`) |
+| `skills[].papeis` | **quem:** pré-seleciona a skill na proposta de cada agente (`produto`, `especificador`, `pesquisador`, `codificador`, `revisor`, `verificador`, `orquestrador`) — uma skill pode servir a vários |
+| `skills[].stack`, `skills[].deteccao` | **onde:** a stack da skill (ex.: `java 17`, `react`); com `deteccao`, a setup só a pré-marca se o repositório casar |
+| `skills[].passo` | **em que passo:** opcional — a skill assume o passo de um agente do Sabiá (`papel`: `especificador`, `codificador`), com o `para` e, opcional, o `agente` a quem delegar — ver [Passos](#passos) |
+| `agentes[]` | agentes neutros do toolkit (nome, descrição, prompt, skills, subagentes); sem campo de permissão |
 | `steering[]` | regras da stack: vira `file://` nos agentes dos papéis indicados |
 | `comandos` | **proposta** para a seção Comandos do `sabia.md` quando o repositório não deixa claro; a pessoa confirma |
 | `verificacao` | texto que a `sa-verificar` usa para executar os cenários de aceite desse tipo de projeto |
+
+## Passos
+
+Uma skill de toolkit sem `passo` é **de apoio**: o agente a carrega quando o artefato pede. Com `passo`, ela assume
+um passo definido de um agente do Sabiá, e a escolha fica registrada; os passos, o briefing e o contrato de cada um
+estão em [passos.md](../../sabia/references/passos.md).
+
+- A setup lista os passos no W5 e os oferece no W6 do agente dono (`sa-especificador`, `sa-codificador`). Ligado,
+  vai no `agentes.json` (`toolkits`: pasta, versão e sha usados; `passos`: toolkit, skill e se usa o agente) e na
+  tabela **Passos de toolkit** do `sabia.md`.
+- **Agente neutro:** o toolkit traz só a definição (`agentes[]`) e o prompt em `.md`. O gerador cria o agente com
+  as regras do papel dono do passo, nunca mais que isso, e o liga como subagente do dono com o `para`; os
+  `subagentes` dele herdam o mesmo papel. Nome `sa-*`, caminho fora da pasta do toolkit, ou agente que não está em
+  `agentes[]` → o gerador recusa e não grava nada.
+- A pasta `~/.sabia/toolkits/` é de leitura para todos os agentes.
 
 ## Proposta por agente
 

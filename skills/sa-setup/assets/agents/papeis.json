@@ -57,7 +57,7 @@
     "trabalho": ["git-leitura", "worktree", "creditos", "git-escrita"]
   },
   "ler": {
-    "permitir": ["./**", "{{POWER}}/**"],
+    "permitir": ["./**", "{{POWER}}/**", "~/.sabia/toolkits/**"],
     "negar": ["**/.env", "**/.env/**", "**/.env.*", "**/.env.*/**", "**/*.pem", "**/*.pem/**",
         "**/*.key", "**/*.key/**", "~/.ssh/**", "~/.aws/**", "~/.config/mcp-elm/**",
         "~/.config/mcp-gitlabpr/**", "{{BUNDLE}}/**"]

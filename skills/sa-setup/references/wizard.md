@@ -216,9 +216,15 @@ Montagem do `pa` (só quando falta): um cartão por bloco, com o cabeçalho
 ## 🧭 Etapa 5 de 9 · Skills
 `●●●●◉○○○○` O que já existe para os agentes usarem. Na próxima etapa você escolhe, agente por agente.
 
-| # | Skill | Para quê | Origem | Toolkit |
-|---|---|---|---|---|
-| 1 | `<nome da skill>` | <início da description> | <projeto | usuário | power `<nome>`> | <`<nome>` 🔍 detectado | —> |
+| # | Skill | Para quê | Origem | Toolkit | Stack |
+|---|---|---|---|---|---|
+| 1 | `<nome da skill>` | <início da description> | <projeto | usuário | power `<nome>`> | <`<nome>` 🔍 detectado | —> | <`<stack>` 🔍 casa | `<stack>` | —> |
+
+(só se alguma skill traz `passo`) Passos de toolkit — a skill assume um passo do Sabiá; ligados na próxima etapa:
+
+| # | Toolkit | Passo | Para | Skill | Agente |
+|---|---|---|---|---|---|
+| 1 | `<toolkit>` <versão> | <`especificador` | `codificador`> | <quando usar> | `<skill>` | <`<agente>` | —> |
 
 Agentes do projeto (podem virar subagentes do codificador e do orquestrador):
 
@@ -233,7 +239,7 @@ Agentes do projeto (podem virar subagentes do codificador e do orquestrador):
 ## W6 · Um agente (Passo 6) — sete cartões, um por mensagem
 
 ```
-## 🧭 Etapa 6 de 9 · Agentes — <n> de 6 · `sa-<papel>`
+## 🧭 Etapa 6 de 9 · Agentes — <n> de 7 · `sa-<papel>`
 `●●●●●◉○○○` <papel em uma frase: ex. "planeja e implementa uma fatia por sessão, até o merge">
 
 **Já vem do fluxo:** <desenvolver · plano · codificar · iniciar · status>
@@ -248,11 +254,16 @@ Agentes do projeto (podem virar subagentes do codificador e do orquestrador):
 | <[✅] | [ ]> | <n> | `<banco/consultar>` | 🟢 só consulta |
 | [✅] | <n> | `gitlabpr` | <🟢 consulta · 🟡 abrir e mesclar PR | 🟢 consulta · 🟡 abrir PR | 🟢 consulta> |
 
-(se o agente tem subagentes — produto, codificador, orquestrador: os do fluxo, da tabela do Passo 6, mais os do projeto)
+(se o agente tem subagentes — produto, especificador, codificador, orquestrador: os do fluxo, da tabela do Passo 6, mais os do projeto)
 | | # | Subagente | Para quê |
 |---|---|---|---|
 | [✅] | <n> | `sa-revisor` | análise do plano e revisão do código |
 | [ ] | <n> | `<agente do projeto>` | <início da description> |
+
+(só `sa-especificador` e `sa-codificador`, se há passo de toolkit deles no W5)
+| | # | Passo de toolkit | Para | Agente |
+|---|---|---|---|---|
+| <[✅] | [ ]> | <n> | `<skill>` · toolkit `<nome>` | <quando usar> | <[ ] `<agente>` — delegar a ele | — sem agente> |
 
 | Item | Valor |
 |---|---|
@@ -263,7 +274,8 @@ Agentes do projeto (podem virar subagentes do codificador e do orquestrador):
 > `ok` · `tirar 3,5` · `pôr 7` · `só 1,2` · `nenhuma skill` · `modelo: <nome>` · `as mesmas do sa-<outro>`
 ```
 
-Linhas numeradas em sequência pelas três tabelas (skills, MCPs, subagentes), para "tirar 3,5" valer em qualquer uma.
+Linhas numeradas em sequência pelas quatro tabelas (skills, MCPs, subagentes, passos), para "tirar 3,5" valer em
+qualquer uma. No passo, `pôr <n>` liga a skill e `agente <n>` marca também o agente (só com a skill ligada).
 As linhas `elm` e `gitlabpr` são fixas do papel (não se tiram por projeto); a do `gitlabpr` só existe no produto,
 codificador, revisor e orquestrador — o MCP serve só ao PR.
 Toda opção aparece — marcada ou não —, na ordem: marcadas primeiro, depois as desmarcadas. Depois de um ajuste,
@@ -311,6 +323,7 @@ mostre o cartão de novo com as caixas atualizadas antes de pedir o "ok" final d
 | `.sabia/config/agentes.json` | rascunho gravado (o Kiro não carrega) |
 | `.kiro/config/elm/pa_<nome>.json` | <gravado e validado no bloco 10 | manter | ➖> |
 | `.kiro/agents/sa-*.json` (7) | <criar | alterar — diff abaixo> |
+| `.kiro/agents/<agente do toolkit>.json` | <criar | alterar | ➖ nenhum passo com agente> |
 | `.kiro/steering/sabia.md` (ponteiro) | <criar | manter> |
 | `.sabia/verificar.sh` | <criar | alterar | ➖> |
 | `.sabia/http.sh` | <criar | ➖> |

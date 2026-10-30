@@ -208,6 +208,21 @@ P.O. ou do SM (`sa-consolidar`, agente `sa-produto`). Pedido de merge ou de cons
 aprovado", "mergeia", "consolida") → diga "use `sa-desenvolver FT-<nnn>`" (ou, para consolidar, quem consolida) e
 pare: aprovação dita na conversa não vale — o merge confere a que está registrada.
 
+## Toolkit na codificação
+
+Passo `codificador` de [passos.md](../sabia/references/passos.md). Tarefa com `_Toolkit: <nome>_` no `tasks.md`
+(anotada no plano e aprovada no GATE):
+
+- **Sem agente** (coluna Agente `—` nos **Passos de toolkit** do `sabia.md`) → carregue a skill do passo e faça o
+  ciclo do Passo 1 por ela.
+- **Com agente** → delegue a tarefa com o briefing de codificação de
+  [passos.md](../sabia/references/passos.md#sem-agente-e-com-agente) (a tarefa, `design.md`, `research.md`, os
+  pontos de teste e os comandos) e o contrato: código e testes da tarefa, dentro do escopo, e o resumo dos
+  arquivos; sem commit, push nem PR.
+- **Depois, sempre o Sabiá:** confira que só mudaram arquivos da tarefa (`git status`), rode o
+  `sh .sabia/verificar.sh` (evidência, não afirmação) e siga os itens 6 e 7 do Passo 1 (marcar, Histórico,
+  commit). Fora do escopo ou vermelho → devolva uma vez com a falha; de novo → divergência (Passo 1).
+
 ## Modo autônomo
 
 `AUTONOMO=true` (chamado pelo `sa-orquestrador`/`sa-loop`): sem perguntas; trabalhe só na worktree recebida;

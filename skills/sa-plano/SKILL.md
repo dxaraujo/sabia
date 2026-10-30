@@ -47,7 +47,8 @@ recomendada (HITL) ou decida e registre (AFK) em "Decisões técnicas".
    pontos de teste (o mais alto possível), erros/transação/reexecução, **contrato de pronto** (como cada cenário
    será verificado de ponta a ponta) e decisões técnicas.
 3. **`tasks.md`**: uma tarefa por comportamento, teste primeiro, comando de pronto, `_Requirements: N.M_`; a
-   última é o checkpoint de validação completa + revisão.
+   última é o checkpoint de validação completa + revisão. Tarefa que casa com o `para` de um passo `codificador`
+   (tabela **Passos de toolkit** do `sabia.md`) → `_Toolkit: <nome>_` na tarefa; aparece no GATE.
 4. Skills do toolkit ligadas ao agente: consulte a da stack para a forma do programa (camadas, nomes, testes).
 5. Limite: plano que passa de ~200 linhas no total ou de ~8 tarefas → a fatia está grande: em vez de escrever um
    plano maior, proponha dividi-la. Ela já está `iniciada`: quem divide é o P.O., pela `sa-fatiar` (sem épico, pela

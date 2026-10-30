@@ -213,6 +213,62 @@ class Gerar(unittest.TestCase):
         self.assertIn("🟡 pergunta", linhas["**sa-codificador**"])
         self.assertTrue(linhas["**sa-produto**"].rstrip(" |").endswith("🔴 negado"))
 
+    def toolkit(self, **mudar):
+        """Toolkit fictício em ~/.sabia/toolkits/batch-alfa: passo do codificador com o agente job, que chama o step."""
+        pasta = self.home / ".sabia/toolkits/batch-alfa"
+        for f in ("skills/batch/SKILL.md", "skills/teste/SKILL.md", "agentes/job.md", "agentes/step.md"):
+            (pasta / f).parent.mkdir(parents=True, exist_ok=True)
+            (pasta / f).write_text("x {{BASE}}" if f.startswith("agentes") else "x")
+        man = {"nome": "batch-alfa", "versao": "1.0.0",
+               "skills": [{"caminho": "skills/batch/SKILL.md", "papeis": ["codificador"],
+                           "passo": {"papel": "codificador", "para": "tarefa de job", "agente": "batch-job"}}],
+               "agentes": [{"nome": "batch-job", "descricao": "job", "prompt": "agentes/job.md", "skills": ["skills/batch/SKILL.md"],
+                            "subagentes": ["batch-step"]},
+                           {"nome": "batch-step", "descricao": "step", "prompt": "agentes/step.md", "skills": ["skills/teste/SKILL.md"]}]}
+        man.update(mudar)
+        (pasta / "toolkit.json").write_text(json.dumps(man))
+        return {"toolkits": {"batch-alfa": {"pasta": "~/.sabia/toolkits/batch-alfa", "versao": "1.0.0", "sha": "abc"}},
+                "passos": [{"toolkit": "batch-alfa", "skill": "skills/batch/SKILL.md", "agente": True}]}
+
+    def test_passo_com_agente(self):
+        agentes = self.gerar(**self.toolkit())
+        c, job, step = agentes["codificador"], agentes["batch-job"], agentes["batch-step"]
+        self.assertIn("skill://~/.sabia/toolkits/batch-alfa/skills/batch/SKILL.md", c["resources"])
+        self.assertIn("batch-job", c["toolsSettings"]["subagent"]["availableAgents"])
+        self.assertIn("`batch-job` (tarefa de job)", c["prompt"])
+        self.assertEqual(job["toolsSettings"]["subagent"]["availableAgents"], ["batch-step"])
+        self.assertEqual(job["prompt"], "x develop\n")
+        self.assertNotIn("welcomeMessage", job)
+        self.assertFalse([r for r in job["resources"] if "/sa-" in r])
+        for a in (job, step):  # as regras do papel dono, nunca mais que isso
+            self.assertEqual([r for r in a["permissions"]["rules"] if r["capability"] != "subagent"],
+                             [r for r in c["permissions"]["rules"] if r["capability"] != "subagent"])
+        self.assertNotIn("toolsSettings", step)
+        self.assertIn("~/.sabia/toolkits/**", regras(c, "fs_read", "allow"))
+
+    def test_passo_sem_agente(self):
+        cfg = self.toolkit()
+        cfg["passos"][0]["agente"] = False
+        agentes = self.gerar(**cfg)
+        self.assertNotIn("batch-job", agentes)
+        self.assertIn("skill://~/.sabia/toolkits/batch-alfa/skills/batch/SKILL.md", agentes["codificador"]["resources"])
+        self.assertNotIn("batch-job", agentes["codificador"].get("toolsSettings", {}).get("subagent", {}).get("availableAgents", []))
+
+    def test_toolkit_invalido_e_recusado(self):
+        skill = lambda caminho, **passo: {"caminho": caminho, "papeis": ["codificador"], "passo": {"papel": "codificador", "para": "p", **passo}}
+        ruins = [{"agentes": [{"nome": "sa-job", "descricao": "j", "prompt": "agentes/job.md"}],
+                  "skills": [skill("skills/batch/SKILL.md", agente="sa-job")]},
+                 {"skills": [skill("../fora/SKILL.md")]},
+                 {"skills": [skill("skills/batch/SKILL.md", agente="batch-job")],
+                  "agentes": [{"nome": "batch-job", "descricao": "j", "prompt": "/etc/passwd"}]},
+                 {"skills": [skill("skills/batch/SKILL.md", papel="faxineiro")]},
+                 {"skills": [{"caminho": "skills/batch/SKILL.md", "papeis": ["codificador"]}]}]  # skill sem `passo`
+        for mudar in ruins:
+            cfg = self.toolkit(**mudar)
+            cfg["passos"][0]["skill"] = mudar["skills"][0]["caminho"]
+            with self.assertRaises(ValueError, msg=mudar):
+                g.gerar(self.projeto, {**self.cfg, **cfg})
+
     def test_chave_sem_prefixo_falha(self):
         with self.assertRaises(ValueError):
             g.gerar(self.projeto, {**self.cfg, "agentes": {"codificador": {}}})
