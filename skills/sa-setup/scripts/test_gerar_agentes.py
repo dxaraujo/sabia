@@ -269,6 +269,51 @@ class Gerar(unittest.TestCase):
             with self.assertRaises(ValueError, msg=mudar):
                 g.gerar(self.projeto, {**self.cfg, **cfg})
 
+    def test_opencode(self):
+        agentes = g.gerar(self.projeto, self.cfg)
+        pesq, cod = g.opencode(agentes["sa-pesquisador.json"], self.cfg), g.opencode(agentes["sa-codificador.json"], self.cfg)
+        self.assertTrue(pesq.startswith("---\n") and '"mode": "all"' in pesq)
+        self.assertIn('  "edit": "deny"', pesq)
+        linhas = cod.splitlines()
+        edit = linhas.index('  "edit":')
+        self.assertEqual(linhas[edit + 1], '    "*": "allow"')  # a última que casa vence: o geral vem antes
+        self.assertIn('    ".sabia/planejamento/epicos/*": "deny"', linhas)
+        self.assertIn('    "*/.kiro/agents/*": "deny"', linhas)
+        self.assertLess(linhas.index('    "git commit *": "allow"'), linhas.index('    "*git commit* -n": "deny"'))
+        self.assertIn('    "sa-revisor": "allow"', linhas)
+        self.assertIn('    "sa-codificar": "allow"', linhas)
+        self.assertIn('  "elm_elm_criar_wi": "ask"', linhas)
+        self.assertIn('  "gitlabpr_gitlab_mesclar_mr": "ask"', linhas)
+        self.assertIn('    "~/.sabia/toolkits/*": "allow"', linhas)
+        self.assertIn('    "~/.config/opencode/*": "allow"', linhas)
+        self.assertTrue(cod.rstrip().endswith(agentes["sa-codificador.json"]["prompt"].rstrip()))
+
+    def test_claude(self):
+        agentes = g.gerar(self.projeto, self.cfg)
+        pesq, cod = g.claude(agentes["sa-pesquisador.json"]), g.claude(agentes["sa-codificador.json"])
+        self.assertIn('"name": "sa-pesquisador"', pesq)
+        self.assertIn('"disallowedTools": "Write, Edit, NotebookEdit, ', pesq)
+        self.assertIn("mcp__gitlabpr__gitlab_criar_mr", pesq)
+        self.assertNotIn("Write", cod.split("---")[1])
+        st = g.claude_settings(agentes, {"permissions": {"ask": ["Bash(x)"]}, "model": "m"})
+        self.assertEqual(st["model"], "m")
+        self.assertEqual(st["permissions"]["ask"][0], "Bash(x)")
+        for r in ("Edit(/.sabia/planejamento/epicos/**)", "Edit(**/.kiro/agents/**)", "Edit(/.sabia/config/**)",
+                  "Edit(/.sabia/planejamento/backlog.md)"):
+            self.assertIn(r, st["permissions"]["ask"])
+        self.assertEqual(g.claude_settings(agentes, st), st)  # rodar de novo não duplica
+
+    def test_main_tres_alvos_sem_kiro_instalado(self):
+        conf = self.projeto / ".sabia/config/agentes.json"
+        conf.parent.mkdir(parents=True)
+        conf.write_text(json.dumps({**self.cfg, "power": "~/nao-existe", "alvos": ["opencode", "claude"]}))
+        self.assertEqual(g.main(["--projeto", str(self.projeto), "--gravar"]), 0)
+        self.assertEqual(len(list((self.projeto / ".opencode/agents").glob("sa-*.md"))), 7)
+        self.assertEqual(len(list((self.projeto / ".claude/agents").glob("sa-*.md"))), 7)
+        self.assertTrue((self.projeto / ".claude/settings.json").exists())
+        self.assertFalse((self.projeto / ".kiro/agents").exists())
+        self.assertEqual(g.main(["--projeto", str(self.projeto), "--alvo", "cursor"]), 1)
+
     def test_chave_sem_prefixo_falha(self):
         with self.assertRaises(ValueError):
             g.gerar(self.projeto, {**self.cfg, "agentes": {"codificador": {}}})

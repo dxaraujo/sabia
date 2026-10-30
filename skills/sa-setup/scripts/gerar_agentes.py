@@ -1,8 +1,10 @@
-"""Gera .kiro/agents/sa-<papel>.json (Kiro IDE e CLI V3) a partir de assets/agents/papeis.json, dos prompts
-assets/agents/sa-<papel>.md e da configuração do projeto em .sabia/config/agentes.json.
+"""Gera os agentes do Sabiá a partir de assets/agents/papeis.json, dos prompts assets/agents/sa-<papel>.md e da
+configuração do projeto em .sabia/config/agentes.json, para cada alvo: kiro (.kiro/agents/*.json, IDE e CLI V3),
+opencode (.opencode/agents/*.md) e claude (.claude/agents/*.md e as regras de proteção no .claude/settings.json).
 
     uv run --no-project python gerar_agentes.py --projeto <raiz>            # só mostra o diff e a tabela
     uv run --no-project python gerar_agentes.py --projeto <raiz> --gravar   # grava (só depois do "ok" da pessoa)
+    ... --alvo kiro,opencode,claude                                         # padrão: `alvos` do agentes.json, ou kiro
 
 Sai com 1 se algum caminho citado não existe ou sobrou um {{…}} (nada é gravado). Termina com a tabela do que
 cada agente recebeu (skills, MCPs, ELM, subagentes, push), lida dos agentes gerados.
@@ -15,6 +17,9 @@ import sys
 from pathlib import Path
 
 ASSETS = Path(__file__).resolve().parent.parent / "assets" / "agents"
+ALVOS = ("kiro", "opencode", "claude")
+# shortcut: pasta fixa das skills do Sabiá no opencode (onde o CLI as copia); se o CLI ganhar --escopo projeto, vira config
+POWER_OPENCODE = "~/.config/opencode"
 PH = re.compile(r"\{\{([A-Z_]+)\}\}")
 
 
@@ -92,7 +97,7 @@ def passos(projeto, cfg):
 
 def agente(nome, p, base, cfg, ext=None, tk=None):
     """O agente sa-<nome>; com `tk`, o agente do toolkit, com as regras do papel <nome>, dono do passo."""
-    valores = {"POWER": cfg["power"], "PRODUTO": cfg["produto"], "GLOSSARIO": cfg.get("glossario"), "ADR": cfg.get("adr"),
+    valores = {"POWER": cfg.get("power", "~/.kiro/powers/installed/sabia"), "PRODUTO": cfg["produto"], "GLOSSARIO": cfg.get("glossario"), "ADR": cfg.get("adr"),
                "BASE": cfg["base"], "BUNDLE": cfg.get("bundle"), "MASSA": cfg.get("massa")}
     extra = {} if tk else cfg.get("agentes", {}).get(f"sa-{nome}", {})
     ext = ext or {"skills": [], "subagentes": []}
@@ -163,7 +168,7 @@ def agente(nome, p, base, cfg, ext=None, tk=None):
                   + [f"subagent/{s}" for s in subagentes]
                   + [f"@{t}" for t in libera + pergunta] + [f"@{m}" for m in mcp_extra],
          "resources": ["file://.sabia/sabia.md"] + cfg.get("steering", [])
-                      + ([] if tk else [f"skill://{cfg['power']}/skills/{s}/SKILL.md" for s in p["skills"]]) + skills_projeto,
+                      + ([] if tk else [f"skill://{valores['POWER']}/skills/{s}/SKILL.md" for s in p["skills"]]) + skills_projeto,
          "includeMcpJson": bool(mcp_extra), "includePowers": True, "permissions": {"rules": regras}}
     if not tk:
         a["welcomeMessage"] = p["welcomeMessage"]
@@ -172,6 +177,115 @@ def agente(nome, p, base, cfg, ext=None, tk=None):
     if extra.get("modelo"):
         a["model"] = extra["modelo"]
     return a
+
+
+def _yaml(d, ind=0):
+    """YAML do frontmatter: strings em JSON (escalar entre aspas válido em YAML), mapas aninhados."""
+    out = []
+    for k, v in d.items():
+        chave = " " * ind + json.dumps(k, ensure_ascii=False)
+        if isinstance(v, dict):
+            out += [chave + ":"] + _yaml(v, ind + 2)
+        elif isinstance(v, list):
+            out.append(chave + ": [" + ", ".join(json.dumps(x, ensure_ascii=False) for x in v) + "]")
+        else:
+            out.append(chave + ": " + json.dumps(v, ensure_ascii=False))
+    return out
+
+
+def _md(frente, prompt):
+    return "---\n" + "\n".join(_yaml(frente)) + "\n---\n\n" + prompt
+
+
+def _regras(a, cap, efeito=None):
+    return [r for r in a["permissions"]["rules"] if r["capability"] == cap and (efeito is None or r["effect"] == efeito)]
+
+
+def _oc(padrao):
+    """Padrão de caminho do Kiro no curinga simples do opencode (`*` atravessa `/`): `**/x` pega a raiz e o aninhado."""
+    padrao = padrao.removeprefix("./")
+    return [padrao.removeprefix("**/").replace("**", "*"), "*/" + padrao.removeprefix("**/").replace("**", "*")] \
+        if padrao.startswith("**/") else [padrao.replace("**", "*")]
+
+
+def _mcp(t, sep):
+    """`sabia/elm/elm_x` (regra power) ou `banco/consultar` (regra mcp) no nome de tool do alvo."""
+    servidor, _, tool = t.removeprefix("sabia/").partition("/")
+    return f"{servidor}{sep}{tool}"
+
+
+def opencode(a, cfg, subagente=False):
+    """O agente do Kiro traduzido para .opencode/agents/<nome>.md (permission por agente; a última regra que casa vence)."""
+    perm = {"read": {"*": "allow"}}
+    for r in _regras(a, "fs_read", "deny"):
+        perm["read"].update({x: "deny" for m in r["match"] for x in _oc(m)})
+    escrita = _regras(a, "fs_write")
+    perm["edit"] = "deny" if not escrita else {"*": "allow", **{x: "deny" for r in _regras(a, "fs_write", "deny")
+                                                                 for m in r["match"] for x in _oc(m)}}
+    if "shell" not in a["tools"]:
+        perm["bash"] = "deny"
+    else:  # a negação vem por último: no Kiro ela sempre vence
+        bash = {"*": "ask"}
+        for r in _regras(a, "shell", "allow"):
+            bash.update({m: "allow" for m in r["match"]})
+            bash.update({m: "ask" for m in r.get("exclude", [])})
+        for efeito in ("ask", "deny"):
+            bash.update({m: efeito for r in _regras(a, "shell", efeito) for m in r["match"]})
+        perm["bash"] = bash
+    subs = [m for r in _regras(a, "subagent") for m in r["match"]]
+    perm["task"] = {"*": "deny", **{s: "allow" for s in subs}} if subs else "deny"
+    perm["skill"] = {"*": "deny", **{Path(r.removeprefix("skill://")).parent.name: "allow"
+                                     for r in a["resources"] if r.startswith("skill://")}}
+    for r in _regras(a, "power"):
+        perm.update({_mcp(m, "_"): r["effect"] for m in r["match"]})
+    for r in _regras(a, "mcp"):
+        perm.update({_mcp(m, "_"): r["effect"] for m in r["match"]})
+    fora = [m.replace(cfg.get("power", "~/.kiro/powers/installed/sabia"), POWER_OPENCODE).replace("**", "*")
+            for r in _regras(a, "fs_read", "allow") for m in r["match"] if m.startswith("~/")]
+    perm["external_directory"] = {"*": "ask", **{m: "allow" for m in fora}}
+    frente = {"description": a["description"], "mode": "subagent" if subagente else "all"}
+    if a.get("model"):
+        frente["model"] = a["model"]
+    frente["permission"] = perm
+    return _md(frente, a["prompt"])
+
+
+def claude(a):
+    """O agente do Kiro traduzido para .claude/agents/<nome>.md. O Claude Code só tira ferramentas inteiras do
+    subagente; a proteção dos arquivos vai no settings.json (`claude_settings`)."""
+    tira = []
+    if not _regras(a, "fs_write"):
+        tira += ["Write", "Edit", "NotebookEdit"]
+    if "shell" not in a["tools"]:
+        tira.append("Bash")
+    tira += [f"mcp__{_mcp(m, '__')}" for r in _regras(a, "power", "deny") for m in r["match"]]
+    frente = {"name": a["name"], "description": a["description"]}
+    if tira:
+        frente["disallowedTools"] = ", ".join(tira)
+    if a.get("model"):
+        frente["model"] = a["model"]
+    return _md(frente, a["prompt"])
+
+
+def claude_settings(agentes, atual):
+    """Protege só o fluxo e o planejamento: harness e registros perguntam antes de qualquer escrita, a todos (o Claude
+    Code não restringe caminho por subagente). Mantém o resto do settings.json como está."""
+    caminhos = sorted({m for a in agentes.values() for r in _regras(a, "fs_write", "deny") for m in r["match"]})
+    regras = [f"Edit({m if m.startswith('**/') else '/' + m.removeprefix('./')})" for m in caminhos]
+    novo = json.loads(json.dumps(atual))
+    ask = novo.setdefault("permissions", {}).setdefault("ask", [])
+    ask += [r for r in regras if r not in ask]
+    return novo
+
+
+LACUNAS = {
+    "opencode": ["as exceções de cada grupo de comandos (`git log --output`, `git add -f`…) perguntam para qualquer comando, não só para o grupo",
+                 "`external_directory` com `~/` não foi conferido numa sessão real"],
+    "claude": ["registros e harness perguntam a todos (sessão principal inclusive), sem diferenciar o papel",
+               "sem regra de shell por papel: push, comandos negados e comandos do projeto seguem as permissões da pessoa",
+               "escrita no ELM e no GitLab sem pergunta por agente (só as tools que o papel não usa são tiradas)",
+               "skills e subagentes não ficam restritos por agente (o prompt diz quais usar)"],
+}
 
 
 def problemas(a, projeto):
@@ -191,7 +305,7 @@ def problemas(a, projeto):
 
 def resumo(agentes, cfg):
     """Tabela markdown do que cada agente recebeu, lida dos agentes gerados; ícones da legenda de references/wizard.md."""
-    fluxo = f"skill://{cfg['power']}/skills/"
+    fluxo = f"skill://{cfg.get('power', '~/.kiro/powers/installed/sabia')}/skills/"
     linhas = ["| Agente | Skills do fluxo | Skills do projeto | MCPs do projeto | ELM | GitLab | Subagentes | Push |",
               "|---|---|---|---|---|---|---|---|"]
     for a in agentes.values():
@@ -230,38 +344,61 @@ def gerar(projeto: Path, cfg: dict) -> dict:
     return agentes
 
 
+def arquivos(agentes, cfg, projeto, alvos):
+    """{caminho: conteúdo} de cada alvo; o settings.json do Claude Code é mesclado com o que já existe."""
+    out = {}
+    for arquivo, a in agentes.items():
+        nome = arquivo.removesuffix(".json")
+        if "kiro" in alvos:
+            out[projeto / ".kiro/agents" / arquivo] = json.dumps(a, ensure_ascii=False, indent=2) + "\n"
+        if "opencode" in alvos:
+            out[projeto / ".opencode/agents" / f"{nome}.md"] = opencode(a, cfg, subagente=not nome.startswith("sa-"))
+        if "claude" in alvos:
+            out[projeto / ".claude/agents" / f"{nome}.md"] = claude(a)
+    if "claude" in alvos:
+        st = projeto / ".claude/settings.json"
+        atual = json.loads(st.read_text(encoding="utf-8")) if st.exists() else {}
+        out[st] = json.dumps(claude_settings(agentes, atual), ensure_ascii=False, indent=2) + "\n"
+    return out
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--projeto", type=Path, default=Path("."))
     ap.add_argument("--config", type=Path, help="padrão: <projeto>/.sabia/config/agentes.json")
-    ap.add_argument("--saida", type=Path, help="padrão: <projeto>/.kiro/agents")
+    ap.add_argument("--alvo", help="kiro,opencode,claude (padrão: `alvos` do agentes.json, ou kiro)")
     # gravar é opt-in: rodar sem flag nunca grava nada antes do "ok" da pessoa
     ap.add_argument("--gravar", action="store_true", help="grava os agentes (sem ela, só mostra o diff)")
     ap.add_argument("--diff", action="store_true", help="o padrão: mostra o diff e não grava")
     args = ap.parse_args(argv)
     projeto = args.projeto.resolve()
     cfg = json.loads((args.config or projeto / ".sabia/config/agentes.json").read_text(encoding="utf-8"))
+    alvos = args.alvo.split(",") if args.alvo else cfg.get("alvos", ["kiro"])
+    if fora := sorted(set(alvos) - set(ALVOS)):
+        print(f"alvo desconhecido {fora}; use {', '.join(ALVOS)}", file=sys.stderr)
+        return 1
     try:
         agentes = gerar(projeto, cfg)
     except ValueError as e:
         print(e, file=sys.stderr)
         return 1
-    erros = [e for a in agentes.values() for e in problemas(a, projeto)]
+    # os caminhos skill:// e file:// são do Kiro; nos outros alvos as skills são achadas pelo nome
+    erros = [e for a in agentes.values() for e in problemas(a, projeto)] if "kiro" in alvos else []
     if erros:
         print("\n".join(erros), file=sys.stderr)
         return 1
-    saida = args.saida or projeto / ".kiro/agents"
-    for arquivo, a in agentes.items():
-        novo = json.dumps(a, ensure_ascii=False, indent=2) + "\n"
-        alvo = saida / arquivo
+    for alvo, novo in arquivos(agentes, cfg, projeto, alvos).items():
         antigo = alvo.read_text(encoding="utf-8") if alvo.exists() else ""
         if not args.gravar:
             sys.stdout.writelines(difflib.unified_diff(antigo.splitlines(True), novo.splitlines(True), str(alvo), str(alvo)))
         elif novo != antigo:
-            saida.mkdir(parents=True, exist_ok=True)
+            alvo.parent.mkdir(parents=True, exist_ok=True)
             alvo.write_text(novo, encoding="utf-8")
             print(f"gravado {alvo}")
     print("\n" + resumo(agentes, cfg), end="")
+    for alvo in alvos:
+        if LACUNAS.get(alvo):
+            print(f"\nO que não tem tradução no {alvo}:\n" + "".join(f"- {l}\n" for l in LACUNAS[alvo]), end="")
     return 0
 
 

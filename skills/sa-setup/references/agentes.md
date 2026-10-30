@@ -28,7 +28,8 @@ rebuilt)` no `--dry-run` (por causa do `toolsSettings.subagent`, que a V3 ainda 
 
 | Campo | O quê |
 |---|---|
-| `power` | a pasta do power, relativa ao home (Passo 0): `~/.kiro/powers/installed/sabia` |
+| `alvos` | as ferramentas do time: `["kiro", "opencode", "claude"]` (padrão `["kiro"]`; `--alvo` no gerador troca) |
+| `power` | a pasta do power do Kiro, relativa ao home (Passo 0): `~/.kiro/powers/installed/sabia` |
 | `produto`, `glossario`, `adr` | os caminhos do Passo 4 (`null` = não há) |
 | `base` | a branch base, sem `origin/` — nas regras de push da base (pergunta no codificador e no orquestrador; negado nos demais) |
 | `bundle` | o `rm.download` do `pa` (leitura negada: a consulta é pelas `elm_*_local`), ou `null` |
@@ -49,6 +50,20 @@ rebuilt)` no `--dry-run` (por causa do `toolsSettings.subagent`, que a V3 ainda 
 
 Todo papel com shell `trabalho` recebe `build`, `verificacao`, o `sh .sabia/verificar.sh` e, com `http_sh`, o
 `sh .sabia/http.sh *`.
+
+## Nos outros alvos
+
+O gerador monta o agente do Kiro e o traduz:
+
+- **opencode** (`.opencode/agents/<nome>.md`): `permission` por agente, na ordem em que a última regra que casa
+  vence — `read` e `edit` por caminho (`**/x` vira `x` e `*/x`), `bash` (as negações por último), `task` (os
+  subagentes), `skill` (as skills do agente, pelo nome), as tools de MCP como `<servidor>_<tool>` e
+  `external_directory` para o que se lê fora do projeto. Agente do toolkit sai como `mode: subagent`.
+- **Claude Code** (`.claude/agents/<nome>.md`): o subagente só perde ferramentas inteiras — `Write`/`Edit` sem
+  escrita, `Bash` sem shell e as tools do MCP que o papel não usa (`mcp__elm__<tool>`). A proteção fica só no fluxo e
+  no planejamento: harness e registros vão em `permissions.ask` (`Edit(...)`) do `.claude/settings.json`, para
+  todos, mesclado com o que já existe.
+- O que não tem tradução sai no fim da saída do gerador, por alvo.
 
 ## Como as permissões são montadas
 

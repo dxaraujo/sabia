@@ -67,12 +67,19 @@ respondeu. Falhou por rede → ⏸️ no cartão, siga com o resto e teste de no
 
 ## Passo 0 — Boas-vindas e pré-checagem (cartão W0)
 
-Rode esta skill na **sessão padrão** do Kiro (sem agente `sa-*`): ela grava em `.sabia/`, `.kiro/steering` e
-`.kiro/agents`, que os agentes do fluxo não podem escrever. Num agente `sa-*` → peça para
+Rode esta skill na **sessão padrão** da ferramenta (Kiro, Claude Code ou opencode, sem agente `sa-*`): ela grava
+em `.sabia/` e nos agentes e ponteiros de cada ferramenta, que os agentes do fluxo não podem escrever. Num agente `sa-*` → peça para
 trocar para a sessão padrão e pare.
 
 1. **Raiz do repositório:** `git rev-parse --show-toplevel` (sem git → avise: o fluxo depende de branches e PRs).
-2. **Pasta do power instalado** (`power` do `agentes.json`): o Kiro instala em `~/.kiro/powers/installed/sabia/`
+1a. **Ferramentas do time** (`alvos` do `agentes.json`; linha 8 do W0): as que o projeto usa, detectadas por
+   `.kiro/`, `.claude/` ou `CLAUDE.md`, `.opencode/` ou `opencode.json`, mais a ferramenta desta sessão. O gerador
+   cria os agentes de cada uma (`kiro` · `opencode` · `claude`); a pessoa muda na linha 8. Onde as skills do Sabiá
+   precisam estar (o CLI `sabia` as copia de `~/.sabia/framework/` e registra no `~/.sabia/inventario.json`): Kiro,
+   o power (item 2); Claude Code, `~/.claude/skills/sa-setup/SKILL.md`; opencode,
+   `~/.config/opencode/skills/sa-setup/SKILL.md`. Faltando numa ferramenta escolhida → ❌ na linha 8, com o comando
+   `npx <pacote> instalar --alvo <ferramenta>`.
+2. **Pasta do power instalado** (`power` do `agentes.json`; só com o Kiro nos alvos): o Kiro instala em `~/.kiro/powers/installed/sabia/`
    (conferido com o `kiro-cli` 2.31). Confirme que `skills/sa-setup/SKILL.md` existe ali; senão procure
    (`find ~/.kiro/powers -path '*sabia/skills/sa-setup/SKILL.md'`) ou use a pasta de onde esta skill foi
    carregada. Escreva o caminho **relativo ao home** (`~/.kiro/powers/installed/sabia`), com `/`. Não achou →
@@ -295,22 +302,26 @@ Na ordem:
 - **c.** Mostre o W8 com essa tabela **colada sem mudar nada** — a partir da linha `| Agente |` que o gerador
   imprimiu, com as mesmas colunas, na mesma ordem; nunca uma tabela sua — e, no modo atualização, o diff de cada arquivo que
   muda.
-- **d.** "ok" → grave nesta ordem: `sabia.md` (e o ponteiro `.kiro/steering/sabia.md`), agentes (gerador com `--gravar`), `verificar.sh`, `http.sh`, pasta do
+- **d.** "ok" → grave nesta ordem: `sabia.md` (e os ponteiros de cada ferramenta, item 1), agentes (gerador com `--gravar`), `verificar.sh`, `http.sh`, pasta do
   produto, glossário e ADRs, `.gitignore`. Recusa de uma confirmação do Kiro → diga qual arquivo ficou de fora e ofereça regravar;
   nunca siga como se tivesse gravado.
 
 Itens:
 1. `.sabia/sabia.md` ← [assets/steering/sabia.md](assets/steering/sabia.md) com as respostas (nada de `<…>`
    sobrando; o que não se aplica fica "não há"/"nenhum"). É o **único** steering do fluxo. No modo atualização, a
-   seção Regras aprendidas fica como está (nunca apague regras promovidas). Para a sessão padrão do Kiro carregá-lo,
-   o ponteiro `.kiro/steering/sabia.md` com uma linha: `#[[file:.sabia/sabia.md]]` (os agentes `sa-*` já o
-   carregam pelo `file://`).
+   seção Regras aprendidas fica como está (nunca apague regras promovidas). Para cada ferramenta carregá-lo, um
+   ponteiro, com o diff e o "ok": Kiro → `.kiro/steering/sabia.md` com uma linha, `#[[file:.sabia/sabia.md]]` (os
+   agentes `sa-*` já o carregam pelo `file://`); Claude Code → a linha `@.sabia/sabia.md` no `CLAUDE.md` (acrescente
+   se faltar; nunca reescreva o arquivo); opencode → `.sabia/sabia.md` em `instructions` do `opencode.json` (mescle
+   com o que existe).
 2. `.sabia/config/agentes.json` com as respostas (campos em [references/agentes.md](references/agentes.md):
    caminhos, base, bundle, ELM, push no loop, `http.sh`, steering, comandos, e skills, leituras, MCPs, subagentes e
    modelo por agente) e, a partir dele, os agentes pelo gerador:
-   `uv run --no-project python <power>/skills/sa-setup/scripts/gerar_agentes.py --projeto <raiz>` mostra
-   o que muda e a tabela dos agentes, sem gravar; depois do "ok", o mesmo comando com `--gravar` grava `.kiro/agents/sa-*.json`
-   (e imprime a tabela de novo). As chaves de `agentes` são os nomes dos agentes (`sa-codificador`, …); chave
+   `uv run --no-project python <pasta desta skill>/scripts/gerar_agentes.py --projeto <raiz>` mostra
+   o que muda e a tabela dos agentes, sem gravar, para os `alvos` do `agentes.json`; depois do "ok", o mesmo comando
+   com `--gravar` grava `.kiro/agents/*.json`, `.opencode/agents/*.md` e `.claude/agents/*.md` com as regras no
+   `.claude/settings.json`, conforme os alvos (e imprime a tabela de novo, com o que não tem tradução em cada
+   ferramenta: mostre essa lista à pessoa). As chaves de `agentes` são os nomes dos agentes (`sa-codificador`, …); chave
    desconhecida faz o gerador parar. Nunca edite os agentes à mão nem os passe pelo `kiro-cli agent upgrade`.
 3. `.sabia/verificar.sh` (Passo 7) e o script de chamada do verificador, se escolhido (Passo 6):
    `.sabia/http.sh` ← [assets/scripts/http.sh](assets/scripts/http.sh) com `{{URL_TESTE}}` trocado pela URL
@@ -347,6 +358,8 @@ escrita de memória.
   "ok") ou registre no `sabia.md` que o loop não deve ser usado.
 - `sh .sabia/verificar.sh` roda e termina com `verificar.sh: ok` (ofereça rodar; na etapa 2 os comandos já
   rodaram um a um).
+- Claude Code nos alvos → `claude plugin validate .claude/agents` (passa ou aponta o arquivo). opencode nos alvos →
+  `opencode debug agents` lista os `sa-*` (a primeira chamada num diretório novo pode voltar vazia: rode de novo).
 - `kiro-cli` disponível → para cada agente, `kiro-cli agent validate --path .kiro/agents/<agente>.json` (saída
   vazia = válido; erro aponta o campo); `kiro-cli agent list` (na raiz do repositório) lista os sete;
   `kiro-cli agent upgrade --dry-run .kiro/agents` diz `v3-only` para os sem subagentes e `out of sync (not rebuilt)`
@@ -359,7 +372,7 @@ escrita de memória.
 - Workspace não confiável → avise: até a pessoa confiar nele, o Kiro não carrega os agentes, o steering, as skills
   e os workflows do projeto e pergunta antes de cada comando de shell.
 
-Sugira o commit — o comando pronto no shell da pessoa, no padrão de commit do projeto — (`.sabia/` sem `local/`, `.kiro/steering/sabia.md`, `.kiro/agents/sa-*.json`, `<produto>/` e `.gitignore`) — só com confirmação — e termine
+Sugira o commit — o comando pronto no shell da pessoa, no padrão de commit do projeto — (`.sabia/` sem `local/`, os agentes e ponteiros de cada ferramenta, `<produto>/` e `.gitignore`) — só com confirmação — e termine
 com o próximo passo — sem `<produto>/equipe.json`, primeiro "monte o planejamento" (`sa-planejamento`, modo
 inicial: equipe com a senioridade, acordos e roadmap; sem ela não há modo da fatia, GATE do plano nem revisor); depois
 "nova demanda: …" (`sa-triar`: faz a triagem e registra no backlog; épico → `sa-prd`), "iniciar <id>" ou "minha próxima tarefa"
@@ -367,7 +380,8 @@ inicial: equipe com a senioridade, acordos e roadmap; sem ela não há modo da f
 
 ## Regras
 
-- Não altere nada fora de `.sabia/`, `.kiro/`, da pasta do produto, do glossário/ADRs que a pessoa pediu para criar e do
+- Não altere nada fora de `.sabia/`, `.kiro/`, `.claude/`, `.opencode/`, `CLAUDE.md` e `opencode.json` (só os
+  ponteiros e os agentes `sa-*`), da pasta do produto, do glossário/ADRs que a pessoa pediu para criar e do
   `.gitignore`.
 - As skills `sa-*` ficam no power — nunca as copie para o projeto (uma atualização do power as atualiza; depois
   rode esta skill em modo atualização para refazer caminhos e agentes).

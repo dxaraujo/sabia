@@ -87,12 +87,13 @@ independentes, PR lido por uma pessoa e o ELM como registro —, em sprints com 
 | # | Item | Status |
 |---|---|---|
 | 1 | Repositório git | <✅ `<raiz>` | ❌ sem git — o fluxo depende de branches e PRs> |
-| 2 | Power sabia | <✅ `~/.kiro/powers/installed/sabia` | ❌ não achei — onde está?> |
+| 2 | Power sabia (Kiro) | <✅ `~/.kiro/powers/installed/sabia` | ❌ não achei — onde está? | ➖ sem o Kiro nos alvos> |
 | 3 | Shell | <✅ bash/zsh | ✅ fish — comandos compostos vão em `bash -c '…'`> |
 | 4 | `uv` (gera os agentes) | <✅ <versão> | ❌ instale: https://docs.astral.sh/uv/> |
 | 5 | `kiro-cli` (valida os agentes) | <✅ <versão> | ➖ sem ele, a validação da etapa 9 é só a do gerador> |
 | 6 | Credencial do ELM | <✅ responde como `<usuário>` | ⏸️ <motivo> | ➖ projeto sem ELM> |
 | 7 | Credencial do GitLab | <⏸️ arquivo existe — a conexão é testada na etapa 3 | ❌ sem arquivo — modelo na etapa 3> |
+| 8 | Ferramentas do time | <Kiro ✅ · Claude Code ✅ · opencode ➖> 🔍 <onde detectou> — <❌ <ferramenta>: skills do Sabiá não instaladas — `<comando>`> |
 
 O Kiro pede licença para ler os arquivos do power (cartões, modelos, gerador): `Always allow` evita a mesma
 pergunta a cada etapa.
@@ -324,7 +325,8 @@ mostre o cartão de novo com as caixas atualizadas antes de pedir o "ok" final d
 | `.kiro/config/elm/pa_<nome>.json` | <gravado e validado no bloco 10 | manter | ➖> |
 | `.kiro/agents/sa-*.json` (7) | <criar | alterar — diff abaixo> |
 | `.kiro/agents/<agente do toolkit>.json` | <criar | alterar | ➖ nenhum passo com agente> |
-| `.kiro/steering/sabia.md` (ponteiro) | <criar | manter> |
+| ponteiros do `sabia.md` | <`.kiro/steering/sabia.md` · `CLAUDE.md` (`@.sabia/sabia.md`) · `opencode.json` (`instructions`): criar | acrescentar | manter> |
+| `.opencode/agents/*.md` · `.claude/agents/*.md` · `.claude/settings.json` | <criar | alterar — diff abaixo | ➖ fora dos alvos> |
 | `.sabia/verificar.sh` | <criar | alterar | ➖> |
 | `.sabia/http.sh` | <criar | ➖> |
 | `<produto>/` | <criar backlog.md, aprendizado/licoes.md, fatias/ | acrescentar <…> | manter> |

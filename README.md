@@ -101,7 +101,7 @@ de `skills/sa-setup/assets/`:
 |---|---|
 | `.sabia/sabia.md` (e o ponteiro `.kiro/steering/sabia.md`) | o único steering do fluxo (sempre carregado): resumo, configuração do projeto (pasta do produto, comandos, verificação, git, banco, autonomia, ELM, agentes) e regras aprendidas |
 | `.sabia/config/agentes.json` | as escolhas do projeto para os agentes (caminhos, comandos, skills e MCPs por agente) — a entrada do gerador |
-| `.kiro/agents/sa-*.json` | `produto`, `especificador`, `pesquisador`, `codificador`, `revisor`, `verificador`, `orquestrador` — gerados pelo script da setup a partir do `agentes.json`, cada um com as skills e MCPs que a pessoa liberou |
+| agentes de cada ferramenta do time: `.kiro/agents/sa-*.json` · `.opencode/agents/sa-*.md` · `.claude/agents/sa-*.md` (+ regras no `.claude/settings.json`) | `produto`, `especificador`, `pesquisador`, `codificador`, `revisor`, `verificador`, `orquestrador` — gerados pelo script da setup a partir do `agentes.json`, cada um com as skills e MCPs que a pessoa liberou |
 | `.sabia/verificar.sh` | backpressure: compila, testa, roda o lint e a cobertura; a `sa-codificar` o roda antes de cada commit |
 | `.sabia/http.sh` (opcional) | única chamada HTTP que o verificador faz sem perguntar: só à URL de teste, com corpo da pasta `massa/` |
 | pasta do produto (proposta pela setup; padrão `.sabia/planejamento`) | `backlog.md`, épicos e PRDs, `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<iteração pai>/`, `sustentacao/<pasta>/`, `aprendizado/` — versionada; o que é local fica em `.sabia/local/` (fora do git) |
@@ -154,9 +154,10 @@ processo do projeto exige algum deles, a skill do passo entrega o roteiro manual
 
 ## Pré-requisitos
 
-- Kiro IDE 1.x ou Kiro CLI 2.32+ na engine V3 (`--agent-engine v3`); repositório git com branch base e PRs. A
-  engine V2 do CLI não lê as permissões dos agentes; e `uv` para os scripts da setup e
-  da `sa-status`.
+- Uma das ferramentas: Kiro IDE 1.x ou Kiro CLI 2.32+ na engine V3 (`--agent-engine v3`; a V2 não lê as permissões
+  dos agentes), Claude Code (conferido no 2.1.314) ou opencode (conferido no 2.1.3); repositório git com branch base
+  e PRs; e `uv` para os scripts da setup e da `sa-status`. No Claude Code e no opencode, a proteção por papel é
+  menor que no Kiro: o gerador lista o que não tem tradução.
 - Kiro Web não lê `~/.kiro`: os agentes do projeto aparecem lá, mas sem as skills do power — use a IDE ou o CLI.
 - MCPs do próprio power (o `mcp.json` os sobe com `uvx`): [`mcp-elm`](https://pypi.org/project/mcp-elm/), que também consulta o
   bundle do ELM (`elm_*_local`, nunca lendo os arquivos), e [`mcp-gitlabpr`](https://pypi.org/project/mcp-gitlabpr/), que lista, lê e abre os PRs (merge
@@ -175,8 +176,12 @@ sessão, por exemplo); concluir é da skill do papel, com o saldo. No AFK há a 
 
 ## Primeiros passos
 
-1. Instale pelo painel **Powers** do Kiro a partir de <https://github.com/dxaraujo/sabia> ou de uma cópia local (o
-   power é a raiz do repositório).
+1. Instale na ferramenta do time:
+   - **Kiro:** pelo painel **Powers**, a partir de <https://github.com/dxaraujo/sabia> ou de uma cópia local (o
+     power é a raiz do repositório).
+   - **Claude Code e opencode:** o CLI `sabia` (em construção) baixa o Sabiá para `~/.sabia/`, copia as skills para
+     `~/.claude/skills/` ou `~/.config/opencode/skills/` e registra os MCPs do `mcp.json`, com um inventário para
+     atualizar e desinstalar. Até lá, copie `skills/sabia` e `skills/sa-*` para essa pasta e registre os MCPs à mão.
 2. No projeto, peça **"configurar o Sabiá"** e confirme as propostas (os padrões vêm marcados; uma confirmação por bloco).
 3. Comece: **"nova demanda: …"** (a `sa-triar` faz a triagem e registra no backlog; épico → PRD), **"iniciar a
    FT-031"** ou **"minha próxima tarefa"** (o hub `sa-iniciar` diz a skill do papel), **"corrigir o defeito 4567"**
