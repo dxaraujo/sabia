@@ -516,7 +516,8 @@ aberto, branch com commits) fica na branch da fatia (passo 5), com `<AAAA-MM-DD 
 (sincronização)` no Histórico. O da `pronta` do merge por fora fica na base, com `merge do PR <link> por fora do Sabiá
 (sha <sha>)`.
 
-**Especificação** (a `[ESP]` e o IB do épico):
+**Especificação** (a `[ESP]` e o IB do épico; vale igual para a fatia `nova` em especificação — a `[ESP] FT-<nnn>` e o
+IB dela —, que fecha quando a fatia fica `elegivel`, não no GATE do backlog, e não espera `[DEV]` enquanto está ali):
 
 | Arquivo | EWM | Solução proposta | Outras |
 |---|---|---|---|
@@ -547,8 +548,8 @@ o SM` (§2). Sem horas não é divergência.
 | fechado e fora da listagem | não é divergência: fica onde fechou | — |
 | sumiu (`nao_encontrado`) | manter: confira na UI do EWM — o `manter` registra `ELM pendente [<tipo> <id> sumiu]` no lugar das pendências do item (`elm.md`, Pendências), que tira o id da comparação até o `ELM feito` | arquivo: `pendente` (republicar) |
 | entrou: fatia `elegivel` fora da sprint (o IB, tarefas dela, ou os dois) | encaixe (P.O., Encaixe da `sa-planejamento`; a tarefa que já existe é a do papel — duas do mesmo papel: a trazida; a do backlog é cancelada, `elm_transicao(<id>, "cancelar")` (falha → `ELM pendente [<tipo> <id> cancelar]` no rodapé da ficha) —, e o IB e as tarefas que faltam vêm para a sprint) — recusado, EWM: tudo volta ao backlog, e o IB ao estado inicial | EWM: volta ao backlog |
-| entrou: fatia `nova` | a DoR primeiro, como na Previsão: passa → `elegivel` e encaixe, como acima; não passa → EWM: volta ao backlog, com o `falta:` na `obs` | — |
-| entrou: épico `novo` ou `elegivel`, com a `[ESP]` | arquivo (P.O.): Especificação `planejada` e épico `planejado`, com `encaixe: trazida do EWM (<P.O.>, <data>)`; Responsável e Horas previstas pelo dono e pela estimativa da `[ESP]` · EWM: o IB do épico → sprint (o `novo` passa antes pela DoR do épico; não passa → EWM: volta ao backlog) | EWM: volta ao backlog |
+| entrou: fatia `nova` | a DoR primeiro, como na Previsão: passa → `elegivel` e encaixe, como acima; não passa → arquivo (P.O.): entra **como especificação** — linha na Especificação `planejada`, a fatia `nova` com `sprint` e `obs` `em especificação`, `falta: …` e `encaixe: trazida do EWM (<P.O.>, <data>)` · EWM: a `[ESP] FT-<nnn>` nasce (ou é a trazida, se já veio) | EWM: volta ao backlog, com o `falta:` na `obs` |
+| entrou: épico `novo` ou `elegivel`, com a `[ESP]` | arquivo (P.O.): Especificação `planejada` e épico `planejado`, com `encaixe: trazida do EWM (<P.O.>, <data>)`; Responsável e Horas previstas pelo dono e pela estimativa da `[ESP]` · EWM: o IB do épico → sprint (o `novo` que não passa na DoR do épico entra assim mesmo: o que falta é trabalho da `[ESP]`) | EWM: volta ao backlog |
 | entrou: épico `novo` ou `elegivel`, só o IB | EWM: volta ao backlog (a especificação entra pelo planejamento, que dá o responsável e as horas) | — |
 | entrou: item de Sustentação `aberto` (o IB, a tarefa, ou os dois) | arquivo: entra na sprint (linha nova), com a situação pelo estado da tarefa (Novo → `aberto`, Em Andamento → `em-andamento`, concluída → `concluido`, com `concluida-em` = a data da sincronização e a Observação `concluído no EWM`, como na linha "tarefa concluída") no backlog, na linha e no `**Situação:**` da ficha, e `trazida do EWM`; a tarefa que já existe é a dele — o arquivo recebe o dono e a estimativa dela (`responsavel`, Responsável, `**Responsável:**` da ficha, Horas e `**Estimativa:**`), e o EWM não muda o dono nem as horas dela; sem dono ou sem estimativa no EWM, vale o do arquivo (EWM: dono = o `responsavel`, estimativa = a `**Estimativa:**` da ficha, como na **Tarefa sem dono**) —, e só sem ela a tarefa nasce (§6), com o `responsavel` e a `**Estimativa:**` da ficha, ou os que a pessoa der na linha · EWM: o IB e a tarefa → sprint, e, com a tarefa concluída, concluir o IB (reserva estourada → o item fica, e o P.O. decide pelo Encaixe se uma fatia sai) | EWM: volta ao backlog |
 | entrou: item terminal | EWM: volta para a iteração esperada | — |

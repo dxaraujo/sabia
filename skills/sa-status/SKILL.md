@@ -101,7 +101,7 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
 
 📄 Produto (épicos pela Fase do status.md)
 - EP-04 em-revisao → GATE do PRD (<po>, sa-prd) · EP-06 aprovado → fatiar (sa-fatiar) · EP-05 rascunho (a descobrir)
-- Especificação na sprint: EP-05 (rita.melo) iniciada · 8/16 h
+- Especificação na sprint: EP-05 (rita.melo) iniciada · 8/16 h · FT-040 (—) planejada · falta: decisão do limite
 
 🎧 Reserva (Sustentação + retrabalho): <h>h · consumido <h>h (retrabalho <x>h · Sustentação <y>h)
 - Atendimento: AT-012 em-andamento (joao.lima, prazo 2026-10-16) · AT-014 aberto · Implantação: IM-003 aberto (ana.souza)
@@ -191,7 +191,8 @@ o `status.md` que vale é o da base — os itens 1 e 4 gravam nele pelo bloco
    próximo fechamento do item o pega pelo `--desde`.
 
    O mesmo vale fora da fatia, mudando só onde a linha vai: Sustentação → seção Créditos da ficha `<ID>` (`AT-<nnn>`,
-   `IM-<nnn>`…); especificação → `status.md` do épico (`sa-especificar`); gestão (triagem, consolidação, planejamento,
+   `IM-<nnn>`…); especificação → `status.md` do épico (`sa-especificar`); especificação de fatia (`[ESP] FT`) → seção
+   Créditos da ficha da fatia; gestão (triagem, consolidação, planejamento,
    ritos, sincronização) → seção **Créditos de gestão** do `sprint-<nn>.md` aberto, com Atividade no lugar de Papel,
    quando há sprint aberta. Sem sprint aberta (só o comentário na `[GB]`) → `--desde` = a data e hora do último
    comentário `Créditos` da `[GB]` (`elm_ler_wi(<id da [GB]>, comentarios = -1)`). Toda sessão do P.O. ou do SM no

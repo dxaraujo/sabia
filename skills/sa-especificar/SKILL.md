@@ -182,7 +182,8 @@ A fatia `nova` (não passa na DoR) entra na sprint com a `[ESP]` dela, para fica
    `backlog.md` a fatia segue `nova`, e `responsavel` `—` vira quem assume) e `elm_transicao(id, "assumir")`, com
    "sim", como no Passo 2.
 2. **Trabalho:** [Completar uma fatia `nova`](../sa-fatiar/references/backlog.md#completar-uma-fatia-nova), itens
-   1–3 (nunca pela `sa-fatiar`). Cada sessão fecha com as horas na `[ESP]`, como no Passo 5.
+   1–3 (nunca pela `sa-fatiar`). Cada sessão fecha com as horas na `[ESP]`, como no Passo 5, e a linha de créditos
+   na seção Créditos da ficha da fatia.
 3. **Concluir:** o item 4 de lá. Passou → `elegivel` e, no mesmo commit (`FT-<nnn> concluir especificação`), a linha
    da sprint com Situação `concluida`; depois a conclusão da `[ESP]` como no item 3 de "Depois do GATE do backlog".
    Não passou → a `[ESP]` segue; na virada, a linha migra.

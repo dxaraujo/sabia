@@ -97,6 +97,9 @@ Então o desconto aplicado é de R$ 50,00
   uma decisão nova (aí é `D-nn` aprovada).
 - **Padrão de épico:** nada de regra ou cenário copiado do PRD — só os links; o PRD continua a fonte.
 - **Decisões** no formato do `decisoes.md` da `sa-entrevistar`, aqui dentro (a ficha não tem pasta).
+- **Créditos da `[ESP] FT`** (fatia `nova` em especificação na sprint, `sa-especificar`): uma seção `## Créditos` no
+  fim da ficha, com a tabela do `status.md` (`| Data | Papel | Login | Sessão | Power sabia | Créditos |`), criada na
+  primeira sessão; a `sa-desenvolver` não a leva para o `status.md` da fatia.
 - **Pendências do ELM** da fatia não iniciada, `dividida` ou `cancelada` (sem `status.md` que valha): no rodapé da
   ficha, `ELM pendente [<chave>]: <o que falta>` — ex.: `[FT-040 cancelar]`, quando o `elm_transicao(<id>,
   "cancelar")` do IB ou das tarefas falhou (sem o MCP, `precondicao`, erro); resolvida, `ELM feito [<chave>]: …`
