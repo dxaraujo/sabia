@@ -33,7 +33,7 @@ O Sabiá 1.0.0 nasce do power `sdd` 3.4.4, mantido antes no repositório
 [`dxaraujo/kiro`](https://github.com/dxaraujo/kiro) (arquivado, com o histórico de versões). Não há migração
 automática: o projeto que usava o `sdd` desinstala o power antigo, instala o Sabiá, move a pasta `.kiro/config/sdd/`
 para `.kiro/config/sabia/` (os `pa_<nome>.json` vão para `.kiro/config/elm/`) e pede "atualizar a configuração do
-Sabiá" e "atualizar os agentes do Sabiá". Requer o `mcp-elm` ≥ 3.5.0, que lê `.kiro/config/elm/`.
+Sabiá" e "atualizar os agentes do Sabiá". Requer o `mcp-elm` ≥ 3.5.1, que lê `.kiro/config/elm/`.
 
 ## Fundamentos
 
@@ -102,7 +102,7 @@ de `skills/sa-setup/assets/`:
 | `.kiro/sabia/http.sh` (opcional) | única chamada HTTP que o verificador faz sem perguntar: só à URL de teste, com corpo da pasta `massa/` |
 | pasta do produto (proposta pela setup; padrão `.kiro/planejamento`) | `backlog.md`, épicos e PRDs, `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<iteração pai>/`, `sustentacao/<pasta>/`, `aprendizado/` — versionada; o que é local fica em `.kiro/local/` (fora do git) |
 
-O ELM vem no próprio power: o MCP **`mcp-elm`** (≥ 3.5.0) lê o `.kiro/config/elm/pa_<nome>.json` do projeto (um por
+O ELM vem no próprio power: o MCP **`mcp-elm`** (≥ 3.5.1) lê o `.kiro/config/elm/pa_<nome>.json` do projeto (um por
 project area, gravado pela `sa-setup`) e expõe operações (`elm_transicao`, `elm_lancar_horas`, `elm_criar_wi`,
 `elm_ligar`, `elm_publicar_req`…): a skill do passo passa só o caminho do projeto, os ids e o conteúdo, e recebe
 `{"ok": …}`. Regras comuns em [`skills/sabia/references/elm.md`](skills/sabia/references/elm.md). Leituras liberadas nos

@@ -93,7 +93,7 @@
   "extensions": {
     "io.github.dxaraujo.sabia": {
       "requires": {
-        "pypi:mcp-elm": ">=3.5.0"
+        "pypi:mcp-elm": ">=3.5.1"
       },
       "note": "Projeto com ELM: a sa-setup grava .kiro/config/elm/pa_<nome>.json, que o MCP elm lê."
     }
