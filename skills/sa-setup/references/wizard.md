@@ -6,6 +6,11 @@ coluna ou formato. O que está entre `<…>` descreve o campo — **nunca é val
 ou da pessoa. `<a | b>` no cartão = escolha **uma** das opções (o `|` não vai para a tela). Tabela sem linha para mostrar → a linha `| — | nada a mostrar | ➖ |`; nunca linha em branco
 como separador.
 
+**Só o que é das ferramentas do time.** Linha, aviso ou valor de uma ferramenta fora dos `alvos` não aparece, nem com
+➖: a linha cujo item termina em `(Kiro)`, `(Claude Code)` ou `(opencode)` sai quando a ferramenta não está nos alvos,
+e os números das outras não mudam. `(se a sessão é do Kiro)` vale pela ferramenta desta sessão. Onde o cartão diz "a
+ferramenta", use o nome da que está nos alvos.
+
 ## Legenda (fixa — só estes ícones)
 
 | Uso | Ícones |
@@ -87,15 +92,17 @@ independentes, PR lido por uma pessoa e o ELM como registro —, em sprints com 
 | # | Item | Status |
 |---|---|---|
 | 1 | Repositório git | <✅ `<raiz>` | ❌ sem git — o fluxo depende de branches e PRs> |
-| 2 | Power sabia (Kiro) | <✅ `~/.kiro/powers/installed/sabia` | ❌ não achei — onde está? | ➖ sem o Kiro nos alvos> |
+| 2 | Power sabia (Kiro) | <✅ `~/.kiro/powers/installed/sabia` | ❌ não achei — onde está?> |
 | 3 | Shell | <✅ bash/zsh | ✅ fish — comandos compostos vão em `bash -c '…'`> |
 | 4 | `uv` (gera os agentes) | <✅ <versão> | ❌ instale: https://docs.astral.sh/uv/> |
-| 5 | `kiro-cli` (valida os agentes) | <✅ <versão> | ➖ sem ele, a validação da etapa 9 é só a do gerador | ➖ sem o Kiro nos alvos> |
+| 5 | `kiro-cli`, que valida os agentes (Kiro) | <✅ <versão> | ➖ sem ele, a validação da etapa 9 é só a do gerador> |
 | 6 | Credencial do ELM | <✅ responde como `<usuário>` | ⏸️ <motivo> | ➖ projeto sem ELM> |
 | 7 | Credencial do GitLab | <⏸️ arquivo existe — a conexão é testada na etapa 3 | ❌ sem arquivo — modelo na etapa 3> |
-| 8 | Ferramentas do time | <Kiro ✅ · Claude Code ✅ · opencode ➖> 🔍 <onde detectou> — <❌ <ferramenta>: skills do Sabiá não instaladas — `<comando>`> |
+| 8 | Ferramentas do time | <só as dos alvos, separadas por ` · `: <ferramenta> ✅ 🔍 <onde detectou> | <ferramenta> ❌ skills do Sabiá não instaladas — `<comando>`> |
 
-O Kiro pede licença para ler os arquivos do power (cartões, modelos, gerador): `Always allow` evita a mesma
+Na linha 8, as ferramentas fora dos alvos não aparecem; a pessoa acrescenta uma com `8: + <ferramenta>`.
+
+(se a sessão é do Kiro) O Kiro pede licença para ler os arquivos do power (cartões, modelos, gerador): `Always allow` evita a mesma
 pergunta a cada etapa.
 
 > ❓ **Começamos pela etapa 1?**
@@ -134,9 +141,9 @@ No lugar da tabela de etapas do W0 (a pré-checagem continua):
 | 2 | Stack | <linguagem e versão · frameworks · banco> | 🔍 <arquivo de build> |
 | 3 | Módulos | <único | lista dos módulos> | 🔍 <arquivo de build> |
 | 4 | Testes e cobertura | <framework de teste · ferramenta de cobertura e gate | sem cobertura> | 🔍 <arquivo de build> |
-| 5 | Steering de produto | <✅ `.kiro/steering/product.md` | ❌ não há> | 🔍 |
-| 6 | Steering de tecnologia | <✅ `.kiro/steering/tech.md` | ❌ não há> | 🔍 |
-| 7 | Steering de estrutura | <✅ `.kiro/steering/structure.md` | ❌ não há> | 🔍 |
+| 5 | Steering de produto (Kiro) | <✅ `.kiro/steering/product.md` | ❌ não há> | 🔍 |
+| 6 | Steering de tecnologia (Kiro) | <✅ `.kiro/steering/tech.md` | ❌ não há> | 🔍 |
+| 7 | Steering de estrutura (Kiro) | <✅ `.kiro/steering/structure.md` | ❌ não há> | 🔍 |
 | 8 | Regras críticas | <1. … 2. … | nenhuma além do steering> | 🔍 <tech.md> |
 
 > ❓ **Está certo?**
@@ -179,7 +186,7 @@ Duas mensagens: a proposta (Status `⏸️ ainda não rodado`) e, depois do `ok`
 | 2 | Prefixo das branches | `<feature/>` | ✅ | 🔍 <branches remotas> |
 | 3 | Padrão de commit | `<Task <id> - <descrição>>` | ✅ | 🔍 <git log> |
 | 4 | PR (merge request) | <MCP `gitlabpr` | entregar título e descrição> | <✅ respondeu | ⏸️ sem rede — testo de novo na etapa 9 | ❌ sem credencial> | 🔍 |
-| 5 | Banco (só consulta) | <`banco/consultar` | não há> | <✅ | ⏸️ …> | 🔍 <.kiro/settings/mcp.json> |
+| 5 | Banco (só consulta) | <`banco/consultar` | não há> | <✅ | ⏸️ …> | 🔍 <arquivo de MCP onde está> |
 | 6 | Artefatos de produto | direto na branch base | ➖ | 📐 fixo |
 | 7 | Push na base para quem desenvolve | requisito: o Dev grava ali a situação da fatia (`iniciada`, `pronta`) | ⚠️ confira no GitLab se a `<branch>` protegida aceita o push dele — sem isso, nenhuma fatia começa | 📐 fixo |
 
@@ -269,7 +276,7 @@ Agentes do projeto (podem virar subagentes do codificador e do orquestrador):
 | Item | Valor |
 |---|---|
 | Push | <🟡 pergunta a cada push (só a branch da fatia) | 🟡 pergunta a cada push (a branch da fatia e, na base, só os registros de situação) | 🔴 negado> |
-| Modelo | padrão do Kiro |
+| Modelo | padrão da ferramenta |
 
 > ❓ **Confirma o `sa-<papel>`?**
 > `ok` · `tirar 3,5` · `pôr 7` · `só 1,2` · `nenhuma skill` · `modelo: <nome>` · `as mesmas do sa-<outro>`
@@ -293,7 +300,7 @@ mostre o cartão de novo com as caixas atualizadas antes de pedir o "ok" final d
 | 1 | `.sabia/verificar.sh` | <[✅] compila, testa, lint e cobertura antes de cada commit | ➖ sem comandos> | 📐 |
 | 2 | GATE do plano | pela senioridade: Júnior sempre · Pleno pergunta · Sênior nunca | 📐 fixo |
 | 3 | Paralelo no loop | 1 fatia por vez (máx. 3) | 📐 |
-| 4 | Push e PR no loop | 🟡 o Kiro pergunta a cada lote | 📐 |
+| 4 | Push e PR no loop | 🟡 a ferramenta pergunta a cada lote | 📐 |
 | 5 | Push pelos agentes | 🟡 pergunta sempre — na base, só os registros de situação da fatia, com os arquivos conferidos · 🔴 nunca `--force` | 📐 fixo |
 | 6 | Chamada HTTP do verificador | <[✅] `.sabia/http.sh` → `<url de teste>` | ➖ projeto sem HTTP> | <🙋 | 📐> |
 ```
@@ -321,12 +328,14 @@ mostre o cartão de novo com as caixas atualizadas antes de pedir o "ok" final d
 | Arquivo | Ação |
 |---|---|
 | `.sabia/sabia.md` | <criar | alterar — diff abaixo | manter> |
-| `.sabia/config/agentes.json` | rascunho gravado (o Kiro não carrega) |
+| `.sabia/config/agentes.json` | rascunho gravado (nenhuma ferramenta carrega) |
 | `.kiro/config/elm/pa_<nome>.json` | <gravado e validado no bloco 10 | manter | ➖> |
-| `.kiro/agents/sa-*.json` (7) | <criar | alterar — diff abaixo> |
-| `.kiro/agents/<agente do toolkit>.json` | <criar | alterar | ➖ nenhum passo com agente> |
-| ponteiros do `sabia.md` | <`.kiro/steering/sabia.md` · `CLAUDE.md` (`@.sabia/sabia.md`) · `opencode.json` (`instructions`): criar | acrescentar | manter> |
-| `.opencode/agents/*.md` · `.claude/agents/*.md` · `.claude/settings.json` | <criar | alterar — diff abaixo | ➖ fora dos alvos> |
+| `.kiro/agents/*.json`, os 7 e os dos toolkits (Kiro) | <criar | alterar — diff abaixo> |
+| `.kiro/steering/sabia.md`, ponteiro do `sabia.md` (Kiro) | <criar | manter> |
+| `.claude/agents/*.md` e `.claude/settings.json` (Claude Code) | <criar | alterar — diff abaixo> |
+| `CLAUDE.md` com `@.sabia/sabia.md` (Claude Code) | <criar | acrescentar | manter> |
+| `.opencode/agents/*.md`, os 7 e os dos toolkits (opencode) | <criar | alterar — diff abaixo> |
+| `opencode.json` com `.sabia/sabia.md` em `instructions` (opencode) | <criar | acrescentar | manter> |
 | `.sabia/verificar.sh` | <criar | alterar | ➖> |
 | `.sabia/http.sh` | <criar | ➖> |
 | `<produto>/` | <criar backlog.md, aprendizado/licoes.md, fatias/ | acrescentar <…> | manter> |
@@ -334,7 +343,7 @@ mostre o cartão de novo com as caixas atualizadas antes de pedir o "ok" final d
 | `<pasta de ADRs>/` | <criar com README.md | manter | ➖ não há> |
 | `.gitignore` | <acrescentar `.sabia/local/` | manter> |
 
-O Kiro pede confirmação para cada arquivo em `.kiro/agents` — se recusar um
+(se a sessão é do Kiro) O Kiro pede confirmação para cada arquivo em `.kiro/agents` — se recusar um
 por engano, diga `regravar <arquivo>`.
 
 > ❓ **Gravo tudo?**
@@ -350,13 +359,15 @@ por engano, diga `regravar <arquivo>`.
 | # | Verificação | Status |
 |---|---|---|
 | 1 | Agentes gerados = os combinados (tabela do gerador) | <✅ | ❌ <diferença>> |
-| 2 | `kiro-cli agent validate` nos 7 | <✅ | ❌ <agente: campo> | ➖ sem kiro-cli | ➖ sem o Kiro nos alvos> |
+| 2 | `kiro-cli agent validate` nos agentes (Kiro) | <✅ | ❌ <agente: campo> | ➖ sem kiro-cli> |
 | 3 | `sh .sabia/verificar.sh` | <✅ ok | ❌ <primeiro comando que falhou> | ⏸️ não rodado | ➖> |
 | 4 | `pa` do ELM válido (`elm_status`) | <✅ | ❌ <faltando> | ➖> |
 | 5 | GitLab responde (`gitlab_listar_mrs`) | <✅ | ⏸️ <motivo> | ➖> |
 | 6 | Caminhos citados no `sabia.md` e nos agentes existem | <✅ | ❌ <caminho>> |
 | 7 | Ferramentas que varrem a raiz ignoram `.sabia/local/` | <✅ | ⚠️ <ferramenta>> |
-| 8 | Workspace confiável no Kiro | <✅ | ⚠️ confie no workspace para carregar agentes e skills> |
+| 8 | Workspace confiável (Kiro) | <✅ | ⚠️ confie no workspace para carregar agentes e skills> |
+| 9 | `claude plugin validate .claude/agents` (Claude Code) | <✅ | ❌ <arquivo: erro>> |
+| 10 | `opencode debug agents` lista os `sa-*` (opencode) | <✅ | ❌ <agente que falta>> |
 ```
 
 Depois, numa mensagem só:
