@@ -1,0 +1,62 @@
+/* Proposta D · Do geral ao detalhe: os controles e a ficha do mapa atual, com a câmera guiada por fases */
+.pdz .lead-sec{margin-bottom:18px}
+.pdz .dz-palco{position:relative}
+.pdz .dz-vista{position:relative;height:clamp(560px,76vh,840px);background:#fff;border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden}
+.pdz #map{display:block;width:100%;height:100%;-webkit-user-select:none;user-select:none}
+.pdz #dz-grade circle{fill:#d3e0ea}
+
+/* traços com espessura fixa na tela; --s escala tudo com o mapa quando ele fica menor que o tamanho natural */
+.pdz #map .track,.pdz #map .flow,.pdz #map .xpath,.pdz #map .decor,.pdz .dz-casing path,.pdz .dz-hit path{vector-effect:non-scaling-stroke}
+.pdz #map .track{stroke-width:calc(var(--s,1)*8px);transition:opacity .4s}
+.pdz #map .track.on{stroke-width:calc(var(--s,1)*11px)}
+.pdz .dz-casing path{fill:none;stroke:#fff;stroke-width:calc(var(--s,1)*14px);stroke-linecap:round;stroke-linejoin:round;transition:opacity .4s}
+.pdz .dz-hit path{fill:none;stroke:transparent;stroke-width:24px;pointer-events:stroke;cursor:pointer}
+.pdz #map .flow{stroke-width:calc(var(--s,1)*3px)}
+.pdz #map .xpath{stroke-width:calc(var(--s,1)*3px)}
+.pdz #map .xedge.hot .xpath{stroke-width:calc(var(--s,1)*4.5px)}
+.pdz #map.sobre:not(.foco) .track:not(.quente),.pdz #map.sobre:not(.foco) .dz-casing path:not(.quente){opacity:.25}
+.pdz #map.foco .track:not(.on){stroke-width:calc(var(--s,1)*3.5px)}
+
+/* fases: 0 visão geral (tudo, como o mapa atual), 1 linha inteira (só ela; o primeiro passo pulsa), 2 estação (transições e voltas) */
+.pdz #map .st,.pdz #map .dz-rows text,.pdz #map .dz-dyn{transition:opacity .35s}
+.pdz #map .dz-off,.pdz #map.foco .st.dim{opacity:0;pointer-events:none}
+.pdz #map.f1 .dz-dyn{opacity:.4}
+.pdz #map.f2 .dz-dyn>*,.pdz .dz-via{animation:dz-entra .4s ease both;animation-delay:var(--dv,0s)}
+.pdz #map .st.sel .name,.pdz #map .st.inicio .name{fill:var(--brand)}
+.pdz #map .st.inicio .body{stroke:var(--brand)}
+.pdz #map .st.inicio .halo{animation:halo 1.8s ease-out infinite}
+/* miniatura (celular na visão geral): sem espaço para rótulos legíveis */
+.pdz #map.mini .st .name,.pdz #map.mini .st .skill,.pdz #map.mini .dz-rows text,.pdz #map.mini .xlab{opacity:0}
+@keyframes dz-entra{from{opacity:0}to{opacity:1}}
+.pdz .dz-via rect{fill:#fff;stroke:var(--line);stroke-width:1.2}
+.pdz .dz-via text{font:500 11.5px/1 var(--mono);fill:var(--ink)}
+
+/* fases: só avançar ou voltar */
+.pdz .dz-passos{position:absolute;left:14px;bottom:14px;z-index:2;display:flex;align-items:center;gap:6px;max-width:calc(100% - 28px);padding:6px;
+  background:rgba(255,255,255,.96);border:1.5px solid var(--line);border-radius:12px 0 12px 0;box-shadow:0 4px 14px rgba(44,81,104,.08)}
+.pdz .dz-passos button{display:inline-flex;align-items:center;gap:10px;min-width:0;min-height:44px;padding:0 16px;border:0;border-radius:10px 0 10px 0;cursor:pointer;font:700 14px/1.1 var(--display)}
+.pdz .dz-passos button span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:240px}
+.pdz .dz-passos .ant{background:var(--grey2);color:var(--title)}
+.pdz .dz-passos .prox{background:var(--navy);color:#fff;box-shadow:inset 6px 0 0 var(--tc,var(--blue));padding-left:20px}
+.pdz .dz-passos button:hover{filter:brightness(1.08)}
+.pdz .dz-passos button:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.pdz .dz-onde{font:600 12.5px/1 var(--display);color:var(--muted);padding:0 10px;white-space:nowrap}
+.pdz .dz-passos[hidden]{display:none}
+.pdz .mapnote{margin-top:10px;border-radius:var(--r-sm)}
+
+/* ficha: encostada na borda direita do palco; o mapa se ajusta ao espaço que sobra */
+.pdz .dz-ficha{position:absolute;top:1.5px;right:1.5px;bottom:1.5px;width:min(500px,50%);max-height:none;z-index:3;border:0;border-left:1.5px solid var(--line);border-radius:0 0 16px 0;
+  box-shadow:-14px 0 30px rgba(44,81,104,.10)}
+.pdz .dz-ficha .linecard{display:block}
+
+@media (max-width:760px){
+  .pdz .dz-vista{height:64vh;min-height:420px}
+  .pdz .dz-ficha{position:static;width:auto;margin-top:12px;box-shadow:none;border:1.5px solid var(--line);border-radius:var(--r)}
+  .pdz .dz-passos{left:8px;right:8px;bottom:8px;max-width:none}
+  .pdz .dz-passos button{flex:1;justify-content:center}
+  .pdz .dz-onde{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .pdz #map.f2 .dz-dyn>*,.pdz .dz-via{animation:none}
+  .pdz #map .st.inicio .halo{animation:none;opacity:.6}
+}
