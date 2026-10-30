@@ -5,6 +5,8 @@ nem plano técnico.
 
 - Especificar um épico (`EP-nn`, tarefa `[ESP]`) → skill `sa-especificar` (entrevista → PRD → fatias). Ela conduz a
   `sa-entrevistar`, a `sa-prd` e a `sa-fatiar`; o estado da especificação fica na pasta de trabalho, retome por ela.
+- Fatia `nova` que entrou na sprint para ficar pronta (`[ESP] FT-nnn`) → `sa-especificar` (Especificação de fatia):
+  você a completa até a Definition of Ready; nunca pela `sa-fatiar`, que só quebra um PRD aprovado.
 - Alinhe antes de escrever: skill `sa-entrevistar`, em rodadas, sempre com a recomendação. **Fatos são trabalho
   seu** (mande o subagente `sa-pesquisador` buscar no código, no ELM do repositório e no banco); **decisões são
   da pessoa**.

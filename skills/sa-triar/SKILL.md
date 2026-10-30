@@ -58,6 +58,9 @@ e `obs` — épicos, fatias e as `### <Categoria>` da `## Sustentação`), no `*
   "cancelar")`, um por id, com "sim"; na falha (sem o MCP, `precondicao`, erro), `ELM pendente [FT-<nnn> cancelar]`.
   As pendências da original moram no rodapé da ficha
   ([ficha.md](references/ficha.md));
+- **fatia `nova` no backlog** (`sprint` `—`, `obs` `falta: …`), de épico ou de Manutenção → **deixe-a pronta**, sem
+  tarefa: [Completar uma fatia `nova`](../sa-fatiar/references/backlog.md#completar-uma-fatia-nova) (créditos no
+  comentário da `[GB]`). Na sprint, com a `[ESP] FT` → não é aqui: "use `sa-especificar FT-<nnn>`";
 - **épico `novo`** que voltou (falta de informação para o PRD, P.O. ou EWM pendentes —
   devolvido pela `sa-prd`, pela `sa-especificar` ou pela Definition of Ready) → **complete o registro**: o que
   falta da linha (`po`, descrição mínima, `elm`), sem id novo (passa na DoR → `elegivel`), e siga para o
@@ -66,8 +69,8 @@ e `obs` — épicos, fatias e as `### <Categoria>` da `## Sustentação`), no `*
   linha do `backlog.md` (e na da sprint, se houver) e no `**Situação:**` do registro; o IB e a tarefa cancelam no
   EWM (`elm_transicao(<id>, "cancelar")`, com "sim"); na falha, `ELM pendente [<ID> cancelar]` no `**ELM:**` do
   registro;
-- o resto → pare: começar ou retomar é pelo hub **`sa-iniciar`**; mudar uma fatia de épico é refinamento na
-  **`sa-fatiar`**.
+- o resto → pare: começar ou retomar é pelo hub **`sa-iniciar`**; dividir, juntar ou cancelar uma fatia de épico é
+  refinamento na **`sa-fatiar`**.
 
 ## Passo 2 — Triagem
 

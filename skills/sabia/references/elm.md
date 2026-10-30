@@ -111,11 +111,15 @@ Resolver ("resolve as pendências do ELM"): a `sa-status` lista; para cada uma, 
 | Tarefa | Pai | Responsável | Nasce | Conclui |
 |---|---|---|---|---|
 | `[ESP] EP-<nn> Especificação` | épico | quem especifica | planejamento | GATE do backlog |
+| `[ESP] FT-<nnn> Especificação` | IB da fatia `nova` | quem especifica | planejamento (fatia que entra sem passar na DoR) | fatia `elegivel` |
 | `[DEV] FT-<nnn> Implementar` | IB da fatia | Dev | planejamento | merge |
 | `[REV] FT-<nnn> Revisar` · `[VER] FT-<nnn> Verificar` | IB | revisor · verificador (só HITL) | planejamento ou troca AFK→HITL | aprovar · aceitar (depois do push) |
 | `[APR] FT-<nnn> Aprovar plano` · `Aprovar PR` | IB | Dev Sênior | no gate | na aprovação |
 | Sustentação: `[ATD] AT-<nnn>` · `[IMPL] IM-<nnn>` · `[BD] BD-<nnn>` · `[INF] IN-<nnn>` · `[OPE] OP-<nnn>` · `[EXT] EX-<nnn>` + `<pedido>` | IB do item (`[AT-<nnn>] <pedido>`) | quem faz | quando o item entra numa sprint, ou trazida do EWM ([elm-sprint.md](../../sa-planejamento/references/elm-sprint.md) §9) | ao finalizar, com o IB do item (`sa-atender` no Atendimento; `sa-executar` nas demais) |
 | `[GB] Gerenciamento do backlog` | IB `Sustentação` | SM | planejamento inicial (no backlog, com a `Sustentação`); move para a 1ª sprint de cada pai | na troca de pai (a do pai novo nasce); senão move na virada |
+
+Sem responsável no planejamento, a tarefa nasce sem dono, e quem a assume (`elm_transicao(id, "assumir")`) vira o
+dono; o IB é sempre do P.O.
 
 **Os pais** (todo trabalho tem pai): épico `[EP-<nn>]` → IB `[FT-<nnn>]`; IB `Sustentação` (um por produto) → IB
 `Manutenção` (das fatias sem épico: o IB `[FT-<nnn>]` ou o item de origem, DF ou IB) e um IB por categoria

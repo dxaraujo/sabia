@@ -34,7 +34,8 @@ diga o que ele é e peça o item.
 | Item informado | Skill | Papel / agente |
 |---|---|---|
 | pedido em texto, ou id que não está no backlog | **`sa-triar`** | P.O. / `sa-produto` |
-| `EP-nn`, tarefa `[ESP]` | **`sa-especificar`** | Especificador / `sa-especificador` |
+| `EP-nn`, tarefa `[ESP]` (de épico, ou `[ESP] FT-nnn` de fatia `nova`) | **`sa-especificar`** | Especificador / `sa-especificador` |
+| `FT-nnn` `nova` (não passa na DoR) | sem sprint → **`sa-triar`** (deixar a fatia pronta) · na sprint, com a `[ESP] FT` → **`sa-especificar`** | P.O. / `sa-produto` · Especificador / `sa-especificador` |
 | `FT-nnn` (de épico ou de Manutenção), tarefa `[DEV]`, "próxima fatia" | **`sa-desenvolver`** | Dev / `sa-codificador` |
 | tarefa `[REV]` | **`sa-revisar`** (rubrica C sobre o PR) | Revisor / `sa-revisor` |
 | tarefa `[APR] FT-nnn Aprovar plano` | **`sa-revisar`** (seção "Aprovação do plano — a `[APR]`") | Aprovador (Dev Sênior) / `sa-revisor` |

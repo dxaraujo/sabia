@@ -86,10 +86,15 @@ Vale para todas as trilhas. Tudo conferido **antes** de gravar na base, criar br
 1. **Definition of Ready** da trilha — a do formato do backlog
    ([../sa-fatiar/references/backlog.md](../sa-fatiar/references/backlog.md#definition-of-ready-o-que-faz-uma-fatia-elegivel),
    mais os itens próprios do `acordos.md`): a fatia está `elegivel` ou `planejada` e ainda passa (confira agora).
-   - Falhou → `sa-entrevistar`, `sa-fatiar` (refinamento) ou `sa-triar` (retomar a triagem: ficha e `falta:` das
-     fatias sem épico).
+   - Falhou → a fatia ainda é especificação, não desenvolvimento: volta a `nova` com o `falta:` e é completada por
+     [Completar uma fatia `nova`](../sa-fatiar/references/backlog.md#completar-uma-fatia-nova) (no backlog, o
+     `sa-produto`; na sprint, a `[ESP] FT-<nnn>` pela `sa-especificar`).
 2. **Responsável.** A coluna `responsavel` do `backlog.md` é outra pessoa → pergunte se ela sabe; trocar é do
-   planejamento, não grave aqui. Quem vai implementar é **Júnior** (`senioridade` no `equipe.json`) e a fatia é
+   planejamento, não grave aqui. É `—` (a fatia entrou sem responsável) → quem implementa a assume, e o modo final
+   sai agora, pela [senioridade](../sa-planejamento/SKILL.md#modo-pela-senioridade); mudou → grave-o no Passo 4
+   (backlog e linha da sprint, com o `obs`) e acerte as tarefas no mesmo "sim": AFK → HITL, nascem a `[REV]` e a
+   `[VER]` (revisor e verificador como no Passo 4, item 1); HITL → AFK, as duas são canceladas
+   ([elm-sprint.md](../sa-planejamento/references/elm-sprint.md), topo). Quem vai implementar é **Júnior** (`senioridade` no `equipe.json`) e a fatia é
    `AFK` → não comece: avise que Júnior implementa sempre em HITL e mande para a **`sa-planejamento`** (o modo sai
    da senioridade de quem implementa).
 3. **Sprint.** Nada começa sem item planejado: é na tarefa da sprint que as horas são lançadas. A

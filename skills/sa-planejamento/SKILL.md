@@ -103,20 +103,31 @@ Regra de ouro: cada etapa termina com a proposta na tela e "ok" antes de gravar.
      capacidade das fatias novas.
 2. **Especificação:** épicos `elegivel` que entram em especificação nesta sprint (do `roadmap.md`, os "a
    descobrir" do topo, e os do `backlog.md` que o roadmap ainda não tem — proponha a posição deles); épico `novo`
-   no topo → confira a Definition of Ready do épico e grave `elegivel` se passa, senão aponte o que falta. Um
-   `[ESP]` por épico, com responsável e horas previstas dentro da capacidade de especificação.
+   no topo → confira a Definition of Ready do épico e grave `elegivel` se passa; não passa → **não barre**: avise que
+   ele entra em especificação com o que falta (`falta: <o quê>`), que é trabalho da `[ESP]`. Uma `[ESP]` por épico,
+   com horas previstas dentro da capacidade de especificação (o responsável sai do passo 3a).
 3. **Previsão** (não compromisso): confira a [Definition of Ready](../sa-fatiar/references/backlog.md#definition-of-ready-o-que-faz-uma-fatia-elegivel)
    das fatias `nova` e `elegivel` do topo e grave `elegivel` nas que passam (ou `nova`, com `obs` `falta: <o quê>`,
    nas que deixaram de passar). Entram as `elegivel` — de épico e de Manutenção — pela `prioridade` (crítica →
    baixa, `—` no fim; no empate, a ordem da linha no `backlog.md`), respeitando `bloqueada-por` — a fatia só entra
    se as dependências entram antes ou já estão `pronta` ou `concluida`. Pare ao atingir a menor das capacidades.
-   Fatia `nova` no topo → aponte o que falta (decisão, PRD, fatiar) antes de pular para a próxima. Cada fatia ganha
-   **responsável**, e o modo final sai da senioridade dele ([Modo pela senioridade](#modo-pela-senioridade)). Cada fatia **HITL** ganha
+   Fatia `nova` que a pessoa quer na sprint → **não barre**: avise que ela entra **como especificação**, com a
+   `[ESP] FT-<nnn>` (`falta: <o quê>` — decisão, PRD, fatiar, ficha), na seção Especificação, dentro da capacidade
+   de especificação; ela não conta na vazão nem ganha `[DEV]` agora (ganha quando, `elegivel`, entrar numa sprint ou
+   for puxada). Cada fatia **HITL** prevê
    **revisor** — um **Dev Sênior**, pela [regra do revisor](#modo-pela-senioridade) — e **verificador** (não quem
-   implementa), e a soma das revisões e verificações cabe nas horas de revisão de cada um; fatia **AFK** não tem
+   implementa), e a soma das revisões e verificações cabe nas horas de revisão do time; fatia **AFK** não tem
    (revisão e verificação por subagente, sem `[REV]`/`[VER]`) — a revisão humana dela é a leitura do PR. As
    **aprovações previstas** também consomem as horas de revisão dos Dev Sêniores: o plano de cada fatia de Júnior
    (e de Pleno que costuma pedir o GATE) e o PR de cada fatia AFK. A `[APR]` não nasce aqui — nasce no gate.
+3a. **Responsáveis — pergunte, nunca aloque sozinho.** Com a lista do passo 3 e das especificações, primeiro
+   pergunte se já há alguém definido para algum item (responsável da fatia ou da `[ESP]`; na HITL, revisor e
+   verificador): `FT-031: <login>`, `EP-04: <login>`. Para os que sobrarem, pergunte se quer atribuir agora — a
+   sugestão pelo `equipe.json` (papéis, senioridade, horas) só aparece se a pessoa pedir. Não quer → `—`: o item
+   entra assim, e quem o assumir vira o responsável (`sa-desenvolver`, `sa-especificar`, `sa-revisar`,
+   `sa-verificar`). Com responsável, o modo final sai da senioridade dele ([Modo pela
+   senioridade](#modo-pela-senioridade)) e a capacidade de cada pessoa é conferida; sem, vale o `modo` do backlog
+   até alguém assumir, e só a capacidade do time.
 4. **Meta da sprint:** uma frase de resultado de negócio que as fatias entregam juntas, e o **nome curto** dela
    (até ~6 palavras: `Exportar o relatório de contas`), que vai no nome do plano no EWM.
 5. **Iteração e número:** o **pai** é o da sprint anterior (a nova herda); pai novo só quando a pessoa diz, com o
@@ -134,17 +145,18 @@ Regra de ouro: cada etapa termina com a proposta na tela e "ok" antes de gravar.
    ```
    🗓️ <pai>/Sprint <nn> · <início> → <fim> · iteração <pai>/<nome> · plano <nome> - <nome curto da meta> · meta: <…>
    Fatias
-   | Prioridade | FT | Título | Origem | Tam. | Modo | Depende de | Responsável | Revisor | Verificador |
+   | Prioridade | FT | Título | Origem | Tam. | Modo | Depende de | Responsável | Revisor | Verificador |   (— = sem responsável)
    Especificação
-   | EP | Responsável | Horas previstas |
+   | EP · FT | Falta (não pronto) | Responsável | Horas previstas |
    Reserva (Sustentação + retrabalho): <h>h (<p>% da sprint) · retrabalho migrado <x>h · itens <AT-…> <y>h · livre <z>h
    Capacidade: revisão <h>h (usa <x>h) · especificação <h>h (usa <x>h) · vazão prevista <n> fatias · lead time médio <d> dias · HITL <h>h
    Próximas a puxar (fora da previsão, na ordem): <FT…>
    ```
 7. "ok" → grave `sprints/<pai>/sprint-<nn>.md` (com `**Power sabia:**` = o `metadata.version` desta skill; as linhas
    novas nascem `planejada`, e as da Sustentação, `aberto`) e, no `backlog.md`, `status` `planejada` (no épico da
-   `[ESP]`, `planejado`), `sprint`, `responsavel` e o `modo` final, pelo bloco
-   [Gravar na base](../sa-fatiar/references/backlog.md#gravar-na-base), e **publique sempre no EWM** ([references/elm-sprint.md](references/elm-sprint.md) §1–4 e §6), para a sprint e o EWM ficarem iguais. Sem o MCP `elm` ou com
+   `[ESP]`, `planejado`; a fatia `nova` com a `[ESP]` segue `nova`, com `obs` `em especificação`), `sprint`,
+   `responsavel` (o definido, ou `—`) e o `modo` final (sem responsável, o do backlog), pelo bloco
+   [Gravar na base](../sa-fatiar/references/backlog.md#gravar-na-base), e **publique sempre no EWM** ([references/elm-sprint.md](references/elm-sprint.md) §1–4 e §6), para a sprint e o EWM ficarem iguais — **também sem responsáveis**: os IBs com o P.O. como dono e todas as tarefas de cada item, sem dono onde não há responsável. Sem o MCP `elm` ou com
    falha, a coluna "Tarefa ELM" fica `pendente` e é publicada depois. O `sprint-<nn>.md` gravado antes do §1 — sem o
    MCP, com falha ou sessão parada antes da publicação; e o da próxima, no passo 4 da virada — leva no cabeçalho
    `**Publicação no EWM:** pendente`, que o §1 tira no commit da publicação. Publicada, **sincronize** (Sincronizar
@@ -157,8 +169,8 @@ Regra de ouro: cada etapa termina com a proposta na tela e "ok" antes de gravar.
 ## Modo pela senioridade
 
 O `modo` que a triagem ou o fatiamento gravaram é a proposta para a **fatia** (critérios da `sa-fatiar`). O modo
-final sai quando a fatia ganha responsável — na seleção da sprint ou no encaixe —, pela `senioridade` de quem
-implementa no `equipe.json`:
+final sai quando a fatia ganha responsável — na seleção da sprint, no encaixe ou, se ela entrou sem responsável,
+quando alguém a assume (`sa-desenvolver` Passo 3) —, pela `senioridade` de quem implementa no `equipe.json`:
 
 | Senioridade | Modo da fatia |
 |---|---|

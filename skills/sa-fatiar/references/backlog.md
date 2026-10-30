@@ -89,13 +89,17 @@ mesmo commit** nos dois arquivos.
 | Situação | Quando | Quem grava | Onde |
 |---|---|---|---|
 | `nova` | registrada (triagem, fatiamento) ou DoR que deixou de valer (`obs` `falta: …`) | `sa-triar` · `sa-fatiar` · `sa-planejamento` (Previsão) | backlog |
-| `elegivel` | passou na [Definition of Ready](#definition-of-ready-o-que-faz-uma-fatia-elegivel) da trilha | `sa-triar` · `sa-fatiar` · `sa-planejamento` | backlog |
+| `elegivel` | passou na [Definition of Ready](#definition-of-ready-o-que-faz-uma-fatia-elegivel) da trilha | `sa-triar` · `sa-fatiar` (no fatiamento do PRD) · `sa-planejamento` · `sa-especificar` (`[ESP] FT`) — [completar](#completar-uma-fatia-nova) | backlog |
 | `planejada` | entrou numa sprint (planejamento, encaixe) | `sa-planejamento` | backlog (+ `sprint`) · a linha nasce na sprint |
 | `iniciada` | a `sa-desenvolver` começou: grava na base **e então** cria a branch | `sa-desenvolver` Passo 4 · no loop, o orquestrador · a sincronização da `sa-planejamento` ([elm-sprint.md](../../sa-planejamento/references/elm-sprint.md) §9, com a rede de proteção: PR aberto, branch com commits ou `status.md` numa branch) | backlog (+ `responsavel`, se `—`) · sprint (puxada: + `sprint` no backlog, e a linha nasce aqui, com `puxada`, revisor, verificador e `revisor único`) |
 | `pronta` | PR mergeado | `sa-desenvolver` Passo 6, na base · a sincronização da `sa-planejamento` (§9: merge por fora do Sabiá, Créditos e lições `—`) | backlog · sprint · `status.md` da base |
 | `concluida` | consolidada | `sa-consolidar` | backlog (+ `concluida-em`) · sprint (+ Créditos) · `status.md` |
 | `dividida` · `cancelada` | desvios (`obs` `substituida-por FT-…` · o motivo) | `sa-fatiar` · `sa-triar` (Manutenção) | backlog e a linha da sprint |
 
+- **Em especificação na sprint:** a fatia `nova` que entrou na sprint sem passar na DoR fica `nova`, com `sprint` e
+  `obs` `em especificação`, e a linha dela na seção Especificação da sprint, com a `[ESP] FT-<nnn>`
+  (`sa-planejamento`). Ela é completada por [Completar uma fatia `nova`](#completar-uma-fatia-nova); a `[DEV]` nasce
+  quando ela, `elegivel`, entrar numa sprint ou for puxada.
 - **Fase:** o detalhe de `iniciada` é a Fase do `status.md` da fatia
   ([status-template.md](../../sa-desenvolver/references/status-template.md)); `pronta` e `concluida` só existem no
   `status.md` da base (regra A base prevalece do `status-template.md`).
@@ -168,7 +172,7 @@ mesmo commit** nos dois arquivos.
 
 ## Definition of Ready (o que faz uma fatia `elegivel`)
 
-A única do fluxo — triagem, fatiamento, planejamento, `sa-especificar` (épico) e `sa-desenvolver` conferem por aqui.
+A única do fluxo — triagem, fatiamento, planejamento, `sa-especificar` (épico e `[ESP]` de fatia) e `sa-desenvolver` conferem por aqui.
 Passou → `elegivel`; deixou de valer → a [Volta](#situações) (`nova`, com `obs` `falta: …`).
 
 | Trilha | Elegível quando |
@@ -178,6 +182,23 @@ Passou → `elegivel`; deixou de valer → a [Volta](#situações) (`nova`, com 
 | padrão sem épico | ficha `aprovada por` o P.O., com cenários `C<n>` |
 | rápida | ficha com o atual (com evidência), o esperado (com fonte), o que não muda e como verificar; sem regra nova; tamanho ≤ M |
 | todas | a ficha existe no caminho da coluna `ficha`; `bloqueada-por` em `pronta` ou `concluida` (já na base) ou planejada antes dela na mesma sprint (ela só **começa** quando o que precisa está na base); nenhuma decisão bloqueante `em aberto` (`decisoes.md` ou ficha); tamanho ≤ G; modo declarado (AFK/HITL); cabe numa janela de contexto |
+
+### Completar uma fatia `nova`
+
+Deixar pronta a fatia que não passa na DoR (`obs` `falta: …`) — nunca pela `sa-fatiar`, que só quebra um PRD
+aprovado. Quem faz depende de onde ela está:
+
+| Onde | Quem | Horas |
+|---|---|---|
+| no backlog (`sprint` `—`) | P.O., no agente `sa-produto`, pela `sa-triar` (retomar a fatia) | sem tarefa: os créditos vão no comentário da `[GB]` |
+| na sprint, com a `[ESP] FT-<nnn>` (`obs` `em especificação`) | quem especifica, no agente `sa-especificador`, pela `sa-especificar` ([Especificação de fatia](../../sa-especificar/SKILL.md#especificação-de-fatia-esp-ft-nnn)) | na `[ESP]` |
+
+1. Decisão em aberto → **`sa-entrevistar`**, com a pessoa.
+2. Ficha incompleta (Objetivo, Cobre, Como verificar) → complete-a no formato da
+   [ficha](../../sa-triar/references/ficha.md).
+3. Cenário de aceite que o PRD do épico não tem → **`sa-prd`** (mudança depois de aprovado).
+4. Confira a DoR acima. Passou → `elegivel` no `backlog.md` (sem o `falta:` e o `em especificação`), pelo bloco
+   [Gravar na base](#gravar-na-base); não passou → atualize o `falta:`.
 
 ## Gravar na base
 

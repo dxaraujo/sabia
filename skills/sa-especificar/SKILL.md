@@ -1,6 +1,6 @@
 ---
 name: sa-especificar
-description: "Skill for the Especificador (specifier) role in the Sabiá flow — drives the specification of an epic (épico, EP-nn) from the [ESP] task: claims the [ESP] in EWM (the epic becomes iniciado on the base branch), sets up the local working folder outside git (.sabia/local/especificacao/), routes by the Fase in the epic's status.md (sa-entrevistar → sa-prd → PRD GATE → sa-fatiar), brings the approved PRD to the base branch, completes the [ESP] after the backlog GATE and, at the end of each session with the client, records the elicitation in the [ESP] (comment + .md attachments with the latest version of each artifact) and logs the session's hours. Another machine resumes by downloading the attachments. Use when the user says \"especificar o EP-03\", \"pegar a [ESP] do EP-03\", \"retomar a especificação\", \"fechar a sessão de especificação\"."
+description: "Skill for the Especificador (specifier) role in the Sabiá flow — drives the specification of an epic (épico, EP-nn) from the [ESP] task, and the [ESP] of a slice (fatia) that entered the sprint not yet ready (FT-nnn): claims the [ESP] in EWM (the epic becomes iniciado on the base branch), sets up the local working folder outside git (.sabia/local/especificacao/), routes by the Fase in the epic's status.md (sa-entrevistar → sa-prd → PRD GATE → sa-fatiar), brings the approved PRD to the base branch, completes the [ESP] after the backlog GATE and, at the end of each session with the client, records the elicitation in the [ESP] (comment + .md attachments with the latest version of each artifact) and logs the session's hours. Another machine resumes by downloading the attachments. Use when the user says \"especificar o EP-03\", \"pegar a [ESP] do EP-03\", \"retomar a especificação\", \"fechar a sessão de especificação\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
@@ -24,12 +24,14 @@ Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configura
 | Entrada | Como ler |
 |---|---|
 | `EP-nn` ou `[ESP] EP-nn` | linha do épico em `## Épicos` do `backlog.md` da base; a `[ESP]` pela coluna `elm` (`ESP <id>`) ou pela Tarefa ELM da seção Especificação do `sprint-<nn>.md` |
-| `FT-nnn`, `[DEV]`, `[REV]`, `[VER]`, `AT-nnn` | não é deste papel → "use `sa-iniciar <item>`" e pare |
+| `[ESP] FT-nnn` (fatia `nova` que entrou na sprint para ficar pronta) | [Especificação de fatia](#especificação-de-fatia-esp-ft-nnn) |
+| `FT-nnn` sem `[ESP]`, `[DEV]`, `[REV]`, `[VER]`, `AT-nnn` | não é deste papel → "use `sa-iniciar <item>`" e pare |
 | pedido em texto, ou épico fora do backlog | não está registrado → "use `sa-triar`" e pare |
 
 **DoR do épico:** a do [`backlog.md`](../sa-fatiar/references/backlog.md#definition-of-ready-o-que-faz-uma-fatia-elegivel)
 (o problema, quem pede, o resultado e o `po`) — `elegivel` ou adiante já passou; `novo`, confira agora. Faltando →
-liste e pare: a `sa-triar` completa o registro antes. `concluido` ou `cancelado` → nada a especificar; pare —
+liste e complete com a pessoa pela `sa-triar` (retomar o registro) — é trabalho desta `[ESP]`, que entrou na sprint
+assim — e siga. `concluido` ou `cancelado` → nada a especificar; pare —
 salvo `concluido` com a linha da Especificação ainda `iniciada`: só os itens 2–3 de "Depois do GATE do backlog"
 (Passo 6), que gravam `concluida` e concluem a `[ESP]`. Épico
 não planejado (`novo` ou `elegivel`, sem `[ESP]`) → ofereça a `sa-planejamento` (seção Especificação); a pessoa
@@ -121,7 +123,7 @@ Próximo: <skill>
 | `aprovado` na pasta de trabalho (`prd` `—` no `backlog.md`) | **Passo 6** desta skill — levar para a base |
 | `aprovado` na base | **`sa-fatiar`**; depois do GATE do backlog, volte aqui (Passo 6) |
 | `fatiado`, Especificação ainda `iniciada` na sprint | **Passo 6** desta skill — concluir a `[ESP]` |
-| `fatiado`, Especificação `concluida` | nada a especificar; refinamento de fatia → `sa-fatiar` |
+| `fatiado`, Especificação `concluida` | nada a especificar; dividir, juntar ou cancelar fatias → `sa-fatiar`; completar uma fatia `nova` → [Completar uma fatia `nova`](../sa-fatiar/references/backlog.md#completar-uma-fatia-nova) (na sprint, a `[ESP] FT` dela; no backlog, o `sa-produto`) |
 
 ## Passo 5 — Fechar a sessão (toda sessão, antes de parar)
 
@@ -169,6 +171,21 @@ A `sa-prd` e a `sa-fatiar` conduzem o GATE e gravam só o próprio artefato; o q
 Situação da linha do épico na seção Especificação ([situações](../sa-fatiar/references/backlog.md#situações)):
 `planejada` (`sa-planejamento`), `iniciada` (Passo 2) e `concluida` (GATE do backlog), estas duas gravadas aqui;
 `cancelada` com o épico cancelado (`sa-fatiar`).
+
+## Especificação de fatia (`[ESP] FT-nnn`)
+
+A fatia `nova` (não passa na DoR) entra na sprint com a `[ESP]` dela, para ficar pronta; a `[DEV]`, a `[REV]` e a
+`[VER]` nascem quando ela, `elegivel`, entrar numa sprint ou for puxada.
+
+1. **Assumir:** a linha da fatia na seção Especificação do `sprint-<nn>.md` com Situação `iniciada` (bloco
+   [Gravar na base](../sa-fatiar/references/backlog.md#gravar-na-base), commit `FT-<nnn> iniciar especificação`; no
+   `backlog.md` a fatia segue `nova`, e `responsavel` `—` vira quem assume) e `elm_transicao(id, "assumir")`, com
+   "sim", como no Passo 2.
+2. **Trabalho:** [Completar uma fatia `nova`](../sa-fatiar/references/backlog.md#completar-uma-fatia-nova), itens
+   1–3 (nunca pela `sa-fatiar`). Cada sessão fecha com as horas na `[ESP]`, como no Passo 5.
+3. **Concluir:** o item 4 de lá. Passou → `elegivel` e, no mesmo commit (`FT-<nnn> concluir especificação`), a linha
+   da sprint com Situação `concluida`; depois a conclusão da `[ESP]` como no item 3 de "Depois do GATE do backlog".
+   Não passou → a `[ESP]` segue; na virada, a linha migra.
 
 ## Toolkit na especificação
 

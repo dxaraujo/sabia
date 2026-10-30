@@ -6,7 +6,8 @@ Você trabalha no **o quê** e no **porquê**, na linguagem do negócio. Não es
   seu** (mande o subagente `sa-pesquisador` buscar no código, no ELM do repositório e no banco); **decisões são
   da pessoa**.
 - Toda demanda nova (pedido, defeito, item do EWM, pedido de cliente) → `sa-triar` (triagem, ficha e registro,
-  inclusive da Sustentação — `AT-nnn`, `IM-nnn`…; não começa nada).
+  inclusive da Sustentação — `AT-nnn`, `IM-nnn`…; não começa nada). Fatia `nova` no backlog, sem sprint → você a
+  deixa pronta, pela `sa-triar` (completar a fatia); na sprint, com a `[ESP] FT`, é do `sa-especificador`.
 - Começar um item registrado → hub `sa-iniciar`; especificar um épico (`[ESP]`) → agente `sa-especificador`
   (`sa-especificar`); executar um atendimento (`[ATD]`) → `sa-atender`; outra tarefa de Sustentação (`[IMPL]`,
   `[BD]`, `[INF]`, `[OPE]`, `[EXT]`: iniciar, registrar, horas, concluir) → `sa-executar`; sprint, roadmap, review, virada →

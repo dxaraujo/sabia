@@ -16,7 +16,8 @@ do modo inicial, até a primeira sprint (§2).
 **Tarefa que já existe** (o item volta a uma sprint — publicação, Encaixe, puxada, `sa-especificar` — com tarefas
 que ficaram no backlog do EWM): **move, nunca recria**. Cada uma numa chamada própria, com o dono e a estimativa do
 papel dela no novo planejamento — `elm_atualizar_wi([id], iteracao, dono, estimativa_h)`: a `[DEV]` com o
-responsável, a `[REV]` com o revisor, a `[VER]` com o verificador, a da Sustentação com quem faz —; o IB e o épico
+responsável, a `[REV]` com o revisor, a `[VER]` com o verificador, a da Sustentação com quem faz (`—` → sem `dono`:
+a tarefa mantém o que tinha) —; o IB e o épico
 movem só com `iteracao`, na chamada única do §3 (o dono do IB segue o P.O.). **Só nasce o papel que falta**,
 conferido com `elm_listar_wi(pai = IB)` — não pelo prefixo do título, que a pessoa pode ter mantido; a tarefa
 descartada e a que tem pendência de cancelamento aberta não contam (o papel nasce de novo, e a velha segue com a
@@ -175,7 +176,7 @@ sai da linha; a Sustentação, a Manutenção e os IBs de categoria não mudam.
   épico, sob a Manutenção, direto ou pelo item original; pai errado → `elm_atualizar_wi(id, pai)`.
 - Ids na coluna `elm` do `backlog.md`, com o tipo antes de cada id: `IB [612010](…) · DEV [612011](…)`; o item de
   origem, `DF [4567](…)` (sem o MCP, `DF 4567`).
-- **Na sprint** (depois do "ok"): épicos, IBs das fatias e IBs dos itens de Sustentação da sprint que já têm `elm` →
+- **Na sprint** (depois do "ok"; com ou sem responsáveis — o IB é sempre do P.O.): épicos, IBs das fatias e IBs dos itens de Sustentação da sprint que já têm `elm` →
   `elm_atualizar_wi(ids, iteracao = a da sprint)` numa chamada, só com a iteração; as tarefas que já existem movem
   cada uma na chamada dela, com o dono e a estimativa do papel (topo); os `—`/`pendente` nascem como acima, já na
   iteração da sprint. Item que sai da sprint sem ter começado (Encaixe ou §9: a Volta) volta com `iteracao =
@@ -189,7 +190,10 @@ que a triagem não fez no EWM e a `elm` ganha o link, como no espelhamento (§0,
 
 Para cada linha do `sprint-<nn>.md` (menos as com `saiu da sprint`, que são histórico), com a tabela "Tarefas no EWM"
 de `elm.md`: `elm_criar_wi(tipo tarefa, título, pai, dono, estimativa_h, iteracao)` — só para o papel que o item não
-tem; a que já existe move (topo). Fatia **AFK**: só a `[DEV]`. A `[APR]` não nasce aqui. Item da `## Sustentação`: o
+tem; a que já existe move (topo). **Responsável `—` não adia nada:** a tarefa nasce agora, sem `dono`, e quem a
+assumir vira o dono (`elm_transicao(id, "assumir")`). Fatia pelo `modo` da linha (sem responsável, o do backlog):
+**HITL** → `[DEV]`, `[REV]` e `[VER]`; **AFK** → só a `[DEV]`. Fatia `nova` que entrou como especificação → só a
+`[ESP] FT-<nnn> Especificação`, sob o IB dela. A `[APR]` não nasce aqui. Item da `## Sustentação`: o
 IB dele muda de iteração (sem `elm` → nasce antes) e a tarefa nasce ou move (§6). Ids na coluna "Tarefa ELM"
 (`DEV <id> · REV <id> · VER <id>`) e no `elm` do `backlog.md` (`DEV [<id>](<url>)`).
 
@@ -458,7 +462,7 @@ linha), nunca `arquivo:`.
 | `concluido` · `cancelado` | tarefa aberta (reaberta) | manter: situação terminal não volta, e trabalho novo é item novo (`sa-triar`) | EWM: concluir de novo, com as horas já lançadas |
 | `concluido` | IB do item aberto | EWM: concluir o IB | — |
 | — | tarefa com outro dono | arquivo: `responsavel` (backlog), Responsável (sprint) e `**Responsável:**` (ficha) | EWM: o dono volta |
-| — | tarefa sem dono | EWM: dono = o responsável do arquivo | — |
+| — | tarefa sem dono (o arquivo tem responsável; `—` nos dois é igual) | EWM: dono = o responsável do arquivo | — |
 | tarefa aberta | outra estimativa | arquivo: Horas (sprint) e `**Estimativa:**` (ficha) | EWM: a estimativa volta |
 
 **Fatia** (as tarefas de papel e o IB ou a origem) — a situação só muda pela skill do papel:
