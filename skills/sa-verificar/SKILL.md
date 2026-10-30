@@ -4,7 +4,7 @@ description: "Acceptance verification of a slice (fatia) in the Sabiá flow — 
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # sa-verificar — O comportamento existe de verdade?

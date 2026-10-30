@@ -4,7 +4,7 @@ description: "Syncs the DOORS Next OKF bundle with ELM both ways, via the elm MC
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # sa-sync — Bundle do DOORS Next nas duas vias

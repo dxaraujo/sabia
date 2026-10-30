@@ -179,6 +179,11 @@ test("toolkit inválido é recusado e nada é gravado", async () => {
   assert.ok(!fs.existsSync(path.join(home, ".sabia/toolkits")));
 });
 
+test("a versão do CLI é a do framework (o instalar baixa a tag sabia-<versão do CLI>)", () => {
+  const ler = (f) => JSON.parse(fs.readFileSync(new URL(f, import.meta.url), "utf8")).version;
+  assert.equal(ler("./package.json"), ler("../plugin.json"));
+});
+
 test("linha de comando: ajuda e comando desconhecido", async () => {
   assert.equal(await s.main(["--ajuda"]), 0);
   assert.equal(await s.main(["voar"]), 1);

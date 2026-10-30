@@ -4,7 +4,7 @@ description: "Independent review in the Sabiá flow, with clean context and with
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # sa-revisar — Verificação independente

@@ -4,7 +4,7 @@ description: "Alignment interview of the Sabiá flow (the \"grill me\" technique
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # sa-entrevistar — Alinhar antes de escrever

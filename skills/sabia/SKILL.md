@@ -4,7 +4,7 @@ description: "Guide to the Sabiá flow — spec-driven agentic engineering, with
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Sabiá — Engenharia agêntica orientada a especificação
