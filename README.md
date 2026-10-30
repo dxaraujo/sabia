@@ -176,12 +176,12 @@ sessão, por exemplo); concluir é da skill do papel, com o saldo. No AFK há a 
 
 ## Primeiros passos
 
-1. Instale com o CLI (Node 18+): **`npx sabia-cli instalar`**. Ele baixa o Sabiá para `~/.sabia/framework/`,
+1. Instale com o CLI (Node 18+): **`npx sabia instalar`**. Ele baixa o Sabiá para `~/.sabia/framework/`,
    pergunta as ferramentas do time e instala em cada uma no padrão dela — no Kiro, o power; no Claude Code e no
    opencode, as skills em `~/.claude/skills/` ou `~/.config/opencode/skills/` e os MCPs do `mcp.json` —, registrando
    tudo em `~/.sabia/inventario.json`. Depois: `sabia atualizar`, `sabia desinstalar` e `sabia toolkits
-   listar|baixar|instalar|atualizar|remover` (`npm i -g sabia-cli` deixa o comando `sabia`; `npx sabia-cli --ajuda`
-   mostra todos). O Kiro também aceita o power pelo painel **Powers**, a partir deste repositório.
+   listar|baixar|instalar|atualizar|remover` (`npm i -g sabia` deixa o comando `sabia`; `npx sabia --ajuda` mostra
+   todos). O Kiro também aceita o power pelo painel **Powers**, a partir deste repositório.
 2. No projeto, peça **"configurar o Sabiá"** e confirme as propostas (os padrões vêm marcados; uma confirmação por bloco).
 3. Comece: **"nova demanda: …"** (a `sa-triar` faz a triagem e registra no backlog; épico → PRD), **"iniciar a
    FT-031"** ou **"minha próxima tarefa"** (o hub `sa-iniciar` diz a skill do papel), **"corrigir o defeito 4567"**
