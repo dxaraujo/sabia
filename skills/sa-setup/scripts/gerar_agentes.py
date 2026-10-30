@@ -1,5 +1,5 @@
 """Gera .kiro/agents/sa-<papel>.json (Kiro IDE e CLI V3) a partir de assets/agents/papeis.json, dos prompts
-assets/agents/sa-<papel>.md e da configuração do projeto em .kiro/config/sabia/agentes.json.
+assets/agents/sa-<papel>.md e da configuração do projeto em .sabia/config/agentes.json.
 
     uv run --no-project python gerar_agentes.py --projeto <raiz>            # só mostra o diff e a tabela
     uv run --no-project python gerar_agentes.py --projeto <raiz> --gravar   # grava (só depois do "ok" da pessoa)
@@ -71,16 +71,20 @@ def agente(nome, p, base, cfg):
     mcp_extra = extra.get("mcp", [])
 
     regras = [regra("fs_read", "allow", preencher(base["ler"]["permitir"], valores) + extra.get("ler", [])),
-              regra("fs_read", "deny", preencher(base["ler"]["negar"], valores)),
-              regra("fs_write", "allow", preencher(p["escreve"], valores))]
-    if p.get("nao_escreve"):  # o `exclude` (V3) tira da negação o que o papel grava dentro de uma pasta negada
-        regras.append(regra("fs_write", "deny", preencher(p["nao_escreve"], valores),
-                            preencher(p.get("nao_escreve_exceto", []), valores)))
-    for g in p["shell"]:
+              regra("fs_read", "deny", preencher(base["ler"]["negar"], valores))]
+    if p["escrita"] == "projeto":  # escreve no projeto, menos o harness e os registros de outros papéis
+        alheios = [x for r, ps in base["registros"].items() if r not in p["registros"] for x in ps]
+        # `**/x` também na raiz: o `like` do V3 exige o `/` antes de `x`
+        harness = [y for x in base["harness"] for y in ([x.removeprefix("**/"), x] if x.startswith("**/") else [x])]
+        regras += [regra("fs_write", "allow", ["./**"]),
+                   regra("fs_write", "deny", preencher(harness + alheios, valores))]
+    for g in base["niveis_shell"][p["shell"]]:
         regras.append(regra("shell", "allow", sh[g]["comandos"], sh[g].get("exceto")))
-    soltos = p.get("shell_permitir", []) + [c for k in p.get("comandos", []) for c in cfg.get("comandos", {}).get(k, [])]
-    if p.get("http_sh") and cfg.get("http_sh"):
-        soltos.append("sh .kiro/sabia/http.sh *")
+    soltos = list(p.get("shell_permitir", []))
+    if p["shell"] == "trabalho":  # os comandos do projeto
+        soltos += [c for cs in cfg.get("comandos", {}).values() for c in cs] + ["sh .sabia/verificar.sh"]
+        if cfg.get("http_sh"):
+            soltos.append("sh .sabia/http.sh *")
     if soltos:
         regras.append(regra("shell", "allow", soltos))
     push = p.get("push")
@@ -110,9 +114,10 @@ def agente(nome, p, base, cfg):
     prompt = re.sub(r"\n{3,}", "\n\n", PH.sub(lambda m: valores.get(m.group(1)) or "não há", prompt)).rstrip() + "\n"
 
     a = {"name": f"sa-{nome}", "description": p["description"], "prompt": prompt,
-         "tools": ["read", "write", "shell"] + [f"subagent/{s}" for s in subagentes]
+         "tools": ["read"] + (["write"] if p["escrita"] != "nenhuma" else []) + (["shell"] if p["shell"] != "nenhum" else [])
+                  + [f"subagent/{s}" for s in subagentes]
                   + [f"@{t}" for t in libera + pergunta] + [f"@{m}" for m in mcp_extra],
-         "resources": ["file://.kiro/steering/sabia.md"] + cfg.get("steering", [])
+         "resources": ["file://.sabia/sabia.md"] + cfg.get("steering", [])
                       + [f"skill://{cfg['power']}/skills/{s}/SKILL.md" for s in p["skills"]] + extra.get("skills", []),
          "includeMcpJson": bool(mcp_extra), "includePowers": True, "welcomeMessage": p["welcomeMessage"],
          "permissions": {"rules": regras}}
@@ -133,7 +138,7 @@ def problemas(a, projeto):
             continue
         alvo = Path.home() / caminho[2:] if caminho.startswith("~/") else projeto / caminho
         # o sabia.md é gravado pela setup no mesmo passo, depois do "ok" ao resumo
-        if "*" not in caminho and r != "file://.kiro/steering/sabia.md" and not alvo.is_file():
+        if "*" not in caminho and r != "file://.sabia/sabia.md" and not alvo.is_file():
             out.append(f"{a['name']}: não existe: {r}")
     return out
 
@@ -176,14 +181,14 @@ def gerar(projeto: Path, cfg: dict) -> dict:
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--projeto", type=Path, default=Path("."))
-    ap.add_argument("--config", type=Path, help="padrão: <projeto>/.kiro/config/sabia/agentes.json")
+    ap.add_argument("--config", type=Path, help="padrão: <projeto>/.sabia/config/agentes.json")
     ap.add_argument("--saida", type=Path, help="padrão: <projeto>/.kiro/agents")
     # gravar é opt-in: rodar sem flag nunca grava nada antes do "ok" da pessoa
     ap.add_argument("--gravar", action="store_true", help="grava os agentes (sem ela, só mostra o diff)")
     ap.add_argument("--diff", action="store_true", help="o padrão: mostra o diff e não grava")
     args = ap.parse_args(argv)
     projeto = args.projeto.resolve()
-    cfg = json.loads((args.config or projeto / ".kiro/config/sabia/agentes.json").read_text(encoding="utf-8"))
+    cfg = json.loads((args.config or projeto / ".sabia/config/agentes.json").read_text(encoding="utf-8"))
     try:
         agentes = gerar(projeto, cfg)
     except ValueError as e:

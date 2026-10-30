@@ -78,8 +78,8 @@ independentes, PR lido por uma pessoa e o ELM como registro —, em sprints com 
 | 3 | Git, PR e banco | branch base, abertura de PR, consulta ao banco |
 | 4 | Produto e ELM | pasta do produto, glossário, ADRs, project area |
 | 5 | Skills | o que o projeto já sabe fazer |
-| 6 | Agentes | o que cada um dos 6 agentes pode usar |
-| 7 | Automação | hook, workflows e autonomia |
+| 6 | Agentes | o que cada um dos 7 agentes pode usar |
+| 7 | Automação | verificação antes do commit e autonomia |
 | 8 | Revisão e gravação | tudo numa tela; só então grava |
 | 9 | Validação | confere e diz o próximo passo |
 
@@ -115,10 +115,10 @@ No lugar da tabela de etapas do W0 (a pré-checagem continua):
 | 4 | Produto e ELM | <`<pasta>` · `pa_<nome>.json`> | <➖ | ⚠️ …> |
 | 5 | Skills | <n> skills · <n> agentes do projeto | <➖ | ⚠️ <n> novas: `<…>` · <n> sumiram: `<…>`> |
 | 6 | Agentes | gerados pelo power <versão> | <➖ | ⚠️ power atualizado → regenerar> |
-| 7 | Automação | hook <[✅] | [ ]> · workflows <[✅] | [ ]> | <➖ | ⚠️ …> |
+| 7 | Automação | `verificar.sh` <[✅] | ➖> | <➖ | ⚠️ …> |
 
 > ❓ **O que muda?**
-> `nada` só regenera agentes, hook e workflows · `<n>` refaz a etapa <n> · `<n>,<m>` refaz várias
+> `nada` só regenera agentes e scripts · `<n>` refaz a etapa <n> · `<n>,<m>` refaz várias
 ```
 
 ## W1 · Projeto (Passo 1)
@@ -198,7 +198,7 @@ Duas mensagens: a proposta (Status `⏸️ ainda não rodado`) e, depois do `ok`
 
 | # | Item | Valor | Fonte |
 |---|---|---|---|
-| 1 | Pasta do produto | `<.kiro/planejamento>` — backlog, épicos, PRDs, aprendizado | <🔍 backlog.md existente | 📐> |
+| 1 | Pasta do produto | `<.sabia/planejamento>` — backlog, épicos, PRDs, aprendizado | <🔍 backlog.md existente | 📐> |
 | 2 | Glossário | <`docs/glossario.md` (existe) | `docs/glossario.md` (será criado) | não há> | <🔍 | 📐 | 🙋> |
 | 3 | ADRs | <`docs/adr` (existe) | `docs/adr` (será criada) | não há> | <🔍 | 📐 | 🙋> |
 | 4 | Usa ELM | <sim — `pa_<nome>.json` | não> | <🔍 | 🙋> |
@@ -230,13 +230,13 @@ Agentes do projeto (podem virar subagentes do codificador e do orquestrador):
 > `ok` segue · `<caminho>` acrescenta
 ```
 
-## W6 · Um agente (Passo 6) — seis cartões, um por mensagem
+## W6 · Um agente (Passo 6) — sete cartões, um por mensagem
 
 ```
 ## 🧭 Etapa 6 de 9 · Agentes — <n> de 6 · `sa-<papel>`
 `●●●●●◉○○○` <papel em uma frase: ex. "planeja e implementa uma fatia por sessão, até o merge">
 
-**Já vem do fluxo:** <desenvolver · plano · implementar · iniciar · status>
+**Já vem do fluxo:** <desenvolver · plano · codificar · iniciar · status>
 
 | | # | Skill | Para quê · origem |
 |---|---|---|---|
@@ -277,13 +277,12 @@ mostre o cartão de novo com as caixas atualizadas antes de pedir o "ok" final d
 
 | # | Item | Valor | Fonte |
 |---|---|---|---|
-| 1 | Hook `sa-backpressure` | <[✅] compila e testa depois de cada tarefa | [ ] sem comandos> | 📐 |
-| 2 | Workflows `sa-planejar-fatia` · `sa-entregar-fatia` | <[✅] instalados — você dispara no chat | [ ] ficam de fora — recurso desligado na IDE e no CLI> | 🔍 <IDE `kiroAgent.workflows.enabled` | CLI `chat.enableWorkflows`> |
-| 3 | GATE do plano | pela senioridade: Júnior sempre · Pleno pergunta · Sênior nunca | 📐 fixo |
-| 4 | Paralelo no loop | 1 fatia por vez (máx. 3) | 📐 |
-| 5 | Push e PR no loop | 🟡 o Kiro pergunta a cada lote | 📐 |
-| 6 | Push pelos agentes | 🟡 pergunta sempre — na base, só os registros de situação da fatia, com os arquivos conferidos · 🔴 nunca `--force` | 📐 fixo |
-| 7 | Chamada HTTP do verificador | <[✅] `.kiro/sabia/http.sh` → `<url de teste>` | ➖ projeto sem HTTP> | <🙋 | 📐> |
+| 1 | `.sabia/verificar.sh` | <[✅] compila, testa, lint e cobertura antes de cada commit | ➖ sem comandos> | 📐 |
+| 2 | GATE do plano | pela senioridade: Júnior sempre · Pleno pergunta · Sênior nunca | 📐 fixo |
+| 3 | Paralelo no loop | 1 fatia por vez (máx. 3) | 📐 |
+| 4 | Push e PR no loop | 🟡 o Kiro pergunta a cada lote | 📐 |
+| 5 | Push pelos agentes | 🟡 pergunta sempre — na base, só os registros de situação da fatia, com os arquivos conferidos · 🔴 nunca `--force` | 📐 fixo |
+| 6 | Chamada HTTP do verificador | <[✅] `.sabia/http.sh` → `<url de teste>` | ➖ projeto sem HTTP> | <🙋 | 📐> |
 ```
 
 ## W8 · Revisão final (Passo 8)
@@ -300,7 +299,7 @@ mostre o cartão de novo com as caixas atualizadas antes de pedir o "ok" final d
 | Git | base `<…>` · prefixo `<…>` · commit `<…>` · PR <…> |
 | Produto | `<pasta>` · glossário <…> · ADRs <…> |
 | ELM | <`pa_<nome>.json` ✅ válido · time <…> | não usa> |
-| Automação | hook <[✅] | [ ]> · workflows <[✅] | [ ]> · paralelo <n> |
+| Automação | `verificar.sh` <[✅] | ➖> · paralelo <n> |
 
 ### Agentes
 <a tabela que o gerador imprimiu (sem `--gravar`), colada como está — mesmas colunas, mesma ordem>
@@ -308,23 +307,23 @@ mostre o cartão de novo com as caixas atualizadas antes de pedir o "ok" final d
 ### Arquivos
 | Arquivo | Ação |
 |---|---|
-| `.kiro/steering/sabia.md` | <criar | alterar — diff abaixo | manter> |
-| `.kiro/config/sabia/agentes.json` | rascunho gravado (o Kiro não carrega) |
+| `.sabia/sabia.md` | <criar | alterar — diff abaixo | manter> |
+| `.sabia/config/agentes.json` | rascunho gravado (o Kiro não carrega) |
 | `.kiro/config/elm/pa_<nome>.json` | <gravado e validado no bloco 10 | manter | ➖> |
-| `.kiro/agents/sa-*.json` (6) | <criar | alterar — diff abaixo> |
-| `.kiro/hooks/sabia.json` | <criar | alterar | ➖> |
-| `.kiro/workflows/sa-*.workflow.json` (2) | <criar | alterar | ➖> |
-| `.kiro/sabia/http.sh` | <criar | ➖> |
+| `.kiro/agents/sa-*.json` (7) | <criar | alterar — diff abaixo> |
+| `.kiro/steering/sabia.md` (ponteiro) | <criar | manter> |
+| `.sabia/verificar.sh` | <criar | alterar | ➖> |
+| `.sabia/http.sh` | <criar | ➖> |
 | `<produto>/` | <criar backlog.md, aprendizado/licoes.md, fatias/ | acrescentar <…> | manter> |
 | `<glossário>` | <criar | manter | ➖ não há> |
 | `<pasta de ADRs>/` | <criar com README.md | manter | ➖ não há> |
-| `.gitignore` | <acrescentar `.kiro/local/` | manter> |
+| `.gitignore` | <acrescentar `.sabia/local/` | manter> |
 
-O Kiro pede confirmação para cada arquivo em `.kiro/agents`, `.kiro/hooks` e `.kiro/workflows` — se recusar um
+O Kiro pede confirmação para cada arquivo em `.kiro/agents` — se recusar um
 por engano, diga `regravar <arquivo>`.
 
 > ❓ **Gravo tudo?**
-> `ok` grava · `<item>: <mudança>` ajusta antes · `parar` sai sem gravar (os rascunhos ficam em `.kiro/config/sabia/`)
+> `ok` grava · `<item>: <mudança>` ajusta antes · `parar` sai sem gravar (os rascunhos ficam em `.sabia/config/`)
 ```
 
 ## W9 · Validação e pronto (Passo 9)
@@ -336,12 +335,12 @@ por engano, diga `regravar <arquivo>`.
 | # | Verificação | Status |
 |---|---|---|
 | 1 | Agentes gerados = os combinados (tabela do gerador) | <✅ | ❌ <diferença>> |
-| 2 | `kiro-cli agent validate` nos 6 | <✅ | ❌ <agente: campo> | ➖ sem kiro-cli> |
-| 3 | Hook e workflows fazem parse; agentes citados existem | <✅ | ❌ | ➖> |
+| 2 | `kiro-cli agent validate` nos 7 | <✅ | ❌ <agente: campo> | ➖ sem kiro-cli> |
+| 3 | `sh .sabia/verificar.sh` | <✅ ok | ❌ <primeiro comando que falhou> | ⏸️ não rodado | ➖> |
 | 4 | `pa` do ELM válido (`elm_status`) | <✅ | ❌ <faltando> | ➖> |
 | 5 | GitLab responde (`gitlab_listar_mrs`) | <✅ | ⏸️ <motivo> | ➖> |
 | 6 | Caminhos citados no `sabia.md` e nos agentes existem | <✅ | ❌ <caminho>> |
-| 7 | Ferramentas que varrem a raiz ignoram `.kiro/local/` | <✅ | ⚠️ <ferramenta>> |
+| 7 | Ferramentas que varrem a raiz ignoram `.sabia/local/` | <✅ | ⚠️ <ferramenta>> |
 | 8 | Workspace confiável no Kiro | <✅ | ⚠️ confie no workspace para carregar agentes e skills> |
 ```
 
@@ -355,6 +354,7 @@ Depois, numa mensagem só:
 |---|---|---|
 | montar equipe, acordos e roadmap | "monte o planejamento" | `sa-produto` |
 | registrar uma demanda nova | "nova demanda: …" | `sa-produto` |
+| especificar um épico | "iniciar EP-<nn>" | `sa-especificador` |
 | começar o que é meu | "minha próxima tarefa" ou "iniciar <id>" | o do seu papel |
 | saber onde parei | "onde parei?" | qualquer um |
 

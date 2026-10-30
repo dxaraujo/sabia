@@ -4,7 +4,7 @@ Cada verificação tem severidade. **BLOQUEANTE** reprova; **IMPORTANTE** reprov
 depois); **SUGESTÃO** não reprova nem reabre ciclo. Todo achado tem **evidência** (`arquivo:linha`, comando +
 saída, ou "procurado em X, não encontrado") e a **correção** esperada. Achado sem evidência não é achado.
 
-Regras promovidas (seção Regras aprendidas do `.kiro/steering/sabia.md`) valem como itens extras da rubrica do artefato a que se
+Regras promovidas (seção Regras aprendidas do `.sabia/sabia.md`) valem como itens extras da rubrica do artefato a que se
 referem, com a severidade registrada nelas.
 
 ## P — PRD (`prd.md` + `decisoes.md`)

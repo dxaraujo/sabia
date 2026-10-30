@@ -33,8 +33,8 @@ e quais verificações a `sa-verificar` usa para executar os cenários de aceite
 
 ## Onde procurar (nesta ordem)
 
-1. **Projeto:** `.kiro/toolkits/*/toolkit.json`
-2. **Usuário:** `~/.kiro/toolkits/*/toolkit.json`
+1. **Projeto:** `.sabia/toolkits/*/toolkit.json`
+2. **Usuário:** `~/.sabia/toolkits/*/toolkit.json`
 3. **Powers instalados:** `~/.kiro/powers/installed/*/toolkit.json` (um toolkit pode ser distribuído como power;
    não achou nada ali → `~/.kiro/powers/**/toolkit.json`)
 4. **Sem manifesto** (toolkit implícito): skills em `.kiro/skills/*/SKILL.md`, `~/.kiro/skills/*/SKILL.md` e
@@ -111,7 +111,7 @@ de frontend — mas quem decide é a pessoa.
 Nenhum toolkit encontrado para o tipo detectado → diga isso uma vez, siga com as skills avulsas e registre no
 `sabia.md` (`Toolkits: nenhum — <tipo>`). Os agentes passam a depender do steering de tecnologia e do
 código vizinho (pattern grounding) — funciona, mas com mais revisão. Sugira à pessoa criar as skills da stack em
-`.kiro/skills/` (ou um toolkit em `.kiro/toolkits/<nome>/`) e rodar a setup em modo atualização depois.
+`.kiro/skills/` (ou um toolkit em `.sabia/toolkits/<nome>/`) e rodar a setup em modo atualização depois.
 
 ## Atualização
 

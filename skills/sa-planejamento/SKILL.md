@@ -9,9 +9,8 @@ metadata:
 
 # sa-planejamento — Planejar o fluxo, não só o calendário
 
-> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta da skill, dentro do
-> power instalado (ex.: `~/.kiro/powers/installed/sabia/skills/sa-planejamento/`), não no projeto: abra-os por esse
-> caminho, relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
+> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta desta skill, não no projeto:
+> abra-os pelo caminho relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
 
 Com agentes escrevendo código, o que limita a entrega é a **atenção humana**: decidir (P.O.), revisar planos e
 PRs, verificar e aceitar. O planejamento do Sabiá mede e protege essa capacidade, trabalha com fatias pequenas e de

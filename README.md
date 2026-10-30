@@ -32,8 +32,13 @@ cada passo. Fonte: branch `gh-pages` deste repositório.
 O Sabiá 1.0.0 nasce do power `sdd` 3.4.4, mantido antes no repositório
 [`dxaraujo/kiro`](https://github.com/dxaraujo/kiro) (arquivado, com o histórico de versões). Não há migração
 automática: o projeto que usava o `sdd` desinstala o power antigo, instala o Sabiá, move a pasta `.kiro/config/sdd/`
-para `.kiro/config/sabia/` (os `pa_<nome>.json` vão para `.kiro/config/elm/`) e pede "atualizar a configuração do
+para `.sabia/config/` (os `pa_<nome>.json` vão para `.kiro/config/elm/`) e pede "atualizar a configuração do
 Sabiá" e "atualizar os agentes do Sabiá". Requer o `mcp-elm` ≥ 3.5.1, que lê `.kiro/config/elm/`.
+
+A 1.1.0 tira do `.kiro/` o que é do Sabiá e não do Kiro: configuração, steering, local, scripts e a pasta do produto
+vão para `.sabia/` (o `.kiro/steering/sabia.md` vira um ponteiro); `.kiro/specs/`, `.kiro/agents/` e
+`.kiro/config/elm|elk/` ficam. O hook `sa-backpressure` e as receitas de Kiro Workflows saem: a verificação antes do
+commit é o `.sabia/verificar.sh`. A setup, em modo atualização, oferece mover os arquivos de um projeto 1.0.0.
 
 ## Fundamentos
 
@@ -78,7 +83,7 @@ Fontes no fim deste arquivo.
 | `sa-atender` | executa o atendimento (categoria Atendimento da Sustentação) já triado (AT-nnn): assume a `[ATD]`, consulta só leitura, extração fora do git, resposta, saldo de horas, desdobramentos |
 | `sa-pesquisar` | pesquisa do código compactada em `research.md` |
 | `sa-plano` | spec do Kiro (`requirements.md`/`bugfix.md`, `design.md`, `tasks.md`) e GATE do plano |
-| `sa-implementar` | TDD + backpressure, commits pequenos, revisão e PR (termina no PR) |
+| `sa-codificar` | TDD + backpressure, commits pequenos, revisão e PR (termina no PR) |
 | `sa-revisar` | revisão independente: PRD (P), plano (L), código (C, dois eixos) |
 | `sa-verificar` | aceite de ponta a ponta com evidência; `CT.csv` para o ETM |
 | `sa-consolidar` | fatia `pronta` (pós-merge) → `concluida`, processo de produto (P.O. ou SM, agente `sa-produto`, créditos num comentário na `[GB]`; horas só do SM): drift marcado pela revisão e pela verificação, ELM as-built (requisitos, ET, casos de teste criados no ETM), ADRs do PR, glossário, conclusão |
@@ -89,18 +94,17 @@ Fontes no fim deste arquivo.
 ## O que a setup instala no projeto
 
 O formato de power recomendado pelo Kiro (Agent Plugins, `plugin.json`) carrega só `skills/` e `mcp.json` — steering,
-agentes, hooks e workflows dentro de um power são ignorados. Por isso a `sa-setup` instala no projeto, a partir
+agentes e scripts dentro de um power são ignorados. Por isso a `sa-setup` instala no projeto, a partir
 de `skills/sa-setup/assets/`:
 
 | Arquivo | O quê |
 |---|---|
-| `.kiro/steering/sabia.md` | o único steering do fluxo (sempre carregado): resumo, configuração do projeto (pasta do produto, comandos, verificação, git, banco, autonomia, ELM, agentes) e regras aprendidas |
-| `.kiro/config/sabia/agentes.json` | as escolhas do projeto para os agentes (caminhos, comandos, skills e MCPs por agente) — a entrada do gerador |
-| `.kiro/agents/sa-*.json` | `produto`, `pesquisador`, `codificador`, `revisor`, `verificador`, `orquestrador` — gerados pelo script da setup a partir do `agentes.json`, cada um com as skills e MCPs que a pessoa liberou |
-| `.kiro/hooks/sabia.json` (opcional) | backpressure: compila e testa depois de cada tarefa de spec |
-| `.kiro/workflows/sa-*.workflow.json` (opcional, experimental) | `planejar-fatia` (até o GATE do plano, com a `[APR]`) e `entregar-fatia` (AFK até o PR aberto pelo `gitlabpr`, com a `[APR] Aprovar PR`) nos Kiro Workflows — quem dispara é a pessoa, no chat do Kiro ("rode o workflow `sa-entregar-fatia` para a FT-031" ou `/workflow-run`), uma fatia por vez; nenhum agente as dispara |
-| `.kiro/sabia/http.sh` (opcional) | única chamada HTTP que o verificador faz sem perguntar: só à URL de teste, com corpo da pasta `massa/` |
-| pasta do produto (proposta pela setup; padrão `.kiro/planejamento`) | `backlog.md`, épicos e PRDs, `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<iteração pai>/`, `sustentacao/<pasta>/`, `aprendizado/` — versionada; o que é local fica em `.kiro/local/` (fora do git) |
+| `.sabia/sabia.md` (e o ponteiro `.kiro/steering/sabia.md`) | o único steering do fluxo (sempre carregado): resumo, configuração do projeto (pasta do produto, comandos, verificação, git, banco, autonomia, ELM, agentes) e regras aprendidas |
+| `.sabia/config/agentes.json` | as escolhas do projeto para os agentes (caminhos, comandos, skills e MCPs por agente) — a entrada do gerador |
+| `.kiro/agents/sa-*.json` | `produto`, `especificador`, `pesquisador`, `codificador`, `revisor`, `verificador`, `orquestrador` — gerados pelo script da setup a partir do `agentes.json`, cada um com as skills e MCPs que a pessoa liberou |
+| `.sabia/verificar.sh` | backpressure: compila, testa, roda o lint e a cobertura; a `sa-codificar` o roda antes de cada commit |
+| `.sabia/http.sh` (opcional) | única chamada HTTP que o verificador faz sem perguntar: só à URL de teste, com corpo da pasta `massa/` |
+| pasta do produto (proposta pela setup; padrão `.sabia/planejamento`) | `backlog.md`, épicos e PRDs, `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<iteração pai>/`, `sustentacao/<pasta>/`, `aprendizado/` — versionada; o que é local fica em `.sabia/local/` (fora do git) |
 
 O ELM vem no próprio power: o MCP **`mcp-elm`** (≥ 3.5.1) lê o `.kiro/config/elm/pa_<nome>.json` do projeto (um por
 project area, gravado pela `sa-setup`) e expõe operações (`elm_transicao`, `elm_lancar_horas`, `elm_criar_wi`,
@@ -125,7 +129,7 @@ responsável, pelo codificador. Detalhes em
 
 O fluxo não sabe programar em nenhuma stack: o conhecimento de Java, Spring Batch, Angular, React etc. vem de
 **toolkits** — pacotes de skills mantidos fora do power, um por tipo de projeto ou stack. A `sa-setup` é a única
-parte do fluxo que sabe procurá-los (`.kiro/toolkits/`, `~/.kiro/toolkits/`, powers instalados com `toolkit.json`,
+parte do fluxo que sabe procurá-los (`.sabia/toolkits/`, `~/.sabia/toolkits/`, powers instalados com `toolkit.json`,
 ou skills com `metadata.toolkit`), detecta o tipo do projeto e **propõe, agente por agente**, as skills a ligar (uma confirmação por agente) —
 num projeto 100% Spring Batch, o codificador recebe as de batch e Java que a pessoa escolher, e não as de REST ou
 frontend. Contrato em [`skills/sa-setup/references/toolkits.md`](skills/sa-setup/references/toolkits.md) e
@@ -151,7 +155,7 @@ processo do projeto exige algum deles, a skill do passo entrega o roteiro manual
 ## Pré-requisitos
 
 - Kiro IDE 1.x ou Kiro CLI 2.32+ na engine V3 (`--agent-engine v3`); repositório git com branch base e PRs. A
-  engine V2 do CLI não lê as permissões dos agentes, nem o hook e os workflows; e `uv` para os scripts da setup e
+  engine V2 do CLI não lê as permissões dos agentes; e `uv` para os scripts da setup e
   da `sa-status`.
 - Kiro Web não lê `~/.kiro`: os agentes do projeto aparecem lá, mas sem as skills do power — use a IDE ou o CLI.
 - MCPs do próprio power (o `mcp.json` os sobe com `uvx`): [`mcp-elm`](https://pypi.org/project/mcp-elm/), que também consulta o
@@ -163,8 +167,7 @@ processo do projeto exige algum deles, a skill do passo entrega o roteiro manual
   [`pa.schema.json`](https://dxaraujo.github.io/mcps/elm/pa.schema.json)) estão em
   [`dxaraujo/mcps`](https://github.com/dxaraujo/mcps).
 - Opcional: IBM ELM — credencial em `~/.config/mcp-elm/elm.properties` e o `pa` gerado pela `sa-setup`; MCP de consulta ao banco (somente leitura);
-  MCP de browser/Playwright para verificar frontend; Kiro Workflows habilitado (IDE: `kiroAgent.workflows.enabled`;
-  CLI: `chat.enableWorkflows`) para as receitas experimentais.
+  MCP de browser/Playwright para verificar frontend.
 - Toolkits da stack do projeto (opcional — sem eles os agentes dependem do steering e do código vizinho).
 
 Horas: **lançar ≠ concluir** — lançar é registro de empenho, a qualquer momento numa tarefa assumida (ao fechar a
@@ -211,8 +214,7 @@ Com o **Kiro CLI 2.31.0** (o binário oficial), no `sdd` 2.x, quando os agentes 
 
 Com o **Kiro CLI 2.32.0**, engine V3 (23/10/2026), os agentes gerados pelo `gerar_agentes.py`: os seis passam no
 `kiro-cli agent validate`; numa conversa sem interação, comando liberado roda, comando fora da lista e exceção
-(`git log --output`) caem em aprovação, e `git commit -n` e push para a base são negados pela regra; as duas
-receitas passam no validador do Kiro ao iniciar e param no primeiro passo com uma fatia inexistente. Não foi
+(`git log --output`) caem em aprovação, e `git commit -n` e push para a base são negados pela regra. Não foi
 possível abrir a IDE.
 
 **O que a documentação não resolve** (comportamento a observar no primeiro uso): o formato do `.config.kiro` das
@@ -224,8 +226,6 @@ steering e de configuração divergem sobre agentes herdarem o steering padrão 
 
 ## Limitações conhecidas e próxima versão
 
-- O Kiro só valida uma receita quando a execução começa: a setup confere o JSON e os agentes citados.
-- Kiro Workflows é experimental: as receitas são opcionais; `/workflow-run` exige a IDE 1.3+.
 - **Próxima versão:** toolkits oficiais (backend Java/Spring, Spring Batch, frontend Angular/React); execução automatizada dos
   casos de avaliação que a `sa-aprender` já guarda em `<produto>/aprendizado/avaliacoes/`; e — quando o MCP do ELM
   suportar — atributo de chave, links entre requisitos, módulos, change sets e baselines automáticos.

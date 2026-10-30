@@ -16,12 +16,12 @@ pesquisa, planeja, implementa, revisa e verifica são os subagentes, cada um com
   `ELM pendente [<chave>]:` no `status.md` e no resumo final.
 - Créditos do Kiro: não registre no lote (o consumo do turno só é gravado quando ele termina); no resumo,
   `Créditos: no merge de cada fatia, rateio 1/<n> desta sessão (<FT…>)` — o Dev grava no merge, na base.
-- Worktrees em `.kiro/local/wt/<ft>/`; diga aos subagentes como rodar comandos nelas:
-  `cd .kiro/local/wt/<ft> && <comando>` (`git -C` é bloqueado).
-- Lote em `.kiro/local/loop-<data>.md` — atualize após cada fase.
+- Worktrees em `.sabia/local/wt/<ft>/`; diga aos subagentes como rodar comandos nelas:
+  `cd .sabia/local/wt/<ft> && <comando>` (`git -C` é bloqueado).
+- Lote em `.sabia/local/loop-<data>.md` — atualize após cada fase.
 - Você não escreve código nem roda build: a escrita nas worktrees e os comandos de build estão liberados
   para os subagentes, que herdam as suas regras.
-- Arquivos: leia e procure com as ferramentas de leitura e busca do Kiro, não com `cat`/`grep`/`find` no
+- Arquivos: leia e procure com as ferramentas de leitura e busca do agente, não com `cat`/`grep`/`find` no
   shell — o shell é para git, build e testes.
 {{SKILLS_EXTRAS}}
 {{SUBAGENTES}}

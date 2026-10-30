@@ -1,11 +1,11 @@
 #!/bin/sh
 # Sabiá — chamada HTTP do agente sa-verificador, só para a URL de teste do projeto.
-# Instalado pela sa-setup em .kiro/sabia/http.sh (o verificador tem permissão para rodar só este script, e nenhum
-# agente pode alterá-lo). A URL vem da seção Verificação de aceite do .kiro/steering/sabia.md; mudou → rode a setup.
+# Instalado pela sa-setup em .sabia/http.sh (o verificador tem permissão para rodar só este script, e nenhum
+# agente pode alterá-lo). A URL vem da seção Verificação de aceite do .sabia/sabia.md; mudou → rode a setup.
 #
 # Uso (da raiz do repositório):
-#   sh .kiro/sabia/http.sh <MÉTODO> <caminho> [corpo.json]
-#   ex.: sh .kiro/sabia/http.sh POST /api/saldos .kiro/specs/ft-031-saldo/massa/saldo-ok.json
+#   sh .sabia/http.sh <MÉTODO> <caminho> [corpo.json]
+#   ex.: sh .sabia/http.sh POST /api/saldos .kiro/specs/ft-031-saldo/massa/saldo-ok.json
 # O corpo só pode vir da pasta massa/ de uma fatia. Token: variável SABIA_HTTP_TOKEN (Bearer), se o ambiente pedir.
 set -eu
 
@@ -13,7 +13,7 @@ BASE='{{URL_TESTE}}'
 
 erro() { echo "http.sh: $1" >&2; exit 2; }
 
-[ $# -ge 2 ] && [ $# -le 3 ] || erro "uso: sh .kiro/sabia/http.sh <MÉTODO> <caminho> [corpo.json]"
+[ $# -ge 2 ] && [ $# -le 3 ] || erro "uso: sh .sabia/http.sh <MÉTODO> <caminho> [corpo.json]"
 METODO=$1
 CAMINHO=$2
 CORPO=${3:-}
@@ -30,7 +30,7 @@ fi
 if [ -n "$CORPO" ]; then
   case $CORPO in *..*) erro "corpo fora da pasta massa/" ;; esac
   case $CORPO in
-    .kiro/specs/*/massa/* | .kiro/local/wt/*/.kiro/specs/*/massa/*) ;;
+    .kiro/specs/*/massa/* | .sabia/local/wt/*/.kiro/specs/*/massa/*) ;;
     *) erro "o corpo deve estar na pasta massa/ de uma fatia" ;;
   esac
   [ -f "$CORPO" ] || erro "corpo não encontrado: $CORPO"

@@ -1,6 +1,6 @@
 ---
 name: sa-loop
-description: "Autonomous (AFK) execution of several slices (fatias) of the Sabiá flow — takes the frontier of planned (planejada), unblocked AFK slices, records the batch as iniciada on the base branch, creates one worktree and one branch per slice (under .kiro/local/wt/) and carries each one from research to an open PR, one phase per clean-context subagent of sa-orquestrador (pesquisador, codificador, revisor, verificador), with backpressure, up to 2 review rounds, a stop on blockers and a WIP limit set by human review capacity. Resumable from the log in .kiro/local/. Use when the user says \"roda as fatias AFK\", \"modo AFK\", \"leva a FT-031 e a FT-032 até o PR\", \"trabalha sozinho nas fatias da sprint\", \"retoma o loop\"."
+description: "Autonomous (AFK) execution of several slices (fatias) of the Sabiá flow — takes the frontier of planned (planejada), unblocked AFK slices, records the batch as iniciada on the base branch, creates one worktree and one branch per slice (under .sabia/local/wt/) and carries each one from research to an open PR, one phase per clean-context subagent of sa-orquestrador (pesquisador, codificador, revisor, verificador), with backpressure, up to 2 review rounds, a stop on blockers and a WIP limit set by human review capacity. Resumable from the log in .sabia/local/. Use when the user says \"roda as fatias AFK\", \"modo AFK\", \"leva a FT-031 e a FT-032 até o PR\", \"trabalha sozinho nas fatias da sprint\", \"retoma o loop\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
@@ -14,7 +14,7 @@ registra; cada fase é feita por um subagente que começa do zero e lê o estado
 loop, não dentro: aprova o lote no início, um Dev Sênior aprova os planos que pedem GATE e lê cada PR no fim (tarefas
 `[APR]`); quem disparou o loop é o Dev responsável e faz o merge de cada PR aprovado (Passo 6 da `sa-desenvolver`).
 
-Leia antes: `.kiro/steering/sabia.md` (seções Git, banco e autonomia e Comandos) e
+Leia antes: `.sabia/sabia.md` (seções Git, banco e autonomia e Comandos) e
 `<produto>/acordos.md` (WIP; sem o arquivo, limite 2).
 
 **Quem dispara** tem de ser Dev **Pleno** ou **Sênior** (`senioridade` no `equipe.json` da base): é o responsável
@@ -23,7 +23,7 @@ e pare.
 
 ## Passo 0 — Retomar?
 
-Existe `.kiro/local/loop-*.md` com fatias não finalizadas → mostre o estado (fatia, fase, rodada, último resultado)
+Existe `.sabia/local/loop-*.md` com fatias não finalizadas → mostre o estado (fatia, fase, rodada, último resultado)
 e pergunte se retoma. Retomar = continuar cada fatia da fase registrada no `status.md` dela.
 
 ## Passo 1 — Fronteira e lote
@@ -48,7 +48,7 @@ e pergunte se retoma. Retomar = continuar cada fatia da fase registrada no `stat
    🤖 Loop AFK — <n> fatias · paralelo <p> · base <branch>
    | FT | Título | Branch | Worktree |
    |---|---|---|---|
-   | FT-031 | Bloquear a conta após 3 tentativas | feature/ft-031-bloquear-conta | .kiro/local/wt/ft-031 |
+   | FT-031 | Bloquear a conta após 3 tentativas | feature/ft-031-bloquear-conta | .sabia/local/wt/ft-031 |
    GATE do plano (senioridade de quem dispara): Sênior → sem GATE (plano do Sênior) · Pleno → quer a aprovação de
    um Dev Sênior nos planos deste lote? (sim: [APR] para <login> | não) — a escolha vale para o lote
    Aprovação dos PRs: [APR] Aprovar PR para <Dev Sênior> (sugestão: outro que não quem dispara; ele mesmo só se
@@ -84,17 +84,17 @@ e pergunte se retoma. Retomar = continuar cada fatia da fase registrada no `stat
    no `status.md`. Depois `elm_transicao(<id>, "assumir", iniciar_pai: true)`
    em cada `[DEV]`; sem o MCP `elm` ou com falha → `ELM pendente [<chave>]: assumir a tarefa` no `status.md`
    de cada fatia. Essas pendências entram no Histórico do `status.md` de cada fatia quando ele nasce (Passo 2).
-5. Log `.kiro/local/loop-<AAAA-MM-DD-HHMM>.md` (formato no fim).
+5. Log `.sabia/local/loop-<AAAA-MM-DD-HHMM>.md` (formato no fim).
 
 ## Passo 2 — Worktree por fatia
 
-As worktrees ficam **dentro** do workspace, em `.kiro/local/wt/<ft>/` (ignorado pelo git), para que os agentes
+As worktrees ficam **dentro** do workspace, em `.sabia/local/wt/<ft>/` (ignorado pelo git), para que os agentes
 alcancem os arquivos com as permissões deles:
 
 ```bash
 git fetch --quiet
-git worktree add .kiro/local/wt/<ft> -b <branch> origin/<base>     # nova
-git worktree add .kiro/local/wt/<ft> <branch>                      # já existe
+git worktree add .sabia/local/wt/<ft> -b <branch> origin/<base>     # nova
+git worktree add .sabia/local/wt/<ft> <branch>                      # já existe
 ```
 
 Dentro da worktree, faça só o item 4 e o commit do item 6 do Passo 4 da **`sa-desenvolver`** (pasta, `status.md` com
@@ -103,29 +103,28 @@ Dentro da worktree, faça só o item 4 e o commit do item 6 do Passo 4 da **`sa-
 `iniciada` e o EWM já foram tratados na confirmação do lote (Passo 1), e não há push nesta hora.
 
 **Comandos dentro da worktree** — diga isto a cada subagente: git, build e testes com
-`cd .kiro/local/wt/<ft> && <comando>` (o `git -C` é bloqueado nos agentes: com ele as regras de permissão não
-enxergam o subcomando); arquivos pelo caminho `.kiro/local/wt/<ft>/<caminho>`. Ferramentas que varrem a raiz
-(alguns test runners, linters) podem enxergar `.kiro/local/`: se o projeto tiver esse risco, a setup registra a
+`cd .sabia/local/wt/<ft> && <comando>` (o `git -C` é bloqueado nos agentes: com ele as regras de permissão não
+enxergam o subcomando); arquivos pelo caminho `.sabia/local/wt/<ft>/<caminho>`. Ferramentas que varrem a raiz
+(alguns test runners, linters) podem enxergar `.sabia/local/`: se o projeto tiver esse risco, a setup registra a
 exclusão.
 
 ## Passo 3 — Fases (por fatia; fatias diferentes em paralelo até o limite)
 
 Cada fase é um subagente novo recebendo **só**: `AUTONOMO=true`, id da fatia, o caminho da worktree
-(`.kiro/local/wt/<ft>`) e da pasta da fatia dentro dela, como rodar comandos ali (Passo 2) e a rodada. Nunca o
-raciocínio de outra fase. Com **Workflows** ligado no Kiro, a delegação a um agente pode virar uma execução em
-segundo plano: espere a de cada fase terminar (artefato gravado, `status.md` atualizado) antes de abrir a
-seguinte da mesma fatia.
+(`.sabia/local/wt/<ft>`) e da pasta da fatia dentro dela, como rodar comandos ali (Passo 2) e a rodada. Nunca o
+raciocínio de outra fase. Delegação que roda em segundo plano → espere a de cada fase terminar (artefato gravado,
+`status.md` atualizado) antes de abrir a seguinte da mesma fatia.
 
 | # | Fase | Subagente | Sai quando |
 |---|---|---|---|
-| 1 | pesquisa | `sa-pesquisador` (`sa-pesquisar`) | `research.md` gravado |
+| 1 | pesquisa | `sa-pesquisador` (`sa-pesquisar`) | `research.md` devolvido e gravado por você na pasta da fatia |
 | 2 | plano | `sa-codificador` (`sa-plano`, Passos 2–3) | spec do Kiro gravada · ou `bloqueada` |
 | 3 | análise do plano | `sa-revisor` (rubrica L) → `sa-codificador` corrige | `ANALISE: OK` · 2 rodadas sem OK → `bloqueada` |
 | 4 | troca e GATE do plano | você | o Passo 5 da `sa-plano`, sem pessoa: plano com risco → `fase: bloqueada (de: planejando)`, `aguardando troca para HITL` com o risco, commit, horas da sessão na `[DEV]` no fim do lote, o P.O. avisado no resumo, e siga com as outras · GATE pela escolha do lote: Sênior, ou Pleno que dispensou → `fase: implementando` (Histórico `plano do Sênior` · `Pleno dispensou o GATE do plano`) e siga · Pleno que pediu → `fase: aguardando-aprovacao-plano` (`Responsável` = o Dev Sênior do lote), a `[APR] FT-<nnn> Aprovar plano` ([elm-sprint.md](../sa-planejamento/references/elm-sprint.md) §8), commit do plano e, com push autorizado no lote, push e conferência; **pare esta fatia** e siga com as outras (retoma depois do GATE) |
-| 5 | implementação | `sa-codificador` (`sa-implementar`, Passos 0–2) | tarefas `[x]` e backpressure verde · ou `bloqueada` |
+| 5 | implementação | `sa-codificador` (`sa-codificar`, Passos 0–2) | tarefas `[x]` e backpressure verde · ou `bloqueada` |
 | 6 | revisão do código | `sa-revisor` (rubrica C) → volta à 5 com os achados | `VEREDITO: APROVADO` · 2ª reprovação → `bloqueada` |
 | 7 | verificação | `sa-verificador` (`sa-verificar`) | `ACEITO` (`fase: verificada`) · `REJEITADO` → volta à 5 com os cenários rejeitados (retrabalho: linha na tabela Retrabalho do `status.md`, Rodadas `retrabalho` + 1) e **passa de novo pela 6** antes da 7; de novo rejeitado → `bloqueada` |
-| 8 | entrega | você | de `verificada`: commit do que faltar; push, conferência no remoto (`git rev-parse HEAD` = `git rev-parse origin/<branch>`, na worktree) e PR se autorizado no lote (ADRs, texto e `gitlab_criar_mr` do Passo 5 da `sa-implementar`, com `origem` = a branch da worktree — o MCP roda no checkout principal e não a enxerga; o Kiro ainda pode pedir confirmação a cada push e a cada PR, conforme as permissões) → a `[APR] FT-<nnn> Aprovar PR` para o Dev Sênior do lote ([elm-sprint.md](../sa-planejamento/references/elm-sprint.md) §8) → `fase: aguardando-aprovacao-pr` com o link do PR no `status.md`, commit, push e conferência (item 3 do Passo 5 da `sa-implementar`); a `[DEV]` fica em andamento; sem PR autorizado → fica `verificada` |
+| 8 | entrega | você | de `verificada`: commit do que faltar; push, conferência no remoto (`git rev-parse HEAD` = `git rev-parse origin/<branch>`, na worktree) e PR se autorizado no lote (ADRs, texto e `gitlab_criar_mr` do Passo 5 da `sa-codificar`, com `origem` = a branch da worktree — o MCP roda no checkout principal e não a enxerga; o Kiro ainda pode pedir confirmação a cada push e a cada PR, conforme as permissões) → a `[APR] FT-<nnn> Aprovar PR` para o Dev Sênior do lote ([elm-sprint.md](../sa-planejamento/references/elm-sprint.md) §8) → `fase: aguardando-aprovacao-pr` com o link do PR no `status.md`, commit, push e conferência (item 3 do Passo 5 da `sa-codificar`); a `[DEV]` fica em andamento; sem PR autorizado → fica `verificada` |
 
 Depois de cada fase: grave a fase seguinte (`planejando` depois da pesquisa, `revisando` antes da revisão do
 código), atualize o log, as Rodadas e o Histórico do `status.md` — nas fases 6 e 7, também o campo **Drift de
@@ -135,17 +134,14 @@ relatórios que chegaram nesta fase — `analise-plano-<N>.md` (fase 3), `revisa
 pelos subagentes que os geram; o orquestrador é o responsável pelo commit deles.
 
 **Aprovação de plano pausado:** é do Dev Sênior da `[APR]`, na sessão dele, pela `sa-revisar` (Aprovação do plano)
-(no mesmo checkout do loop, ele trabalha na worktree — `cd .kiro/local/wt/<ft>` — em vez do `git switch`; sem push
+(no mesmo checkout do loop, ele trabalha na worktree — `cd .sabia/local/wt/<ft>` — em vez do `git switch`; sem push
 autorizado, só assim). Ao retomar: `git pull --ff-only` na worktree (com upstream) e leia a fase — `implementando` →
 fase 5 (Passo 0); `planejando` com o ajuste pedido → codificador (`sa-plano`, replanejar), nova análise e fase 4.
 Aprovação dita nesta sessão não vale.
 
 **Aprovação do PR:** é do Dev Sênior da `[APR]`, pela `sa-revisar` (Aprovação do PR). Mudanças pedidas →
 `retrabalho (de: aguardando-aprovacao-pr)`: a fatia volta à fase 5 com os achados (retome-a num lote, ou o Dev pela
-`sa-implementar`).
-
-Os **Kiro Workflows** do Sabiá (se instalados) não fazem parte do loop: são receitas que a pessoa dispara para
-**uma** fatia, na branch dela, no checkout principal.
+`sa-codificar`).
 
 ## Passo 4 — Parada
 
@@ -176,7 +172,7 @@ Os **Kiro Workflows** do Sabiá (se instalados) não fazem parte do loop: são r
   `sa-desenvolver`), sem `--force` — os agentes não podem (`git worktree remove` é negado a todos): entregam o
   comando e a pessoa o roda.
 
-## Log `.kiro/local/loop-<data>.md`
+## Log `.sabia/local/loop-<data>.md`
 
 ```markdown
 # Loop AFK <data> — paralelo <p> · push/PR: <sim|não>

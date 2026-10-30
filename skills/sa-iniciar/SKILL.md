@@ -1,6 +1,6 @@
 ---
 name: sa-iniciar
-description: "Start hub of the Sabiá flow — receives an already registered work item (FT-031, EP-03, AT-012, IM-003, a DF or IB the backlog knows, a [DEV] [REV] [APR] [VER] [ESP] [GB] [ATD] [IMPL] [BD] [INF] [OPE] [EXT] task) or \"minha próxima tarefa\", figures out its type and says which role skill to use: sa-desenvolver (Dev), sa-revisar (Revisor and [APR]), sa-verificar (QA), sa-especificar (Especificador), sa-atender (Atendimento), sa-executar (the other Sustentação categories), sa-implementar (verified AFK slice (fatia): open the PR), sa-consolidar (slice in pronta: PR merged) or sa-planejamento (mode switch, sprint); a new request or an item outside the backlog goes to sa-triar. Use when the user says \"iniciar\", \"começar\", \"pegar a task 123\", \"vamos trabalhar na FT-031\", \"iniciar o AT-012\", \"minha próxima tarefa\", \"o que eu pego agora?\"."
+description: "Start hub of the Sabiá flow — receives an already registered work item (FT-031, EP-03, AT-012, IM-003, a DF or IB the backlog knows, a [DEV] [REV] [APR] [VER] [ESP] [GB] [ATD] [IMPL] [BD] [INF] [OPE] [EXT] task) or \"minha próxima tarefa\", figures out its type and says which role skill to use: sa-desenvolver (Dev), sa-revisar (Revisor and [APR]), sa-verificar (QA), sa-especificar (Especificador), sa-atender (Atendimento), sa-executar (the other Sustentação categories), sa-codificar (verified AFK slice (fatia): open the PR), sa-consolidar (slice in pronta: PR merged) or sa-planejamento (mode switch, sprint); a new request or an item outside the backlog goes to sa-triar. Use when the user says \"iniciar\", \"começar\", \"pegar a task 123\", \"vamos trabalhar na FT-031\", \"iniciar o AT-012\", \"minha próxima tarefa\", \"o que eu pego agora?\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
@@ -13,7 +13,7 @@ Cada tarefa do EWM tem um papel e uma skill dona, que pode ser chamada direto po
 descobre o tipo do item e diz qual é: não confere compromisso, não cria branch e não mexe no EWM — a skill do papel
 faz isso, começando por assumir a própria tarefa (`elm_transicao(<id>, "assumir")`).
 
-Leia antes: `.kiro/steering/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configurar o Sabiá") e pare.
+Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configurar o Sabiá") e pare.
 
 ## Passo 1 — Identificar o item
 
@@ -34,7 +34,7 @@ diga o que ele é e peça o item.
 | Item informado | Skill | Papel / agente |
 |---|---|---|
 | pedido em texto, ou id que não está no backlog | **`sa-triar`** | P.O. / `sa-produto` |
-| `EP-nn`, tarefa `[ESP]` | **`sa-especificar`** | Especificador / `sa-produto` |
+| `EP-nn`, tarefa `[ESP]` | **`sa-especificar`** | Especificador / `sa-especificador` |
 | `FT-nnn` (de épico ou de Manutenção), tarefa `[DEV]`, "próxima fatia" | **`sa-desenvolver`** | Dev / `sa-codificador` |
 | tarefa `[REV]` | **`sa-revisar`** (rubrica C sobre o PR) | Revisor / `sa-revisor` |
 | tarefa `[APR] FT-nnn Aprovar plano` | **`sa-revisar`** (seção "Aprovação do plano — a `[APR]`") | Aprovador (Dev Sênior) / `sa-revisor` |
@@ -43,7 +43,7 @@ diga o que ele é e peça o item.
 | `AT-nnn`, tarefa `[ATD]` | **`sa-atender`** | quem atende / `sa-produto` |
 | `IM-`, `BD-`, `IN-`, `OP-`, `EX-nnn` (as demais categorias da tabela **Sustentação** do `sabia.md`), tarefa `[IMPL]` `[BD]` `[INF]` `[OPE]` `[EXT]` | **`sa-executar`** | quem faz / `sa-produto` |
 | fatia `iniciada` no `backlog.md` sem `status.md` em nenhuma branch (a sessão parou entre o registro e a branch) | **`sa-desenvolver`** (retomada pelo Passo 4 — só o `responsavel` da linha retoma) | Dev responsável / `sa-codificador` |
-| fatia em `verificada` (AFK) | **`sa-implementar`** (Passo 5 — abrir o PR) | Dev / `sa-codificador` |
+| fatia em `verificada` (AFK) | **`sa-codificar`** (Passo 5 — abrir o PR) | Dev / `sa-codificador` |
 | fatia em `aceita` (HITL), ou em `aguardando-aprovacao-pr` (AFK) com a `[APR] Aprovar PR` concluída — qualquer item dela, menos a `[APR]` | **`sa-desenvolver`** (Passo 6 — merge do PR aprovado) | Dev responsável / `sa-codificador` |
 | fatia em `aguardando-aprovacao-pr` (AFK) sem a `[APR] Aprovar PR` concluída | **`sa-revisar`** (seção "Aprovação do PR — a `[APR]`") | Aprovador (Dev Sênior) / `sa-revisor` |
 | fatia em `bloqueada` com `aguardando troca para HITL` | **`sa-planejamento`** (Troca de modo, na base); feita a troca, o Dev retoma pela **`sa-desenvolver`** | P.O. ou SM / `sa-produto` · Dev / `sa-codificador` |

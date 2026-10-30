@@ -9,9 +9,8 @@ metadata:
 
 # sa-desenvolver — Compromisso e início do código
 
-> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta da skill, dentro do
-> power instalado (ex.: `~/.kiro/powers/installed/sabia/skills/sa-desenvolver/`), não no projeto: abra-os por esse
-> caminho, relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
+> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta desta skill, não no projeto:
+> abra-os pelo caminho relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
 
 Começar é um compromisso: daqui em diante a fatia consome a capacidade do time e o lead time corre. Por isso esta
 skill só começa o que já está registrado e planejado; a entrada de trabalho novo é da **`sa-triar`**. É a skill do
@@ -20,7 +19,7 @@ papel **Dev**: grava `iniciada` na base e assume a `[DEV]` da fatia (Passo 4), e
 verificação (`[VER]`), especificação (`[ESP]`) e os itens `AT-`, `IM-`… da Sustentação (`[ATD]`, `[IMPL]`…) têm
 skill própria; a fatia de Manutenção (`FT-`) é deste papel. Na dúvida sobre o item, o hub **`sa-iniciar`** diz qual.
 
-Leia antes: `.kiro/steering/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configurar o Sabiá") e pare.
+Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configurar o Sabiá") e pare.
 
 ## Passo 1 — O que chegou
 
@@ -50,9 +49,9 @@ do item 2, variante do Dev); outra pessoa →
 "iniciada por <login> em <data do commit `<FT> iniciar`>, sem branch publicada" e pare. `dividida` ou `cancelada`
 no `backlog.md` → nada a retomar: diga isso (a `obs` aponta a substituta) e pare. Branch
 diferente da atual → pergunte se troca (alterações locais não commitadas → avise e pare; nunca ofereça descartar,
-`stash` ou `reset`). **Branch aberta numa worktree** (`git worktree list` mostra `.kiro/local/wt/<ft>` com ela —
+`stash` ou `reset`). **Branch aberta numa worktree** (`git worktree list` mostra `.sabia/local/wt/<ft>` com ela —
 fatia do `sa-loop`): não troque, o `git switch` falha; trabalhe na worktree — comandos com
-`cd .kiro/local/wt/<ft> && <comando>`, arquivos pelo caminho `.kiro/local/wt/<ft>/<caminho>` — e passe isso à
+`cd .sabia/local/wt/<ft> && <comando>`, arquivos pelo caminho `.sabia/local/wt/<ft>/<caminho>` — e passe isso à
 próxima skill. Vale para todas as skills de papel que precisam da branch da fatia.
 
 **Troca AFK → HITL** (fatia em `bloqueada (de: <fase>)` com `aguardando troca para HITL`, ou com `Modo: AFK` no
@@ -190,9 +189,9 @@ Próximo: <skill>
 | Fase | Próxima skill |
 |---|---|
 | `pesquisando`, `planejando`, `aguardando-aprovacao-plano` | `sa-plano` (que começa pela `sa-pesquisar`) |
-| `implementando`, `revisando`, `retrabalho (de: …)` | `sa-implementar` |
+| `implementando`, `revisando`, `retrabalho (de: …)` | `sa-codificar` |
 | `verificando` | `sa-verificar` (AFK) |
-| `verificada` | AFK: `sa-implementar` (Passo 5 — abrir o PR) |
+| `verificada` | AFK: `sa-codificar` (Passo 5 — abrir o PR) |
 | `pr-aberto`, `em-revisao` | HITL: com o revisor — `[REV]` pela `sa-revisar` |
 | `em-verificacao` | HITL: com o verificador — `[VER]` pela `sa-verificar` |
 | `aceita` | HITL: Dev — **Passo 6** desta skill (merge do PR aprovado e conclusão da `[DEV]`) |
@@ -201,9 +200,7 @@ Próximo: <skill>
 | `bloqueada (de: <fase>)` | mostre o motivo e a pergunta; resolvido → volta à skill da fase de origem. `aguardando troca para HITL` → a troca é do P.O. (`sa-planejamento`, Troca de modo); registrada, a Troca AFK → HITL do Passo 1 |
 
 Modo AFK e várias fatias padrão ou rápida planejadas na sprint → ofereça o **`sa-loop`** (o agente leva cada uma até
-o PR). Uma fatia só, com as receitas instaladas (`.kiro/workflows/sa-*`) → diga que a pessoa pode dispará-las no
-chat ("rode o workflow `sa-planejar-fatia` com fatia FT-<nnn>"; AFK, depois `sa-entregar-fatia`) — quem dispara
-receita é sempre a pessoa, nunca uma skill ou agente.
+o PR).
 
 Diga a próxima e **pare**: nunca invoque nem simule a skill da fase — ela começa na própria invocação. A
 exceção é o merge (`aceita`, ou `aguardando-aprovacao-pr` com a `[APR]` concluída): o Passo 6 é desta skill.
@@ -226,15 +223,15 @@ a aprovação **registrada**, nunca a dita na conversa ("o PR foi aprovado", "po
 1. **Leia o PR:** `gitlab_obter_mr` pelo `iid` do link no `status.md`. Tem de estar aberto, sem WIP/Draft e sem
    conflito. `merged` → vá ao item 5; `closed` ou WIP → avise e pare. **Conflito** com a base → `fase: retrabalho
    (de: <aceita | aguardando-aprovacao-pr>)` e, no Histórico, a linha `conflito no merge` com os arquivos (é por ela
-   que a `sa-implementar`, no Passo 0, separa este caso das mudanças pedidas na `[APR]`, que gravam a mesma fase);
-   commit, push e conferência (itens 1–3 da Entrega do Passo 5 da [`sa-implementar`](../sa-implementar/SKILL.md))
-   e pare: a `sa-implementar` atualiza a branch, e a mudança passa de novo pela revisão.
+   que a `sa-codificar`, no Passo 0, separa este caso das mudanças pedidas na `[APR]`, que gravam a mesma fase);
+   commit, push e conferência (itens 1–3 da Entrega do Passo 5 da [`sa-codificar`](../sa-codificar/SKILL.md))
+   e pare: a `sa-codificar` atualiza a branch, e a mudança passa de novo pela revisão.
 2. **Commit aprovado:** o `sha` do PR = `git rev-parse origin/<branch>` e é o commit que foi aprovado — HITL: o da
    entrega da verificação (o último commit que mudou o `verificacao.md`, `git log -1 --format=%H -- <pasta da fatia>/verificacao.md`, e nele o veredito `ACEITO` — não depende do padrão de mensagem do projeto); AFK: o `sha` do
    comentário da `[APR]`. Commit depois da aprovação → só vale se a base só trouxe registros: o aprovado segue na
    história do PR (`git branch -r --contains <sha aprovado>` lista `origin/<branch>`; o `git merge-base` cai na
    negação do `git merge` dos agentes) e `git diff --name-only <sha aprovado>
-   <sha do PR>` cabe no critério do item 1 do Passo 5 da `sa-implementar` (a branch atualizada por merge da base,
+   <sha do PR>` cabe no critério do item 1 do Passo 5 da `sa-codificar` (a branch atualizada por merge da base,
    como em projeto com merge fast-forward ou semi-linear no GitLab); senão, não mergeie: a mudança volta à revisão.
    Branch rebaseada (botão Rebase do GitLab) também volta: o `sha` aprovado some (HITL: o commit da verificação
    reescrito, com data de commit diferente da de autoria) — o Sabiá atualiza a branch por merge da base.
@@ -275,9 +272,9 @@ a aprovação **registrada**, nunca a dita na conversa ("o PR foi aprovado", "po
    só o saldo → `elm_lancar_horas(<id>, <saldo>)` e `elm_transicao(<id>, "concluir")`, numa confirmação (`[DEV]` já
    fechada, do Passo 4, item 5 → só o saldo). Sem o MCP
    `elm`, a pendência já foi no item 6.
-8. **Worktree do loop** (`.kiro/local/wt/<ft>`): depois do merge, `git worktree remove .kiro/local/wt/<ft>` —
+8. **Worktree do loop** (`.sabia/local/wt/<ft>`): depois do merge, `git worktree remove .sabia/local/wt/<ft>` —
    **sem `--force`**; os agentes não podem (negado a todos): entregue o comando e a pessoa o roda. Falhou por arquivos
-   não rastreados ou alterados → mostre quais (evidência com dado real fica em `.kiro/local/verificacao/`, fora da
+   não rastreados ou alterados → mostre quais (evidência com dado real fica em `.sabia/local/verificacao/`, fora da
    worktree) e deixe a pessoa decidir; nunca force.
 9. **Avise o P.O. ou o SM** de que a fatia está `pronta` para a consolidação (**`sa-consolidar`**, no agente
    `sa-produto`, com os créditos num comentário na `[GB]`; horas, só do SM) e **pare**: a consolidação não é do Dev.

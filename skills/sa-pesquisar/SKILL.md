@@ -13,7 +13,7 @@ Uma linha errada na pesquisa vira um plano errado, que vira centenas de linhas d
 barata de revisar e cara de errar — por isso ela é um arquivo curto, factual e verificável.
 
 Prefira o agente **`sa-pesquisador`** (somente leitura, contexto próprio): ele lê dezenas de arquivos e devolve
-só o `research.md`. Sem o agente, faça você mesmo e, ao terminar, trabalhe a partir do arquivo, não da memória da
+só o conteúdo do `research.md`, que quem o chamou grava como veio. Sem o agente, faça você mesmo e, ao terminar, trabalhe a partir do arquivo, não da memória da
 leitura.
 
 ## Entrada
@@ -90,5 +90,6 @@ Antes de abrir o código, escreva de 3 a 7 perguntas que o plano vai precisar re
 
 ## Regras
 
-- Somente leitura: nenhum arquivo além de `research.md` (e, fora do agente pesquisador, a linha do `status.md`).
+- Somente leitura: nenhum arquivo além de `research.md` (e, fora do agente pesquisador, a linha do `status.md`). O
+  agente pesquisador não grava nada: devolve o `research.md` inteiro na resposta.
 - Nunca invente arquivo, classe, coluna ou rota. Não achou → seção "Não encontrado".

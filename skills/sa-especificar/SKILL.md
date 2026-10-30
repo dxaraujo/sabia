@@ -1,6 +1,6 @@
 ---
 name: sa-especificar
-description: "Skill for the Especificador (specifier) role in the Sabiá flow — drives the specification of an epic (épico, EP-nn) from the [ESP] task: claims the [ESP] in EWM (the epic becomes iniciado on the base branch), sets up the local working folder outside git (.kiro/local/especificacao/), routes by the Fase in the epic's status.md (sa-entrevistar → sa-prd → PRD GATE → sa-fatiar), brings the approved PRD to the base branch, completes the [ESP] after the backlog GATE and, at the end of each session with the client, records the elicitation in the [ESP] (comment + .md attachments with the latest version of each artifact) and logs the session's hours. Another machine resumes by downloading the attachments. Use when the user says \"especificar o EP-03\", \"pegar a [ESP] do EP-03\", \"retomar a especificação\", \"fechar a sessão de especificação\"."
+description: "Skill for the Especificador (specifier) role in the Sabiá flow — drives the specification of an epic (épico, EP-nn) from the [ESP] task: claims the [ESP] in EWM (the epic becomes iniciado on the base branch), sets up the local working folder outside git (.sabia/local/especificacao/), routes by the Fase in the epic's status.md (sa-entrevistar → sa-prd → PRD GATE → sa-fatiar), brings the approved PRD to the base branch, completes the [ESP] after the backlog GATE and, at the end of each session with the client, records the elicitation in the [ESP] (comment + .md attachments with the latest version of each artifact) and logs the session's hours. Another machine resumes by downloading the attachments. Use when the user says \"especificar o EP-03\", \"pegar a [ESP] do EP-03\", \"retomar a especificação\", \"fechar a sessão de especificação\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
@@ -9,16 +9,15 @@ metadata:
 
 # sa-especificar — Especificação de épico
 
-> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta da skill, dentro do
-> power instalado (ex.: `~/.kiro/powers/installed/sabia/skills/sa-especificar/`), não no projeto: abra-os por esse
-> caminho, relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
+> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta desta skill, não no projeto:
+> abra-os pelo caminho relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
 
 A especificação de um épico é trabalho junto ao cliente — levantamento de regras e definições — que dura várias
 sessões antes do GATE do PRD. Ele fica registrado na tarefa `[ESP]` do EWM, não na base: até o GATE, a base só
 recebe a situação do épico (Passo 2); o resto vai com o PRD aprovado. Esta skill é a do papel **Especificador**; o
 épico chega `novo` ou `elegivel` pela `sa-triar` e `planejado` (com a `[ESP]`) pela `sa-planejamento`.
 
-Leia antes: `.kiro/steering/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configurar o Sabiá") e pare.
+Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configurar o Sabiá") e pare.
 
 ## Passo 1 — O que chegou
 
@@ -58,7 +57,7 @@ pode seguir sem tarefa — a linha dele nasce na sprint aberta (Passo 2), como a
 
 ## Passo 3 — Pasta de trabalho (fora do git)
 
-`.kiro/local/especificacao/<EP>-<slug>/` — é ali que a `sa-entrevistar`, a `sa-prd` e a revisão P trabalham até
+`.sabia/local/especificacao/<EP>-<slug>/` — é ali que a `sa-entrevistar`, a `sa-prd` e a revisão P trabalham até
 o GATE. Monte-a pela primeira fonte que existir:
 
 1. **Já existe nesta máquina** → use-a, mas compare antes com a `[ESP]`: último comentário de sessão mais novo que
@@ -108,7 +107,7 @@ reunião, com a data de cada sessão. Decisões vão para o `decisoes.md` (`D-nn
 
 ```
 🧭 EP-<nn> — <título> · [ESP] <id | pendente> · fase <…>
-Pasta de trabalho: .kiro/local/especificacao/<EP>-<slug>/
+Pasta de trabalho: .sabia/local/especificacao/<EP>-<slug>/
 Próximo: <skill>
 ```
 

@@ -9,16 +9,15 @@ metadata:
 
 # sa-triar — Triagem e registro
 
-> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta da skill, dentro do
-> power instalado (ex.: `~/.kiro/powers/installed/sabia/skills/sa-triar/`), não no projeto: abra-os por esse
-> caminho, relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
+> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta desta skill, não no projeto:
+> abra-os pelo caminho relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
 
 Toda demanda nova entra por aqui. Triar é decidir **se** ela entra, **em que trilha** e **com que informação** —
 sem começar nada. O que sai é uma linha no `backlog.md` (e, em toda fatia sem épico, a ficha; na Sustentação, o
 registro do item e o IB dele no EWM), que o planejamento puxa para a sprint. Começar é pelo hub **`sa-iniciar`**, que
 encaminha o item para a skill do papel.
 
-Leia antes: `.kiro/steering/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configurar o Sabiá") e pare. Formato do
+Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configurar o Sabiá") e pare. Formato do
 backlog e quem escreve cada coluna: [../sa-fatiar/references/backlog.md](../sa-fatiar/references/backlog.md).
 Ficha da fatia (toda trilha): [references/ficha.md](references/ficha.md).
 

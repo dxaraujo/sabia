@@ -257,7 +257,7 @@ Cria a `[REV]` e a `[VER]` como no §4 (mesmo pai da `[DEV]`), com o revisor e o
 que falta: a que já existe move, e a que tem pendência de cancelamento não conta (topo). A `[DEV]` não muda. HITL →
 AFK não existe.
 
-## 8. `[APR]` no gate (chamada pela `sa-plano`, `sa-implementar` Passo 5 ou `sa-loop`)
+## 8. `[APR]` no gate (chamada pela `sa-plano`, `sa-codificar` Passo 5 ou `sa-loop`)
 
 `elm_listar_wi(pai = IB, titulo_prefixo "[APR] FT-<nnn> Aprovar <plano|PR>")` → já existe: é ela (volta a ser
 aprovada depois de ajustes). Senão `elm_criar_wi(tipo tarefa, "[APR] FT-<nnn> Aprovar <plano|PR>", pai = IB, dono = o

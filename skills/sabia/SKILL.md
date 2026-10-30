@@ -14,7 +14,7 @@ depois. O Sabiá põe as pessoas onde elas têm mais alavanca — decidir o quê
 deixa o resto com agentes de contexto limpo, presos a feedback automático. O IBM ELM é o registro oficial do que
 o sistema faz; o repositório guarda como cada mudança foi feita.
 
-Configuração do projeto: `.kiro/steering/sabia.md` (gerado pela **`sa-setup`**). Sem ele, comece por
+Configuração do projeto: `.sabia/sabia.md` (gerado pela **`sa-setup`**). Sem ele, comece por
 "configurar o Sabiá".
 
 ## Trilhas (o tamanho decide a cerimônia)
@@ -26,7 +26,7 @@ chamada direto:
 
 | Papel | Tarefa | Skill |
 |---|---|---|
-| Especificador | `[ESP]` | `sa-especificar` (entrevista → PRD → fatias) |
+| Especificador | `[ESP]` | `sa-especificar` (entrevista → PRD → fatias), no agente `sa-especificador` |
 | Dev | `[DEV]` | `sa-desenvolver` (compromisso, `iniciada` na base, branch) → pesquisar → plano → implementar → PR → merge (`pronta` na base; a fatia é dele de ponta a ponta) |
 | Revisor (Dev Sênior) | `[REV]` | `sa-revisar` |
 | Aprovador (Dev Sênior) | `[APR]` — só nos gates sem tarefa de papel; nasce quando a fatia chega ao gate | `[APR] … Aprovar plano` → `sa-revisar` (Aprovação do plano) · `[APR] … Aprovar PR` (AFK) → `sa-revisar` (Aprovação do PR) |
@@ -152,26 +152,25 @@ loop, a fatia para sozinha e o lote segue.
 | lançar horas ou ver o relatório de horas | `sa-status` (fechar a sessão) · Sustentação: `sa-atender` ou `sa-executar` · relatório: `sa-planejamento` |
 | entender o código antes de planejar | `sa-pesquisar` |
 | planejar uma fatia (spec do Kiro) | `sa-plano` |
-| implementar e abrir o PR | `sa-implementar` |
+| implementar e abrir o PR | `sa-codificar` |
 | revisar PRD, plano ou código | `sa-revisar` |
 | verificar o aceite de ponta a ponta | `sa-verificar` |
 | fechar a fatia depois do merge (P.O. ou SM, agente `sa-produto`) | `sa-consolidar` |
 | publicar no ELM (DOORS Next, EWM, ETM) | a skill do passo ([references/elm.md](references/elm.md)) · bundle: `sa-sync` |
 | levar várias fatias AFK até o PR | `sa-loop` (com o agente `sa-orquestrador`) |
-| rodar uma receita de workflow numa fatia | você, no chat do Kiro: "rode o workflow `sa-entregar-fatia` para a FT-031" ou `/workflow-run` (IDE 1.3+) |
 | registrar uma lição / retrospectiva | `sa-aprender` |
 
 ## Onde as coisas moram (no projeto)
 
 | Caminho | O quê |
 |---|---|
-| `.kiro/steering/sabia.md` | o único steering do fluxo: resumo, configuração do projeto e regras aprendidas |
+| `.sabia/sabia.md` | o único steering do fluxo: resumo, configuração do projeto e regras aprendidas |
 | `.kiro/agents/sa-*.json` | agentes (criados pela setup, com as skills escolhidas por agente) |
-| `<produto>/` — a pasta escolhida na setup (padrão `.kiro/planejamento`), registrada no `sabia.md` | `backlog.md`, `epicos/<EP>-<slug>/` (PRDs), `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<pai>/sprint-<nn>.md` (a sprint segue a iteração pai do EWM; chave `2026/Sprint 03`), `sustentacao/<pasta>/` (a pasta de cada categoria na tabela **Sustentação** do `sabia.md`), `aprendizado/` (só na branch base) |
+| `<produto>/` — a pasta escolhida na setup (padrão `.sabia/planejamento`), registrada no `sabia.md` | `backlog.md`, `epicos/<EP>-<slug>/` (PRDs), `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<pai>/sprint-<nn>.md` (a sprint segue a iteração pai do EWM; chave `2026/Sprint 03`), `sustentacao/<pasta>/` (a pasta de cada categoria na tabela **Sustentação** do `sabia.md`), `aprendizado/` (só na branch base) |
 | `.kiro/specs/<ft>-<slug>/` | uma pasta por fatia: `status.md`, `research.md`, spec do Kiro, revisões, verificação |
 | glossário · ADRs · bundle do ELM | caminhos na seção Projeto do `sabia.md` |
-| `.kiro/hooks/sabia.json` · `.kiro/workflows/sa-*` · `.kiro/sabia/http.sh` | opcionais da setup: backpressure por tarefa, receitas, chamada HTTP do verificador |
-| `.kiro/local/` (fora do git) | worktrees do loop, vereditos dos workflows, log dos lotes, dados de cliente (extrações, evidências com dado real), especificação em andamento (`especificacao/<EP>/`, até o GATE do PRD) |
+| `.sabia/verificar.sh` · `.sabia/http.sh` | da setup: backpressure antes de cada commit · chamada HTTP do verificador (opcional) |
+| `.sabia/local/` (fora do git) | worktrees do loop, log dos lotes, dados de cliente (extrações, evidências com dado real), especificação em andamento (`especificacao/<EP>/`, até o GATE do PRD) |
 
 ## Fronteiras de fase
 
@@ -203,7 +202,7 @@ a próxima e para — nunca invoca nem simula a do passo seguinte.
   `destino` sempre explícitos, porque o MCP roda no checkout principal, não na worktree) — nunca `gh` nem `glab`.
   MCP indisponível → diga e siga sem ele: bundle → o ELM ao vivo (`elm_buscar_req`); PR → título e descrição entregues.
 - Dado de cliente (resultado de consulta, extração, tela com dado real) nunca vai para o git: fica em
-  `.kiro/local/` (`sustentacao/<pasta>/<ID>/`, `verificacao/`…); o registro versionado guarda consulta, contagem,
+  `.sabia/local/` (`sustentacao/<pasta>/<ID>/`, `verificacao/`…); o registro versionado guarda consulta, contagem,
   caminho e resumo sem identificar pessoas.
 - **Skills sem agente exclusivo:** `sa-setup` e `sa-aprender` rodam na **sessão padrão** (com o power
   carregado): gravam onde nenhum agente pode (steering, agentes); o modo registrar da `sa-aprender`, que só grava
@@ -211,7 +210,7 @@ a próxima e para — nunca invoca nem simula a do passo seguinte.
   com `ask` (o Kiro pergunta sempre), só a branch da fatia — e, no codificador e no orquestrador, a base com os
   registros de situação (`iniciada`, `pronta`; o orquestrador, só a `iniciada` do lote); push recusado (pela pessoa
   ou pela regra) → a skill entrega o comando pronto e espera a pessoa dizer que publicou; o da base recusado pelo
-  remoto → desfaz só o commit de registro, com "sim", e para; produto e pesquisador não
+  remoto → desfaz só o commit de registro, com "sim", e para; produto, especificador e pesquisador não
   fazem push. Subagente do AFK não faz push (quem conduz commita). Com a branch no remoto, o PR é aberto pela
   `gitlab_criar_mr`, que o Kiro confirma (`ask` no codificador e no orquestrador; negada aos demais).
   **O que os agentes não fazem:** merge (exceto a `gitlab_mesclar_mr` no codificador, com `ask`: o Dev mergeia o

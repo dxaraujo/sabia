@@ -4,11 +4,11 @@ Os agentes são **gerados**, nunca editados à mão. Três fontes:
 
 | Fonte | Onde | O quê |
 |---|---|---|
-| `papeis.json` | [../assets/agents/](../assets/agents/papeis.json) (power) | permissões de cada papel, em grupos reutilizáveis |
+| `papeis.json` | [../assets/agents/](../assets/agents/papeis.json) (power) | permissões de cada papel: escrita, registros, nível de shell, push e MCPs |
 | `sa-<papel>.md` | [../assets/agents/](../assets/agents/) (power) | o prompt de cada agente |
-| `agentes.json` | `.kiro/config/sabia/agentes.json` (projeto, versionado) | as escolhas do projeto: caminhos, comandos, skills e MCPs por agente |
+| `agentes.json` | `.sabia/config/agentes.json` (projeto, versionado) | as escolhas do projeto: caminhos, comandos, skills e MCPs por agente |
 
-O script [../scripts/gerar_agentes.py](../scripts/gerar_agentes.py) junta as três e grava os seis agentes:
+O script [../scripts/gerar_agentes.py](../scripts/gerar_agentes.py) junta as três e grava os sete agentes:
 
 ```bash
 uv run --no-project python <power>/skills/sa-setup/scripts/gerar_agentes.py --projeto <raiz>            # mostra o diff e a tabela
@@ -35,7 +35,7 @@ rebuilt)` no `--dry-run` (por causa do `toolsSettings.subagent`, que a V3 ainda 
 | `massa` | a pasta de massa do projeto que o verificador escreve, ou `null` |
 | `elm` | `false` → nenhuma tool do `elm` em nenhum agente (`sabia/elm/*` negado) |
 | `push_pr_no_loop` | `false` ("não — a pessoa abre") → o orquestrador não faz push (nem o da `iniciada` do lote, na base) nem abre PR |
-| `http_sh` | `true` se a setup instalou `.kiro/sabia/http.sh` |
+| `http_sh` | `true` se a setup instalou `.sabia/http.sh` |
 | `steering` | `file://` do steering de produto, tecnologia e estrutura, para todos os agentes |
 | `comandos.build` | compilar, testes, teste único, lint, cobertura (padrões de shell: `mvn test*`) |
 | `comandos.verificacao` | executar a aplicação ou o job, scripts de massa |
@@ -45,15 +45,17 @@ rebuilt)` no `--dry-run` (por causa do `toolsSettings.subagent`, que a V3 ainda 
 | `agentes.sa-<papel>.subagentes` | `[{"nome", "para"}]` — agentes do projeto (codificador e orquestrador) |
 | `agentes.sa-<papel>.modelo` | o modelo, se não for o padrão |
 
-Codificador e orquestrador recebem `build` e `verificacao` (chamam revisor e verificador como subagentes); revisor
-recebe `build`; verificador, `verificacao`.
+Todo papel com shell `trabalho` recebe `build`, `verificacao`, o `sh .sabia/verificar.sh` e, com `http_sh`, o
+`sh .sabia/http.sh *`.
 
 ## Como as permissões são montadas
 
 - **Leitura:** o projeto e o power; negados `.env*`, `*.pem`, `*.key`, `~/.ssh`, `~/.aws`, as credenciais dos MCPs
-  e o bundle. Os agentes leem e procuram com as ferramentas do Kiro, não com `cat`/`grep` no shell.
-- **Shell — só o necessário:** cada papel libera grupos de comandos (`git-leitura`, `worktree`, `git-escrita`,
-  `creditos`) e os do projeto. Comando fora da lista → o Kiro pergunta (sem interação, é negado). Cada grupo tem
+  e o bundle. Os agentes leem e procuram com as ferramentas do agente, não com `cat`/`grep` no shell.
+- **Shell — por nível** (`niveis_shell`): `nenhum` (sem a ferramenta de shell) · `leitura` (`git-leitura`,
+  `worktree`, `creditos`) · `trabalho` (a leitura, `git-escrita` e os comandos do projeto), mais poucos extras por
+  papel (`shell_permitir`, `shell_perguntar`, `shell_negar`: `uuidgen`, o `git worktree add` do orquestrador, o
+  `curl` com `ask` no verificador). Comando fora da lista → o Kiro pergunta (sem interação, é negado). Cada grupo tem
   exceções (`exclude`) que caem em "perguntar" (`git log --output`, `git add -f`…). Negados em todos (`shell.negar`):
   `git -C`/`-c` (escondem o subcomando das regras), merge, rebase, `pull --rebase`/`--no-ff`, `commit -n`,
   `--no-verify`, `reset --hard`, `clean`, `stash`, `restore`, `checkout --`/`.`, `--force`, `--delete`, `rm -rf`,
@@ -65,7 +67,7 @@ recebe `build`; verificador, `verificacao`.
   registros de situação da fatia, com os arquivos conferidos antes
   ([Gravar na base](../../sa-fatiar/references/backlog.md#gravar-na-base)); nos dois, `git reset --keep origin/*`
   também pergunta (desfaz o commit de registro de um push recusado). Revisor e verificador: push da base negado
-  (`shell_negar`). Produto e pesquisador: push negado.
+  (`shell_negar`). Produto, especificador e pesquisador: push negado.
 - **MCP do power** (`elm`, `gitlabpr`): regra `power` `sabia/<servidor>/<tool>` — leitura liberada (`mcp_libera`),
   escrita com confirmação (`mcp_pergunta`), e **toda tool do catálogo que o papel não usa, negada**: a IDE chama
   tool de power pela `kiro_powers`, fora do filtro de `tools`. Comentar e anexar: todo papel com tarefa, só na
@@ -75,13 +77,16 @@ recebe `build`; verificador, `verificacao`.
 - **Subagentes:** `tools` `subagent/<nome>`, `toolsSettings.subagent` e a regra `subagent`. O subagente herda as
   regras de quem o chama (interseção, o mais restritivo vence): por isso o orquestrador já tem os comandos de build
   e verificação e escreve nas worktrees.
-- **Escrita:** só o que o papel produz (`escreve`, `nao_escreve` no `papeis.json`; `nao_escreve_exceto` vira o
-  `exclude` da negação). O codificador escreve no projeto, menos `.kiro/agents`, `hooks`, `workflows`, `steering`,
-  `settings`, `skills`, `toolkits`, `config`, o `AGENTS.md`, a pasta do produto (fora o `backlog.md` e as `sprints/`,
-  onde grava a situação da fatia na base; nas worktrees, toda ela), `.kiro/local/wf`, `.kiro/sabia` e `.git`; o
-  orquestrador grava os mesmos dois caminhos do produto, para a `iniciada` do lote. Os relatórios do revisor e do
-  verificador não podem ser negados nele (os subagentes herdariam a negação): quem barra relatório forjado é o
-  merge, que confere as tarefas no ELM.
+- **Escrita — protege só o framework:** `escrita` `nenhuma` (sem a ferramenta de escrita: o pesquisador devolve o
+  `research.md` e quem chamou grava) ou `projeto` (escreve em `./**`, menos o `harness` e os `registros` de outros
+  papéis). O `harness`, que nenhum agente escreve: `.sabia/config`, `sabia.md`, `http.sh`, `verificar.sh`, o ponteiro
+  `.kiro/steering/sabia.md`, `.kiro/agents`, `.kiro/settings`, `.claude`, `.opencode`, `opencode.json`,
+  `AGENTS.md`, `.git` e a pasta do produto dentro das worktrees (cada um também na raiz: o `like` do V3 exige o `/`
+  antes de `**/x`). Os `registros`: `backlog` (`backlog.md`), `sprints` (`sprints/**`) e `epicos` (`epicos/**`, PRD
+  e decisões) — produto e especificador escrevem os três; codificador e orquestrador, `backlog` e `sprints` (a
+  situação da fatia e a `iniciada` do lote, na base); revisor e verificador, nenhum. A independência do revisor e do
+  verificador fica no prompt e no diff do PR; quem barra relatório forjado é o merge, que confere as tarefas no
+  ELM.
 - **Limite: redireção.** O Kiro compara as regras só com o comando, sem o `> arquivo`: `git show … > <caminho>` passa
   pelo `allow` de `git show*`. A defesa é fora do agente — a confirmação de cada push, a revisão do PR por pessoa e
   o merge conferindo o ELM.
@@ -97,5 +102,5 @@ com "atualizar os agentes do Sabiá".
 
 ## Gravação
 
-O Kiro sempre pergunta antes de gravar em `.kiro/agents/`, `.kiro/hooks/` e `.kiro/workflows/`: o script grava
+O Kiro sempre pergunta antes de gravar em `.kiro/agents/`: o script grava
 pelo shell, então a confirmação é a do comando — mostre antes o diff (o script sem `--gravar`).

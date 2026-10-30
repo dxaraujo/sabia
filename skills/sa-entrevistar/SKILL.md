@@ -16,10 +16,10 @@ feche as decisões que as fontes não respondem — o agente **não** preenche l
 
 - **O que está sendo alinhado:** demanda (texto, work item do EWM), PRD, fatia ou plano técnico.
 - **Onde registrar:** a pasta do épico — até o GATE do PRD, a pasta de trabalho da `sa-especificar`
-  (`.kiro/local/especificacao/<EP>-<slug>/decisoes.md`, fora do git); depois, `<produto>/epicos/<EP>-<slug>/` — ou da fatia
+  (`.sabia/local/especificacao/<EP>-<slug>/decisoes.md`, fora do git); depois, `<produto>/epicos/<EP>-<slug>/` — ou da fatia
   (`.kiro/specs/<ft>-<slug>/decisoes.md`) — ou, na triagem de uma fatia sem épico, a seção Decisões da ficha
   (`<produto>/fatias/FT-<nnn>-<slug>.md`). Quem chamou informa; chamada direta → pergunte uma vez.
-- **Glossário:** o caminho está no `.kiro/steering/sabia.md` (seção Projeto; padrão `docs/glossario.md`).
+- **Glossário:** o caminho está no `.sabia/sabia.md` (seção Projeto; padrão `docs/glossario.md`).
 
 ## Passo 1 — Montar a árvore de decisões (sem perguntar nada ainda)
 

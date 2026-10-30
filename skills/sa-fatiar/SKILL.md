@@ -9,9 +9,8 @@ metadata:
 
 # sa-fatiar — PRD → fatias verticais
 
-> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta da skill, dentro do
-> power instalado (ex.: `~/.kiro/powers/installed/sabia/skills/sa-fatiar/`), não no projeto: abra-os por esse
-> caminho, relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
+> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta desta skill, não no projeto:
+> abra-os pelo caminho relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
 
 Entrada: o PRD aprovado — `Fase: aprovado` no `status.md` do épico, na base (`<produto>/epicos/<EP>-<slug>/`, com o
 `prd.md`; no refinamento, `fatiado`, ou `aprovado` depois de uma mudança no PRD). Saída: fatias no

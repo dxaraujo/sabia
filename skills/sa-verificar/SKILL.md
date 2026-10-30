@@ -1,6 +1,6 @@
 ---
 name: sa-verificar
-description: "Acceptance verification of a slice (fatia) in the Sabiá flow — runs end to end, on the real application, every scenario the slice covers (API, batch job, browser screen, data load — depending on the project type and the toolkit), with test data, evidence per scenario (response, count, log, screenshot) and an ACEITO/REJEITADO decision; generates the test cases (CT.csv) for ETM from the verified scenarios. A failed scenario goes back to sa-implementar with expected × actual. With the [VER] task (directly or through the sa-iniciar hub), first claims it in EWM (elm_transicao). Use when the user says \"verifica a FT-031\", \"pegar a [VER] da FT-031\", \"testa a fatia\", \"executa os cenários\", \"teste de aceitação\", \"gera os CTs\"."
+description: "Acceptance verification of a slice (fatia) in the Sabiá flow — runs end to end, on the real application, every scenario the slice covers (API, batch job, browser screen, data load — depending on the project type and the toolkit), with test data, evidence per scenario (response, count, log, screenshot) and an ACEITO/REJEITADO decision; generates the test cases (CT.csv) for ETM from the verified scenarios. A failed scenario goes back to sa-codificar with expected × actual. With the [VER] task (directly or through the sa-iniciar hub), first claims it in EWM (elm_transicao). Use when the user says \"verifica a FT-031\", \"pegar a [VER] da FT-031\", \"testa a fatia\", \"executa os cenários\", \"teste de aceitação\", \"gera os CTs\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
@@ -9,9 +9,8 @@ metadata:
 
 # sa-verificar — O comportamento existe de verdade?
 
-> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta da skill, dentro do
-> power instalado (ex.: `~/.kiro/powers/installed/sabia/skills/sa-verificar/`), não no projeto: abra-os por esse
-> caminho, relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
+> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta desta skill, não no projeto:
+> abra-os pelo caminho relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
 
 Teste unitário verde prova que o código faz o que o teste diz; a verificação prova que o **sistema** faz o que o
 cenário do PRD diz. Prefira o agente **`sa-verificador`** (contexto limpo; não implementou a fatia).
@@ -23,7 +22,7 @@ Entrada: pasta da fatia com revisão `APROVADO`, na branch da fatia. **HITL** (t
 Passo 0): só com `fase: em-verificacao` — a REV aprovou antes (sem isso, diga que a `[VER]` espera a revisão e
 pare, **antes** do Passo 0, sem assumir a `[VER]`; retomando uma verificação interrompida, `em-verificacao` vale);
 vá para a branch do PR (`git switch <branch>` com "sim", `git pull --ff-only`) e a rodada de verificação é sua. Tipo de projeto, como executar e onde ver o
-resultado: seção **Verificação de aceite** do `.kiro/steering/sabia.md` (vem do toolkit, confirmado na setup).
+resultado: seção **Verificação de aceite** do `.sabia/sabia.md` (vem do toolkit, confirmado na setup).
 
 ## Passo 0 — Assumir a `[VER]` (só com a tarefa)
 
@@ -72,7 +71,7 @@ Execute cenário por cenário e registre logo abaixo do roteiro:
 - Evidência: <trecho da resposta | resultado da consulta | linha de log | evidencias/ft-031-1.2.png>
 ```
 
-- Por tipo de projeto: **backend** → chamada HTTP (pelo `sh .kiro/sabia/http.sh <MÉTODO> <caminho> [corpo]`, se o
+- Por tipo de projeto: **backend** → chamada HTTP (pelo `sh .sabia/http.sh <MÉTODO> <caminho> [corpo]`, se o
   `sabia.md` o registra — o corpo vem da pasta `massa/`; senão `curl`, que pede confirmação) e estado no
   banco; **batch** → execução do job com a massa, status da execução e contagens; **frontend** → navegação real
   no browser (Playwright ou MCP de browser ligado ao agente), screenshot em `evidencias/`; **dados** → carga e
@@ -94,8 +93,8 @@ ser o do PRD ou da ficha, por decisão registrada). HITL: grave-o no campo do `s
 `sim`); AFK: fica no relatório e quem conduz grava. A consolidação só lê esse campo.
 
 - **ACEITO** (todos aceitos) → gere o `CT.csv` (Passo 5).
-  - **AFK** (subagente do loop ou da `sa-implementar`): `fase: verificada` e devolva para abrir o PR (Passo 5 da
-    `sa-implementar`). Não há `[VER]` no EWM (Q8).
+  - **AFK** (subagente do loop ou da `sa-codificar`): `fase: verificada` e devolva para abrir o PR (Passo 5 da
+    `sa-codificar`). Não há `[VER]` no EWM (Q8).
   - **HITL**: `fase: aceita`, e a **entrega**, nesta ordem — o Dev só acha o seu trabalho no remoto:
     1. créditos da sessão no `status.md` ([`sa-status`](../sa-status/SKILL.md#fechar-a-sessão), item 4); commit de `verificacao.md`, `CT.csv`, `evidencias/`,
        `massa/` e `status.md` (`FT-<nnn> verificação: ACEITO`);
@@ -107,7 +106,7 @@ ser o do PRD ou da ficha, por decisão registrada). HITL: grave-o no campo do `s
        confirmação; sem o MCP `elm` → `ELM pendente [<chave>]: lançar <h>h e concluir [VER] FT-<nnn>`) e avise o **Dev
        responsável** de que a fatia está `aceita`, à espera do merge (Passo 6 da `sa-desenvolver`).
 - **REJEITADO** → para cada cenário, esperado × obtido + evidência, registrados no `status.md` como achados.
-  AFK: `fase: implementando`; a `sa-implementar` corrige e a verificação roda de novo (só os rejeitados + os de
+  AFK: `fase: implementando`; a `sa-codificar` corrige e a verificação roda de novo (só os rejeitados + os de
   repetição). HITL: `fase: retrabalho (de: em-verificacao)`, "retrabalho" +1 em Rodadas e uma linha na tabela
   **Retrabalho** (papel VER); a `[VER]` fica em andamento; entrega como no aceito (commit `FT-<nnn> verificação: REJEITADO` → push →
   conferir no remoto) e avise o Dev responsável. Se o
@@ -125,14 +124,14 @@ cria a partir dele um caso de teste por cenário no ETM, já ligado à história
 [elm-publicar.md](../sa-consolidar/references/elm-publicar.md)); o CSV também é a
 alternativa para importar à mão quando a criação falha.
 
-Rodadas: quem pediu a verificação incrementa "verificação" (a `sa-implementar` ou o orquestrador); só no
+Rodadas: quem pediu a verificação incrementa "verificação" (a `sa-codificar` ou o orquestrador); só no
 pedido direto de uma pessoa, incremente você.
 
 ## Regras
 
 - Nunca marque aceito sem evidência. Nunca altere código de produção aqui — só massa, fixtures e evidências.
 - Nunca rode contra produção, nem com dado real de pessoa. Evidência ou trecho de resposta que traga dado real
-  (homologação com cópia de produção, por exemplo) vai para `.kiro/local/verificacao/<ft>/`, fora do git; no
+  (homologação com cópia de produção, por exemplo) vai para `.sabia/local/verificacao/<ft>/`, fora do git; no
   `verificacao.md` ficam a consulta, a contagem, o caminho e um resumo sem identificar pessoas.
 - Não invoque nem simule outra skill do fluxo: termine com a decisão (e, com a `[VER]`, o aviso ao Dev) e pare. Como
   subagente, devolva o relatório a quem chamou.

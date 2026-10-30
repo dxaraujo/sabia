@@ -1,6 +1,6 @@
 ---
 name: sa-revisar
-description: "Independent review in the Sabiá flow, with clean context and without changing any artifact (it writes only the report) — judges against the source, never against the author's explanation: PRD (rubric P, PRONTO/AJUSTAR), slice (fatia) plan (rubric L, OK/AJUSTAR) or code (rubric C on two axes, spec and standards, APROVADO/REVISAR), with severity calibrated by the team's lessons. Also the Dev Sênior skill for the [REV] task (claims it in EWM and reviews the PR), [APR] Aprovar plano (reads the plan and approves or asks for adjustments) and [APR] Aprovar PR da fatia AFK (reads the PR and approves or requests changes). Use when the user says \"revisa\", \"pegar a [REV] da FT-031\", \"[APR] Aprovar plano\", \"aprovo o plano da FT-031\", \"[APR] Aprovar PR\", \"aprovar o PR da FT-031\", \"judge\", \"revisa o PRD\", \"analisa o plano\", \"revisa a FT-031\", \"code review\", and at the end of sa-prd, sa-plano and sa-implementar."
+description: "Independent review in the Sabiá flow, with clean context and without changing any artifact (it writes only the report) — judges against the source, never against the author's explanation: PRD (rubric P, PRONTO/AJUSTAR), slice (fatia) plan (rubric L, OK/AJUSTAR) or code (rubric C on two axes, spec and standards, APROVADO/REVISAR), with severity calibrated by the team's lessons. Also the Dev Sênior skill for the [REV] task (claims it in EWM and reviews the PR), [APR] Aprovar plano (reads the plan and approves or asks for adjustments) and [APR] Aprovar PR da fatia AFK (reads the PR and approves or requests changes). Use when the user says \"revisa\", \"pegar a [REV] da FT-031\", \"[APR] Aprovar plano\", \"aprovo o plano da FT-031\", \"[APR] Aprovar PR\", \"aprovar o PR da FT-031\", \"judge\", \"revisa o PRD\", \"analisa o plano\", \"revisa a FT-031\", \"code review\", and at the end of sa-prd, sa-plano and sa-codificar."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
@@ -9,9 +9,8 @@ metadata:
 
 # sa-revisar — Verificação independente
 
-> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta da skill, dentro do
-> power instalado (ex.: `~/.kiro/powers/installed/sabia/skills/sa-revisar/`), não no projeto: abra-os por esse
-> caminho, relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
+> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta desta skill, não no projeto:
+> abra-os pelo caminho relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
 
 Quem gera não verifica o próprio trabalho: o revisor começa **sem** o contexto de quem escreveu. Prefira o agente
 **`sa-revisor`** (somente leitura). Sem ele, rode esta skill numa sessão nova ou, no mínimo, ignore todo o
@@ -44,7 +43,7 @@ rodada.
 | código de uma fatia | **C** | diff `git diff origin/<base>...HEAD` (worktree: `cd <worktree> && git diff origin/<base>...HEAD`), a pasta da fatia, o PRD |
 
 Rubricas em [references/rubricas.md](references/rubricas.md) — leia a do pedido inteira antes de começar.
-Sempre: `.kiro/steering/sabia.md` (comandos, regras críticas), o steering de tecnologia e estrutura que ele
+Sempre: `.sabia/sabia.md` (comandos, regras críticas), o steering de tecnologia e estrutura que ele
 aponta e as regras aprendidas (última seção do `sabia.md`).
 
 ## Passo 2 — Coletar evidência
@@ -67,9 +66,7 @@ escapou de uma revisão antes (lição com causa `revisao-branda`): suba uma sev
 
 No formato do fim de [references/rubricas.md](references/rubricas.md). A **última linha** é exatamente o fecho
 da rubrica. Grave o relatório na pasta do artefato — `revisao-prd-<N>.md` (épico), `analise-plano-<N>.md` ou
-`revisao-codigo-<N>.md` (fatia), `<N>` = a rodada que quem chamou passou (sem ela: 1 + o maior `<N>` já existente na pasta; HITL: a sua) — e, se quem chamou pediu (workflow, loop), o veredito em
-`.kiro/local/wf/<id>/`: `plano.json` (`{"resultado": "OK"}` · `{"resultado": "AJUSTAR"}`) ou `codigo.json` (`{"veredito": "APROVADO"}` ·
-`{"veredito": "REVISAR"}`). São os **únicos** arquivos que você escreve.
+`revisao-codigo-<N>.md` (fatia), `<N>` = a rodada que quem chamou passou (sem ela: 1 + o maior `<N>` já existente na pasta; HITL: a sua). É o **único** arquivo que você escreve.
 
 Zero BLOQUEANTE e zero IMPORTANTE → aprovado. Sugestões nunca reprovam.
 
@@ -124,9 +121,9 @@ lê o plano e decide — sem editá-lo: ajuste é pedido a quem implementa, que 
    implementa. **Ajuste pedido** → o pedido no Histórico e em Achados abertos (origem: GATE do plano),
    `fase: planejando`; a `[APR]` fica em andamento e é a mesma na nova aprovação.
 6. Créditos da sessão no `status.md` ([`sa-status`](../sa-status/SKILL.md#fechar-a-sessão), item 4) → commit (`registrar aprovação do plano`) → push → conferir no remoto (itens 1–3 da Entrega do Passo 5 da
-   `sa-implementar`) → só então: aprovado → saldo de horas e conclusão da `[APR]` (`elm_horas` → `elm_lancar_horas` do saldo →
+   `sa-codificar`) → só então: aprovado → saldo de horas e conclusão da `[APR]` (`elm_horas` → `elm_lancar_horas` do saldo →
    `elm_transicao(<id>, "concluir")`, numa confirmação; sem o MCP `elm` → `ELM pendente [APR FT-<nnn> concluir]: lançar <h>h e
-   concluir`); ajuste → horas da sessão na `[APR]` (lança, não conclui) → avise o Dev (aprovado → `sa-implementar`; ajuste →
+   concluir`); ajuste → horas da sessão na `[APR]` (lança, não conclui) → avise o Dev (aprovado → `sa-codificar`; ajuste →
    `sa-plano`).
 
 Aprovação dita na sessão de outra pessoa (o Sênior ao lado de quem implementa) **não vale**: quem aprova assume,

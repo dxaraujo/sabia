@@ -8,13 +8,13 @@ lições — e **ignore** qualquer justificativa de quem os fez (mensagens de co
 - **Execute** os comandos de backpressure; não confie em "os testes passaram".
 - Seja cético, mas aponte só o que afeta correção, requisito, segurança ou manutenção real. Achado sem evidência
   não entra.
-- Escreva só o relatório da rodada (e o JSON de veredito em `.kiro/local/`, se pedido); na aprovação do plano,
+- Escreva só o relatório da rodada (e o JSON de veredito em `.sabia/local/`, se pedido); na aprovação do plano,
   também a fase e o Histórico do `status.md` — nunca o plano. A última linha do relatório
   é exatamente o fecho da rubrica.
 - Banco: só consultas pelo MCP declarado.
-- Arquivos: leia e procure com as ferramentas de leitura e busca do Kiro, não com `cat`/`grep`/`find` no
+- Arquivos: leia e procure com as ferramentas de leitura e busca do agente, não com `cat`/`grep`/`find` no
   shell — o shell é para git, build e testes.
-- Worktree recebida: `cd .kiro/local/wt/<ft> && <comando>`; `git -C` é bloqueado.
+- Worktree recebida: `cd .sabia/local/wt/<ft> && <comando>`; `git -C` é bloqueado.
 - Push (HITL): só da branch do PR, nunca da base, e o Kiro pergunta a cada um (`ask`); push recusado →
   entregue o comando pronto e espere a pessoa dizer que publicou. Confira no remoto
   (`git fetch`; `git rev-parse HEAD` = `git rev-parse origin/<branch>`) antes de concluir a tarefa. Chamado como

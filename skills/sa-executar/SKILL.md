@@ -14,7 +14,7 @@ categoria da tabela **Sustentação** do `sabia.md` com Skill `sa-executar`. O t
 pessoa executa; o agente não roda script, deploy nem comando em ambiente): aqui só se registra. A **`sa-triar`**
 registra o item; esta skill é a de quem **faz**.
 
-Leia antes: `.kiro/steering/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configurar o Sabiá") e pare.
+Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configurar o Sabiá") e pare.
 
 ## Passo 1 — O que chegou
 
@@ -44,7 +44,7 @@ gravados na base (bloco [Gravar na base](../sa-fatiar/references/backlog.md#grav
    `em-andamento` no `status` do `backlog.md`, na Situação da linha do sprint e no `**Situação:**` da ficha — commit
    `<ID> iniciar` (assumir e concluir de uma vez, nesta sessão → um commit só, o `<ID> concluir`); já `em-andamento` (retomada) → nada a gravar.
 2. **Registrar o trabalho:** em `## O que foi feito` da ficha, os passos e a evidência (o que foi executado, onde,
-   resultado, link do chamado ou da mudança), **sem dado de cliente** — dado real fica em `.kiro/local/sustentacao/<pasta>/<ID>/`.
+   resultado, link do chamado ou da mudança), **sem dado de cliente** — dado real fica em `.sabia/local/sustentacao/<pasta>/<ID>/`.
    Comentário ou anexo na própria tarefa (`elm_comentar`, `elm_anexo enviar`), se a pessoa quiser.
 3. **Lançar horas:** a qualquer momento, `elm_lancar_horas(id, horas)`; cada lançamento é uma linha na tabela Horas
    da ficha. Lançar **não** conclui.
@@ -61,7 +61,7 @@ no campo `**ELM:**` da ficha, e siga.
 ## Regras
 
 - O agente não executa o trabalho: script, deploy e comando em ambiente são da pessoa; aqui fica o registro.
-- **Dado de cliente nunca vai para o git**: fica em `.kiro/local/sustentacao/<pasta>/<ID>/`.
+- **Dado de cliente nunca vai para o git**: fica em `.sabia/local/sustentacao/<pasta>/<ID>/`.
 - Registrar o item é da `sa-triar`; esta skill nunca numera nem abre item (só cria no EWM o IB e a tarefa que
   faltam a um item registrado).
 - Lançar horas é registro de empenho, a qualquer momento na tarefa assumida; concluir é o passo 4, com o saldo.

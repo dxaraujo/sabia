@@ -9,9 +9,8 @@ metadata:
 
 # sa-plano — Decidir o como antes de codar
 
-> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta da skill, dentro do
-> power instalado (ex.: `~/.kiro/powers/installed/sabia/skills/sa-plano/`), não no projeto: abra-os por esse
-> caminho, relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
+> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta desta skill, não no projeto:
+> abra-os pelo caminho relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
 
 O plano existe para que as decisões de desenho sejam tomadas **com** uma pessoa, não descobertas por ela no
 code review. Ele é curto, concreto e descartável: depois do merge, o que vale é o código, o ELM, o glossário e os
@@ -20,11 +19,12 @@ ADRs. Templates: [references/plano-templates.md](references/plano-templates.md).
 Entrada: pasta `.kiro/specs/<ft>-<slug>/` criada pela `sa-desenvolver`, na branch da fatia.
 Leia: `status.md`, a fatia no `backlog.md`, o PRD do épico (histórias e regras cobertas), a ficha da fatia sem
 épico (`<produto>/fatias/`) ou o defeito,
-`.kiro/steering/sabia.md` (com as regras aprendidas) e o steering de tecnologia/estrutura.
+`.sabia/sabia.md` (com as regras aprendidas) e o steering de tecnologia/estrutura.
 
 ## Passo 1 — Pesquisa
 
-Sem `research.md` → **`sa-pesquisar`** (de preferência pelo agente `sa-pesquisador`). Trabalhe a partir do
+Sem `research.md` → **`sa-pesquisar`** (de preferência pelo agente `sa-pesquisador`, que devolve o conteúdo: grave-o
+como veio na pasta da fatia). Trabalhe a partir do
 arquivo, não da memória da leitura. Divergência entre o ELM e o código apontada na pesquisa → pergunte antes de
 seguir (pode ser defeito, pode ser documentação velha).
 
@@ -80,7 +80,7 @@ dado (diga qual) → **sugira** ao Dev trocar para HITL. A troca é do P.O. (ou 
 - Dev não aceita → o GATE abaixo, no AFK.
 - Dev aceita → `fase: bloqueada (de: planejando)`, Bloqueio `aguardando troca para HITL` · motivo: `<risco>`, linha
   no Histórico e os créditos da sessão ([`sa-status`](../sa-status/SKILL.md#fechar-a-sessão), item 4); commit com os artefatos do plano e o `status.md` (`registrar plano`) → push → conferir no remoto
-  (itens 1–3 da Entrega do Passo 5 da [`sa-implementar`](../sa-implementar/SKILL.md)) → horas da sessão na
+  (itens 1–3 da Entrega do Passo 5 da [`sa-codificar`](../sa-codificar/SKILL.md)) → horas da sessão na
   `[DEV]` (`elm_horas(<id>)` → desconte → `elm_lancar_horas(<id>, <h>)`, com "sim"; sem o MCP `elm` →
   `ELM pendente [DEV FT-<nnn> horas]`) — ela fica
   **interrompida**, sem conclusão → avise o P.O. (troca pela `sa-planejamento`, seção Troca de modo). Não troque
@@ -115,14 +115,14 @@ e a tarefa **`[APR] FT-<nnn> Aprovar plano`** para ele
 ([elm-sprint.md](../sa-planejamento/references/elm-sprint.md) §8, com "sim"; sem o MCP `elm` →
 `ELM pendente [APR FT-<nnn> criar]`). Commit com `research.md`, `.config.kiro`,
 `requirements.md`/`bugfix.md`, `design.md`, `tasks.md` e `status.md`, já com os créditos da sessão ([`sa-status`](../sa-status/SKILL.md#fechar-a-sessão), item 4) (`registrar plano`) → push → conferir no remoto
-(itens 1–3 da Entrega do Passo 5 da `sa-implementar`) — quem aprova lê o plano no remoto → horas da sessão na
+(itens 1–3 da Entrega do Passo 5 da `sa-codificar`) — quem aprova lê o plano no remoto → horas da sessão na
 `[DEV]` (lança, não conclui) → avise o aprovador (`sa-revisar`, Aprovação do plano).
 
 **Sem GATE** (Sênior, ou Pleno que dispensou): `fase: implementando`, a linha no Histórico, os créditos da sessão ([`sa-status`](../sa-status/SKILL.md#fechar-a-sessão), item 4) e **um commit** com os
-mesmos arquivos (`registrar plano`). Próximo: **`sa-implementar`** — numa sessão nova, de preferência (o plano está
+mesmos arquivos (`registrar plano`). Próximo: **`sa-codificar`** — numa sessão nova, de preferência (o plano está
 no disco; o contexto da pesquisa não é mais necessário).
 
-Retomando em `aguardando-aprovacao-plano` sem `[APR]` (receita de workflow, pendência `[APR FT-<nnn> criar]`) → faça
+Retomando em `aguardando-aprovacao-plano` sem `[APR]` (pendência `[APR FT-<nnn> criar]`) → faça
 agora a pergunta ao Pleno, ou crie a `[APR]` (Júnior, Pleno que pediu).
 
 ### Quem aprova
@@ -146,6 +146,6 @@ e a pergunta fica para a sessão dele); nada de ELM (`ELM pendente [<chave>]`).
 
 ## Regras
 
-- Não invoque nem simule outra skill do fluxo: termine dizendo a próxima (`sa-implementar`, o Dev Sênior da `[APR]`
+- Não invoque nem simule outra skill do fluxo: termine dizendo a próxima (`sa-codificar`, o Dev Sênior da `[APR]`
   ou o P.O. na troca de modo e na divisão) e pare. A `sa-pesquisar` e o subagente revisor, que os passos mandam
   chamar, fazem parte desta skill.

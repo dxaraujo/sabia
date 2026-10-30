@@ -10,7 +10,7 @@ metadata:
 # sa-status — Onde parei
 
 O painel é somente leitura: não altera arquivo, branch nem ELM. Pedido de **fechar a sessão** → modo da última
-seção. Sem `.kiro/steering/sabia.md` → diga que o fluxo não está configurado e ofereça a `sa-setup`.
+seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofereça a `sa-setup`.
 
 ## Coleta
 
@@ -39,7 +39,7 @@ seção. Sem `.kiro/steering/sabia.md` → diga que o fluxo não está configura
    `planejada` (sprint aberta) e `elegivel` sem `status.md` em nenhuma branch, `iniciada` (em andamento; a data é a
    do commit que a gravou na base) e `pronta` (esperando a consolidação); épicos, com a Fase do `status.md` de cada
    um (o de `epicos/<EP>-<slug>/`; antes do GATE do PRD, o da pasta de trabalho
-   `.kiro/local/especificacao/<EP>-<slug>/`, se houver nesta máquina);
+   `.sabia/local/especificacao/<EP>-<slug>/`, se houver nesta máquina);
    sprint atual (em `<produto>/sprints/<pai>/`, a de início mais recente com `**Situação:** aberta`) e a meta.
    PRDs (`epicos/*/prd.md`; antes do GATE, o `rascunho.md`): pendências `ELM pendente [<chave>]:` do rodapé.
 5. `<produto>/acordos.md`: limites de WIP (sem o arquivo: 2 fatias esperando pessoa, e sugira a
@@ -72,7 +72,7 @@ seção. Sem `.kiro/steering/sabia.md` → diga que o fluxo não está configura
    - **fora de toda contagem** — o que o §9, passo 2, deixa fora da comparação: as pendências registradas (itens 2
      e 4, inclusive as das fatias `concluida` e a `[<tipo> <id> sumiu]`, até o `ELM feito`), o id com pendência de cancelamento (aberta ou já com `ELM feito`) e a
      linha com a publicação pendente.
-7. Lotes autônomos em andamento: `.kiro/local/loop-*.md`.
+7. Lotes autônomos em andamento: `.sabia/local/loop-*.md`.
 8. "Minhas" = responsável igual ao login da pessoa: `git config user.name` cruzado com `nome`/`login` do
    `equipe.json`; sem correspondência, pergunte o login uma vez.
 
@@ -91,9 +91,9 @@ seção. Sem `.kiro/steering/sabia.md` → diga que o fluxo não está configura
 - FT-028 em-verificacao → esperando verificação: [VER] de <verificador> (sa-verificar)
 - FT-027 aceita → merge pelo Dev responsável (<login>, sa-desenvolver Passo 6) <link>
 - FT-032 aguardando-aprovacao-pr → [APR] Aprovar PR de <Dev Sênior> (sa-revisar); aprovada, o merge pelo Dev (sa-desenvolver Passo 6) <link>
-- FT-030 verificada → abrir o PR (sa-implementar)
+- FT-030 verificada → abrir o PR (sa-codificar)
 - FT-026 bloqueada: aguardando troca para HITL → P.O. (sa-planejamento, Troca de modo)
-🔁 Retrabalho: FT-026 (de: em-revisao) → o codificador retoma no mesmo PR (sa-implementar)
+🔁 Retrabalho: FT-026 (de: em-revisao) → o codificador retoma no mesmo PR (sa-codificar)
 📦 Prontas esperando consolidação: FT-025 (merge há 1 dia) → P.O. ou SM (sa-consolidar, agente sa-produto, [GB])
 
 ✅ Elegíveis para começar — as planejadas da sprint, depois as elegivel (por prioridade; empate: a ordem da linha)
@@ -148,7 +148,7 @@ trabalho de produto (PRD/fatiar) para manter o backlog com fatias elegíveis.
 - `backlog.md` alterado numa branch de fatia (deve mudar só na base);
 - reserva (Sustentação + retrabalho) estourada (consumido > reserva; o consumido não conta as linhas com
   `saiu da sprint`) sem decisão do P.O. registrada no `sprint-<nn>.md`;
-- arquivo com dado de cliente versionado (extração, CSV ou evidência fora de `.kiro/local/`).
+- arquivo com dado de cliente versionado (extração, CSV ou evidência fora de `.sabia/local/`).
 
 Tarefa concluída **sem horas lançadas** não é apontada aqui: só no fechamento da sprint (`sa-planejamento`,
 virada). A `[GB]` sem horas (a dona também é o P.O., que nunca lança) é normal: nem aqui nem no relatório de horas.
@@ -173,7 +173,7 @@ o `status.md` que vale é o da base — os itens 1 e 4 gravam nele pelo bloco
    `💳 Registrar os créditos desta sessão? (sim)` (nas entregas das skills de papel, antes do commit:
    `💳 Registrar os créditos e entregar? (sim)`), e só na resposta rode o script; assim o turno do trabalho já
    está gravado. Rode
-   o script `scripts/creditos.py` desta skill (fica no power instalado: caminho relativo a esta pasta; busca no
+   o script `scripts/creditos.py` desta skill (fica na pasta desta skill: caminho relativo a esta pasta; busca no
    workspace não o acha): `uv run --no-project python <caminho>/creditos.py --pasta <cada pasta do git worktree
    list> --desde <Data da sua última linha onde vai gravar | início do item>`. Sai uma linha por sessão do Kiro
    com consumo, a mais recente primeiro — é a atual; as outras são sessões que ninguém fechou: mostre-as com o

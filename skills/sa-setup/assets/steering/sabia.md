@@ -33,7 +33,7 @@ Começar um item registrado: hub `sa-iniciar` (diz a skill do papel: `sa-especif
   situação da fatia (`<FT> iniciar`, `<FT> registrar merge`), com os arquivos conferidos antes (bloco Gravar na base
   do `references/backlog.md` da `sa-fatiar`). Merge só do PR aprovado, pelo **Dev responsável**
   (`gitlab_mesclar_mr`, com confirmação); nunca `--force`.
-- Dado de cliente (consulta, extração, tela com dado real) nunca vai para o git: fica em `.kiro/local/<origem>/<id>/`;
+- Dado de cliente (consulta, extração, tela com dado real) nunca vai para o git: fica em `.sabia/local/<origem>/<id>/`;
   o versionado guarda consulta, contagem, caminho e resumo sem identificar pessoas.
 - Scrumban: a sprint é cadência (meta, review, retro), não contêiner de escopo: o compromisso é a meta; dentro dela,
   fluxo puxado — a `elegivel` de maior prioridade entra quando o WIP de revisão tem folga. Previsão pela vazão, sem
@@ -71,7 +71,7 @@ Começar um item registrado: hub `sa-iniciar` (diz a skill do papel: `sa-especif
 
 | Item | Valor |
 |---|---|
-| Pasta do produto (`<produto>` nas skills) | `<.kiro/planejamento>` — backlog, épicos e PRDs, planejamento, aprendizado |
+| Pasta do produto (`<produto>` nas skills) | `<.sabia/planejamento>` — backlog, épicos e PRDs, planejamento, aprendizado |
 | Tipos · stack · módulos | `<batch>` · <Java 21, Spring Batch 5, Oracle> · <módulo único | lista> |
 | Toolkits | <nome (origem) | nenhum> |
 | Steering | produto `<product.md>` · tecnologia `<tech.md>` · estrutura `<structure.md>` · extras `<… | nenhum>` |
@@ -84,7 +84,9 @@ Começar um item registrado: hub `sa-iniciar` (diz a skill do papel: `sa-especif
 ## Comandos (backpressure)
 
 Uma coluna por módulo quando houver mais de um; a fatia usa a do módulo que altera (o `design.md` diz qual).
-Na worktree do `sa-loop`: `cd .kiro/local/wt/<ft> && <comando>`. Falha de ambiente → `AMBIENTE`, nunca consertar.
+O `.sabia/verificar.sh` roda compilar, testes, lint e cobertura de todos os módulos: a `sa-codificar` o roda antes
+de cada commit.
+Na worktree do `sa-loop`: `cd .sabia/local/wt/<ft> && <comando>`. Falha de ambiente → `AMBIENTE`, nunca consertar.
 
 | Ação | `<módulo>` |
 |---|---|
@@ -98,7 +100,7 @@ Na worktree do `sa-loop`: `cd .kiro/local/wt/<ft> && <comando>`. Falha de ambien
 |---|---|
 | Executar · exercitar um cenário | `<comando | job + parâmetros>` · <HTTP | job | browser | carga> |
 | Onde verificar · massa de teste | <resposta, banco, log> · `<pasta e convenção>` |
-| Ambiente · chamada HTTP | <local | dev — nunca produção> · `<sh .kiro/sabia/http.sh — <url> | curl com confirmação | não se aplica>` |
+| Ambiente · chamada HTTP | <local | dev — nunca produção> · `<sh .sabia/http.sh — <url> | curl com confirmação | não se aplica>` |
 
 ## Git, banco e autonomia
 
@@ -111,7 +113,6 @@ Na worktree do `sa-loop`: `cd .kiro/local/wt/<ft> && <comando>`. Falha de ambien
 | MCP de banco | `<@servidor/tool | não há>` — **somente leitura** (`SELECT`/`WITH`), exceto os scripts de massa; DDL fora do fluxo |
 | Paralelo no loop | `<1>` (máx. 3) — o GATE do plano não se configura: sai da senioridade de quem implementa (`sa-plano` Passo 5) |
 | Push e PR no loop | `<perguntar a cada lote (o Kiro confirma cada um) | não — a pessoa abre (o push da base com a iniciada do lote também: o orquestrador entrega o comando e espera a publicação)>` |
-| Instalados | hook `<sa-backpressure | nenhum>` · workflows `<sa-planejar-fatia, sa-entregar-fatia | nenhum>` (disparados pela pessoa) |
 
 ## ELM
 
@@ -140,7 +141,7 @@ inicial da `sa-planejamento`) é o pai da `[GB]`, do IB `Manutenção` e dos IBs
   IB `<Categoria>` (filho da Sustentação; nasce com o primeiro item triado dela, como a `### <Categoria>` do
   `backlog.md`) → IB do item `[<ID>] <pedido>` (nasce na triagem; dono = P.O.) → tarefa `<prefixo> <ID> <pedido>`
   (nasce quando o item entra numa sprint; dono = quem faz). Ficha: `<produto>/sustentacao/<pasta>/<ID>-<slug>.md`;
-  dado de cliente: `.kiro/local/sustentacao/<pasta>/<ID>/` (fora do git).
+  dado de cliente: `.sabia/local/sustentacao/<pasta>/<ID>/` (fora do git).
 
 Item de categoria (`AT-`, `IM-`, `BD-`, `IN-`, `OP-`, `EX-` e as tarefas deles) não é do agente do Dev nem AFK: a
 regra vale pelo tipo de id, não pelo nome Sustentação.

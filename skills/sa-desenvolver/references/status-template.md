@@ -34,7 +34,7 @@
            verificador na linha da sprint) → o Dev retoma pela sa-desenvolver: Modo HITL, ids da [REV] e da [VER],
            fase planejando → GATE pela senioridade → segue o HITL até pronta → concluida
      Conflito no merge (sa-desenvolver Passo 6) → retrabalho (de: aceita | aguardando-aprovacao-pr), com a linha
-           `conflito no merge` no Histórico: a sa-implementar atualiza a branch e segue — HITL volta a pr-aberto, e
+           `conflito no merge` no Histórico: a sa-codificar atualiza a branch e segue — HITL volta a pr-aberto, e
            o revisor e o verificador reabrem a [REV] e a [VER] concluídas (Passo 0 da sa-revisar e da
            sa-verificar); AFK volta a revisando (subagentes), e quem aprova reabre a [APR] Aprovar PR (sa-revisar,
            Aprovação do PR).
@@ -59,8 +59,8 @@
      Dev, na base (sa-desenvolver Passo 6), ou a sincronização da sprint, pela evidência do merge por fora
      (elm-sprint.md §9), que também grava a fase do PR (ou implementando) no status.md da iniciada por fora, na
      branch; concluida, a consolidação, na base.
-     Rodadas: incrementadas por quem pede a rodada — sa-plano (análise), sa-implementar (revisão e
-     verificação) ou, no loop, o orquestrador; nas receitas de workflow, o passo do codificador que vem depois.
+     Rodadas: incrementadas por quem pede a rodada — sa-plano (análise), sa-codificar (revisão e
+     verificação) ou, no loop, o orquestrador.
      O revisor e o verificador não incrementam — exceto no HITL, em que eles mesmos conduzem a rodada sobre o PR.
      Drift de negócio: a REV (rubrica C: achado aceito ou decisão técnica que muda comportamento visível) e a VER
      (cenário ajustado na verificação) marcam; no AFK o subagente põe a linha no relatório e quem conduz grava aqui.
@@ -71,7 +71,7 @@
 
 ## Achados abertos
 
-<!-- Da revisão (plano/código), da verificação e do PR. A sa-implementar os transforma em tarefas [R<n>] e
+<!-- Da revisão (plano/código), da verificação e do PR. A sa-codificar os transforma em tarefas [R<n>] e
      marca a Situação `resolvido — tarefa <n>` quando a tarefa fica verde. -->
 
 | # | Origem | Achado | Situação |

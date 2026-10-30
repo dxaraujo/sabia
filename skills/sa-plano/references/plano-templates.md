@@ -98,7 +98,7 @@ Para toda entrada sem `condicaoDoDefeito`, o resultado é igual ao de antes da c
 
 As primeiras tarefas do `tasks.md` de um bugfix são sempre: **1.** teste que reproduz a condição do defeito
 (vermelho) e **2.** testes de preservação (verdes antes e depois da correção). A tarefa 1 e a da correção fecham
-num **ciclo só** (um commit, verde — `sa-implementar` Passo 1).
+num **ciclo só** (um commit, verde — `sa-codificar` Passo 1).
 
 **Testes existentes que mudam** (qualquer trilha): a correção ou o comportamento novo contradiz o esperado de um
 teste que já existe → declare no `bugfix.md` (em Expected Behavior, um item `2.x` com o teste, o esperado de hoje
@@ -163,7 +163,7 @@ arquivo) — palavra por palavra; o valor interno que o produz (enum, código) v
 | Decisão | Alternativas | Motivo | Vira ADR? |
 |---|---|---|---|
 <!-- Vira ADR? sim = muda como o time vai construir daqui para a frente: o Dev escreve o ADR no PR, em `adr/` desta
-     pasta (Passo 5 da sa-implementar); o Dev Sênior o julga e a consolidação o leva para a pasta de ADRs. -->
+     pasta (Passo 5 da sa-codificar); o Dev Sênior o julga e a consolidação o leva para a pasta de ADRs. -->
 
 ## Riscos
 <concorrência, volume, dependências, DDL pendente>

@@ -1,5 +1,5 @@
 ---
-name: sa-implementar
+name: sa-codificar
 description: "Implements a slice (fatia) of the Sabiá flow from the approved plan (tasks.md), one task at a time, in a test cycle (red → green → refactor) with backpressure — build, tests, lint and the coverage set in sabia.md must pass before a task is checked off; small commits, progress in status.md and PR delivery (commit, push, check on the remote, PR via gitlabpr). HITL: automatic review (rubric C, subagent) before the PR; the official review and verification belong to people. AFK: review (up to 2 rounds) and verification by subagent before the PR. Ends at the PR: the merge and completing the [DEV] belong to sa-desenvolver. Fixes in the same PR the rework requested in the REV, the VER and the PR, and loads the coder toolkit skills before each artifact. Use when the user says \"implementa a FT-031\", \"executa as tasks\", \"continua a implementação\", \"Start task\", \"abre o PR\", \"corrige os achados\"."
 license: MIT
 metadata:
@@ -7,14 +7,14 @@ metadata:
   version: "1.0.0"
 ---
 
-# sa-implementar — Ciclo curto, verificação sempre
+# sa-codificar — Ciclo curto, verificação sempre
 
 Entrada: `.kiro/specs/<ft>-<slug>/` com o plano aprovado (`status.md` com fase `implementando` ou `retrabalho (de:
 …)`), na branch da fatia. O **modo** do `status.md` decide o caminho até o PR (Passo 5): **HITL** vai direto, depois
 da revisão automática; **AFK** passa antes pela revisão e pela verificação por subagente (Passos 3–4). Nos dois, a skill
 termina no PR: a `[DEV]` fica em andamento, e o merge do PR aprovado e a conclusão dela são da `sa-desenvolver` (Passo 6). No Kiro, cada tarefa também pode ser executada pelo **"Start task"** do `tasks.md` — as regras valem igual.
 
-Leia antes: `design.md` inteiro, `research.md`, `.kiro/steering/sabia.md` (comandos, regras críticas,
+Leia antes: `design.md` inteiro, `research.md`, `.sabia/sabia.md` (comandos, regras críticas,
 regras aprendidas).
 
 ## Passo 0 — Onde estou
@@ -64,10 +64,11 @@ Para cada tarefa do `tasks.md`, nesta ordem:
 3. **Verde:** a menor mudança de produção que faz o teste passar, imitando o análogo do `design.md`.
 4. **Arrumar** só o que você acabou de escrever (nomes do glossário, duplicação), com os testes verdes.
    Refatorar código existente não é desta tarefa: vira sugestão para a revisão ou fatia própria.
-5. **Backpressure:** compilar + testes da área + lint (comandos do `sabia.md`). Falhou → corrija antes de
-   seguir; não acumule vermelho.
+5. **Backpressure:** `sh .sabia/verificar.sh` (compilar, testes, lint e cobertura do `sabia.md`, gravado pela
+   setup). Falhou → corrija antes de seguir; não acumule vermelho. Sem o script → os comandos do `sabia.md`, um a
+   um, e avise que falta rodar a setup.
 6. Marque `- [x]` e acrescente a linha no Histórico do `status.md`: `<data> — tarefa N ok · <testes>`.
-7. **Commit** pequeno (padrão do `sabia.md`, com o id da fatia) com o código, os testes, o `tasks.md` e o
+7. **Commit** pequeno, só com o `verificar.sh` verde (padrão do `sabia.md`, com o id da fatia) com o código, os testes, o `tasks.md` e o
    `status.md` — a árvore fica limpa a cada tarefa.
 
 Regras do ciclo:

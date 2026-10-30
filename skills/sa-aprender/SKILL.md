@@ -1,6 +1,6 @@
 ---
 name: sa-aprender
-description: "Compound learning for the Sabiá flow — turns each human correction into a permanent improvement: records the lesson (what the agent did, what was right, where the information was, cause: missing context, unwritten rule, lenient review, incomplete PRD, outdated skill), proposes the fix in the right source (steering, glossary, toolkit skill, rubric, PRD) and promotes rules to the Regras aprendidas section of .kiro/steering/sabia.md with a person's approval. Also runs the data-driven retrospective of the slice (fatia)/sprint. Use when the user says \"isso está errado, aprenda\", \"registra a lição\", \"o agente sempre erra X\", \"retrospectiva\", \"resumo das lições\", and when the review, the verification or the PR rejects something a human had to fix."
+description: "Compound learning for the Sabiá flow — turns each human correction into a permanent improvement: records the lesson (what the agent did, what was right, where the information was, cause: missing context, unwritten rule, lenient review, incomplete PRD, outdated skill), proposes the fix in the right source (steering, glossary, toolkit skill, rubric, PRD) and promotes rules to the Regras aprendidas section of .sabia/sabia.md with a person's approval. Also runs the data-driven retrospective of the slice (fatia)/sprint. Use when the user says \"isso está errado, aprenda\", \"registra a lição\", \"o agente sempre erra X\", \"retrospectiva\", \"resumo das lições\", and when the review, the verification or the PR rejects something a human had to fix."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
@@ -13,7 +13,7 @@ Todo retrabalho tem uma causa no **ambiente** do agente: contexto, verificação
 resolve hoje; corrigir o ambiente resolve para sempre. Arquivos (versionados):
 
 - `<produto>/aprendizado/licoes.md` — log de lições (só acréscimo);
-- a seção **Regras aprendidas** do `.kiro/steering/sabia.md` — regras promovidas de **julgamento** (o revisor
+- a seção **Regras aprendidas** do `.sabia/sabia.md` — regras promovidas de **julgamento** (o revisor
   cobra, o plano respeita; o steering é sempre carregado, então cada regra é curta, imperativa, com exemplo).
 
 Os dois só mudam na **branch base** (artefato de produto), pelo bloco [Gravar na base](../sa-fatiar/references/backlog.md#gravar-na-base) (com
@@ -70,7 +70,7 @@ Regra promovida é curta, imperativa, verificável e com exemplo — o revisor c
 - Origem: L-<nnn>, L-<nnn>
 ```
 
-Mostre o diff da seção Regras aprendidas do `.kiro/steering/sabia.md` e grave só com "ok" (o resto do arquivo
+Mostre o diff da seção Regras aprendidas do `.sabia/sabia.md` e grave só com "ok" (o resto do arquivo
 não muda). Regra que pertence à stack (ex.: "todo
 `ItemWriter` deve ser idempotente") → proponha também levá-la para a skill do toolkit, onde serve a outros projetos.
 

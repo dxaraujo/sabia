@@ -1,6 +1,6 @@
 ---
 name: sa-atender
-description: "Skill for whoever handles support in the Sabiá flow — carries out an atendimento (a ticket or customer request; the Atendimento category of Sustentação) already registered by sa-triar (AT-nnn: IB [AT-nnn] and task [ATD]): claims the [ATD] in EWM (creating any missing IB and task) and records the AT as em-andamento on the base branch, queries the database (read-only) and the ELM bundle, touches code only within a closed scope, keeps extractions out of git (.kiro/local/sustentacao/atendimento/), drafts the reply for the person's \"ok\" and wraps up — records the reply, logs the remaining hours, closes the [ATD] and the AT's IB, and asks about follow-ups (archive · change via sa-triar · rule via sa-entrevistar · lesson via sa-aprender). A new request does not start here: it goes through sa-triar. Use when the user says \"atender o AT-012\", \"pegar a [ATD] 669380\", \"extrai os dados do AT-012\", \"enviei a resposta\", \"conclui o AT-012\"."
+description: "Skill for whoever handles support in the Sabiá flow — carries out an atendimento (a ticket or customer request; the Atendimento category of Sustentação) already registered by sa-triar (AT-nnn: IB [AT-nnn] and task [ATD]): claims the [ATD] in EWM (creating any missing IB and task) and records the AT as em-andamento on the base branch, queries the database (read-only) and the ELM bundle, touches code only within a closed scope, keeps extractions out of git (.sabia/local/sustentacao/atendimento/), drafts the reply for the person's \"ok\" and wraps up — records the reply, logs the remaining hours, closes the [ATD] and the AT's IB, and asks about follow-ups (archive · change via sa-triar · rule via sa-entrevistar · lesson via sa-aprender). A new request does not start here: it goes through sa-triar. Use when the user says \"atender o AT-012\", \"pegar a [ATD] 669380\", \"extrai os dados do AT-012\", \"enviei a resposta\", \"conclui o AT-012\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
@@ -16,13 +16,13 @@ A **`sa-triar`** registra a demanda (`AT-nnn`, linha na `### Atendimento` da `##
 `[AT-nnn]` no EWM; a tarefa `[ATD]` nasce quando o AT entra numa sprint); esta skill é a de quem **atende**: assume
 a `[ATD]`, executa e finaliza, deixando um registro versionado **sem dado de cliente**.
 
-Leia antes: `.kiro/steering/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configurar o Sabiá") e pare.
+Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configurar o Sabiá") e pare.
 
 ## Arquivos
 
 - `<produto>/sustentacao/atendimento/AT-<nnn>-<slug>.md` — o registro (formato no fim), criado pela triagem.
 - Linha do AT na `### Atendimento` da `## Sustentação` do `backlog.md` e do `sprints/<pai>/sprint-<nn>.md`.
-- `.kiro/local/sustentacao/atendimento/AT-<nnn>/` — extrações, telas e respostas com dado real. Fora do git.
+- `.sabia/local/sustentacao/atendimento/AT-<nnn>/` — extrações, telas e respostas com dado real. Fora do git.
 
 ## Passo 1 — O que chegou
 
@@ -65,7 +65,7 @@ Linha viva) → a decisão é do P.O. (`sa-planejamento`, Encaixe) e pare; com a
    simples de dados — considere acionar o **`sa-pesquisar`** antes das consultas SQL para entender o contexto
    do código; nesse caso, registre no AT: `"análise baseada em pesquisa de código"`. Sem tempo para pesquisa:
    registre `"resposta baseada apenas no bundle do ELM e no banco"` na seção Consultas do AT.
-2. **Resultado com dado real** (linhas, telas, planilhas) → `.kiro/local/sustentacao/atendimento/AT-<nnn>/`. No registro
+2. **Resultado com dado real** (linhas, telas, planilhas) → `.sabia/local/sustentacao/atendimento/AT-<nnn>/`. No registro
    ficam só a consulta (SQL), a contagem, o caminho do arquivo e um resumo **sem identificar pessoas**.
 3. **Rascunho da resposta** → "ok" da pessoa antes de enviar. Quem envia é a pessoa; o agente não manda e-mail
    nem responde chamado.
@@ -75,7 +75,7 @@ Linha viva) → a decisão é do P.O. (`sa-planejamento`, Encaixe) e pare; com a
 
 ## Passo 4 — Finalizar ("enviei", "conclui o AT-012")
 
-1. Grava no registro a resposta enviada (sem dado de cliente; o texto com dado real fica em `.kiro/local/`).
+1. Grava no registro a resposta enviada (sem dado de cliente; o texto com dado real fica em `.sabia/local/`).
 2. **Saldo de horas:** mostre o que já foi lançado na `[ATD]` (`elm_horas(id)`) e pergunte só o que falta →
    `elm_lancar_horas(id, horas)`; depois `elm_transicao(id, "concluir")` na `[ATD]` e no IB `[AT-nnn]`, com uma
    confirmação. Cada lançamento ganha uma linha na tabela Horas do registro. Sem o MCP `elm` ou com
@@ -120,7 +120,7 @@ e `## Resposta enviada` dão lugar a `## O que foi feito` (passos e evidência, 
 |---|---|---|
 | 1 | `select count(*) from conta where situacao = 'B' and dt_bloqueio between …` | 1.284 contas |
 
-Arquivo: `.kiro/local/sustentacao/atendimento/AT-012/contas-bloqueadas-2026-09.csv` (fora do git)
+Arquivo: `.sabia/local/sustentacao/atendimento/AT-012/contas-bloqueadas-2026-09.csv` (fora do git)
 
 ## Resposta enviada
 <texto, sem dado que identifique pessoas>
@@ -142,7 +142,7 @@ Arquivo: `.kiro/local/sustentacao/atendimento/AT-012/contas-bloqueadas-2026-09.c
 ## Regras
 
 - **Dado de cliente nunca vai para o git**: resultado de consulta, extração ou tela com dado real fica em
-  `.kiro/local/sustentacao/atendimento/AT-<nnn>/`. O registro guarda consulta, contagem, caminho e resumo anônimo.
+  `.sabia/local/sustentacao/atendimento/AT-<nnn>/`. O registro guarda consulta, contagem, caminho e resumo anônimo.
 - Banco só em leitura. Pedido que exige escrita na base não é atendimento: vira Banco de dados (`[BD]`, a pessoa
   executa o script fora; pela `sa-executar`) ou, se muda o repositório, fatia de Manutenção.
 - Um IB `[AT-nnn]` e uma `[ATD]` por demanda, sem balde. Registrar o AT é da `sa-triar`; esta skill nunca numera

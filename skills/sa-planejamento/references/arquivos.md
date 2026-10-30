@@ -6,7 +6,7 @@ atualize); mostre o diff e grave só com "ok".
 ## `equipe.json`
 
 Formato definido pelo JSON Schema [../assets/equipe.schema.json](../assets/equipe.schema.json) (fonte da verdade).
-Ele fica dentro do power instalado, não no projeto: leia-o direto por esse caminho, relativo a esta pasta (busca no
+Ele fica na pasta desta skill, não no projeto: leia-o direto pelo caminho relativo a esta pasta (busca no
 workspace não o acha), e valide o JSON contra ele antes de mostrar. `$schema` é a primeira propriedade e é sempre a
 URL abaixo, nunca um caminho local:
 

@@ -34,10 +34,10 @@ class Gerar(unittest.TestCase):
         for s in {s for p in PAPEIS.values() for s in p["skills"]}:
             (self.home / "power/skills" / s).mkdir(parents=True)
             (self.home / "power/skills" / s / "SKILL.md").write_text("x")
-        (self.projeto / ".kiro/steering").mkdir(parents=True)
-        (self.projeto / ".kiro/steering/sabia.md").write_text("x")
+        (self.projeto / ".sabia").mkdir(parents=True)
+        (self.projeto / ".sabia/sabia.md").write_text("x")
         self.velho_home, os.environ["HOME"] = os.environ.get("HOME"), str(self.home)
-        self.cfg = {"power": "~/power", "produto": ".kiro/planejamento", "glossario": "docs/glossario.md", "adr": "docs/adr",
+        self.cfg = {"power": "~/power", "produto": ".sabia/planejamento", "glossario": "docs/glossario.md", "adr": "docs/adr",
                     "base": "develop", "bundle": "docs/elm/pa", "massa": None, "elm": True, "push_pr_no_loop": True,
                     "http_sh": True, "comandos": {"build": ["mvn test*"], "verificacao": ["mvn spring-boot:run*"]}}
 
@@ -50,7 +50,7 @@ class Gerar(unittest.TestCase):
         self.assertEqual([e for a in agentes.values() for e in g.problemas(a, self.projeto)], [])
         return {k.removeprefix("sa-").removesuffix(".json"): a for k, a in agentes.items()}
 
-    def test_seis_agentes_so_v3(self):
+    def test_sete_agentes_so_v3(self):
         agentes = self.gerar()
         self.assertEqual(sorted(agentes), sorted(PAPEIS))
         for nome, a in agentes.items():
@@ -61,9 +61,51 @@ class Gerar(unittest.TestCase):
             self.assertNotIn("{{", json.dumps(a))
             self.assertNotIn("V2", a["prompt"])
 
+    def test_harness_ninguem_escreve(self):
+        for nome, a in self.gerar().items():
+            for alvo in (".kiro/agents/sa-produto.json", ".sabia/config/agentes.json", ".sabia/sabia.md", ".sabia/verificar.sh",
+                         ".sabia/http.sh", ".kiro/steering/sabia.md", ".claude/settings.json", "opencode.json", "AGENTS.md",
+                         ".git/config", ".sabia/local/wt/ft-031/.kiro/agents/x.json",
+                         ".sabia/local/wt/ft-031/.sabia/planejamento/backlog.md"):
+                self.assertNotEqual(efeito(a, "fs_write", alvo), "allow", (nome, alvo))
+
+    def test_escrita_no_projeto_e_registros_por_papel(self):
+        agentes = self.gerar()
+        dono = {"backlog.md": {"produto", "especificador", "codificador", "orquestrador"},
+                "sprints/2026/sprint-03.md": {"produto", "especificador", "codificador", "orquestrador"},
+                "epicos/ep-03-x/prd.md": {"produto", "especificador"}}
+        for nome, a in agentes.items():
+            for reg, quem in dono.items():
+                self.assertEqual(efeito(a, "fs_write", f".sabia/planejamento/{reg}"),
+                                 "allow" if nome in quem else "ask" if nome == "pesquisador" else "deny", (nome, reg))
+            if nome != "pesquisador":
+                self.assertEqual(efeito(a, "fs_write", "src/main/App.java"), "allow", nome)
+                self.assertEqual(efeito(a, "fs_write", ".kiro/specs/ft-031-x/status.md"), "allow", nome)
+                self.assertIn("sh .sabia/verificar.sh", regras(a, "shell", "allow"), nome)
+
+    def test_pesquisador_sem_escrita(self):
+        p = self.gerar()["pesquisador"]
+        self.assertNotIn("write", p["tools"])
+        self.assertEqual(regras(p, "fs_write", "allow"), [])
+        self.assertNotIn("git commit *", regras(p, "shell", "allow"))
+        self.assertNotIn("sh .sabia/verificar.sh", regras(p, "shell", "allow"))
+
+    def test_especificador_separado_do_produto(self):
+        agentes = self.gerar()
+        e, p = agentes["especificador"], agentes["produto"]
+        for s in ("sa-especificar", "sa-prd", "sa-fatiar", "sa-entrevistar"):
+            self.assertTrue(any(r.endswith(f"/{s}/SKILL.md") for r in e["resources"]), s)
+        for s in ("sa-especificar", "sa-prd", "sa-fatiar"):
+            self.assertFalse(any(r.endswith(f"/{s}/SKILL.md") for r in p["resources"]), s)
+        self.assertTrue(any(r.endswith("/sa-entrevistar/SKILL.md") for r in p["resources"]))
+        self.assertEqual(e["toolsSettings"]["subagent"]["availableAgents"], ["sa-pesquisador", "sa-revisor"])
+        self.assertEqual(efeito(e, "shell", "git push origin feature/x"), "deny")
+        self.assertIn("sabia/elm/elm_publicar_req", regras(e, "power", "ask"))
+        self.assertIn("sabia/gitlabpr/gitlab_obter_mr", regras(e, "power", "deny"))
+
     def test_comentar_e_anexar_na_propria_tarefa(self):
         agentes = self.gerar()
-        for nome in ("produto", "codificador", "revisor", "verificador", "orquestrador"):
+        for nome in ("produto", "especificador", "codificador", "revisor", "verificador", "orquestrador"):
             for t in ("elm_comentar", "elm_anexo", "elm_transicao", "elm_lancar_horas"):
                 self.assertIn(f"sabia/elm/{t}", regras(agentes[nome], "power", "ask"), nome)
                 self.assertIn(f"@elm/{t}", agentes[nome]["tools"])
@@ -80,7 +122,7 @@ class Gerar(unittest.TestCase):
 
     def test_gitlab_so_em_quem_lida_com_pr(self):
         agentes = self.gerar()
-        for nome in ("pesquisador", "verificador"):
+        for nome in ("pesquisador", "verificador", "especificador"):
             self.assertFalse([t for t in agentes[nome]["tools"] if t.startswith("@gitlabpr/")], nome)
             self.assertIn("sabia/gitlabpr/gitlab_obter_mr", regras(agentes[nome], "power", "deny"), nome)
         for nome in ("produto", "codificador", "revisor", "orquestrador"):
@@ -92,7 +134,7 @@ class Gerar(unittest.TestCase):
         for nome in ("codificador", "revisor", "verificador", "orquestrador"):
             self.assertIn("git push *", regras(agentes[nome], "shell", "ask"))
             self.assertEqual(efeito(agentes[nome], "shell", "git push -u origin feature/ft-031-x"), "ask", nome)
-            for cmd in ("git push", "git push origin", "cd .kiro/local/wt/ft-031 && git push", "git push origin HEAD",
+            for cmd in ("git push", "git push origin", "cd .sabia/local/wt/ft-031 && git push", "git push origin HEAD",
                         "git push -u origin HEAD:feature/ft-031-x", "git push origin @", "git push origin ft-031:develop",
                         "git push origin refs/heads/develop", "git push -f origin ft-031"):
                 self.assertEqual(efeito(agentes[nome], "shell", cmd), "deny", (nome, cmd))
@@ -105,11 +147,9 @@ class Gerar(unittest.TestCase):
         for nome in ("codificador", "orquestrador"):
             a = agentes[nome]
             for p in ("backlog.md", "sprints/2026/sprint-03.md"):
-                self.assertEqual(efeito(a, "fs_write", f".kiro/planejamento/{p}"), "allow", (nome, p))
-            for p in ("equipe.json", "acordos.md", "roadmap.md", "epicos/ep-03-x/prd.md", "fatias/FT-031.md",
-                      "sustentacao/atendimento/AT-012-x.md", "aprendizado/licoes.md"):
-                self.assertNotEqual(efeito(a, "fs_write", f".kiro/planejamento/{p}"), "allow", (nome, p))
-            self.assertNotEqual(efeito(a, "fs_write", ".kiro/local/wt/ft-031/.kiro/planejamento/backlog.md"), "allow", nome)
+                self.assertEqual(efeito(a, "fs_write", f".sabia/planejamento/{p}"), "allow", (nome, p))
+            self.assertEqual(efeito(a, "fs_write", ".sabia/planejamento/epicos/ep-03-x/prd.md"), "deny", nome)
+            self.assertNotEqual(efeito(a, "fs_write", ".sabia/local/wt/ft-031/.sabia/planejamento/backlog.md"), "allow", nome)
             self.assertEqual(efeito(a, "shell", "git push origin develop"), "ask", nome)
             self.assertIn("git reset --keep origin/*", regras(a, "shell", "ask"), nome)
             self.assertEqual(efeito(a, "shell", "git reset --keep origin/develop --hard"), "deny", nome)
@@ -139,7 +179,6 @@ class Gerar(unittest.TestCase):
 
     def test_sem_glossario_nem_bundle(self):
         agentes = self.gerar(glossario=None, bundle=None)
-        self.assertNotIn("docs/glossario.md", regras(agentes["produto"], "fs_write", "allow"))
         self.assertIn("glossário (`não há`)", agentes["produto"]["prompt"])
         self.assertFalse([m for m in regras(agentes["codificador"], "fs_read", "deny") if "elm/pa" in m])
 
@@ -156,7 +195,8 @@ class Gerar(unittest.TestCase):
         self.assertIn("Skills do projeto ligadas a você: `java`", c["prompt"])
         self.assertIn("`dba` (consultas)", c["prompt"])
         self.assertIn("mvn test*", regras(c, "shell", "allow"))
-        self.assertIn("sh .kiro/sabia/http.sh *", regras(c, "shell", "allow"))
+        self.assertIn("sh .sabia/http.sh *", regras(c, "shell", "allow"))
+        self.assertIn("sh .sabia/verificar.sh", regras(c, "shell", "allow"))
         self.assertEqual(c["model"], "m1")
 
     def test_resumo_mostra_o_que_cada_agente_recebeu(self):
@@ -184,7 +224,7 @@ class Gerar(unittest.TestCase):
         self.assertEqual(len(erros), 2)
 
     def test_main_grava_e_diff_nao(self):
-        conf = self.projeto / ".kiro/config/sabia/agentes.json"
+        conf = self.projeto / ".sabia/config/agentes.json"
         conf.parent.mkdir(parents=True)
         conf.write_text(json.dumps(self.cfg))
         self.assertEqual(g.main(["--projeto", str(self.projeto), "--diff"]), 0)
@@ -192,7 +232,7 @@ class Gerar(unittest.TestCase):
         self.assertEqual(g.main(["--projeto", str(self.projeto)]), 0)
         self.assertFalse((self.projeto / ".kiro/agents").exists())  # sem --gravar nada é gravado
         self.assertEqual(g.main(["--projeto", str(self.projeto), "--gravar"]), 0)
-        self.assertEqual(len(list((self.projeto / ".kiro/agents").glob("sa-*.json"))), 6)
+        self.assertEqual(len(list((self.projeto / ".kiro/agents").glob("sa-*.json"))), 7)
 
 
 if __name__ == "__main__":

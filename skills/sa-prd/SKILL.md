@@ -9,11 +9,10 @@ metadata:
 
 # sa-prd — O quê e por quê (épico)
 
-> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta da skill, dentro do
-> power instalado (ex.: `~/.kiro/powers/installed/sabia/skills/sa-prd/`), não no projeto: abra-os por esse
-> caminho, relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
+> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta desta skill, não no projeto:
+> abra-os pelo caminho relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
 
-Saída, na **pasta de trabalho** da especificação — `.kiro/local/especificacao/<EP>-<slug>/`, fora do git, montada
+Saída, na **pasta de trabalho** da especificação — `.sabia/local/especificacao/<EP>-<slug>/`, fora do git, montada
 pela **`sa-especificar`** — até o GATE; depois dele, a `sa-especificar` a leva para `<produto>/epicos/<EP>-<slug>/`: o `prd.md` no formato de
 [references/prd-template.md](references/prd-template.md), o `decisoes.md` e a pasta `elm/` com **um conceito OKF
 v0.2 por história, regra e termo novo** — o formato de [references/okf-elm.md](references/okf-elm.md), o mesmo do
@@ -25,7 +24,7 @@ oficial; o que vale a longo prazo é o ELM, o glossário e os ADRs. Se o PRD afi
 defeito do PRD. Toda demanda entra pela `sa-triar`; só o que ela classifica como **épico** chega aqui. Uma fatia
 com regra clara é trilha padrão sem épico, com uma ficha no lugar do PRD.
 
-Leia antes: `.kiro/steering/sabia.md` (ELM, caminhos, papéis) e o steering de produto que ele aponta.
+Leia antes: `.sabia/sabia.md` (ELM, caminhos, papéis) e o steering de produto que ele aponta.
 
 ## Passo 1 — Entender a demanda
 
@@ -44,7 +43,7 @@ sessão com o P.O." e pare.
    Registre o que achou como fontes (id ELM, `arquivo:linha`).
 3. Defina o id: o `EP-<nn>` que a `sa-triar` registrou (linha com `prd` `—`: `novo` ou `elegivel` na triagem,
    `iniciado` pela `sa-especificar`); sem registro, a demanda não passou pela triagem → "use `sa-triar`" e pare.
-   Pasta de trabalho: a da `sa-especificar` (`.kiro/local/especificacao/<EP>-<slug>/`, `slug` em kebab-case, sem
+   Pasta de trabalho: a da `sa-especificar` (`.sabia/local/especificacao/<EP>-<slug>/`, `slug` em kebab-case, sem
    acento); sem ela → "use `sa-especificar EP-<nn>`" e pare (é ela que assume a `[ESP]` e monta a pasta).
 4. **EWM:** nada a registrar aqui — o épico nasceu no backlog do EWM na triagem (o `IB` da coluna `elm`;
    `pendente` → crie pela [elm-sprint.md](../sa-planejamento/references/elm-sprint.md) §3) e entrou na sprint com a
