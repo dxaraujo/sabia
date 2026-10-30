@@ -73,7 +73,10 @@ trocar para a sessão padrão e pare.
 
 1. **Raiz do repositório:** `git rev-parse --show-toplevel` (sem git → avise: o fluxo depende de branches e PRs).
 1a. **Ferramentas do time** (`alvos` do `agentes.json`; linha 8 do W0): as que o projeto usa, detectadas por
-   `.kiro/`, `.claude/` ou `CLAUDE.md`, `.opencode/` ou `opencode.json`, mais a ferramenta desta sessão. O gerador
+   `.kiro/`, `.claude/` ou `CLAUDE.md`, `.opencode/` ou `opencode.json`, mais a ferramenta desta sessão. Detecte com
+   `ls -A` na raiz, que sai com 0 e mostra o que existe; nunca com `ls` dos nomes, que sai com 1 quando falta algum. Nenhum
+   desses arquivos num projeto novo é o normal: fica só a ferramenta desta sessão, a da pasta de onde esta skill foi
+   carregada (`~/.kiro/powers/…` → Kiro · `~/.claude/skills/` → Claude Code · `~/.config/opencode/skills/` → opencode). O gerador
    cria os agentes de cada uma (`kiro` · `opencode` · `claude`); a pessoa muda na linha 8. Onde as skills do Sabiá
    precisam estar (o CLI `sabia` as copia de `~/.sabia/framework/` e registra no `~/.sabia/inventario.json`): Kiro,
    o power (item 2); Claude Code, `~/.claude/skills/sa-setup/SKILL.md`; opencode,
