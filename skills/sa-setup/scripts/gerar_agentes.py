@@ -99,7 +99,9 @@ def agente(nome, p, base, cfg, ext=None, tk=None):
     """O agente sa-<nome>; com `tk`, o agente do toolkit, com as regras do papel <nome>, dono do passo."""
     valores = {"POWER": cfg.get("power", "~/.kiro/powers/installed/sabia"), "PRODUTO": cfg["produto"], "GLOSSARIO": cfg.get("glossario"), "ADR": cfg.get("adr"),
                "BASE": cfg["base"], "BUNDLE": cfg.get("bundle"), "MASSA": cfg.get("massa")}
-    extra = {} if tk else cfg.get("agentes", {}).get(f"sa-{nome}", {})
+    extra = cfg.get("agentes", {}).get(f"sa-{nome}", {})
+    if tk:  # o agente do toolkit herda do dono do passo as skills, os MCPs e as leituras (o mesmo papel), não os subagentes
+        extra = {k: v for k, v in extra.items() if k != "subagentes"}
     ext = ext or {"skills": [], "subagentes": []}
     grupos, sh = base["grupos"], base["shell"]
 
@@ -154,7 +156,7 @@ def agente(nome, p, base, cfg, ext=None, tk=None):
         regras.append(regra("mcp", "allow", [m if "/" in m else f"{m}/*" for m in mcp_extra]))
     regras.append(regra("skill", "allow"))
 
-    skills_projeto = tk["skills"] if tk else extra.get("skills", []) + ext["skills"]
+    skills_projeto = tk["skills"] + [s for s in extra.get("skills", []) if s not in tk["skills"]] if tk else extra.get("skills", []) + ext["skills"]
     skills_extras = [Path(s.removeprefix("skill://")).parent.name for s in skills_projeto]
     prompt = tk["prompt"] if tk else (ASSETS / f"sa-{nome}.md").read_text(encoding="utf-8")
     prompt = prompt.replace("{{SKILLS_EXTRAS}}", f"Skills do projeto ligadas a você: {', '.join(f'`{s}`' for s in skills_extras)}"

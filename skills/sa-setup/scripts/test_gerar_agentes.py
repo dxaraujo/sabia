@@ -246,6 +246,20 @@ class Gerar(unittest.TestCase):
         self.assertNotIn("toolsSettings", step)
         self.assertIn("~/.sabia/toolkits/**", regras(c, "fs_read", "allow"))
 
+    def test_agente_do_toolkit_herda_skills_e_mcps_do_dono(self):
+        cfg = {**self.cfg, **self.toolkit(), "agentes": {"sa-codificador": {
+            "skills": ["skill://~/.sabia/toolkits/java/skills/java/SKILL.md"], "mcp": ["sqlcl/sql_run"],
+            "subagentes": [{"nome": "outro", "para": "x"}]}}}
+        agentes = g.gerar(self.projeto, cfg)
+        job, c = agentes["batch-job.json"], agentes["sa-codificador.json"]
+        self.assertEqual(job["resources"][-2:], ["skill://~/.sabia/toolkits/batch-alfa/skills/batch/SKILL.md",
+                                                 "skill://~/.sabia/toolkits/java/skills/java/SKILL.md"])
+        self.assertIn("@sqlcl/sql_run", job["tools"])
+        self.assertTrue(job["includeMcpJson"])
+        # os subagentes do dono ficam com ele
+        self.assertNotIn("outro", job["toolsSettings"]["subagent"]["availableAgents"])
+        self.assertIn("outro", c["toolsSettings"]["subagent"]["availableAgents"])
+
     def test_passo_sem_agente(self):
         cfg = self.toolkit()
         cfg["passos"][0]["agente"] = False

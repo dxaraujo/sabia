@@ -15,14 +15,73 @@ const VERSAO = JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.
 const REPO = "https://github.com/dxaraujo/sabia.git";
 const INDICE = "https://github.com/dxaraujo/sabia-toolkits.git";
 const ALVOS = ["kiro", "claude", "opencode"];
-const BANNER = `
-                               ▄▄▀
-███████╗ █████╗ ██████╗ ██╗ █████╗
-██╔════╝██╔══██╗██╔══██╗██║██╔══██╗
-███████╗███████║██████╔╝██║███████║
-╚════██║██╔══██║██╔══██╗██║██╔══██║
-███████║██║  ██║██████╔╝██║██║  ██║
-╚══════╝╚═╝  ╚═╝╚═════╝ ╚═╝╚═╝  ╚═╝`;
+const NOME = [
+  "                               ▄▄▀",
+  "███████╗ █████╗ ██████╗ ██╗ █████╗",
+  "██╔════╝██╔══██╗██╔══██╗██║██╔══██╗",
+  "███████╗███████║██████╔╝██║███████║",
+  "╚════██║██╔══██║██╔══██╗██║██╔══██║",
+  "███████║██║  ██║██████╔╝██║██║  ██║",
+  "╚══════╝╚═╝  ╚═╝╚═════╝ ╚═╝╚═╝  ╚═╝",
+];
+// a saíra do sabia-site/logo.svg: as sete facetas (uma por etapa) e o bico, cinza para aparecer no fundo escuro
+const SAIRA = [
+  ["#00BBCE", [56, 57, 70, 42, 90, 38, 104, 46, 106, 62, 84, 74, 57, 70]],
+  ["#B2D235", [84, 74, 106, 62, 118, 74, 116, 92, 92, 94]],
+  ["#0786E3", [57, 70, 84, 74, 92, 94, 86, 122, 70, 112, 60, 92]],
+  ["#2C5168", [92, 94, 116, 92, 134, 108, 112, 124, 86, 122]],
+  ["#76B043", [86, 122, 112, 124, 132, 152, 118, 170, 94, 146]],
+  ["#FAA61A", [134, 108, 150, 128, 150, 154, 132, 152, 112, 124]],
+  ["#0094AD", [132, 152, 150, 154, 180, 196, 164, 198]],
+  ["#8A8F8C", [36, 64, 56, 57, 57, 70]],
+];
+
+function naAve(x, y, p) {
+  let d = false;
+  for (let i = 0, j = p.length - 2; i < p.length; j = i, i += 2)
+    if (p[i + 1] > y !== p[j + 1] > y && x < ((p[j] - p[i]) * (y - p[i + 1])) / (p[j + 1] - p[i + 1]) + p[i]) d = !d;
+  return d;
+}
+
+/** A saíra em meio-blocos coloridos: cada caractere são dois pixels de `passo` unidades do SVG. */
+function saira(cor, passo = 13) {
+  // pixel: a cor que mais aparece em 4x4 amostras; vazio se menos da metade cai na ave
+  const pixel = (cx, cy) => {
+    if (Math.hypot(cx - 82, cy - 54) < passo * 0.55) return "#0E1210"; // o olho
+    const n = {};
+    for (let i = 0; i < 16; i++) {
+      const x = cx + ((i % 4) + 0.5 - 2) * (passo / 4), y = cy + (Math.floor(i / 4) + 0.5 - 2) * (passo / 4);
+      const c = SAIRA.find(([, p]) => naAve(x, y, p))?.[0];
+      if (c) n[c] = (n[c] || 0) + 1;
+    }
+    const total = Object.values(n).reduce((a, b) => a + b, 0);
+    return total >= 8 ? Object.entries(n).sort((a, b) => b[1] - a[1])[0][0] : null;
+  };
+  const linhas = [];
+  for (let y = 36; y < 200; y += 2 * passo) {
+    let l = "";
+    for (let x = 34; x < 182; x += passo) {
+      const a = pixel(x + passo / 2, y + passo / 2), b = pixel(x + passo / 2, y + 1.5 * passo);
+      l += !a && !b ? " " : !b ? cor(a) + "▀\x1b[0m" : !a ? cor(b) + "▄\x1b[0m" : cor(a) + cor(b, true) + "▀\x1b[0m";
+    }
+    linhas.push(l);
+  }
+  while (!linhas.at(-1).trim()) linhas.pop();
+  return linhas;
+}
+
+/** Sem terminal ou com NO_COLOR, só o nome; senão a saíra ao lado, em 24 bits ou nos 256 tons. */
+export function banner({ cores = process.stdout.isTTY && !process.env.NO_COLOR, bits24 = /truecolor|24bit/.test(process.env.COLORTERM ?? "") } = {}) {
+  if (!cores) return "\n" + NOME.join("\n");
+  const cor = (h, fundo) => {
+    const [r, g, b] = [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+    return `\x1b[${fundo ? 48 : 38};` + (bits24 ? `2;${r};${g};${b}m` : `5;${16 + 36 * Math.round(r / 51) + 6 * Math.round(g / 51) + Math.round(b / 51)}m`);
+  };
+  const ave = saira(cor), largura = [...ave[0]].filter((c) => " ▀▄".includes(c)).length;
+  const texto = [...NOME.map((l) => `\x1b[1m${l}\x1b[0m`), "", `\x1b[2mengenharia agêntica, da ideia ao resultado aceito  v${VERSAO}\x1b[0m`];
+  return "\n" + texto.map((t, i) => (ave[i] ?? " ".repeat(largura)) + "  " + t).join("\n");
+}
+const BANNER = banner();
 
 // trocáveis nos testes
 export const ctx = {
@@ -301,7 +360,8 @@ export async function instalar(opcoes = {}) {
   } finally {
     gravarInventario(inv);
   }
-  ctx.log('Pronto. No projeto, peça "configurar o Sabiá" (ou "atualizar os agentes do Sabiá").');
+  ctx.log('Pronto: skills e MCPs instalados. Os agentes são de cada projeto: abra a ferramenta na raiz dele, na sessão\n' +
+    'padrão, e peça "configurar o Sabiá" (ou, num projeto já configurado, "atualizar os agentes do Sabiá").');
 }
 
 export async function atualizar(opcoes = {}) {
@@ -371,6 +431,8 @@ export function validarToolkit(pasta, nomeEsperado = null) {
   const nomeOk = (n) => typeof n === "string" && /^[a-z0-9][a-z0-9-]*$/.test(n) && !n.startsWith("sa-");
   if (!nomeOk(m.nome)) erros.push(`nome inválido (kebab-case, sem sa-): ${m.nome}`);
   if (nomeEsperado && m.nome !== nomeEsperado) erros.push(`nome ${m.nome} ≠ ${nomeEsperado} do índice`);
+  if (m.customiza && (!nomeOk(m.customiza.toolkit) || m.customiza.toolkit === m.nome || typeof m.customiza.versao !== "string"))
+    erros.push("customiza: precisa de toolkit (outro nome, kebab-case) e versao da base");
   const existe = (c, de) => {
     try { if (!fs.existsSync(path.join(pasta, dentro(c, de)))) erros.push(`${de}: não existe ${c}`); } catch (e) { erros.push(e.message); }
   };
@@ -453,6 +515,10 @@ export async function instalarToolkit(alvo, opcoes = {}) {
   const pasta = sabia("toolkits", baixado);
   const m = JSON.parse(fs.readFileSync(path.join(pasta, "toolkit.json"), "utf8"));
   const inv = lerInventario();
+  // a customização é uma cópia modificada da base: as duas juntas no projeto dão skills e agentes repetidos
+  const familia = m.customiza?.toolkit ?? baixado;
+  const rival = Object.keys(inv.toolkits).find((n) => n !== baixado && (baseDe(n) ?? n) === familia);
+  if (rival) ctx.log(`aviso: ${baixado} e ${rival} são versões do mesmo toolkit (base ${familia}); use um só: sabia toolkits remover ${rival}`);
   const tk = (inv.toolkits[baixado] ||= { versao: m.versao, alvos: {} });
   const alvos = opcoes.alvo ? opcoes.alvo.split(",") : Object.keys(inv.alvos).length ? Object.keys(inv.alvos) : await escolherAlvos(opcoes);
   try {
@@ -504,6 +570,12 @@ export async function atualizarToolkits(nome, opcoes = {}) {
   }
 }
 
+/** A base que o toolkit baixado customiza (do toolkit.json em ~/.sabia/toolkits), ou null. */
+function baseDe(nome) {
+  const f = sabia("toolkits", nome, "toolkit.json");
+  return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")).customiza?.toolkit ?? null : null;
+}
+
 export function listarToolkits(opcoes = {}) {
   const inv = lerInventario();
   const projeto = path.join(process.cwd(), ".sabia", "config", "agentes.json");
@@ -517,6 +589,18 @@ export function listarToolkits(opcoes = {}) {
     }
   }
   for (const [n, t] of Object.entries(inv.toolkits)) if (!linhas.some((l) => l[0] === n)) linhas.push([n, "—", t.versao, doProjeto[n]?.versao || "—", "(fora dos índices)"]);
+  // a customização logo abaixo da base, com ↳ e de onde veio
+  for (const l of [...linhas]) {
+    const f = sabia("toolkits", l[0], "toolkit.json");
+    const c = fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")).customiza : null;
+    if (!c) continue;
+    linhas.splice(linhas.indexOf(l), 1);
+    const i = linhas.findIndex((b) => b[0] === c.toolkit);
+    // só a primeira mudança (quem customizou), como resumo; a lista inteira está no toolkit.json
+    l[4] = `customiza ${c.toolkit} ${c.versao}${c.mudancas?.length ? `: ${c.mudancas[0]}${c.mudancas.length > 1 ? "; …" : ""}` : ""}${l[4] ? " — " + l[4] : ""}`;
+    l[0] = `↳ ${l[0]}`;
+    linhas.splice(i < 0 ? linhas.length : i + 1, 0, l);
+  }
   ctx.log(["| Toolkit | No índice | Instalado | Neste projeto | Descrição |", "|---|---|---|---|---|",
     ...linhas.map((l) => `| ${l.join(" | ")} |`)].join("\n"));
   return linhas;

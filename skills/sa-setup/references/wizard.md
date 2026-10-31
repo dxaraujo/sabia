@@ -226,7 +226,10 @@ Montagem do `pa` (só quando falta): um cartão por bloco, com o cabeçalho
 
 | # | Skill | Para quê | Origem | Toolkit | Stack |
 |---|---|---|---|---|---|
-| 1 | `<nome da skill>` | <início da description> | <projeto | usuário | power `<nome>`> | <`<nome>` 🔍 detectado | —> | <`<stack>` 🔍 casa | `<stack>` | —> |
+| 1 | `<nome da skill>` | <início da description> | <projeto | usuário | power `<nome>`> | <`<nome>` 🔍 detectado | `<nome>` ↳ customiza `<base>` <versão> | —> | <`<stack>` 🔍 casa | `<stack>` | —> |
+
+(se há toolkit com `customiza`) Logo abaixo da tabela, uma linha por cópia: `↳ <cópia> customiza <base> <versão>: <mudanças>`
+— com a base também presente, `<base>` fica fora (substituído pela cópia); base mais nova que a versão da cópia → ⚠️.
 
 (só se alguma skill traz `passo`) Passos de toolkit — a skill assume um passo do Sabiá; ligados na próxima etapa:
 

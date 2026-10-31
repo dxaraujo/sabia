@@ -1,6 +1,6 @@
 {
   "name": "sabia",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Instala, atualiza e desinstala o Sabiá e os toolkits dele no Kiro, no Claude Code e no opencode, com um inventário em ~/.sabia/.",
   "type": "module",
   "bin": {

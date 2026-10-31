@@ -141,6 +141,27 @@ test("valida o toolkit: nome, caminhos presos à pasta e referências", () => {
   assert.match(erros({ skills: [{ caminho: "skills/nao/SKILL.md", papeis: ["codificador"] }] }), /não existe/);
   assert.match(erros({ agentes: [{ nome: "sa-job", descricao: "x", prompt: "/etc/x.md" }] }), /nome inválido[\s\S]*fora da pasta/);
   assert.match(erros({ agentes: [] }), /agente batch-job não está em agentes/);
+  assert.match(erros({ customiza: { toolkit: "batch-alfa" } }), /customiza/);
+  assert.equal(erros({ customiza: { toolkit: "spring-alfa", versao: "1.0.0" } }), "");
+});
+
+test("customização: cópia modificada da base, listada abaixo dela e com aviso se as duas forem instaladas", async () => {
+  const indice = escrever(path.join(raiz, "indice-c"), {
+    ".claude-plugin/marketplace.json": { name: "idx", plugins: [
+      { name: "batch-alfa-casa", version: "1.1.0", source: "./casa" }, { name: "batch-alfa", version: "1.0.0", source: "./base" }] },
+  });
+  toolkit(path.join(indice, "base"));
+  toolkit(path.join(indice, "casa"), { nome: "batch-alfa-casa", versao: "1.1.0",
+    customiza: { toolkit: "batch-alfa", versao: "1.0.0", mudancas: ["customizações feitas pela casa", "writers da casa"] } });
+  const log = [];
+  s.ctx.log = (x) => log.push(x);
+  await s.instalarToolkit("batch-alfa", { indice, alvo: "kiro" });
+  await s.instalarToolkit("batch-alfa-casa", { indice, alvo: "kiro" });
+  assert.ok(log.some((l) => /aviso: batch-alfa-casa e batch-alfa são versões do mesmo toolkit/.test(l)));
+  const linhas = s.listarToolkits({ indice });
+  assert.deepEqual(linhas.map((l) => l[0]), ["batch-alfa", "↳ batch-alfa-casa"]);
+  assert.match(linhas[1][4], /^customiza batch-alfa 1\.0\.0: customizações feitas pela casa; …/);
+  s.ctx.log = () => {};
 });
 
 test("toolkit pelo índice: baixa, instala nas ferramentas, atualiza e remove pelo inventário", async () => {
@@ -182,6 +203,19 @@ test("toolkit inválido é recusado e nada é gravado", async () => {
 test("a versão do CLI é a do framework (o instalar baixa a tag sabia-<versão do CLI>)", () => {
   const ler = (f) => JSON.parse(fs.readFileSync(new URL(f, import.meta.url), "utf8")).version;
   assert.equal(ler("./package.json"), ler("../plugin.json"));
+});
+
+test("banner: a saíra colorida ao lado do nome; sem cores, só o nome", () => {
+  const sem = s.banner({ cores: false });
+  assert.ok(!sem.includes("\x1b") && sem.includes("███████╗ █████╗"));
+  for (const bits24 of [true, false]) {
+    const com = s.banner({ cores: true, bits24 }).split("\n").slice(1);
+    assert.equal(com.length, 9);
+    assert.ok(com[0].includes(bits24 ? "\x1b[38;2;" : "\x1b[38;5;"));
+    // o nome começa na mesma coluna em todas as linhas, depois da ave
+    const nome = sem.split("\n").slice(1), limpo = com.map((l) => [...l.replace(/\x1b\[[0-9;]*m/g, "")]);
+    assert.equal(new Set(nome.map((n, i) => limpo[i].length - [...n].length)).size, 1);
+  }
 });
 
 test("linha de comando: ajuda e comando desconhecido", async () => {

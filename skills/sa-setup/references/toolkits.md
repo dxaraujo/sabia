@@ -99,6 +99,7 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
 | `skills[].papeis` | **quem:** pré-seleciona a skill na proposta de cada agente (`produto`, `especificador`, `pesquisador`, `codificador`, `revisor`, `verificador`, `orquestrador`) — uma skill pode servir a vários |
 | `skills[].stack`, `skills[].deteccao` | **onde:** a stack da skill (ex.: `java 17`, `react`); com `deteccao`, a setup só a pré-marca se o repositório casar |
 | `skills[].passo` | **em que passo:** opcional — a skill assume o passo de um agente do Sabiá (`papel`: `especificador`, `codificador`), com o `para` e, opcional, o `agente` a quem delegar — ver [Passos](#passos) |
+| `customiza` | opcional: o toolkit é uma **cópia modificada** de outro (`toolkit`, a `versao` de onde saiu e as `mudancas`) — ver [Customização](#customização) |
 | `agentes[]` | agentes neutros do toolkit (nome, descrição, prompt, skills, subagentes); sem campo de permissão |
 | `steering[]` | regras da stack: vira `file://` nos agentes dos papéis indicados |
 | `comandos` | **proposta** para a seção Comandos do `sabia.md` quando o repositório não deixa claro; a pessoa confirma |
@@ -114,7 +115,8 @@ estão em [passos.md](../../sabia/references/passos.md).
   vai no `agentes.json` (`toolkits`: pasta, versão e sha usados; `passos`: toolkit, skill e se usa o agente) e na
   tabela **Passos de toolkit** do `sabia.md`.
 - **Agente neutro:** o toolkit traz só a definição (`agentes[]`) e o prompt em `.md`. O gerador cria o agente com
-  as regras do papel dono do passo, nunca mais que isso, e o liga como subagente do dono com o `para`; os
+  as regras do papel dono do passo, nunca mais que isso, mais as skills e os MCPs ligados ao dono (de outros
+  toolkits, como o `java`, e do projeto; não os subagentes), e o liga como subagente do dono com o `para`; os
   `subagentes` dele herdam o mesmo papel. Nome `sa-*`, caminho fora da pasta do toolkit, ou agente que não está em
   `agentes[]` → o gerador recusa e não grava nada.
 - A pasta `~/.sabia/toolkits/` é de leitura para todos os agentes.
@@ -139,6 +141,18 @@ Nenhum toolkit encontrado para o tipo detectado → diga isso uma vez, siga com 
 `sabia.md` (`Toolkits: nenhum — <tipo>`). Os agentes passam a depender do steering de tecnologia e do
 código vizinho (pattern grounding) — funciona, mas com mais revisão. Sugira à pessoa criar as skills da stack em
 `.kiro/skills/` (ou um toolkit em `.sabia/toolkits/<nome>/`) e rodar a setup em modo atualização depois.
+
+## Customização
+
+Um toolkit pode ser a **cópia modificada** de outro para uma casa ou projeto (ex.: `spring-batch-pab`, a partir do
+`spring-batch`). A cópia é completa por si — skills, agentes e passos próprios — e **não herda nada** da base: a base
+só aparece no campo `customiza`, para mostrar de onde veio e o que mudou.
+
+- **Um ou o outro:** a cópia substitui a base. Encontrou os dois → proponha só a cópia e mostre a base como
+  `↳ substituído por <cópia>`; nunca ligue os dois (skills e agentes repetidos).
+- **Visual:** no W5 e no `sabia toolkits listar`, a cópia aparece logo abaixo da base, com `↳`, a versão da base e as
+  `mudancas`. Base com versão mais nova que a do `customiza` → ⚠️ "a base mudou desde a cópia" (quem mantém a cópia
+  decide o que trazer).
 
 ## Atualização
 

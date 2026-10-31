@@ -30,5 +30,5 @@ Os passos ligados no projeto estão na tabela **Passos de toolkit** do `.sabia/s
   3. O dono confere o contrato e segue o fluxo. Fora do contrato → devolve uma vez com o que falta; de novo fora →
      trata como divergência (codificação) ou completa ele mesmo (especificação), e registra no `status.md`.
 
-O agente do toolkit é gerado com as permissões do papel dono, nunca mais que isso; o subagente dele herda o mesmo
-papel.
+O agente do toolkit é gerado com as permissões do papel dono, nunca mais que isso, e recebe as skills e os MCPs
+ligados ao dono (não os subagentes dele); o subagente dele herda o mesmo papel.

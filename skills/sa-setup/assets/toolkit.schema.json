@@ -32,6 +32,33 @@
       "type": "string",
       "minLength": 10
     },
+    "customiza": {
+      "type": "object",
+      "description": "Este toolkit é uma cópia modificada de outro (a base), completo por si: não herda nada da base e a substitui no projeto (instala-se um ou o outro). Serve para mostrar de onde veio e o que mudou.",
+      "required": [
+        "toolkit",
+        "versao"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "toolkit": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$",
+          "description": "Nome do toolkit base."
+        },
+        "versao": {
+          "type": "string",
+          "description": "Versão da base de onde a cópia saiu."
+        },
+        "mudancas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "O que muda em relação à base, em frases curtas."
+        }
+      }
+    },
     "tipos-de-projeto": {
       "type": "array",
       "minItems": 1,
@@ -161,7 +188,7 @@
     },
     "agentes": {
       "type": "array",
-      "description": "Agentes neutros do toolkit. O gerador cria cada um em cada alvo com as permissões do papel dono do passo que o usa (o subagente herda o papel de quem o chama); não há campo de permissão.",
+      "description": "Agentes neutros do toolkit. O gerador cria cada um em cada alvo com as permissões do papel dono do passo que o usa e as skills e os MCPs ligados ao dono (o subagente herda o papel de quem o chama); não há campo de permissão.",
       "items": {
         "type": "object",
         "required": [

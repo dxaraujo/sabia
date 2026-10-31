@@ -4,7 +4,7 @@ description: "Sabiá Dev role skill — starts or resumes a slice (fatia) alread
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # sa-desenvolver — Compromisso e início do código
