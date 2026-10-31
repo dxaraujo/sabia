@@ -224,11 +224,11 @@ Montagem do `pa` (só quando falta): um cartão por bloco, com o cabeçalho
 ## 🧭 Etapa 5 de 9 · Skills
 `●●●●◉○○○○` O que já existe para os agentes usarem. Na próxima etapa você escolhe, agente por agente.
 
-| # | Skill | Para quê | Origem | Toolkit | Stack |
-|---|---|---|---|---|---|
-| 1 | `<nome da skill>` | <início da description> | <projeto | usuário | power `<nome>`> | <`<nome>` 🔍 detectado | `<nome>` ↳ customiza `<base>` <versão> | —> | <`<stack>` 🔍 casa | `<stack>` | —> |
+| # | Skill | Para quê | Origem | Toolkit | Autor | Stack |
+|---|---|---|---|---|---|---|
+| 1 | `<nome da skill>` | <início da description> | <projeto | usuário | power `<nome>`> | <`<nome>` 🔍 detectado | `<nome>` ↳ customiza `<base>` <versão> | —> | <`<autor.nome>` (<autor.area>) | —> | <`<stack>` 🔍 casa | `<stack>` | —> |
 
-(se há toolkit com `customiza`) Logo abaixo da tabela, uma linha por cópia: `↳ <cópia> customiza <base> <versão>: <mudanças>`
+(se há toolkit com `customiza`) Logo abaixo da tabela, uma linha por cópia: `↳ <cópia> customiza <base> <versão>, por <autor.nome> (<autor.area>): <mudanças>`
 — com a base também presente, `<base>` fica fora (substituído pela cópia); base mais nova que a versão da cópia → ⚠️.
 
 (só se alguma skill traz `passo`) Passos de toolkit — a skill assume um passo do Sabiá; ligados na próxima etapa:

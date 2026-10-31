@@ -427,7 +427,10 @@ export function validarToolkit(pasta, nomeEsperado = null) {
   let m;
   try { m = JSON.parse(fs.readFileSync(f, "utf8")); } catch (e) { return [`toolkit.json inválido: ${e.message}`]; }
   const erros = [];
-  for (const c of ["nome", "versao", "descricao", "tipos-de-projeto", "skills"]) if (!(c in m)) erros.push(`falta o campo ${c}`);
+  for (const c of ["nome", "versao", "descricao", "autor", "tipos-de-projeto", "skills"]) if (!(c in m)) erros.push(`falta o campo ${c}`);
+  // quem fez responde pelo toolkit: nome e área aparecem no listar e na setup
+  if (m.autor && (typeof m.autor.nome !== "string" || typeof m.autor.area !== "string" || !m.autor.nome.trim() || !m.autor.area.trim()))
+    erros.push("autor: precisa de nome e area");
   const nomeOk = (n) => typeof n === "string" && /^[a-z0-9][a-z0-9-]*$/.test(n) && !n.startsWith("sa-");
   if (!nomeOk(m.nome)) erros.push(`nome inválido (kebab-case, sem sa-): ${m.nome}`);
   if (nomeEsperado && m.nome !== nomeEsperado) erros.push(`nome ${m.nome} ≠ ${nomeEsperado} do índice`);
@@ -463,7 +466,7 @@ export function lerIndice(fonte) {
   const m = JSON.parse(fs.readFileSync(path.join(raiz, ".claude-plugin", "marketplace.json"), "utf8"));
   return (m.plugins || []).map((p) => {
     const s = p.source;
-    const base = { nome: p.name, versao: p.version, descricao: p.description, customiza: p.customiza, indice: fonte };
+    const base = { nome: p.name, versao: p.version, descricao: p.description, customiza: p.customiza, autor: p.autor, indice: fonte };
     if (typeof s === "string") return { ...base, url: local ? path.resolve(raiz, dentro(s.replace(/^\.\//, ""), fonte)) : fonte, subpasta: local ? null : s.replace(/^\.\//, "") };
     if (s?.source === "github") return { ...base, url: `https://github.com/${s.repo}.git`, ref: s.ref, sha: s.sha };
     if (s?.source === "url") return { ...base, url: s.url, ref: s.ref, sha: s.sha };
@@ -581,28 +584,36 @@ export function listarToolkits(opcoes = {}) {
   const inv = lerInventario();
   const projeto = path.join(process.cwd(), ".sabia", "config", "agentes.json");
   const doProjeto = fs.existsSync(projeto) ? JSON.parse(fs.readFileSync(projeto, "utf8")).toolkits || {} : {};
+  // autor e customiza: do toolkit baixado (o toolkit.json) ou, sem ele, da entrada do índice
+  const manifesto = (n) => { const f = sabia("toolkits", n, "toolkit.json"); return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")) : {}; };
   const linhas = [], doIndice = {};
   for (const i of opcoes.indice ? [opcoes.indice] : indices()) {
     try {
-      for (const e of lerIndice(i)) (doIndice[e.nome] = e.customiza), linhas.push([e.nome, e.versao || "—", inv.toolkits[e.nome]?.versao || "—", doProjeto[e.nome]?.versao || "—", e.descricao || ""]);
+      for (const e of lerIndice(i)) {
+        doIndice[e.nome] = e;
+        linhas.push([e.nome, "", e.versao || "—", inv.toolkits[e.nome]?.versao || "—", doProjeto[e.nome]?.versao || "—", e.descricao || ""]);
+      }
     } catch (err) {
       ctx.log(`índice ${i}: ${err.message}`);
     }
   }
-  for (const [n, t] of Object.entries(inv.toolkits)) if (!linhas.some((l) => l[0] === n)) linhas.push([n, "—", t.versao, doProjeto[n]?.versao || "—", "(fora dos índices)"]);
-  // a customização logo abaixo da base, com ↳ e de onde veio: do toolkit baixado ou, sem ele, da entrada do índice
+  for (const [n, t] of Object.entries(inv.toolkits)) if (!linhas.some((l) => l[0] === n)) linhas.push([n, "", "—", t.versao, doProjeto[n]?.versao || "—", "(fora dos índices)"]);
+  for (const l of linhas) {
+    const a = manifesto(l[0]).autor ?? doIndice[l[0]]?.autor;
+    l[1] = a ? `${a.nome} (${a.area})` : "—";
+  }
+  // a customização logo abaixo da base, com ↳ e de onde veio
   for (const l of [...linhas]) {
-    const f = sabia("toolkits", l[0], "toolkit.json");
-    const c = (fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")).customiza : null) ?? doIndice[l[0]];
+    const c = manifesto(l[0]).customiza ?? doIndice[l[0]]?.customiza;
     if (!c) continue;
     linhas.splice(linhas.indexOf(l), 1);
     const i = linhas.findIndex((b) => b[0] === c.toolkit);
     // só a primeira mudança (quem customizou), como resumo; a lista inteira está no toolkit.json
-    l[4] = `customiza ${c.toolkit} ${c.versao}${c.mudancas?.length ? `: ${c.mudancas[0]}${c.mudancas.length > 1 ? "; …" : ""}` : ""}${l[4] ? " — " + l[4] : ""}`;
+    l[5] = `customiza ${c.toolkit} ${c.versao}${c.mudancas?.length ? `: ${c.mudancas[0]}${c.mudancas.length > 1 ? "; …" : ""}` : ""}${l[5] ? " — " + l[5] : ""}`;
     l[0] = `↳ ${l[0]}`;
     linhas.splice(i < 0 ? linhas.length : i + 1, 0, l);
   }
-  ctx.log(["| Toolkit | No índice | Instalado | Neste projeto | Descrição |", "|---|---|---|---|---|",
+  ctx.log(["| Toolkit | Autor | No índice | Instalado | Neste projeto | Descrição |", "|---|---|---|---|---|---|",
     ...linhas.map((l) => `| ${l.join(" | ")} |`)].join("\n"));
   return linhas;
 }

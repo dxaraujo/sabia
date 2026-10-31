@@ -4,7 +4,7 @@ description: "Skill for whoever does the Sustentação items that have no flow o
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "1.1.2"
+  version: "1.1.3"
 ---
 
 # sa-executar — Sustentação sem fluxo próprio

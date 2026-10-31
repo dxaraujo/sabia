@@ -8,6 +8,7 @@
     "nome",
     "versao",
     "descricao",
+    "autor",
     "tipos-de-projeto",
     "skills"
   ],
@@ -31,6 +32,29 @@
     "descricao": {
       "type": "string",
       "minLength": 10
+    },
+    "autor": {
+      "type": "object",
+      "description": "Quem fez o toolkit e responde por ele: aparece no sabia toolkits listar e na sa-setup.",
+      "required": [
+        "nome",
+        "area"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "nome": {
+          "type": "string",
+          "minLength": 3
+        },
+        "area": {
+          "type": "string",
+          "minLength": 2,
+          "description": "Área, equipe ou projeto responsável."
+        },
+        "email": {
+          "type": "string"
+        }
+      }
     },
     "customiza": {
       "type": "object",

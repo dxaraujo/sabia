@@ -60,6 +60,7 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
   "$schema": "https://raw.githubusercontent.com/dxaraujo/sabia/main/skills/sa-setup/assets/toolkit.schema.json",
   "nome": "spring-batch",
   "versao": "1.0.0",
+  "autor": { "nome": "<quem fez>", "area": "<área, equipe ou projeto>" },
   "descricao": "Jobs Spring Batch 5: steps chunk e tasklet, readers/writers JDBC, reexecução e testes de job",
   "tipos-de-projeto": ["batch"],
   "deteccao": {
@@ -99,6 +100,7 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
 | `skills[].papeis` | **quem:** pré-seleciona a skill na proposta de cada agente (`produto`, `especificador`, `pesquisador`, `codificador`, `revisor`, `verificador`, `orquestrador`) — uma skill pode servir a vários |
 | `skills[].stack`, `skills[].deteccao` | **onde:** a stack da skill (ex.: `java 17`, `react`); com `deteccao`, a setup só a pré-marca se o repositório casar |
 | `skills[].passo` | **em que passo:** opcional — a skill assume o passo de um agente do Sabiá (`papel`: `especificador`, `codificador`), com o `para` e, opcional, o `agente` a quem delegar — ver [Passos](#passos) |
+| `autor` | **obrigatório:** `nome` e `area` de quem fez e responde pelo toolkit (`email` opcional). Aparece no W5 e no `sabia toolkits listar`; toolkit sem autor é recusado |
 | `customiza` | opcional: o toolkit é uma **cópia modificada** de outro (`toolkit`, a `versao` de onde saiu e as `mudancas`) — ver [Customização](#customização) |
 | `agentes[]` | agentes neutros do toolkit (nome, descrição, prompt, skills, subagentes); sem campo de permissão |
 | `steering[]` | regras da stack: vira `file://` nos agentes dos papéis indicados |

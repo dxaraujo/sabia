@@ -126,7 +126,8 @@ function toolkit(base, mudar = {}) {
   return escrever(base, {
     "skills/batch/SKILL.md": "batch",
     "agentes/job.md": "job",
-    "toolkit.json": { nome: "batch-alfa", versao: "1.0.0", descricao: "toolkit fictício", "tipos-de-projeto": ["batch"],
+    "toolkit.json": { nome: "batch-alfa", versao: "1.0.0", descricao: "toolkit fictício", autor: { nome: "Ana Exemplo", area: "Equipe Alfa" },
+      "tipos-de-projeto": ["batch"],
       skills: [{ caminho: "skills/batch/SKILL.md", papeis: ["codificador"], passo: { papel: "codificador", para: "job", agente: "batch-job" } }],
       agentes: [{ nome: "batch-job", descricao: "codifica um job", prompt: "agentes/job.md", skills: ["skills/batch/SKILL.md"] }], ...mudar },
   });
@@ -143,6 +144,8 @@ test("valida o toolkit: nome, caminhos presos à pasta e referências", () => {
   assert.match(erros({ agentes: [] }), /agente batch-job não está em agentes/);
   assert.match(erros({ customiza: { toolkit: "batch-alfa" } }), /customiza/);
   assert.equal(erros({ customiza: { toolkit: "spring-alfa", versao: "1.0.0" } }), "");
+  assert.match(erros({ autor: undefined }), /falta o campo autor/);
+  assert.match(erros({ autor: { nome: "Ana" } }), /autor: precisa de nome e area/);
 });
 
 test("customização: cópia modificada da base, listada abaixo dela e recusada com a base já instalada", async () => {
@@ -156,13 +159,15 @@ test("customização: cópia modificada da base, listada abaixo dela e recusada 
   // sem nada baixado, a relação vem da entrada do índice
   const ix = path.join(indice, ".claude-plugin/marketplace.json"), m = JSON.parse(fs.readFileSync(ix, "utf8"));
   m.plugins[0].customiza = { toolkit: "batch-alfa", versao: "1.0.0" };
+  m.plugins[0].autor = { nome: "Bia Exemplo", area: "Casa" };
   fs.writeFileSync(ix, JSON.stringify(m));
-  assert.deepEqual(s.listarToolkits({ indice }).map((l) => l.slice(0, 1).concat(l[4])), [["batch-alfa", ""], ["↳ batch-alfa-casa", "customiza batch-alfa 1.0.0"]]);
+  assert.deepEqual(s.listarToolkits({ indice }).map((l) => [l[0], l[1], l[5]]), [["batch-alfa", "—", ""], ["↳ batch-alfa-casa", "Bia Exemplo (Casa)", "customiza batch-alfa 1.0.0"]]);
   await s.instalarToolkit("batch-alfa", { indice, alvo: "kiro" });
   await assert.rejects(s.instalarToolkit("batch-alfa-casa", { indice, alvo: "kiro" }), /batch-alfa-casa e batch-alfa são versões do mesmo toolkit/);
   const linhas = s.listarToolkits({ indice });
   assert.deepEqual(linhas.map((l) => l[0]), ["batch-alfa", "↳ batch-alfa-casa"]);
-  assert.match(linhas[1][4], /^customiza batch-alfa 1\.0\.0: customizações feitas pela casa; …/);
+  assert.match(linhas[1][5], /^customiza batch-alfa 1\.0\.0: customizações feitas pela casa; …/);
+  assert.equal(linhas[0][1], "Ana Exemplo (Equipe Alfa)");  // do toolkit baixado
 });
 
 test("toolkit pelo índice: baixa, instala nas ferramentas, atualiza e remove pelo inventário", async () => {
@@ -176,7 +181,7 @@ test("toolkit pelo índice: baixa, instala nas ferramentas, atualiza e remove pe
   assert.equal(fs.readFileSync(skill("claude", "batch"), "utf8"), "batch");
   assert.ok(!fs.existsSync(path.join(home, ".kiro")));  // o Kiro lê de ~/.sabia/toolkits
   const linhas = s.listarToolkits({ indice });
-  assert.deepEqual(linhas[0].slice(0, 3), ["batch-alfa", "1.0.0", "1.0.0"]);
+  assert.deepEqual([linhas[0][0], linhas[0][2], linhas[0][3]], ["batch-alfa", "1.0.0", "1.0.0"]);
 
   fs.writeFileSync(path.join(indice, "batch-alfa/skills/batch/SKILL.md"), "batch 2");
   respostas = ["s"];

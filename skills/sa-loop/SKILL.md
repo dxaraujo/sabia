@@ -4,7 +4,7 @@ description: "Autonomous (AFK) execution of several slices (fatias) of the Sabi�
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "1.1.2"
+  version: "1.1.3"
 ---
 
 # sa-loop — Fatias AFK até o PR

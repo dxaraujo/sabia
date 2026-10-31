@@ -4,7 +4,7 @@ description: "Closes a pronta slice (fatia) of the Sabiá flow (PR merged and re
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "1.1.2"
+  version: "1.1.3"
 ---
 
 # sa-consolidar — Documentação viva depois do merge
