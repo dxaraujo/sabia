@@ -4,7 +4,7 @@ description: "9-step wizard, in Brazilian Portuguese and with standardized cards
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "1.1.1"
+  version: "1.1.2"
 ---
 
 # sa-setup — Configurar o fluxo no projeto

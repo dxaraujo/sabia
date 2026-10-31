@@ -145,7 +145,7 @@ test("valida o toolkit: nome, caminhos presos à pasta e referências", () => {
   assert.equal(erros({ customiza: { toolkit: "spring-alfa", versao: "1.0.0" } }), "");
 });
 
-test("customização: cópia modificada da base, listada abaixo dela e com aviso se as duas forem instaladas", async () => {
+test("customização: cópia modificada da base, listada abaixo dela e recusada com a base já instalada", async () => {
   const indice = escrever(path.join(raiz, "indice-c"), {
     ".claude-plugin/marketplace.json": { name: "idx", plugins: [
       { name: "batch-alfa-casa", version: "1.1.0", source: "./casa" }, { name: "batch-alfa", version: "1.0.0", source: "./base" }] },
@@ -153,15 +153,16 @@ test("customização: cópia modificada da base, listada abaixo dela e com aviso
   toolkit(path.join(indice, "base"));
   toolkit(path.join(indice, "casa"), { nome: "batch-alfa-casa", versao: "1.1.0",
     customiza: { toolkit: "batch-alfa", versao: "1.0.0", mudancas: ["customizações feitas pela casa", "writers da casa"] } });
-  const log = [];
-  s.ctx.log = (x) => log.push(x);
+  // sem nada baixado, a relação vem da entrada do índice
+  const ix = path.join(indice, ".claude-plugin/marketplace.json"), m = JSON.parse(fs.readFileSync(ix, "utf8"));
+  m.plugins[0].customiza = { toolkit: "batch-alfa", versao: "1.0.0" };
+  fs.writeFileSync(ix, JSON.stringify(m));
+  assert.deepEqual(s.listarToolkits({ indice }).map((l) => l.slice(0, 1).concat(l[4])), [["batch-alfa", ""], ["↳ batch-alfa-casa", "customiza batch-alfa 1.0.0"]]);
   await s.instalarToolkit("batch-alfa", { indice, alvo: "kiro" });
-  await s.instalarToolkit("batch-alfa-casa", { indice, alvo: "kiro" });
-  assert.ok(log.some((l) => /aviso: batch-alfa-casa e batch-alfa são versões do mesmo toolkit/.test(l)));
+  await assert.rejects(s.instalarToolkit("batch-alfa-casa", { indice, alvo: "kiro" }), /batch-alfa-casa e batch-alfa são versões do mesmo toolkit/);
   const linhas = s.listarToolkits({ indice });
   assert.deepEqual(linhas.map((l) => l[0]), ["batch-alfa", "↳ batch-alfa-casa"]);
   assert.match(linhas[1][4], /^customiza batch-alfa 1\.0\.0: customizações feitas pela casa; …/);
-  s.ctx.log = () => {};
 });
 
 test("toolkit pelo índice: baixa, instala nas ferramentas, atualiza e remove pelo inventário", async () => {
@@ -205,14 +206,14 @@ test("a versão do CLI é a do framework (o instalar baixa a tag sabia-<versão 
   assert.equal(ler("./package.json"), ler("../plugin.json"));
 });
 
-test("banner: a saíra colorida ao lado do nome; sem cores, só o nome", () => {
+test("banner: o sabiá colorido ao lado do nome; sem cores, só o nome", () => {
   const sem = s.banner({ cores: false });
   assert.ok(!sem.includes("\x1b") && sem.includes("███████╗ █████╗"));
   for (const bits24 of [true, false]) {
     const com = s.banner({ cores: true, bits24 }).split("\n").slice(1);
     assert.equal(com.length, 9);
     assert.ok(com[0].includes(bits24 ? "\x1b[38;2;" : "\x1b[38;5;"));
-    // o nome começa na mesma coluna em todas as linhas, depois da ave
+    // o nome começa na mesma coluna em todas as linhas, depois do sabiá
     const nome = sem.split("\n").slice(1), limpo = com.map((l) => [...l.replace(/\x1b\[[0-9;]*m/g, "")]);
     assert.equal(new Set(nome.map((n, i) => limpo[i].length - [...n].length)).size, 1);
   }

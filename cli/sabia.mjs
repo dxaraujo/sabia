@@ -24,8 +24,8 @@ const NOME = [
   "███████║██║  ██║██████╔╝██║██║  ██║",
   "╚══════╝╚═╝  ╚═╝╚═════╝ ╚═╝╚═╝  ╚═╝",
 ];
-// a saíra do sabia-site/logo.svg: as sete facetas (uma por etapa) e o bico, cinza para aparecer no fundo escuro
-const SAIRA = [
+// o sabiá do sabia-site/logo.svg: as sete facetas (uma por etapa) e o bico, cinza para aparecer no fundo escuro
+const SABIA = [
   ["#00BBCE", [56, 57, 70, 42, 90, 38, 104, 46, 106, 62, 84, 74, 57, 70]],
   ["#B2D235", [84, 74, 106, 62, 118, 74, 116, 92, 92, 94]],
   ["#0786E3", [57, 70, 84, 74, 92, 94, 86, 122, 70, 112, 60, 92]],
@@ -36,22 +36,22 @@ const SAIRA = [
   ["#8A8F8C", [36, 64, 56, 57, 57, 70]],
 ];
 
-function naAve(x, y, p) {
+function noSabia(x, y, p) {
   let d = false;
   for (let i = 0, j = p.length - 2; i < p.length; j = i, i += 2)
     if (p[i + 1] > y !== p[j + 1] > y && x < ((p[j] - p[i]) * (y - p[i + 1])) / (p[j + 1] - p[i + 1]) + p[i]) d = !d;
   return d;
 }
 
-/** A saíra em meio-blocos coloridos: cada caractere são dois pixels de `passo` unidades do SVG. */
-function saira(cor, passo = 13) {
-  // pixel: a cor que mais aparece em 4x4 amostras; vazio se menos da metade cai na ave
+/** O sabiá em meio-blocos coloridos: cada caractere são dois pixels de `passo` unidades do SVG. */
+function desenharSabia(cor, passo = 13) {
+  // pixel: a cor que mais aparece em 4x4 amostras; vazio se menos da metade cai no sabiá
   const pixel = (cx, cy) => {
     if (Math.hypot(cx - 82, cy - 54) < passo * 0.55) return "#0E1210"; // o olho
     const n = {};
     for (let i = 0; i < 16; i++) {
       const x = cx + ((i % 4) + 0.5 - 2) * (passo / 4), y = cy + (Math.floor(i / 4) + 0.5 - 2) * (passo / 4);
-      const c = SAIRA.find(([, p]) => naAve(x, y, p))?.[0];
+      const c = SABIA.find(([, p]) => noSabia(x, y, p))?.[0];
       if (c) n[c] = (n[c] || 0) + 1;
     }
     const total = Object.values(n).reduce((a, b) => a + b, 0);
@@ -70,16 +70,16 @@ function saira(cor, passo = 13) {
   return linhas;
 }
 
-/** Sem terminal ou com NO_COLOR, só o nome; senão a saíra ao lado, em 24 bits ou nos 256 tons. */
+/** Sem terminal ou com NO_COLOR, só o nome; senão o sabiá ao lado, em 24 bits ou nos 256 tons. */
 export function banner({ cores = process.stdout.isTTY && !process.env.NO_COLOR, bits24 = /truecolor|24bit/.test(process.env.COLORTERM ?? "") } = {}) {
   if (!cores) return "\n" + NOME.join("\n");
   const cor = (h, fundo) => {
     const [r, g, b] = [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
     return `\x1b[${fundo ? 48 : 38};` + (bits24 ? `2;${r};${g};${b}m` : `5;${16 + 36 * Math.round(r / 51) + 6 * Math.round(g / 51) + Math.round(b / 51)}m`);
   };
-  const ave = saira(cor), largura = [...ave[0]].filter((c) => " ▀▄".includes(c)).length;
+  const desenho = desenharSabia(cor), largura = [...desenho[0]].filter((c) => " ▀▄".includes(c)).length;
   const texto = [...NOME.map((l) => `\x1b[1m${l}\x1b[0m`), "", `\x1b[2mengenharia agêntica, da ideia ao resultado aceito  v${VERSAO}\x1b[0m`];
-  return "\n" + texto.map((t, i) => (ave[i] ?? " ".repeat(largura)) + "  " + t).join("\n");
+  return "\n" + texto.map((t, i) => (desenho[i] ?? " ".repeat(largura)) + "  " + t).join("\n");
 }
 const BANNER = banner();
 
@@ -463,7 +463,7 @@ export function lerIndice(fonte) {
   const m = JSON.parse(fs.readFileSync(path.join(raiz, ".claude-plugin", "marketplace.json"), "utf8"));
   return (m.plugins || []).map((p) => {
     const s = p.source;
-    const base = { nome: p.name, versao: p.version, descricao: p.description, indice: fonte };
+    const base = { nome: p.name, versao: p.version, descricao: p.description, customiza: p.customiza, indice: fonte };
     if (typeof s === "string") return { ...base, url: local ? path.resolve(raiz, dentro(s.replace(/^\.\//, ""), fonte)) : fonte, subpasta: local ? null : s.replace(/^\.\//, "") };
     if (s?.source === "github") return { ...base, url: `https://github.com/${s.repo}.git`, ref: s.ref, sha: s.sha };
     if (s?.source === "url") return { ...base, url: s.url, ref: s.ref, sha: s.sha };
@@ -518,7 +518,8 @@ export async function instalarToolkit(alvo, opcoes = {}) {
   // a customização é uma cópia modificada da base: as duas juntas no projeto dão skills e agentes repetidos
   const familia = m.customiza?.toolkit ?? baixado;
   const rival = Object.keys(inv.toolkits).find((n) => n !== baixado && (baseDe(n) ?? n) === familia);
-  if (rival) ctx.log(`aviso: ${baixado} e ${rival} são versões do mesmo toolkit (base ${familia}); use um só: sabia toolkits remover ${rival}`);
+  // mesmos nomes de skill e de agente: as duas no usuário se sobrescreveriam
+  if (rival) throw new Error(`${baixado} e ${rival} são versões do mesmo toolkit (base ${familia}); instale um só: sabia toolkits remover ${rival}`);
   const tk = (inv.toolkits[baixado] ||= { versao: m.versao, alvos: {} });
   const alvos = opcoes.alvo ? opcoes.alvo.split(",") : Object.keys(inv.alvos).length ? Object.keys(inv.alvos) : await escolherAlvos(opcoes);
   try {
@@ -580,19 +581,19 @@ export function listarToolkits(opcoes = {}) {
   const inv = lerInventario();
   const projeto = path.join(process.cwd(), ".sabia", "config", "agentes.json");
   const doProjeto = fs.existsSync(projeto) ? JSON.parse(fs.readFileSync(projeto, "utf8")).toolkits || {} : {};
-  const linhas = [];
+  const linhas = [], doIndice = {};
   for (const i of opcoes.indice ? [opcoes.indice] : indices()) {
     try {
-      for (const e of lerIndice(i)) linhas.push([e.nome, e.versao || "—", inv.toolkits[e.nome]?.versao || "—", doProjeto[e.nome]?.versao || "—", e.descricao || ""]);
+      for (const e of lerIndice(i)) (doIndice[e.nome] = e.customiza), linhas.push([e.nome, e.versao || "—", inv.toolkits[e.nome]?.versao || "—", doProjeto[e.nome]?.versao || "—", e.descricao || ""]);
     } catch (err) {
       ctx.log(`índice ${i}: ${err.message}`);
     }
   }
   for (const [n, t] of Object.entries(inv.toolkits)) if (!linhas.some((l) => l[0] === n)) linhas.push([n, "—", t.versao, doProjeto[n]?.versao || "—", "(fora dos índices)"]);
-  // a customização logo abaixo da base, com ↳ e de onde veio
+  // a customização logo abaixo da base, com ↳ e de onde veio: do toolkit baixado ou, sem ele, da entrada do índice
   for (const l of [...linhas]) {
     const f = sabia("toolkits", l[0], "toolkit.json");
-    const c = fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")).customiza : null;
+    const c = (fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")).customiza : null) ?? doIndice[l[0]];
     if (!c) continue;
     linhas.splice(linhas.indexOf(l), 1);
     const i = linhas.findIndex((b) => b[0] === c.toolkit);

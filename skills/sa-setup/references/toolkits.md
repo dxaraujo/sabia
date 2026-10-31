@@ -148,8 +148,10 @@ Um toolkit pode ser a **cópia modificada** de outro para uma casa ou projeto (e
 `spring-batch`). A cópia é completa por si — skills, agentes e passos próprios — e **não herda nada** da base: a base
 só aparece no campo `customiza`, para mostrar de onde veio e o que mudou.
 
-- **Um ou o outro:** a cópia substitui a base. Encontrou os dois → proponha só a cópia e mostre a base como
-  `↳ substituído por <cópia>`; nunca ligue os dois (skills e agentes repetidos).
+- **Mesmos nomes:** a cópia mantém os nomes de skill, de agente e de reference da base (ex.: a skill
+  `spring-batch` e o agente `spring-batch-job` nos dois). O que é só dela tem prefixo próprio (ex.: `pab-*.md`).
+- **Um ou o outro:** a cópia substitui a base, e o CLI recusa instalar as duas. Encontrou os dois → proponha só a
+  cópia e mostre a base como `↳ substituído por <cópia>`; nunca ligue os dois.
 - **Visual:** no W5 e no `sabia toolkits listar`, a cópia aparece logo abaixo da base, com `↳`, a versão da base e as
   `mudancas`. Base com versão mais nova que a do `customiza` → ⚠️ "a base mudou desde a cópia" (quem mantém a cópia
   decide o que trazer).

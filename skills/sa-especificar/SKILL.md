@@ -4,7 +4,7 @@ description: "Skill for the Especificador (specifier) role in the Sabiá flow �
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "1.1.1"
+  version: "1.1.2"
 ---
 
 # sa-especificar — Especificação de épico
