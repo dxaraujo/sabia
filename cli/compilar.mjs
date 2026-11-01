@@ -234,10 +234,11 @@ const italico = (resumo) => (resumo ? `_${resumo}_\n\n` : "");
 
 const NO_PROJETO = `## No projeto
 
-Uma vez, no início: liste \`.sabia/fluxo/\` e \`.sabia/padrao/\` na raiz do projeto. Não existem → ignore esta seção.
-Existem → todo arquivo \`…/skills/<skill>/references/<fluxo>/<passo>.md\` que for ler (de qualquer skill) vale como
-\`.sabia/fluxo/<skill>/<fluxo>/passos/<passo>.md\` se este estiver na lista; \`…/skills/<skill>/references/padrao/<nome>.md\`
-vale como \`.sabia/padrao/<skill>/<nome>.md\`. Com agente do Sabiá, o prompt já lista as trocas: siga o prompt.
+Antes de ler o arquivo de um passo (\`…/skills/<skill>/references/<fluxo>/<passo>.md\`, de qualquer skill), tente abrir
+direto \`.sabia/fluxo/<skill>/<fluxo>/passos/<passo>.md\` na raiz do projeto: se existir, vale ele; senão, o da skill.
+O mesmo para um padrão: \`.sabia/padrao/<skill>/<nome>.md\` no lugar de \`…/references/padrao/<nome>.md\`. Abra pelo
+caminho; não liste a pasta (a busca não vê pastas ocultas). Com agente do Sabiá, o prompt lista também os passos inseridos
+e removidos nos fluxos de que ele é dono.
 `;
 
 /** O SKILL.md compilado de uma skill de fluxo. */

@@ -1,5 +1,5 @@
 {
-  "$comment": "Fonte única dos agentes do Sabiá. O scripts/gerar_agentes.py junta isto com o .sabia/config/agentes.json do projeto e grava .kiro/agents/sa-<papel>.json (Kiro IDE e CLI V3). Protege só o framework: `harness` nenhum agente escreve; dos `registros`, cada papel escreve só os que lista. Regras em references/agentes.md. Padrão com {{X}} cujo valor no projeto é null sai da saída.",
+  "$comment": "Fonte única dos agentes do Sabiá. O scripts/gerar_agentes.py junta isto com o .sabia/config/agentes.json do projeto e grava .kiro/agents/sa-<papel>.json (Kiro IDE e CLI V3). Protege só o framework: `harness` nenhum agente escreve; dos `registros`, cada papel escreve só os que lista. Regras em references/agentes.md. Shell `trabalho` = liberado (`*`), menos o `negar` e o push de cada papel. `harness_libera`: o que sai do harness só para o papel (o sa-produto grava a seção Regras aprendidas do sabia.md). Padrão com {{X}} cujo valor no projeto é null sai da saída.",
   "mcp_do_power": {
     "elm": ["elm_status", "elm_ler_wi", "elm_listar_wi", "elm_criar_wi", "elm_atualizar_wi",
         "elm_transicao", "elm_comentar", "elm_anexo", "elm_horas", "elm_lancar_horas",
@@ -34,17 +34,15 @@
     "creditos": {
       "comandos": ["uv run --no-project python *sa-status/scripts/creditos.py*"]
     },
-    "git-escrita": {
-      "comandos": ["git add *", "git commit *", "git fetch*", "git pull --ff-only*", "git switch *"],
-      "exceto": ["* -f*", "* --ff", "* --ff *"]
-    },
     "negar": ["git -C *", "git -c *", "*git merge*", "*git rebase*", "*git pull*--rebase*",
         "*git pull*--no-ff*", "*git commit* -n", "*git commit* -n *", "*--discard-changes*",
         "*git reset*--hard*", "*git clean*", "*git stash*", "*git checkout -- *",
         "*git checkout .*", "*git restore *", "*git worktree remove*", "*git branch*-D*",
         "*git branch*-M*", "*--force*", "*--delete*", "*--no-verify*", "*--upload-pack*",
-        "*--receive-pack*", "*gh pr merge*", "*glab mr merge*", "*rm -rf*", "*rm -fr*",
-        "*.env*", "*.ssh/*", "*.aws/*", "*.config/mcp-*", "*.pem*", "*.key", "*.key *",
+        "*--receive-pack*", "*gh pr merge*", "*glab mr merge*", "*rm -rf*", "*rm -fr*", "*git switch* -f*", "*git checkout* -f*", "*git branch* -f*",
+        "*.kiro/agents*", "*.kiro/settings*", "*.opencode/*", "*opencode.json*", "*.sabia/config*", "*.sabia/fluxo/*",
+        "*.sabia/padrao/*",
+        "*.env*", "*.ssh*", "*.aws*", "*.config/mcp-*", "*.pem*", "*.key", "*.key *",
         "*{{BUNDLE}}*"],
     "push-perigoso": ["*git push* -f*", "*git push* +*", "*git push* :*", "*git push*--mirror*",
         "*git push*--all*", "*git push*--prune*", "*git push", "*git push origin",
@@ -54,7 +52,7 @@
   "niveis_shell": {
     "nenhum": [],
     "leitura": ["git-leitura", "worktree", "creditos"],
-    "trabalho": ["git-leitura", "worktree", "creditos", "git-escrita"]
+    "trabalho": "*"
   },
   "ler": {
     "permitir": ["./**", "{{POWER}}/**", "~/.sabia/toolkits/**"],
@@ -63,7 +61,7 @@
         "~/.config/mcp-gitlabpr/**", "{{BUNDLE}}/**"]
   },
   "harness": ["**/.sabia/config/**", "**/.sabia/sabia.md", "**/.sabia/http.sh",
-      "**/.sabia/verificar.sh", "**/.kiro/steering/sabia.md", "**/.kiro/agents/**",
+      "**/.sabia/fluxo/**", "**/.sabia/padrao/**", "**/.kiro/steering/sabia.md", "**/.kiro/agents/**",
       "**/.kiro/settings/**", "**/.claude/**", "**/.opencode/**", "**/opencode.json",
       "**/AGENTS.md", "**/.git/**", "**/.git", ".sabia/local/wt/*/{{PRODUTO}}/**"],
   "registros": {
@@ -78,6 +76,7 @@
       "skills": ["sa-triar", "sa-entrevistar", "sa-planejamento", "sa-atender", "sa-executar",
           "sa-consolidar", "sa-aprender", "sa-iniciar", "sa-status"],
       "subagentes": ["sa-pesquisador"],
+      "harness_libera": [".sabia/sabia.md"],
       "escrita": "projeto",
       "registros": ["backlog", "sprints", "epicos"],
       "shell": "trabalho",
@@ -120,7 +119,7 @@
       "registros": ["backlog", "sprints"],
       "shell": "trabalho",
       "shell_permitir": ["uuidgen*"],
-      "shell_perguntar": ["git reset --keep origin/*"],
+      "shell_perguntar": ["*git reset --keep origin/*"],
       "push": "perguntar",
       "mcp_libera": ["+elm-leitura", "+gitlab-leitura"],
       "mcp_pergunta": ["+elm-tarefa", "elm/elm_criar_wi", "elm/elm_atualizar_wi", "elm/elm_ligar",
@@ -145,7 +144,7 @@
       "escrita": "projeto",
       "registros": [],
       "shell": "trabalho",
-      "shell_perguntar": ["curl *", "wget *"],
+      "shell_perguntar": ["*curl *", "*wget *"],
       "shell_negar": ["*git push* {{BASE}}", "*git push* {{BASE}} *"],
       "push": "perguntar",
       "mcp_libera": ["+elm-leitura"],
@@ -160,7 +159,7 @@
       "registros": ["backlog", "sprints"],
       "shell": "trabalho",
       "shell_permitir": ["uuidgen*", "git worktree add .sabia/local/wt/*"],
-      "shell_perguntar": ["git reset --keep origin/*"],
+      "shell_perguntar": ["*git reset --keep origin/*"],
       "shell_negar": ["*git worktree add*..*"],
       "push": "loop",
       "mcp_libera": ["+elm-leitura", "+gitlab-leitura"],

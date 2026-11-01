@@ -1,26 +1,36 @@
 """Gera os agentes do Sabiá a partir de assets/agents/papeis.json, dos prompts assets/agents/sa-<papel>.md e da
-configuração do projeto em .sabia/config/agentes.json, para cada alvo: kiro (.kiro/agents/*.json, IDE e CLI V3),
-opencode (.opencode/agents/*.md) e claude (.claude/agents/*.md e as regras de proteção no .claude/settings.json).
+configuração do projeto em .sabia/config/agentes.json, para cada alvo: kiro (.kiro/agents/*.json, motor V3: IDE e
+`kiro-cli --agent-engine v3`) e opencode (.opencode/agents/*.md). Lê os mestres dos fluxos no framework instalado
+(~/.sabia/framework/fluxo/, ou --framework) e o override do projeto (.sabia/fluxo/): o agente dono de cada fluxo
+recebe no prompt só o que o projeto mudou (o delta), e todo agente a regra de chamada entre fluxos.
 
     uv run --no-project python gerar_agentes.py --projeto <raiz>            # só mostra o diff e a tabela
     uv run --no-project python gerar_agentes.py --projeto <raiz> --gravar   # grava (só depois do "ok" da pessoa)
-    ... --alvo kiro,opencode,claude                                         # padrão: `alvos` do agentes.json, ou kiro
+    ... --alvo kiro,opencode                                                # padrão: `alvos` do agentes.json, ou kiro
+    ... --framework <dir>                                                   # padrão: ~/.sabia/framework
 
 Sai com 1 se algum caminho citado não existe ou sobrou um {{…}} (nada é gravado). Termina com a tabela do que
 cada agente recebeu (skills, MCPs, ELM, subagentes, push), lida dos agentes gerados.
 """
 import argparse
 import difflib
+import hashlib
 import json
 import re
 import sys
 from pathlib import Path
 
 ASSETS = Path(__file__).resolve().parent.parent / "assets" / "agents"
-ALVOS = ("kiro", "opencode", "claude")
+ALVOS = ("kiro", "opencode")
 # shortcut: pasta fixa das skills do Sabiá no opencode (onde o CLI as copia); se o CLI ganhar --escopo projeto, vira config
 POWER_OPENCODE = "~/.config/opencode"
 PH = re.compile(r"\{\{([A-Z_]+)\}\}")
+FM = re.compile(r"\A---\n(.*?)\n---\n", re.S)
+# o gancho de cada papel dos toolkits 1.x (passo.papel); na 2.0 o toolkit diz o passo pelo id
+GANCHO_1X = {"desenvolvedor": "sa-codificar.codificar.tarefa", "especificador": "sa-prd.prd.escrever"}
+CHAMADA = ("Entre fluxos (colunas Chama e Saídas da tabela de cada fluxo no SKILL.md): chama **em linha** → rode você mesmo o"
+           " fluxo chamado e volte ao passo; chama **subagente** → chame esse agente e continue com a resposta (sem ele,"
+           " carregue a skill do fluxo); **passa a** → este fluxo termina: diga a próxima (o agente dono do outro fluxo) e pare.")
 
 
 def expandir(itens, grupos):
@@ -60,7 +70,157 @@ def dentro(caminho, toolkit):
     return caminho
 
 
-def passos(projeto, cfg):
+def _fm(texto, arquivo=""):
+    m = FM.match(texto)
+    try:
+        return json.loads(m.group(1)) if m else {}
+    except ValueError as e:
+        raise ValueError(f"{arquivo}: front-matter inválido ({e})") from None
+
+
+def sha12(arquivo):
+    """A `base` de uma cópia: o sha256 (12) do arquivo-fonte no framework, com o front-matter."""
+    return hashlib.sha256(Path(arquivo).read_bytes()).hexdigest()[:12]
+
+
+def ler_fluxos(fw):
+    """Os mestres do framework instalado: {"sa-x.f": {skill, fluxo, dono, passos, dir}}. Sem fluxo/ (1.x), vazio."""
+    out = {}
+    for m in sorted((fw / "fluxo").glob("*/*/*.md")) if (fw / "fluxo").is_dir() else []:
+        if m.stem == m.parent.name:
+            d = _fm(m.read_text(encoding="utf-8"), m)
+            out[f"{m.parts[-3]}.{m.stem}"] = {"skill": m.parts[-3], "fluxo": m.stem, "dono": d.get("dono"),
+                                              "passos": d.get("passos", []), "dir": m.parent}
+    return out
+
+
+def gancho(ext, fluxos, toolkit):
+    """(papel dono, id do passo) do desvio de um toolkit: o passo tem de existir e aceitar desvio."""
+    if "passo" in ext:
+        skill, fluxo, pid = (ext["passo"].split(".") + [None, None])[:3]
+        fl = fluxos.get(f"{skill}.{fluxo}")
+        x = next((y for y in fl["passos"] if y["id"] == pid), None) if fl else None
+        if x is None:
+            raise ValueError(f"toolkit {toolkit}: o passo {ext['passo']} não existe no framework")
+        if not x.get("desvio"):
+            raise ValueError(f"toolkit {toolkit}: o passo {ext['passo']} não aceita desvio de toolkit")
+        return fl["dono"].removeprefix("sa-"), ext["passo"]
+    # shortcut: toolkit 1.x (passo.papel, e "codificador" antes do renome); vira erro quando os toolkits saírem na 2.0
+    papel = {"codificador": "desenvolvedor"}.get(ext.get("papel"), ext.get("papel"))
+    if papel not in GANCHO_1X:
+        raise ValueError(f"toolkit {toolkit}: o papel {papel} não tem passo que aceite desvio")
+    return papel, GANCHO_1X[papel]
+
+
+ID = re.compile(r"[a-z][a-z0-9-]*")
+
+
+def override(projeto, fw, fluxos):
+    """O que o projeto mudou: ({"sa-x.f": [linhas do delta]}, [linhas dos padrões], avisos). Recusa (ValueError) o
+    override que o compilador e o agente não entenderiam: arquivo órfão, operação desconhecida, trava liberada."""
+    delta, padroes, avisos, erros = {}, [], [], []
+    ler = lambda f: _fm(f.read_text(encoding="utf-8"), f.relative_to(projeto))
+
+    def com_base(f, original, rotulo):
+        b = ler(f).get("base")
+        if not b:
+            erros.append(f"{f.relative_to(projeto)}: sem `base` (crie a cópia pela setup: \"customizar {rotulo}\")")
+        elif b != sha12(original):
+            avisos.append(f"{f.relative_to(projeto)}: a base mudou desde a cópia ({b} → {sha12(original)}): compare e funda à mão")
+
+    tem = [f for d in (".sabia/fluxo", ".sabia/padrao") if (projeto / d).is_dir() for f in (projeto / d).rglob("*") if f.is_file()]
+    if tem and not fluxos:
+        raise ValueError(f"o projeto tem override em .sabia/fluxo ou .sabia/padrao, mas {fw} não tem fluxo/ (Sabiá 1.x ou "
+                         "ausente): rode `sabia instalar` ou passe --framework")
+    por_fluxo = {}
+    for f in sorted(tem):
+        rel = f.relative_to(projeto).parts[1:]  # ("fluxo"|"padrao", ...)
+        if f.suffix != ".md":
+            erros.append(f"{f.relative_to(projeto)}: só arquivos .md")
+        elif rel[0] == "padrao":
+            original = fw / "padrao" / Path(*rel[1:])
+            if len(rel) != 3 or not original.exists():
+                erros.append(f"{f.relative_to(projeto)}: não é padrão do Sabiá")
+            else:
+                com_base(f, original, f"padrão {rel[1]}/{rel[2]}")
+                padroes.append(f"- padrão `{rel[1]}/{rel[2]}`: `.sabia/padrao/{rel[1]}/{rel[2]}` (no lugar do da skill)")
+        elif (q := ".".join(rel[1:3]) if len(rel) >= 4 else None) not in fluxos:
+            erros.append(f"{f.relative_to(projeto)}: não é de um fluxo do Sabiá")
+        else:
+            por_fluxo.setdefault(q, []).append((rel[3:], f))
+    for q, arqs in por_fluxo.items():
+        fl, linhas = fluxos[q], []
+        ids = [x["id"] for x in fl["passos"]]
+        mestre = next((f for r, f in arqs if r == (f"{fl['fluxo']}.md",)), None)
+        ops = ler(mestre) if mestre else {}
+        if fora := sorted(set(ops) - {"inserir", "remover", "liberar"}):
+            erros.append(f"{q}: no {fl['fluxo']}.md do projeto só valem inserir, remover e liberar (não {', '.join(fora)})")
+        if ops.get("liberar"):
+            erros.append(f"{q}: nenhuma trava pode ser liberada na 2.0 ({ops['liberar']})")
+        ins, rem = ops.get("inserir", []), ops.get("remover", [])
+        if not isinstance(ins, list) or not all(isinstance(o, dict) for o in ins) or not isinstance(rem, list):
+            erros.append(f"{q}: inserir é uma lista de {{id, depois}} e remover uma lista de ids")
+            ins, rem = [], []
+        removidos = set(rem)
+        for r in rem:
+            x = next((y for y in fl["passos"] if y["id"] == r), None)
+            if not x or not x.get("removivel") or x.get("travas"):
+                erros.append(f"{q}: o passo {r} não pode ser removido (só passo removivel e sem trava)")
+            else:
+                linhas.append(f"- passo `{r}`: removido neste projeto")
+        novos = [o.get("id") for o in ins]
+        inseridos = {}
+        for o in ins:
+            i, depois = o.get("id"), o.get("depois")
+            if not isinstance(i, str) or not ID.fullmatch(i) or i in ids or novos.count(i) > 1:
+                erros.append(f"{q}: inserir {i}: id inválido, repetido ou que já existe no fluxo")
+            elif depois not in ids + novos or depois in removidos or depois == i:
+                erros.append(f"{q}: inserir {i} depois de {depois}: o 'depois' não existe (ou foi removido)")
+            else:
+                inseridos[i] = depois
+        visto = set()
+        for i in inseridos:  # sem ciclo: seguindo os 'depois', chega-se a um passo do fluxo
+            cadeia, k = set(), i
+            while k in inseridos and k not in cadeia:
+                cadeia.add(k); k = inseridos[k]
+            if k in inseridos and i not in visto:
+                erros.append(f"{q}: inserir em ciclo ({', '.join(sorted(cadeia))})")
+                visto |= cadeia
+        for r, f in arqs:
+            if r == (f"{fl['fluxo']}.md",):
+                continue
+            pid = r[1].removesuffix(".md") if len(r) == 2 and r[0] == "passos" else None
+            caminho = f".sabia/fluxo/{fl['skill']}/{fl['fluxo']}/passos/{pid}.md"
+            if pid is None:
+                erros.append(f"{f.relative_to(projeto)}: fora de passos/")
+            elif pid in removidos:
+                erros.append(f"{caminho}: o passo foi removido no {fl['fluxo']}.md (apague a cópia ou não o remova)")
+            elif pid in ids:
+                com_base(f, fl["dir"] / "passos" / f"{pid}.md", f"{q}.{pid}")
+                linhas.append(f"- passo `{pid}`: leia `{caminho}` (no lugar do da skill)")
+            elif pid in inseridos:
+                linhas.append(f"- passo `{pid}` (inserido depois de `{inseridos[pid]}`): `{caminho}`")
+            else:
+                erros.append(f"{caminho}: não é passo de {q} (passo novo → declare em `inserir` no {fl['fluxo']}.md)")
+        if falta := [i for i in inseridos if not (projeto / f".sabia/fluxo/{fl['skill']}/{fl['fluxo']}/passos/{i}.md").is_file()]:
+            erros.append(f"{q}: inserido sem arquivo: {', '.join(falta)}")
+        if linhas:
+            delta[q] = linhas
+    if erros:
+        raise ValueError("override do projeto recusado (nada foi gravado):\n" + "\n".join(erros))
+    return delta, padroes, avisos
+
+
+def texto_fluxos(nome, fluxos, delta, padroes):
+    """O delta no prompt: os fluxos de que o agente é dono e que o projeto mudou (D1), e os padrões trocados, para todos
+    (um padrão é citado por fluxos de vários donos)."""
+    blocos = [f"Fluxo `{q}`:\n" + "\n".join(delta[q]) for q, fl in fluxos.items() if fl["dono"] == f"sa-{nome}" and q in delta]
+    if padroes:
+        blocos.append("\n".join(padroes))
+    return ("O que este projeto mudou (vale sobre o SKILL.md):\n" + "\n".join(blocos)) if blocos else ""
+
+
+def passos(projeto, cfg, fluxos=None):
     """Resolve os `passos` do agentes.json pelas skills com `passo` dos toolkit.json: por papel dono, as skills e os
     subagentes (com o `para`) que ele ganha; e os agentes do toolkit a gerar (com os subagentes deles), cada um com
     o papel do dono."""
@@ -74,11 +234,12 @@ def passos(projeto, cfg):
         ext = next((x["passo"] for x in man.get("skills", []) if x["caminho"] == e["skill"] and x.get("passo")), None)
         if ext is None:
             raise ValueError(f"toolkit {e['toolkit']}: não há skill com `passo` em {e['skill']}")
-        dono = por_papel.setdefault(ext["papel"], {"skills": [], "subagentes": [], "passos": []})
+        papel, pid = gancho(ext, fluxos or {}, e["toolkit"])
+        dono = por_papel.setdefault(papel, {"skills": [], "subagentes": [], "passos": []})
         dono["skills"].append(f"skill://{pasta}/{dentro(e['skill'], e['toolkit'])}")
         com_agente = bool(e.get("agente") and ext.get("agente"))
-        dono["passos"].append({"skill": Path(e["skill"]).parent.name, "para": ext["para"],
-                               "agente": ext["agente"] if com_agente else None})
+        dono["passos"].append({"skill": Path(e["skill"]).parent.name, "para": ext["para"], "passo": pid,
+                               "arquivos": ext.get("arquivos", []), "agente": ext["agente"] if com_agente else None})
         if not com_agente:
             continue
         dono["subagentes"].append({"nome": ext["agente"], "para": ext["para"]})
@@ -90,7 +251,7 @@ def passos(projeto, cfg):
             if n.startswith("sa-") or n not in defs:
                 raise ValueError(f"toolkit {e['toolkit']}: agente {n} " + ("não pode começar com sa-" if n.startswith("sa-") else "não está em `agentes`"))
             d = defs[n]
-            do_toolkit[n] = {"papel": ext["papel"], "nome": n, "descricao": d["descricao"],
+            do_toolkit[n] = {"papel": papel, "nome": n, "descricao": d["descricao"],
                              "prompt": (real / dentro(d["prompt"], e["toolkit"])).read_text(encoding="utf-8"),
                              "skills": [f"skill://{pasta}/{dentro(x, e['toolkit'])}" for x in d.get("skills", [])],
                              "subagentes": d.get("subagentes", [])}
@@ -99,17 +260,23 @@ def passos(projeto, cfg):
 
 
 def texto_passos(papel, passos):
-    """Os passos de toolkit no prompt do dono: a configuração decide, nada é marcado no status.md nem no tasks.md."""
+    """Os desvios de toolkit no prompt do dono: a configuração decide, nada é marcado no status.md nem no tasks.md."""
     if not passos:
         return ""
-    onde = {"especificador": "na escrita do PRD (3.2 da `sa-prd`)", "desenvolvedor": "em cada tarefa do `tasks.md`"}.get(papel, "no passo")
-    regras = [f"`{x['para']}` → delegue ao subagente `{x['agente']}`, com o briefing e o contrato do `passos.md`" if x["agente"]
-              else f"`{x['para']}` → carregue a skill `{x['skill']}` e faça o passo por ela" for x in passos]
-    return (f"Passos de toolkit: {onde}, o que casa com o `para` vai ao toolkit, sem perguntar à pessoa e sem marcar"
-            f" no `status.md` nem no `tasks.md`: " + "; ".join(regras) + ".")
+    out = []
+    for pid in dict.fromkeys(x["passo"] for x in passos):
+        regras = []
+        for x in (y for y in passos if y["passo"] == pid):
+            quando = f"`{x['para']}`" + (f" (arquivos {', '.join(f'`{a}`' for a in x['arquivos'])})" if x["arquivos"] else "")
+            regras.append(f"{quando} → delegue ao subagente `{x['agente']}`, com o briefing e o contrato do `passos.md`" if x["agente"]
+                          else f"{quando} → carregue a skill `{x['skill']}` e faça o passo por ela")
+        onde = f"no passo `{pid}`" if pid else "no passo"
+        out.append(f"Desvios de toolkit {onde} (⇢ na tabela do fluxo): o que casa vai ao toolkit, sem perguntar à pessoa e sem"
+                   " marcar no `status.md` nem no `tasks.md`: " + "; ".join(regras) + ".")
+    return "\n".join(out)
 
 
-def agente(nome, p, base, cfg, ext=None, tk=None):
+def agente(nome, p, base, cfg, ext=None, tk=None, fluxo=None):
     """O agente sa-<nome>; com `tk`, o agente do toolkit, com as regras do papel <nome>, dono do passo."""
     valores = {"POWER": cfg.get("power", "~/.kiro/powers/installed/sabia"), "PRODUTO": cfg["produto"], "GLOSSARIO": cfg.get("glossario"), "ADR": cfg.get("adr"),
                "BASE": cfg["base"], "BUNDLE": cfg.get("bundle"), "MASSA": cfg.get("massa")}
@@ -141,22 +308,23 @@ def agente(nome, p, base, cfg, ext=None, tk=None):
     if p["escrita"] == "projeto":  # escreve no projeto, menos o harness e os registros de outros papéis
         alheios = [x for r, ps in base["registros"].items() if r not in p["registros"] for x in ps]
         # `**/x` também na raiz: o `like` do V3 exige o `/` antes de `x`
-        harness = [y for x in base["harness"] for y in ([x.removeprefix("**/"), x] if x.startswith("**/") else [x])]
+        do_papel = set() if tk else set(p.get("harness_libera", []))  # a exceção é do papel, não de quem ele delega
+        harness = [y for x in base["harness"] for y in ([x.removeprefix("**/"), x] if x.startswith("**/") else [x]) if y not in do_papel]
         regras += [regra("fs_write", "allow", ["./**"]),
                    regra("fs_write", "deny", preencher(harness + alheios, valores))]
-    for g in base["niveis_shell"][p["shell"]]:
-        regras.append(regra("shell", "allow", sh[g]["comandos"], sh[g].get("exceto")))
-    soltos = list(p.get("shell_permitir", []))
-    if p["shell"] == "trabalho":  # os comandos do projeto
-        soltos += [c for cs in cfg.get("comandos", {}).values() for c in cs] + ["sh .sabia/verificar.sh"]
-        if cfg.get("http_sh"):
-            soltos.append("sh .sabia/http.sh *")
-    if soltos:
-        regras.append(regra("shell", "allow", soltos))
+    nivel = base["niveis_shell"][p["shell"]]
+    if nivel == "*":  # decisão 2 da 2.0: o shell é liberado para quem escreve; restam o `negar` e o push do papel
+        regras.append(regra("shell", "allow", ["*"]))
+    else:
+        for g in nivel:
+            regras.append(regra("shell", "allow", sh[g]["comandos"], sh[g].get("exceto")))
+        if p.get("shell_permitir"):
+            regras.append(regra("shell", "allow", list(p["shell_permitir"])))
     push = p.get("push")
     if push == "loop":
         push = "perguntar" if cfg.get("push_pr_no_loop", True) else "negar"
-    perguntar = (["git push *"] if push == "perguntar" else []) + p.get("shell_perguntar", [])
+    # o curinga no início pega `cd <worktree> && git push …`, o jeito de trabalhar na worktree (`git -C` é negado)
+    perguntar = (["*git push*"] if push == "perguntar" else []) + p.get("shell_perguntar", [])
     if perguntar:
         regras.append(regra("shell", "ask", perguntar))
     negar = sh["negar"] + (sh["push-perigoso"] if push == "perguntar" else ["*git push*"]) + p.get("shell_negar", [])
@@ -178,6 +346,8 @@ def agente(nome, p, base, cfg, ext=None, tk=None):
     prompt = prompt.replace("{{PASSOS}}", texto_passos(nome, ext.get("passos", [])))
     prompt = prompt.replace("{{SUBAGENTES}}", "Subagentes do projeto: " + ", ".join(f"`{s['nome']}` ({s['para']})" for s in subs_projeto)
                             if subs_projeto else "")
+    if not tk and fluxo is not None:  # fluxo None = framework sem fluxo/ (1.x): sem delta nem chamada
+        prompt = prompt.rstrip() + "\n\n" + "\n\n".join(x for x in (fluxo, CHAMADA) if x)
     prompt = re.sub(r"\n{3,}", "\n\n", PH.sub(lambda m: valores.get(m.group(1)) or "não há", prompt)).rstrip() + "\n"
 
     a = {"name": tk["nome"] if tk else f"sa-{nome}", "description": tk["descricao"] if tk else p["description"], "prompt": prompt,
@@ -267,41 +437,13 @@ def opencode(a, cfg, subagente=False):
     return _md(frente, a["prompt"])
 
 
-def claude(a):
-    """O agente do Kiro traduzido para .claude/agents/<nome>.md. O Claude Code só tira ferramentas inteiras do
-    subagente; a proteção dos arquivos vai no settings.json (`claude_settings`)."""
-    tira = []
-    if not _regras(a, "fs_write"):
-        tira += ["Write", "Edit", "NotebookEdit"]
-    if "shell" not in a["tools"]:
-        tira.append("Bash")
-    tira += [f"mcp__{_mcp(m, '__')}" for r in _regras(a, "power", "deny") for m in r["match"]]
-    frente = {"name": a["name"], "description": a["description"]}
-    if tira:
-        frente["disallowedTools"] = ", ".join(tira)
-    if a.get("model"):
-        frente["model"] = a["model"]
-    return _md(frente, a["prompt"])
-
-
-def claude_settings(agentes, atual):
-    """Protege só o fluxo e o planejamento: harness e registros perguntam antes de qualquer escrita, a todos (o Claude
-    Code não restringe caminho por subagente). Mantém o resto do settings.json como está."""
-    caminhos = sorted({m for a in agentes.values() for r in _regras(a, "fs_write", "deny") for m in r["match"]})
-    regras = [f"Edit({m if m.startswith('**/') else '/' + m.removeprefix('./')})" for m in caminhos]
-    novo = json.loads(json.dumps(atual))
-    ask = novo.setdefault("permissions", {}).setdefault("ask", [])
-    ask += [r for r in regras if r not in ask]
-    return novo
-
-
 LACUNAS = {
+    "kiro": ["com o shell liberado, a negação do shell é por trecho do comando: `grep -r` no projeto, glob ou variável chegam a um"
+             " `.env` ou a um arquivo do harness sem citá-lo (a leitura pela ferramenta continua negada; o prompt manda buscar"
+             " com as ferramentas do agente)"],
     "opencode": ["as exceções de cada grupo de comandos (`git log --output`, `git add -f`…) perguntam para qualquer comando, não só para o grupo",
-                 "`external_directory` com `~/` não foi conferido numa sessão real"],
-    "claude": ["registros e harness perguntam a todos (sessão principal inclusive), sem diferenciar o papel",
-               "sem regra de shell por papel: push, comandos negados e comandos do projeto seguem as permissões da pessoa",
-               "escrita no ELM e no GitLab sem pergunta por agente (só as tools que o papel não usa são tiradas)",
-               "skills e subagentes não ficam restritos por agente (o prompt diz quais usar)"],
+                 "com o shell liberado, a negação do shell é por trecho do comando: `grep -r` no projeto, glob ou variável chegam a"
+                 " um `.env` ou a um arquivo do harness sem citá-lo (a leitura pela ferramenta continua negada)"],
 }
 
 
@@ -339,7 +481,7 @@ def resumo(agentes, cfg):
         gitlab = ("➖" if not do_gitlab else "🟢 consulta · 🟡 abrir e mesclar PR" if "gitlab_mesclar_mr" in do_gitlab
                   else "🟢 consulta · 🟡 abrir PR" if "gitlab_criar_mr" in do_gitlab else "🟢 consulta")
         subs = a.get("toolsSettings", {}).get("subagent", {}).get("availableAgents", [])
-        push = "🟡 pergunta" if any(r["capability"] == "shell" and r["effect"] == "ask" and "git push *" in r["match"]
+        push = "🟡 pergunta" if any(r["capability"] == "shell" and r["effect"] == "ask" and "*git push*" in r["match"]
                                  for r in a["permissions"]["rules"]) else "🔴 negado"
         cel = lambda xs: ", ".join(f"`{x}`" for x in xs) or "➖"
         linhas.append(f"| **{a['name']}** | {cel(do_fluxo)} | {cel(do_projeto)} | {cel(mcps)} | {elm} | {gitlab} | {cel(subs)} | {push} |")
@@ -352,17 +494,28 @@ def gerar(projeto: Path, cfg: dict) -> dict:
     nomes = [f"sa-{n}" for n in base["papeis"]]
     if desconhecidos := sorted(set(cfg.get("agentes", {})) - set(nomes)):
         raise ValueError(f"agentes.json: agente desconhecido {desconhecidos}; use {nomes}")
-    por_papel, do_toolkit = passos(projeto, cfg)
+    fw = Path(cfg.get("framework") or "~/.sabia/framework").expanduser()
+    fluxos = ler_fluxos(fw)
+    gerar.avisos = []
+    delta, padroes, avisos = override(projeto, fw, fluxos)
+    gerar.avisos = avisos
+    if cfg.get("sabia") and (fw / "plugin.json").exists():
+        instalado = json.loads((fw / "plugin.json").read_text(encoding="utf-8")).get("version")
+        if instalado != cfg["sabia"]:
+            avisos.append(f"o projeto foi configurado com o Sabiá {cfg['sabia']} e o seu é o {instalado}: atualize um dos dois")
+    por_papel, do_toolkit = passos(projeto, cfg, fluxos)
     if fora := sorted(set(por_papel) - set(base["papeis"])):
         raise ValueError(f"toolkit: passo de papel desconhecido {fora}")
-    agentes = {f"sa-{n}.json": agente(n, p, base, cfg, por_papel.get(n)) for n, p in base["papeis"].items()}
+    agentes = {f"sa-{n}.json": agente(n, p, base, cfg, por_papel.get(n),
+                                   fluxo=texto_fluxos(n, fluxos, delta, padroes) if fluxos else None)
+               for n, p in base["papeis"].items()}
     for n, tk in do_toolkit.items():
         agentes[f"{n}.json"] = agente(tk["papel"], base["papeis"][tk["papel"]], base, cfg, tk=tk)
     return agentes
 
 
 def arquivos(agentes, cfg, projeto, alvos):
-    """{caminho: conteúdo} de cada alvo; o settings.json do Claude Code é mesclado com o que já existe."""
+    """{caminho: conteúdo} de cada alvo."""
     out = {}
     for arquivo, a in agentes.items():
         nome = arquivo.removesuffix(".json")
@@ -370,12 +523,6 @@ def arquivos(agentes, cfg, projeto, alvos):
             out[projeto / ".kiro/agents" / arquivo] = json.dumps(a, ensure_ascii=False, indent=2) + "\n"
         if "opencode" in alvos:
             out[projeto / ".opencode/agents" / f"{nome}.md"] = opencode(a, cfg, subagente=not nome.startswith("sa-"))
-        if "claude" in alvos:
-            out[projeto / ".claude/agents" / f"{nome}.md"] = claude(a)
-    if "claude" in alvos:
-        st = projeto / ".claude/settings.json"
-        atual = json.loads(st.read_text(encoding="utf-8")) if st.exists() else {}
-        out[st] = json.dumps(claude_settings(agentes, atual), ensure_ascii=False, indent=2) + "\n"
     return out
 
 
@@ -383,13 +530,26 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--projeto", type=Path, default=Path("."))
     ap.add_argument("--config", type=Path, help="padrão: <projeto>/.sabia/config/agentes.json")
-    ap.add_argument("--alvo", help="kiro,opencode,claude (padrão: `alvos` do agentes.json, ou kiro)")
+    ap.add_argument("--alvo", help="kiro,opencode (padrão: `alvos` do agentes.json, ou kiro)")
+    ap.add_argument("--framework", type=Path, help="o framework instalado (padrão: ~/.sabia/framework)")
+    ap.add_argument("--base", help="imprime a `base` de uma cópia: o id do passo (sa-x.f.p) ou o padrão (sa-x/nome.md)")
     # gravar é opt-in: rodar sem flag nunca grava nada antes do "ok" da pessoa
     ap.add_argument("--gravar", action="store_true", help="grava os agentes (sem ela, só mostra o diff)")
     ap.add_argument("--diff", action="store_true", help="o padrão: mostra o diff e não grava")
     args = ap.parse_args(argv)
+    if args.base:  # a setup calcula a base por aqui, nunca por outro caminho
+        fw = (args.framework or Path("~/.sabia/framework")).expanduser()
+        partes = args.base.split(".")
+        f = fw / "fluxo" / partes[0] / partes[1] / "passos" / f"{partes[2]}.md" if len(partes) == 3 else fw / "padrao" / args.base
+        if not f.is_file():
+            print(f"não existe no framework: {args.base} ({f})", file=sys.stderr)
+            return 1
+        print(sha12(f))
+        return 0
     projeto = args.projeto.resolve()
     cfg = json.loads((args.config or projeto / ".sabia/config/agentes.json").read_text(encoding="utf-8"))
+    if args.framework:
+        cfg["framework"] = str(args.framework)
     alvos = args.alvo.split(",") if args.alvo else cfg.get("alvos", ["kiro"])
     if fora := sorted(set(alvos) - set(ALVOS)):
         print(f"alvo desconhecido {fora}; use {', '.join(ALVOS)}", file=sys.stderr)
@@ -413,6 +573,8 @@ def main(argv=None):
             alvo.write_text(novo, encoding="utf-8")
             print(f"gravado {alvo}")
     print("\n" + resumo(agentes, cfg), end="")
+    for aviso in getattr(gerar, "avisos", []):
+        print(f"aviso: {aviso}")
     for alvo in alvos:
         if LACUNAS.get(alvo):
             print(f"\nO que não tem tradução no {alvo}:\n" + "".join(f"- {l}\n" for l in LACUNAS[alvo]), end="")

@@ -10,7 +10,7 @@ import os from "node:os";
 import path from "node:path";
 import readline from "node:readline/promises";
 import { fileURLToPath } from "node:url";
-import { compilar } from "./compilar.mjs";
+import { carregar, compilar } from "./compilar.mjs";
 
 const VERSAO = JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8")).version;
 const REPO = "https://github.com/dxaraujo/sabia.git";
@@ -433,7 +433,7 @@ export async function desinstalar(opcoes = {}) {
 // ---------- toolkits ----------
 
 /** Erros do toolkit.json: campos, nome, caminhos presos à pasta e arquivos que existem (o schema completo é o da setup). */
-export function validarToolkit(pasta, nomeEsperado = null) {
+export function validarToolkit(pasta, nomeEsperado = null, fw = null) {
   const f = path.join(pasta, "toolkit.json");
   if (!fs.existsSync(f)) return ["falta o toolkit.json"];
   let m;
@@ -452,9 +452,17 @@ export function validarToolkit(pasta, nomeEsperado = null) {
     try { if (!fs.existsSync(path.join(pasta, dentro(c, de)))) erros.push(`${de}: não existe ${c}`); } catch (e) { erros.push(e.message); }
   };
   const agentes = new Set((m.agentes || []).map((a) => a.nome));
+  // sem o framework (toolkits baixar antes do instalar), o gancho é conferido na setup
+  const ganchos = fw && fs.existsSync(path.join(fw, "fluxo")) ? carregar(fw) : null;
   for (const s of m.skills || []) {
     existe(s.caminho, "skills");
     if (s.passo?.agente && !agentes.has(s.passo.agente)) erros.push(`passo de ${s.caminho}: agente ${s.passo.agente} não está em agentes`);
+    if (s.passo?.passo && ganchos) {
+      const [sk, fl, id] = s.passo.passo.split(".");
+      const x = ganchos.fluxos[`${sk}.${fl}`]?.passos.find((p) => p.id === id);
+      if (!x) erros.push(`passo de ${s.caminho}: ${s.passo.passo} não existe no Sabiá instalado`);
+      else if (!x.desvio) erros.push(`passo de ${s.caminho}: ${s.passo.passo} não aceita desvio de toolkit`);
+    }
   }
   for (const s of m.steering || []) existe(s.caminho, "steering");
   for (const a of m.agentes || []) {
@@ -500,7 +508,7 @@ export async function baixarToolkit(alvo, opcoes = {}) {
   const [nomeOuUrl, versaoOuRef] = separarRef(alvo);
   const e = ehUrl ? { nome: null, url: nomeOuUrl, ref: versaoOuRef } : acharNoIndice(nomeOuUrl, versaoOuRef, opcoes);
   const { pasta, sha } = baixar(e.url, e);
-  const erros = validarToolkit(pasta, e.nome);
+  const erros = validarToolkit(pasta, e.nome, sabia("framework"));
   if (erros.length) throw new Error(`toolkit recusado:\n- ${erros.join("\n- ")}`);
   const m = JSON.parse(fs.readFileSync(path.join(pasta, "toolkit.json"), "utf8"));
   const destino = sabia("toolkits", m.nome);

@@ -221,6 +221,15 @@ test("toolkit pelo índice: baixa, instala nas ferramentas, atualiza e remove pe
   assert.deepEqual(s.lerInventario().toolkits, {});
 });
 
+test("o passo do toolkit pelo id: só em passo do Sabiá com gancho de desvio", () => {
+  const repo = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
+  const comPasso = (passo) => ({ skills: [{ caminho: "skills/batch/SKILL.md", papeis: ["desenvolvedor"], passo: { passo, para: "job de batch", agente: "batch-job" } }] });
+  assert.deepEqual(s.validarToolkit(toolkit(path.join(raiz, "ok"), comPasso("sa-codificar.codificar.tarefa")), "batch-alfa", repo), []);
+  assert.match(s.validarToolkit(toolkit(path.join(raiz, "a"), comPasso("sa-codificar.codificar.validar")), null, repo).join(), /não aceita desvio/);
+  assert.match(s.validarToolkit(toolkit(path.join(raiz, "b"), comPasso("sa-codificar.codificar.nada")), null, repo).join(), /não existe/);
+  assert.deepEqual(s.validarToolkit(toolkit(path.join(raiz, "c"), comPasso("sa-codificar.codificar.nada"))), []);  // sem framework: fica para a setup
+});
+
 test("toolkit inválido é recusado e nada é gravado", async () => {
   const pasta = toolkit(path.join(raiz, "ruim"), { nome: "sa-ruim" });
   await assert.rejects(s.baixarToolkit(pasta, {}), /toolkit recusado/);

@@ -135,18 +135,22 @@
           "passo": {
             "type": "object",
             "required": [
-              "papel",
               "para"
             ],
             "additionalProperties": false,
-            "description": "Opcional: a skill assume um passo de um agente do Sabiá (sem isso, é de apoio). O Sabiá continua dono da revisão, do GATE, do verificar.sh e do commit (skills/sabia/references/passos.md).",
+            "description": "Opcional: a skill assume um passo de um agente do Sabiá (sem isso, é de apoio). O Sabiá continua dono da revisão, do GATE, do passo validar e do commit (skills/sabia/references/passos.md).",
             "properties": {
+              "passo": {
+                "type": "string",
+                "pattern": "^sa-[a-z]+\\.[a-z][a-z-]*\\.[a-z][a-z-]*$",
+                "description": "O id do passo do Sabiá que aceita desvio (\"desvio\": true no mestre), ex.: sa-codificar.codificar.tarefa. O dono do fluxo é o agente que recebe o desvio."
+              },
               "papel": {
                 "enum": [
                   "especificador",
                   "desenvolvedor"
                 ],
-                "description": "O agente do Sabiá dono do passo."
+                "description": "Toolkit 1.x: o agente do Sabiá dono do passo. Na 2.0, use `passo` (o id)."
               },
               "para": {
                 "type": "string",
@@ -156,8 +160,28 @@
               "agente": {
                 "$ref": "#/$defs/nome-agente",
                 "description": "Opcional: agente de agentes[] a quem o dono delega."
+              },
+              "arquivos": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "description": "Opcional: globs dos arquivos que levam ao desvio (ex.: **/*JobConfig.java); vão no prompt do dono, ao lado do `para`."
               }
-            }
+            },
+            "anyOf": [
+              {
+                "required": [
+                  "passo"
+                ]
+              },
+              {
+                "required": [
+                  "papel"
+                ]
+              }
+            ]
           }
         }
       }

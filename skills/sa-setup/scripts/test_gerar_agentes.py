@@ -9,6 +9,8 @@ from pathlib import Path
 
 import gerar_agentes as g
 
+REPO = Path(__file__).resolve().parents[3]  # a fonte do framework (fluxo/, padrao/, plugin.json)
+
 BASE = json.loads((g.ASSETS / "papeis.json").read_text(encoding="utf-8"))
 PAPEIS = BASE["papeis"]
 
@@ -63,11 +65,14 @@ class Gerar(unittest.TestCase):
 
     def test_harness_ninguem_escreve(self):
         for nome, a in self.gerar().items():
-            for alvo in (".kiro/agents/sa-produto.json", ".sabia/config/agentes.json", ".sabia/sabia.md", ".sabia/verificar.sh",
-                         ".sabia/http.sh", ".kiro/steering/sabia.md", ".claude/settings.json", "opencode.json", "AGENTS.md",
+            for alvo in (".kiro/agents/sa-produto.json", ".sabia/config/agentes.json", ".sabia/http.sh",
+                         ".sabia/fluxo/sa-codificar/codificar/passos/tarefa.md", ".sabia/padrao/sa-codificar/pr.md",
+                         ".kiro/steering/sabia.md", "opencode.json", "AGENTS.md",
                          ".git/config", ".sabia/local/wt/ft-031/.kiro/agents/x.json",
                          ".sabia/local/wt/ft-031/.sabia/planejamento/backlog.md"):
                 self.assertNotEqual(efeito(a, "fs_write", alvo), "allow", (nome, alvo))
+            # o sabia.md é da setup; só o sa-produto grava nele (a seção Regras aprendidas, pela sa-aprender)
+            self.assertEqual(efeito(a, "fs_write", ".sabia/sabia.md") == "allow", nome == "produto", nome)
 
     def test_escrita_no_projeto_e_registros_por_papel(self):
         agentes = self.gerar()
@@ -81,14 +86,15 @@ class Gerar(unittest.TestCase):
             if nome != "pesquisador":
                 self.assertEqual(efeito(a, "fs_write", "src/main/App.java"), "allow", nome)
                 self.assertEqual(efeito(a, "fs_write", ".kiro/specs/ft-031-x/status.md"), "allow", nome)
-                self.assertIn("sh .sabia/verificar.sh", regras(a, "shell", "allow"), nome)
+                self.assertEqual(efeito(a, "shell", "mvn -q test"), "allow", nome)  # decisão 2: shell liberado para quem escreve
+                self.assertEqual(efeito(a, "shell", "cat .env"), "deny", nome)  # credenciais continuam negadas
 
     def test_pesquisador_sem_escrita(self):
         p = self.gerar()["pesquisador"]
         self.assertNotIn("write", p["tools"])
         self.assertEqual(regras(p, "fs_write", "allow"), [])
         self.assertNotIn("git commit *", regras(p, "shell", "allow"))
-        self.assertNotIn("sh .sabia/verificar.sh", regras(p, "shell", "allow"))
+        self.assertNotIn("*", regras(p, "shell", "allow"))
 
     def test_especificador_separado_do_produto(self):
         agentes = self.gerar()
@@ -132,7 +138,7 @@ class Gerar(unittest.TestCase):
     def test_push_da_branch_nomeada_e_merge_so_no_desenvolvedor(self):
         agentes = self.gerar()
         for nome in ("desenvolvedor", "revisor", "verificador", "orquestrador"):
-            self.assertIn("git push *", regras(agentes[nome], "shell", "ask"))
+            self.assertIn("*git push*", regras(agentes[nome], "shell", "ask"))
             self.assertEqual(efeito(agentes[nome], "shell", "git push -u origin feature/ft-031-x"), "ask", nome)
             for cmd in ("git push", "git push origin", "cd .sabia/local/wt/ft-031 && git push", "git push origin HEAD",
                         "git push -u origin HEAD:feature/ft-031-x", "git push origin @", "git push origin ft-031:develop",
@@ -151,11 +157,11 @@ class Gerar(unittest.TestCase):
             self.assertEqual(efeito(a, "fs_write", ".sabia/planejamento/epicos/ep-03-x/prd.md"), "deny", nome)
             self.assertNotEqual(efeito(a, "fs_write", ".sabia/local/wt/ft-031/.sabia/planejamento/backlog.md"), "allow", nome)
             self.assertEqual(efeito(a, "shell", "git push origin develop"), "ask", nome)
-            self.assertIn("git reset --keep origin/*", regras(a, "shell", "ask"), nome)
+            self.assertIn("*git reset --keep origin/*", regras(a, "shell", "ask"), nome)
             self.assertEqual(efeito(a, "shell", "git reset --keep origin/develop --hard"), "deny", nome)
         for nome in ("revisor", "verificador"):
             self.assertEqual(efeito(agentes[nome], "shell", "git push origin develop"), "deny", nome)
-            self.assertNotIn("git reset --keep origin/*", regras(agentes[nome], "shell", "ask"), nome)
+            self.assertNotIn("*git reset --keep origin/*", regras(agentes[nome], "shell", "ask"), nome)
         self.assertEqual(efeito(agentes["produto"], "shell", "git push origin develop"), "deny")
 
     def test_tool_do_elm_fora_do_papel_e_negada(self):
@@ -174,7 +180,7 @@ class Gerar(unittest.TestCase):
     def test_loop_sem_push_nem_pr(self):
         o = self.gerar(push_pr_no_loop=False)["orquestrador"]
         self.assertIn("*git push*", regras(o, "shell", "deny"))
-        self.assertNotIn("git push *", regras(o, "shell", "ask"))
+        self.assertNotIn("*git push*", regras(o, "shell", "ask"))
         self.assertIn("sabia/gitlabpr/gitlab_criar_mr", regras(o, "power", "deny"))
 
     def test_sem_glossario_nem_bundle(self):
@@ -194,9 +200,8 @@ class Gerar(unittest.TestCase):
         self.assertIn("dba", c["toolsSettings"]["subagent"]["availableAgents"])
         self.assertIn("Skills do projeto ligadas a você: `java`", c["prompt"])
         self.assertIn("`dba` (consultas)", c["prompt"])
-        self.assertIn("mvn test*", regras(c, "shell", "allow"))
-        self.assertIn("sh .sabia/http.sh *", regras(c, "shell", "allow"))
-        self.assertIn("sh .sabia/verificar.sh", regras(c, "shell", "allow"))
+        for cmd in ("mvn test", "sh .sabia/http.sh GET /x"):
+            self.assertEqual(efeito(c, "shell", cmd), "allow", cmd)
         self.assertEqual(c["model"], "m1")
 
     def test_resumo_mostra_o_que_cada_agente_recebeu(self):
@@ -237,9 +242,9 @@ class Gerar(unittest.TestCase):
         self.assertIn("batch-job", c["toolsSettings"]["subagent"]["availableAgents"])
         self.assertIn("`batch-job` (tarefa de job)", c["prompt"])
         # o passo é da configuração do agente, não uma marca no tasks.md
-        self.assertIn("Passos de toolkit: em cada tarefa do `tasks.md`", c["prompt"])
+        self.assertIn("Desvios de toolkit no passo `sa-codificar.codificar.tarefa`", c["prompt"])
         self.assertIn("`tarefa de job` → delegue ao subagente `batch-job`", c["prompt"])
-        self.assertNotIn("Passos de toolkit", agentes["revisor"]["prompt"])
+        self.assertNotIn("Desvios de toolkit", agentes["revisor"]["prompt"])
         self.assertEqual(job["toolsSettings"]["subagent"]["availableAgents"], ["batch-step"])
         self.assertEqual(job["prompt"], "x develop\n")
         self.assertNotIn("welcomeMessage", job)
@@ -298,7 +303,9 @@ class Gerar(unittest.TestCase):
         self.assertEqual(linhas[edit + 1], '    "*": "allow"')  # a última que casa vence: o geral vem antes
         self.assertIn('    ".sabia/planejamento/epicos/*": "deny"', linhas)
         self.assertIn('    "*/.kiro/agents/*": "deny"', linhas)
-        self.assertLess(linhas.index('    "git commit *": "allow"'), linhas.index('    "*git commit* -n": "deny"'))
+        bash = linhas.index('  "bash":')
+        self.assertEqual(linhas[bash + 1], '    "*": "allow"')  # liberado; as negações e o push vêm depois e vencem
+        self.assertLess(bash + 1, linhas.index('    "*git commit* -n": "deny"'))
         self.assertIn('    "sa-revisor": "allow"', linhas)
         self.assertIn('    "sa-codificar": "allow"', linhas)
         self.assertIn('  "elm_elm_criar_wi": "ask"', linhas)
@@ -307,31 +314,170 @@ class Gerar(unittest.TestCase):
         self.assertIn('    "~/.config/opencode/*": "allow"', linhas)
         self.assertTrue(cod.rstrip().endswith(agentes["sa-desenvolvedor.json"]["prompt"].rstrip()))
 
-    def test_claude(self):
-        agentes = g.gerar(self.projeto, self.cfg)
-        pesq, cod = g.claude(agentes["sa-pesquisador.json"]), g.claude(agentes["sa-desenvolvedor.json"])
-        self.assertIn('"name": "sa-pesquisador"', pesq)
-        self.assertIn('"disallowedTools": "Write, Edit, NotebookEdit, ', pesq)
-        self.assertIn("mcp__gitlabpr__gitlab_criar_mr", pesq)
-        self.assertNotIn("Write", cod.split("---")[1])
-        st = g.claude_settings(agentes, {"permissions": {"ask": ["Bash(x)"]}, "model": "m"})
-        self.assertEqual(st["model"], "m")
-        self.assertEqual(st["permissions"]["ask"][0], "Bash(x)")
-        for r in ("Edit(/.sabia/planejamento/epicos/**)", "Edit(**/.kiro/agents/**)", "Edit(/.sabia/config/**)",
-                  "Edit(/.sabia/planejamento/backlog.md)"):
-            self.assertIn(r, st["permissions"]["ask"])
-        self.assertEqual(g.claude_settings(agentes, st), st)  # rodar de novo não duplica
-
-    def test_main_tres_alvos_sem_kiro_instalado(self):
+    def test_main_so_opencode_sem_kiro_instalado(self):
         conf = self.projeto / ".sabia/config/agentes.json"
         conf.parent.mkdir(parents=True)
-        conf.write_text(json.dumps({**self.cfg, "power": "~/nao-existe", "alvos": ["opencode", "claude"]}))
+        conf.write_text(json.dumps({**self.cfg, "power": "~/nao-existe", "alvos": ["opencode"]}))
         self.assertEqual(g.main(["--projeto", str(self.projeto), "--gravar"]), 0)
         self.assertEqual(len(list((self.projeto / ".opencode/agents").glob("sa-*.md"))), 7)
-        self.assertEqual(len(list((self.projeto / ".claude/agents").glob("sa-*.md"))), 7)
-        self.assertTrue((self.projeto / ".claude/settings.json").exists())
         self.assertFalse((self.projeto / ".kiro/agents").exists())
-        self.assertEqual(g.main(["--projeto", str(self.projeto), "--alvo", "cursor"]), 1)
+        for alvo in ("cursor", "claude"):  # o Claude Code saiu dos alvos na 2.0
+            self.assertEqual(g.main(["--projeto", str(self.projeto), "--alvo", alvo]), 1)
+
+    # ---- fluxos (F3): delta do override do projeto, recusas, desvio pelo id e regra de chamada
+    def com_fluxo(self, arquivos, **mudar):
+        for f, c in arquivos.items():
+            (self.projeto / f).parent.mkdir(parents=True, exist_ok=True)
+            (self.projeto / f).write_text(c if isinstance(c, str) else json.dumps(c))
+        return self.gerar(framework=str(REPO), **mudar)
+
+    def base(self, rel):
+        import hashlib
+        return hashlib.sha256((REPO / rel).read_bytes()).hexdigest()[:12]
+
+    def test_sem_override_nao_ha_delta_e_todo_agente_tem_a_chamada(self):
+        for nome, a in self.gerar(framework=str(REPO)).items():
+            self.assertNotIn("O que este projeto mudou", a["prompt"], nome)
+            self.assertIn("chama **em linha**", a["prompt"], nome)
+
+    def test_delta_vai_so_para_o_dono_do_fluxo(self):
+        pf = "fluxo/sa-codificar/codificar/passos/validar.md"
+        agentes = self.com_fluxo({
+            ".sabia/" + pf: f'---\n{{"base": "{self.base(pf)}", "resumo": "x"}}\n---\n## Entrada\n',
+            ".sabia/fluxo/sa-codificar/codificar/codificar.md": '---\n{"inserir": [{"id": "lint-extra", "depois": "validar"}]}\n---\n',
+            ".sabia/fluxo/sa-codificar/codificar/passos/lint-extra.md": "---\n{}\n---\n## Entrada\n",
+            ".sabia/padrao/sa-codificar/pr.md": f'---\n{{"base": "{self.base("padrao/sa-codificar/pr.md")}"}}\n---\nPR\n'})
+        d = agentes["desenvolvedor"]["prompt"]
+        self.assertIn("Fluxo `sa-codificar.codificar`:", d)
+        self.assertIn("- passo `validar`: leia `.sabia/fluxo/sa-codificar/codificar/passos/validar.md` (no lugar do da skill)", d)
+        self.assertIn("- passo `lint-extra` (inserido depois de `validar`)", d)
+        self.assertIn("- padrão `sa-codificar/pr.md`", d)
+        for nome in ("orquestrador", "revisor", "produto"):  # D1 = A: só o dono leva o delta do fluxo
+            self.assertNotIn("Fluxo `sa-codificar.codificar`", agentes[nome]["prompt"], nome)
+            self.assertIn("- padrão `sa-codificar/pr.md`", agentes[nome]["prompt"], nome)  # o padrão vai a todos
+
+    def test_override_invalido_e_recusado(self):
+        pf = "fluxo/sa-codificar/codificar/passos/validar.md"
+        ruins = [
+            {".sabia/fluxo/sa-codificar/codificar/passos/nao-existe.md": "x"},                       # órfão
+            {".sabia/fluxo/sa-nada/x/passos/y.md": "x"},                                              # fluxo que não existe
+            {".sabia/" + pf: "---\n{}\n---\n## Entrada\n"},                                         # cópia sem base
+            {".sabia/fluxo/sa-codificar/codificar/codificar.md": '---\n{"passos": []}\n---\n'},     # chave proibida
+            {".sabia/fluxo/sa-codificar/codificar/codificar.md": '---\n{"remover": ["revisar"]}\n---\n'},  # trava
+            {".sabia/fluxo/sa-codificar/codificar/codificar.md": '---\n{"liberar": ["backpressure"]}\n---\n'},
+            {".sabia/fluxo/sa-codificar/codificar/codificar.md": '---\n{"inserir": [{"id": "z", "depois": "validar"}]}\n---\n'},  # sem arquivo
+            {".sabia/padrao/sa-codificar/nao-existe.md": "x"},
+            {".sabia/padrao/sa-codificar/pr.md": "PR sem base"},                                      # padrão sem base
+            {".sabia/fluxo/sa-codificar/codificar/passos/validar.txt": "x"},                         # não é .md
+            {".sabia/fluxo/sa-planejamento/review/review.md": '---\n{"remover": ["rito"]}\n---\n',  # removido e copiado
+             ".sabia/fluxo/sa-planejamento/review/passos/rito.md": f'---\n{{"base": "{self.base("fluxo/sa-planejamento/review/passos/rito.md")}"}}\n---\n'},
+            {".sabia/fluxo/sa-planejamento/review/review.md": '---\n{"remover": ["rito"], "inserir": [{"id": "a", "depois": "rito"}]}\n---\n',
+             ".sabia/fluxo/sa-planejamento/review/passos/a.md": "x"},                                  # depois de um removido
+            {".sabia/fluxo/sa-planejamento/review/review.md": '---\n{"inserir": [{"id": "a", "depois": "rito"}, {"id": "a", "depois": "rito"}]}\n---\n',
+             ".sabia/fluxo/sa-planejamento/review/passos/a.md": "x"},                                  # id repetido
+            {".sabia/fluxo/sa-planejamento/review/review.md": '---\n{"inserir": [{"id": "a", "depois": "b"}, {"id": "b", "depois": "a"}]}\n---\n',
+             ".sabia/fluxo/sa-planejamento/review/passos/a.md": "x", ".sabia/fluxo/sa-planejamento/review/passos/b.md": "x"},  # ciclo
+            {".sabia/fluxo/sa-planejamento/review/review.md": '---\n{"inserir": [{"id": "../x", "depois": "rito"}]}\n---\n'},  # id ruim
+            {".sabia/fluxo/sa-codificar/codificar/codificar.md": '---\n{"inserir": [1,]}\n---\n'},  # JSON inválido
+        ]
+        for arquivos in ruins:
+            for f in (self.projeto / ".sabia").glob("fluxo"), (self.projeto / ".sabia").glob("padrao"):
+                for d in f:
+                    import shutil; shutil.rmtree(d)
+            for f, c in arquivos.items():
+                (self.projeto / f).parent.mkdir(parents=True, exist_ok=True)
+                (self.projeto / f).write_text(c)
+            with self.assertRaises(ValueError, msg=arquivos):
+                g.gerar(self.projeto, {**self.cfg, "framework": str(REPO)})
+
+    def test_base_velha_so_avisa(self):
+        pf = "fluxo/sa-codificar/codificar/passos/validar.md"
+        self.com_fluxo({".sabia/" + pf: '---\n{"base": "000000000000"}\n---\n## Entrada\n'}, sabia="0.0.1")
+        avisos = "\n".join(g.gerar.avisos)
+        self.assertIn("a base mudou desde a cópia", avisos)
+        self.assertIn("configurado com o Sabiá 0.0.1", avisos)
+
+    def test_desvio_pelo_id_do_passo_com_gancho(self):
+        cfg = self.toolkit(skills=[{"caminho": "skills/batch/SKILL.md", "papeis": ["desenvolvedor"],
+                                    "passo": {"passo": "sa-codificar.codificar.tarefa", "para": "tarefa de job",
+                                              "arquivos": ["**/*JobConfig.java"], "agente": "batch-job"}}])
+        c = self.gerar(framework=str(REPO), **cfg)["desenvolvedor"]
+        self.assertIn("`tarefa de job` (arquivos `**/*JobConfig.java`) → delegue ao subagente `batch-job`", c["prompt"])
+        for passo in ("sa-codificar.codificar.validar", "sa-codificar.codificar.nada"):  # sem gancho · inexistente
+            cfg["passos"][0]["skill"] = "skills/batch/SKILL.md"
+            ruim = self.toolkit(skills=[{"caminho": "skills/batch/SKILL.md", "papeis": ["desenvolvedor"],
+                                         "passo": {"passo": passo, "para": "p"}}])
+            with self.assertRaises(ValueError, msg=passo):
+                g.gerar(self.projeto, {**self.cfg, "framework": str(REPO), **ruim})
+
+    def test_gerador_fora_do_repo_acha_o_mestre_pelo_framework(self):
+        import shutil, subprocess, sys
+        copia = Path(self.tmp.name) / "instalado/sa-setup"
+        shutil.copytree(Path(__file__).resolve().parents[1], copia, ignore=shutil.ignore_patterns("__pycache__"))
+        fw = Path(self.tmp.name) / "fw"
+        for d in ("fluxo", "padrao"):
+            shutil.copytree(REPO / d, fw / d)
+        pf = "fluxo/sa-codificar/codificar/passos/validar.md"
+        (self.projeto / ".sabia" / pf).parent.mkdir(parents=True)
+        (self.projeto / ".sabia" / pf).write_text(f'---\n{{"base": "{self.base(pf)}"}}\n---\n## Entrada\n')
+        conf = self.projeto / ".sabia/config/agentes.json"
+        conf.parent.mkdir(parents=True)
+        conf.write_text(json.dumps({**self.cfg, "alvos": ["opencode"]}))
+        r = subprocess.run([sys.executable, str(copia / "scripts/gerar_agentes.py"), "--projeto", str(self.projeto),
+                            "--framework", str(fw), "--gravar"], capture_output=True, text=True, env={**os.environ, "HOME": str(self.home)})
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn("- passo `validar`: leia", (self.projeto / ".opencode/agents/sa-desenvolvedor.md").read_text())
+
+    def test_inserir_encadeado_e_remover_validos(self):
+        r = "fluxo/sa-planejamento/review"
+        agentes = self.com_fluxo({
+            f".sabia/{r}/review.md": '---\n{"remover": ["rito"], "inserir": [{"id": "b", "depois": "a"}, {"id": "a", "depois": "consolidacao"}]}\n---\n',
+            f".sabia/{r}/passos/a.md": "x", f".sabia/{r}/passos/b.md": "x"})
+        p = agentes["produto"]["prompt"]
+        for t in ("- passo `rito`: removido neste projeto", "- passo `a` (inserido depois de `consolidacao`)", "- passo `b` (inserido depois de `a`)"):
+            self.assertIn(t, p)
+
+    def test_framework_sem_fluxo_recusa_override_e_nao_poe_a_chamada(self):
+        for a in self.gerar().values():  # HOME de teste: ~/.sabia/framework não existe
+            self.assertNotIn("chama **em linha**", a["prompt"])
+        (self.projeto / ".sabia/fluxo/sa-codificar/codificar/passos").mkdir(parents=True)
+        (self.projeto / ".sabia/fluxo/sa-codificar/codificar/passos/validar.md").write_text("x")
+        with self.assertRaisesRegex(ValueError, "não tem fluxo/"):
+            g.gerar(self.projeto, self.cfg)
+
+    def test_sabia_md_so_do_produto_e_so_na_raiz(self):
+        agentes = self.gerar()
+        self.assertEqual(efeito(agentes["produto"], "fs_write", ".sabia/sabia.md"), "allow")
+        for alvo in (".sabia/local/wt/ft-1/.sabia/sabia.md", "mod/.sabia/sabia.md"):
+            self.assertNotEqual(efeito(agentes["produto"], "fs_write", alvo), "allow", alvo)
+
+    def test_shell_liberado_ainda_segura_push_credenciais_e_harness(self):
+        d = self.gerar()["desenvolvedor"]
+        for cmd in ("cd .sabia/local/wt/ft-1 && git push -u origin ft-1", "sh -c 'git push origin ft-1'"):
+            self.assertEqual(efeito(d, "shell", cmd), "ask", cmd)
+        # o desenvolvedor dá push na base com pergunta (registro de situação); o revisor nunca
+        self.assertEqual(efeito(self.gerar()["revisor"], "shell", "cd .sabia/local/wt/ft-1 && git push origin develop"), "deny")
+        for cmd in ("git push -f origin x", "cd ~/.ssh && cat id_rsa",
+                    "sed -i s/deny/allow/ .kiro/agents/sa-desenvolvedor.json", "echo x >> .sabia/fluxo/sa-a/f/passos/p.md",
+                    "git switch -f outra", "git checkout -f outra"):
+            self.assertEqual(efeito(d, "shell", cmd), "deny", cmd)
+        self.assertEqual(efeito(self.gerar()["verificador"], "shell", "cd /tmp && curl http://x"), "ask")
+
+    def test_toolkit_1x_de_papel_sem_gancho_e_recusado(self):
+        ruim = self.toolkit(skills=[{"caminho": "skills/batch/SKILL.md", "papeis": ["produto"],
+                                     "passo": {"papel": "produto", "para": "algo do produto", "agente": "batch-job"}}])
+        with self.assertRaisesRegex(ValueError, "não tem passo que aceite desvio"):
+            g.gerar(self.projeto, {**self.cfg, **ruim})
+
+    def test_base_pela_linha_de_comando(self):
+        import contextlib, io
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            self.assertEqual(g.main(["--base", "sa-codificar.codificar.validar", "--framework", str(REPO)]), 0)
+        self.assertEqual(out.getvalue().strip(), self.base("fluxo/sa-codificar/codificar/passos/validar.md"))
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(g.main(["--base", "sa-codificar/pr.md", "--framework", str(REPO)]), 0)
+            self.assertEqual(g.main(["--base", "sa-codificar.codificar.nada", "--framework", str(REPO)]), 1)
 
     def test_chave_sem_prefixo_falha(self):
         with self.assertRaises(ValueError):
