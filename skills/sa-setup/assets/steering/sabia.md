@@ -12,7 +12,7 @@ Começar um item registrado: hub `sa-iniciar` (diz a skill do papel: `sa-especif
 
 - **Créditos do Kiro:** nenhuma sessão termina sem registrá-los. Skill que termina (diz a próxima e para) sem ter
   registrado os desta sessão, ou pessoa que encerra → pergunte `💳 Fechar a sessão e registrar os créditos? (sim)`
-  e, na resposta, `sa-status` › Fechar a sessão, item 4. A leitura é sempre depois de uma resposta da pessoa: o Kiro
+  e, na resposta, `sa-status` › Fechar a sessão › Créditos da sessão. A leitura é sempre depois de uma resposta da pessoa: o Kiro
   só grava o consumo do turno quando ele termina.
 - Nada inventado (confirme no código, no banco — só leitura — ou no ELM). Nunca apague nem afrouxe teste.
 - **Falha de escrita:** pasta inexistente → crie; permissão negada ou confirmação recusada → `fase: bloqueada (de:
@@ -39,7 +39,7 @@ Começar um item registrado: hub `sa-iniciar` (diz a skill do papel: `sa-especif
   fluxo puxado — a `elegivel` de maior prioridade entra quando o WIP de revisão tem folga. Previsão pela vazão, sem
   pontos.
 - **Modo pela senioridade** de quem implementa (`equipe.json`): Júnior → sempre HITL; Pleno → os critérios da fatia;
-  Sênior → AFK por padrão (HITL só com motivo forte, registrado). Só Pleno ou Sênior dispara o `sa-loop`. A `[REV]`
+  Sênior → AFK por padrão (HITL só com motivo forte, registrado). Só Pleno ou Sênior dispara o `sa-orquestrar`. A `[REV]`
   e a `[APR]` são sempre de um **Dev Sênior** (PR de um Sênior: outro Sênior; único Sênior ativo → ele mesmo,
   `revisor único`). **GATE do plano** pela senioridade: Júnior → sempre; Pleno → pergunta (no loop, vale para o
   lote); Sênior → nunca (aprova o próprio plano). Fatia AFK cujo plano mostra risco → sugerir HITL; a troca é do
@@ -61,8 +61,8 @@ Começar um item registrado: hub `sa-iniciar` (diz a skill do papel: `sa-especif
   (`concluida`).
 - Estado em disco: a situação de cada item no `backlog.md` e na sprint, gravada na base por quem a causa (seção
   Situações do `references/backlog.md` da `sa-fatiar`); o detalhe da fatia em `.kiro/specs/<ft>-<slug>/` (comece
-  pelo `status.md`; em `pronta` e `concluida` vale o da base — regra A base prevalece do `status-template.md` da
-  `sa-desenvolver`); produto na pasta abaixo.
+  pelo `status.md`; em `pronta` e `concluida` vale o da base — regra A base prevalece do padrão
+  `sa-desenvolver/status.md`); produto na pasta abaixo.
 
 > Gerado pela `sa-setup` (power `sabia` <x.y.z>) em <AAAA-MM-DD>. Para mudar: "atualizar a configuração do Sabiá".
 > As skills e os agentes `sa-*` leem os valores daqui.
@@ -75,7 +75,7 @@ Começar um item registrado: hub `sa-iniciar` (diz a skill do papel: `sa-especif
 | Tipos · stack · módulos | `<batch>` · <Java 21, Spring Batch 5, Oracle> · <módulo único | lista> |
 | Toolkits | <nome (origem) | nenhum> |
 | Steering | produto `<product.md>` · tecnologia `<tech.md>` · estrutura `<structure.md>` · extras `<… | nenhum>` |
-| Glossário · ADRs | `<docs/glossario.md>` · `<docs/adr | não há>` |
+| Glossário · ADRs | `<.sabia/glossario.md>` · `<.sabia/adr | não há>` |
 | Bundle do ELM (cópia local em Markdown, baixada pela `sa-sync`) | `<rm.download do pa — ex.: docs/elm/<pa>> | não há` — consulta **só pelo MCP `elm`**: `elm_buscar_req_local` para achar, `elm_ler_req_local` para ler, `elm_listar_req_local` para listar (o MCP acha a pasta pelo `pa` e reindexa o que mudou); sem nada baixado (erro `nao_encontrado` campo `bundle`) → diga isso, pesquise no ELM remoto (`elm_buscar_req`/`elm_ler_req`) e ofereça a `sa-sync`. Nunca leia nem busque os arquivos dela |
 
 **Regras críticas** (BLOQUEANTE na revisão):
@@ -84,9 +84,9 @@ Começar um item registrado: hub `sa-iniciar` (diz a skill do papel: `sa-especif
 ## Comandos (backpressure)
 
 Uma coluna por módulo quando houver mais de um; a fatia usa a do módulo que altera (o `design.md` diz qual).
-O `.sabia/verificar.sh` roda compilar, testes, lint e cobertura de todos os módulos: a `sa-codificar` o roda antes
+O passo `sa-codificar.codificar.validar` roda compilar, testes, lint e cobertura de todos os módulos antes
 de cada commit.
-Na worktree do `sa-loop`: `cd .sabia/local/wt/<ft> && <comando>`. Falha de ambiente → `AMBIENTE`, nunca consertar.
+Na worktree do `sa-orquestrar`: `cd .sabia/local/wt/<ft> && <comando>`. Falha de ambiente → `AMBIENTE`, nunca consertar.
 
 | Ação | `<módulo>` |
 |---|---|
@@ -111,7 +111,7 @@ Na worktree do `sa-loop`: `cd .sabia/local/wt/<ft> && <comando>`. Falha de ambie
 | PR (merge request) | `<MCP gitlabpr — gitlab_listar_mrs · gitlab_obter_mr · gitlab_criar_mr (origem e destino sempre explícitos) · gitlab_mesclar_mr (merge pelo Dev responsável, com o `sha` aprovado) | entregar título e descrição>` — nunca `gh` nem `glab` |
 | Artefatos de produto (pasta do produto, glossário, ADRs, consolidação) | direto na branch base — nunca em branch de fatia; push com o "sim" da pessoa (o agente `sa-produto` não faz push: entrega o comando; o agente do Dev publica ali só os registros de situação da fatia) |
 | MCP de banco | `<@servidor/tool | não há>` — **somente leitura** (`SELECT`/`WITH`), exceto os scripts de massa; DDL fora do fluxo |
-| Paralelo no loop | `<1>` (máx. 3) — o GATE do plano não se configura: sai da senioridade de quem implementa (`sa-plano` Passo 5) |
+| Paralelo no loop | `<1>` (máx. 3) — o GATE do plano não se configura: sai da senioridade de quem implementa (passo `sa-plano.plano.gate`) |
 | Push e PR no loop | `<perguntar a cada lote (o Kiro confirma cada um) | não — a pessoa abre (o push da base com a iniciada do lote também: o orquestrador entrega o comando e espera a publicação)>` |
 
 ## ELM
@@ -130,8 +130,8 @@ Na worktree do `sa-loop`: `cd .sabia/local/wt/<ft> && <comando>`. Falha de ambie
 
 ## Sustentação
 
-O que não vem de épico. No EWM, o IB `Sustentação` (um por produto, no backlog do EWM; nasce com a `[GB]` no modo
-inicial da `sa-planejamento`) é o pai da `[GB]`, do IB `Manutenção` e dos IBs de categoria.
+O que não vem de épico. No EWM, o IB `Sustentação` (um por produto, no backlog do EWM; nasce com a `[GB]` no fluxo
+`inicial` da `sa-planejamento`) é o pai da `[GB]`, do IB `Manutenção` e dos IBs de categoria.
 
 - **Manutenção:** o IB pai das fatias sem épico (trilha padrão ou rápida; `origem` `Manutenção` no `backlog.md`),
   que nasce com a primeira delas. Elas mudam o repositório e seguem o fluxo da fatia: são do Dev e podem ser AFK.
@@ -162,7 +162,7 @@ regra vale pelo tipo de id, não pelo nome Sustentação.
 | `sa-produto` | <…> | <…> | <…> | <padrão> | `sa-pesquisador` |
 | `sa-especificador` | <…> | <…> | <…> | <padrão> | `sa-pesquisador`, `sa-revisor` <+ do toolkit> |
 | `sa-pesquisador` | <…> | <…> | <…> | <padrão> | — |
-| `sa-codificador` | <…> | <…> | <…> | <padrão> | `sa-pesquisador`, `sa-revisor`, `sa-verificador` <+ do projeto> |
+| `sa-desenvolvedor` | <…> | <…> | <…> | <padrão> | `sa-pesquisador`, `sa-revisor`, `sa-verificador` <+ do projeto> |
 | `sa-revisor` | <…> | <…> | <…> | <padrão> | — |
 | `sa-verificador` | <…> | <…> | <…> | <padrão> | — |
 | `sa-orquestrador` | <…> | <…> | — | <padrão> | os `sa-*` <+ do projeto> |
@@ -170,18 +170,18 @@ regra vale pelo tipo de id, não pelo nome Sustentação.
 ## Passos de toolkit
 
 Num passo de um agente do Sabiá, a skill de um toolkit assume o trabalho; o Sabiá continua dono da revisão, do
-GATE, do `verificar.sh` e do commit (`references/passos.md` da skill `sabia`).
+GATE, do passo `sa-codificar.codificar.validar` e do commit (`references/passos.md` da skill `sabia`).
 
 | Passo | Toolkit | Para | Skill | Agente |
 |---|---|---|---|---|
-| <`especificador` | `codificador`> | `<nome>` <versão> | <quando usar> | `<skill>` | <`<agente>` | —> |
+| <`especificador` | `desenvolvedor`> | `<nome>` <versão> | <quando usar> | `<skill>` | <`<agente>` | —> |
 <nenhum — sem skill de toolkit com `passo`, ou nenhuma ligada>
 
 ## Regras aprendidas
 
 Regras de **julgamento** promovidas pela `sa-aprender` (lições em `<produto>/aprendizado/licoes.md`). O revisor
 as cobra como itens da rubrica; o plano as respeita. Erro mecânico não entra aqui: vira lint, teste, hook ou CI.
-Formato: `### R-<nn> · <título> · aplica a: <codificador | revisor | plano | PRD | todos> · severidade: <BLOQUEANTE | IMPORTANTE>`,
+Formato: `### R-<nn> · <título> · aplica a: <desenvolvedor | revisor | plano | PRD | todos> · severidade: <BLOQUEANTE | IMPORTANTE>`,
 a regra em 1–2 frases imperativas, `- ✅ <certo> · ❌ <errado>`, `- Origem: L-<nnn>`.
 
 <!-- Nenhuma regra promovida ainda. -->

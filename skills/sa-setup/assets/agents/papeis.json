@@ -111,7 +111,7 @@
       "push": "negar",
       "mcp_libera": ["+elm-local"]
     },
-    "codificador": {
+    "desenvolvedor": {
       "description": "Sabiá coder — plans the slice (fatia) in Kiro's spec format (sa-plano) and implements it in a test cycle with backpressure (sa-codificar), using the project's toolkit skills bound to it. Takes the slice all the way to merge (push of the slice branch with confirmation, PR, and merge of the approved PR) and records its situação (iniciada, pronta) on the base branch, with confirmation. In autonomous mode it works only in the worktree it was given, and neither pushes nor opens a PR.",
       "welcomeMessage": "Qual fatia (FT-nnn) devo planejar ou implementar?",
       "skills": ["sa-plano", "sa-codificar", "sa-desenvolver", "sa-iniciar", "sa-status"],
@@ -152,10 +152,10 @@
       "mcp_pergunta": ["+elm-tarefa"]
     },
     "orquestrador": {
-      "description": "Sabiá orchestrator — runs the sa-loop skill, taking planned AFK slices (fatias) from research to an open PR, one worktree per slice in .sabia/local/wt/, delegating each phase to a clean-context subagent (pesquisador, codificador, revisor, verificador), within the human-review WIP limit. The only one that creates worktrees; records the batch as iniciada on the base branch and pushes with the authorization given at the start of the batch. Never merges.",
+      "description": "Sabiá orchestrator — runs the sa-orquestrar skill, taking planned AFK slices (fatias) from research to an open PR, one worktree per slice in .sabia/local/wt/, delegating each phase to a clean-context subagent (pesquisador, desenvolvedor, revisor, verificador), within the human-review WIP limit. The only one that creates worktrees; records the batch as iniciada on the base branch and pushes with the authorization given at the start of the batch. Never merges.",
       "welcomeMessage": "Quais fatias AFK devo levar até o PR? (lista de FT-nnn ou \"as planejadas da sprint\")",
-      "skills": ["sa-loop", "sa-status", "sa-desenvolver", "sa-plano", "sa-codificar"],
-      "subagentes": ["sa-pesquisador", "sa-codificador", "sa-revisor", "sa-verificador"],
+      "skills": ["sa-orquestrar", "sa-status", "sa-desenvolver", "sa-plano", "sa-codificar"],
+      "subagentes": ["sa-pesquisador", "sa-desenvolvedor", "sa-revisor", "sa-verificador"],
       "escrita": "projeto",
       "registros": ["backlog", "sprints"],
       "shell": "trabalho",

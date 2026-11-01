@@ -11,7 +11,7 @@ from creditos import _ts, sessoes  # noqa: E402
 def _sessao(kiro, sid, pasta, turnos):
     d = Path(kiro, "sessions", "h", f"sess_{sid}-0000")
     d.mkdir(parents=True)
-    (d / "session.json").write_text(json.dumps({"workspacePaths": [pasta], "agentMode": "sa-codificador", "title": sid}))
+    (d / "session.json").write_text(json.dumps({"workspacePaths": [pasta], "agentMode": "sa-desenvolvedor", "title": sid}))
     linhas = [{"timestamp": ts, "payload": {"type": "usage_summary", "promptTurnSummaries": [{"unit": "credit", "usage": u}]}}
               for ts, u in turnos]
     linhas.append({"timestamp": "2026-10-21T10:00:00Z", "payload": {"type": "user"}})

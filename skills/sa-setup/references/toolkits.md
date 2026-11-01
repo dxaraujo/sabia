@@ -9,7 +9,7 @@ liberou para ele.
 ```
 toolkit (fora do fluxo)            sa-setup                             agentes do projeto
 ┌──────────────────────┐   descobre   ┌──────────────────────┐  liga   ┌──────────────────────────┐
-│ toolkit.json         │ ───────────► │ detecta o tipo de    │ ──────► │ sa-codificador            │
+│ toolkit.json         │ ───────────► │ detecta o tipo de    │ ──────► │ sa-desenvolvedor            │
 │ skills/<skill>/      │              │ projeto, propõe as   │         │   skill://…/java/SKILL.md │
 │ steering/ (opcional) │              │ skills por agente e  │         │   skill://…/spring-batch… │
 │ comandos de build    │              │ PERGUNTA à pessoa    │         │ sa-revisor …              │
@@ -68,13 +68,13 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
     "contem": ["spring-batch-core", "org.springframework.batch"]
   },
   "skills": [
-    { "caminho": "skills/spring-batch-job/SKILL.md", "papeis": ["codificador", "revisor"], "stack": ["spring-batch 5"],
-      "passo": { "papel": "codificador", "para": "tarefa que cria ou altera um job ou step", "agente": "batch-job" } },
-    { "caminho": "skills/spring-batch-teste/SKILL.md", "papeis": ["codificador", "verificador"] },
-    { "caminho": "skills/java/SKILL.md", "papeis": ["codificador", "revisor", "pesquisador"] }
+    { "caminho": "skills/spring-batch-job/SKILL.md", "papeis": ["desenvolvedor", "revisor"], "stack": ["spring-batch 5"],
+      "passo": { "papel": "desenvolvedor", "para": "tarefa que cria ou altera um job ou step", "agente": "batch-job" } },
+    { "caminho": "skills/spring-batch-teste/SKILL.md", "papeis": ["desenvolvedor", "verificador"] },
+    { "caminho": "skills/java/SKILL.md", "papeis": ["desenvolvedor", "revisor", "pesquisador"] }
   ],
   "steering": [
-    { "caminho": "steering/batch-regras.md", "papeis": ["codificador", "revisor"] }
+    { "caminho": "steering/batch-regras.md", "papeis": ["desenvolvedor", "revisor"] }
   ],
   "comandos": {
     "compilar": "mvn -q -DskipTests compile",
@@ -97,9 +97,9 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
 |---|---|
 | `tipos-de-projeto` | casa com o tipo detectado → o toolkit vira **sugestão** (nunca é ligado sem a pessoa dizer sim) |
 | `deteccao` | `arquivos` existe na raiz (ou em módulos) **e** algum `contem` aparece nele → toolkit "detectado" |
-| `skills[].papeis` | **quem:** pré-seleciona a skill na proposta de cada agente (`produto`, `especificador`, `pesquisador`, `codificador`, `revisor`, `verificador`, `orquestrador`) — uma skill pode servir a vários |
+| `skills[].papeis` | **quem:** pré-seleciona a skill na proposta de cada agente (`produto`, `especificador`, `pesquisador`, `desenvolvedor`, `revisor`, `verificador`, `orquestrador`) — uma skill pode servir a vários |
 | `skills[].stack`, `skills[].deteccao` | **onde:** a stack da skill (ex.: `java 17`, `react`); com `deteccao`, a setup só a pré-marca se o repositório casar |
-| `skills[].passo` | **em que passo:** opcional — a skill assume o passo de um agente do Sabiá (`papel`: `especificador`, `codificador`), com o `para` e, opcional, o `agente` a quem delegar — ver [Passos](#passos) |
+| `skills[].passo` | **em que passo:** opcional — a skill assume o passo de um agente do Sabiá (`papel`: `especificador`, `desenvolvedor`), com o `para` e, opcional, o `agente` a quem delegar — ver [Passos](#passos) |
 | `autor` | **obrigatório:** `nome` e `area` de quem fez e responde pelo toolkit (`email` opcional). Aparece no W5 e no `sabia toolkits listar`; toolkit sem autor é recusado |
 | `customiza` | opcional: o toolkit é uma **cópia modificada** de outro (`toolkit`, a `versao` de onde saiu e as `mudancas`) — ver [Customização](#customização) |
 | `agentes[]` | agentes neutros do toolkit (nome, descrição, prompt, skills, subagentes); sem campo de permissão |
@@ -110,10 +110,11 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
 ## Passos
 
 Uma skill de toolkit sem `passo` é **de apoio**: o agente a carrega quando o artefato pede. Com `passo`, ela assume
-um passo definido de um agente do Sabiá, e a escolha fica registrada; os passos, o briefing e o contrato de cada um
+um passo definido de um agente do Sabiá, e a configuração do agente decide quando usá-la (os **Passos de toolkit**
+que o gerador põe no prompt do dono; nada é marcado no `status.md` nem no `tasks.md`); os passos, o briefing e o contrato de cada um
 estão em [passos.md](../../sabia/references/passos.md).
 
-- A setup lista os passos no W5 e os oferece no W6 do agente dono (`sa-especificador`, `sa-codificador`). Ligado,
+- A setup lista os passos no W5 e os oferece no W6 do agente dono (`sa-especificador`, `sa-desenvolvedor`). Ligado,
   vai no `agentes.json` (`toolkits`: pasta, versão e sha usados; `passos`: toolkit, skill e se usa o agente) e na
   tabela **Passos de toolkit** do `sabia.md`.
 - **Agente neutro:** o toolkit traz só a definição (`agentes[]`) e o prompt em `.md`. O gerador cria o agente com
@@ -134,7 +135,7 @@ O cartão é o W6 de [wizard.md](wizard.md): skills numeradas com a caixa `[✅]
 "Para quê" (ex.: `spring-batch-job` — steps chunk/tasklet · toolkit spring-batch 🔍 detectado), e a resposta pelos
 números (`tirar 3,5`, `pôr 7`, `nenhuma skill`, `as mesmas do sa-<outro>`).
 
-Num projeto 100% Spring Batch, o normal é o codificador receber as skills de batch e Java, e não as de REST ou
+Num projeto 100% Spring Batch, o normal é o desenvolvedor receber as skills de batch e Java, e não as de REST ou
 de frontend — mas quem decide é a pessoa.
 
 ## Sem toolkit

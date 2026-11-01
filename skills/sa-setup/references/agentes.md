@@ -31,7 +31,7 @@ rebuilt)` no `--dry-run` (por causa do `toolsSettings.subagent`, que a V3 ainda 
 | `alvos` | as ferramentas do time: `["kiro", "opencode", "claude"]` (padrão `["kiro"]`; `--alvo` no gerador troca) |
 | `power` | a pasta do power do Kiro, relativa ao home (Passo 0): `~/.kiro/powers/installed/sabia` |
 | `produto`, `glossario`, `adr` | os caminhos do Passo 4 (`null` = não há) |
-| `base` | a branch base, sem `origin/` — nas regras de push da base (pergunta no codificador e no orquestrador; negado nos demais) |
+| `base` | a branch base, sem `origin/` — nas regras de push da base (pergunta no desenvolvedor e no orquestrador; negado nos demais) |
 | `bundle` | o `rm.download` do `pa` (leitura negada: a consulta é pelas `elm_*_local`), ou `null` |
 | `massa` | a pasta de massa do projeto que o verificador escreve, ou `null` |
 | `elm` | `false` → nenhuma tool do `elm` em nenhum agente (`sabia/elm/*` negado) |
@@ -43,7 +43,7 @@ rebuilt)` no `--dry-run` (por causa do `toolsSettings.subagent`, que a V3 ainda 
 | `agentes.sa-<papel>.skills` | `skill://` das skills escolhidas no Passo 6 |
 | `agentes.sa-<papel>.ler` | pastas dessas skills fora do projeto e do power (`~/.kiro/skills/<skill>/**`) |
 | `agentes.sa-<papel>.mcp` | tools de MCP do projeto: `servidor/tool` (banco: só a de consulta) ou `servidor` (inteiro, ex.: browser) |
-| `agentes.sa-<papel>.subagentes` | `[{"nome", "para"}]` — agentes do projeto (codificador e orquestrador) |
+| `agentes.sa-<papel>.subagentes` | `[{"nome", "para"}]` — agentes do projeto (desenvolvedor e orquestrador) |
 | `agentes.sa-<papel>.modelo` | o modelo, se não for o padrão |
 | `toolkits.<nome>` | `{"pasta", "versao", "sha"}` de cada toolkit com passo ligado — `pasta` relativa ao home (`~/.sabia/toolkits/<nome>`) ou ao projeto |
 | `passos` | `[{"toolkit", "skill", "agente"}]` — a skill do `toolkit.json` que tem `passo`; `agente: true` gera o agente do passo e o liga ao dono |
@@ -77,10 +77,10 @@ O gerador monta o agente do Kiro e o traduz:
   `git -C`/`-c` (escondem o subcomando das regras), merge, rebase, `pull --rebase`/`--no-ff`, `commit -n`,
   `--no-verify`, `reset --hard`, `clean`, `stash`, `restore`, `checkout --`/`.`, `--force`, `--delete`, `rm -rf`,
   credenciais e o bundle em qualquer comando.
-- **Push:** codificador, revisor, verificador e orquestrador — `git push *` pergunta sempre (`ask`, sem "sempre
+- **Push:** desenvolvedor, revisor, verificador e orquestrador — `git push *` pergunta sempre (`ask`, sem "sempre
   permitir"); `push-perigoso` nega `-f`, `+ref`, `:ref`, `--mirror`, `--all`, `--prune`, o push sem a branch nomeada
   (`git push`, `git push origin`, `HEAD`, `@`: as skills sempre a nomeiam) e outra ref para a base (`<ref>:<base>`,
-  `heads/<base>`). O push da base (`git push origin <base>`) pergunta no codificador e no orquestrador, só para os
+  `heads/<base>`). O push da base (`git push origin <base>`) pergunta no desenvolvedor e no orquestrador, só para os
   registros de situação da fatia, com os arquivos conferidos antes
   ([Gravar na base](../../sa-fatiar/references/backlog.md#gravar-na-base)); nos dois, `git reset --keep origin/*`
   também pergunta (desfaz o commit de registro de um push recusado). Revisor e verificador: push da base negado
@@ -88,7 +88,7 @@ O gerador monta o agente do Kiro e o traduz:
 - **MCP do power** (`elm`, `gitlabpr`): regra `power` `sabia/<servidor>/<tool>` — leitura liberada (`mcp_libera`),
   escrita com confirmação (`mcp_pergunta`), e **toda tool do catálogo que o papel não usa, negada**: a IDE chama
   tool de power pela `kiro_powers`, fora do filtro de `tools`. Comentar e anexar: todo papel com tarefa, só na
-  própria (regra em [`sabia/references/elm.md`](../../sabia/references/elm.md)). Merge do PR: só o codificador.
+  própria (regra em [`sabia/references/elm.md`](../../sabia/references/elm.md)). Merge do PR: só o desenvolvedor.
 - **MCP do projeto:** `tools` (`@servidor/tool`), regra `mcp` `allow` e `includeMcpJson: true` — o gerador faz os
   três a partir de `agentes.sa-<papel>.mcp`.
 - **Subagentes:** `tools` `subagent/<nome>`, `toolsSettings.subagent` e a regra `subagent`. O subagente herda as
@@ -100,7 +100,7 @@ O gerador monta o agente do Kiro e o traduz:
   `.kiro/steering/sabia.md`, `.kiro/agents`, `.kiro/settings`, `.claude`, `.opencode`, `opencode.json`,
   `AGENTS.md`, `.git` e a pasta do produto dentro das worktrees (cada um também na raiz: o `like` do V3 exige o `/`
   antes de `**/x`). Os `registros`: `backlog` (`backlog.md`), `sprints` (`sprints/**`) e `epicos` (`epicos/**`, PRD
-  e decisões) — produto e especificador escrevem os três; codificador e orquestrador, `backlog` e `sprints` (a
+  e decisões) — produto e especificador escrevem os três; desenvolvedor e orquestrador, `backlog` e `sprints` (a
   situação da fatia e a `iniciada` do lote, na base); revisor e verificador, nenhum. A independência do revisor e do
   verificador fica no prompt e no diff do PR; quem barra relatório forjado é o merge, que confere as tarefas no
   ELM.

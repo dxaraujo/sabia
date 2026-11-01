@@ -23,5 +23,5 @@ palavras-chave do domínio (termos do glossário, sinônimos da entrevista, ator
    ```
 
    **igual → reutilizar** (HF embute a REG existente, cita a HF, linka o termo pelo id) · **sobrepõe → alterar** o
-   existente (caminho "Alteração" da `sa-prd`) · **relacionado → criar novo**, citando o existente em `## Relações`
+   existente (caminho "Alteração" do passo `sa-prd.prd.escrever`) · **relacionado → criar novo**, citando o existente em `## Relações`
    · **nenhum → criar novo** (`novo (verificado <data>)`). A decisão é da pessoa.

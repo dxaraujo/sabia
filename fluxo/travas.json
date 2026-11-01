@@ -1,0 +1,14 @@
+{
+  "$comment": "Catálogo das travas do Sabiá. O gerador escreve o texto curto de cada trava no índice do prompt do agente; o corpo dos passos nunca as repete. Na 2.0 nenhuma é liberável (liberavel_por vazio); numa 2.x, liberavel_por: [\"projeto\"] e {\"liberar\": [...], \"motivo\", \"por\"} no mestre do projeto.",
+  "travas": {
+    "sim-da-pessoa": {"texto": "commit, push e escrita no ELM só com o \"sim\" da pessoa; o GATE para a sessão", "liberavel_por": []},
+    "backpressure": {"texto": "nada é dado como pronto nem comitado sem o passo validar verde: compilando, testes passando, lint e cobertura com o gate", "liberavel_por": []},
+    "revisao-independente": {"texto": "quem implementou não revisa nem aprova, salvo o único Dev Sênior ativo (revisor único na Observação da fatia na sprint)", "liberavel_por": []},
+    "aceite-independente": {"texto": "quem implementou não verifica", "liberavel_por": []},
+    "pr-lido-por-pessoa": {"texto": "merge só depois de uma pessoa ler o PR", "liberavel_por": []},
+    "po-decide-fechamento": {"texto": "só o P.O. fecha a sprint sem consolidar", "liberavel_por": []},
+    "toolkit-sem-commit": {"texto": "o toolkit devolve código e testes, sem commit, push nem PR", "liberavel_por": []},
+    "sem-force": {"texto": "nunca --force; a branch se atualiza sempre por merge da base, nunca por rebase", "liberavel_por": []},
+    "decisao-da-pessoa": {"texto": "nunca invente regra, valor ou ator: sem fonte e sem decisão de uma pessoa, é em aberto", "liberavel_por": []}
+  }
+}

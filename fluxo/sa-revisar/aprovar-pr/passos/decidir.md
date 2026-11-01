@@ -1,0 +1,32 @@
+---
+{"resumo": "Aprovado → comentário com o sha e os créditos, horas e conclusão da [APR], sem commit na branch; mudanças pedidas → Achados abertos, retrabalho, commit, push e aviso ao Dev."}
+---
+## Entrada
+
+A decisão da pessoa (passo `ler`) e o `sha` do PR (passo `assumir`).
+
+## Faça
+
+1. **Aprovado** → **não commite na branch nem grave fase** (o `sha` que o Dev vai mergear não pode mudar; a fatia
+   segue em `aguardando-aprovacao-pr` até o merge): numa
+   confirmação, `elm_comentar(<id da [APR]>, "PR aprovado, sha <sha> · créditos <linha da seção Créditos>")` (
+   os créditos saem do script ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4), e o Dev grava a
+   linha no `status.md` da base, no registro do merge), o saldo de horas e a
+   conclusão (`elm_lancar_horas`, `elm_transicao(<id>, "concluir")`). Avise o Dev responsável: o merge é dele (`sa-desenvolver.encerrar`),
+   que confere essa `[APR]`. Sem o MCP `elm` → entregue ao Dev a linha `PR aprovado por <login>, sha <sha>`, a linha de créditos e a
+   pendência `ELM pendente [APR FT-<nnn> concluir]: lançar <h>h e concluir (<login>)` — ele as grava na base, no
+   commit `FT-<nnn> registrar merge`.
+2. **Mudanças pedidas** → cada uma em Achados abertos (origem: PR), `fase: retrabalho (de: aguardando-aprovacao-pr)`,
+   "retrabalho" + 1 em Rodadas, uma linha na tabela Retrabalho (papel APR) e os créditos da sessão ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4). Commit
+   (`FT-<nnn> aprovação do PR: mudanças pedidas`) → push → conferir no remoto (como no passo `sa-revisar.hitl.entrega`) → horas
+   da sessão na `[APR]` (lança, não conclui) → avise o Dev responsável. A `[APR]` fica em andamento e é a mesma na
+   nova aprovação.
+
+## Saída
+
+Aprovado: a `[APR]` concluída e o Dev avisado do merge. Mudanças pedidas: o `status.md` no remoto, a `[APR]` em
+andamento e o Dev avisado. Aqui o fluxo termina.
+
+## Pare se
+
+- Mudanças pedidas, com o remoto diferente do local → não siga: diga o que falta.

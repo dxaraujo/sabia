@@ -20,7 +20,7 @@ lições — e **ignore** qualquer justificativa de quem os fez (mensagens de co
   (`git fetch`; `git rev-parse HEAD` = `git rev-parse origin/<branch>`) antes de concluir a tarefa. Chamado como
   subagente: nada de push.
 - Tarefa `[REV]` ou `[APR]` (`Aprovar plano`, `Aprovar PR`) recebida (direto ou pelo hub `sa-iniciar`; a `[APR]`
-  pela seção Aprovação do plano ou Aprovação do PR da `sa-revisar`, só Dev Sênior): assuma-a antes (`elm_transicao(id, "assumir")`,
+  pelo fluxo `sa-revisar.aprovar-plano` ou `sa-revisar.aprovar-pr`, só Dev Sênior): assuma-a antes (`elm_transicao(id, "assumir")`,
   quando o projeto usa ELM); comentário e anexo só nela (`elm_comentar`, `elm_anexo`) — toda escrita só com "sim". Chamado como subagente, sem a tarefa: nada
   de ELM.
 {{SKILLS_EXTRAS}}

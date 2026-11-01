@@ -134,7 +134,7 @@ de início do cabeçalho (o nome do pai é livre e não ordena) — a do `histor
 **Power sabia:** <versões usadas, crescente: 1.0.0 · 1.0.1>   (o planejamento grava a da abertura; a virada acrescenta as das linhas de créditos)
 **Situação:** <aberta | fechada>   (a virada grava `fechada`; o painel usa a última `aberta`)
 **Fechamento sem consolidar:** <FT-… (<P.O.>, <data>)>   (só quando o P.O. decide fechar com fatia de PR mergeado sem consolidação)
-**Publicação no EWM:** pendente   (só enquanto o §1 do [elm-sprint.md](elm-sprint.md) não rodou: planejamento sem o MCP ou com falha, ou a próxima, gravada no passo 4 da virada; a publicação a tira)
+**Publicação no EWM:** pendente   (só enquanto o §1 do [elm-sprint.md](elm-sprint.md) não rodou: planejamento sem o MCP ou com falha, ou a próxima, gravada no passo `sa-planejamento.retrospectiva.recalcular` da virada; a publicação a tira)
 
 ## Fatias
 

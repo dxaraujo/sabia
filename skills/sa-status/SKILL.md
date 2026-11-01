@@ -20,7 +20,7 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
    (só as das fatias `iniciada` ou `pronta` no `backlog.md`). Antes do merge, a pasta da fatia só existe na branch
    dela; qual `status.md` vale (a base sobre a branch; o de fatia `concluida`, `dividida` ou `cancelada`
    no `backlog.md` não conta) → a regra A base prevalece do
-   [status-template.md](../sa-desenvolver/references/status-template.md).
+   o padrão [`sa-desenvolver/status.md`](~/.sabia/framework/padrao/sa-desenvolver/status.md).
 2. De cada `status.md`: fatia, título, trilha, modo, fase, responsável, rodadas, achados abertos, PR, ELM,
    Banco, última linha do Histórico (data) e pendências `ELM pendente [<chave>]:` sem `ELM feito` com a **mesma chave** (também
    no rodapé das fichas de `fatias/`, no campo `**ELM:**` das fichas de `sustentacao/**`, na `## Sustentação` e nas
@@ -31,7 +31,7 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
    sincronização cria (espelhamento, §0 passo 4 do `elm-sprint.md`).
    PR das fatias em `pr-aberto`, `em-revisao`, `em-verificacao`, `retrabalho`, `aceita` ou `aguardando-aprovacao-pr`:
    `gitlab_listar_mrs(origem=<branch>, estado=all)` (MCP `gitlabpr`, só leitura) — estado, conflitos e link;
-   `merged` sem `Fase: pronta` na base → o Dev responsável registra o merge (`sa-desenvolver` Passo 6: `pronta` na
+   `merged` sem `Fase: pronta` na base → o Dev responsável registra o merge (`sa-desenvolver.encerrar`: `pronta` na
    base e conclusão da `[DEV]`; merge por fora do Sabiá → a sincronização da sprint grava a `pronta`); `closed` sem
    merge → inconsistência. Sem o MCP → o link do `status.md`.
 3. De cada `tasks.md`: `[x]`/total e o primeiro item pendente.
@@ -43,7 +43,7 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
    sprint atual (em `<produto>/sprints/<pai>/`, a de início mais recente com `**Situação:** aberta`) e a meta.
    PRDs (`epicos/*/prd.md`; antes do GATE, o `rascunho.md`): pendências `ELM pendente [<chave>]:` do rodapé.
 5. `<produto>/acordos.md`: limites de WIP (sem o arquivo: 2 fatias esperando pessoa, e sugira a
-   `sa-planejamento` modo inicial). Sem `<produto>/equipe.json` → sugira o mesmo modo inicial: sem ele não há
+   fluxo `sa-planejamento.inicial`). Sem `<produto>/equipe.json` → sugira o mesmo fluxo: sem ele não há
    senioridade (modo da fatia, GATE do plano, quem revisa).
 6. `<produto>/aprendizado/licoes.md`: lições com situação `proposta`.
    Sprint aberta (`sprint-<nn>.md`): seções Especificação e Sustentação (reserva × consumido; a linha com
@@ -86,14 +86,14 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
 ⏸️ Iniciadas sem branch publicada: FT-035 (iniciada por joao.lima em 2026-10-20) → só ele retoma (sa-desenvolver)
 
 👀 Esperando pessoa (WIP de revisão: <n>/<limite> — aguardando-aprovacao-plano + pr-aberto + em-revisao + em-verificacao + aceita + verificada + aguardando-aprovacao-pr)
-- FT-031 aguardando-aprovacao-plano há 1 dia → aprovar o plano: [APR] de <Dev Sênior> (sa-revisar, Aprovação do plano)
+- FT-031 aguardando-aprovacao-plano há 1 dia → aprovar o plano: [APR] de <Dev Sênior> (sa-revisar, fluxo aprovar-plano)
 - FT-029 pr-aberto há 2 dias → esperando revisão: [REV] de <revisor> (sa-revisar) <link>
 - FT-028 em-verificacao → esperando verificação: [VER] de <verificador> (sa-verificar)
-- FT-027 aceita → merge pelo Dev responsável (<login>, sa-desenvolver Passo 6) <link>
-- FT-032 aguardando-aprovacao-pr → [APR] Aprovar PR de <Dev Sênior> (sa-revisar); aprovada, o merge pelo Dev (sa-desenvolver Passo 6) <link>
+- FT-027 aceita → merge pelo Dev responsável (<login>, sa-desenvolver, fluxo encerrar) <link>
+- FT-032 aguardando-aprovacao-pr → [APR] Aprovar PR de <Dev Sênior> (sa-revisar); aprovada, o merge pelo Dev (sa-desenvolver, fluxo encerrar) <link>
 - FT-030 verificada → abrir o PR (sa-codificar)
-- FT-026 bloqueada: aguardando troca para HITL → P.O. (sa-planejamento, Troca de modo)
-🔁 Retrabalho: FT-026 (de: em-revisao) → o codificador retoma no mesmo PR (sa-codificar)
+- FT-026 bloqueada: aguardando troca para HITL → P.O. (sa-planejamento, fluxo troca-modo)
+🔁 Retrabalho: FT-026 (de: em-revisao) → o desenvolvedor retoma no mesmo PR (sa-codificar)
 📦 Prontas esperando consolidação: FT-025 (merge há 1 dia) → P.O. ou SM (sa-consolidar, agente sa-produto, [GB])
 
 ✅ Elegíveis para começar — as planejadas da sprint, depois as elegivel (por prioridade; empate: a ordem da linha)
@@ -123,7 +123,7 @@ fatias `concluida` (Coleta, item 2).
 
 **Sugestão** — nesta ordem: desbloquear quem espera uma pessoa (plano ou PR parado, WIP de revisão estourado, PR
 mergeado sem `pronta` na base) → item de Sustentação com prazo vencendo → terminar a fatia em andamento → começar a
-próxima elegível (a planejada do topo; nenhuma → a `elegivel` do topo; AFK em quantidade → ofereça o `sa-loop`) →
+próxima elegível (a planejada do topo; nenhuma → a `elegivel` do topo; AFK em quantidade → ofereça o `sa-orquestrar`) →
 trabalho de produto (PRD/fatiar) para manter o backlog com fatias elegíveis.
 
 ## Inconsistências a apontar
@@ -134,8 +134,8 @@ trabalho de produto (PRD/fatiar) para manter o backlog com fatias elegíveis.
   sprint corrige, [elm-sprint.md](../sa-planejamento/references/elm-sprint.md) §9);
 - fatia `iniciada` sem `status.md` em nenhuma branch nem na base (sessão interrompida antes da branch): vai na
   linha ⏸️ do painel;
-- PR `merged` sem `Fase: pronta` no `status.md` da base: o Dev responsável registra o merge (`sa-desenvolver`
-  Passo 6); merge por fora do Sabiá → a sincronização da sprint (§9);
+- PR `merged` sem `Fase: pronta` no `status.md` da base: o Dev responsável registra o merge (fluxo
+  `sa-desenvolver.encerrar`); merge por fora do Sabiá → a sincronização da sprint (§9);
 - situação diferente no `backlog.md` e na linha viva da sprint aberta (fatia ou item de Sustentação; a com
   `saiu da sprint` é histórico — [Gravar na base](../sa-fatiar/references/backlog.md#gravar-na-base)), ou
   `pronta`/`concluida` no `status.md` da base e não no `backlog.md` (ou o contrário) — a sincronização da sprint
@@ -150,8 +150,8 @@ trabalho de produto (PRD/fatiar) para manter o backlog com fatias elegíveis.
   `saiu da sprint`) sem decisão do P.O. registrada no `sprint-<nn>.md`;
 - arquivo com dado de cliente versionado (extração, CSV ou evidência fora de `.sabia/local/`).
 
-Tarefa concluída **sem horas lançadas** não é apontada aqui: só no fechamento da sprint (`sa-planejamento`,
-virada). A `[GB]` sem horas (a dona também é o P.O., que nunca lança) é normal: nem aqui nem no relatório de horas.
+Tarefa concluída **sem horas lançadas** não é apontada aqui: só no fechamento da sprint (passo
+`sa-planejamento.retrospectiva.horas`). A `[GB]` sem horas (a dona também é o P.O., que nunca lança) é normal: nem aqui nem no relatório de horas.
 
 ## Fechar a sessão
 
@@ -172,9 +172,8 @@ o `status.md` que vale é o da base — os itens 1 e 4 gravam nele pelo bloco
    Kiro só grava o consumo de um turno quando ele **termina**: leia sempre **na resposta a uma pergunta** — primeiro
    `💳 Registrar os créditos desta sessão? (sim)` (nas entregas das skills de papel, antes do commit:
    `💳 Registrar os créditos e entregar? (sim)`), e só na resposta rode o script; assim o turno do trabalho já
-   está gravado. Rode
-   o script `scripts/creditos.py` desta skill (fica na pasta desta skill: caminho relativo a esta pasta; busca no
-   workspace não o acha): `uv run --no-project python <caminho>/creditos.py --pasta <cada pasta do git worktree
+   está gravado. Rode o script `scripts/creditos.py` desta skill:
+   `uv run --no-project python <caminho>/creditos.py --pasta <cada pasta do git worktree
    list> --desde <Data da sua última linha onde vai gravar | início do item>`. Sai uma linha por sessão do Kiro
    com consumo, a mais recente primeiro — é a atual; as outras são sessões que ninguém fechou: mostre-as com o
    título e pergunte quais são deste item (nenhuma é atribuída sem "sim").

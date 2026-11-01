@@ -86,6 +86,27 @@ test("atualizar mostra a diferença, troca as cópias, tira a skill que saiu e p
   assert.ok(!("~/.claude/skills/sa-codificar" in s.lerInventario().alvos.claude.copias));
 });
 
+test("skill de fluxo é compilada: os passos gerados entram no inventário e o passo editado à mão é detectado", async () => {
+  const fw = framework("fw", "2.0.0");
+  escrever(fw, {
+    "skills/sa-codificar/SKILL.md": "---\nname: sa-codificar\nmetadata:\n  version: \"2.0.0\"\n---\n# sa-codificar\n",
+    "fluxo/travas.json": { travas: {} },
+    "fluxo/sa-codificar/codificar/codificar.md": '---\n{"fluxo": "codificar", "dono": "sa-x", "passos": [{"id": "tarefa"}]}\n---\n# Codificar\n',
+    "fluxo/sa-codificar/codificar/passos/tarefa.md": '---\n{"resumo": "Uma tarefa."}\n---\n## Entrada\n\n## Faça\n\nCiclo.\n\n## Saída\n\n## Pare se\n\n—\n',
+  });
+  await s.instalar({ fonte: fw, alvo: "opencode" });
+  const dir = path.join(home, ".config/opencode/skills/sa-codificar");
+  assert.match(fs.readFileSync(path.join(dir, "SKILL.md"), "utf8"), /## Fluxo codificar/);
+  const copias = s.lerInventario().alvos.opencode.copias["~/.config/opencode/skills/sa-codificar"];
+  assert.match(copias["references/codificar/tarefa.md"], /^[0-9a-f]{64}$/);
+  assert.equal(s.lerInventario().framework.compilador, JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8")).version);
+  fs.appendFileSync(path.join(dir, "references/codificar/tarefa.md"), "editado\n");
+  escrever(fw, { "fluxo/sa-codificar/codificar/passos/tarefa.md": '---\n{"resumo": "Uma tarefa."}\n---\n## Entrada\n\n## Faça\n\nCiclo novo.\n\n## Saída\n\n## Pare se\n\n—\n' });
+  respostas = ["s", "n"];  // atualizar? sim · sobrescrever a alterada à mão? não
+  await s.atualizar({ fonte: fw });
+  assert.match(fs.readFileSync(path.join(dir, "references/codificar/tarefa.md"), "utf8"), /editado/);
+});
+
 test("desinstalar apaga só o que o inventário registrou", async () => {
   await s.instalar({ fonte: framework("fw", "1.1.0"), alvo: "claude,kiro" });
   escrever(home, { ".claude/skills/minha/SKILL.md": "minha" });
@@ -128,7 +149,7 @@ function toolkit(base, mudar = {}) {
     "agentes/job.md": "job",
     "toolkit.json": { nome: "batch-alfa", versao: "1.0.0", descricao: "toolkit fictício", autor: { nome: "Ana Exemplo", area: "Equipe Alfa" },
       "tipos-de-projeto": ["batch"],
-      skills: [{ caminho: "skills/batch/SKILL.md", papeis: ["codificador"], passo: { papel: "codificador", para: "job", agente: "batch-job" } }],
+      skills: [{ caminho: "skills/batch/SKILL.md", papeis: ["desenvolvedor"], passo: { papel: "desenvolvedor", para: "job", agente: "batch-job" } }],
       agentes: [{ nome: "batch-job", descricao: "codifica um job", prompt: "agentes/job.md", skills: ["skills/batch/SKILL.md"] }], ...mudar },
   });
 }
@@ -138,8 +159,8 @@ test("valida o toolkit: nome, caminhos presos à pasta e referências", () => {
   const erros = (mudar, nome) => s.validarToolkit(toolkit(path.join(raiz, Math.random().toString(36).slice(2)), mudar), nome).join("\n");
   assert.match(erros({}, "outro"), /≠ outro/);
   assert.match(erros({ nome: "sa-batch" }), /nome inválido/);
-  assert.match(erros({ skills: [{ caminho: "../fora/SKILL.md", papeis: ["codificador"] }] }), /fora da pasta/);
-  assert.match(erros({ skills: [{ caminho: "skills/nao/SKILL.md", papeis: ["codificador"] }] }), /não existe/);
+  assert.match(erros({ skills: [{ caminho: "../fora/SKILL.md", papeis: ["desenvolvedor"] }] }), /fora da pasta/);
+  assert.match(erros({ skills: [{ caminho: "skills/nao/SKILL.md", papeis: ["desenvolvedor"] }] }), /não existe/);
   assert.match(erros({ agentes: [{ nome: "sa-job", descricao: "x", prompt: "/etc/x.md" }] }), /nome inválido[\s\S]*fora da pasta/);
   assert.match(erros({ agentes: [] }), /agente batch-job não está em agentes/);
   assert.match(erros({ customiza: { toolkit: "batch-alfa" } }), /customiza/);

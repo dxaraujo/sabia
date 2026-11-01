@@ -1,0 +1,29 @@
+---
+{"resumo": "Lê o campo Drift de negócio do status.md (marcado pela revisão e pela verificação) e, com sim, leva o PRD ou a ficha a nova versão antes de publicar."}
+---
+## Entrada
+
+Fatia `pronta` na base, já na base (Entrada do fluxo), e o campo **Drift de negócio** do `status.md`.
+
+## Faça
+
+Leia o campo **Drift de negócio** do `status.md` — marcado pela revisão (`sa-revisar`, rubrica C: achado aceito
+ou decisão técnica que muda comportamento visível) e pela verificação (`sa-verificar`: cenário ajustado). Não
+releia o `design.md` nem o `verificacao.md` atrás de drift: isso já foi julgado.
+
+- `sim — <motivo>` → mostre o motivo: o PRD vai a nova versão **antes** de publicar (passo `elm`). Com épico,
+  pare e passe ao especificador (`sa-prd.mudanca`, com a revisão P e o GATE); depois do GATE, retome a consolidação
+  aqui. Na fatia sem épico, a ficha, pela `sa-triar`.
+- `não` → nada no PRD nem na ficha.
+- vazio (`—`) → pergunte a quem revisou ou verificou (Histórico) e grave a resposta no campo; não procure você;
+  sem REV nem VER no Histórico (fatia `pronta` pela sincronização, `merge do PR <link> por fora do Sabiá`) → pergunte
+  ao Dev responsável (o dono da `[DEV]`) e grave a resposta no campo.
+
+## Saída
+
+O drift resolvido (PRD ou ficha em nova versão, ou nada a mudar) → passo `elm`.
+
+## Pare se
+
+- `concluida` no `status.md` ou no `backlog.md` da base → diga "já consolidada em <data>" e pare — nada se repete.
+- Sem `pronta` na base → não consolide: mande o Dev ao fluxo `sa-desenvolver.encerrar` e pare.

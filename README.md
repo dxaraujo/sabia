@@ -88,7 +88,7 @@ Fontes no fim deste arquivo.
 | `sa-verificar` | aceite de ponta a ponta com evidência; `CT.csv` para o ETM |
 | `sa-consolidar` | fatia `pronta` (pós-merge) → `concluida`, processo de produto (P.O. ou SM, agente `sa-produto`, créditos num comentário na `[GB]`; horas só do SM): drift marcado pela revisão e pela verificação, ELM as-built (requisitos, ET, casos de teste criados no ETM), ADRs do PR, glossário, conclusão |
 | `sa-sync` | sincroniza o bundle OKF do DOORS Next nas duas vias (plano, baixar, enviar, conflitos) e, depois de baixar, pergunta se indexa o bundle local |
-| `sa-loop` | fatias AFK até o PR, uma worktree por fatia, uma fase por contexto limpo |
+| `sa-orquestrar` | fatias AFK até o PR, uma worktree por fatia, uma fase por contexto limpo |
 | `sa-aprender` | lições, promoção de regras, retrospectiva com dados, casos de avaliação |
 
 ## O que a setup instala no projeto
@@ -101,9 +101,8 @@ de `skills/sa-setup/assets/`:
 |---|---|
 | `.sabia/sabia.md` (e o ponteiro `.kiro/steering/sabia.md`) | o único steering do fluxo (sempre carregado): resumo, configuração do projeto (pasta do produto, comandos, verificação, git, banco, autonomia, ELM, agentes) e regras aprendidas |
 | `.sabia/config/agentes.json` | as escolhas do projeto para os agentes (caminhos, comandos, skills e MCPs por agente) — a entrada do gerador |
-| agentes de cada ferramenta do time: `.kiro/agents/sa-*.json` · `.opencode/agents/sa-*.md` · `.claude/agents/sa-*.md` (+ regras no `.claude/settings.json`) | `produto`, `especificador`, `pesquisador`, `codificador`, `revisor`, `verificador`, `orquestrador` — gerados pelo script da setup a partir do `agentes.json`, cada um com as skills e MCPs que a pessoa liberou |
-| `.sabia/verificar.sh` | backpressure: compila, testa, roda o lint e a cobertura; a `sa-codificar` o roda antes de cada commit |
-| `.sabia/http.sh` (opcional) | única chamada HTTP que o verificador faz sem perguntar: só à URL de teste, com corpo da pasta `massa/` |
+| agentes de cada ferramenta do time: `.kiro/agents/sa-*.json` · `.opencode/agents/sa-*.md` · `.claude/agents/sa-*.md` (+ regras no `.claude/settings.json`) | `produto`, `especificador`, `pesquisador`, `desenvolvedor`, `revisor`, `verificador`, `orquestrador` — gerados pelo script da setup a partir do `agentes.json`, cada um com as skills e MCPs que a pessoa liberou |
+| `.sabia/http.sh` (opcional) | única chamada HTTP que o verificador faz sem perguntar: só à URL de teste, com corpo da pasta `massa/`; o backpressure antes de cada commit (compila, testa, roda o lint e a cobertura) é o passo `validar` da `sa-codificar`, com os Comandos do `sabia.md` |
 | pasta do produto (proposta pela setup; padrão `.sabia/planejamento`) | `backlog.md`, épicos e PRDs, `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<iteração pai>/`, `sustentacao/<pasta>/`, `aprendizado/` — versionada; o que é local fica em `.sabia/local/` (fora do git) |
 
 O ELM vem no próprio power: o MCP **`mcp-elm`** (≥ 3.5.1) lê o `.kiro/config/elm/pa_<nome>.json` do projeto (um por
@@ -119,10 +118,10 @@ Cada agente tem as permissões mínimas do papel, definidas uma vez em
 escreve só o que produz; no shell, só o que o papel usa — git de leitura e, conforme o papel, `add`/`commit` e os
 comandos de build e verificação —, e o resto o Kiro pergunta. Merge,
 rebase, `--force`, `reset --hard` e `git -C` (que esconde o subcomando das regras) são negados em todos; push com
-confirmação a cada um (`ask`), só da branch da fatia, no orquestrador, no codificador, no revisor e no verificador —
-e, no codificador e no orquestrador, o da base com os registros de situação (`backlog.md`, `sprints/**` e o
+confirmação a cada um (`ask`), só da branch da fatia, no orquestrador, no desenvolvedor, no revisor e no verificador —
+e, no desenvolvedor e no orquestrador, o da base com os registros de situação (`backlog.md`, `sprints/**` e o
 `status.md` da fatia, conferidos antes; quem desenvolve precisa de push na base); o merge do PR aprovado é do Dev
-responsável, pelo codificador. Detalhes em
+responsável, pelo desenvolvedor. Detalhes em
 [`skills/sa-setup/references/agentes.md`](skills/sa-setup/references/agentes.md).
 
 ## Toolkits
@@ -131,7 +130,7 @@ O fluxo não sabe programar em nenhuma stack: o conhecimento de Java, Spring Bat
 **toolkits** — pacotes de skills mantidos fora do power, um por tipo de projeto ou stack. A `sa-setup` é a única
 parte do fluxo que sabe procurá-los (`.sabia/toolkits/`, `~/.sabia/toolkits/`, powers instalados com `toolkit.json`,
 ou skills com `metadata.toolkit`), detecta o tipo do projeto e **propõe, agente por agente**, as skills a ligar (uma confirmação por agente) —
-num projeto 100% Spring Batch, o codificador recebe as de batch e Java que a pessoa escolher, e não as de REST ou
+num projeto 100% Spring Batch, o desenvolvedor recebe as de batch e Java que a pessoa escolher, e não as de REST ou
 frontend. Contrato em [`skills/sa-setup/references/toolkits.md`](skills/sa-setup/references/toolkits.md) e
 schema em [`toolkit.schema.json`](skills/sa-setup/assets/toolkit.schema.json).
 

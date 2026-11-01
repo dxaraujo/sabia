@@ -74,9 +74,12 @@ def passos(projeto, cfg):
         ext = next((x["passo"] for x in man.get("skills", []) if x["caminho"] == e["skill"] and x.get("passo")), None)
         if ext is None:
             raise ValueError(f"toolkit {e['toolkit']}: não há skill com `passo` em {e['skill']}")
-        dono = por_papel.setdefault(ext["papel"], {"skills": [], "subagentes": []})
+        dono = por_papel.setdefault(ext["papel"], {"skills": [], "subagentes": [], "passos": []})
         dono["skills"].append(f"skill://{pasta}/{dentro(e['skill'], e['toolkit'])}")
-        if not (e.get("agente") and ext.get("agente")):
+        com_agente = bool(e.get("agente") and ext.get("agente"))
+        dono["passos"].append({"skill": Path(e["skill"]).parent.name, "para": ext["para"],
+                               "agente": ext["agente"] if com_agente else None})
+        if not com_agente:
             continue
         dono["subagentes"].append({"nome": ext["agente"], "para": ext["para"]})
         defs, fila = {a["nome"]: a for a in man.get("agentes", [])}, [ext["agente"]]
@@ -95,6 +98,17 @@ def passos(projeto, cfg):
     return por_papel, do_toolkit
 
 
+def texto_passos(papel, passos):
+    """Os passos de toolkit no prompt do dono: a configuração decide, nada é marcado no status.md nem no tasks.md."""
+    if not passos:
+        return ""
+    onde = {"especificador": "na escrita do PRD (3.2 da `sa-prd`)", "desenvolvedor": "em cada tarefa do `tasks.md`"}.get(papel, "no passo")
+    regras = [f"`{x['para']}` → delegue ao subagente `{x['agente']}`, com o briefing e o contrato do `passos.md`" if x["agente"]
+              else f"`{x['para']}` → carregue a skill `{x['skill']}` e faça o passo por ela" for x in passos]
+    return (f"Passos de toolkit: {onde}, o que casa com o `para` vai ao toolkit, sem perguntar à pessoa e sem marcar"
+            f" no `status.md` nem no `tasks.md`: " + "; ".join(regras) + ".")
+
+
 def agente(nome, p, base, cfg, ext=None, tk=None):
     """O agente sa-<nome>; com `tk`, o agente do toolkit, com as regras do papel <nome>, dono do passo."""
     valores = {"POWER": cfg.get("power", "~/.kiro/powers/installed/sabia"), "PRODUTO": cfg["produto"], "GLOSSARIO": cfg.get("glossario"), "ADR": cfg.get("adr"),
@@ -102,7 +116,7 @@ def agente(nome, p, base, cfg, ext=None, tk=None):
     extra = cfg.get("agentes", {}).get(f"sa-{nome}", {})
     if tk:  # o agente do toolkit herda do dono do passo as skills, os MCPs e as leituras (o mesmo papel), não os subagentes
         extra = {k: v for k, v in extra.items() if k != "subagentes"}
-    ext = ext or {"skills": [], "subagentes": []}
+    ext = ext or {"skills": [], "subagentes": [], "passos": []}
     grupos, sh = base["grupos"], base["shell"]
 
     libera = expandir(p.get("mcp_libera", []), grupos)
@@ -161,6 +175,7 @@ def agente(nome, p, base, cfg, ext=None, tk=None):
     prompt = tk["prompt"] if tk else (ASSETS / f"sa-{nome}.md").read_text(encoding="utf-8")
     prompt = prompt.replace("{{SKILLS_EXTRAS}}", f"Skills do projeto ligadas a você: {', '.join(f'`{s}`' for s in skills_extras)}"
                             " — carregue a do artefato antes de escrevê-lo." if skills_extras else "")
+    prompt = prompt.replace("{{PASSOS}}", texto_passos(nome, ext.get("passos", [])))
     prompt = prompt.replace("{{SUBAGENTES}}", "Subagentes do projeto: " + ", ".join(f"`{s['nome']}` ({s['para']})" for s in subs_projeto)
                             if subs_projeto else "")
     prompt = re.sub(r"\n{3,}", "\n\n", PH.sub(lambda m: valores.get(m.group(1)) or "não há", prompt)).rstrip() + "\n"

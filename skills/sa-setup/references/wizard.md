@@ -207,8 +207,8 @@ Duas mensagens: a proposta (Status `⏸️ ainda não rodado`) e, depois do `ok`
 | # | Item | Valor | Fonte |
 |---|---|---|---|
 | 1 | Pasta do produto | `<.sabia/planejamento>` — backlog, épicos, PRDs, aprendizado | <🔍 backlog.md existente | 📐> |
-| 2 | Glossário | <`docs/glossario.md` (existe) | `docs/glossario.md` (será criado) | não há> | <🔍 | 📐 | 🙋> |
-| 3 | ADRs | <`docs/adr` (existe) | `docs/adr` (será criada) | não há> | <🔍 | 📐 | 🙋> |
+| 2 | Glossário | <`.sabia/glossario.md` (existe) | `.sabia/glossario.md` (será criado) | não há> | <🔍 | 📐 | 🙋> |
+| 3 | ADRs | <`.sabia/adr` (existe) | `.sabia/adr` (será criada) | não há> | <🔍 | 📐 | 🙋> |
 | 4 | Usa ELM | <sim — `pa_<nome>.json` | não> | <🔍 | 🙋> |
 | 5 | Bundle do RM | <`docs/elm/<nome>` · <n> documentos | não baixado — `sa-sync` depois | ➖> | <🔍 | 🧩> |
 | 6 | Regras do ELM | publicar requisitos na aprovação · ET não publica · fatia dividida = filhos do item | 📐 |
@@ -235,9 +235,9 @@ Montagem do `pa` (só quando falta): um cartão por bloco, com o cabeçalho
 
 | # | Toolkit | Passo | Para | Skill | Agente |
 |---|---|---|---|---|---|
-| 1 | `<toolkit>` <versão> | <`especificador` | `codificador`> | <quando usar> | `<skill>` | <`<agente>` | —> |
+| 1 | `<toolkit>` <versão> | <`especificador` | `desenvolvedor`> | <quando usar> | `<skill>` | <`<agente>` | —> |
 
-Agentes do projeto (podem virar subagentes do codificador e do orquestrador):
+Agentes do projeto (podem virar subagentes do desenvolvedor e do orquestrador):
 
 | # | Agente | Para quê | Status |
 |---|---|---|---|
@@ -265,13 +265,13 @@ Agentes do projeto (podem virar subagentes do codificador e do orquestrador):
 | <[✅] | [ ]> | <n> | `<banco/consultar>` | 🟢 só consulta |
 | [✅] | <n> | `gitlabpr` | <🟢 consulta · 🟡 abrir e mesclar PR | 🟢 consulta · 🟡 abrir PR | 🟢 consulta> |
 
-(se o agente tem subagentes — produto, especificador, codificador, orquestrador: os do fluxo, da tabela do Passo 6, mais os do projeto)
+(se o agente tem subagentes — produto, especificador, desenvolvedor, orquestrador: os do fluxo, da tabela do Passo 6, mais os do projeto)
 | | # | Subagente | Para quê |
 |---|---|---|---|
 | [✅] | <n> | `sa-revisor` | análise do plano e revisão do código |
 | [ ] | <n> | `<agente do projeto>` | <início da description> |
 
-(só `sa-especificador` e `sa-codificador`, se há passo de toolkit deles no W5)
+(só `sa-especificador` e `sa-desenvolvedor`, se há passo de toolkit deles no W5)
 | | # | Passo de toolkit | Para | Agente |
 |---|---|---|---|---|
 | <[✅] | [ ]> | <n> | `<skill>` · toolkit `<nome>` | <quando usar> | <[ ] `<agente>` — delegar a ele | — sem agente> |
@@ -288,7 +288,7 @@ Agentes do projeto (podem virar subagentes do codificador e do orquestrador):
 Linhas numeradas em sequência pelas quatro tabelas (skills, MCPs, subagentes, passos), para "tirar 3,5" valer em
 qualquer uma. No passo, `pôr <n>` liga a skill e `agente <n>` marca também o agente (só com a skill ligada).
 As linhas `elm` e `gitlabpr` são fixas do papel (não se tiram por projeto); a do `gitlabpr` só existe no produto,
-codificador, revisor e orquestrador — o MCP serve só ao PR.
+desenvolvedor, revisor e orquestrador — o MCP serve só ao PR.
 Toda opção aparece — marcada ou não —, na ordem: marcadas primeiro, depois as desmarcadas. Depois de um ajuste,
 mostre o cartão de novo com as caixas atualizadas antes de pedir o "ok" final do agente.
 

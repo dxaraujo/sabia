@@ -10,6 +10,7 @@ import os from "node:os";
 import path from "node:path";
 import readline from "node:readline/promises";
 import { fileURLToPath } from "node:url";
+import { compilar } from "./compilar.mjs";
 
 const VERSAO = JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8")).version;
 const REPO = "https://github.com/dxaraujo/sabia.git";
@@ -296,8 +297,15 @@ async function registrarMcps(alvo, fw, reg) {
   }
 }
 
+/** Compila o framework para o alvo em ~/.sabia/compilado/<alvo>/ (seção 11 do plano da 2.0). */
+function compilarPara(alvo, fw) {
+  const versao = JSON.parse(fs.readFileSync(path.join(fw, "plugin.json"), "utf8")).version;
+  const base = alvo === "kiro" ? "~/.kiro/powers/installed/sabia/skills" : curto(PASTA_SKILLS[alvo]());
+  return compilar(fw, sabia("compilado", alvo), { base, raiz: alvo === "kiro", versao });
+}
+
 async function instalarAlvo(alvo, inv, opcoes) {
-  const fw = sabia("framework");
+  const fw = compilarPara(alvo, sabia("framework"));
   if (alvo === "kiro") {
     const nosso = inv.alvos.kiro?.power;
     // o painel Powers instala em ~/.kiro/powers/installed/sabia: fora do inventário, é de outra instalação
@@ -314,7 +322,7 @@ async function instalarAlvo(alvo, inv, opcoes) {
   }
   const reg = (inv.alvos[alvo] ||= { copias: {}, mcp: [] });
   for (const s of skillsDoFluxo(fw)) await copiar(path.join(fw, "skills", s), path.join(PASTA_SKILLS[alvo](), s), reg.copias, opcoes);
-  if (!opcoes.semMcp) await registrarMcps(alvo, fw, reg);
+  if (!opcoes.semMcp) await registrarMcps(alvo, sabia("framework"), reg);
   if (alvo === "opencode") {
     const velhas = fs.existsSync(PASTA_SKILLS.opencode()) ? fs.readdirSync(PASTA_SKILLS.opencode()).filter((d) => /^sdd/.test(d)) : [];
     if (velhas.length) ctx.log(`aviso: skills antigas no opencode concorrem com as sa-*: ${velhas.join(", ")} (remova se não usa mais)`);
@@ -353,7 +361,7 @@ export async function instalar(opcoes = {}) {
   fs.rmSync(sabia("framework"), { recursive: true, force: true });
   fs.mkdirSync(sabia(), { recursive: true });
   fs.cpSync(novo.pasta, sabia("framework"), { recursive: true });
-  inv.framework = { versao: novo.versao, sha: novo.sha, fonte: novo.fonte, instalado_em: new Date().toISOString() };
+  inv.framework = { versao: novo.versao, sha: novo.sha, fonte: novo.fonte, compilador: VERSAO, instalado_em: new Date().toISOString() };
   ctx.log(`Sabiá ${novo.versao} em ~/.sabia/framework`);
   try {
     for (const alvo of await escolherAlvos(opcoes)) await instalarAlvo(alvo, inv, opcoes);
@@ -369,11 +377,14 @@ export async function atualizar(opcoes = {}) {
   if (!inv.framework) throw new Error("o Sabiá não está instalado: rode `sabia instalar`");
   const novo = baixarFramework({ fonte: inv.framework.fonte === REPO ? undefined : inv.framework.fonte, ...opcoes });
   ctx.log(`Sabiá ${inv.framework.versao} → ${novo.versao}`);
-  if (!mostrarDiferencas(diferencas(sabia("framework"), novo.pasta))) return ctx.log("nada mudou");
+  // o compilador também conta: a mesma fonte compilada por outro CLI pode dar outra skill
+  const compilador = inv.framework.compilador === VERSAO ? null : `compilador ${inv.framework.compilador || "—"} → ${VERSAO}`;
+  if (!mostrarDiferencas(diferencas(sabia("framework"), novo.pasta)) && !compilador) return ctx.log("nada mudou");
+  if (compilador) ctx.log(`  ${compilador}`);
   if (!/^s/i.test(await ctx.perguntar("Atualizar? [s/N]", "n"))) return ctx.log("nada foi alterado");
   fs.rmSync(sabia("framework"), { recursive: true, force: true });
   fs.cpSync(novo.pasta, sabia("framework"), { recursive: true });
-  inv.framework = { ...inv.framework, versao: novo.versao, sha: novo.sha, instalado_em: new Date().toISOString() };
+  inv.framework = { ...inv.framework, versao: novo.versao, sha: novo.sha, compilador: VERSAO, instalado_em: new Date().toISOString() };
   try {
     for (const alvo of Object.keys(inv.alvos)) {
       if (alvo !== "kiro") {  // skill que saiu do framework sai da ferramenta
@@ -411,6 +422,7 @@ export async function desinstalar(opcoes = {}) {
     }
     if (!Object.keys(inv.alvos).length) {
       fs.rmSync(sabia("framework"), { recursive: true, force: true });
+      fs.rmSync(sabia("compilado"), { recursive: true, force: true });
       inv.framework = null;
     }
   } finally {

@@ -3,20 +3,21 @@
 O Sabiá é o fluxo; os toolkits são extensões dos agentes dele. Uma skill de toolkit ajuda de dois jeitos:
 
 - **de apoio** (só `papeis`): o agente a carrega quando o artefato pede;
-- **de passo** (com `passo` no `toolkit.json`): ela assume um passo definido de um agente do Sabiá. A escolha fica
-  registrada, então vale sempre, também no AFK. A skill traz os modelos no `assets/` e, opcionalmente, um agente a
+- **de passo** (com `passo` no `toolkit.json`): ela assume um passo definido de um agente do Sabiá. Quem decide é a
+  configuração do agente (o `agentes.json`, que o gerador leva ao prompt como **Passos de toolkit**), então vale
+  sempre, também no AFK, e é transparente para quem está no fluxo. A skill traz os modelos no `assets/` e, opcionalmente, um agente a
   quem o dono do passo delega.
 
-O Sabiá define o dono, o contrato de saída e o que continua sendo dele: revisão, GATE, `verificar.sh` e commit.
+O Sabiá define o dono, o contrato de saída e o que continua sendo dele: revisão, GATE, o passo `sa-codificar.codificar.validar` e commit.
 Formato no `toolkit.json` (`skills[].passo`, `agentes[]`): [toolkits.md](../../sa-setup/references/toolkits.md).
 Os passos ligados no projeto estão na tabela **Passos de toolkit** do `.sabia/sabia.md` (gravada pela setup).
 
 ## Os passos
 
-| Passo (`passo.papel`) | Dono | Onde a escolha fica registrada | Contrato de saída |
+| Passo (`passo.papel`) | Dono | Como o agente sabe | Contrato de saída |
 |---|---|---|---|
-| `especificador` | agente `sa-especificador`, na `sa-especificar`; a escrita do 3.2 da `sa-prd` passa para o toolkit | ao montar a pasta de trabalho, a `sa-especificar` pergunta à pessoa se o épico usa o toolkit e grava a linha `Toolkit` no `status.md` do épico | `prd.md` com as H2 do [template](../../sa-prd/references/prd-template.md); conceitos OKF em `elm/` quando há ELM; extras em `.md` na pasta de trabalho (vão como anexo e para a base no GATE). O 3.1, a revisão P e o GATE continuam do Sabiá |
-| `codificador` | agente `sa-codificador`, na `sa-codificar`, por tarefa | no Passo 3 da `sa-plano`, a tarefa que casa com o `para` ganha `_Toolkit: <nome>_` no `tasks.md`, e a pessoa aprova no GATE do plano | código e testes da tarefa, dentro do escopo dela, e o resumo dos arquivos. O Sabiá roda o `.sabia/verificar.sh` (evidência, não afirmação) e faz o commit. O toolkit não faz commit, push nem PR |
+| `especificador` | agente `sa-especificador`, na `sa-especificar`; a escrita do passo `sa-prd.prd.escrever` passa para o toolkit | os **Passos de toolkit** do prompt do `sa-especificador`: o épico que casa com o `para` vai ao toolkit no passo `sa-prd.prd.escrever`, sem pergunta e sem marca no `status.md` | `prd.md` com as H2 do padrão `sa-prd/prd.md`; conceitos OKF em `elm/` quando há ELM; extras em `.md` na pasta de trabalho (vão como anexo e para a base no GATE). O passo `sa-prd.prd.similares`, a revisão P e o GATE continuam do Sabiá |
+| `desenvolvedor` | agente `sa-desenvolvedor`, na `sa-codificar`, por tarefa | os **Passos de toolkit** do prompt do `sa-desenvolvedor`: a tarefa que casa com o `para` vai ao toolkit na `sa-codificar`, sem marca no `tasks.md` | código e testes da tarefa, dentro do escopo dela, e o resumo dos arquivos. O Sabiá roda o passo `sa-codificar.codificar.validar` (evidência, não afirmação) e faz o commit. O toolkit não faz commit, push nem PR |
 
 ## Sem agente e com agente
 

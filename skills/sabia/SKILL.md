@@ -29,7 +29,7 @@ chamada direto:
 | Especificador | `[ESP]` | `sa-especificar` (entrevista → PRD → fatias), no agente `sa-especificador` |
 | Dev | `[DEV]` | `sa-desenvolver` (compromisso, `iniciada` na base, branch) → pesquisar → plano → implementar → PR → merge (`pronta` na base; a fatia é dele de ponta a ponta) |
 | Revisor (Dev Sênior) | `[REV]` | `sa-revisar` |
-| Aprovador (Dev Sênior) | `[APR]` — só nos gates sem tarefa de papel; nasce quando a fatia chega ao gate | `[APR] … Aprovar plano` → `sa-revisar` (Aprovação do plano) · `[APR] … Aprovar PR` (AFK) → `sa-revisar` (Aprovação do PR) |
+| Aprovador (Dev Sênior) | `[APR]` — só nos gates sem tarefa de papel; nasce quando a fatia chega ao gate | `[APR] … Aprovar plano` → `sa-revisar.aprovar-plano` · `[APR] … Aprovar PR` (AFK) → `sa-revisar.aprovar-pr` |
 | Verificador (QA) | `[VER]` | `sa-verificar` |
 | quem atende | `[ATD]` (Sustentação — Atendimento) | `sa-atender` |
 | quem faz o item de Sustentação | `[IMPL]` `[BD]` `[INF]` `[OPE]` `[EXT]` (demais categorias) | `sa-executar` (assumir no ELM, registrar o trabalho, lançar horas, concluir) |
@@ -91,8 +91,8 @@ dispensados.
 
 | | **HITL** — pessoas nos papéis, subfluxos assíncronos | **AFK** — a IA coordena, um fluxo só |
 |---|---|---|
-| Quem roda | cada pessoa, a skill do seu papel | `sa-loop` (`sa-orquestrador` + subagentes) |
-| Codificador (Dev) | revisão automática (rubrica C, subagente) → PR, com a `[DEV]` em andamento → merge depois da REV e da VER → `pronta` na base e `[DEV]` concluída | o loop leva a fatia até o PR (`aguardando-aprovacao-pr`); quem disparou o loop faz o merge do PR aprovado, grava `pronta` na base e conclui a `[DEV]` |
+| Quem roda | cada pessoa, a skill do seu papel | `sa-orquestrar` (`sa-orquestrador` + subagentes) |
+| Desenvolvedor (Dev) | revisão automática (rubrica C, subagente) → PR, com a `[DEV]` em andamento → merge depois da REV e da VER → `pronta` na base e `[DEV]` concluída | o loop leva a fatia até o PR (`aguardando-aprovacao-pr`); quem disparou o loop faz o merge do PR aprovado, grava `pronta` na base e conclui a `[DEV]` |
 | Revisão | o revisor assume a `[REV]` e revisa o PR: aprova → VER; reprova → retrabalho | subagente, até 2 rodadas |
 | Verificação | o verificador assume a `[VER]` (só depois da REV): aceita → fase `aceita` (o Dev mergeia → `pronta` na base; `concluida` na consolidação); rejeita → retrabalho | subagente: aceita → `verificada`, e o PR abre em `aguardando-aprovacao-pr` |
 | Retrabalho | a `[DEV]`, ainda em andamento, recebe a correção no mesmo PR, que passa de novo pela REV | volta à implementação |
@@ -103,7 +103,7 @@ O modo final sai da **senioridade** de quem implementa (o `responsavel` da fatia
 
 | Senioridade | Modo |
 |---|---|
-| Júnior | sempre HITL (não começa fatia AFK nem dispara o `sa-loop`) |
+| Júnior | sempre HITL (não começa fatia AFK nem dispara o `sa-orquestrar`) |
 | Pleno | os critérios da fatia (`sa-fatiar`), propostos pelo Sabiá e confirmados pela pessoa |
 | Sênior | AFK por padrão; HITL só com motivo forte, registrado |
 
@@ -157,7 +157,7 @@ loop, a fatia para sozinha e o lote segue.
 | verificar o aceite de ponta a ponta | `sa-verificar` |
 | fechar a fatia depois do merge (P.O. ou SM, agente `sa-produto`) | `sa-consolidar` |
 | publicar no ELM (DOORS Next, EWM, ETM) | a skill do passo ([references/elm.md](references/elm.md)) · bundle: `sa-sync` |
-| levar várias fatias AFK até o PR | `sa-loop` (com o agente `sa-orquestrador`) |
+| levar várias fatias AFK até o PR | `sa-orquestrar` (com o agente `sa-orquestrador`) |
 | registrar uma lição / retrospectiva | `sa-aprender` |
 
 ## Onde as coisas moram (no projeto)
@@ -169,7 +169,7 @@ loop, a fatia para sozinha e o lote segue.
 | `<produto>/` — a pasta escolhida na setup (padrão `.sabia/planejamento`), registrada no `sabia.md` | `backlog.md`, `epicos/<EP>-<slug>/` (PRDs), `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<pai>/sprint-<nn>.md` (a sprint segue a iteração pai do EWM; chave `2026/Sprint 03`), `sustentacao/<pasta>/` (a pasta de cada categoria na tabela **Sustentação** do `sabia.md`), `aprendizado/` (só na branch base) |
 | `.kiro/specs/<ft>-<slug>/` | uma pasta por fatia: `status.md`, `research.md`, spec do Kiro, revisões, verificação |
 | glossário · ADRs · bundle do ELM | caminhos na seção Projeto do `sabia.md` |
-| `.sabia/verificar.sh` · `.sabia/http.sh` | da setup: backpressure antes de cada commit · chamada HTTP do verificador (opcional) |
+| `.sabia/http.sh` | da setup: chamada HTTP do verificador (opcional); o backpressure antes de cada commit é o passo `sa-codificar.codificar.validar`, com os Comandos do `sabia.md` |
 | `.sabia/local/` (fora do git) | worktrees do loop, log dos lotes, dados de cliente (extrações, evidências com dado real), especificação em andamento (`especificacao/<EP>/`, até o GATE do PRD) |
 
 ## Fronteiras de fase
@@ -204,19 +204,19 @@ a próxima e para — nunca invoca nem simula a do passo seguinte.
 - Dado de cliente (resultado de consulta, extração, tela com dado real) nunca vai para o git: fica em
   `.sabia/local/` (`sustentacao/<pasta>/<ID>/`, `verificacao/`…); o registro versionado guarda consulta, contagem,
   caminho e resumo sem identificar pessoas.
-- **Skills sem agente exclusivo:** `sa-setup` e `sa-aprender` rodam na **sessão padrão** (com o power
-  carregado): gravam onde nenhum agente pode (steering, agentes); o modo registrar da `sa-aprender`, que só grava
-  as lições, também roda no `sa-produto`. A **`sa-consolidar`** é do P.O. ou do SM, no `sa-produto`. **Push pelo agente:** orquestrador (no loop), codificador, revisor e verificador,
-  com `ask` (o Kiro pergunta sempre), só a branch da fatia — e, no codificador e no orquestrador, a base com os
+- **Skill sem agente:** a `sa-setup` roda na **sessão padrão** (com o power carregado): grava onde nenhum agente
+  pode (steering, agentes). A **`sa-aprender`** é do `sa-produto`, que escreve só a seção Regras aprendidas do
+  `.sabia/sabia.md`. A **`sa-consolidar`** é do P.O. ou do SM, no `sa-produto`. **Push pelo agente:** orquestrador (no loop), desenvolvedor, revisor e verificador,
+  com `ask` (o Kiro pergunta sempre), só a branch da fatia — e, no desenvolvedor e no orquestrador, a base com os
   registros de situação (`iniciada`, `pronta`; o orquestrador, só a `iniciada` do lote); push recusado (pela pessoa
   ou pela regra) → a skill entrega o comando pronto e espera a pessoa dizer que publicou; o da base recusado pelo
   remoto → desfaz só o commit de registro, com "sim", e para; produto, especificador e pesquisador não
   fazem push. Subagente do AFK não faz push (quem conduz commita). Com a branch no remoto, o PR é aberto pela
-  `gitlab_criar_mr`, que o Kiro confirma (`ask` no codificador e no orquestrador; negada aos demais).
-  **O que os agentes não fazem:** merge (exceto a `gitlab_mesclar_mr` no codificador, com `ask`: o Dev mergeia o
+  `gitlab_criar_mr`, que o Kiro confirma (`ask` no desenvolvedor e no orquestrador; negada aos demais).
+  **O que os agentes não fazem:** merge (exceto a `gitlab_mesclar_mr` no desenvolvedor, com `ask`: o Dev mergeia o
   PR aprovado), `--force`, `worktree remove` — nunca. O hub `sa-iniciar` está em todos os agentes de papel, e a `sa-status`
   em todos os agentes, menos o `sa-pesquisador`; os dois também funcionam na sessão padrão. Nenhuma skill depende de um agente para operar: o agente apenas recebe a skill
   pré-carregada para conveniência.
-- **Nenhuma skill cria branch ou `.kiro/specs/<ft>/status.md`** sem passar pelos Passos 3–4 da `sa-desenvolver`
-  (DoR, sprint, WIP, `iniciada` na base, branch, commit). O `sa-loop` é a única exceção (opera em worktree como
+- **Nenhuma skill cria branch ou `.kiro/specs/<ft>/status.md`** sem passar pelos passos `sa-desenvolver.desenvolver.compromisso` e `sa-desenvolver.desenvolver.iniciar`
+  (DoR, sprint, WIP, `iniciada` na base, branch, commit). O `sa-orquestrar` é a única exceção (opera em worktree como
   orquestrador e grava a `iniciada` do lote na base).

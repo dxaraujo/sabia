@@ -71,8 +71,8 @@ class Gerar(unittest.TestCase):
 
     def test_escrita_no_projeto_e_registros_por_papel(self):
         agentes = self.gerar()
-        dono = {"backlog.md": {"produto", "especificador", "codificador", "orquestrador"},
-                "sprints/2026/sprint-03.md": {"produto", "especificador", "codificador", "orquestrador"},
+        dono = {"backlog.md": {"produto", "especificador", "desenvolvedor", "orquestrador"},
+                "sprints/2026/sprint-03.md": {"produto", "especificador", "desenvolvedor", "orquestrador"},
                 "epicos/ep-03-x/prd.md": {"produto", "especificador"}}
         for nome, a in agentes.items():
             for reg, quem in dono.items():
@@ -105,11 +105,11 @@ class Gerar(unittest.TestCase):
 
     def test_comentar_e_anexar_na_propria_tarefa(self):
         agentes = self.gerar()
-        for nome in ("produto", "especificador", "codificador", "revisor", "verificador", "orquestrador"):
+        for nome in ("produto", "especificador", "desenvolvedor", "revisor", "verificador", "orquestrador"):
             for t in ("elm_comentar", "elm_anexo", "elm_transicao", "elm_lancar_horas"):
                 self.assertIn(f"sabia/elm/{t}", regras(agentes[nome], "power", "ask"), nome)
                 self.assertIn(f"@elm/{t}", agentes[nome]["tools"])
-        self.assertIn("sabia/elm/elm_ligar", regras(agentes["codificador"], "power", "ask"))
+        self.assertIn("sabia/elm/elm_ligar", regras(agentes["desenvolvedor"], "power", "ask"))
 
     def test_pesquisador_so_le(self):
         p = self.gerar()["pesquisador"]
@@ -125,13 +125,13 @@ class Gerar(unittest.TestCase):
         for nome in ("pesquisador", "verificador", "especificador"):
             self.assertFalse([t for t in agentes[nome]["tools"] if t.startswith("@gitlabpr/")], nome)
             self.assertIn("sabia/gitlabpr/gitlab_obter_mr", regras(agentes[nome], "power", "deny"), nome)
-        for nome in ("produto", "codificador", "revisor", "orquestrador"):
+        for nome in ("produto", "desenvolvedor", "revisor", "orquestrador"):
             self.assertIn("sabia/gitlabpr/gitlab_obter_mr", regras(agentes[nome], "power", "allow"), nome)
         self.assertIn("sabia/gitlabpr/gitlab_criar_mr", regras(agentes["produto"], "power", "deny"))
 
-    def test_push_da_branch_nomeada_e_merge_so_no_codificador(self):
+    def test_push_da_branch_nomeada_e_merge_so_no_desenvolvedor(self):
         agentes = self.gerar()
-        for nome in ("codificador", "revisor", "verificador", "orquestrador"):
+        for nome in ("desenvolvedor", "revisor", "verificador", "orquestrador"):
             self.assertIn("git push *", regras(agentes[nome], "shell", "ask"))
             self.assertEqual(efeito(agentes[nome], "shell", "git push -u origin feature/ft-031-x"), "ask", nome)
             for cmd in ("git push", "git push origin", "cd .sabia/local/wt/ft-031 && git push", "git push origin HEAD",
@@ -139,12 +139,12 @@ class Gerar(unittest.TestCase):
                         "git push origin refs/heads/develop", "git push -f origin ft-031"):
                 self.assertEqual(efeito(agentes[nome], "shell", cmd), "deny", (nome, cmd))
         for nome, a in agentes.items():
-            self.assertIn("sabia/gitlabpr/gitlab_mesclar_mr", regras(a, "power", "ask" if nome == "codificador" else "deny"), nome)
+            self.assertIn("sabia/gitlabpr/gitlab_mesclar_mr", regras(a, "power", "ask" if nome == "desenvolvedor" else "deny"), nome)
 
     def test_registro_de_situacao_na_base(self):
-        """Codificador e orquestrador gravam a situação da fatia (backlog e sprint) na base e dão o push com pergunta."""
+        """Desenvolvedor e orquestrador gravam a situação da fatia (backlog e sprint) na base e dão o push com pergunta."""
         agentes = self.gerar()
-        for nome in ("codificador", "orquestrador"):
+        for nome in ("desenvolvedor", "orquestrador"):
             a = agentes[nome]
             for p in ("backlog.md", "sprints/2026/sprint-03.md"):
                 self.assertEqual(efeito(a, "fs_write", f".sabia/planejamento/{p}"), "allow", (nome, p))
@@ -180,14 +180,14 @@ class Gerar(unittest.TestCase):
     def test_sem_glossario_nem_bundle(self):
         agentes = self.gerar(glossario=None, bundle=None)
         self.assertIn("glossário (`não há`)", agentes["produto"]["prompt"])
-        self.assertFalse([m for m in regras(agentes["codificador"], "fs_read", "deny") if "elm/pa" in m])
+        self.assertFalse([m for m in regras(agentes["desenvolvedor"], "fs_read", "deny") if "elm/pa" in m])
 
     def test_extras_do_projeto(self):
-        cfg = {"agentes": {"sa-codificador": {"skills": ["skill://.kiro/skills/java/SKILL.md"], "mcp": ["banco/consultar"],
+        cfg = {"agentes": {"sa-desenvolvedor": {"skills": ["skill://.kiro/skills/java/SKILL.md"], "mcp": ["banco/consultar"],
                                            "subagentes": [{"nome": "dba", "para": "consultas"}], "modelo": "m1"}}}
         (self.projeto / ".kiro/skills/java").mkdir(parents=True)
         (self.projeto / ".kiro/skills/java/SKILL.md").write_text("x")
-        c = self.gerar(**cfg)["codificador"]
+        c = self.gerar(**cfg)["desenvolvedor"]
         self.assertTrue(c["includeMcpJson"])
         self.assertIn("@banco/consultar", c["tools"])
         self.assertIn("banco/consultar", regras(c, "mcp", "allow"))
@@ -202,26 +202,26 @@ class Gerar(unittest.TestCase):
     def test_resumo_mostra_o_que_cada_agente_recebeu(self):
         (self.projeto / ".kiro/skills/java").mkdir(parents=True)
         (self.projeto / ".kiro/skills/java/SKILL.md").write_text("x")
-        cfg = {**self.cfg, "agentes": {"sa-codificador": {"skills": ["skill://.kiro/skills/java/SKILL.md"],
+        cfg = {**self.cfg, "agentes": {"sa-desenvolvedor": {"skills": ["skill://.kiro/skills/java/SKILL.md"],
                                                            "mcp": ["banco/consultar"]}}}
         linhas = {l.split("|")[1].strip(): l for l in g.resumo(g.gerar(self.projeto, cfg), cfg).splitlines()[2:]}
-        self.assertIn("`java`", linhas["**sa-codificador**"])
-        self.assertIn("`banco/consultar`", linhas["**sa-codificador**"])
+        self.assertIn("`java`", linhas["**sa-desenvolvedor**"])
+        self.assertIn("`banco/consultar`", linhas["**sa-desenvolvedor**"])
         self.assertIn("🟢 só o bundle local", linhas["**sa-pesquisador**"])
         self.assertIn("| ➖ |", linhas["**sa-pesquisador**"])
-        self.assertIn("🟢 consulta · 🟡 abrir e mesclar PR", linhas["**sa-codificador**"])
-        self.assertIn("🟡 pergunta", linhas["**sa-codificador**"])
+        self.assertIn("🟢 consulta · 🟡 abrir e mesclar PR", linhas["**sa-desenvolvedor**"])
+        self.assertIn("🟡 pergunta", linhas["**sa-desenvolvedor**"])
         self.assertTrue(linhas["**sa-produto**"].rstrip(" |").endswith("🔴 negado"))
 
     def toolkit(self, **mudar):
-        """Toolkit fictício em ~/.sabia/toolkits/batch-alfa: passo do codificador com o agente job, que chama o step."""
+        """Toolkit fictício em ~/.sabia/toolkits/batch-alfa: passo do desenvolvedor com o agente job, que chama o step."""
         pasta = self.home / ".sabia/toolkits/batch-alfa"
         for f in ("skills/batch/SKILL.md", "skills/teste/SKILL.md", "agentes/job.md", "agentes/step.md"):
             (pasta / f).parent.mkdir(parents=True, exist_ok=True)
             (pasta / f).write_text("x {{BASE}}" if f.startswith("agentes") else "x")
         man = {"nome": "batch-alfa", "versao": "1.0.0",
-               "skills": [{"caminho": "skills/batch/SKILL.md", "papeis": ["codificador"],
-                           "passo": {"papel": "codificador", "para": "tarefa de job", "agente": "batch-job"}}],
+               "skills": [{"caminho": "skills/batch/SKILL.md", "papeis": ["desenvolvedor"],
+                           "passo": {"papel": "desenvolvedor", "para": "tarefa de job", "agente": "batch-job"}}],
                "agentes": [{"nome": "batch-job", "descricao": "job", "prompt": "agentes/job.md", "skills": ["skills/batch/SKILL.md"],
                             "subagentes": ["batch-step"]},
                            {"nome": "batch-step", "descricao": "step", "prompt": "agentes/step.md", "skills": ["skills/teste/SKILL.md"]}]}
@@ -232,10 +232,14 @@ class Gerar(unittest.TestCase):
 
     def test_passo_com_agente(self):
         agentes = self.gerar(**self.toolkit())
-        c, job, step = agentes["codificador"], agentes["batch-job"], agentes["batch-step"]
+        c, job, step = agentes["desenvolvedor"], agentes["batch-job"], agentes["batch-step"]
         self.assertIn("skill://~/.sabia/toolkits/batch-alfa/skills/batch/SKILL.md", c["resources"])
         self.assertIn("batch-job", c["toolsSettings"]["subagent"]["availableAgents"])
         self.assertIn("`batch-job` (tarefa de job)", c["prompt"])
+        # o passo é da configuração do agente, não uma marca no tasks.md
+        self.assertIn("Passos de toolkit: em cada tarefa do `tasks.md`", c["prompt"])
+        self.assertIn("`tarefa de job` → delegue ao subagente `batch-job`", c["prompt"])
+        self.assertNotIn("Passos de toolkit", agentes["revisor"]["prompt"])
         self.assertEqual(job["toolsSettings"]["subagent"]["availableAgents"], ["batch-step"])
         self.assertEqual(job["prompt"], "x develop\n")
         self.assertNotIn("welcomeMessage", job)
@@ -247,11 +251,11 @@ class Gerar(unittest.TestCase):
         self.assertIn("~/.sabia/toolkits/**", regras(c, "fs_read", "allow"))
 
     def test_agente_do_toolkit_herda_skills_e_mcps_do_dono(self):
-        cfg = {**self.cfg, **self.toolkit(), "agentes": {"sa-codificador": {
+        cfg = {**self.cfg, **self.toolkit(), "agentes": {"sa-desenvolvedor": {
             "skills": ["skill://~/.sabia/toolkits/java/skills/java/SKILL.md"], "mcp": ["sqlcl/sql_run"],
             "subagentes": [{"nome": "outro", "para": "x"}]}}}
         agentes = g.gerar(self.projeto, cfg)
-        job, c = agentes["batch-job.json"], agentes["sa-codificador.json"]
+        job, c = agentes["batch-job.json"], agentes["sa-desenvolvedor.json"]
         self.assertEqual(job["resources"][-2:], ["skill://~/.sabia/toolkits/batch-alfa/skills/batch/SKILL.md",
                                                  "skill://~/.sabia/toolkits/java/skills/java/SKILL.md"])
         self.assertIn("@sqlcl/sql_run", job["tools"])
@@ -265,18 +269,19 @@ class Gerar(unittest.TestCase):
         cfg["passos"][0]["agente"] = False
         agentes = self.gerar(**cfg)
         self.assertNotIn("batch-job", agentes)
-        self.assertIn("skill://~/.sabia/toolkits/batch-alfa/skills/batch/SKILL.md", agentes["codificador"]["resources"])
-        self.assertNotIn("batch-job", agentes["codificador"].get("toolsSettings", {}).get("subagent", {}).get("availableAgents", []))
+        self.assertIn("skill://~/.sabia/toolkits/batch-alfa/skills/batch/SKILL.md", agentes["desenvolvedor"]["resources"])
+        self.assertNotIn("batch-job", agentes["desenvolvedor"].get("toolsSettings", {}).get("subagent", {}).get("availableAgents", []))
+        self.assertIn("`tarefa de job` → carregue a skill `batch` e faça o passo por ela", agentes["desenvolvedor"]["prompt"])
 
     def test_toolkit_invalido_e_recusado(self):
-        skill = lambda caminho, **passo: {"caminho": caminho, "papeis": ["codificador"], "passo": {"papel": "codificador", "para": "p", **passo}}
+        skill = lambda caminho, **passo: {"caminho": caminho, "papeis": ["desenvolvedor"], "passo": {"papel": "desenvolvedor", "para": "p", **passo}}
         ruins = [{"agentes": [{"nome": "sa-job", "descricao": "j", "prompt": "agentes/job.md"}],
                   "skills": [skill("skills/batch/SKILL.md", agente="sa-job")]},
                  {"skills": [skill("../fora/SKILL.md")]},
                  {"skills": [skill("skills/batch/SKILL.md", agente="batch-job")],
                   "agentes": [{"nome": "batch-job", "descricao": "j", "prompt": "/etc/passwd"}]},
                  {"skills": [skill("skills/batch/SKILL.md", papel="faxineiro")]},
-                 {"skills": [{"caminho": "skills/batch/SKILL.md", "papeis": ["codificador"]}]}]  # skill sem `passo`
+                 {"skills": [{"caminho": "skills/batch/SKILL.md", "papeis": ["desenvolvedor"]}]}]  # skill sem `passo`
         for mudar in ruins:
             cfg = self.toolkit(**mudar)
             cfg["passos"][0]["skill"] = mudar["skills"][0]["caminho"]
@@ -285,7 +290,7 @@ class Gerar(unittest.TestCase):
 
     def test_opencode(self):
         agentes = g.gerar(self.projeto, self.cfg)
-        pesq, cod = g.opencode(agentes["sa-pesquisador.json"], self.cfg), g.opencode(agentes["sa-codificador.json"], self.cfg)
+        pesq, cod = g.opencode(agentes["sa-pesquisador.json"], self.cfg), g.opencode(agentes["sa-desenvolvedor.json"], self.cfg)
         self.assertTrue(pesq.startswith("---\n") and '"mode": "all"' in pesq)
         self.assertIn('  "edit": "deny"', pesq)
         linhas = cod.splitlines()
@@ -300,11 +305,11 @@ class Gerar(unittest.TestCase):
         self.assertIn('  "gitlabpr_gitlab_mesclar_mr": "ask"', linhas)
         self.assertIn('    "~/.sabia/toolkits/*": "allow"', linhas)
         self.assertIn('    "~/.config/opencode/*": "allow"', linhas)
-        self.assertTrue(cod.rstrip().endswith(agentes["sa-codificador.json"]["prompt"].rstrip()))
+        self.assertTrue(cod.rstrip().endswith(agentes["sa-desenvolvedor.json"]["prompt"].rstrip()))
 
     def test_claude(self):
         agentes = g.gerar(self.projeto, self.cfg)
-        pesq, cod = g.claude(agentes["sa-pesquisador.json"]), g.claude(agentes["sa-codificador.json"])
+        pesq, cod = g.claude(agentes["sa-pesquisador.json"]), g.claude(agentes["sa-desenvolvedor.json"])
         self.assertIn('"name": "sa-pesquisador"', pesq)
         self.assertIn('"disallowedTools": "Write, Edit, NotebookEdit, ', pesq)
         self.assertIn("mcp__gitlabpr__gitlab_criar_mr", pesq)
@@ -330,7 +335,7 @@ class Gerar(unittest.TestCase):
 
     def test_chave_sem_prefixo_falha(self):
         with self.assertRaises(ValueError):
-            g.gerar(self.projeto, {**self.cfg, "agentes": {"codificador": {}}})
+            g.gerar(self.projeto, {**self.cfg, "agentes": {"desenvolvedor": {}}})
 
     def test_caminho_ruim_e_apontado(self):
         a = g.gerar(self.projeto, {**self.cfg, "agentes": {"sa-revisor": {"skills": ["skill://.kiro/skills/nao/SKILL.md",

@@ -19,7 +19,7 @@ Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configura
 
 **Ordem de consulta** — vale a primeira fonte que achar, e nunca se inventa dado de work item: (1) `status.md` nas
 branches (atual, worktrees, remotas: `git grep -l '<id>' <ref> -- '.kiro/specs/*/status.md'`) e na base, pela regra
-A base prevalece do [`status-template.md`](../sa-desenvolver/references/status-template.md); (2) o `backlog.md`
+A base prevalece do padrão [`sa-desenvolver/status.md`](~/.sabia/framework/padrao/sa-desenvolver/status.md); (2) o `backlog.md`
 da base (ids locais e as colunas `origem` e `elm`, inclusive as `### <Categoria>` da `## Sustentação`); (3) o EWM
 (`elm_ler_wi`), se a sessão tem o MCP `elm` (o título da tarefa traz o tipo: `[DEV] FT-031 …`); (4) perguntar à
 pessoa. Id que não está em (1) nem (2) não está registrado. Fatia `concluida`, `dividida` ou `cancelada` no
@@ -36,25 +36,25 @@ diga o que ele é e peça o item.
 | pedido em texto, ou id que não está no backlog | **`sa-triar`** | P.O. / `sa-produto` |
 | `EP-nn`, tarefa `[ESP]` (de épico, ou `[ESP] FT-nnn` de fatia `nova`) | **`sa-especificar`** | Especificador / `sa-especificador` |
 | `FT-nnn` `nova` (não passa na DoR) | sem sprint → **`sa-triar`** (deixar a fatia pronta) · na sprint, com a `[ESP] FT` → **`sa-especificar`** | P.O. / `sa-produto` · Especificador / `sa-especificador` |
-| `FT-nnn` (de épico ou de Manutenção), tarefa `[DEV]`, "próxima fatia" | **`sa-desenvolver`** | Dev / `sa-codificador` |
-| tarefa `[REV]` | **`sa-revisar`** (rubrica C sobre o PR) | Revisor / `sa-revisor` |
-| tarefa `[APR] FT-nnn Aprovar plano` | **`sa-revisar`** (seção "Aprovação do plano — a `[APR]`") | Aprovador (Dev Sênior) / `sa-revisor` |
-| tarefa `[APR] FT-nnn Aprovar PR` | **`sa-revisar`** (seção "Aprovação do PR — a `[APR]`") | Aprovador (Dev Sênior) / `sa-revisor` |
+| `FT-nnn` (de épico ou de Manutenção), tarefa `[DEV]`, "próxima fatia" | **`sa-desenvolver`** | Dev / `sa-desenvolvedor` |
+| tarefa `[REV]` | **`sa-revisar.hitl`** (rubrica C sobre o PR) | Revisor / `sa-revisor` |
+| tarefa `[APR] FT-nnn Aprovar plano` | **`sa-revisar.aprovar-plano`** | Aprovador (Dev Sênior) / `sa-revisor` |
+| tarefa `[APR] FT-nnn Aprovar PR` | **`sa-revisar.aprovar-pr`** | Aprovador (Dev Sênior) / `sa-revisor` |
 | tarefa `[VER]` | **`sa-verificar`** | Verificador (QA) / `sa-verificador` |
 | `AT-nnn`, tarefa `[ATD]` | **`sa-atender`** | quem atende / `sa-produto` |
 | `IM-`, `BD-`, `IN-`, `OP-`, `EX-nnn` (as demais categorias da tabela **Sustentação** do `sabia.md`), tarefa `[IMPL]` `[BD]` `[INF]` `[OPE]` `[EXT]` | **`sa-executar`** | quem faz / `sa-produto` |
-| fatia `iniciada` no `backlog.md` sem `status.md` em nenhuma branch (a sessão parou entre o registro e a branch) | **`sa-desenvolver`** (retomada pelo Passo 4 — só o `responsavel` da linha retoma) | Dev responsável / `sa-codificador` |
-| fatia em `verificada` (AFK) | **`sa-codificar`** (Passo 5 — abrir o PR) | Dev / `sa-codificador` |
-| fatia em `aceita` (HITL), ou em `aguardando-aprovacao-pr` (AFK) com a `[APR] Aprovar PR` concluída — qualquer item dela, menos a `[APR]` | **`sa-desenvolver`** (Passo 6 — merge do PR aprovado) | Dev responsável / `sa-codificador` |
-| fatia em `aguardando-aprovacao-pr` (AFK) sem a `[APR] Aprovar PR` concluída | **`sa-revisar`** (seção "Aprovação do PR — a `[APR]`") | Aprovador (Dev Sênior) / `sa-revisor` |
-| fatia em `bloqueada` com `aguardando troca para HITL` | **`sa-planejamento`** (Troca de modo, na base); feita a troca, o Dev retoma pela **`sa-desenvolver`** | P.O. ou SM / `sa-produto` · Dev / `sa-codificador` |
+| fatia `iniciada` no `backlog.md` sem `status.md` em nenhuma branch (a sessão parou entre o registro e a branch) | **`sa-desenvolver`** (retomada pelo passo `sa-desenvolver.desenvolver.iniciar` — só o `responsavel` da linha retoma) | Dev responsável / `sa-desenvolvedor` |
+| fatia em `verificada` (AFK) | **`sa-codificar.codificar.pr`** (abrir o PR) | Dev / `sa-desenvolvedor` |
+| fatia em `aceita` (HITL), ou em `aguardando-aprovacao-pr` (AFK) com a `[APR] Aprovar PR` concluída — qualquer item dela, menos a `[APR]` | **`sa-desenvolver.encerrar`** (merge do PR aprovado) | Dev responsável / `sa-desenvolvedor` |
+| fatia em `aguardando-aprovacao-pr` (AFK) sem a `[APR] Aprovar PR` concluída | **`sa-revisar.aprovar-pr`** | Aprovador (Dev Sênior) / `sa-revisor` |
+| fatia em `bloqueada` com `aguardando troca para HITL` | **`sa-planejamento.troca-modo`** (na base); feita a troca, o Dev retoma pela **`sa-desenvolver`** | P.O. ou SM / `sa-produto` · Dev / `sa-desenvolvedor` |
 | fatia `pronta` (na base) | **`sa-consolidar`** (processo de produto, na `[GB]`) | P.O. ou SM / `sa-produto` |
 | tarefa `[GB] Gerenciamento do backlog` | pedido de sprint (planejar, ritos, "sincroniza a sprint") → **`sa-planejamento`**; senão, fatias `pronta` → **`sa-consolidar`** (uma por vez); nenhuma → **`sa-triar`** | SM (o dono) ou P.O. / `sa-produto` |
 
 As linhas `fatia …` valem sobre as do item (`FT-nnn`, `[DEV]`…) e leem a fase pela regra A base prevalece (Passo 1).
 Tarefa `[DEV]` ou de Sustentação já fechada no EWM encaminha igual: a `sa-desenvolver`, a `sa-atender` e a
 `sa-executar` mostram o estado e oferecem reabrir ou fechar o item
-(a `[DEV]` com o PR mergeado, pelo Passo 6 da `sa-desenvolver`; o item de Sustentação, `concluido`).
+(a `[DEV]` com o PR mergeado, pelo fluxo `sa-desenvolver.encerrar`; o item de Sustentação, `concluido`).
 
 ```
 🔀 <item> — <título> · <tipo> · <fase do status.md | status do backlog>
@@ -69,7 +69,7 @@ Responda com a instrução e **pare**: nunca invoque nem simule a skill do papel
 
 1. Com o MCP `elm` e a sprint publicada: `elm_listar_wi(dono: "eu", iteracao: <a da sprint aberta>, tipo: "tarefa")`;
    sem ele, ou com `**Publicação no EWM:** pendente` no cabeçalho (nenhuma tool recebe a iteração dela antes da
-   publicação — [elm.md](../sabia/references/elm.md), Regras de toda escrita, item 6): as linhas do `sprint-<nn>.md`
+   publicação — [elm.md](../sabia/references/elm.md), Regras de toda escrita, Sprint não publicada): as linhas do `sprint-<nn>.md`
    aberto (Fatias, Especificação e as `### <Categoria>` da Sustentação) com `responsavel` = a pessoa (login do
    `sabia.md` ou `git config user.email`) — com o marcador, diga também "sprint não publicada no EWM → sincroniza a
    sprint (`sa-planejamento`)".

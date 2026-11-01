@@ -38,5 +38,5 @@ para importar à mão no ETM; com os ids que a pessoa informar, `elm_ligar(ct, r
 IB da fatia: `elm_comentar(id, "PR <link> · pasta <pasta> · publicados: <ids de requisitos, ET, CT>")` e
 `elm_transicao(id, "concluir")`, na mesma confirmação. Na última fatia do épico (as demais `concluida`, `dividida`
 ou `cancelada`), também o IB do épico (`elm_transicao(id, "concluir")`), junto com o `concluido` no `backlog.md` e
-na Fase do `status.md` do épico (`sa-consolidar` Passo 4); épico `cancelado` não conclui (fica como está). Erro
+na Fase do `status.md` do épico (passo `sa-consolidar.consolidar.fechar`); épico `cancelado` não conclui (fica como está). Erro
 `precondicao` → `ELM pendente [IB FT-<nnn> concluir]` (no épico, `[EP-<nn> concluir]`) com o atributo.

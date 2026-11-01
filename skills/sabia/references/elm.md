@@ -70,7 +70,7 @@ criado fora do fluxo recusado numa transição → mostre o campo e peça o valo
    inteira e pode achar a sprint homônima de outro produto. No agente de produto, rode o §1 antes — sprint em pai
    novo: também o §2 (a `[GB]` do pai novo nasce, e a antiga conclui com o saldo e sai da linha) —, com o mesmo "sim",
    e tire o marcador no commit (linha `migrada de` ou linha sem ids: indique também "sincroniza a sprint"); nos
-   agentes sem o `elm_iteracao` (codificador, orquestrador), registre o lado do EWM como `ELM pendente [<chave>]` e
+   agentes sem o `elm_iteracao` (desenvolvedor, orquestrador), registre o lado do EWM como `ELM pendente [<chave>]` e
    indique "sincroniza a sprint" (`sa-planejamento`).
 
 ## Pendências
@@ -139,7 +139,7 @@ também é o SM. Toda sessão do P.O. ou do SM no agente de produto (triagem, co
 sincronização) fecha com os créditos num comentário na `[GB]`: `elm_comentar(<id da [GB]>, "Créditos <atividade>
 <ids>: <créditos> (sessão <sessão>, <login>, <AAAA-MM-DD>)")` — ex.: `Créditos triagem FT-040, AT-013: 2.40 (sessão
 9ec1dcaa, ana.souza, 2026-10-29)` —, além da linha em Créditos de gestão do `sprint-<nn>.md` aberto
-([`sa-status`](../../sa-status/SKILL.md#fechar-a-sessão), item 4). `[GB]` sem horas é normal.
+([`sa-status`](../../sa-status/SKILL.md#fechar-a-sessão), Créditos da sessão). `[GB]` sem horas é normal.
 
 ## O que o MCP não grava (roteiro manual)
 

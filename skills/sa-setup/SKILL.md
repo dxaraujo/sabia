@@ -13,9 +13,6 @@ metadata:
 > (mesmo que o Kiro esteja em inglês); entre uma ferramenta e outra, no máximo uma linha `🔎 <o que está
 > fazendo>…` por etapa — nunca "Let me…", "I'll…", "Vou…", "Agora vou…". A mensagem que a pessoa lê é o cartão.
 
-> **Arquivos desta skill** (`references/`, `assets/` e os `../<skill>/…` citados abaixo) ficam na pasta desta skill, não no projeto:
-> abra-os pelo caminho relativo a este `SKILL.md`. A busca no workspace não os encontra — não procure no projeto.
-
 O power `sabia` só entrega skills (o formato de power do Kiro não instala steering, agentes nem scripts):
 esta skill instala no projeto o que o fluxo precisa, a partir de [assets/](assets/), e é a **única** parte do
 fluxo que conhece os toolkits de stack ([references/toolkits.md](references/toolkits.md)).
@@ -145,7 +142,7 @@ de bloqueio com o erro em uma linha; a pessoa decide (corrigir o comando, seguir
 
 | Item | Como detectar |
 |---|---|
-| Branch base | candidatos: `git symbolic-ref refs/remotes/origin/HEAD`, as remotas `develop`/`desenvolvimento`/`dev`/`main`/`master` e o destino dos últimos merges (`git log --merges -30 --format=%s` — "into '<branch>'"). Um só candidato, ou todos os sinais na mesma → padrão; sinais divergentes (ex.: `origin/HEAD` = `master`, merges em `desenvolvimento`) → pergunte, com a tabela de candidatos do W3. Vai também no `{{BASE}}` dos agentes (push para a base negado, salvo os registros de situação do codificador e do orquestrador, com pergunta) |
+| Branch base | candidatos: `git symbolic-ref refs/remotes/origin/HEAD`, as remotas `develop`/`desenvolvimento`/`dev`/`main`/`master` e o destino dos últimos merges (`git log --merges -30 --format=%s` — "into '<branch>'"). Um só candidato, ou todos os sinais na mesma → padrão; sinais divergentes (ex.: `origin/HEAD` = `master`, merges em `desenvolvimento`) → pergunte, com a tabela de candidatos do W3. Vai também no `{{BASE}}` dos agentes (push para a base negado, salvo os registros de situação do desenvolvedor e do orquestrador, com pergunta) |
 | Prefixo da branch | branches remotas existentes; padrão `feature/` |
 | Padrão de commit | `git log --oneline -20` (Task/IB do EWM? Conventional Commits?) |
 | PR (merge request) | pelo MCP **`gitlabpr`** do power (GitLab, API v4, CE 10.8+; projeto vem do `origin` da raiz do workspace, informada em `pasta` a cada chamada; fora de um repositório, a URL do projeto colada pela pessoa vai em `url_projeto`). Teste uma vez com `gitlab_listar_mrs(pasta=<raiz do workspace>, limite=1)`: respondeu → `MCP gitlabpr` ✅; erro de rede → `MCP gitlabpr` ⏸️ (sem rede — testado de novo no Passo 9). Erro de credencial → mostre o modelo de `~/.config/mcp-gitlabpr/gitlabpr.properties` (`url` do GitLab e `token` pessoal com escopo `api`; a pessoa cria o arquivo, o agente não lê nem grava credencial) e teste de novo. `origin` fora do GitLab, ou a pessoa segue sem credencial → "entregar título e descrição" (troca depois por "atualizar a configuração do Sabiá"). Nunca `gh` nem `glab` |
@@ -164,7 +161,7 @@ mais longa (10 blocos) e o que ela decide.
    e PRDs, planejamento e aprendizado — versionada. Já existe um `backlog.md` do Sabiá no repositório → a pasta dele;
    senão o padrão `.sabia/planejamento`. Vai na linha 1 do W4 (📐 ou 🔍). Grave o caminho real na seção Projeto do
    `sabia.md`.
-2. **Glossário** (padrão `docs/glossario.md`) e **ADRs** (padrão `docs/adr`, sem barra no fim) — use os que já
+2. **Glossário** (padrão `.sabia/glossario.md`) e **ADRs** (padrão `.sabia/adr`, sem barra no fim) — use os que já
    existirem; não existindo, o padrão é criá-los (linhas 2 e 3 do W4). A pessoa recusou na tabela → registre
    "não há" e remova dos agentes as regras e linhas que os citam (`{{GLOSSARIO}}`, `{{ADR}}`).
 3. **ELM** — o MCP `elm` vem com o power. `.kiro/config/elm/pa_*.json` no repositório (um por project area)?
@@ -179,8 +176,8 @@ mais longa (10 blocos) e o que ela decide.
    - Seção ELM do `sabia.md`, sem perguntas (linha 6 do W4): publicar requisitos `na-aprovacao`, ET `não
      publica`, manual `nada`, pontos `não`, fatia dividida "filhos do item original", títulos das tarefas e colunas
      do `CT.csv` do template; a categoria do IB de defeito é a do bloco 5 do `elm-pa.md`. A Sustentação não é
-     perguntada: o IB `Sustentação` nasce no backlog do EWM, um por produto, com a `[GB]`, no modo inicial
-     da `sa-planejamento` ou no espelhamento do backlog ([elm-sprint.md](../sa-planejamento/references/elm-sprint.md)
+     perguntada: o IB `Sustentação` nasce no backlog do EWM, um por produto, com a `[GB]`, no fluxo
+     `sa-planejamento.inicial` ou no espelhamento do backlog ([elm-sprint.md](../sa-planejamento/references/elm-sprint.md)
      §0 e §2); o IB
      `Manutenção` e os de categoria, com o primeiro item de cada um. A seção **Sustentação** do `sabia.md` vem do
      template — a Manutenção (as fatias sem épico) e as seis categorias, a Classificação de cada uma pelo bloco 5 do
@@ -217,20 +214,20 @@ pré-marcadas pelos `papeis` do toolkit e pelo tipo de projeto (formato em `tool
 | `sa-produto` | triar, entrevistar, planejamento, atender, executar, consolidar, aprender (registrar), iniciar, status | 🟢 consulta · 🟡 escrita | 🟢 consulta | `sa-pesquisador` | 🔴 negado | skills de domínio/negócio |
 | `sa-especificador` | especificar, entrevistar, prd, fatiar, iniciar, status | 🟢 consulta · 🟡 escrita | ➖ | `sa-pesquisador`, `sa-revisor` | 🔴 negado | skills de domínio/negócio e de especificação |
 | `sa-pesquisador` | pesquisar | 🟢 só o bundle local | ➖ | — | 🔴 negado | skills de stack para ler o código |
-| `sa-codificador` | desenvolver, plano, codificar, iniciar, status | 🟢 consulta · 🟡 escrita | 🟢 consulta · 🟡 abrir e mesclar PR | `sa-pesquisador`, `sa-revisor`, `sa-verificador` | 🟡 pergunta | skills de stack e de teste do toolkit |
+| `sa-desenvolvedor` | desenvolver, plano, codificar, iniciar, status | 🟢 consulta · 🟡 escrita | 🟢 consulta · 🟡 abrir e mesclar PR | `sa-pesquisador`, `sa-revisor`, `sa-verificador` | 🟡 pergunta | skills de stack e de teste do toolkit |
 | `sa-revisor` | revisar, iniciar, status | 🟢 consulta · 🟡 escrita | 🟢 consulta | — | 🟡 pergunta | skills de padrões e de revisão da stack |
 | `sa-verificador` | verificar, iniciar, status | 🟢 consulta · 🟡 escrita | ➖ | — | 🟡 pergunta | skills de teste de aceite |
-| `sa-orquestrador` | loop, desenvolver, plano, codificar, status | 🟢 consulta · 🟡 escrita | 🟢 consulta · 🟡 abrir PR | `sa-pesquisador`, `sa-codificador`, `sa-revisor`, `sa-verificador` | 🟡 pergunta | normalmente nenhuma |
+| `sa-orquestrador` | orquestrar, desenvolver, plano, codificar, status | 🟢 consulta · 🟡 escrita | 🟢 consulta · 🟡 abrir PR | `sa-pesquisador`, `sa-desenvolvedor`, `sa-revisor`, `sa-verificador` | 🟡 pergunta | normalmente nenhuma |
 
 As colunas `elm`, `gitlabpr`, Subagentes do fluxo e Push vêm do `papeis.json` e vão **todas** no W6 do agente, como
 estão (projeto sem ELM → a linha do `elm` com ➖; PR entregue como texto → a do `gitlabpr` continua, com a nota
 "sem projeto no GitLab ainda"): nunca omita uma linha fixa nem mude o acesso dela. O `gitlabpr` só serve ao PR e
-só aparece em quem lida com PR (produto: conferir o PR mergeado na pré-condição dos ritos e no painel; codificador:
+só aparece em quem lida com PR (produto: conferir o PR mergeado na pré-condição dos ritos e no painel; desenvolvedor:
 abrir e mesclar; revisor: ler o PR; orquestrador: abrir no loop) — pesquisador e verificador não o têm. Pedido de
 tirar uma linha fixa → explique que é do papel, não do projeto, e siga sem ela mudar.
 
-Aprender e setup rodam na **sessão padrão** (sem agente); o modo registrar da aprender também no `sa-produto`,
-na consolidação. A consolidação é do P.O. ou do SM, no `sa-produto`
+A setup roda na **sessão padrão** (sem agente); a `sa-aprender` é do `sa-produto` (também na consolidação), que
+escreve só a seção Regras aprendidas do `sabia.md`. A consolidação é do P.O. ou do SM, no `sa-produto`
 (grava na base, publica a ET *as-built* e os casos de teste).
 
 Para cada agente, **uma mensagem só** (cartão W6): a proposta completa já marcada pelos padrões e **uma**
@@ -243,20 +240,20 @@ Padrões da proposta:
    ela também casa); as outras aparecem desmarcadas —
    inclusive skill avulsa que pareça útil (recomende em texto, ex. "recomendo `pôr 1`") e skill que a pessoa marcou
    em **outro** agente: a escolha de um agente não passa para o seguinte.
-2. **MCPs:** o de banco entra como somente leitura em pesquisador, codificador, revisor e verificador — só a tool
+2. **MCPs:** o de banco entra como somente leitura em pesquisador, desenvolvedor, revisor e verificador — só a tool
    de consulta (`<servidor>/<tool>` em `agentes.sa-<papel>.mcp`), nunca o servidor inteiro se ele tiver tool de
    escrita; browser/Playwright marcado no verificador em projeto `frontend`. **ELM** (projeto com ELM): as tools do
    `elm` que o `papeis.json` dá a cada papel (leitura liberada; escrita com `ask`) — `sa-produto`,
-   `sa-codificador`, `sa-orquestrador`, `sa-revisor` e `sa-verificador`, cada um comentando e anexando só na
+   `sa-desenvolvedor`, `sa-orquestrador`, `sa-revisor` e `sa-verificador`, cada um comentando e anexando só na
    própria tarefa; o pesquisador só consulta o bundle local (`elm_*_local`). Projeto sem ELM → `"elm": false` no
    `agentes.json` (a escrita vira `ELM pendente`).
 3. **Modelo:** sempre o padrão do Kiro — não pergunte; a pessoa troca na proposta se quiser.
-4. Só codificador e orquestrador: **subagentes** — os `sa-*` do fluxo marcados; os agentes do projeto do
+4. Só desenvolvedor e orquestrador: **subagentes** — os `sa-*` do fluxo marcados; os agentes do projeto do
    inventário (Passo 5) **sempre listados**, desmarcados, com o "para quê" — que vai em
    `agentes.sa-<papel>.subagentes[].para` e no prompt do agente. Agente com o campo `hooks` (mesmo vazio) é
    ignorado pela IDE: fica desmarcado, com o ⚠️.
 
-5. Só especificador e codificador: **passos de toolkit** do agente — a skill marcada se o toolkit foi detectado,
+5. Só especificador e desenvolvedor: **passos de toolkit** do agente — a skill marcada se o toolkit foi detectado,
    o agente sempre desmarcado (delegar é escolha da pessoa). Vão no `agentes.json` (`toolkits` e `passos`) e na
    tabela **Passos de toolkit** do `sabia.md`; o gerador liga a skill ao agente dono e gera o agente do toolkit
    com as permissões do dono ([references/toolkits.md](references/toolkits.md#passos)).
@@ -266,14 +263,14 @@ atualização, só skill que não está em nenhuma das duas colunas é "nova".
 
 A autonomia (seção Git, banco e autonomia do template) aparece no cartão do Passo 7 (linhas 2 a 6 do W7), **sem
 perguntas**: GATE do
-plano pela senioridade de quem implementa (fixo: Júnior sempre, Pleno pergunta, Sênior nunca — `sa-plano` Passo 5);
+plano pela senioridade de quem implementa (fixo: Júnior sempre, Pleno pergunta, Sênior nunca — passo `sa-plano.plano.gate`);
 paralelismo do loop `1`; push e PR no loop perguntando a cada lote (o orquestrador tem regra `ask` para push e PR, então
 o Kiro confirma cada um; a pessoa muda para "não — a pessoa abre" → `"push_pr_no_loop": false`, e a regra vira
 `deny`: o orquestrador entrega também o comando do push da base (`iniciada` do lote) e espera a publicação);
-**push pelo agente** no codificador, no revisor e no verificador (fixo, não é perguntado): `git push *` com
+**push pelo agente** no desenvolvedor, no revisor e no verificador (fixo, não é perguntado): `git push *` com
 `ask` (o Kiro pergunta sempre), com as negações de `--force`, `-f`, `+ref`, `:ref`, `--mirror`, `--all`, `--prune`,
 `--delete` e do push sem a branch nomeada (`git push`, `git push origin`, `HEAD`, `@`); revisor e verificador só
-publicam a branch do PR (push para a base negado); na base, o codificador publica só os registros de situação da
+publicam a branch do PR (push para a base negado); na base, o desenvolvedor publica só os registros de situação da
 fatia (`iniciada`, `pronta`) e o orquestrador, só a `iniciada` do lote, com os arquivos conferidos antes
 ([Gravar na base](../sa-fatiar/references/backlog.md#gravar-na-base)); push da branch recusado → o agente entrega o
 comando pronto e espera a pessoa dizer que publicou (o da base segue o Gravar na base); e, se a verificação chama a
@@ -324,7 +321,7 @@ Itens:
    o que muda e a tabela dos agentes, sem gravar, para os `alvos` do `agentes.json`; depois do "ok", o mesmo comando
    com `--gravar` grava `.kiro/agents/*.json`, `.opencode/agents/*.md` e `.claude/agents/*.md` com as regras no
    `.claude/settings.json`, conforme os alvos (e imprime a tabela de novo, com o que não tem tradução em cada
-   ferramenta: mostre essa lista à pessoa). As chaves de `agentes` são os nomes dos agentes (`sa-codificador`, …); chave
+   ferramenta: mostre essa lista à pessoa). As chaves de `agentes` são os nomes dos agentes (`sa-desenvolvedor`, …); chave
    desconhecida faz o gerador parar. Nunca edite os agentes à mão nem os passe pelo `kiro-cli agent upgrade`.
 3. `.sabia/verificar.sh` (Passo 7) e o script de chamada do verificador, se escolhido (Passo 6):
    `.sabia/http.sh` ← [assets/scripts/http.sh](assets/scripts/http.sh) com `{{URL_TESTE}}` trocado pela URL
@@ -334,10 +331,10 @@ Itens:
    as seções `## Épicos`, `## Fatias` e `## Sustentação` vazias, sem `### <Categoria>`: cada uma nasce com o primeiro
    item dela — formato na `sa-fatiar`), `<produto>/aprendizado/licoes.md` com o título `# Lições` (a pasta
    `sustentacao/` nasce com o primeiro item de categoria, pela `sa-triar`) e `fatias/` (as fichas). O `equipe.json`
-   e o `acordos.md` não: são da `sa-planejamento` (modo inicial), que só grava a equipe depois dos acordos (duração
+   e o `acordos.md` não: são do fluxo `sa-planejamento.inicial`, que só grava a equipe depois dos acordos (duração
    da sprint). No modo atualização, acrescente só o que falta — nunca recrie o que existe.
 5. Glossário e ADRs que o W4 disse "será criado" (só o que não existe): `<glossario>` com `# Glossário — <nome>` e a
-   tabela vazia `| Termo | Definição | Evitar | Fonte | ELM |` (formato da `sa-entrevistar`); `<adr>/` com um
+   tabela vazia `| Termo | Definição | Evitar | Fonte | ELM |` (padrão `sa-entrevistar/glossario.md`); `<adr>/` com um
    `README.md` de uma linha ("Decisões que devem durar — um arquivo por decisão, gravado pela consolidação").
    Prometido no W4 e não gravado → o fluxo aponta para um caminho que não existe: confira na etapa 9.
 6. `.gitignore`: acrescente `.sabia/local/` se faltar.
@@ -376,8 +373,8 @@ escrita de memória.
   e os workflows do projeto e pergunta antes de cada comando de shell.
 
 Sugira o commit — o comando pronto no shell da pessoa, no padrão de commit do projeto — (`.sabia/` sem `local/`, os agentes e ponteiros de cada ferramenta, `<produto>/` e `.gitignore`) — só com confirmação — e termine
-com o próximo passo — sem `<produto>/equipe.json`, primeiro "monte o planejamento" (`sa-planejamento`, modo
-inicial: equipe com a senioridade, acordos e roadmap; sem ela não há modo da fatia, GATE do plano nem revisor); depois
+com o próximo passo — sem `<produto>/equipe.json`, primeiro "monte o planejamento" (fluxo
+`sa-planejamento.inicial`: equipe com a senioridade, acordos e roadmap; sem ela não há modo da fatia, GATE do plano nem revisor); depois
 "nova demanda: …" (`sa-triar`: faz a triagem e registra no backlog; épico → `sa-prd`), "iniciar <id>" ou "minha próxima tarefa"
 (`sa-iniciar`: o hub diz a skill do papel) ou "onde parei?" (`sa-status`).
 
