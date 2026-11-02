@@ -121,8 +121,9 @@ O fluxo não sabe programar em nenhuma stack: o conhecimento de Java, Spring Bat
 parte do fluxo que sabe procurá-los (`.sabia/toolkits/`, `~/.sabia/toolkits/`, powers instalados com `toolkit.json`,
 ou skills com `metadata.toolkit`), detecta o tipo do projeto e **propõe, agente por agente**, as skills a ligar (uma confirmação por agente) —
 num projeto 100% Spring Batch, o desenvolvedor recebe as de batch e Java que a pessoa escolher, e não as de REST ou
-frontend. Uma skill de toolkit também pode assumir um passo do Sabiá pelo id (`sa-codificar.codificar.tarefa`,
-`sa-prd.prd.escrever`): o toolkit fica fora da compilação, e o desvio vai no prompt do agente dono. Contrato em [`skills/sa-setup/references/toolkits.md`](skills/sa-setup/references/toolkits.md) e
+frontend. Uma skill de toolkit também pode assumir um passo do Sabiá pelo id (`sa-codificar.codificar.tarefa`): o
+desvio vai no prompt do agente dono. E um toolkit pode trazer o fluxo que escreve um tipo do catálogo (`"tipos":
+{"HF": "<toolkit>.<fluxo>"}`), compilado na instalação com o compilador do Sabiá. Contrato em [`skills/sa-setup/references/toolkits.md`](skills/sa-setup/references/toolkits.md) e
 schema em [`toolkit.schema.json`](skills/sa-setup/assets/toolkit.schema.json).
 
 ## IBM ELM

@@ -1,5 +1,5 @@
 ---
-{"resumo": "Preenche o prd.md (padrão sa-prd/prd.md) e cria em elm/ um conceito OKF por artefato, mais index.md e log.md, pelas regras de escrita; épico que casa com um desvio do prompt vai ao toolkit."}
+{"resumo": "Preenche o prd.md (padrão sa-prd/prd.md) e cria em elm/ um conceito OKF por artefato, mais index.md e log.md, pelas regras de escrita; o tipo com fluxo de toolkit no prompt sai por esse fluxo."}
 ---
 ## Entrada
 
@@ -7,8 +7,11 @@ O `decisoes.md` e as decisões do passo `similares`.
 
 ## Faça
 
-O épico casa com o `para` de um desvio do seu prompt → a escrita é a do toolkit
-("Toolkit na especificação", no passo `sa-especificar.especificar.encaminhar`); o contrato abaixo continua.
+Tipo com fluxo de toolkit no seu prompt (**Tipos com fluxo de toolkit**) → o artefato desse tipo sai pelo fluxo do
+toolkit: rode-o em linha e volte a este passo ("Toolkit na especificação", no passo `sa-especificar.especificar.encaminhar`).
+Na volta, confira o artefato pelo contrato: arquivo pela coluna Arquivo do catálogo, envelope do `okf-elm.md`,
+`status: draft`, entrada no `index.md` e no `log.md`. Fora dele, complete aqui mesmo e registre no `status.md`.
+Os demais tipos seguem as regras abaixo; o `prd.md`, o `index.md`, o `log.md` e o contrato continuam deste passo.
 
 Preencha o padrão `sa-prd/prd.md` (o `prd.md`) e crie, em `elm/`, um arquivo por artefato, de um tipo do
 [catálogo](~/.sabia/framework/skills/sabia/references/tipos.md) que este passo cria, fora os pendentes (nome pela coluna Arquivo), com

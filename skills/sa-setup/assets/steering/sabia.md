@@ -172,15 +172,42 @@ regra vale pelo tipo de id, não pelo nome Sustentação.
 
 ## Desvios de toolkit
 
-Num passo do Sabiá que aceita desvio (`sa-codificar.codificar.tarefa`, `sa-prd.prd.escrever`), a skill de um toolkit
+Num passo do Sabiá que aceita desvio (`sa-codificar.codificar.tarefa`), a skill de um toolkit
 assume o trabalho; o Sabiá continua dono da revisão, do GATE, do passo `sa-codificar.codificar.validar` e do commit
 (`references/passos.md` da skill `sabia`). O agente dono já tem o desvio no prompt; esta tabela vale na sessão sem
 agente.
 
 | Passo | Toolkit | Para | Skill | Agente |
 |---|---|---|---|---|
-| <`sa-codificar.codificar.tarefa` | `sa-prd.prd.escrever`> | `<nome>` <versão> | <quando usar> | `<skill>` | <`<agente>` | —> |
+| `sa-codificar.codificar.tarefa` | `<nome>` <versão> | <quando usar> | `<skill>` | <`<agente>` | —> |
 <nenhum — sem skill de toolkit com `passo`, ou nenhuma ligada>
+
+## Tipos com fluxo de toolkit
+
+Num tipo desviável do catálogo (`references/tipos.md` da skill `sabia`), o fluxo de um toolkit escreve o artefato no
+passo de desvio do tipo (coluna Desviável, ⇢); o Sabiá continua dono do catálogo, do envelope OKF, da revisão e do
+GATE. O agente dono já tem a linha no prompt; estas tabelas (as que o gerador imprime) valem na sessão sem agente.
+`<alvo>` é a ferramenta da sessão (`kiro` ou `opencode`).
+
+| Tipo | Fluxo | Skill | Toolkit | Passo de desvio |
+|---|---|---|---|---|
+| `<sigla>` | `<toolkit>.<fluxo>` | `~/.sabia/compilado-toolkits/<alvo>/<toolkit>/skills/<skill>/SKILL.md` | `<nome>` <versão> | `<id do passo>` |
+<nenhum — sem toolkit com `tipos`>
+
+O padrão do toolkit vale no lugar do da skill (o `.sabia/padrao/` do projeto vale sobre os dois), também na revisão e
+na publicação:
+
+| Padrão | No lugar do da skill | Toolkit |
+|---|---|---|
+| `<skill>/<nome>.md` | `~/.sabia/compilado-toolkits/<alvo>/<toolkit>/padrao/<skill>/<nome>.md` | `<nome>` <versão> |
+<nenhum — sem toolkit com `padroes` sobre um do Sabiá>
+
+Os itens de rubrica do toolkit se somam aos da rubrica do artefato na revisão (nenhum troca um item do Sabiá):
+
+| Item de rubrica | Tipo | Severidade | Verificação | Toolkit |
+|---|---|---|---|---|
+| `<id>` | `<sigla>` | <BLOQUEANTE · IMPORTANTE · SUGESTÃO> | <verificação> | `<nome>` <versão> |
+<nenhum — sem toolkit com `rubricas`>
 
 ## Regras aprendidas
 

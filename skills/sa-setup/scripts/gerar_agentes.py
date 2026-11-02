@@ -115,9 +115,10 @@ def gancho(ext, fluxos, toolkit):
 ID = re.compile(r"[a-z][a-z0-9-]*")
 
 
-def override(projeto, fw, fluxos):
+def override(projeto, fw, fluxos, fontes=None):
     """O que o projeto mudou: ({"sa-x.f": [linhas do delta]}, [linhas dos padrões], avisos). Recusa (ValueError) o
-    override que o compilador e o agente não entenderiam: arquivo órfão, operação desconhecida, trava liberada."""
+    override que o compilador e o agente não entenderiam: arquivo órfão, operação desconhecida, trava liberada.
+    `fontes` ({"<skill>/<nome>.md": arquivo}) são os padrões dos toolkits: a `base` da cópia é a deles."""
     delta, padroes, avisos, erros = {}, [], [], []
     ler = lambda f: _fm(f.read_text(encoding="utf-8"), f.relative_to(projeto))
 
@@ -135,9 +136,9 @@ def override(projeto, fw, fluxos):
         if f.suffix != ".md":
             erros.append(f"{f.relative_to(projeto)}: só arquivos .md")
         elif rel[0] == "padrao":
-            original = fw / "padrao" / Path(*rel[1:])
+            original = (fontes or {}).get("/".join(rel[1:])) or fw / "padrao" / Path(*rel[1:])
             if len(rel) != 3 or not original.exists():
-                erros.append(f"{f.relative_to(projeto)}: não é padrão do Sabiá")
+                erros.append(f"{f.relative_to(projeto)}: não é padrão do Sabiá nem de um toolkit do projeto")
             else:
                 com_base(f, original, f"padrão {rel[1]}/{rel[2]}")
                 padroes.append(f"- padrão `{rel[1]}/{rel[2]}`: `.sabia/padrao/{rel[1]}/{rel[2]}` (no lugar do da skill)")
@@ -210,6 +211,90 @@ def override(projeto, fw, fluxos):
     if erros:
         raise ValueError("override do projeto recusado (nada foi gravado):\n" + "\n".join(erros))
     return delta, padroes, avisos
+
+
+def fonte_toolkits(projeto, cfg, fw, fluxos):
+    """Fluxos, padrões, tipos e rubricas dos toolkits do projeto. Põe os fluxos deles em `fluxos` (o override do projeto
+    também vale sobre eles) e devolve {papel: {"linhas", "skills"}}, {padrão: arquivo-fonte}, {padrão: linha do prompt},
+    as linhas da seção do sabia.md e {prefixo skill:// da fonte: o da compilação} dos toolkits com fluxos ou padrões. O
+    mesmo tipo, padrão, fluxo ou item de rubrica em dois toolkits → ValueError."""
+    ler = lambda f: json.loads(f.read_text(encoding="utf-8")) if f.is_file() else {}
+    catalogo = ler(fw / "fluxo/tipos.json").get("tipos", {})
+    rub = fw / "padrao/sa-revisar/rubricas.md"
+    de = {f"rubrica {r}": "Sabiá" for r in (re.findall(r"^\| ([A-Z]\d+) \|", rub.read_text(encoding="utf-8"), re.M) if rub.is_file() else [])}
+    de.update({f"fluxo {q}": "Sabiá" for q in fluxos})
+    erros, por_papel, fontes, linhas_padrao, rubricas, troca = [], {}, {}, {}, [], {}
+    tab_tipos, tab_padroes, tab_rubricas = [], [], []
+
+    def meu(chave, nome):  # a primeira dona fica; a segunda é colisão
+        if chave in de:
+            erros.append(f"toolkit {nome}: {chave} já é de {de[chave]}")
+            return False
+        de[chave] = f"toolkit {nome}"
+        return True
+
+    for nome, t in cfg.get("toolkits", {}).items():
+        pasta = t.get("pasta", f"~/.sabia/toolkits/{nome}").rstrip("/")
+        real = Path.home() / pasta[2:] if pasta.startswith("~/") else projeto / pasta
+        man = ler(real / "toolkit.json")
+        comp = f"~/.sabia/compilado-toolkits/kiro/{nome}"  # o opencode() troca o alvo
+        geral = f"~/.sabia/compilado-toolkits/<alvo>/{nome}"  # no sabia.md: vale nos dois alvos
+        versao = f"`{nome}` {man.get('versao', '')}".rstrip()
+        if man.get("fluxos") or man.get("padroes"):  # com fonte, a skill que vale é a compilada, não a da pasta
+            troca[f"skill://{pasta}/skills/"] = f"skill://{comp}/skills/"
+        for q, fl in ler_fluxos(real).items():
+            if meu(f"fluxo {q}", nome):
+                fluxos[q] = {**fl, "toolkit": nome}
+        for p in man.get("padroes", []):
+            if meu(f"padrão {p}", nome):
+                fontes[p] = real / "padrao" / p
+                if p.startswith("sa-"):  # camada sobre o do Sabiá; o da skill do toolkit já vai com ela
+                    linhas_padrao[p] = f"- padrão `{p}`: `{comp}/padrao/{p}` (toolkit `{nome}`; no lugar do da skill)"
+                    tab_padroes.append(f"| `{p}` | `{geral}/padrao/{p}` | {versao} |")
+        for sg, q in man.get("tipos", {}).items():
+            tipo = catalogo.get(sg, {})
+            if not tipo.get("desviavel") or tipo.get("pendente") or q not in man.get("fluxos", []):
+                erros.append(f"toolkit {nome}: tipo {sg} → {q}: o tipo tem de ser desviável e não pendente no catálogo, e {q} um dos fluxos do toolkit")
+                continue
+            if not meu(f"tipo {sg}", nome):
+                continue
+            # só os passos de "desviavel" do catálogo: nos outros passos de cria, o tipo é sempre do Sabiá
+            criam = [c for c in tipo["desviavel"] if ".".join(c.split(".")[:2]) in fluxos]
+            for c in criam:
+                dono_passo = fluxos[".".join(c.split(".")[:2])]["dono"]
+                if fluxos.get(q, {}).get("dono") != dono_passo:
+                    erros.append(f"toolkit {nome}: tipo {sg}: {q} tem dono {fluxos.get(q, {}).get('dono')}; o passo {c} é de {dono_passo}")
+                    continue
+                dono = por_papel.setdefault(dono_passo.removeprefix("sa-"), {"linhas": {}, "skills": []})
+                dono["linhas"].setdefault(c, []).append(f"{sg} → `{q}`")
+                skill = f"skill://{comp}/skills/{q.split('.')[0]}/SKILL.md"
+                if skill not in dono["skills"]:
+                    dono["skills"].append(skill)
+            tab_tipos.append(f"| `{sg}` | `{q}` | `{geral}/skills/{q.split('.')[0]}/SKILL.md` | {versao} | {', '.join(f'`{c}`' for c in criam)} |")
+        for r in man.get("rubricas", []):
+            if not (r.get("id") and r.get("verificacao") and r.get("severidade") in ("BLOQUEANTE", "IMPORTANTE", "SUGESTÃO")):
+                erros.append(f"toolkit {nome}: rubrica {r.get('id', '?')}: precisa de id, verificacao e severidade (BLOQUEANTE, IMPORTANTE ou SUGESTÃO)")
+            elif meu(f"rubrica {r['id']}", nome):
+                rubricas.append(f"`{r['id']}`{' (' + r['tipo'] + ')' if r.get('tipo') else ''} {r['severidade']} — {r['verificacao']} (toolkit `{nome}`)")
+                tab_rubricas.append(f"| `{r['id']}` | {r.get('tipo') or '—'} | {r['severidade']} | {r['verificacao']} | {versao} |")
+    if erros:
+        raise ValueError("toolkits do projeto recusados (nada foi gravado):\n" + "\n".join(erros))
+    for p in por_papel.values():
+        p["linhas"] = ["Tipos com fluxo de toolkit (⇢ no passo de desvio do tipo): " + "; ".join(
+            f"no passo `{c}`, {', '.join(ls)}" for c, ls in p["linhas"].items())
+            + ". O artefato desse tipo sai pelo fluxo do toolkit: rode-o em linha (a skill dele está ligada a você) e volte ao"
+              " passo; os demais tipos seguem o passo. O catálogo, o envelope OKF, a revisão e o GATE continuam do Sabiá."]
+    if rubricas:  # quem revisa é o dono da sa-revisar
+        por_papel.setdefault("revisor", {"linhas": [], "skills": []})["linhas"].append(
+            "Itens de rubrica dos toolkits (acrescentam aos da rubrica do artefato; nenhum troca um item do Sabiá): " + "; ".join(rubricas) + ".")
+    # a seção Tipos com fluxo de toolkit do sabia.md: o que vale na sessão sem agente
+    tabela = []
+    for cab, linhas in (("| Tipo | Fluxo | Skill | Toolkit | Passo de desvio |\n|---|---|---|---|---|", tab_tipos),
+                        ("| Padrão | No lugar do da skill | Toolkit |\n|---|---|---|", tab_padroes),
+                        ("| Item de rubrica | Tipo | Severidade | Verificação | Toolkit |\n|---|---|---|---|---|", tab_rubricas)):
+        if linhas:
+            tabela += ([""] if tabela else []) + cab.split("\n") + linhas
+    return por_papel, fontes, linhas_padrao, tabela, troca
 
 
 def texto_fluxos(nome, fluxos, delta, padroes):
@@ -339,7 +424,7 @@ def agente(nome, p, base, cfg, ext=None, tk=None, fluxo=""):
         regras.append(regra("mcp", "allow", [m if "/" in m else f"{m}/*" for m in mcp_extra]))
     regras.append(regra("skill", "allow"))
 
-    skills_projeto = tk["skills"] + [s for s in extra.get("skills", []) if s not in tk["skills"]] if tk else extra.get("skills", []) + ext["skills"]
+    skills_projeto = tk["skills"] + [s for s in extra.get("skills", []) if s not in tk["skills"]] if tk else list(dict.fromkeys(extra.get("skills", []) + ext["skills"]))
     skills_extras = [Path(s.removeprefix("skill://")).parent.name for s in skills_projeto]
     prompt = tk["prompt"] if tk else (ASSETS / f"sa-{nome}.md").read_text(encoding="utf-8")
     prompt = prompt.replace("{{SKILLS_EXTRAS}}", f"Skills do projeto ligadas a você: {', '.join(f'`{s}`' for s in skills_extras)}"
@@ -435,7 +520,7 @@ def opencode(a, cfg, subagente=False):
     if a.get("model"):
         frente["model"] = a["model"]
     frente["permission"] = perm
-    return _md(frente, a["prompt"])
+    return _md(frente, a["prompt"].replace("~/.sabia/compilado-toolkits/kiro/", "~/.sabia/compilado-toolkits/opencode/"))
 
 
 LACUNAS = {
@@ -499,8 +584,11 @@ def gerar(projeto: Path, cfg: dict) -> dict:
     fluxos = ler_fluxos(fw)
     if not fluxos:
         raise ValueError(f"{fw} não tem os fluxos (fluxo/ ausente ou sem mestres): rode `sabia instalar` ou passe --framework")
-    gerar.avisos = []
-    delta, padroes, avisos = override(projeto, fw, fluxos)
+    gerar.avisos, gerar.tabela_tipos = [], []
+    tk, fontes, linhas_padrao, gerar.tabela_tipos, troca = fonte_toolkits(projeto, cfg, fw, fluxos)
+    delta, padroes, avisos = override(projeto, fw, fluxos, fontes)
+    # o padrão do toolkit vale sobre o do Sabiá; o do projeto, sobre os dois
+    padroes = [l for p, l in linhas_padrao.items() if not (projeto / ".sabia/padrao" / p).is_file()] + padroes
     gerar.avisos = avisos
     if cfg.get("sabia") and (fw / "plugin.json").exists():
         instalado = json.loads((fw / "plugin.json").read_text(encoding="utf-8")).get("version")
@@ -509,8 +597,15 @@ def gerar(projeto: Path, cfg: dict) -> dict:
     por_papel, do_toolkit = passos(projeto, cfg, fluxos)
     if fora := sorted(set(por_papel) - set(base["papeis"])):
         raise ValueError(f"toolkit: passo de papel desconhecido {fora}")
+    for n, t in tk.items():  # a skill do fluxo do toolkit vai ao dono do passo de desvio do tipo
+        por_papel.setdefault(n, {"skills": [], "subagentes": [], "passos": []})["skills"].extend(t["skills"])
+    # toolkit com fluxos ou padrões: toda skill dele (agentes.json, passos, agentes do toolkit) aponta para a compilada
+    compilada = lambda ss: list(dict.fromkeys(next((c + x[len(f):] for f, c in troca.items() if x.startswith(f)), x) for x in ss))
+    cfg = {**cfg, "agentes": {k: {**v, "skills": compilada(v.get("skills", []))} for k, v in cfg.get("agentes", {}).items()}}
+    for d in [*por_papel.values(), *do_toolkit.values()]:
+        d["skills"] = compilada(d["skills"])
     agentes = {f"sa-{n}.json": agente(n, p, base, cfg, por_papel.get(n),
-                                   fluxo=texto_fluxos(n, fluxos, delta, padroes))
+                                   fluxo="\n\n".join(x for x in [texto_fluxos(n, fluxos, delta, padroes), *tk.get(n, {}).get("linhas", [])] if x))
                for n, p in base["papeis"].items()}
     for n, tk in do_toolkit.items():
         agentes[f"{n}.json"] = agente(tk["papel"], base["papeis"][tk["papel"]], base, cfg, tk=tk)
@@ -577,6 +672,8 @@ def main(argv=None):
             alvo.write_text(novo, encoding="utf-8")
             print(f"gravado {alvo}")
     print("\n" + resumo(agentes, cfg), end="")
+    if gerar.tabela_tipos:  # a setup grava estas tabelas no sabia.md (o que vale na sessão sem agente)
+        print("\nTipos com fluxo de toolkit (seção do sabia.md):\n" + "\n".join(gerar.tabela_tipos))
     for aviso in getattr(gerar, "avisos", []):
         print(f"aviso: {aviso}")
     for alvo in alvos:

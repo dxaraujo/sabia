@@ -1,5 +1,5 @@
 ---
-{"resumo": "Mostra o painel do épico e encaminha pela Fase do status.md (sa-prd, sa-fatiar ou o passo fechamentos); a escrita do PRD pode ir a um toolkit pelo desvio do prompt."}
+{"resumo": "Mostra o painel do épico e encaminha pela Fase do status.md (sa-prd, sa-fatiar ou o passo fechamentos); um tipo do PRD pode sair pelo fluxo de um toolkit."}
 ---
 ## Entrada
 
@@ -25,19 +25,19 @@ Próximo: <skill>
 
 ### Toolkit na especificação
 
-Passo `especificador` de [passos.md](~/.sabia/framework/skills/sabia/references/passos.md): uma skill de toolkit pode assumir a escrita
-do passo `sa-prd.prd.escrever` (os modelos de PRD e os extras de uma stack ou de um tipo de sistema).
+Um toolkit pode trazer o fluxo que escreve um tipo desviável do [catálogo](~/.sabia/framework/skills/sabia/references/tipos.md)
+(HF, REG…), no padrão dele ([passos.md](~/.sabia/framework/skills/sabia/references/passos.md#tipos-com-fluxo-de-toolkit)).
 
-Quem decide é a configuração do agente: os **desvios** do seu prompt, gerados do `agentes.json` pela
-setup. É transparente para quem está no fluxo: nada é perguntado nem marcado no `status.md` do épico.
+Quem decide é a configuração do agente: a linha **Tipos com fluxo de toolkit** do seu prompt, gerada do `agentes.json`
+pela setup. É transparente para quem está no fluxo: nada é perguntado nem marcado no `status.md` do épico.
 
-1. **Escrita (este passo, `sa-prd.prd.escrever`).** O épico casa com o `para` de um desvio seu → com subagente, delegue com o
-   briefing de especificação de [passos.md](~/.sabia/framework/skills/sabia/references/passos.md#sem-agente-e-com-agente); sem
-   subagente, carregue a skill do desvio e escreva por ela, no seu contexto. Não casa, ou não há desvio → a escrita
-   é a do Sabiá. O passo `sa-prd.prd.similares` vem antes e é seu.
+1. **Escrita (passo `sa-prd.prd.escrever`).** Cada tipo da linha sai pelo fluxo do toolkit, em linha (a skill dele está
+   ligada a você), e volta ao passo; os demais tipos e o `prd.md` são do Sabiá. Sem a linha → tudo é do Sabiá. O
+   passo `sa-prd.prd.similares` vem antes e é seu.
 2. **Contrato, antes da revisão P.** `prd.md` com todas as H2 do template (o padrão `sa-prd/prd.md`), `elm/` com os conceitos OKF quando há
-   ELM, extras só em `.md` na pasta de trabalho. Fora disso → como manda o `passos.md`. A revisão P e o GATE
-   continuam os do Sabiá.
+   ELM, um arquivo por artefato, com a sigla e o nome do catálogo. A revisão P e o GATE continuam os do Sabiá; os itens
+   de rubrica do toolkit se somam à P (no prompt do `sa-revisor`; sem agente, na seção **Tipos com fluxo de toolkit**
+   do `.sabia/sabia.md`).
 
 ## Saída
 

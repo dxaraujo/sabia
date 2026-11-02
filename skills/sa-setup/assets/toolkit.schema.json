@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/dxaraujo/sabia/main/skills/sa-setup/assets/toolkit.schema.json",
   "title": "Toolkit do Sabiá",
-  "description": "Manifesto de um toolkit: skills (e opcionalmente steering, comandos e agentes) para um tipo de projeto ou stack, mantido fora do fluxo Sabiá e descoberto pela skill sa-setup. Três perguntas por skill: quem (papeis), onde (stack e deteccao) e em que passo (passo).",
+  "description": "Manifesto de um toolkit: skills (e opcionalmente steering, comandos, agentes, fluxos, padrões e tipos) para um tipo de projeto ou stack, mantido fora do fluxo Sabiá e descoberto pela skill sa-setup. Três perguntas por skill: quem (papeis), onde (stack e deteccao) e em que passo (passo).",
   "type": "object",
   "required": [
     "nome",
@@ -144,7 +144,7 @@
               "passo": {
                 "type": "string",
                 "pattern": "^sa-[a-z]+\\.[a-z][a-z-]*\\.[a-z][a-z-]*$",
-                "description": "O id do passo do Sabiá que aceita desvio (\"desvio\": true no mestre), ex.: sa-codificar.codificar.tarefa. O dono do fluxo é o agente que recebe o desvio."
+                "description": "O id do passo do Sabiá que aceita desvio (\"desvio\": true no mestre), ex.: sa-codificar.codificar.tarefa. O dono do fluxo é o agente que recebe o desvio. Um tipo do catálogo (HF, REG…) vai por tipos, não por aqui."
               },
               "para": {
                 "type": "string",
@@ -215,6 +215,82 @@
     "verificacao": {
       "type": "string",
       "description": "Como executar os cenários de aceite neste tipo de projeto (usado pela sa-verificar)."
+    },
+    "tipos": {
+      "type": "object",
+      "description": "Opcional: o fluxo do toolkit que escreve um tipo desviável do catálogo do Sabiá (skills/sabia/references/tipos.md), ex.: {\"HF\": \"<toolkit>.hf\"}. O toolkit não cria tipo: a sigla é do catálogo. No passo de desvio do tipo (coluna Desviável do catálogo, ⇢), o dono roda esse fluxo em linha; o fluxo tem o dono desse passo; a linha vai no prompt dele e na seção Tipos com fluxo de toolkit do sabia.md. Dois toolkits do projeto no mesmo tipo → o gerador recusa.",
+      "propertyNames": {
+        "pattern": "^[A-Z]{2,4}$"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9-]*\\.[a-z][a-z-]*$"
+      }
+    },
+    "fluxos": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "Opcional: os fluxos do toolkit, pelo id <skill>.<fluxo> (a skill em skills/<skill>/SKILL.md), no formato dos fluxos do Sabiá: fluxo/<skill>/<fluxo>/<fluxo>.md e passos/<id>.md. O sabia toolkits instalar os compila com o compilador do Sabiá; o link para um id sa-* resolve para a skill do Sabiá.",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9-]*\\.[a-z][a-z-]*$"
+      }
+    },
+    "padroes": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "Opcional: padrões do toolkit, <skill>/<nome>.md, em padrao/<skill>/<nome>.md. Com uma skill sa-*, é a camada sobre o padrão do Sabiá de mesmo nome (framework < toolkit < projeto); com uma skill do toolkit, é padrão dela.",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9-]*/[a-z0-9][a-z0-9.-]*\\.md$"
+      }
+    },
+    "rubricas": {
+      "type": "array",
+      "description": "Opcional: itens de rubrica que o toolkit acrescenta à revisão (vão no prompt do revisor); não troca nenhum item do Sabiá, e o id não pode repetir um da rubrica do Sabiá nem de outro toolkit do projeto.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "verificacao",
+          "severidade"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Z]+[0-9]+$"
+          },
+          "tipo": {
+            "type": "string",
+            "pattern": "^[A-Z]{2,4}$",
+            "description": "Opcional: a sigla do tipo que o item confere."
+          },
+          "verificacao": {
+            "type": "string",
+            "minLength": 10
+          },
+          "severidade": {
+            "enum": [
+              "BLOQUEANTE",
+              "IMPORTANTE",
+              "SUGESTÃO"
+            ]
+          }
+        }
+      }
+    },
+    "requer": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Opcional: o que o toolkit precisa para instalar.",
+      "properties": {
+        "sabia": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+",
+          "description": "Versão mínima do Sabiá instalado (os fluxos do toolkit citam os ids dele)."
+        }
+      }
     },
     "agentes": {
       "type": "array",

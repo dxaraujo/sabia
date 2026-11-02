@@ -209,7 +209,8 @@ do projeto (`.kiro/skills/*/SKILL.md`), do usuário (`~/.kiro/skills/*/SKILL.md`
 nome, início da `description`, origem e, se houver, toolkit e papéis. Toolkit cujo `deteccao` casa com o projeto
 → "detectado"; skill com `passo` → a tabela de
 desvios do W5 (o passo pelo id, como `sa-codificar.codificar.tarefa`; `para`, skill e agente), ligados no Passo 6;
-`passo` num passo sem desvio → ❌ na linha, e a skill não é ligada. Skill com
+`passo` num passo sem desvio → ❌ na linha, e a skill não é ligada. Toolkit com `tipos` → a tabela de tipos do W5
+(o tipo, o fluxo do toolkit e o passo de desvio do tipo); vai para o projeto com o toolkit. Skill com
 `stack`/`deteccao` própria → a coluna Stack diz se casa. Liste também os **agentes do projeto** (`.kiro/agents/*.json`, `~/.kiro/agents/*.json` e
 `.opencode/agents/*.md`, exceto `sa-*`), com o "para quê" tirado da `description` — eles são oferecidos como
 subagentes no Passo 6, sem a pessoa precisar lembrar deles.
@@ -274,12 +275,16 @@ Padrões da proposta:
    `agentes.sa-<papel>.subagentes[].para` e no prompt do agente. Agente com o campo `hooks` (mesmo vazio) é
    ignorado pela IDE: fica desmarcado, com o ⚠️.
 
-5. Só especificador e desenvolvedor, os donos dos passos que aceitam desvio (`sa-prd.prd.escrever` e
-   `sa-codificar.codificar.tarefa`): **desvios de toolkit** do agente — a skill marcada se o toolkit foi detectado,
+5. Só o desenvolvedor, o dono do passo que aceita desvio (`sa-codificar.codificar.tarefa`): **desvios de toolkit** do agente — a skill marcada se o toolkit foi detectado,
    o agente sempre desmarcado (delegar é escolha da pessoa). Vão no `agentes.json` (`toolkits` e `passos`) e na
    tabela **Desvios de toolkit** do `sabia.md` (a que vale na sessão sem agente); o gerador liga a skill ao agente dono e gera o agente do toolkit, e põe o desvio no
    prompt do dono; o agente do toolkit fica
    com as permissões do dono ([references/toolkits.md](references/toolkits.md#passos)).
+6. Toolkit com `tipos` ligado ao projeto (em `toolkits` no `agentes.json`): sem pergunta por agente. O gerador põe a
+   linha **Tipos com fluxo de toolkit** no prompt do dono do passo de desvio do tipo, liga a skill do fluxo a ele e
+   imprime a seção **Tipos com fluxo de toolkit** (tipos, padrões em camada e itens de rubrica), que vai para o
+   `sabia.md` como saiu
+   ([references/toolkits.md](references/toolkits.md#fluxos-padrões-e-tipos)).
 
 Registre também as skills **oferecidas e recusadas** por agente (coluna própria no `sabia.md`): no modo
 atualização, só skill que não está em nenhuma das duas colunas é "nova".

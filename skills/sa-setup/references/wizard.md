@@ -236,7 +236,14 @@ Montagem do `pa` (só quando falta): um cartão por bloco, com o cabeçalho
 
 | # | Toolkit | Passo | Para | Skill | Agente |
 |---|---|---|---|---|---|
-| 1 | `<toolkit>` <versão> | <`sa-codificar.codificar.tarefa` | `sa-prd.prd.escrever` | ❌ `<id>` não aceita desvio> | <quando usar> | `<skill>` | <`<agente>` | —> |
+| 1 | `<toolkit>` <versão> | <`sa-codificar.codificar.tarefa` | ❌ `<id>` não aceita desvio> | <quando usar> | `<skill>` | <`<agente>` | —> |
+
+(só se algum toolkit traz `tipos`) Tipos com fluxo de toolkit — o fluxo do toolkit escreve o tipo no passo de desvio
+dele (coluna Desviável do catálogo):
+
+| Tipo | Fluxo | Toolkit | Passo de desvio |
+|---|---|---|---|
+| `<sigla>` | `<toolkit>.<fluxo>` | `<toolkit>` <versão> | `<id do passo>` |
 
 Agentes do projeto (podem virar subagentes do desenvolvedor e do orquestrador):
 
@@ -287,7 +294,7 @@ Nada customizado → a linha `| — | o Sabiá como vem | ➖ |`. Para mudar: "c
 | [✅] | <n> | `sa-revisor` | análise do plano e revisão do código |
 | [ ] | <n> | `<agente do projeto>` | <início da description> |
 
-(só `sa-especificador` e `sa-desenvolvedor`, se há desvio de toolkit deles no W5)
+(só `sa-desenvolvedor`, se há desvio de toolkit dele no W5)
 | | # | Desvio de toolkit | Para | Agente |
 |---|---|---|---|---|
 | <[✅] | [ ]> | <n> | `<skill>` · toolkit `<nome>` | <quando usar> | <[ ] `<agente>` — delegar a ele | — sem agente> |

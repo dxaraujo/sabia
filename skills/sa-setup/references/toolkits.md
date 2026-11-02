@@ -100,7 +100,11 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
 | `deteccao` | `arquivos` existe na raiz (ou em módulos) **e** algum `contem` aparece nele → toolkit "detectado" |
 | `skills[].papeis` | **quem:** pré-seleciona a skill na proposta de cada agente (`produto`, `especificador`, `pesquisador`, `desenvolvedor`, `revisor`, `verificador`, `orquestrador`) — uma skill pode servir a vários |
 | `skills[].stack`, `skills[].deteccao` | **onde:** a stack da skill (ex.: `java 17`, `react`); com `deteccao`, a setup só a pré-marca se o repositório casar |
-| `skills[].passo` | **em que passo:** opcional — a skill assume o passo de um agente do Sabiá, pelo id (`passo`: `sa-codificar.codificar.tarefa` ou `sa-prd.prd.escrever`, os únicos com `"desvio": true` no mestre), com o `para` e, opcionais, os `arquivos` (globs) e o `agente` a quem delegar — ver [Passos](#passos) |
+| `skills[].passo` | **em que passo:** opcional — a skill assume o passo de um agente do Sabiá, pelo id (`passo`: `sa-codificar.codificar.tarefa`, o único com `"desvio": true` no mestre), com o `para` e, opcionais, os `arquivos` (globs) e o `agente` a quem delegar — ver [Passos](#passos) |
+| `tipos` | opcional — `{"HF": "<toolkit>.<fluxo>"}`: o fluxo do toolkit escreve um tipo desviável do catálogo no passo de desvio do tipo (coluna Desviável do catálogo) — ver [Fluxos, padrões e tipos](#fluxos-padrões-e-tipos) |
+| `fluxos`, `padroes` | opcionais — os fluxos (`<skill>.<fluxo>`) e os padrões (`<skill>/<nome>.md`) do toolkit, compilados na instalação |
+| `rubricas` | opcional — itens que o toolkit **acrescenta** à revisão (`id`, `verificacao`, `severidade`, `tipo`); vão no prompt do revisor |
+| `requer` | opcional — `{"sabia": "<versão mínima>"}`; abaixo dela, o CLI recusa o toolkit |
 | `autor` | **obrigatório:** `nome` e `area` de quem fez e responde pelo toolkit (`email` opcional). Aparece no W5 e no `sabia toolkits listar`; toolkit sem autor é recusado |
 | `customiza` | opcional: o toolkit é uma **cópia modificada** de outro (`toolkit`, a `versao` de onde saiu e as `mudancas`) — ver [Customização](#customização) |
 | `agentes[]` | agentes neutros do toolkit (nome, descrição, prompt, skills, subagentes); sem campo de permissão |
@@ -132,6 +136,32 @@ estão em [passos.md](../../sabia/references/passos.md).
   `agentes[]` → o gerador recusa e não grava nada.
 - A pasta `~/.sabia/toolkits/` é de leitura para todos os agentes.
 
+## Fluxos, padrões e tipos
+
+Um toolkit pode trazer fluxos e padrões no formato dos do Sabiá, e o fluxo que escreve um tipo do catálogo:
+
+```
+toolkit.json                       "fluxos": ["exemplo.hf"], "padroes": ["sa-prd/hf.md"], "tipos": {"HF": "exemplo.hf"}
+skills/exemplo/SKILL.md            front-matter e o H1 (o corpo é gerado)
+fluxo/exemplo/hf/hf.md             mestre (front-matter JSON) + passos/<id>.md
+padrao/sa-prd/hf.md                camada sobre o padrão do Sabiá de mesmo nome
+```
+
+- **Compilado na instalação:** `sabia toolkits instalar` (e `atualizar`, e o `sabia atualizar` do framework) compila os
+  fluxos e padrões do toolkit com o compilador do Sabiá em `~/.sabia/compilado-toolkits/<alvo>/<toolkit>/`. O espaço de
+  nomes é o `sa-*` mais as skills declaradas em `skills[]`; o link para um id do Sabiá resolve para a skill dele. No
+  opencode, as skills compiladas vão para `~/.config/opencode/skills/<skill>`; no Kiro, ficam na compilação e o
+  gerador as liga por `skill://`, como o power.
+- **Tipo:** a sigla é do catálogo (o toolkit não cria tipo), desviável e não pendente; o fluxo é um dos `fluxos` e
+  tem o dono do passo de desvio (coluna Desviável do catálogo). O gerador põe a linha **Tipos com fluxo de toolkit**
+  no prompt desse dono, liga a skill do fluxo a ele e imprime a seção que a setup grava no `sabia.md`: os tipos (com
+  a skill compilada), os padrões em camada e os itens de rubrica.
+- **Camadas de padrão:** Sabiá < toolkit < projeto. O padrão do toolkit sobre um do Sabiá vai no prompt de todos os
+  agentes ("no lugar do da skill"); o `.sabia/padrao/` do projeto vale sobre os dois. O override do projeto
+  (`.sabia/fluxo/`) também vale sobre os passos dos fluxos do toolkit, com a `base` tirada da fonte do toolkit.
+- **Colisão:** dois toolkits do projeto no mesmo tipo, no mesmo padrão, no mesmo id de fluxo ou de item de rubrica →
+  o gerador recusa e não grava nada. Item de rubrica com o id de um do Sabiá também.
+
 ## Proposta por agente
 
 A setup nunca liga uma skill sem a confirmação da pessoa — mas confirma a proposta inteira do agente de uma vez
@@ -142,6 +172,10 @@ detectado, skill do projeto e skill do usuário aparecem desmarcadas:
 O cartão é o W6 de [wizard.md](wizard.md): skills numeradas com a caixa `[✅]`/`[ ]` na primeira coluna, agrupadas por toolkit e origem na coluna
 "Para quê" (ex.: `spring-batch-job` — steps chunk/tasklet · toolkit spring-batch 🔍 detectado), e a resposta pelos
 números (`tirar 3,5`, `pôr 7`, `nenhuma skill`, `as mesmas do sa-<outro>`).
+
+A skill confirmada vai ao `agentes.json` pela fonte (`skill://~/.sabia/toolkits/<toolkit>/skills/<skill>/SKILL.md`).
+Num toolkit com `fluxos` ou `padroes`, o gerador a troca pela compilada
+(`skill://~/.sabia/compilado-toolkits/kiro/<toolkit>/skills/<skill>/SKILL.md`), em todos os agentes, e não a repete.
 
 Num projeto 100% Spring Batch, o normal é o desenvolvedor receber as skills de batch e Java, e não as de REST ou
 de frontend — mas quem decide é a pessoa.

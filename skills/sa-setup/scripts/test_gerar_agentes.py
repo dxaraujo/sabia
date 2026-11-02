@@ -415,6 +415,92 @@ class Gerar(unittest.TestCase):
             with self.assertRaises(ValueError, msg=passo):
                 g.gerar(self.projeto, {**self.cfg, "framework": str(REPO), **ruim})
 
+    def exemplo(self, nome="exemplo", dono="sa-especificador", **mudar):
+        """Toolkit sintético em ~/.sabia/toolkits/<nome>: o fluxo <nome>.hf para o tipo HF, um padrão em camada sobre o
+        sa-prd/hf.md e uma rubrica; a compilação do Kiro em ~/.sabia/compilado-toolkits/kiro/<nome> (o CLI a faz)."""
+        pasta = self.home / ".sabia/toolkits" / nome
+        arquivos = {f"fluxo/{nome}/hf/hf.md": json.dumps({"fluxo": "hf", "dono": dono, "passos": [{"id": "escrever"}]}),
+                    f"fluxo/{nome}/hf/passos/escrever.md": '{"resumo": "x"}', "padrao/sa-prd/hf.md": '{"resumo": "HF do toolkit"}'}
+        for f, c in arquivos.items():
+            (pasta / f).parent.mkdir(parents=True, exist_ok=True)
+            (pasta / f).write_text(f"---\n{c}\n---\n# x\n")
+        comp = self.home / ".sabia/compilado-toolkits/kiro" / nome / "skills" / nome / "SKILL.md"
+        comp.parent.mkdir(parents=True, exist_ok=True)
+        comp.write_text("x")
+        man = {"nome": nome, "versao": "1.0.0", "skills": [{"caminho": f"skills/{nome}/SKILL.md", "papeis": ["especificador"]}],
+               "fluxos": [f"{nome}.hf"], "padroes": ["sa-prd/hf.md"], "tipos": {"HF": f"{nome}.hf"},
+               "rubricas": [{"id": "EX1", "tipo": "HF", "verificacao": "Toda HF cita o campo de origem", "severidade": "IMPORTANTE"}], **mudar}
+        (pasta / "toolkit.json").write_text(json.dumps(man))
+        return {nome: {"pasta": f"~/.sabia/toolkits/{nome}", "versao": "1.0.0"}}
+
+    def test_tipo_com_fluxo_de_toolkit(self):
+        agentes = self.gerar(toolkits=self.exemplo())
+        e = agentes["especificador"]
+        self.assertIn("Tipos com fluxo de toolkit (⇢ no passo de desvio do tipo): no passo `sa-prd.prd.escrever`, HF → `exemplo.hf`", e["prompt"])
+        self.assertIn("skill://~/.sabia/compilado-toolkits/kiro/exemplo/skills/exemplo/SKILL.md", e["resources"])
+        self.assertIn("~/.sabia/compilado-toolkits/**", regras(e, "fs_read", "allow"))
+        self.assertNotIn("Tipos com fluxo de toolkit", agentes["desenvolvedor"]["prompt"])
+        # o padrão em camada vai a todos; no opencode, o caminho do alvo
+        linha = "- padrão `sa-prd/hf.md`: `~/.sabia/compilado-toolkits/kiro/exemplo/padrao/sa-prd/hf.md` (toolkit `exemplo`; no lugar do da skill)"
+        for nome in ("especificador", "revisor", "produto"):
+            self.assertIn(linha, agentes[nome]["prompt"], nome)
+        self.assertIn("~/.sabia/compilado-toolkits/opencode/exemplo/padrao/sa-prd/hf.md", g.opencode(e, self.cfg))
+        self.assertIn("Itens de rubrica dos toolkits", agentes["revisor"]["prompt"])
+        self.assertIn("`EX1` (HF) IMPORTANTE — Toda HF cita o campo de origem (toolkit `exemplo`)", agentes["revisor"]["prompt"])
+        # a seção do sabia.md: tipos (com a skill compilada), padrões em camada e itens de rubrica
+        comp = "~/.sabia/compilado-toolkits/<alvo>/exemplo"
+        self.assertEqual(g.gerar.tabela_tipos, [
+            "| Tipo | Fluxo | Skill | Toolkit | Passo de desvio |", "|---|---|---|---|---|",
+            f"| `HF` | `exemplo.hf` | `{comp}/skills/exemplo/SKILL.md` | `exemplo` 1.0.0 | `sa-prd.prd.escrever` |", "",
+            "| Padrão | No lugar do da skill | Toolkit |", "|---|---|---|", f"| `sa-prd/hf.md` | `{comp}/padrao/sa-prd/hf.md` | `exemplo` 1.0.0 |", "",
+            "| Item de rubrica | Tipo | Severidade | Verificação | Toolkit |", "|---|---|---|---|---|",
+            "| `EX1` | HF | IMPORTANTE | Toda HF cita o campo de origem | `exemplo` 1.0.0 |"])
+        # o REG só desvia no prd.escrever: o consolidar.elm (sa-produto) não recebe a linha nem a skill
+        agentes = self.gerar(toolkits=self.exemplo(tipos={"REG": "exemplo.hf"}))
+        self.assertIn("no passo `sa-prd.prd.escrever`, REG → `exemplo.hf`", agentes["especificador"]["prompt"])
+        self.assertNotIn("Tipos com fluxo de toolkit", agentes["produto"]["prompt"])
+        self.assertFalse([r for r in agentes["produto"]["resources"] if "exemplo" in r])
+
+    def test_skill_de_toolkit_com_fonte_aponta_para_a_compilada(self):
+        # papeis grava a skill da fonte no agentes.json; com fluxos, vale a compilada, uma vez só
+        fonte = "skill://~/.sabia/toolkits/exemplo/skills/exemplo/SKILL.md"
+        agentes = self.gerar(toolkits=self.exemplo(), agentes={"sa-especificador": {"skills": [fonte]}})
+        r = [x for x in agentes["especificador"]["resources"] if x.endswith("/exemplo/SKILL.md")]
+        self.assertEqual(r, ["skill://~/.sabia/compilado-toolkits/kiro/exemplo/skills/exemplo/SKILL.md"])
+        self.assertIn("Skills do projeto ligadas a você: `exemplo` —", agentes["especificador"]["prompt"])
+
+    def test_override_do_projeto_vale_sobre_o_toolkit(self):
+        tk = self.exemplo()
+        fonte = lambda rel: g.sha12(self.home / ".sabia/toolkits/exemplo" / rel)
+        agentes = self.com_fluxo({
+            ".sabia/fluxo/exemplo/hf/passos/escrever.md": f'---\n{{"base": "{fonte("fluxo/exemplo/hf/passos/escrever.md")}"}}\n---\n## Entrada\n',
+            ".sabia/padrao/sa-prd/hf.md": f'---\n{{"base": "{fonte("padrao/sa-prd/hf.md")}"}}\n---\nHF\n'}, toolkits=tk)
+        e = agentes["especificador"]["prompt"]
+        self.assertIn("Fluxo `exemplo.hf`:\n- passo `escrever`: leia `.sabia/fluxo/exemplo/hf/passos/escrever.md`", e)
+        self.assertIn("- padrão `sa-prd/hf.md`: `.sabia/padrao/sa-prd/hf.md` (no lugar do da skill)", e)
+        self.assertNotIn("compilado-toolkits/kiro/exemplo/padrao", e)  # o do projeto vale sobre o do toolkit
+        self.assertEqual(g.gerar.avisos, [])  # a base é a da fonte do toolkit, não a do Sabiá
+
+    def test_toolkits_em_colisao_ou_tipo_que_nao_desvia_sao_recusados(self):
+        casos = [(lambda: {**self.exemplo(), **self.exemplo("outro", padroes=[], rubricas=[], tipos={"HF": "outro.hf"})}, "tipo HF já é de toolkit exemplo"),
+                 (lambda: {**self.exemplo(), **self.exemplo("outro", tipos={}, rubricas=[])}, "padrão sa-prd/hf.md já é de toolkit exemplo"),
+                 (lambda: self.exemplo(rubricas=[{"id": "P2", "verificacao": "repete", "severidade": "BLOQUEANTE"}]), "rubrica P2 já é de Sabiá"),
+                 (lambda: self.exemplo(tipos={"EL": "exemplo.hf"}), "tipo EL → exemplo.hf: o tipo tem de ser desviável e não pendente"),
+                 (lambda: self.exemplo(tipos={"GL": "exemplo.hf"}), "tipo GL"),
+                 (lambda: self.exemplo(tipos={"ET": "exemplo.hf"}), "tipo ET"),  # sem ponto de desvio até a ET inicial no PRD
+                 (lambda: self.exemplo(rubricas=[{"id": "EX1", "tipo": "HF"}]), "rubrica EX1: precisa de id, verificacao e severidade"),
+                 (lambda: self.exemplo(dono="sa-desenvolvedor"), "tipo HF: exemplo.hf tem dono sa-desenvolvedor; o passo sa-prd.prd.escrever é de sa-especificador")]
+        for toolkits, erro in casos:
+            with self.assertRaisesRegex(ValueError, re.escape(erro), msg=erro):
+                g.gerar(self.projeto, {**self.cfg, "toolkits": toolkits()})
+            import shutil; shutil.rmtree(self.home / ".sabia")
+
+    def test_escrever_do_prd_nao_aceita_desvio_por_passo(self):
+        ruim = self.toolkit(skills=[{"caminho": "skills/batch/SKILL.md", "papeis": ["especificador"],
+                                     "passo": {"passo": "sa-prd.prd.escrever", "para": "épico de exemplo"}}])
+        with self.assertRaisesRegex(ValueError, "não aceita desvio de toolkit"):
+            g.gerar(self.projeto, {**self.cfg, **ruim})
+
     def test_gerador_fora_do_repo_acha_o_mestre_pelo_framework(self):
         import shutil, subprocess, sys
         copia = Path(self.tmp.name) / "instalado/sa-setup"
