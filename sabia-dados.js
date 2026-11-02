@@ -1,15 +1,15 @@
 
-/* dados do mapa, tirados das skills do Sabiá 1.0.0 (tag sabia-1.0.0) */
+/* dados do mapa, tirados dos fluxos do Sabiá 2.0 (fluxo/ e padrao/ do repositório) */
 (function(){
 "use strict";
 const LINES={
  epico:{nome:"Épico",c:"--l-epico",sub:"entrevista → PRD → fatias",
   quando:"Funcionalidade com várias histórias ou decisão de produto em aberto. O épico entra numa sprint para ser especificado: a [ESP] nasce no planejamento. O PRD aprovado vai para a base, os requisitos sobem ao DOORS Next e as fatias aprovadas no GATE do backlog ficam no backlog, de onde seguem pelas linhas da fatia."},
  hitl:{nome:"Fatia · HITL",c:"--l-hitl",sub:"pessoas nos papéis",
-  quando:"O Dev implementa e abre o PR depois da revisão automática do codificador. Um Dev Sênior revisa o PR ([REV]), outra pessoa verifica ([VER]) e o Dev faz o merge. Vale para a trilha padrão e para a rápida.",
+  quando:"O Dev implementa e abre o PR depois da revisão automática do desenvolvedor. Um Dev Sênior revisa o PR ([REV]), outra pessoa verifica ([VER]) e o Dev faz o merge. Vale para a trilha padrão e para a rápida.",
   sen:{jr:"Sempre HITL.",pl:"HITL ou AFK pelos critérios da fatia, propostos pelo Sabiá e confirmados pela pessoa.",sr:"Só com motivo forte, registrado: decisão de produto ou de UX, dado sensível, risco alto."}},
  afk:{nome:"Fatia · AFK",c:"--l-afk",dash:true,sub:"a IA leva a fatia até o PR",
-  quando:"Revisão e verificação rodam por subagente antes do PR, e só existe a [DEV]. Um Dev Sênior aprova o PR na [APR] e quem disparou faz o merge. Roda uma fatia pelas skills, várias pelo sa-loop, ou pelas receitas do Kiro Workflows.",
+  quando:"Revisão e verificação rodam por subagente antes do PR, e só existe a [DEV]. Um Dev Sênior aprova o PR na [APR] e quem disparou faz o merge. Roda uma fatia pelas skills, ou várias pelo sa-orquestrar.",
   sen:{jr:"Não pode: o Júnior não começa fatia AFK nem dispara o loop.",pl:"Se os critérios da fatia permitirem. No loop, a escolha do GATE do plano vale para o lote.",sr:"AFK por padrão, sem GATE do plano."}},
  atd:{nome:"Sustentação · Atendimento",c:"--l-atd",sub:"sa-atender",
   quando:"Chamado ou pedido do cliente que não muda o repositório: consulta, extração, explicação, conferência. Mudança de código ou de config é fatia rápida."},
@@ -80,27 +80,27 @@ const S={
    atd:{faz:["O item de Sustentação entra na sprint aberta já na triagem, se cabe na reserva","Sem sprint aberta, fica aberto, fora de sprint, e entra no próximo planejamento, como as fatias","Sustentação que estoura a reserva: o P.O. decide no Encaixe; a Sustentação nunca tira fatia sozinha"],sen:null},
    min:{faz:["O item de Sustentação entra na sprint aberta já na triagem, se cabe na reserva","Sem sprint aberta, fica aberto, fora de sprint, e entra no próximo planejamento, como as fatias","Sustentação que estoura a reserva: o P.O. decide no Encaixe; a Sustentação nunca tira fatia sozinha"],sen:null}}},
  iniciar:{x:400,y1:396,y2:444,g:"hubpill",lab:"above",nome:"Hub",sk:"sa-iniciar",
-  papel:"qualquer papel",agente:"sa-produto, sa-codificador, sa-revisor, sa-verificador e a sessão padrão",tarefa:"a do papel",
+  papel:"qualquer papel",agente:"todos, menos o pesquisador e o orquestrador; e a sessão padrão",tarefa:"a do papel",
   faz:["Recebe um item registrado, uma tarefa do EWM ou “minha próxima tarefa”","Procura nos status.md das branches, depois no backlog.md da base, depois no EWM","Diz a skill do papel e para; não confere compromisso, não toca no EWM nem cria branch","Texto ou id fora do backlog: sa-triar; tarefa sem prefixo do Sabiá: sincroniza a sprint","[GB]: pedido de sprint → sa-planejamento; fatia pronta → sa-consolidar; senão sa-triar","Tarefa já fechada no EWM encaminha igual: a skill do papel mostra o estado e oferece reabrir ou fechar o item"],
   arq:["lê status.md, backlog.md e a sprint"],elm:["elm_listar_wi(dono, iteracao) em “minha próxima tarefa”","Sprint com Publicação no EWM: pendente: lê as linhas do sprint-<nn>.md e indica sincroniza a sprint"],
-  ctx:{epico:{faz:["EP ou [ESP] → sa-especificar, no sa-produto","Texto ou id fora do backlog → sa-triar"]},
-   hitl:{faz:["FT, DF/IB do backlog ou [DEV] → sa-desenvolver","[REV] e [APR] → sa-revisar (Dev Sênior); [VER] → sa-verificar","aceita → sa-desenvolver P6 (merge); pronta na base → sa-consolidar","iniciada no backlog sem status.md em branch → sa-desenvolver (só o responsável retoma)","bloqueada aguardando troca para HITL → sa-planejamento"]},
-   afk:{faz:["Fatia AFK → sa-desenvolver; várias planejadas → o sa-loop é oferecido","verificada → sa-implementar P5 (abrir o PR)","aguardando-aprovacao-pr sem a [APR] concluída → sa-revisar (Dev Sênior); com ela → sa-desenvolver P6","pronta na base → sa-consolidar"]},
+  ctx:{epico:{faz:["EP ou [ESP] → sa-especificar, no sa-especificador","Texto ou id fora do backlog → sa-triar"]},
+   hitl:{faz:["FT, DF/IB do backlog ou [DEV] → sa-desenvolver","[REV] e [APR] → sa-revisar (Dev Sênior); [VER] → sa-verificar","aceita → sa-desenvolver.encerrar.merge (merge); pronta na base → sa-consolidar","iniciada no backlog sem status.md em branch → sa-desenvolver (só o responsável retoma)","bloqueada aguardando troca para HITL → sa-planejamento"]},
+   afk:{faz:["Fatia AFK → sa-desenvolver; várias planejadas → o sa-orquestrar é oferecido","verificada → sa-codificar.codificar.pr (abrir o PR)","aguardando-aprovacao-pr sem a [APR] concluída → sa-revisar (Dev Sênior); com ela → sa-desenvolver.encerrar.merge","pronta na base → sa-consolidar"]},
    atd:{faz:["AT-nnn ou [ATD] → sa-atender, no sa-produto"]},
    min:{faz:["IM, BD, IN, OP, EX ou [IMPL]… → sa-executar, no sa-produto"]}}},
 
 /* ---------- épico ---------- */
  especificar:{x:520,y:100,lab:"below",nome:"Especificar",sk:"sa-especificar",
-  papel:"Especificador",agente:"sa-produto",tarefa:"[ESP] EP-<nn> Especificação",
+  papel:"Especificador",agente:"sa-especificador",tarefa:"[ESP] EP-<nn> Especificação",
   faz:["Entrada: EP no backlog que passa na DoR do épico: o problema, quem pede, o resultado e o po (faltando: sa-triar)","Grava na base o épico iniciado e a Especificação iniciada (commit EP-<nn> iniciar) e assume a [ESP]; épico não planejado: oferece o planejamento, ou a linha nasce puxada na sprint aberta","Trabalha numa pasta local até o GATE do PRD, com o status.md do épico (Fase) que a triagem criou","Retoma pela Fase do status.md do épico: rascunho ou em-revisao → sa-prd; aprovado na pasta → leva à base; aprovado na base → sa-fatiar; fatiado → fecha a [ESP]","Toda sessão fecha com créditos, comentário, anexos e horas na [ESP], num “sim”"],
-  arq:["backlog.md: iniciado · sprint-<nn>.md: Especificação iniciada (commit EP-<nn> iniciar)",".kiro/local/especificacao/<EP>-<slug>/ (até o GATE do PRD)","status.md do épico (Fase, créditos)"],
+  arq:["backlog.md: iniciado · sprint-<nn>.md: Especificação iniciada (commit EP-<nn> iniciar)",".sabia/local/especificacao/<EP>-<slug>/ (até o GATE do PRD)","status.md do épico (Fase, créditos)"],
   elm:["elm_transicao assumir a [ESP]; épico não planejado: o IB dele e a [ESP] que ficou no backlog movem para a sprint","elm_comentar · elm_anexo enviar · elm_lancar_horas ao fechar cada sessão"]},
  entrevistar:{x:600,y:100,lab:"below",dy:23,nome:"Entrevistar",sk:"sa-entrevistar",
-  papel:"Especificador, com o P.O. e o cliente",agente:"sa-produto",tarefa:"[ESP]",
+  papel:"Especificador, com o P.O. e o cliente",agente:"sa-especificador",tarefa:"[ESP]",
   faz:["Responde sozinha o que tem fonte (bundle, código): confirmada","Rodadas pela fronteira de decisões, sempre com a resposta recomendada","Termina com a fronteira vazia e o entendimento confirmado; “chega” deixa o resto em aberto","Termo novo vai para o glossário no GATE do PRD"],
   arq:["decisoes.md na pasta local (só acréscimo)"],elm:["elm_buscar_req_local · elm_ler_req_local"]},
  prd:{x:680,y:100,lab:"below",nome:"PRD",sk:"sa-prd",
-  papel:"Especificador",agente:"sa-produto, com os subagentes pesquisador e revisor",tarefa:"[ESP]",
+  papel:"Especificador",agente:"sa-especificador, com os subagentes pesquisador e revisor",tarefa:"[ESP]",
   faz:["Explora o EWM, o bundle, o código, o glossário e os ADRs; entrevista pela sa-entrevistar","Procura similares no ELM: uma decisão por artefato","Escreve o prd.md e os conceitos HF, REG e GL (status draft)","Mais de ~8 histórias: propõe dividir o épico","Nunca é AFK"],
   arq:["prd.md","elm/HF-*, REG-*, GL-*, index.md, log.md (pasta local)"],elm:["elm_buscar_req_local · elm_buscar_req (similares)","Não registra nada no EWM"]},
  revprd:{x:760,y:100,lab:"below",dy:23,nome:"Revisão do PRD",sk:"rubrica P",
@@ -112,16 +112,16 @@ const S={
   faz:["O P.O. aprova o quê e o porquê: histórias, cenários, regras e fora de escopo","Decisão em aberto que muda comportamento → volta à entrevista","Aprovado: Fase aprovado no status.md do épico; prd.md v1.0; cada conceito stable com verified humano","No primeiro GATE grava só na pasta local e diz “use sa-especificar”"],
   arq:["status.md do épico: Fase aprovado","prd.md: v1.0, com o aprovador no rodapé"],elm:["Sem verified humano, nada é publicado"]},
  prdbase:{x:920,y:100,lab:"below",dy:23,nome:"PRD na base",sk:"sa-especificar",
-  papel:"Especificador",agente:"sa-produto",tarefa:"[ESP]",
+  papel:"Especificador",agente:"sa-especificador",tarefa:"[ESP]",
   faz:["Fecha a sessão: créditos, comentário, anexos e horas","Gravar na base: copia a pasta para <produto>/epicos/<EP>-<slug>/, com as revisões (substitui o rascunho, as decisões e o status.md da triagem)","Backlog: só o link prd (e a pasta, se estava —); o épico segue iniciado e a sprint não muda","Um commit; antes do GATE do PRD, só a situação foi à base"],
   arq:["<produto>/epicos/<EP>-<slug>/prd.md, status.md e elm/","backlog.md (link prd)"],elm:["—"]},
  elmpub:{x:1000,y:100,lab:"below",nome:"Publicar requisitos",sk:"DOORS Next",
-  papel:"Especificador",agente:"sa-produto",tarefa:"[ESP]",
+  papel:"Especificador",agente:"sa-especificador",tarefa:"[ESP]",
   aviso:"Política na-aprovacao (padrão): publica aqui, antes de fatiar. Com no-merge, a publicação fica para a consolidação.",
   faz:["Só conceitos stable com verified humano","Ordem GL → REG → HF; HF → REG vira embed","Similar igual ou que se sobrepõe → volta à sa-prd","Grava de volta o resource e o id e sugere a sa-sync","Numa mudança de PRD, só os artefatos alterados"],
   arq:["conceitos HF, REG e GL na pasta elm/ do épico"],elm:["elm_publicar_req, com prévia e “sim”; conflito → pergunta","Atributos e links requisito↔requisito: roteiro manual"]},
  fatiar:{x:1080,y:100,lab:"below",dy:23,nome:"Fatiar",sk:"sa-fatiar",
-  papel:"Especificador, com o time",agente:"sa-produto",tarefa:"[ESP]",
+  papel:"Especificador, com o time",agente:"sa-especificador",tarefa:"[ESP]",
   faz:["Entrada: Fase aprovado no status.md do épico, na base; nunca é AFK","Rascunho de fatias verticais, com conferência de cobertura e de ponta a ponta","Cada fatia cabe numa janela de contexto e prova algo demonstrável","Propõe tamanho, dependências e modo; tipo de trabalho novo começa HITL","Refinamento: divide, junta (só não iniciadas) e cancela a fatia ou o épico, por decisão do P.O."],
   arq:["backlog.md: fatias do épico","fichas “padrão de épico”"],elm:["Refinamento: elm_transicao(id, “cancelar”) no IB da fatia ou do épico cancelado, com “sim”"]},
  gbacklog:{x:1160,y:100,g:"gate",lab:"below",nome:"GATE do backlog",sk:"P.O. + time",
@@ -129,35 +129,35 @@ const S={
   faz:["Aprovam as fatias: granularidade, dependências, AFK ou HITL","Repete até o “ok”; não vale sem a fatia ponta a ponta","Grava: fatias elegivel ou nova (falta:), com origem EP-nn e a prioridade do épico","Fase fatiado no status.md do épico; o status do épico não muda"],
   arq:["backlog.md · fichas · status.md do épico","um commit"],elm:["Um IB por fatia sob o épico, no backlog do produto e no estado inicial (elm_criar_wi + elm_ligar)"]},
  espfim:{x:1240,y:100,lab:"below",dy:23,term:true,nome:"Fechar a [ESP]",sk:"sa-especificar",
-  papel:"Especificador",agente:"sa-produto",tarefa:"[ESP]",
+  papel:"Especificador",agente:"sa-especificador",tarefa:"[ESP]",
   faz:["Pergunta se a especificação terminou","Continua: não conclui e para; a virada move a [ESP]","Terminou: Especificação concluida na sprint e os créditos, num commit; o épico segue iniciado, com as fatias","Saldo de horas e conclusão da [ESP]"],
   arq:["sprint-<nn>.md: Especificação concluida","status.md do épico"],elm:["elm_horas · elm_lancar_horas · elm_transicao concluir","Sem o MCP: pendência no rodapé do PRD"]},
 
 /* ---------- fatia: trecho comum ---------- */
  desenvolver:{x:520,y1:290,y2:298,g:"pill",lab:"above",nome:"Desenvolver",sk:"sa-desenvolver",
-  papel:"Dev",agente:"sa-codificador",tarefa:"[DEV] FT-<nnn> Implementar",fase:"nenhuma → pesquisando",
-  faz:["Compromisso: Definition of Ready, responsável, sprint aberta (fora dela: puxada da elegivel do topo, ou Encaixe do P.O.), WIP de revisão, linha da fatia na base e dono do item pai","Grava iniciada na base, no backlog e na sprint (commit <FT> iniciar, push com “sim”); só então sugere a branch e espera o “ok”","Cria a pasta da fatia com status.md e .config.kiro e assume a [DEV] (iniciando o pai); a tarefa que ficou no backlog do EWM move, e só nasce o papel que falta","Fatia já iniciada: retoma pela fase, sem repetir o compromisso; [DEV] já fechada no EWM: mostra o estado e oferece reabrir (PR mergeado → Passo 6)","Encaminha pela fase e para"],
+  papel:"Dev",agente:"sa-desenvolvedor",tarefa:"[DEV] FT-<nnn> Implementar",fase:"nenhuma → pesquisando",
+  faz:["Compromisso: Definition of Ready, responsável, sprint aberta (fora dela: puxada da elegivel do topo, ou Encaixe do P.O.), WIP de revisão, linha da fatia na base e dono do item pai","Grava iniciada na base, no backlog e na sprint (commit <FT> iniciar, push com “sim”); só então sugere a branch e espera o “ok”","Cria a pasta da fatia com status.md e .config.kiro e assume a [DEV] (iniciando o pai); a tarefa que ficou no backlog do EWM move, e só nasce o papel que falta","Fatia já iniciada: retoma pela fase, sem repetir o compromisso; [DEV] já fechada no EWM: mostra o estado e oferece reabrir (PR mergeado → sa-desenvolver.encerrar.merge)","Encaminha pela fase e para"],
   arq:["backlog.md e sprint-<nn>.md: iniciada, na base (commit <FT> iniciar)",".kiro/specs/<ft>-<slug>/status.md (fase pesquisando)",".kiro/specs/<ft>-<slug>/.config.kiro (feature ou bugfix)","commit e push com “sim”"],
   elm:["elm_transicao(“assumir”, iniciar_pai) na [DEV]; já fechada → reabrir, com “sim”","Fatia fora da sprint: o IB vai à iteração da sprint, e as tarefas que já existem movem com o dono e a estimativa do papel","Fatia puxada HITL: pergunta o revisor (Dev Sênior) e o verificador e cria a [REV] e a [VER]"],
   sen:{jr:"Júnior: sempre HITL; segue normalmente",pl:"Pleno: segue no modo gravado na sprint",sr:"Sênior em HITL só com motivo forte, registrado na sprint"},
-  ctx:{afk:{nome:"Desenvolver ou loop",sk:"sa-desenvolver · sa-loop",agente:"sa-codificador (uma fatia) · sa-orquestrador (lote)",tarefa:"[DEV], a única tarefa do AFK",
-   faz:["Uma fatia: o Dev conduz pelas skills, com revisão e verificação por subagente","Várias planejadas: o sa-loop, disparado por Dev Pleno ou Sênior; candidatas planejada e AFK da sprint aberta, desbloqueadas; uma confirmação para o lote; paralelismo de 1 a 3","No loop: o orquestrador grava a iniciada do lote na base, num commit; com o push conferido, nasce uma worktree por fatia em .kiro/local/wt/<ft>, com a [DEV] criada e assumida na confirmação do lote","Receitas do Kiro Workflows (sa-planejar-fatia, sa-entregar-fatia): quem dispara é a pessoa"],
-   arq:["backlog.md e sprint-<nn>.md: iniciada do lote (commit <FT…> iniciar)",".kiro/local/wt/<ft>/ (loop)",".kiro/specs/<ft>-<slug>/status.md","log do lote em .kiro/local/"],
+  ctx:{afk:{nome:"Desenvolver ou loop",sk:"sa-desenvolver · sa-orquestrar",agente:"sa-desenvolvedor (uma fatia) · sa-orquestrador (lote)",tarefa:"[DEV], a única tarefa do AFK",
+   faz:["Uma fatia: o Dev conduz pelas skills, com revisão e verificação por subagente","Várias planejadas: o sa-orquestrar, disparado por Dev Pleno ou Sênior; candidatas planejada e AFK da sprint aberta, desbloqueadas; uma confirmação para o lote; paralelismo de 1 a 3","No loop: o orquestrador grava a iniciada do lote na base, num commit; com o push conferido, nasce uma worktree por fatia em .sabia/local/wt/<ft>, com a [DEV] criada e assumida na confirmação do lote"],
+   arq:["backlog.md e sprint-<nn>.md: iniciada do lote (commit <FT…> iniciar)",".sabia/local/wt/<ft>/ (loop)",".kiro/specs/<ft>-<slug>/status.md","log do lote em .sabia/local/"],
    elm:["Só a [DEV], assumida com iniciar_pai","No loop, as horas são lançadas numa pergunta só, no fim; os créditos ficam para o merge (rateio 1/n)"],
    sen:{jr:"Não começa fatia AFK nem dispara o loop",pl:"Dispara o loop; uma pergunta só sobre o GATE do plano, para o lote",sr:"Dispara o loop; sem GATE do plano"}}}},
  pesquisar:{x:605,y1:290,y2:298,g:"pill",lab:"above",dy:-26,nome:"Pesquisar",sk:"sa-pesquisar",
   papel:"Dev, pelo subagente",agente:"sa-pesquisador (só leitura)",tarefa:"[DEV]",fase:"pesquisando → planejando",
-  faz:["De 3 a 7 perguntas sobre o código","Investiga o código e os requisitos pelo bundle; sem bundle, registra e indica a sa-sync","Devolve fatos com arquivo:linha, sem opinar sobre o como",s=>s.line==="afk"?"Chamada pela sa-plano, pelo loop ou pela receita de planejar":"Chamada pela sa-plano (ou pela receita de planejar)"],
+  faz:["De 3 a 7 perguntas sobre o código","Investiga o código e os requisitos pelo bundle; sem bundle, registra e indica a sa-sync","Devolve fatos com arquivo:linha, sem opinar sobre o como",s=>s.line==="afk"?"Chamada pela sa-plano ou pelo loop":"Chamada pela sa-plano"],
   arq:[".kiro/specs/<ft>-<slug>/research.md (até ~150 linhas)","o commit é da sa-plano"],elm:["elm_buscar_req_local · elm_ler_req_local"],
   trv:{rapida:{faz:["Pesquisa curta sobre o defeito ou o pedido","De 3 a 7 perguntas; fatos com arquivo:linha","O commit é da sa-plano"]}}},
  plano:{x:690,y1:290,y2:298,g:"pill",lab:"above",nome:"Plano",sk:"sa-plano",
-  papel:"Dev",agente:"sa-codificador",tarefa:"[DEV]",fase:"planejando",
+  papel:"Dev",agente:"sa-desenvolvedor",tarefa:"[DEV]",fase:"planejando",
   faz:["Sem research.md: sa-pesquisar antes",s=>s.line==="afk"?"Lacuna de negócio: para (é do P.O.). Escolha técnica: decide e registra":"Lacuna de negócio: para (é do P.O.). Escolha técnica: apresenta à pessoa","Spec do Kiro: requirements.md, design.md e tasks.md, com a forma do programa e o contrato de pronto","Mais de ~200 linhas ou ~8 tarefas: bloqueada (de: planejando) com a proposta de divisão; quem divide é o P.O. (sa-fatiar; sem épico, sa-triar)"],
   arq:["requirements.md · design.md · tasks.md","decisoes.md"],elm:["Horas na [DEV] (lançar não conclui)"],
   trv:{rapida:{sk:"sa-plano · bugfix.md",faz:["Spec de bugfix do Kiro: bugfix.md, design.md e tasks.md","O teste que reproduz o defeito e a correção formam um ciclo só","Lacuna de negócio: para (é do P.O.)"],arq:["bugfix.md · design.md · tasks.md","decisoes.md"]}}},
  analise:{x:775,y1:290,y2:298,g:"pill",lab:"above",dy:-26,nome:"Análise do plano",sk:"rubrica L",
-  papel:"subagente sa-revisor",agente:"sa-revisor (subagente do codificador)",tarefa:"[DEV]",fase:"planejando",
-  faz:s=>["Análise independente do plano pela rubrica L"+(s.tr==="rapida"?", sobre o bugfix.md":""),"OK: segue para o P5 da sa-plano: "+(s.line==="afk"?"troca de modo e GATE":"GATE"),s.tr==="rapida"?"AJUSTAR por falta do plano: corrige, até 2 rodadas. Lacuna de negócio: para, é do P.O.":"AJUSTAR por falta do plano: corrige, até 2 rodadas. Por falta do PRD: volta às lacunas","Sem subagente: para em “plano pronto para análise”"],
+  papel:"subagente sa-revisor",agente:"sa-revisor (subagente do desenvolvedor)",tarefa:"[DEV]",fase:"planejando",
+  faz:s=>["Análise independente do plano pela rubrica L"+(s.tr==="rapida"?", sobre o bugfix.md":""),"OK: segue para o gate da sa-plano: "+(s.line==="afk"?"troca de modo e GATE":"GATE"),s.tr==="rapida"?"AJUSTAR por falta do plano: corrige, até 2 rodadas. Lacuna de negócio: para, é do P.O.":"AJUSTAR por falta do plano: corrige, até 2 rodadas. Por falta do PRD: volta às lacunas","Sem subagente: para em “plano pronto para análise”"],
   arq:["analise-plano-<N>.md","commit registrar análise do plano <N>"],elm:["—"],
   ctx:{afk:{aviso:"Plano AFK com risco (regra sensível, muitos cenários, integração externa, mudança de dado): antes do GATE, o fluxo sugere a troca para HITL."}}},
  gplano:{x:860,y:294,g:"gate",lab:"above",nome:"GATE do plano",sk:"[APR] Aprovar plano",
@@ -166,20 +166,20 @@ const S={
   arq:["status.md: Histórico e Achados abertos"],elm:["elm_criar_wi da [APR], filha do IB da fatia","elm_transicao assumir/concluir, na sa-revisar"],
   sen:{jr:"Sempre",pl:"O fluxo pergunta. Se pedir, segue como o Júnior; se dispensar: implementando e “Pleno dispensou o GATE do plano”",sr:"Nunca: aprova o próprio plano (“plano do Sênior”), mesmo mudando a expectativa de um teste existente"},
   ctx:{afk:{aviso:"No loop, a escolha do GATE é uma só para o lote. Com GATE, a fatia pausa em aguardando-aprovacao-plano e o lote segue."}}},
- implementar:{x:945,y1:290,y2:298,g:"pill",lab:"above",dy:-26,nome:"Implementar",sk:"sa-implementar",
-  papel:"Dev",agente:"sa-codificador",tarefa:"[DEV]",fase:"implementando",
+ implementar:{x:945,y1:290,y2:298,g:"pill",lab:"above",dy:-26,nome:"Implementar",sk:"sa-codificar",
+  papel:"Dev",agente:"sa-desenvolvedor",tarefa:"[DEV]",fase:"implementando",
   faz:s=>[s.sen==="jr"?"Exige no Histórico a linha do GATE do plano aprovado":s.sen==="sr"?"Exige no Histórico a linha do plano do Sênior":s.sen==="pl"?"Exige no Histórico a linha do GATE aprovado ou da dispensa do Pleno":"Exige no Histórico a linha do GATE (ou do plano do Sênior, ou da dispensa do Pleno)","Uma tarefa por vez: vermelho → verde → arrumar → backpressure (compilar, testes, lint) → commit","Oráculo protegido: teste não se apaga nem se afrouxa","Duas correções sem avanço: bloqueada (de: implementando)","Conflito no merge (retrabalho com a linha conflito no merge): antes de tudo, a branch atualizada com a base, por merge","Validação completa no fim"],
   arq:["código e testes · tasks.md · status.md","elm/ET-<slug>.md (as-built) e adr/, que vão no PR"],elm:["—"],
-  ctx:{hitl:{aviso:"No HITL, antes do PR há só a revisão automática do codificador (pré-PR)."},afk:{aviso:"No AFK, depois daqui vêm a revisão e a verificação por subagente (até a fase verificada), ainda antes do PR."}},
+  ctx:{hitl:{aviso:"No HITL, antes do PR há só a revisão automática do desenvolvedor (pré-PR)."},afk:{aviso:"No AFK, depois daqui vêm a revisão e a verificação por subagente (até a fase verificada), ainda antes do PR."}},
   trv:{rapida:{faz:s=>[s.sen==="jr"?"Exige no Histórico a linha do GATE do plano aprovado":s.sen==="sr"?"Exige no Histórico a linha do plano do Sênior":s.sen==="pl"?"Exige no Histórico a linha do GATE aprovado ou da dispensa do Pleno":"Exige no Histórico a linha do GATE (ou do plano do Sênior, ou da dispensa do Pleno)","O teste que reproduz o defeito e a correção formam um ciclo só","Backpressure a cada tarefa; oráculo protegido","Duas correções sem avanço: bloqueada (de: implementando)"]}}},
 
 /* ---------- fatia: HITL ---------- */
  prepr:{x:1020,y:298,lab:"above",dx:4,nome:"Pré-PR",sk:"rubrica C",
-  papel:"subagente sa-revisor",agente:"chamado pelo sa-codificador",tarefa:"[DEV]",fase:"implementando",
+  papel:"subagente sa-revisor",agente:"chamado pelo sa-desenvolvedor",tarefa:"[DEV]",fase:"implementando",
   faz:["Revisão automática antes do PR, pela rubrica C, com o contexto “pré-PR”","O relatório fica só na conversa: não grava revisao-codigo nem conta rodada","REVISAR: tarefas [R<n>], até 2 vezes; persistindo, a pessoa decide abrir o PR com os achados ou corrigir","APROVADO, ou sem subagente: segue para o PR"],
   arq:["—"],elm:["—"]},
  pr_h:{x:1105,y:298,lab:"above",nome:"PR aberto",sk:"gitlab_criar_mr",
-  papel:"Dev",agente:"sa-codificador",tarefa:"[DEV] em andamento",fase:"pr-aberto",
+  papel:"Dev",agente:"sa-desenvolvedor",tarefa:"[DEV] em andamento",fase:"pr-aberto",
   faz:["ADRs e a ET as-built vão no PR","Branch desatualizada (o backlog.md e as sprints que o time grava na base não contam): com “sim”, git merge origin/<base>; nunca rebase, que tira o sha aprovado","Commit → push → conferir no remoto → gitlab_listar_mrs (se já existe, é esse) ou gitlab_criar_mr","Push “não”: a fase não muda; para em “aguardando o PR”","Horas na [DEV] (lança, não conclui) e avisa o revisor"],
   arq:["texto do PR, com caminho de leitura e evidência"],elm:["gitlab_criar_mr, com a confirmação do Kiro","Sem GitLab: entrega título e descrição e a pessoa abre"]},
  revisar:{x:1190,y:298,lab:"above",nome:"Revisar",sk:"sa-revisar",
@@ -195,16 +195,16 @@ const S={
 
 /* ---------- fatia: AFK ---------- */
  rev_a:{x:1050,y:190,lab:"below",nome:"Revisão C",sk:"subagente",
-  papel:"subagente sa-revisor",agente:"chamado pelo codificador ou pelo orquestrador",tarefa:"[DEV]",fase:"revisando",
+  papel:"subagente sa-revisor",agente:"chamado pelo desenvolvedor ou pelo orquestrador",tarefa:"[DEV]",fase:"revisando",
   faz:["Rubrica C nos dois eixos, sobre o diff; grava o drift de negócio","APROVADO: segue para a verificação","REVISAR: tarefas [R<n>] e volta à implementação; a 2ª reprovação → bloqueada (de: revisando)"],
   arq:["revisao-codigo-<N>.md","commit registrar revisão <N>"],elm:["Subagente não faz push nem toca no ELM"]},
  ver_a:{x:1130,y:190,lab:"below",nome:"Verificação",sk:"subagente",
-  papel:"subagente sa-verificador",agente:"chamado pelo codificador ou pelo orquestrador",tarefa:"[DEV]",fase:"verificando → verificada",
+  papel:"subagente sa-verificador",agente:"chamado pelo desenvolvedor ou pelo orquestrador",tarefa:"[DEV]",fase:"verificando → verificada",
   faz:["Executa o contrato de pronto na aplicação de verdade, nunca em produção","ACEITO: verificada (quem grava é o verificador) e CT.csv","REJEITADO: volta à implementação e passa de novo pela revisão; a 2ª rejeição → bloqueada (de: verificando)"],
   arq:["verificacao.md · CT.csv","commit registrar verificação"],elm:["—"]},
  pr_a:{x:1210,y:190,lab:"below",nome:"PR",sk:"gitlab_criar_mr",
-  papel:"Dev, ou o orquestrador se o lote autorizou",agente:"sa-codificador · sa-orquestrador",tarefa:"[DEV]",fase:"verificada → aguardando-aprovacao-pr",
-  faz:["Começa só com a fase verificada","Commit → push → conferir → gitlab_criar_mr","Cria a [APR] Aprovar PR para um Dev Sênior, de preferência outro que não quem disparou","Push ou PR não autorizado no lote: a fatia fica verificada e o Dev abre o PR pela sa-implementar","Horas na [DEV] e avisa o Sênior da [APR]"],
+  papel:"Dev, ou o orquestrador se o lote autorizou",agente:"sa-desenvolvedor · sa-orquestrador",tarefa:"[DEV]",fase:"verificada → aguardando-aprovacao-pr",
+  faz:["Começa só com a fase verificada","Commit → push → conferir → gitlab_criar_mr","Cria a [APR] Aprovar PR para um Dev Sênior, de preferência outro que não quem disparou","Push ou PR não autorizado no lote: a fatia fica verificada e o Dev abre o PR pela sa-codificar","Horas na [DEV] e avisa o Sênior da [APR]"],
   arq:["texto do PR"],elm:["elm_criar_wi da [APR] Aprovar PR","gitlab_criar_mr"]},
  aprpr:{x:1290,y:190,g:"gate",lab:"below",nome:"Aprovar PR",sk:"[APR]",
   papel:"Dev Sênior dono da [APR]",agente:"sa-revisor (sa-revisar)",tarefa:"[APR] FT-<nnn> Aprovar PR",fase:"aguardando-aprovacao-pr",
@@ -213,8 +213,8 @@ const S={
   sen:{jr:"—",pl:"Um Dev Sênior aprova o PR AFK do Pleno",sr:"Outro Sênior, de preferência; ele mesmo só se for o único Sênior ativo"}},
 
 /* ---------- depois do merge ---------- */
- merge:{x:1240,y1:430,y2:444,g:"pill",lab:"below",nome:"Merge",sk:"sa-desenvolver P6",
-  papel:"Dev responsável (no AFK, quem disparou)",agente:"sa-codificador, o único com gitlab_mesclar_mr",tarefa:"[DEV]",fase:"aceita | aguardando-aprovacao-pr → pronta",
+ merge:{x:1240,y1:430,y2:444,g:"pill",lab:"below",nome:"Merge",sk:"sa-desenvolver.encerrar.merge",
+  papel:"Dev responsável (no AFK, quem disparou)",agente:"sa-desenvolvedor, o único com gitlab_mesclar_mr",tarefa:"[DEV]",fase:"aceita | aguardando-aprovacao-pr → pronta",
   ctx:{hitl:{papel:"Dev responsável",faz:["Pré-condição: fase aceita (REV APROVADO e VER ACEITO registrados)","PR aberto, sem Draft; o sha tem de ser o aprovado (rebase tira o sha: volta à revisão). Conflito → retrabalho (de: aceita), com a linha “conflito no merge”","gitlab_mesclar_mr(iid, sha, remover_origem=true), com confirmação; sem o MCP, a pessoa mergeia na interface, sem o botão Rebase","Na base: Lições candidatas, créditos e Fase pronta no status.md; pronta no backlog e na sprint; commit <FT> registrar merge e push","Conclui a [DEV] com o saldo e avisa o P.O. ou o SM"]},
    afk:{papel:"quem disparou o loop (ou o Dev da fatia)",faz:["Pré-condição: a [APR] Aprovar PR concluída, com o sha no comentário","PR aberto, sem Draft; o sha tem de ser o aprovado (rebase tira o sha: volta à revisão). Conflito → retrabalho (de: aguardando-aprovacao-pr), com a linha “conflito no merge”","gitlab_mesclar_mr(iid, sha, remover_origem=true), com confirmação; sem o MCP, a pessoa mergeia na interface, sem o botão Rebase","Na base: Lições candidatas, créditos do lote (rateio 1/n) e Fase pronta no status.md; pronta no backlog e na sprint; commit <FT> registrar merge e push","Conclui a [DEV] com o saldo; a pessoa remove a worktree do loop (git worktree remove, sem --force) e avisa o P.O. ou o SM"]}},
   faz:["Pré-condição: no HITL, fase aceita; no AFK, a [APR] concluída com o sha no comentário","PR aberto, sem Draft; o sha tem de ser o aprovado (rebase tira o sha: volta à revisão). Conflito → retrabalho, com a linha “conflito no merge”","gitlab_mesclar_mr(iid, sha, remover_origem=true), com confirmação; sem o MCP, a pessoa mergeia na interface, sem o botão Rebase","Na base: Lições candidatas, créditos e Fase pronta no status.md; pronta no backlog e na sprint; commit <FT> registrar merge e push","PR mergeado por fora: confere o merge e registra; pronta já gravada pela sincronização → só conclui a [DEV]","Conclui a [DEV] com o saldo; a pessoa remove a worktree (git worktree remove, sem --force) e avisa o P.O. ou o SM"],
@@ -222,14 +222,14 @@ const S={
  consolidar:{x:1130,y1:430,y2:444,g:"pill",lab:"below",nome:"Consolidar",sk:"sa-consolidar",
   papel:"P.O. ou SM",agente:"sa-produto",tarefa:"[GB] (só o SM lança horas; não conclui)",fase:"pronta → concluida",
   aviso:"É pré-condição da review, da retrospectiva e da virada. A trilha rápida também passa por aqui.",
-  faz:s=>["Entrada: Fase pronta no status.md da base; sem ela, o Dev registra o merge (sa-desenvolver P6) ou, mergeado por fora, “sincroniza a sprint”","Drift de negócio marcado pela revisão e pela verificação: sim → nova versão do PRD (sa-prd) ou da ficha (sa-triar) antes de publicar; vazio e sem REV nem VER, pergunta ao Dev","Publica no ELM numa confirmação: requisitos, regra da ficha as-built, ET as-built do PR, casos de teste no ETM","Conclui o IB da fatia (e, na última fatia, o épico: concluido no backlog e na Fase do status.md dele; o cancelado fica como está); não conclui "+(s.line==="afk"?"a [DEV] nem a [APR]":"[DEV], [REV], [VER] nem [APR]"),"Leva os ADRs do PR à pasta de ADRs e corrige o glossário","Fecha: Fase concluida, backlog concluida, sprint concluida com os Créditos; créditos da sessão num comentário na [GB]; lições pela sa-aprender"],
+  faz:s=>["Entrada: Fase pronta no status.md da base; sem ela, o Dev registra o merge (sa-desenvolver.encerrar.merge) ou, mergeado por fora, “sincroniza a sprint”","Drift de negócio marcado pela revisão e pela verificação: sim → nova versão do PRD (sa-prd) ou da ficha (sa-triar) antes de publicar; vazio e sem REV nem VER, pergunta ao Dev","Publica no ELM numa confirmação: requisitos, regra da ficha as-built, ET as-built do PR, casos de teste no ETM","Conclui o IB da fatia (e, na última fatia, o épico: concluido no backlog e na Fase do status.md dele; o cancelado fica como está); não conclui "+(s.line==="afk"?"a [DEV] nem a [APR]":"[DEV], [REV], [VER] nem [APR]"),"Leva os ADRs do PR à pasta de ADRs e corrige o glossário","Fecha: Fase concluida, backlog concluida, sprint concluida com os Créditos; créditos da sessão num comentário na [GB]; lições pela sa-aprender"],
   arq:["status.md da base: Fase concluida","backlog.md: concluida, concluida-em e os ids do EWM que faltam","sprint-<nn>.md: concluida, Tarefa ELM, Créditos e a linha em Créditos de gestão","pasta de ADRs · glossário","commit <id> consolidar"],
   elm:["elm_publicar_req (GL → REG → HF) · elm_ligar(IB, ET)","elm_criar_ct por cenário aceito; erro → CT.csv importado à mão","elm_comentar + elm_transicao concluir no IB (e no épico)","elm_comentar com os créditos na [GB]; elm_lancar_horas na [GB] só pelo SM (o P.O. nunca)"],
-  trv:{rapida:{aviso:"É pré-condição da review, da retrospectiva e da virada.",faz:s=>["Entrada: Fase pronta no status.md da base; sem ela, o Dev registra o merge (sa-desenvolver P6) ou, mergeado por fora, “sincroniza a sprint”","Drift de negócio marcado pela revisão e pela verificação: sim → nova versão da ficha (sa-triar) antes de publicar","Na rápida não há requisitos nem regra da ficha: publica a ET as-built do PR (se houver) e os casos de teste no ETM","Conclui o IB da fatia; não conclui "+(s.line==="afk"?"a [DEV] nem a [APR]":"[DEV], [REV], [VER] nem [APR]"),"Leva os ADRs do PR à pasta de ADRs","Fecha: Fase concluida, backlog concluida, sprint concluida com os Créditos; créditos da sessão num comentário na [GB]; lições pela sa-aprender"],elm:["elm_ligar(IB, ET) quando há ET as-built","elm_criar_ct por cenário aceito; erro → CT.csv importado à mão","elm_comentar + elm_transicao concluir no IB","elm_comentar com os créditos na [GB]; elm_lancar_horas na [GB] só pelo SM (o P.O. nunca)"]}}},
+  trv:{rapida:{aviso:"É pré-condição da review, da retrospectiva e da virada.",faz:s=>["Entrada: Fase pronta no status.md da base; sem ela, o Dev registra o merge (sa-desenvolver.encerrar.merge) ou, mergeado por fora, “sincroniza a sprint”","Drift de negócio marcado pela revisão e pela verificação: sim → nova versão da ficha (sa-triar) antes de publicar","Na rápida não há requisitos nem regra da ficha: publica a ET as-built do PR (se houver) e os casos de teste no ETM","Conclui o IB da fatia; não conclui "+(s.line==="afk"?"a [DEV] nem a [APR]":"[DEV], [REV], [VER] nem [APR]"),"Leva os ADRs do PR à pasta de ADRs","Fecha: Fase concluida, backlog concluida, sprint concluida com os Créditos; créditos da sessão num comentário na [GB]; lições pela sa-aprender"],elm:["elm_ligar(IB, ET) quando há ET as-built","elm_criar_ct por cenário aceito; erro → CT.csv importado à mão","elm_comentar + elm_transicao concluir no IB","elm_comentar com os créditos na [GB]; elm_lancar_horas na [GB] só pelo SM (o P.O. nunca)"]}}},
  aprender:{x:1020,y1:430,y2:444,g:"pill",lab:"below",term:true,nome:"Aprender",sk:"sa-aprender",
-  papel:"qualquer pessoa",agente:"sessão padrão; o modo registrar também roda no sa-produto",tarefa:"—",
+  papel:"qualquer pessoa",agente:"sa-produto (registrar, promover e retrospectiva)",tarefa:"—",
   faz:["Registrar: fatos, causa (proposta pelo agente, confirmada pela pessoa) e uma entrada L-nnn","Segunda ocorrência da mesma causa: propõe promover a regra R-nn, de preferência como checagem determinística","Retrospectiva de fatia, épico ou sprint, com dados de fluxo, autonomia AFK/HITL e créditos","A de sprint começa pela sincronização com o EWM (a tabela ou 🔄 iguais) e pela consolidação das pronta"],
-  arq:["<produto>/aprendizado/licoes.md","Regras aprendidas no .kiro/steering/sabia.md","<produto>/aprendizado/avaliacoes/"],elm:["Retrospectiva na sessão do P.O. ou do SM: os créditos num comentário na [GB]"]},
+  arq:["<produto>/aprendizado/licoes.md","Regras aprendidas no .sabia/sabia.md (promover)","<produto>/aprendizado/avaliacoes/"],elm:["Retrospectiva na sessão do P.O. ou do SM: os créditos num comentário na [GB]"]},
 
 /* ---------- Sustentação: Atendimento ---------- */
  atd1:{x:560,y:580,lab:"below",nome:"Assumir",sk:"sa-atender",
@@ -243,7 +243,7 @@ const S={
  atd3:{x:740,y:580,lab:"below",nome:"Extrair",sk:"fora do git",
   papel:"quem atende",agente:"sa-produto",tarefa:"[ATD]",
   faz:["Dado real (linhas, telas, planilhas) nunca vai para o git","Na ficha ficam só a SQL, a contagem, o caminho e um resumo que não identifica pessoas"],
-  arq:[".kiro/local/sustentacao/atendimento/AT-<nnn>/<arquivo>"],elm:["elm_lancar_horas a qualquer momento (não conclui)"]},
+  arq:[".sabia/local/sustentacao/atendimento/AT-<nnn>/<arquivo>"],elm:["elm_lancar_horas a qualquer momento (não conclui)"]},
  atd4:{x:830,y:580,lab:"below",nome:"Responder",sk:"“ok” da pessoa",
   papel:"quem atende",agente:"sa-produto",tarefa:"[ATD]",
   faz:["Rascunho da resposta para o “ok” da pessoa","Quem envia é a pessoa; o agente não manda e-mail nem responde chamado"],
@@ -265,7 +265,7 @@ const S={
  min2:{x:650,y:680,lab:"below",nome:"Registrar",sk:"na ficha",
   papel:"quem faz o item",agente:"sa-produto",tarefa:"a da categoria",
   faz:["## O que foi feito: passos e evidência (o que, onde, resultado, link do chamado ou da mudança)","Sem dado de cliente"],
-  arq:["ficha da categoria",".kiro/local/sustentacao/<categoria>/<ID>/<arquivo>"],elm:["elm_comentar · elm_anexo enviar, se a pessoa quiser"]},
+  arq:["ficha da categoria",".sabia/local/sustentacao/<categoria>/<ID>/<arquivo>"],elm:["elm_comentar · elm_anexo enviar, se a pessoa quiser"]},
  min3:{x:740,y:680,lab:"below",nome:"Lançar horas",sk:"várias vezes",
   papel:"quem faz o item",agente:"sa-produto",tarefa:"a da categoria",
   faz:["A qualquer momento, em várias sessões","Uma linha por lançamento na tabela Horas","Lançar não conclui"],
@@ -277,7 +277,7 @@ const S={
 
 /* ---------- ciclo da sprint ---------- */
  durante:Object.assign(rp(-30),{lab:"in-left",nome:"Durante",sk:"puxar · encaixe · troca",
-  papel:"P.O. (encaixe) · P.O. ou SM (troca) · Dev (puxar)",agente:"sa-produto · sa-codificador",tarefa:"[GB] (horas só do SM)",
+  papel:"P.O. (encaixe) · P.O. ou SM (troca) · Dev (puxar)",agente:"sa-produto · sa-desenvolvedor",tarefa:"[GB] (horas só do SM)",
   faz:["Puxar: a elegivel do topo entra quando o WIP de revisão tem folga, pela sa-desenvolver, sem cerimônia: a linha nasce na sprint com a iniciada (puxada)","Encaixe: fura a fila, WIP no limite, Sustentação além da reserva ou a linha encaixe da sincronização. O P.O. decide: entra na folga, entra no lugar de uma planejada ou fica para a próxima","A que sai fica nova ou elegivel, sem sprint, e a linha recebe saiu da sprint; o IB e as tarefas voltam ao backlog do EWM, o IB no estado inicial","Troca AFK → HITL: o P.O. ou o SM grava o modo, sugere revisor e verificador de menor alocação e cria a [REV] e a [VER] que faltam","Fatia que passou de G volta para a sa-fatiar"],
   arq:["sprint-<nn>.md: encaixe: <decisão> (<quem>, <data>)","sprint-<nn>.md: saiu da sprint: encaixe de <FT> (<quem>, <data>)","backlog.md: planejada, sprint, responsavel · modo HITL"],elm:["Encaixe: o IB entra na iteração; a tarefa que já existe move com o dono e a estimativa, só nasce a que falta","A que sai: elm_atualizar_wi(ids, iteracao = backlog)","Troca: a [REV] e a [VER] que já existem movem, as que faltam nascem com o mesmo pai da [DEV]; nenhuma [APR] nasce"]}),
  sincroniza:Object.assign(rp(30),{lab:"in-left",nome:"Sincroniza",sk:"EWM · git ↔ sprint",
@@ -289,12 +289,12 @@ const S={
   faz:["Pré-condição: sincroniza (com a rede de proteção) e confere as fatias pronta que esperam a consolidação, e as de PR mergeado sem pronta. Alguma: para; só segue com o “sim” do P.O. (Fechamento sem consolidar)","Abre pelo resumo do Status das Fatias: concluídas · prontas sem consolidar · iniciadas e planejadas que migram","Cada fatia concluída: o cenário entregue e a evidência do verificacao.md","Pedido novo vai para a sa-prd ou a sa-fatiar; nunca reabre fatia concluída"],
   arq:["sprint-<nn>.md: ## Review","**Fechamento sem consolidar:** FT-… (<P.O.>, <data>)"],elm:["—"]}),
  retro:Object.assign(rp(150),{lab:"left",nome:"Retro",sk:"sa-aprender",
-  papel:"time",agente:"sessão padrão",tarefa:"[GB]",
+  papel:"time",agente:"sa-produto",tarefa:"[GB]",
   faz:["A pré-condição vale de novo","Retrospectiva com dados pela sa-aprender: fluxo, autonomia AFK/HITL, créditos","Bom · melhorar · ações, cada ação com dono","Créditos da sessão em Créditos de gestão; do P.O. ou do SM, também num comentário na [GB]"],
   arq:["sprint-<nn>.md: ## Retrospectiva, Créditos de gestão","aprendizado/licoes.md"],elm:["elm_comentar com os créditos na [GB] (sessão do P.O. ou do SM)"]}),
  virada:Object.assign(rp(210),{lab:"left",nome:"Virada",sk:"fecha e replaneja",
   papel:"P.O. ou SM",agente:"sa-produto",tarefa:"[GB] (horas só do SM)",
-  faz:["A pré-condição antes da virada: a sincronização dela é a da virada, antes da migração","Números: horas planejadas × lançadas por tipo (DEV, REV, APR, VER, ESP e Sustentação) pelo elm_horas, créditos só do git, versões do power; a [GB] sem horas não é falta","Migram as linhas fora de situação terminal (fatias, Especificação, Sustentação): migrada para <chave> na que fecha, migrada de <chave> na próxima; a com saiu da sprint não migra","Vazão, lead time e horas por tipo no histórico; reserva de Sustentação + retrabalho; replaneja com as migradas primeiro, e a próxima nasce com Publicação no EWM: pendente","EWM, nesta ordem: iteração e plano da próxima, o movimento só do que está aberto (o fechado fica onde fechou, com as horas), as linhas novas e a sincronização da próxima","Virada pela metade (sem o MCP, falha no movimento): os arquivos seguem, e a sincronização da próxima faz o movimento","Pai novo, só quando a pessoa diz: nasce a [GB] dele e a antiga conclui com o saldo do SM; a Sustentação, a Manutenção e os IBs de categoria não mudam"],
+  faz:["A pré-condição antes da virada: a sincronização dela é a da virada, antes da migração","Números: horas planejadas × lançadas por tipo (DEV, REV, APR, VER, ESP e Sustentação) pelo elm_horas, créditos só do git, a versão do Sabiá; a [GB] sem horas não é falta","Migram as linhas fora de situação terminal (fatias, Especificação, Sustentação): migrada para <chave> na que fecha, migrada de <chave> na próxima; a com saiu da sprint não migra","Vazão, lead time e horas por tipo no histórico; reserva de Sustentação + retrabalho; replaneja com as migradas primeiro, e a próxima nasce com Publicação no EWM: pendente","EWM, nesta ordem: iteração e plano da próxima, o movimento só do que está aberto (o fechado fica onde fechou, com as horas), as linhas novas e a sincronização da próxima","Virada pela metade (sem o MCP, falha no movimento): os arquivos seguem, e a sincronização da próxima faz o movimento","Pai novo, só quando a pessoa diz: nasce a [GB] dele e a antiga conclui com o saldo do SM; a Sustentação, a Manutenção e os IBs de categoria não mudam"],
   arq:["sprint-<nn>.md: ## Números, Situação fechada, migrada para","próxima sprint: migrada de, Publicação no EWM: pendente","backlog.md: sprint e creditos","equipe.json: historico"],elm:["elm_horas(iteracao)","elm_iteracao da próxima (pai novo: a [GB] dele)","elm_atualizar_wi(ids abertos, iteração nova): move, nunca recria"]})
 };
 S.triar.ctx.afk=S.triar.ctx.hitl;
@@ -348,7 +348,7 @@ const EXTRA=[
  {id:"troca",f:"analise",t:"durante",kind:"xfer",lines:["afk"],toLine:"sprint",bend:-1,tname:"Troca para HITL (P.O.)",
   lab:"plano AFK com risco: o Dev aceita a sugestão; bloqueada (aguardando troca para HITL); o P.O. troca",short:"risco: troca para HITL"},
  {id:"retoma",f:"durante",t:"desenvolver",kind:"xfer",lines:["sprint"],toLine:"hitl",tname:"Desenvolver (HITL)",
-  lab:"trocada para HITL: o Dev retoma pela sa-desenvolver e volta ao P5 da sa-plano, com GATE pela senioridade",short:"o Dev retoma no HITL"},
+  lab:"trocada para HITL: o Dev retoma pela sa-desenvolver e volta ao sa-plano.plano.gate, com GATE pela senioridade",short:"o Dev retoma no HITL"},
  {id:"encaixe",f:"desenvolver",t:"durante",kind:"xfer",lines:["hitl","afk"],toLine:"sprint",tname:"Encaixe (P.O.)",
   lab:"fora da sprint: puxada se for a elegivel do topo e o WIP tiver folga; senão, Encaixe do P.O.",short:"fora da sprint: encaixe"},
  {id:"pre_rep",f:"prepr",t:"implementar",kind:"loop",lines:["hitl"],bend:-1,lab:"REVISAR: tarefas [R<n>], até 2 vezes; persistindo, a pessoa decide",short:"REVISAR ↺ até 2 vezes"},
@@ -376,27 +376,27 @@ const EXTRA=[
 ];
 
 const SERV=[
- {sk:"sa-setup",nome:"Configurar o projeto",desc:"Wizard de 10 passos: projeto, comandos, git, ELM, agentes",papel:"quem configura o projeto",agente:"sessão padrão",tarefa:"—",
-  faz:["Roda na sessão padrão; uma pergunta por mensagem; nada é gravado antes do “ok” do Passo 8","Projeto, comandos (roda de verdade), git, PR e banco; avisa que quem desenvolve precisa de push na base","Pasta do produto, glossário, ADRs e o pa do ELM, montado bloco a bloco com a pessoa (inclui a Categoria do IB Manutenção)","Inventário de skills e toolkits; um cartão por agente para escolher as skills","Automações (hook de backpressure, receitas), revisão, gravação e validação","Modo atualização: “atualizar a configuração do Sabiá” e “atualizar os agentes do Sabiá”; acrescenta só o que falta; com o backlog do EWM já configurado, roda o espelhamento dos itens sem IB"],
-  arq:[".kiro/steering/sabia.md",".kiro/config/sabia/agentes.json",".kiro/config/elm/pa_<nome>.json",".kiro/agents/sa-*.json (gerados)",".kiro/hooks/sabia.json · .kiro/workflows/ · .kiro/sabia/http.sh","pasta do produto: backlog.md mínimo (Épicos, Fatias, Sustentação), aprendizado/, fatias/"],
+ {sk:"sabia",nome:"Instalar e compilar",desc:"CLI: instalar, atualizar, rota e toolkits",papel:"quem instala o Sabiá na máquina",agente:"terminal (npx sabia)",tarefa:"—",
+  faz:["npx sabia instalar: baixa o framework para ~/.sabia/framework/, pergunta os alvos (Kiro, opencode) e compila as skills","Compilar (as-built): fluxo/ + padrao/ + skills/ do framework viram uma skill por sa-*, com a tabela de cada fluxo e um arquivo por passo, em ~/.sabia/compilado/<alvo>/","Instala na pasta do usuário: no opencode, ~/.config/opencode/skills/; no Kiro, o power (kiro-cli powers install). Nada vai para o projeto","sabia atualizar recompila (também quando só o compilador mudou); sabia desinstalar apaga a instalação e a compilação","sabia rota <arquivo>: o passo com desvio, o dono, o toolkit e as travas; sabia rota --fluxo <skill.fluxo>: o fluxo resolvido no projeto, em tabela e Mermaid","sabia toolkits listar|baixar|instalar|atualizar|remover: toolkits em ~/.sabia/toolkits/, com a origem e o sha"],
+  arq:["~/.sabia/framework/ · ~/.sabia/compilado/<alvo>/","~/.sabia/inventario.json","~/.sabia/toolkits/<nome>/ (.origem.json)"],elm:["O mcp.json sobe os MCPs do Sabiá (mcp-elm, mcp-gitlabpr, mcp-elk) com uvx"]},
+ {sk:"sa-setup",nome:"Configurar o projeto",desc:"Wizard de 9 etapas, atualização e customizar",papel:"quem configura o projeto",agente:"sessão padrão",tarefa:"—",
+  faz:["Roda na sessão padrão; uma pergunta por mensagem; nada é gravado antes do “ok” da revisão (W8)","Projeto, comandos (roda de verdade), git, PR e banco; avisa que quem desenvolve precisa de push na base","Pasta do produto, glossário, ADRs e o pa do ELM, montado bloco a bloco com a pessoa (inclui a Categoria do IB Manutenção)","Inventário de skills e toolkits; um cartão por agente para escolher as skills; os desvios de toolkit vão ao agente dono do passo","Modo atualização: “atualizar a configuração do Sabiá” e “atualizar os agentes do Sabiá”; acrescenta só o que falta e migra o projeto 1.x","Modo customizar: trocar, inserir ou remover um passo de fluxo e trocar um padrão neste projeto (C1 a C4); “o que este projeto mudou?”; descustomizar"],
+  arq:[".sabia/sabia.md (preserva ## Regras aprendidas) e o ponteiro .kiro/steering/sabia.md",".sabia/config/agentes.json",".kiro/config/elm/pa_<nome>.json",".kiro/agents/sa-*.json · .opencode/agents/sa-*.md (gerados)",".sabia/fluxo/ · .sabia/padrao/ (só ao customizar) · .sabia/http.sh (opcional)","pasta do produto: backlog.md mínimo (Épicos, Fatias, Sustentação), aprendizado/, fatias/"],
   elm:["elm_setup_descobrir para montar o pa","elm_backlog: backlog do produto no EWM","elm_status confere a configuração"]},
  {sk:"sa-status",nome:"Onde parei",desc:"Painel, próxima ação e fechar a sessão",papel:"qualquer pessoa",agente:"todos, menos o pesquisador",tarefa:"a do papel de quem fecha a sessão",
   faz:["Só leitura: status.md das branches, worktrees e remotas, PRs, backlog, sprint e acordos","Painel: em andamento, iniciadas sem branch, esperando pessoa (com o WIP), retrabalho, prontas esperando consolidação, elegíveis, épicos pela Fase, reserva, EWM, fechamento, ELM pendente","EWM pela listagem da sprint, só leitura: por fora, divergências e ids a conferir; sprint com Publicação no EWM: pendente não é listada","Sugere a próxima ação de maior alavanca","Fechar a sessão: Histórico, tasks.md, horas na tarefa do papel e créditos do Kiro (creditos.py); commit só com “ok”, nunca push (fatia mergeada: o Gravar na base)","P.O. ou SM no agente de produto: os créditos também num comentário na [GB]; horas na [GB], só o SM (o P.O. nunca)"],
   arq:["linha de créditos no status.md, na ficha, no status.md do épico ou em Créditos de gestão"],elm:["elm_listar_wi da iteração da sprint, sem tipo, no painel","ELM pendente conta os itens do backlog sem IB → sa-triar ou sincroniza a sprint","elm_horas · elm_lancar_horas ao fechar a sessão","elm_comentar: créditos na [GB]","gitlab_listar_mrs"]},
  {sk:"sa-sync",nome:"Sincronizar o bundle",desc:"Cópia local do DOORS Next, nas duas vias",papel:"quem precisa do bundle",agente:"sessão padrão",tarefa:"—",
   faz:["Plano, conflitos perguntados, baixar e enviar com “sim”","Commit ELM - Sincronizar bundle na sessão padrão; num agente, entrega o comando","Pergunta se indexa o bundle"],
-  arq:["bundle do ELM (caminho no sabia.md)"],elm:["elm_sync · elm_indexar_local"]},
- {sk:"Kiro Workflows",nome:"Receitas de workflow",desc:"planejar-fatia e entregar-fatia, disparadas pela pessoa",papel:"Dev (a pessoa dispara)",agente:"revisor, pesquisador, codificador e verificador, em passos",tarefa:"[DEV] · [APR]",
-  faz:["sa-planejar-fatia: conferir, pesquisa, plano, análise (até 2) e a entrega do plano com a pessoa (P5 da sa-plano); termina em implementando, aguardando-aprovacao-plano ou bloqueada","sa-entregar-fatia (só AFK): ciclo implementar → revisar → verificar, até 3 voltas; em verificada, a entrega com a pessoa: PR e [APR] Aprovar PR, e a fatia em aguardando-aprovacao-pr","Nenhum agente dispara as receitas"],
-  arq:[".kiro/workflows/sa-*.workflow.json",".kiro/local/wf/<id>/plano.json · codigo.json · aceite.json"],elm:["Horas na [DEV]; a [APR] nasce na entrega"]}
+  arq:["bundle do ELM (caminho no sabia.md)"],elm:["elm_sync · elm_indexar_local"]}
 ];
 
 const ROLES=[
  {nome:"P.O. / SM",who:"analista de negócio; um P.O. e um SM ativos, que podem ser a mesma pessoa",tarefa:"[GB] do SM",c:"--navy",agente:"sa-produto",st:"triar",line:"hitl",
   faz:["Triagem e GATE da ficha","GATE do PRD e do backlog","Planejamento, encaixe, troca de modo e ritos","Sincronização com o EWM: leva o Sabiá até onde o trabalho chegou","Consolidação da fatia pronta","Horas na [GB], só do SM; o P.O. nunca lança. Os créditos de cada sessão vão num comentário nela"]},
- {nome:"Especificador",who:"especifica o épico",tarefa:"[ESP]",c:"--teal",agente:"sa-produto",st:"especificar",line:"epico",
+ {nome:"Especificador",who:"especifica o épico",tarefa:"[ESP]",c:"--teal",agente:"sa-especificador",st:"especificar",line:"epico",
   faz:["Entrevista em rodadas","PRD e revisão P","PRD na base e requisitos no DOORS Next","Fatias e fechamento da [ESP]"]},
- {nome:"Dev",who:"a fatia é dele de ponta a ponta",tarefa:"[DEV]",c:"--blue",agente:"sa-codificador",st:"desenvolver",line:"hitl",
+ {nome:"Dev",who:"a fatia é dele de ponta a ponta",tarefa:"[DEV]",c:"--blue",agente:"sa-desenvolvedor",st:"desenvolver",line:"hitl",
   faz:["Compromisso, iniciada na base, branch e pasta da fatia","Pesquisa, plano e implementação com TDD","PR e retrabalho no mesmo PR","Merge do PR aprovado e pronta na base","[DEV] já fechada na retomada: reabrir, ou o registro do merge se o PR já entrou"]},
  {nome:"Revisor",who:"sempre um Dev Sênior",tarefa:"[REV]",c:"--cyan",agente:"sa-revisor",st:"revisar",line:"hitl",
   faz:["Lê o PR nos dois eixos: spec e padrões","Marca o drift de negócio","PR mudou depois da aprovação: reabre a [REV]","Revisor único, se for o só Sênior ativo"]},
@@ -411,24 +411,23 @@ const ROLES=[
 ];
 
 const AGENTS=[
- {id:"sa-produto",quem:"P.O., SM, especificador, quem faz a Sustentação",skills:["triar","entrevistar","prd","fatiar","planejamento","atender","executar","consolidar","aprender","especificar","iniciar","status"],sub:"pesquisador · revisor",push:"não faz",pk:"no",obs:"Escreve a pasta do produto, glossário, ADRs e .kiro/local/sustentacao/; entrega o comando de push. Créditos de cada sessão do P.O. ou do SM num comentário na [GB]"},
+ {id:"sa-produto",quem:"P.O., SM, quem faz a Sustentação",skills:["triar","entrevistar","planejamento","atender","executar","consolidar","aprender","iniciar","status"],sub:"pesquisador",push:"não faz",pk:"no",obs:"Escreve a pasta do produto, glossário, ADRs e .sabia/local/sustentacao/; o único que grava o .sabia/sabia.md (só ## Regras aprendidas, pela sa-aprender, e só na raiz); entrega o comando de push. Créditos de cada sessão do P.O. ou do SM num comentário na [GB]"},
+ {id:"sa-especificador",quem:"Especificador",skills:["especificar","entrevistar","prd","fatiar","iniciar","status"],sub:"pesquisador · revisor",push:"não faz",pk:"no",obs:"Dono do épico até o GATE do backlog: pasta local .sabia/local/especificacao/, PRD, requisitos e fatias. Recebe o desvio de toolkit do passo sa-prd.prd.escrever"},
  {id:"sa-pesquisador",quem:"subagente de quem planeja ou atende",skills:["pesquisar"],sub:"—",push:"não faz",pk:"no",obs:"Só leitura; escreve só o research.md; MCP de banco só para consulta"},
- {id:"sa-codificador",quem:"Dev",skills:["plano","implementar","desenvolver","iniciar","status"],sub:"pesquisador · revisor · verificador",push:"pergunta",pk:"ask",obs:"Único com gitlab_mesclar_mr (merge do PR aprovado, com confirmação). Grava na base a situação da fatia (iniciada, pronta) no backlog.md e em sprints/, com push da base perguntado e os arquivos conferidos"},
+ {id:"sa-desenvolvedor",quem:"Dev",skills:["plano","codificar","desenvolver","iniciar","status"],sub:"pesquisador · revisor · verificador (e os agentes de toolkit ligados)",push:"pergunta",pk:"ask",obs:"Único com gitlab_mesclar_mr (merge do PR aprovado, com confirmação). Grava na base a situação da fatia (iniciada, pronta) no backlog.md e em sprints/, com push da base perguntado. Recebe o desvio de toolkit do passo sa-codificar.codificar.tarefa"},
  {id:"sa-revisor",quem:"Revisor e aprovador (Dev Sênior)",skills:["revisar","iniciar","status"],sub:"—",push:"pergunta",pk:"ask",obs:"Assume a [REV] ou a [APR]; como subagente, sem push e sem ELM"},
  {id:"sa-verificador",quem:"Verificador (QA)",skills:["verificar","iniciar","status"],sub:"—",push:"pergunta",pk:"ask",obs:"Nunca contra produção nem com dado real; sem acesso ao GitLab"},
- {id:"sa-orquestrador",quem:"loop AFK",skills:["loop","status","desenvolver","plano","implementar"],sub:"pesquisador · codificador · revisor · verificador",push:"no loop",pk:"loop",obs:"Grava a iniciada do lote no backlog.md e em sprints/, num commit na base, com push perguntado. Push e PR das branches só se o lote autorizou; nunca faz merge nem escreve código"}
+ {id:"sa-orquestrador",quem:"loop AFK",skills:["orquestrar","status","desenvolver","plano","codificar"],sub:"pesquisador · desenvolvedor · revisor · verificador",push:"no loop",pk:"loop",obs:"Grava a iniciada do lote no backlog.md e em sprints/, num commit na base, com push perguntado. Push e PR das branches só se o lote autorizou; nunca faz merge nem escreve código"}
 ];
 
 const TREE=[
- {d:".kiro/",open:true,c:[
-  {d:"steering/",c:[{f:"sabia.md",b:"gen",w:"sa-setup; regras aprendidas pela sa-aprender",q:"sempre carregado",o:"O único steering do fluxo: resumo, configuração do projeto (pasta do produto, comandos, git, banco, autonomia, ELM, agentes, tabela Sustentação) e regras aprendidas."}]},
-  {d:"config/sabia/",c:[{f:"agentes.json",b:"gen",w:"sa-setup",q:"ao configurar ou atualizar os agentes",o:"As escolhas do projeto para os agentes: caminhos, comandos, skills e MCPs por agente. É a entrada do gerador."}]},
-  {d:"config/elm/",c:[{f:"pa_<nome>.json",b:"gen",w:"sa-setup, com a pessoa, bloco a bloco",q:"um por project area",o:"Configuração do ELM lida pelo mcp-elm: tipos, campos obrigatórios, classificação por prefixo, iterações e o backlog do produto."}]},
-  {d:"agents/",c:[{f:"sa-*.json",b:"gen",w:"gerar_agentes.py da sa-setup",q:"“atualizar os agentes do Sabiá”",o:"Seis agentes no formato V3, com permissões mínimas por papel e as skills escolhidas. O codificador e o orquestrador também gravam o backlog.md e as sprints, para os registros de situação."}]},
-  {d:"hooks/",c:[{f:"sabia.json",b:"gen",w:"sa-setup (opcional)",q:"depois de cada tarefa de spec",o:"Backpressure: compila e testa depois de cada tarefa; não bloqueia a próxima.",st:"implementar",line:"hitl"}]},
-  {d:"workflows/",c:[{f:"sa-planejar-fatia.workflow.json",b:"gen",w:"sa-setup (opcional, experimental)",q:"a pessoa dispara no chat do Kiro",o:"Leva a fatia até a entrega do plano, com a análise L e o GATE.",st:"plano",line:"hitl"},
-   {f:"sa-entregar-fatia.workflow.json",b:"gen",w:"sa-setup (opcional, experimental)",q:"a pessoa dispara no chat do Kiro",o:"Só AFK: implementar, revisar e verificar até 3 voltas; entrega com o PR e a [APR] Aprovar PR.",st:"pr_a",line:"afk"}]},
-  {d:"sabia/",c:[{f:"http.sh",b:"gen",w:"sa-setup (opcional)",q:"na verificação",o:"Única chamada HTTP que o verificador faz sem perguntar: só à URL de teste, com corpo da pasta massa/.",st:"verificar",line:"hitl"}]},
+ {d:".sabia/",open:true,c:[
+  {f:"sabia.md",b:"gen",w:"sa-setup grava o arquivo; a seção ## Regras aprendidas é da sa-aprender (promover), no sa-produto",q:"sempre carregado (pelo ponteiro .kiro/steering/sabia.md e pelo opencode.json)",o:"O único steering do fluxo, um por projeto: resumo, configuração (pasta do produto, comandos, git, banco, autonomia, ELM, agentes, tabela Sustentação), a tabela Desvios de toolkit e as regras aprendidas. A setup refaz o arquivo e preserva as Regras aprendidas.",st:"aprender",line:"hitl"},
+  {d:"config/",c:[{f:"agentes.json",b:"gen",w:"sa-setup",q:"ao configurar ou atualizar os agentes",o:"As escolhas do projeto para os agentes: caminhos, comandos, skills, MCPs, toolkits e passos por agente, e a versão do Sabiá (\"sabia\"). É a entrada do gerador."}]},
+  {d:"fluxo/  (só ao customizar)",c:[{f:"<skill>/<fluxo>/passos/<passo>.md",b:"gen",w:"sa-setup, modo customizar (sessão padrão; nenhum agente escreve)",q:"trocar ou inserir um passo",o:"O passo que o projeto trocou (com a base: o sha do original) ou inseriu. O agente dono do fluxo recebe só o delta no prompt."},{f:"<skill>/<fluxo>/<fluxo>.md",b:"gen",w:"sa-setup, modo customizar",q:"inserir ou remover um passo",o:"Só as operações: inserir (id, depois) e remover. Passo com trava não sai."}]},
+  {d:"padrao/  (só ao customizar)",c:[{f:"<skill>/<nome>.md",b:"gen",w:"sa-setup, modo customizar",q:"trocar um padrão",o:"O padrão de artefato trocado neste projeto (PRD, status.md, ficha…); vale para todos os agentes."}]},
+  {f:"http.sh",b:"gen",w:"sa-setup (opcional)",q:"na verificação",o:"Única chamada HTTP que o verificador faz sem perguntar: só à URL de teste, com corpo da pasta massa/.",st:"verificar",line:"hitl"},
+  {f:"glossario.md · adr/",b:"git",w:"GATE do PRD · sa-consolidar (leva os ADRs do PR)",q:"termos novos e decisões que devem durar",o:"Padrão novo da 2.0 (antes em docs/); o projeto que já os tem em outro lugar aponta o caminho no sabia.md.",st:"consolidar",line:"hitl"},
   {d:"planejamento/  (pasta do produto)",open:true,c:[
    {f:"backlog.md",b:"git",w:"cada situação, quem a muda: sa-triar · sa-fatiar · sa-planejamento · sa-especificar · Dev e orquestrador (iniciada, pronta) · sa-consolidar · sa-atender · sa-executar",q:"a cada triagem, GATE, sprint, início, merge e consolidação",o:"Épicos, uma tabela de Fatias (origem EP-nn ou Manutenção) e a Sustentação, com uma seção por categoria: situação, prioridade, sprint, responsável, ids do EWM com o tipo e créditos. A linha da Sustentação: o IB Sustentação e a [GB], criados no modo inicial, e o IB Manutenção; cada categoria abre com o IB dela. Todo IB triado nasce no backlog do EWM, no estado inicial.",st:"backlog",line:"hitl"},
    {f:"equipe.json",b:"git",w:"sa-planejamento (modo inicial e virada)",q:"ao formar o time e na virada",o:"Pessoas, papéis, senioridade dos Devs, quem atende, horas de revisão e especificação e o histórico de vazão. Exatamente um P.O. e um SM ativos, que podem ser a mesma pessoa; o SM é o dono da [GB].",st:"planejar",line:"sprint"},
@@ -444,6 +443,18 @@ const TREE=[
    {d:"aprendizado/",c:[{f:"licoes.md",b:"git",w:"sa-aprender (a consolidação chama o modo registrar)",q:"a cada lição",o:"Lições L-nnn, que podem virar checagem ou regra do revisor.",st:"aprender",line:"hitl"},
     {f:"avaliacoes/",b:"git",w:"sa-aprender",q:"casos de avaliação",o:"Casos para avaliar o fluxo em retrospectivas.",st:"aprender",line:"hitl"}]}
   ]},
+  {d:"local/  (fora do git)",c:[
+   {f:"wt/<ft>/",b:"local",w:"sa-orquestrador",q:"uma por fatia AFK do lote",o:"Worktree da fatia no loop; quem remove é a pessoa, depois do merge.",st:"desenvolver",line:"afk"},
+   {f:"especificacao/<EP>-<slug>/",b:"local",w:"sa-especificar · sa-prd · revisor",q:"até o GATE do PRD",o:"Especificação em andamento: prd.md, conceitos, decisões e revisões do PRD.",st:"especificar",line:"epico"},
+   {f:"sustentacao/<pasta>/<ID>/<arquivo>",b:"local",w:"sa-atender · sa-executar",q:"quando há dado real",o:"Dado de cliente: extrações, telas, planilhas. Nunca vai para o git.",st:"atd3",line:"atd"},
+   {f:"verificacao/",b:"local",w:"verificador",q:"na verificação",o:"Evidências com dado sensível.",st:"verificar",line:"hitl"},
+   {f:"loop-*.md",b:"local",w:"sa-orquestrador",q:"a cada lote",o:"Log do lote do loop AFK.",st:"desenvolver",line:"afk"}
+ ]}
+ ]},
+ {d:".kiro/",open:true,c:[
+  {d:"steering/",c:[{f:"sabia.md",b:"gen",w:"sa-setup",q:"sempre carregado",o:"Ponteiro para o .sabia/sabia.md."}]},
+  {d:"config/elm/",c:[{f:"pa_<nome>.json",b:"gen",w:"sa-setup, com a pessoa, bloco a bloco",q:"um por project area",o:"Configuração do ELM lida pelo mcp-elm: tipos, campos obrigatórios, classificação por prefixo, iterações e o backlog do produto."}]},
+  {d:"agents/",c:[{f:"sa-*.json",b:"gen",w:"gerar_agentes.py da sa-setup",q:"“atualizar os agentes do Sabiá”",o:"Sete agentes no formato V3, com permissões mínimas por papel, as skills escolhidas e o delta do que o projeto customizou."}]},
   {d:"specs/<ft>-<slug>/  (na branch da fatia)",open:true,c:[
    {f:"status.md · .config.kiro",b:"git",w:"sa-desenvolver cria; quem conduz a fase atualiza; pronta, o Dev na base ou a sincronização, pelo merge por fora",q:"a cada fase",o:"Fase, branch, PR, modo, Histórico, drift de negócio, Lições candidatas e créditos. Depois do merge vale o da base: pronta e concluida só existem lá.",st:"desenvolver",line:"hitl"},
    {f:"research.md",b:"git",w:"sa-pesquisar (commit da sa-plano)",q:"antes do plano",o:"Pesquisa compactada com arquivo:linha.",st:"pesquisar",line:"hitl"},
@@ -454,15 +465,8 @@ const TREE=[
    {f:"verificacao.md · CT.csv · evidencias/ · massa/",b:"git",w:"sa-verificar",q:"no aceite",o:"Cenários executados com evidência; CT.csv para o ETM.",st:"verificar",line:"hitl"},
    {f:"elm/ET-<slug>.md · adr/",b:"git",w:"Dev, no PR",q:"implementação",o:"Especificação técnica as-built e decisões técnicas, levadas ao ELM e à pasta de ADRs na consolidação.",st:"pr_h",line:"hitl"}
   ]},
-  {d:"local/  (fora do git)",c:[
-   {f:"wt/<ft>/",b:"local",w:"sa-loop",q:"uma por fatia AFK do lote",o:"Worktree da fatia no loop; quem remove é a pessoa, depois do merge.",st:"desenvolver",line:"afk"},
-   {f:"especificacao/<EP>-<slug>/",b:"local",w:"sa-especificar · sa-prd · revisor",q:"até o GATE do PRD",o:"Especificação em andamento: prd.md, conceitos, decisões e revisões do PRD.",st:"especificar",line:"epico"},
-   {f:"sustentacao/<pasta>/<ID>/<arquivo>",b:"local",w:"sa-atender · sa-executar",q:"quando há dado real",o:"Dado de cliente: extrações, telas, planilhas. Nunca vai para o git.",st:"atd3",line:"atd"},
-   {f:"verificacao/ · wf/<id>/",b:"local",w:"verificador · receitas de workflow",q:"na verificação e nas receitas",o:"Evidências com dado sensível e os vereditos das receitas (plano.json, codigo.json, aceite.json).",st:"verificar",line:"hitl"},
-   {f:"loop-*.md",b:"local",w:"sa-orquestrador",q:"a cada lote",o:"Log do lote do loop AFK.",st:"desenvolver",line:"afk"}
-  ]}
  ]},
- {d:"docs/  (padrão; caminhos no sabia.md)",c:[{f:"glossario.md",b:"git",w:"GATE do PRD · sa-consolidar",q:"termos novos e correções",o:"Linguagem ubíqua usada no PRD, nos testes e no código.",st:"consolidar",line:"hitl"},{f:"adr/",b:"git",w:"sa-consolidar (leva os ADRs do PR)",q:"depois do merge",o:"Decisões que devem durar, numeradas, com a origem FT-<nnn>.",st:"consolidar",line:"hitl"}]}
+ {d:".opencode/",c:[{d:"agents/",c:[{f:"sa-*.md",b:"gen",w:"gerar_agentes.py da sa-setup",q:"“atualizar os agentes do Sabiá”",o:"Os mesmos sete agentes, no formato do opencode (permission). O gerador lista o que não tem tradução."}]}]}
 ];
 
 const GATES=[
@@ -500,7 +504,7 @@ const PHASES={
 };
 const PHNOTE=c=>{
  const sen=c.sen==="jr"&&c.mode==="afk"?"O Júnior não começa fatia AFK: estas fases valem para Pleno e Sênior. ":c.sen==="pl"?"Pleno: aguardando-aprovacao-plano só se ele pedir a aprovação. ":"";
- const modo=c.mode==="afk"?"No AFK, a revisão e a verificação rodam por subagente antes do PR; sem push autorizado no lote, a fatia fica em verificada até o Dev abrir o PR. ":"No HITL, antes do PR há só a revisão automática do codificador. ";
+ const modo=c.mode==="afk"?"No AFK, a revisão e a verificação rodam por subagente antes do PR; sem push autorizado no lote, a fatia fica em verificada até o Dev abrir o PR. ":"No HITL, antes do PR há só a revisão automática do desenvolvedor. ";
  const tr=c.tr==="rapida"?"Na trilha rápida as fases são as mesmas; o plano é o bugfix.md. ":"";
  return sen+modo+tr+"Retrabalho: retrabalho (de: <fase>), no mesmo PR; conflito no merge também volta a retrabalho. Bloqueio: bloqueada (de: <fase>), com o motivo; resolvido, volta à skill da fase de origem. O Dev grava iniciada na base antes de criar a branch, e pronta depois do merge; pronta e concluida só existem no status.md da base.";
 };
@@ -537,7 +541,7 @@ const ELM_HTML=`
  <tr><td><span class="tag t">[ESP]</span></td><td>épico</td><td>quem especifica</td><td>planejamento da sprint</td><td>depois do GATE do backlog, se a especificação terminou</td></tr>
  <tr><td><span class="tag t">[DEV]</span></td><td>IB da fatia</td><td>Dev</td><td>planejamento, puxada, encaixe ou loop</td><td>no merge</td></tr>
  <tr><td><span class="tag t">[REV]</span> <span class="tag t">[VER]</span></td><td>IB da fatia</td><td>Dev Sênior · verificador (só HITL)</td><td>planejamento, puxada HITL, encaixe ou troca AFK → HITL</td><td>ao aprovar · ao aceitar, depois do push</td></tr>
- <tr><td><span class="tag t">[APR]</span></td><td>IB da fatia</td><td>Dev Sênior</td><td>no gate: GATE do plano (sa-plano) ou PR do AFK (sa-implementar, loop)</td><td>na aprovação</td></tr>
+ <tr><td><span class="tag t">[APR]</span></td><td>IB da fatia</td><td>Dev Sênior</td><td>no gate: GATE do plano (sa-plano) ou PR do AFK (sa-codificar, loop)</td><td>na aprovação</td></tr>
  <tr><td><span class="tag t">[ATD]</span> <span class="tag t">[IMPL]</span> <span class="tag t">[BD]</span> <span class="tag t">[INF]</span> <span class="tag t">[OPE]</span> <span class="tag t">[EXT]</span></td><td>IB do item ([AT-nnn] …)</td><td>quem faz o item</td><td>quando o item entra numa sprint, ou trazida pela sincronização</td><td>ao finalizar, com o IB do item</td></tr>
  <tr><td><span class="tag t">[GB]</span></td><td>Sustentação</td><td>SM</td><td>modo inicial, no backlog, e move para a 1ª sprint; pai novo: nasce na 1ª sprint dele</td><td>na troca de pai; senão move na virada</td></tr>
 </tbody></table></div>
@@ -557,11 +561,11 @@ const GOLDEN=`
 <div><b>Toda skill diz a próxima e para</b>Nenhuma invoca a do passo seguinte; quem segue é a pessoa, ou o orquestrador no loop.</div>`;
 
 const INTRO=`<div class="ph"><h3>Escolha uma linha</h3><div class="sk">ou clique numa estação do mapa</div></div>
-<div class="pb fade"><p style="font-size:14px">Cada linha é um fluxo do power. Ao escolher uma, o mapa acende o caminho dela e a ficha mostra o itinerário, passo a passo, com as transições. Use ▶ para o trem percorrer a linha.</p>
+<div class="pb fade"><p style="font-size:14px">Cada linha é um caminho pelos fluxos do Sabiá. Ao escolher uma, o mapa acende o caminho dela e a ficha mostra o itinerário, passo a passo, com as transições. Use ▶ para o trem percorrer a linha.</p>
 <div class="trans">${Object.keys(LINES).map(k=>`<button class="tr" data-line-pick="${k}" style="--tc:var(${LINES[k].c})${k==="sprint"?";color:var(--navy)":""}"><span class="ico">→</span><b>${LINES[k].nome}</b><span>${LINES[k].sub}</span></button>`).join("")}</div>
 <div class="blk"><h4>Senioridade de quem implementa</h4><div class="crow">${["jr","pl","sr"].map(k=>`<button class="chip snr" data-sen-pick="${k}">${SENNOME[k]}</button>`).join("")}</div></div></div>`;
 
-const SENRULE={jrAfk:"Júnior: sempre HITL. Não começa fatia AFK nem dispara o sa-loop; com fatia AFK, a sa-desenvolver manda para a sa-planejamento."};
+const SENRULE={jrAfk:"Júnior: sempre HITL. Não começa fatia AFK nem dispara o sa-orquestrar; com fatia AFK, a sa-desenvolver manda para a sa-planejamento."};
 
 window.SABIA={LINES,SENNOME,SENRULE,ROUTES,TEXTS,DECOR,S,ALL,SKIP,VIA,EXTRA,SERV,ROLES,AGENTS,TREE,GATES,PHASES,PHNOTE,STATUSES,ELM_HTML,SENCARDS,GOLDEN,INTRO};
 })();

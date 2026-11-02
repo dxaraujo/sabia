@@ -5,7 +5,7 @@ const D=window.SABIA;
 const $=(s,r=document)=>r.querySelector(s);
 const cv=v=>`var(${v})`;
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const RX=/(\[[A-Z]+\]|\.kiro\/(?:[\w.\/*-]|&lt;|&gt;)*|(?:[\w.\/*-]|&lt;|&gt;)+\.(?:md|json|csv|sh|py)\b|\bsa-[a-z]+|elm_[a-z_]+|gitlab_[a-z_]+)/g;
+const RX=/(\[[A-Z]+\]|\.(?:kiro|sabia|opencode)\/(?:[\w.\/*-]|&lt;|&gt;)*|(?:[\w.\/*-]|&lt;|&gt;)+\.(?:md|json|csv|sh|py)\b|\bsa-[a-z]+(?:\.[a-z-]+){0,2}|elm_[a-z_]+|gitlab_[a-z_]+)/g;
 const fmt=t=>esc(t).replace(RX,"<code>$1</code>");
 const PICK=(id,L)=>window.SABIA_PICK?PICK(id,L):(location.href="index.html#"+encodeURIComponent((L||"x")+"."+id));
 const SEN=(k)=>window.SABIA_SEN?SEN(k):(location.href="index.html#sen-"+k);
@@ -36,7 +36,7 @@ function show(n){fi.innerHTML=`<span class="badge ${n.b}" style="margin:0;align-
   <div><div class="k">Quem escreve</div><p>${fmt(n.w)}</p></div><div><div class="k">Quando</div><p>${fmt(n.q)}</p></div>${n.st?`<button class="go" data-st="${n.st}">ver a estação no mapa</button>`:""}`;
   const g=fi.querySelector(".go");if(g)g.addEventListener("click",()=>PICK(n.st,n.line))}
 if(tree){build(D.TREE,tree);
-fi.innerHTML=`<h3 style="font-family:var(--display)">Escolha um arquivo</h3><p>A árvore mostra o projeto depois da setup. Cada arquivo diz quem o escreve e quando, e leva à estação do mapa que o grava. A pasta do produto aparece com o nome padrão, <code>.kiro/planejamento</code>.</p>
+fi.innerHTML=`<h3 style="font-family:var(--display)">Escolha um arquivo</h3><p>A árvore mostra o projeto depois da setup. Cada arquivo diz quem o escreve e quando, e leva à estação do mapa que o grava. A pasta do produto aparece com o nome padrão, <code>.sabia/planejamento</code>.</p>
 <div class="flowr"><span class="badge git" style="margin:0">git</span><em>registro e decisão</em><span class="badge local" style="margin:0">local</span><em>fora do git</em><span class="badge gen" style="margin:0">setup</span><em>configuração</em></div>`;
 
 /* gates */
@@ -53,7 +53,7 @@ document.querySelectorAll(".sen>div[data-sen]").forEach(d=>d.addEventListener("c
 "use strict";
 const D=window.SABIA,$=(s)=>document.querySelector(s),phEl=$("#phases");if(!phEl)return;
 const cv=v=>`var(${v})`,esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const RX=/(\[[A-Z]+\]|\.kiro\/(?:[\w.\/*-]|&lt;|&gt;)*|(?:[\w.\/*-]|&lt;|&gt;)+\.(?:md|json|csv|sh|py)\b|\bsa-[a-z]+|elm_[a-z_]+|gitlab_[a-z_]+)/g;
+const RX=/(\[[A-Z]+\]|\.(?:kiro|sabia|opencode)\/(?:[\w.\/*-]|&lt;|&gt;)*|(?:[\w.\/*-]|&lt;|&gt;)+\.(?:md|json|csv|sh|py)\b|\bsa-[a-z]+(?:\.[a-z-]+){0,2}|elm_[a-z_]+|gitlab_[a-z_]+)/g;
 const fmt=t=>esc(t).replace(RX,"<code>$1</code>");
 const ST={sen:null,tr:"padrao"},val=v=>typeof v==="function"?v(ST):v;let PM="hitl";
 const chips=(el,opts,get,set,color)=>{el.innerHTML="";for(const [k,n] of opts){const b=document.createElement("button");b.className="chip";b.dataset.k=k;if(color)b.style.setProperty("--c",color(k));b.innerHTML=n;b.addEventListener("click",()=>{set(k);draw()});el.appendChild(b)}};

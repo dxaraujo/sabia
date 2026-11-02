@@ -1,0 +1,35 @@
+/* páginas Como funciona e Toolkits: diagramas, exemplos de código e índice da página */
+.indice{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0}
+.indice a{font:600 13px/1 var(--display);color:var(--title);text-decoration:none;background:var(--grey);padding:9px 12px;border-radius:var(--r-sm)}
+.indice a:hover{background:var(--blue);color:#fff}
+.diag{margin:18px 0 6px;overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--grey2);border-radius:var(--r);background:var(--bg);padding:14px}
+.diag svg{display:block;width:100%;min-width:760px;height:auto}
+.diag figcaption{font-size:13px;color:var(--muted);margin-top:10px;max-width:90ch}
+.diag text{font-family:var(--body);fill:var(--ink)}
+.diag .t{font:700 15px var(--display);fill:var(--title)}
+.diag .s{font-size:12.5px;fill:var(--muted)}
+.diag .m{font:500 12.5px var(--mono);fill:var(--title)}
+.diag .w{fill:#fff}
+.diag .cx{fill:var(--grey);stroke:var(--grey2)}
+.diag .cxs{fill:var(--soft);stroke:none}
+.diag .seta{stroke:var(--title);stroke-width:1.8;fill:none;marker-end:url(#ponta)}
+.diag .seta.ret{stroke:var(--orange);stroke-dasharray:5 4;marker-end:url(#ponta-l)}
+.diag .seta.sai{stroke:var(--teal);marker-end:url(#ponta-t)}
+.diag .vida{stroke:var(--line);stroke-dasharray:4 4}
+pre.cod{font:400 12.8px/1.55 var(--mono);background:#1f2d38;color:#e8eef3;padding:16px 18px;border-radius:var(--r);overflow-x:auto;margin:12px 0;tab-size:2}
+pre.cod .c{color:#8fb3c9}
+pre.cod .k{color:#ffd479}
+pre.cod .v{color:#b2d235}
+.duas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:18px;align-items:start}
+.duas h3,.bloco h3{font-size:18px;margin:18px 0 6px}
+.bloco p,.duas p{max-width:85ch;margin:6px 0}
+.bloco ul,.duas ul,.bloco ol{margin:6px 0;padding-left:20px;max-width:85ch}
+.bloco li,.duas li{margin:3px 0}
+.pontos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px;margin-top:14px}
+.pontos article{background:var(--grey);border-radius:var(--r);padding:16px 18px;border-top:4px solid var(--c,var(--blue))}
+.pontos h3{font-size:16px;margin-bottom:4px}
+.pontos .onde{font:600 12px/1.4 var(--mono);color:var(--muted);margin-bottom:8px}
+.pontos p{font-size:14px}
+.pontos a{color:var(--blue)}
+.aviso{background:#FFF6E0;border-left:4px solid var(--yellow);padding:10px 14px;border-radius:0 12px 0 0;margin:12px 0;max-width:95ch;font-size:14px}
+.diag .lb{paint-order:stroke;stroke:var(--bg);stroke-width:5px;stroke-linejoin:round}

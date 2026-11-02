@@ -8,7 +8,7 @@ const $=(s,r=document)=>r.querySelector(s);
 const reduce=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
 const cv=v=>`var(${v})`;
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const RX=/(\[[A-Z]+\]|\.kiro\/(?:[\w.\/*-]|&lt;|&gt;)*|(?:[\w.\/*-]|&lt;|&gt;)+\.(?:md|json|csv|sh|py)\b|\bsa-[a-z]+|elm_[a-z_]+|gitlab_[a-z_]+)/g;
+const RX=/(\[[A-Z]+\]|\.(?:kiro|sabia|opencode)\/(?:[\w.\/*-]|&lt;|&gt;)*|(?:[\w.\/*-]|&lt;|&gt;)+\.(?:md|json|csv|sh|py)\b|\bsa-[a-z]+(?:\.[a-z-]+){0,2}|elm_[a-z_]+|gitlab_[a-z_]+)/g;
 const fmt=t=>esc(t).replace(RX,"<code>$1</code>");
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
