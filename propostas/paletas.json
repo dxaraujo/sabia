@@ -28,35 +28,6 @@
    }
   }
  },
- "c-warm-summer": {
-  "nome": "Warm Summer Palette",
-  "site": "Coolors",
-  "origem": "sua seleção",
-  "ideia": "azul-báltico e azul-Yale com teal, mel e amaranto de acento",
-  "fonte": "edae49-d1495b-00798c-30638e-003d5b",
-  "sementes": {
-   "tinta": "#002A40",
-   "capa": "#30638E",
-   "brand": "#30638E",
-   "navy": "#003D5B",
-   "cyan": "#A9C6DE",
-   "lime": "#F3CE8A",
-   "green": "#00798C",
-   "orange": "#EDAE49",
-   "teal": "#A93848",
-   "destaque": "#D1495B",
-   "cinza": "#30638E",
-   "linhas": {
-    "epico": "#003D5B",
-    "hitl": "#30638E",
-    "afk": "#00798C",
-    "atd": "#B87A1E",
-    "min": "#5D7487",
-    "sprint": "#EDAE49",
-    "rapida": "#D1495B"
-   }
-  }
- },
  "c-petroleo-mostarda": {
   "nome": "Azul-petróleo e mostarda",
   "site": "Coolors",
