@@ -28,64 +28,6 @@
    }
   }
  },
- "c-dark-sunset": {
-  "nome": "Dark Sunset",
-  "site": "Coolors",
-  "origem": "sua seleção",
-  "ideia": "azul-petróleo com amarelo-claro, âmbar e vinho",
-  "fonte": "335c67-fff3b0-e09f3e-9e2a2b-540b0e",
-  "sementes": {
-   "tinta": "#1C2F35",
-   "capa": "#335C67",
-   "brand": "#335C67",
-   "navy": "#2A4A53",
-   "cyan": "#9DC3CC",
-   "lime": "#FFF3B0",
-   "green": "#9E2A2B",
-   "orange": "#F0C27F",
-   "teal": "#540B0E",
-   "destaque": "#E09F3E",
-   "cinza": "#335C67",
-   "linhas": {
-    "epico": "#2A4A53",
-    "hitl": "#335C67",
-    "afk": "#6E99A3",
-    "atd": "#9E2A2B",
-    "min": "#7A6A5F",
-    "sprint": "#E09F3E",
-    "rapida": "#540B0E"
-   }
-  }
- },
- "c-sunny-beach": {
-  "nome": "Sunny Beach Day",
-  "site": "Coolors",
-  "origem": "sua seleção",
-  "ideia": "azul-carvão e verdigris com jasmim, areia e pêssego queimado de acento",
-  "fonte": "264653-2a9d8f-e9c46a-f4a261-e76f51",
-  "sementes": {
-   "tinta": "#1B323B",
-   "capa": "#264653",
-   "brand": "#2A9D8F",
-   "navy": "#264653",
-   "cyan": "#9ED8CF",
-   "lime": "#E9C46A",
-   "green": "#85651A",
-   "orange": "#F4A261",
-   "teal": "#3E5F6D",
-   "destaque": "#E76F51",
-   "cinza": "#264653",
-   "linhas": {
-    "epico": "#264653",
-    "hitl": "#2A9D8F",
-    "afk": "#6CC2B6",
-    "atd": "#1F756A",
-    "min": "#6B7F86",
-    "sprint": "#E9C46A",
-    "rapida": "#E76F51"
-   }
-  }
- },
  "c-warm-summer": {
   "nome": "Warm Summer Palette",
   "site": "Coolors",

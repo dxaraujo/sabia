@@ -1,10 +1,10 @@
-// Paleta e modo sobre a proposta: ?paleta=sobria|atual|sabia&modo=claro|escuro, lembrados entre as propostas.
+// Paleta e modo sobre a proposta: ?paleta=sobria|atual|…&modo=claro|escuro, lembrados entre as propostas.
 // Roda no <head> para não piscar; a barra de troca ganha os botões quando a página carrega.
 (function(){
   var root=document.documentElement, q=new URLSearchParams(location.search);
-  var OP={paleta:[["sobria", "Sóbria"], ["atual", "Atual"], ["sabia", "Sabiá"], ["c-ceu-sol", "Refreshing Summer Fun"], ["c-dark-sunset", "Dark Sunset"], ["c-sunny-beach", "Sunny Beach Day"], ["c-warm-summer", "Warm Summer Palette"], ["c-petroleo-mostarda", "Azul-petróleo e mostarda"]],modo:[['claro','Claro'],['escuro','Escuro']]};
-  var GRUPO={"sobria": "base", "atual": "base", "sabia": "base", "c-ceu-sol": "Coolors · sua seleção", "c-dark-sunset": "Coolors · sua seleção", "c-sunny-beach": "Coolors · sua seleção", "c-warm-summer": "Coolors · sua seleção", "c-petroleo-mostarda": "Coolors · nova"};
-  var PADRAO={paleta:'sabia',modo:'claro'}, SEM={paleta:'sobria',modo:'claro'}, ROT={paleta:'Paleta',modo:'Modo'}, v={};
+  var OP={paleta:[["sobria", "Sóbria"], ["atual", "Atual"], ["c-ceu-sol", "Refreshing Summer Fun"], ["c-warm-summer", "Warm Summer Palette"], ["c-petroleo-mostarda", "Azul-petróleo e mostarda"]],modo:[['claro','Claro'],['escuro','Escuro']]};
+  var GRUPO={"sobria": "base", "atual": "base", "c-ceu-sol": "Coolors · sua seleção", "c-warm-summer": "Coolors · sua seleção", "c-petroleo-mostarda": "Coolors · nova"};
+  var PADRAO={paleta:'sobria',modo:'claro'}, SEM={paleta:'sobria',modo:'claro'}, ROT={paleta:'Paleta',modo:'Modo'}, v={};
   function valido(k,x){return OP[k].some(function(o){return o[0]===x})}
   function ler(k){
     var x=q.get(k);

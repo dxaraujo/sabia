@@ -1,6 +1,6 @@
-/* Paletas vivas sobre qualquer proposta: <html data-paleta="atual|sabia">. Sem o atributo, fica a sóbria do sistema.
+/* Paletas vivas sobre qualquer proposta: <html data-paleta="atual|…">. Sem o atributo, fica a sóbria do sistema.
    O sistema dá fonte, forma e componentes; a paleta dá a identidade: capa cheia, etapas coloridas, trilho de 7 cores.
-   "atual" reaproveita as cores de hoje, iguais às do site em cada lugar; "sabia" parte dela; a sóbria é o sistema sem paleta (nova/tema.css). */
+   "atual" reaproveita as cores de hoje, iguais às do site em cada lugar; a sóbria é o sistema sem paleta (nova/tema.css). */
 :root[data-paleta="atual"]{
   --brand:#0786E3; --blue:#0086C8; --navy:#2C5168; --cyan:#00BBCE; --teal:#0094AD; --green:#76B043; --lime:#B2D235; --yellow:#FEBE10; --orange:#FAA61A;
   --l-epico:#2C5168; --l-hitl:#0086C8; --l-afk:#00BBCE; --l-atd:#76B043; --l-min:#0094AD; --l-sprint:#FEBE10; --l-rapida:#FAA61A;
@@ -63,8 +63,7 @@
 [data-modo="escuro"][data-paleta] .porta .n{color:color-mix(in oklab,var(--c) 80%,#fff)}
 
 /* "atual" fiel ao site de hoje (sabia.css): as mesmas cores em cada lugar; forma, tamanho e sombra seguem o sistema.
-   Toda paleta viva usa estas mesmas regras; "sabia" usa também os mesmos neutros; só trocam as cores que remetem à identidade
-   visual de origem dos decks (blocos no fim do arquivo). */
+   Toda paleta viva usa estas mesmas regras; cada uma troca só os valores das cores. */
 :root[data-paleta="atual"]:not([data-modo="escuro"]){
   --bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#2C5168; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7;
   --acento:#0086C8;
@@ -94,27 +93,6 @@
 [data-paleta] .porta .ir{color:var(--blue)}
 [data-paleta] footer{border-top-color:var(--soft)}
 
-/* "sabia": a atual, com as mesmas regras e os mesmos neutros (#C9D3DC, #EEF6FD, #F3F5F7, #E6EBEF, #6b7a88) e o
-   mesmo vermelho, que não estão na identidade visual de origem (manual 2025 e modelo de slides). Trocadas só as cores que
-   estão lá ou derivam dela: azuis cerúleos (~200°) e o navy #2C5168; ciano e teal (~186°); verdes-amarelados, amarelos e
-   laranjas (38–92°); e o texto #404040, a regra de "cinza sem preto" do manual. No lugar: cobalto e índigo (~222°),
-   pervinca, menta, verde (~152°), ardósia, coral e pêssego (~10°), framboesa (~340°). Sem roxo. O navy #2C5168 fica (está nos slides,
-   não no manual): superfícies escuras, títulos e linha Épico; o texto sobre as cores claras usa um marinho mais profundo.
-   Texto das etapas ≥ 4,6:1. */
-:root[data-paleta="sabia"]{
-  --brand:#2F5BEA; --blue:#2449C9; --navy:#2C5168; --cyan:#8FB0FF; --lime:#5FD4B0; --green:#16854E; --orange:#FFB4A2; --teal:#475569; --yellow:#FF6A4D;
-  --l-epico:#2C5168; --l-hitl:#2F5BEA; --l-afk:#12A594; --l-atd:#16854E; --l-min:#64748B; --l-sprint:#FF6A4D; --l-rapida:#E0457B;
-  --viva-capa:#2F5BEA; --viva-escuro:#2C5168; --viva-destaque:#FF6A4D; --viva-tinta:#1B2A5E;
-}
-:root[data-paleta="sabia"]:not([data-modo="escuro"]){
-  --bg:#ffffff; --card:#ffffff; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7;
-}
-:root[data-paleta="sabia"]:not([data-modo="escuro"]){--ink:#36424F; --title:#2C5168; --acento:#2449C9}
-/* escuro: o épico clareia no mapa e nas amostras dos chips; rótulos e aba ativa usam o acento claro */
-:root[data-paleta="sabia"][data-modo="escuro"]{--acento:#8DA2E8}
-[data-modo="escuro"][data-paleta="sabia"] :is(#map,.itin,.trilho,.chip){--l-epico:#7FA6C4}
-[data-modo="escuro"][data-paleta="sabia"] :is(.kv dt,.blk h4,.senbox b){color:var(--acento)}
-[data-paleta="sabia"] .tr[style*="--l-sprint)"]{color:#1B2A5E}
 
 /* ===== paletas para teste (geradas por gerar_paletas.py a partir do Coolors): cada uma com cores-base, acento e escala
    própria de cinzas e branco; só a luminosidade foi ajustada para o contraste (etapas ≥ 4,5:1; linhas do mapa ≥ 3:1).
@@ -130,30 +108,6 @@
 [data-modo="escuro"][data-paleta="c-ceu-sol"] :is(#map,.itin,.trilho,.chip){--l-epico:#028EDB}
 [data-paleta="c-ceu-sol"] .panel{--l-epico:#023047; --l-hitl:#219EBC; --l-afk:#5AB4D6; --l-atd:#0F6E7A; --l-min:#5C7A94; --l-sprint:#FFB703; --l-rapida:#FB8500}
 [data-paleta="c-ceu-sol"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#022338}
-
-/* Dark Sunset (Coolors, sua seleção) — azul-petróleo com amarelo-claro, âmbar e vinho */
-:root[data-paleta="c-dark-sunset"]{
-  --brand:#335C67; --blue:#335C67; --navy:#2A4A53; --cyan:#9DC3CC; --lime:#FFF3B0; --green:#9E2A2B; --orange:#F0C27F; --teal:#540B0E; --yellow:#E09F3E;
-  --l-epico:#2A4A53; --l-hitl:#335C67; --l-afk:#6E99A3; --l-atd:#9E2A2B; --l-min:#7A6A5F; --l-sprint:#CA8721; --l-rapida:#540B0E;
-  --viva-capa:#335C67; --viva-escuro:#2A4A53; --viva-destaque:#E09F3E; --viva-tinta:#1C2F35; --destaque-txt:#1C2F35;
-}
-:root[data-paleta="c-dark-sunset"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38484D; --title:#2A4A53; --muted:#657A80; --line:#D0DADD; --soft:#F0F7F9; --grey:#F6F8F9; --grey2:#E7ECEE; --panel-bg:#F6F8F9; --acento:#335C67}
-:root[data-paleta="c-dark-sunset"][data-modo="escuro"]{--acento:#548F9D}
-[data-modo="escuro"][data-paleta="c-dark-sunset"] :is(#map,.itin,.trilho,.chip){--l-epico:#588F9A}
-[data-paleta="c-dark-sunset"] .panel{--l-epico:#2A4A53; --l-hitl:#335C67; --l-afk:#6E99A3; --l-atd:#9E2A2B; --l-min:#7A6A5F; --l-sprint:#E09F3E; --l-rapida:#540B0E}
-[data-paleta="c-dark-sunset"] .tr:is([style*="--l-sprint)"]){color:#1C2F35}
-
-/* Sunny Beach Day (Coolors, sua seleção) — azul-carvão e verdigris com jasmim, areia e pêssego queimado de acento */
-:root[data-paleta="c-sunny-beach"]{
-  --brand:#238173; --blue:#238173; --navy:#264653; --cyan:#9ED8CF; --lime:#E9C46A; --green:#85651A; --orange:#F4A261; --teal:#3E5F6D; --yellow:#E76F51;
-  --l-epico:#264653; --l-hitl:#2A9D8F; --l-afk:#43A395; --l-atd:#1F756A; --l-min:#6B7F86; --l-sprint:#B98E1F; --l-rapida:#E76F51;
-  --viva-capa:#264653; --viva-escuro:#264653; --viva-destaque:#E76F51; --viva-tinta:#1B323B; --destaque-txt:#1B323B;
-}
-:root[data-paleta="c-sunny-beach"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38474D; --title:#264653; --muted:#657880; --line:#D0D9DD; --soft:#F0F7F9; --grey:#F6F8F9; --grey2:#E7ECEE; --panel-bg:#F6F8F9; --acento:#238173}
-:root[data-paleta="c-sunny-beach"][data-modo="escuro"]{--acento:#29998B}
-[data-modo="escuro"][data-paleta="c-sunny-beach"] :is(#map,.itin,.trilho,.chip){--l-epico:#528FA7}
-[data-paleta="c-sunny-beach"] .panel{--l-epico:#264653; --l-hitl:#2A9D8F; --l-afk:#6CC2B6; --l-atd:#1F756A; --l-min:#6B7F86; --l-sprint:#E9C46A; --l-rapida:#E76F51}
-[data-paleta="c-sunny-beach"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"]){color:#1B323B}
 
 /* Warm Summer Palette (Coolors, sua seleção) — azul-báltico e azul-Yale com teal, mel e amaranto de acento */
 :root[data-paleta="c-warm-summer"]{
