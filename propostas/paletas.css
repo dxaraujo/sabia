@@ -306,4 +306,14 @@
 :root[data-paleta="c-sunny-beach"][data-modo="escuro"]{--acento:#29998B}
 [data-modo="escuro"][data-paleta="c-sunny-beach"] :is(#map,.itin,.trilho,.chip){--l-epico:#528FA7}
 
+/* Warm Summer Palette (Coolors, sua seleção) — azul-báltico e azul-Yale com teal, mel e amaranto de acento */
+:root[data-paleta="c-warm-summer"]{
+  --brand:#30638E; --blue:#30638E; --navy:#003D5B; --cyan:#A9C6DE; --lime:#F3CE8A; --green:#00798C; --orange:#EDAE49; --teal:#A93848; --yellow:#D1495B;
+  --l-epico:#003D5B; --l-hitl:#30638E; --l-afk:#00798C; --l-atd:#B87A1E; --l-min:#5D7487; --l-sprint:#C98312; --l-rapida:#D1495B;
+  --viva-capa:#30638E; --viva-escuro:#003D5B; --viva-destaque:#D1495B; --viva-tinta:#002A40; --destaque-txt:#FFFFFF;
+}
+:root[data-paleta="c-warm-summer"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38434D; --title:#003D5B; --muted:#677683; --line:#D0D7DD; --soft:#F0F5F9; --grey:#F6F7F9; --grey2:#E7EBEE; --panel-bg:#F6F7F9; --acento:#30638E}
+:root[data-paleta="c-warm-summer"][data-modo="escuro"]{--acento:#428CC3}
+[data-modo="escuro"][data-paleta="c-warm-summer"] :is(#map,.itin,.trilho,.chip){--l-epico:#008FDB}
+
 .proposta select{font:inherit;padding:6px 8px;border:1px solid #d0d4da;border-radius:6px;background:#fff;color:#222;max-width:220px}
