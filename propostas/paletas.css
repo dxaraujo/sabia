@@ -91,11 +91,12 @@
 :root[data-paleta="sabia"]{
   --brand:#219EBC; --blue:#187F97; --navy:#023047; --cyan:#8ECAE6; --lime:#FFB703; --green:#219EBC; --orange:#FB8500; --teal:#63787D; --yellow:#FFB703;
   --l-epico:#023047; --l-hitl:#219EBC; --l-afk:#8ECAE6; --l-atd:#FB8500; --l-min:#63787D; --l-sprint:#FFB703; --l-rapida:#FB8500;
-  --viva-capa:#219EBC; --viva-escuro:#023047; --viva-destaque:#FFB703; --viva-tinta:#022338; --destaque-txt:#022338;
+  --viva-capa:#187F97; --viva-escuro:#023047; --viva-destaque:#FFB703; --viva-tinta:#022338; --destaque-txt:#022338;
 }
 :root[data-paleta="sabia"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38494D; --title:#023047; --muted:#63787D; --line:#D0DADD; --soft:#F0F8F9; --grey:#F6F8F9; --grey2:#E7EDEE; --panel-bg:#F6F8F9; --acento:#187F97}
 :root[data-paleta="sabia"][data-modo="escuro"]{--acento:#5AB4D6}
 [data-modo="escuro"][data-paleta="sabia"] :is(#map,.itin,.trilho,.chip){--l-epico:#6FA8C8}
+/* capa em #187F97 (o azul da própria paleta): texto branco a 4,6:1, para o parágrafo da capa passar no AA */
 /* texto como na atual: branco nas etapas e nas linhas da barra lateral; escuro só nas cores muito claras
    (Triagem, Alinhamento, Verificação, Copiar; na barra, AFK em céu e sprint em amarelo) */
 [data-paleta="sabia"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"]){color:#022338}

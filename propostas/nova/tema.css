@@ -105,3 +105,9 @@ footer{border-top:1px solid var(--line)}
 .etapas b{font-weight:600}
 .tr b,.trilho b,.itin b,.svc b{font-weight:600}
 :root .portas .porta .n{font-weight:600}
+
+/* revisão (impeccable craft floor + ui-ux-pro-max): monoespaçada só para código; seleção de texto na paleta;
+   links da capa sempre sublinhados */
+.ph .sk,.ficha .fh span{font-family:var(--body);font-weight:400}
+::selection{background:color-mix(in srgb,var(--brand) 28%,transparent);color:inherit}
+.install .ghost{text-decoration:underline;text-underline-offset:4px}
