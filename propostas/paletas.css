@@ -16,7 +16,7 @@
 [data-paleta] .sign.hero .lead,[data-paleta] .install .how{color:rgba(255,255,255,.88)}
 [data-paleta] .install .url{background:#fff;border:0}
 [data-paleta] .install code{color:var(--viva-tinta)}
-[data-paleta] .install button,[data-paleta] .install button:hover{background:var(--viva-destaque);color:var(--viva-tinta)}
+[data-paleta] .install button,[data-paleta] .install button:hover{background:var(--viva-destaque);color:var(--destaque-txt,var(--viva-tinta))}
 [data-paleta] .install button:hover{filter:brightness(1.07)}
 [data-paleta] .install .ghost{color:#fff;text-decoration:underline;text-underline-offset:4px}
 [data-paleta] .ficha .fh::before{display:block;height:6px;background:var(--viva-trilho)}
@@ -48,7 +48,7 @@
 [data-paleta] .ph .sk,[data-paleta] .ph .nav{color:rgba(255,255,255,.75)}
 [data-paleta] .ph .ltabs button,[data-paleta] .ph .nav button{background:rgba(255,255,255,.14);color:#fff;box-shadow:none}
 [data-paleta] .ph .ltabs button[aria-pressed="true"],[data-paleta] .ph .nav button:hover:not(:disabled){background:#fff;color:var(--viva-escuro)}
-[data-paleta] .ph .nav .play{background:var(--viva-destaque);color:var(--viva-tinta)}
+[data-paleta] .ph .nav .play{background:var(--viva-destaque);color:var(--destaque-txt,var(--viva-tinta))}
 [data-paleta] .pdz .dz-passos .prox{background:var(--viva-escuro);color:#fff}
 
 /* seletor de paleta, dentro da troca de proposta */
@@ -63,36 +63,36 @@
 [data-modo="escuro"][data-paleta] .porta .n{color:color-mix(in oklab,var(--c) 80%,#fff)}
 
 /* "atual" fiel ao site de hoje (sabia.css): as mesmas cores em cada lugar; forma, tamanho e sombra seguem o sistema.
-   "sabia" usa estas mesmas regras e os mesmos neutros; só trocam as cores que remetem à identidade
+   Toda paleta viva usa estas mesmas regras; "sabia" usa também os mesmos neutros; só trocam as cores que remetem à identidade
    visual de origem dos decks (blocos no fim do arquivo). */
 :root[data-paleta="atual"]:not([data-modo="escuro"]){
   --bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#2C5168; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7;
   --acento:#0086C8;
 }
-:root:is([data-paleta="atual"],[data-paleta="sabia"]){--red:#D9534F}
-:is([data-paleta="atual"],[data-paleta="sabia"]) :focus-visible{outline-color:var(--yellow)}
-:is([data-paleta="atual"],[data-paleta="sabia"]) :is(.top .gh,.chip:not([aria-pressed="true"])){border-color:var(--line);color:var(--title)}
-:is([data-paleta="atual"],[data-paleta="sabia"]) .top .gh:hover{border-color:var(--blue);color:var(--blue);background:#fff}
-:is([data-paleta="atual"],[data-paleta="sabia"]) nav.tabs a{color:var(--title)}
-:is([data-paleta="atual"],[data-paleta="sabia"]) nav.tabs a:hover{background:var(--blue);color:#fff}
-:is([data-paleta="atual"],[data-paleta="sabia"]) nav.tabs a[aria-current="page"]{background:var(--navy);color:#fff}
-:is([data-paleta="atual"],[data-paleta="sabia"]) .lead-sec h2::before{display:none}
-:is([data-paleta="atual"],[data-paleta="sabia"]) .ficha .fh{background:var(--navy);color:#fff;border-bottom:0}
-:is([data-paleta="atual"],[data-paleta="sabia"]) .ficha .fh::before{background:var(--green)}
-:is([data-paleta="atual"],[data-paleta="sabia"]) .ficha .fh b{color:#fff}
-:is([data-paleta="atual"],[data-paleta="sabia"]) .ficha .fh span,:is([data-paleta="atual"],[data-paleta="sabia"]) .ph .sk,:is([data-paleta="atual"],[data-paleta="sabia"]) .ph .nav{color:#cfe3f1}
-:is([data-paleta="atual"],[data-paleta="sabia"]) .etapas .claro code{background:color-mix(in srgb,var(--navy) 12%,transparent)}
-:is([data-paleta="atual"],[data-paleta="sabia"]) .controls .lbl{color:var(--title)}
-:is([data-paleta="atual"],[data-paleta="sabia"]) :is(.kv dt,.blk h4,.senbox b){color:var(--blue)}
-:is([data-paleta="atual"],[data-paleta="sabia"]) .senbox div.on{background:var(--navy)}
-:is([data-paleta="atual"],[data-paleta="sabia"]) .senbox div.on b{color:var(--yellow)}
-:is([data-paleta="atual"],[data-paleta="sabia"]) .itin li.cur .dot{background:var(--yellow);border-color:var(--navy);box-shadow:0 0 0 4px color-mix(in srgb,var(--yellow) 35%,transparent)}
-:is([data-paleta="atual"],[data-paleta="sabia"]) .razoes article{background:var(--soft)}
-:is([data-paleta="atual"],[data-paleta="sabia"]) .porta{border:1.5px solid var(--line)}
-:is([data-paleta="atual"],[data-paleta="sabia"]) .porta:hover{border-color:var(--blue)}
-:is([data-paleta="atual"],[data-paleta="sabia"]) .porta .n{color:var(--c)}
-:is([data-paleta="atual"],[data-paleta="sabia"]) .porta .ir{color:var(--blue)}
-:is([data-paleta="atual"],[data-paleta="sabia"]) footer{border-top-color:var(--soft)}
+:root[data-paleta]{--red:#D9534F}
+[data-paleta] :focus-visible{outline-color:var(--yellow)}
+[data-paleta] :is(.top .gh,.chip:not([aria-pressed="true"])){border-color:var(--line);color:var(--title)}
+[data-paleta] .top .gh:hover{border-color:var(--blue);color:var(--blue);background:#fff}
+[data-paleta] nav.tabs a{color:var(--title)}
+[data-paleta] nav.tabs a:hover{background:var(--blue);color:#fff}
+[data-paleta] nav.tabs a[aria-current="page"]{background:var(--navy);color:#fff}
+[data-paleta] .lead-sec h2::before{display:none}
+[data-paleta] .ficha .fh{background:var(--navy);color:#fff;border-bottom:0}
+[data-paleta] .ficha .fh::before{background:var(--green)}
+[data-paleta] .ficha .fh b{color:#fff}
+[data-paleta] .ficha .fh span,[data-paleta] .ph .sk,[data-paleta] .ph .nav{color:#cfe3f1}
+[data-paleta] .etapas .claro code{background:color-mix(in srgb,var(--navy) 12%,transparent)}
+[data-paleta] .controls .lbl{color:var(--title)}
+[data-paleta] :is(.kv dt,.blk h4,.senbox b){color:var(--blue)}
+[data-paleta] .senbox div.on{background:var(--navy)}
+[data-paleta] .senbox div.on b{color:var(--yellow)}
+[data-paleta] .itin li.cur .dot{background:var(--yellow);border-color:var(--navy);box-shadow:0 0 0 4px color-mix(in srgb,var(--yellow) 35%,transparent)}
+[data-paleta] .razoes article{background:var(--soft)}
+[data-paleta] .porta{border:1.5px solid var(--line)}
+[data-paleta] .porta:hover{border-color:var(--blue)}
+[data-paleta] .porta .n{color:var(--c)}
+[data-paleta] .porta .ir{color:var(--blue)}
+[data-paleta] footer{border-top-color:var(--soft)}
 
 /* "sabia": a atual, com as mesmas regras e os mesmos neutros (#C9D3DC, #EEF6FD, #F3F5F7, #E6EBEF, #6b7a88) e o
    mesmo vermelho, que não estão na identidade visual de origem (manual 2025 e modelo de slides). Trocadas só as cores que
@@ -114,3 +114,166 @@
 :root[data-paleta="sabia"][data-modo="escuro"]{--acento:#8DA2E8}
 [data-modo="escuro"][data-paleta="sabia"] :is(#map,.itin,.trilho,.chip){--l-epico:#7FA6C4}
 [data-modo="escuro"][data-paleta="sabia"] :is(.kv dt,.blk h4,.senbox b){color:var(--acento)}
+
+/* ===== paletas para teste (geradas por gerar_paletas.py a partir de Coolors e Adobe Color): cada uma com cores-base,
+   acento e escala própria de cinzas e branco; só a luminosidade foi ajustada para o contraste (etapas ≥ 4,5:1, linhas ≥ 3:1) ===== */
+/* Fiery Ocean (Coolors, sua seleção) — marinho e azul-aço com vermelho de acento e creme */
+:root[data-paleta="c-fiery-ocean"]{
+  --brand:#437B9C; --blue:#437B9C; --navy:#003049; --cyan:#A9C8DD; --lime:#F5DDB0; --green:#780000; --orange:#F2A3A8; --teal:#34607A; --yellow:#C1121F;
+  --l-epico:#003049; --l-hitl:#669BBC; --l-afk:#549CC7; --l-atd:#780000; --l-min:#8C7A6B; --l-sprint:#C1121F; --l-rapida:#C98727;
+  --viva-capa:#437B9C; --viva-escuro:#003049; --viva-destaque:#C1121F; --viva-tinta:#001F33; --destaque-txt:#FFFFFF;
+}
+:root[data-paleta="c-fiery-ocean"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38454D; --title:#003049; --muted:#677983; --line:#D0D8DD; --soft:#F0F6F9; --grey:#F6F8F9; --grey2:#E7EBEE; --panel-bg:#F6F8F9; --acento:#437B9C}
+:root[data-paleta="c-fiery-ocean"][data-modo="escuro"]{--acento:#4F8EB4}
+[data-modo="escuro"][data-paleta="c-fiery-ocean"] :is(#map,.itin,.trilho,.chip){--l-epico:#008BE2}
+
+/* Fresh Greens (Coolors, sua seleção) — verdes com creme e vermelho de acento (sem azul) */
+:root[data-paleta="c-fresh-greens"]{
+  --brand:#597F3F; --blue:#597F3F; --navy:#386641; --cyan:#A7C957; --lime:#EADCB4; --green:#4E7A36; --orange:#E5A3A4; --teal:#5C6B4E; --yellow:#BC4749;
+  --l-epico:#386641; --l-hitl:#6A994E; --l-afk:#80A034; --l-atd:#4E7A36; --l-min:#8A8F70; --l-sprint:#BC4749; --l-rapida:#B68C3B;
+  --viva-capa:#386641; --viva-escuro:#386641; --viva-destaque:#BC4749; --viva-tinta:#1E3523; --destaque-txt:#FFFFFF;
+}
+:root[data-paleta="c-fresh-greens"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#404D38; --title:#386641; --muted:#6A7A61; --line:#D5DDD0; --soft:#F4F9F0; --grey:#F7F9F6; --grey2:#EAEEE7; --panel-bg:#F7F9F6; --acento:#597F3F}
+:root[data-paleta="c-fresh-greens"][data-modo="escuro"]{--acento:#66934A}
+[data-modo="escuro"][data-paleta="c-fresh-greens"] :is(#map,.itin,.trilho,.chip){--l-epico:#56945F}
+
+/* Pastel Dreamland Adventure (Coolors, sua seleção) — pastéis: azul-bebê, rosa e lavanda (os escuros derivados dos pastéis) */
+:root[data-paleta="c-pastel"]{
+  --brand:#0077DA; --blue:#0077DA; --navy:#2B4A6F; --cyan:#BDE0FE; --lime:#FFC8DD; --green:#7A5C99; --orange:#FFAFCC; --teal:#4F6B8A; --yellow:#FFAFCC;
+  --l-epico:#2B4A6F; --l-hitl:#5698D7; --l-afk:#459BDA; --l-atd:#9B7BB8; --l-min:#8C8FA8; --l-sprint:#E46E9A; --l-rapida:#E8669A;
+  --viva-capa:#0077DA; --viva-escuro:#2B4A6F; --viva-destaque:#FFAFCC; --viva-tinta:#22314F; --destaque-txt:#22314F;
+}
+:root[data-paleta="c-pastel"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38434D; --title:#2B4A6F; --muted:#677683; --line:#D0D6DD; --soft:#F0F5F9; --grey:#F6F7F9; --grey2:#E7EBEE; --panel-bg:#F6F7F9; --acento:#0077DA}
+:root[data-paleta="c-pastel"][data-modo="escuro"]{--acento:#0089F9}
+[data-modo="escuro"][data-paleta="c-pastel"] :is(#map,.itin,.trilho,.chip){--l-epico:#538BC1}
+
+/* Summer Ocean Breeze (Coolors, sua seleção) — marinho e azul-aço com um coral vermelho de acento */
+:root[data-paleta="c-marinho-coral"]{
+  --brand:#457B9D; --blue:#457B9D; --navy:#1D3557; --cyan:#A8DADC; --lime:#C9DDEB; --green:#2A7F86; --orange:#F4A6AC; --teal:#3D5A80; --yellow:#E63946;
+  --l-epico:#1D3557; --l-hitl:#457B9D; --l-afk:#42A1A7; --l-atd:#2A7F86; --l-min:#6C8EAD; --l-sprint:#E63946; --l-rapida:#B5303C;
+  --viva-capa:#457B9D; --viva-escuro:#1D3557; --viva-destaque:#E63946; --viva-tinta:#12233D; --destaque-txt:#FFFFFF;
+}
+:root[data-paleta="c-marinho-coral"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38454D; --title:#1D3557; --muted:#677883; --line:#D0D8DD; --soft:#F0F6F9; --grey:#F6F8F9; --grey2:#E7EBEE; --panel-bg:#F6F8F9; --acento:#457B9D}
+:root[data-paleta="c-marinho-coral"][data-modo="escuro"]{--acento:#528CB3}
+[data-modo="escuro"][data-paleta="c-marinho-coral"] :is(#map,.itin,.trilho,.chip){--l-epico:#508ACC}
+
+/* Autumn Harvest (Coolors, sua seleção) — marrons, caramelo e creme (sem azul) */
+:root[data-paleta="c-autumn"]{
+  --brand:#99582A; --blue:#99582A; --navy:#432818; --cyan:#FFE6A7; --lime:#DCC08F; --green:#6F1D1B; --orange:#E8B98A; --teal:#6B5444; --yellow:#BB9457;
+  --l-epico:#432818; --l-hitl:#99582A; --l-afk:#B78E4B; --l-atd:#6F1D1B; --l-min:#8A7563; --l-sprint:#B88D38; --l-rapida:#B5651D;
+  --viva-capa:#99582A; --viva-escuro:#432818; --viva-destaque:#BB9457; --viva-tinta:#2B1A10; --destaque-txt:#2B1A10;
+}
+:root[data-paleta="c-autumn"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#4D4038; --title:#432818; --muted:#837367; --line:#DDD5D0; --soft:#F9F4F0; --grey:#F9F7F6; --grey2:#EEEAE7; --panel-bg:#F9F7F6; --acento:#99582A}
+:root[data-paleta="c-autumn"][data-modo="escuro"]{--acento:#C67035}
+[data-modo="escuro"][data-paleta="c-autumn"] :is(#map,.itin,.trilho,.chip){--l-epico:#C86E3C}
+
+/* Olive Garden Feast (Coolors, sua seleção) — oliva e musgo com creme e caramelo (sem azul) */
+:root[data-paleta="c-olive"]{
+  --brand:#606C38; --blue:#606C38; --navy:#283618; --cyan:#F2E9B8; --lime:#EBC28F; --green:#4A5A2A; --orange:#DDA15E; --teal:#5A5F4A; --yellow:#BC6C25;
+  --l-epico:#283618; --l-hitl:#606C38; --l-afk:#8A9A5B; --l-atd:#4A5A2A; --l-min:#7D7A63; --l-sprint:#CC822D; --l-rapida:#BC6C25;
+  --viva-capa:#606C38; --viva-escuro:#283618; --viva-destaque:#BC6C25; --viva-tinta:#1C2610; --destaque-txt:#1C2610;
+}
+:root[data-paleta="c-olive"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#484D38; --title:#283618; --muted:#71775F; --line:#DADDD0; --soft:#F7F9F0; --grey:#F8F9F6; --grey2:#ECEEE7; --panel-bg:#F8F9F6; --acento:#606C38}
+:root[data-paleta="c-olive"][data-modo="escuro"]{--acento:#818E4E}
+[data-modo="escuro"][data-paleta="c-olive"] :is(#map,.itin,.trilho,.chip){--l-epico:#6B9141}
+
+/* Refreshing Summer Fun (Coolors, sua seleção) — azul-céu e marinho com amarelo e laranja de acento */
+:root[data-paleta="c-ceu-sol"]{
+  --brand:#187F97; --blue:#187F97; --navy:#023047; --cyan:#8ECAE6; --lime:#FFD670; --green:#0F6E7A; --orange:#FFB703; --teal:#3A5A78; --yellow:#FB8500;
+  --l-epico:#023047; --l-hitl:#219EBC; --l-afk:#319DC7; --l-atd:#0F6E7A; --l-min:#5C7A94; --l-sprint:#C08800; --l-rapida:#E17600;
+  --viva-capa:#187F97; --viva-escuro:#023047; --viva-destaque:#FB8500; --viva-tinta:#022338; --destaque-txt:#022338;
+}
+:root[data-paleta="c-ceu-sol"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38494D; --title:#023047; --muted:#63787D; --line:#D0DADD; --soft:#F0F8F9; --grey:#F6F8F9; --grey2:#E7EDEE; --panel-bg:#F6F8F9; --acento:#187F97}
+:root[data-paleta="c-ceu-sol"][data-modo="escuro"]{--acento:#1E94B0}
+[data-modo="escuro"][data-paleta="c-ceu-sol"] :is(#map,.itin,.trilho,.chip){--l-epico:#028EDB}
+
+/* Dark Sunset (Coolors, sua seleção) — azul-petróleo com amarelo-claro, âmbar e vinho */
+:root[data-paleta="c-dark-sunset"]{
+  --brand:#335C67; --blue:#335C67; --navy:#2A4A53; --cyan:#9DC3CC; --lime:#FFF3B0; --green:#9E2A2B; --orange:#F0C27F; --teal:#540B0E; --yellow:#E09F3E;
+  --l-epico:#2A4A53; --l-hitl:#335C67; --l-afk:#6E99A3; --l-atd:#9E2A2B; --l-min:#7A6A5F; --l-sprint:#CA8721; --l-rapida:#540B0E;
+  --viva-capa:#335C67; --viva-escuro:#2A4A53; --viva-destaque:#E09F3E; --viva-tinta:#1C2F35; --destaque-txt:#1C2F35;
+}
+:root[data-paleta="c-dark-sunset"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38484D; --title:#2A4A53; --muted:#657A80; --line:#D0DADD; --soft:#F0F7F9; --grey:#F6F8F9; --grey2:#E7ECEE; --panel-bg:#F6F8F9; --acento:#335C67}
+:root[data-paleta="c-dark-sunset"][data-modo="escuro"]{--acento:#548F9D}
+[data-modo="escuro"][data-paleta="c-dark-sunset"] :is(#map,.itin,.trilho,.chip){--l-epico:#588F9A}
+
+/* Cobalto e âmbar (Coolors, nova) — cobalto como base, âmbar de acento, teal e céu de apoio, cinzas ardósia */
+:root[data-paleta="c-cobalto-ambar"]{
+  --brand:#2563EB; --blue:#2563EB; --navy:#0F1E45; --cyan:#93C5FD; --lime:#FCD9A0; --green:#0F766E; --orange:#FBBF5A; --teal:#475569; --yellow:#F59E0B;
+  --l-epico:#0F1E45; --l-hitl:#2563EB; --l-afk:#0E9BDA; --l-atd:#0F766E; --l-min:#64748B; --l-sprint:#CD840A; --l-rapida:#EA580C;
+  --viva-capa:#2563EB; --viva-escuro:#0F1E45; --viva-destaque:#F59E0B; --viva-tinta:#0F1E45; --destaque-txt:#0F1E45;
+}
+:root[data-paleta="c-cobalto-ambar"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38404D; --title:#0F1E45; --muted:#677383; --line:#D0D5DD; --soft:#F0F4F9; --grey:#F6F7F9; --grey2:#E7EAEE; --panel-bg:#F6F7F9; --acento:#2563EB}
+:root[data-paleta="c-cobalto-ambar"][data-modo="escuro"]{--acento:#5082EE}
+[data-modo="escuro"][data-paleta="c-cobalto-ambar"] :is(#map,.itin,.trilho,.chip){--l-epico:#5F84DA}
+
+/* Azul elétrico e coral (Coolors, nova) — azul elétrico como base, coral de acento, esmeralda e menta de apoio */
+:root[data-paleta="c-eletrico-coral"]{
+  --brand:#1E66F5; --blue:#1E66F5; --navy:#0B1B3A; --cyan:#7DD3FC; --lime:#A7F3D0; --green:#047857; --orange:#FFB4A2; --teal:#334155; --yellow:#FF7A59;
+  --l-epico:#0B1B3A; --l-hitl:#1E66F5; --l-afk:#06A0BB; --l-atd:#059669; --l-min:#475569; --l-sprint:#FF5E35; --l-rapida:#E11D48;
+  --viva-capa:#1E66F5; --viva-escuro:#0B1B3A; --viva-destaque:#FF7A59; --viva-tinta:#0B1B3A; --destaque-txt:#0B1B3A;
+}
+:root[data-paleta="c-eletrico-coral"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38404D; --title:#0B1B3A; --muted:#677383; --line:#D0D5DD; --soft:#F0F4F9; --grey:#F6F7F9; --grey2:#E7EAEE; --panel-bg:#F6F7F9; --acento:#1E66F5}
+:root[data-paleta="c-eletrico-coral"][data-modo="escuro"]{--acento:#4783F5}
+[data-modo="escuro"][data-paleta="c-eletrico-coral"] :is(#map,.itin,.trilho,.chip){--l-epico:#5F86DB}
+
+/* Azul-petróleo e mostarda (Coolors, nova) — azul-petróleo e marinho como base, mostarda e laranja de acento, verde-folha de apoio */
+:root[data-paleta="c-petroleo-mostarda"]{
+  --brand:#2B7D9F; --blue:#2B7D9F; --navy:#1B3B6F; --cyan:#A3D5FF; --lime:#B8E0D2; --green:#3F7D58; --orange:#F2C14E; --teal:#5D737E; --yellow:#F78154;
+  --l-epico:#1B3B6F; --l-hitl:#2E86AB; --l-afk:#3B9DB7; --l-atd:#3F7D58; --l-min:#5D737E; --l-sprint:#BF8B19; --l-rapida:#F76531;
+  --viva-capa:#2B7D9F; --viva-escuro:#1B3B6F; --viva-destaque:#F78154; --viva-tinta:#12263F; --destaque-txt:#12263F;
+}
+:root[data-paleta="c-petroleo-mostarda"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38464D; --title:#1B3B6F; --muted:#657780; --line:#D0D8DD; --soft:#F0F6F9; --grey:#F6F8F9; --grey2:#E7ECEE; --panel-bg:#F6F8F9; --acento:#2B7D9F}
+:root[data-paleta="c-petroleo-mostarda"][data-modo="escuro"]{--acento:#318FB7}
+[data-modo="escuro"][data-paleta="c-petroleo-mostarda"] :is(#map,.itin,.trilho,.chip){--l-epico:#5B87D7}
+
+/* Complementar (Adobe Color, nova) — regra complementar a partir do azul #1F5FBF: azuis e laranjas */
+:root[data-paleta="a-complementar"]{
+  --brand:#1F5FBF; --blue:#1F5FBF; --navy:#12306B; --cyan:#9CC0F0; --lime:#F7C9A1; --green:#B3541E; --orange:#FFB27A; --teal:#3B4F6E; --yellow:#F28C28;
+  --l-epico:#12306B; --l-hitl:#1F5FBF; --l-afk:#5B8FD6; --l-atd:#B3541E; --l-min:#6B7F99; --l-sprint:#E5750D; --l-rapida:#D9480F;
+  --viva-capa:#1F5FBF; --viva-escuro:#12306B; --viva-destaque:#F28C28; --viva-tinta:#0E2148; --destaque-txt:#0E2148;
+}
+:root[data-paleta="a-complementar"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38404D; --title:#12306B; --muted:#677283; --line:#D0D5DD; --soft:#F0F4F9; --grey:#F6F7F9; --grey2:#E7EAEE; --panel-bg:#F6F7F9; --acento:#1F5FBF}
+:root[data-paleta="a-complementar"][data-modo="escuro"]{--acento:#4D88E3}
+[data-modo="escuro"][data-paleta="a-complementar"] :is(#map,.itin,.trilho,.chip){--l-epico:#5B85DF}
+
+/* Complementar dividida (Adobe Color, nova) — regra dividida a partir do azul #2B59C3: amarelo-laranja e vermelho-laranja */
+:root[data-paleta="a-dividida"]{
+  --brand:#2B59C3; --blue:#2B59C3; --navy:#172F6B; --cyan:#A9C0F2; --lime:#F8D98C; --green:#B8431F; --orange:#F5A88F; --teal:#4A5878; --yellow:#F2B134;
+  --l-epico:#172F6B; --l-hitl:#2B59C3; --l-afk:#6A8FE0; --l-atd:#B8431F; --l-min:#6B7891; --l-sprint:#BF8A0F; --l-rapida:#E4572E;
+  --viva-capa:#2B59C3; --viva-escuro:#172F6B; --viva-destaque:#F2B134; --viva-tinta:#13265A; --destaque-txt:#13265A;
+}
+:root[data-paleta="a-dividida"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#383E4D; --title:#172F6B; --muted:#677083; --line:#D0D4DD; --soft:#F0F3F9; --grey:#F6F7F9; --grey2:#E7E9EE; --panel-bg:#F6F7F9; --acento:#2B59C3}
+:root[data-paleta="a-dividida"][data-modo="escuro"]{--acento:#5F83DC}
+[data-modo="escuro"][data-paleta="a-dividida"] :is(#map,.itin,.trilho,.chip){--l-epico:#5F84DB}
+
+/* Tríade (Adobe Color, nova) — regra tríade (roda RYB) a partir do azul #1E4FA3: vermelho e amarelo */
+:root[data-paleta="a-triade"]{
+  --brand:#1E4FA3; --blue:#1E4FA3; --navy:#13305F; --cyan:#A4BDE6; --lime:#F6DE95; --green:#8C6D0E; --orange:#F2A7A7; --teal:#4A5A73; --yellow:#F2C94C;
+  --l-epico:#13305F; --l-hitl:#1E4FA3; --l-afk:#5C86D1; --l-atd:#8C6D0E; --l-min:#6A7A92; --l-sprint:#B48E23; --l-rapida:#D64545;
+  --viva-capa:#1E4FA3; --viva-escuro:#13305F; --viva-destaque:#F2C94C; --viva-tinta:#0F2654; --destaque-txt:#0F2654;
+}
+:root[data-paleta="a-triade"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38404D; --title:#13305F; --muted:#677283; --line:#D0D4DD; --soft:#F0F4F9; --grey:#F6F7F9; --grey2:#E7EAEE; --panel-bg:#F6F7F9; --acento:#1E4FA3}
+:root[data-paleta="a-triade"][data-modo="escuro"]{--acento:#5285DF}
+[data-modo="escuro"][data-paleta="a-triade"] :is(#map,.itin,.trilho,.chip){--l-epico:#5986DB}
+
+/* Composta aço (Adobe Color, variação) — regra composta a partir do azul-aço #3A6EA5: teal, âmbar e terracota */
+:root[data-paleta="a-composta-aco"]{
+  --brand:#3A6EA5; --blue:#3A6EA5; --navy:#1F3A5C; --cyan:#9FD3CF; --lime:#F4D19B; --green:#22706B; --orange:#EBA48F; --teal:#4F6275; --yellow:#E8A33D;
+  --l-epico:#1F3A5C; --l-hitl:#3A6EA5; --l-afk:#2F9C95; --l-atd:#22706B; --l-min:#6F8296; --l-sprint:#C7861E; --l-rapida:#C9573A;
+  --viva-capa:#3A6EA5; --viva-escuro:#1F3A5C; --viva-destaque:#E8A33D; --viva-tinta:#182B44; --destaque-txt:#182B44;
+}
+:root[data-paleta="a-composta-aco"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38424D; --title:#1F3A5C; --muted:#677583; --line:#D0D6DD; --soft:#F0F5F9; --grey:#F6F7F9; --grey2:#E7EBEE; --panel-bg:#F6F7F9; --acento:#3A6EA5}
+:root[data-paleta="a-composta-aco"][data-modo="escuro"]{--acento:#4F8BC3}
+[data-modo="escuro"][data-paleta="a-composta-aco"] :is(#map,.itin,.trilho,.chip){--l-epico:#4A8CCA}
+
+/* Composta marinho (Adobe Color, variação) — regra composta a partir do marinho #22406B: verde-água, areia e terracota */
+:root[data-paleta="a-composta-marinho"]{
+  --brand:#2C5D8F; --blue:#2C5D8F; --navy:#22406B; --cyan:#A7DDD6; --lime:#F2DCA0; --green:#237A70; --orange:#F4B19F; --teal:#52606D; --yellow:#E9C46A;
+  --l-epico:#22406B; --l-hitl:#2C5D8F; --l-afk:#2A9D8F; --l-atd:#237A70; --l-min:#6B7A88; --l-sprint:#B49022; --l-rapida:#E76F51;
+  --viva-capa:#2C5D8F; --viva-escuro:#22406B; --viva-destaque:#E9C46A; --viva-tinta:#14263F; --destaque-txt:#14263F;
+}
+:root[data-paleta="a-composta-marinho"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38404D; --title:#22406B; --muted:#677383; --line:#D0D5DD; --soft:#F0F4F9; --grey:#F6F7F9; --grey2:#E7EAEE; --panel-bg:#F6F7F9; --acento:#2C5D8F}
+:root[data-paleta="a-composta-marinho"][data-modo="escuro"]{--acento:#448DC8}
+[data-modo="escuro"][data-paleta="a-composta-marinho"] :is(#map,.itin,.trilho,.chip){--l-epico:#5488CD}
+.proposta select{font:inherit;padding:6px 8px;border:1px solid #d0d4da;border-radius:6px;background:#fff;color:#222;max-width:220px}

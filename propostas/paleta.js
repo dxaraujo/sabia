@@ -2,7 +2,8 @@
 // Roda no <head> para não piscar; a barra de troca ganha os botões quando a página carrega.
 (function(){
   var root=document.documentElement, q=new URLSearchParams(location.search);
-  var OP={paleta:[['sobria','Sóbria'],['atual','Atual'],['sabia','Sabiá']],modo:[['claro','Claro'],['escuro','Escuro']]};
+  var OP={paleta:[["sobria", "Sóbria"], ["atual", "Atual"], ["sabia", "Sabiá"], ["c-fiery-ocean", "Fiery Ocean"], ["c-fresh-greens", "Fresh Greens"], ["c-pastel", "Pastel Dreamland Adventure"], ["c-marinho-coral", "Summer Ocean Breeze"], ["c-autumn", "Autumn Harvest"], ["c-olive", "Olive Garden Feast"], ["c-ceu-sol", "Refreshing Summer Fun"], ["c-dark-sunset", "Dark Sunset"], ["c-cobalto-ambar", "Cobalto e âmbar"], ["c-eletrico-coral", "Azul elétrico e coral"], ["c-petroleo-mostarda", "Azul-petróleo e mostarda"], ["a-complementar", "Complementar"], ["a-dividida", "Complementar dividida"], ["a-triade", "Tríade"], ["a-composta-aco", "Composta aço"], ["a-composta-marinho", "Composta marinho"]],modo:[['claro','Claro'],['escuro','Escuro']]};
+  var GRUPO={"sobria": "base", "atual": "base", "sabia": "base", "c-fiery-ocean": "Coolors · sua seleção", "c-fresh-greens": "Coolors · sua seleção", "c-pastel": "Coolors · sua seleção", "c-marinho-coral": "Coolors · sua seleção", "c-autumn": "Coolors · sua seleção", "c-olive": "Coolors · sua seleção", "c-ceu-sol": "Coolors · sua seleção", "c-dark-sunset": "Coolors · sua seleção", "c-cobalto-ambar": "Coolors · nova", "c-eletrico-coral": "Coolors · nova", "c-petroleo-mostarda": "Coolors · nova", "a-complementar": "Adobe Color", "a-dividida": "Adobe Color", "a-triade": "Adobe Color", "a-composta-aco": "Adobe Color", "a-composta-marinho": "Adobe Color"};
   var PADRAO={paleta:'sabia',modo:'claro'}, SEM={paleta:'sobria',modo:'claro'}, ROT={paleta:'Paleta',modo:'Modo'}, v={};
   function valido(k,x){return OP[k].some(function(o){return o[0]===x})}
   function ler(k){
@@ -19,11 +20,15 @@
   for(var k in OP) aplicar(k,ler(k));
   document.addEventListener('DOMContentLoaded',function(){
     var nav=document.querySelector('.proposta'); if(!nav) return;
-    for(var k in OP){
-      var s=document.createElement('span'); s.className='paletas';
-      s.innerHTML='<b>'+ROT[k]+'</b>'+OP[k].map(function(o){return '<button type="button" data-k="'+k+'" data-v="'+o[0]+'">'+o[1]+'</button>'}).join('');
-      nav.appendChild(s);
-    }
+    // paleta numa lista suspensa agrupada (são muitas); modo em botões
+    var sp=document.createElement('span'); sp.className='paletas';
+    var grupos={}; OP.paleta.forEach(function(o){(grupos[GRUPO[o[0]]]=grupos[GRUPO[o[0]]]||[]).push(o)});
+    sp.innerHTML='<b>Paleta</b><select aria-label="Paleta">'+Object.keys(grupos).map(function(g){return '<optgroup label="'+g+'">'+grupos[g].map(function(o){return '<option value="'+o[0]+'">'+o[1]+'</option>'}).join('')+'</optgroup>'}).join('')+'</select>';
+    nav.appendChild(sp);
+    var sel=sp.querySelector('select'); sel.value=v.paleta; sel.addEventListener('change',function(){aplicar('paleta',sel.value)});
+    var sm=document.createElement('span'); sm.className='paletas';
+    sm.innerHTML='<b>'+ROT.modo+'</b>'+OP.modo.map(function(o){return '<button type="button" data-k="modo" data-v="'+o[0]+'">'+o[1]+'</button>'}).join('');
+    nav.appendChild(sm);
     nav.addEventListener('click',function(e){
       var b=e.target.closest('[data-k]'); if(b) aplicar(b.dataset.k,b.dataset.v);
       if(e.target.closest('a')) salvarRolagem();

@@ -1,0 +1,466 @@
+{
+ "c-fiery-ocean": {
+  "nome": "Fiery Ocean",
+  "site": "Coolors",
+  "origem": "sua seleção",
+  "ideia": "marinho e azul-aço com vermelho de acento e creme",
+  "fonte": "780000-c1121f-fdf0d5-003049-669bbc",
+  "sementes": {
+   "tinta": "#001F33",
+   "capa": "#669BBC",
+   "brand": "#669BBC",
+   "navy": "#003049",
+   "cyan": "#A9C8DD",
+   "lime": "#F5DDB0",
+   "green": "#780000",
+   "orange": "#F2A3A8",
+   "teal": "#34607A",
+   "destaque": "#C1121F",
+   "cinza": "#669BBC",
+   "linhas": {
+    "epico": "#003049",
+    "hitl": "#669BBC",
+    "afk": "#9CC3DA",
+    "atd": "#780000",
+    "min": "#8C7A6B",
+    "sprint": "#C1121F",
+    "rapida": "#E0A458"
+   }
+  }
+ },
+ "c-fresh-greens": {
+  "nome": "Fresh Greens",
+  "site": "Coolors",
+  "origem": "sua seleção",
+  "ideia": "verdes com creme e vermelho de acento (sem azul)",
+  "fonte": "386641-6a994e-a7c957-f2e8cf-bc4749",
+  "sementes": {
+   "tinta": "#1E3523",
+   "capa": "#386641",
+   "brand": "#6A994E",
+   "navy": "#386641",
+   "cyan": "#A7C957",
+   "lime": "#EADCB4",
+   "green": "#4E7A36",
+   "orange": "#E5A3A4",
+   "teal": "#5C6B4E",
+   "destaque": "#BC4749",
+   "cinza": "#6A994E",
+   "linhas": {
+    "epico": "#386641",
+    "hitl": "#6A994E",
+    "afk": "#A7C957",
+    "atd": "#4E7A36",
+    "min": "#8A8F70",
+    "sprint": "#BC4749",
+    "rapida": "#C9A35B"
+   }
+  }
+ },
+ "c-pastel": {
+  "nome": "Pastel Dreamland Adventure",
+  "site": "Coolors",
+  "origem": "sua seleção",
+  "ideia": "pastéis: azul-bebê, rosa e lavanda (os escuros derivados dos pastéis)",
+  "fonte": "cdb4db-ffc8dd-ffafcc-bde0fe-a2d2ff",
+  "sementes": {
+   "tinta": "#22314F",
+   "capa": "#A2D2FF",
+   "brand": "#A2D2FF",
+   "navy": "#2B4A6F",
+   "cyan": "#BDE0FE",
+   "lime": "#FFC8DD",
+   "green": "#7A5C99",
+   "orange": "#FFAFCC",
+   "teal": "#4F6B8A",
+   "destaque": "#FFAFCC",
+   "cinza": "#A2D2FF",
+   "linhas": {
+    "epico": "#2B4A6F",
+    "hitl": "#5A9BD8",
+    "afk": "#7FB8E8",
+    "atd": "#9B7BB8",
+    "min": "#8C8FA8",
+    "sprint": "#E87FA6",
+    "rapida": "#F08CB4"
+   }
+  }
+ },
+ "c-marinho-coral": {
+  "nome": "Summer Ocean Breeze",
+  "site": "Coolors",
+  "origem": "sua seleção",
+  "ideia": "marinho e azul-aço com um coral vermelho de acento",
+  "fonte": "1d3557-457b9d-a8dadc-f1faee-e63946",
+  "sementes": {
+   "tinta": "#12233D",
+   "capa": "#457B9D",
+   "brand": "#457B9D",
+   "navy": "#1D3557",
+   "cyan": "#A8DADC",
+   "lime": "#C9DDEB",
+   "green": "#2A7F86",
+   "orange": "#F4A6AC",
+   "teal": "#3D5A80",
+   "destaque": "#E63946",
+   "cinza": "#457B9D",
+   "linhas": {
+    "epico": "#1D3557",
+    "hitl": "#457B9D",
+    "afk": "#4FB3B8",
+    "atd": "#2A7F86",
+    "min": "#6C8EAD",
+    "sprint": "#E63946",
+    "rapida": "#B5303C"
+   }
+  }
+ },
+ "c-autumn": {
+  "nome": "Autumn Harvest",
+  "site": "Coolors",
+  "origem": "sua seleção",
+  "ideia": "marrons, caramelo e creme (sem azul)",
+  "fonte": "6f1d1b-bb9457-432818-99582a-ffe6a7",
+  "sementes": {
+   "tinta": "#2B1A10",
+   "capa": "#99582A",
+   "brand": "#99582A",
+   "navy": "#432818",
+   "cyan": "#FFE6A7",
+   "lime": "#DCC08F",
+   "green": "#6F1D1B",
+   "orange": "#E8B98A",
+   "teal": "#6B5444",
+   "destaque": "#BB9457",
+   "cinza": "#99582A",
+   "linhas": {
+    "epico": "#432818",
+    "hitl": "#99582A",
+    "afk": "#BB9457",
+    "atd": "#6F1D1B",
+    "min": "#8A7563",
+    "sprint": "#C9A050",
+    "rapida": "#B5651D"
+   }
+  }
+ },
+ "c-olive": {
+  "nome": "Olive Garden Feast",
+  "site": "Coolors",
+  "origem": "sua seleção",
+  "ideia": "oliva e musgo com creme e caramelo (sem azul)",
+  "fonte": "606c38-283618-fefae0-dda15e-bc6c25",
+  "sementes": {
+   "tinta": "#1C2610",
+   "capa": "#606C38",
+   "brand": "#606C38",
+   "navy": "#283618",
+   "cyan": "#F2E9B8",
+   "lime": "#EBC28F",
+   "green": "#4A5A2A",
+   "orange": "#DDA15E",
+   "teal": "#5A5F4A",
+   "destaque": "#BC6C25",
+   "cinza": "#606C38",
+   "linhas": {
+    "epico": "#283618",
+    "hitl": "#606C38",
+    "afk": "#8A9A5B",
+    "atd": "#4A5A2A",
+    "min": "#7D7A63",
+    "sprint": "#DDA15E",
+    "rapida": "#BC6C25"
+   }
+  }
+ },
+ "c-ceu-sol": {
+  "nome": "Refreshing Summer Fun",
+  "site": "Coolors",
+  "origem": "sua seleção",
+  "ideia": "azul-céu e marinho com amarelo e laranja de acento",
+  "fonte": "023047-219ebc-8ecae6-ffb703-fb8500",
+  "sementes": {
+   "tinta": "#022338",
+   "capa": "#219EBC",
+   "brand": "#219EBC",
+   "navy": "#023047",
+   "cyan": "#8ECAE6",
+   "lime": "#FFD670",
+   "green": "#0F6E7A",
+   "orange": "#FFB703",
+   "teal": "#3A5A78",
+   "destaque": "#FB8500",
+   "cinza": "#219EBC",
+   "linhas": {
+    "epico": "#023047",
+    "hitl": "#219EBC",
+    "afk": "#5AB4D6",
+    "atd": "#0F6E7A",
+    "min": "#5C7A94",
+    "sprint": "#FFB703",
+    "rapida": "#FB8500"
+   }
+  }
+ },
+ "c-dark-sunset": {
+  "nome": "Dark Sunset",
+  "site": "Coolors",
+  "origem": "sua seleção",
+  "ideia": "azul-petróleo com amarelo-claro, âmbar e vinho",
+  "fonte": "335c67-fff3b0-e09f3e-9e2a2b-540b0e",
+  "sementes": {
+   "tinta": "#1C2F35",
+   "capa": "#335C67",
+   "brand": "#335C67",
+   "navy": "#2A4A53",
+   "cyan": "#9DC3CC",
+   "lime": "#FFF3B0",
+   "green": "#9E2A2B",
+   "orange": "#F0C27F",
+   "teal": "#540B0E",
+   "destaque": "#E09F3E",
+   "cinza": "#335C67",
+   "linhas": {
+    "epico": "#2A4A53",
+    "hitl": "#335C67",
+    "afk": "#6E99A3",
+    "atd": "#9E2A2B",
+    "min": "#7A6A5F",
+    "sprint": "#E09F3E",
+    "rapida": "#540B0E"
+   }
+  }
+ },
+ "c-cobalto-ambar": {
+  "nome": "Cobalto e âmbar",
+  "site": "Coolors",
+  "origem": "nova",
+  "ideia": "cobalto como base, âmbar de acento, teal e céu de apoio, cinzas ardósia",
+  "fonte": "2563eb-0f1e45-93c5fd-0f766e-f59e0b-475569",
+  "sementes": {
+   "tinta": "#0F1E45",
+   "capa": "#2563EB",
+   "brand": "#2563EB",
+   "navy": "#0F1E45",
+   "cyan": "#93C5FD",
+   "lime": "#FCD9A0",
+   "green": "#0F766E",
+   "orange": "#FBBF5A",
+   "teal": "#475569",
+   "destaque": "#F59E0B",
+   "cinza": "#64748B",
+   "linhas": {
+    "epico": "#0F1E45",
+    "hitl": "#2563EB",
+    "afk": "#0EA5E9",
+    "atd": "#0F766E",
+    "min": "#64748B",
+    "sprint": "#F59E0B",
+    "rapida": "#EA580C"
+   }
+  }
+ },
+ "c-eletrico-coral": {
+  "nome": "Azul elétrico e coral",
+  "site": "Coolors",
+  "origem": "nova",
+  "ideia": "azul elétrico como base, coral de acento, esmeralda e menta de apoio",
+  "fonte": "1e66f5-0b1b3a-7dd3fc-047857-a7f3d0-ff7a59",
+  "sementes": {
+   "tinta": "#0B1B3A",
+   "capa": "#1E66F5",
+   "brand": "#1E66F5",
+   "navy": "#0B1B3A",
+   "cyan": "#7DD3FC",
+   "lime": "#A7F3D0",
+   "green": "#047857",
+   "orange": "#FFB4A2",
+   "teal": "#334155",
+   "destaque": "#FF7A59",
+   "cinza": "#334155",
+   "linhas": {
+    "epico": "#0B1B3A",
+    "hitl": "#1E66F5",
+    "afk": "#06B6D4",
+    "atd": "#059669",
+    "min": "#475569",
+    "sprint": "#FF7A59",
+    "rapida": "#E11D48"
+   }
+  }
+ },
+ "c-petroleo-mostarda": {
+  "nome": "Azul-petróleo e mostarda",
+  "site": "Coolors",
+  "origem": "nova",
+  "ideia": "azul-petróleo e marinho como base, mostarda e laranja de acento, verde-folha de apoio",
+  "fonte": "2e86ab-1b3b6f-a3d5ff-3f7d58-f2c14e-f78154",
+  "sementes": {
+   "tinta": "#12263F",
+   "capa": "#2E86AB",
+   "brand": "#2E86AB",
+   "navy": "#1B3B6F",
+   "cyan": "#A3D5FF",
+   "lime": "#B8E0D2",
+   "green": "#3F7D58",
+   "orange": "#F2C14E",
+   "teal": "#5D737E",
+   "destaque": "#F78154",
+   "cinza": "#5D737E",
+   "linhas": {
+    "epico": "#1B3B6F",
+    "hitl": "#2E86AB",
+    "afk": "#4FB0C6",
+    "atd": "#3F7D58",
+    "min": "#5D737E",
+    "sprint": "#E0A526",
+    "rapida": "#F78154"
+   }
+  }
+ },
+ "a-complementar": {
+  "nome": "Complementar",
+  "site": "Adobe Color",
+  "origem": "nova",
+  "ideia": "regra complementar a partir do azul #1F5FBF: azuis e laranjas",
+  "fonte": "1f5fbf-12306b-9cc0f0-b3541e-ffb27a-f28c28",
+  "sementes": {
+   "tinta": "#0E2148",
+   "capa": "#1F5FBF",
+   "brand": "#1F5FBF",
+   "navy": "#12306B",
+   "cyan": "#9CC0F0",
+   "lime": "#F7C9A1",
+   "green": "#B3541E",
+   "orange": "#FFB27A",
+   "teal": "#3B4F6E",
+   "destaque": "#F28C28",
+   "cinza": "#1F5FBF",
+   "linhas": {
+    "epico": "#12306B",
+    "hitl": "#1F5FBF",
+    "afk": "#5B8FD6",
+    "atd": "#B3541E",
+    "min": "#6B7F99",
+    "sprint": "#F28C28",
+    "rapida": "#D9480F"
+   }
+  }
+ },
+ "a-dividida": {
+  "nome": "Complementar dividida",
+  "site": "Adobe Color",
+  "origem": "nova",
+  "ideia": "regra dividida a partir do azul #2B59C3: amarelo-laranja e vermelho-laranja",
+  "fonte": "2b59c3-172f6b-a9c0f2-f2b134-e4572e",
+  "sementes": {
+   "tinta": "#13265A",
+   "capa": "#2B59C3",
+   "brand": "#2B59C3",
+   "navy": "#172F6B",
+   "cyan": "#A9C0F2",
+   "lime": "#F8D98C",
+   "green": "#B8431F",
+   "orange": "#F5A88F",
+   "teal": "#4A5878",
+   "destaque": "#F2B134",
+   "cinza": "#2B59C3",
+   "linhas": {
+    "epico": "#172F6B",
+    "hitl": "#2B59C3",
+    "afk": "#6A8FE0",
+    "atd": "#B8431F",
+    "min": "#6B7891",
+    "sprint": "#C9900F",
+    "rapida": "#E4572E"
+   }
+  }
+ },
+ "a-triade": {
+  "nome": "Tríade",
+  "site": "Adobe Color",
+  "origem": "nova",
+  "ideia": "regra tríade (roda RYB) a partir do azul #1E4FA3: vermelho e amarelo",
+  "fonte": "1e4fa3-13305f-a4bde6-d64545-f2c94c",
+  "sementes": {
+   "tinta": "#0F2654",
+   "capa": "#1E4FA3",
+   "brand": "#1E4FA3",
+   "navy": "#13305F",
+   "cyan": "#A4BDE6",
+   "lime": "#F6DE95",
+   "green": "#8C6D0E",
+   "orange": "#F2A7A7",
+   "teal": "#4A5A73",
+   "destaque": "#F2C94C",
+   "cinza": "#1E4FA3",
+   "linhas": {
+    "epico": "#13305F",
+    "hitl": "#1E4FA3",
+    "afk": "#5C86D1",
+    "atd": "#8C6D0E",
+    "min": "#6A7A92",
+    "sprint": "#D4A72C",
+    "rapida": "#D64545"
+   }
+  }
+ },
+ "a-composta-aco": {
+  "nome": "Composta aço",
+  "site": "Adobe Color",
+  "origem": "variação",
+  "ideia": "regra composta a partir do azul-aço #3A6EA5: teal, âmbar e terracota",
+  "fonte": "3a6ea5-1f3a5c-2f9c95-e8a33d-c9573a",
+  "sementes": {
+   "tinta": "#182B44",
+   "capa": "#3A6EA5",
+   "brand": "#3A6EA5",
+   "navy": "#1F3A5C",
+   "cyan": "#9FD3CF",
+   "lime": "#F4D19B",
+   "green": "#22706B",
+   "orange": "#EBA48F",
+   "teal": "#4F6275",
+   "destaque": "#E8A33D",
+   "cinza": "#3A6EA5",
+   "linhas": {
+    "epico": "#1F3A5C",
+    "hitl": "#3A6EA5",
+    "afk": "#2F9C95",
+    "atd": "#22706B",
+    "min": "#6F8296",
+    "sprint": "#C7861E",
+    "rapida": "#C9573A"
+   }
+  }
+ },
+ "a-composta-marinho": {
+  "nome": "Composta marinho",
+  "site": "Adobe Color",
+  "origem": "variação",
+  "ideia": "regra composta a partir do marinho #22406B: verde-água, areia e terracota",
+  "fonte": "22406b-2c5d8f-2a9d8f-e9c46a-e76f51",
+  "sementes": {
+   "tinta": "#14263F",
+   "capa": "#2C5D8F",
+   "brand": "#2C5D8F",
+   "navy": "#22406B",
+   "cyan": "#A7DDD6",
+   "lime": "#F2DCA0",
+   "green": "#237A70",
+   "orange": "#F4B19F",
+   "teal": "#52606D",
+   "destaque": "#E9C46A",
+   "cinza": "#22406B",
+   "linhas": {
+    "epico": "#22406B",
+    "hitl": "#2C5D8F",
+    "afk": "#2A9D8F",
+    "atd": "#237A70",
+    "min": "#6B7A88",
+    "sprint": "#C9A227",
+    "rapida": "#E76F51"
+   }
+  }
+ }
+}
