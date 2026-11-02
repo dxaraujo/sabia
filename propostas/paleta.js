@@ -2,8 +2,8 @@
 // Roda no <head> para não piscar; a barra de troca ganha os botões quando a página carrega.
 (function(){
   var root=document.documentElement, q=new URLSearchParams(location.search);
-  var OP={paleta:[["sobria", "Sóbria"], ["atual", "Atual"], ["c-ceu-sol", "Refreshing Summer Fun"]],modo:[['claro','Claro'],['escuro','Escuro']]};
-  var GRUPO={"sobria": "base", "atual": "base", "c-ceu-sol": "Coolors · sua seleção"};
+  var OP={paleta:[["sobria", "Sóbria"], ["sobria-sabia", "Sóbria - Sabiá"], ["atual", "Atual"], ["sabia", "Sabiá"]],modo:[['claro','Claro'],['escuro','Escuro']]};
+  var GRUPO={"sobria": "base", "sobria-sabia": "base", "atual": "base", "sabia": "base"};
   var PADRAO={paleta:'sobria',modo:'claro'}, SEM={paleta:'sobria',modo:'claro'}, ROT={paleta:'Paleta',modo:'Modo'}, v={};
   function valido(k,x){return OP[k].some(function(o){return o[0]===x})}
   function ler(k){
@@ -13,7 +13,14 @@
   }
   function aplicar(k,x){
     v[k]=x;
-    if(x===SEM[k]) root.removeAttribute('data-'+k); else root.setAttribute('data-'+k,x);
+    if(k==='paleta'&&x.indexOf('sobria')===0){
+      // sóbria e variantes: sem as regras de paleta viva; a variante só troca tokens (data-sobria)
+      root.removeAttribute('data-paleta');
+      if(x==='sobria') root.removeAttribute('data-sobria'); else root.setAttribute('data-sobria',x);
+    } else {
+      if(k==='paleta') root.removeAttribute('data-sobria');
+      if(x===SEM[k]) root.removeAttribute('data-'+k); else root.setAttribute('data-'+k,x);
+    }
     try{localStorage.setItem('sabia-'+k,x)}catch(e){}
     document.querySelectorAll('.proposta [data-k="'+k+'"]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.v===x))});
   }

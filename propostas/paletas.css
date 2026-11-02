@@ -97,16 +97,34 @@
 /* ===== paletas para teste (geradas por gerar_paletas.py a partir do Coolors): cada uma com cores-base, acento e escala
    própria de cinzas e branco; só a luminosidade foi ajustada para o contraste (etapas ≥ 4,5:1; linhas do mapa ≥ 3:1).
    Na barra lateral, as linhas usam a cor original da paleta ===== */
-/* Refreshing Summer Fun (Coolors, sua seleção) — azul-céu e marinho com amarelo e laranja de acento */
-:root[data-paleta="c-ceu-sol"]{
+/* Sabiá (Coolors, base: Refreshing Summer Fun) — cores da Refreshing Summer Fun (Coolors): azul-céu e marinho com amarelo e laranja de acento */
+:root[data-paleta="sabia"]{
   --brand:#187F97; --blue:#187F97; --navy:#023047; --cyan:#8ECAE6; --lime:#FFD670; --green:#0F6E7A; --orange:#FFB703; --teal:#3A5A78; --yellow:#FB8500;
   --l-epico:#023047; --l-hitl:#219EBC; --l-afk:#319DC7; --l-atd:#0F6E7A; --l-min:#5C7A94; --l-sprint:#C08800; --l-rapida:#E17600;
   --viva-capa:#187F97; --viva-escuro:#023047; --viva-destaque:#FB8500; --viva-tinta:#022338; --destaque-txt:#022338;
 }
-:root[data-paleta="c-ceu-sol"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38494D; --title:#023047; --muted:#63787D; --line:#D0DADD; --soft:#F0F8F9; --grey:#F6F8F9; --grey2:#E7EDEE; --panel-bg:#F6F8F9; --acento:#187F97}
-:root[data-paleta="c-ceu-sol"][data-modo="escuro"]{--acento:#1E94B0}
-[data-modo="escuro"][data-paleta="c-ceu-sol"] :is(#map,.itin,.trilho,.chip){--l-epico:#028EDB}
-[data-paleta="c-ceu-sol"] .panel{--l-epico:#023047; --l-hitl:#219EBC; --l-afk:#5AB4D6; --l-atd:#0F6E7A; --l-min:#5C7A94; --l-sprint:#FFB703; --l-rapida:#FB8500}
-[data-paleta="c-ceu-sol"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#022338}
+:root[data-paleta="sabia"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38494D; --title:#023047; --muted:#63787D; --line:#D0DADD; --soft:#F0F8F9; --grey:#F6F8F9; --grey2:#E7EDEE; --panel-bg:#F6F8F9; --acento:#187F97}
+:root[data-paleta="sabia"][data-modo="escuro"]{--acento:#1E94B0}
+[data-modo="escuro"][data-paleta="sabia"] :is(#map,.itin,.trilho,.chip){--l-epico:#028EDB}
+[data-paleta="sabia"] .panel{--l-epico:#023047; --l-hitl:#219EBC; --l-afk:#5AB4D6; --l-atd:#0F6E7A; --l-min:#5C7A94; --l-sprint:#FFB703; --l-rapida:#FB8500}
+[data-paleta="sabia"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#022338}
+
+/* ===== variantes da sóbria: a mesma estrutura (quase tudo branco, destaques no navy e num amarelo em poucos pontos),
+   com outras cores. Ficam em <html data-sobria="…"> e não ligam as regras de paleta viva ===== */
+/* Sóbria - Sabiá: navy #023047 e azul-céu #219EBC da Refreshing Summer Fun; amarelo #FFB703 de destaque;
+   filetes das etapas e linhas do mapa com céu, amarelo, laranja e teal; cinzas puxados para o azul da paleta */
+:root[data-sobria="sobria-sabia"]{
+  --navy:#023047; --cyan:#8ECAE6; --lime:#FFD670; --green:#0F6E7A; --orange:#FB8500; --teal:#3A5A78; --yellow:#FFB703;
+  --l-epico:#023047; --l-hitl:#219EBC; --l-afk:#319DC7; --l-atd:#0F6E7A; --l-min:#5C7A94; --l-sprint:#C08800; --l-rapida:#E17600;
+}
+:root[data-sobria="sobria-sabia"]:not([data-modo="escuro"]){
+  --bg:#FFFFFF; --card:#FFFFFF; --ink:#38494D; --title:#023047; --muted:#63787D; --line:#D0DADD; --soft:#F0F8F9; --grey:#F6F8F9; --grey2:#E7EDEE;
+  --acento:#187F97; --brand:#187F97; --brand-hover:#023047; --blue:#187F97; --hero-bg:#F0F8F9; --hero-fg:#023047;
+}
+:root[data-sobria="sobria-sabia"][data-modo="escuro"]{--acento:#5AB4D6; --brand:#219EBC; --brand-hover:#5AB4D6; --blue:#219EBC}
+[data-modo="escuro"][data-sobria="sobria-sabia"] :is(#map,.itin,.trilho,.chip){--l-epico:#6FA8C8}
+[data-sobria="sobria-sabia"] .panel{--l-epico:#023047; --l-hitl:#219EBC; --l-afk:#5AB4D6; --l-atd:#0F6E7A; --l-min:#5C7A94; --l-sprint:#FFB703; --l-rapida:#FB8500}
+[data-sobria="sobria-sabia"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#022338}
+[data-sobria="sobria-sabia"] :is(.itin li.cur .dot,.trilho li.agora::after){box-shadow:0 0 0 4px rgba(255,183,3,.35)}
 
 .proposta select{font:inherit;padding:6px 8px;border:1px solid #d0d4da;border-radius:6px;background:#fff;color:#222;max-width:220px}

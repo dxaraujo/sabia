@@ -1,9 +1,9 @@
 {
- "c-ceu-sol": {
-  "nome": "Refreshing Summer Fun",
+ "sabia": {
+  "nome": "Sabiá",
   "site": "Coolors",
-  "origem": "sua seleção",
-  "ideia": "azul-céu e marinho com amarelo e laranja de acento",
+  "origem": "base: Refreshing Summer Fun",
+  "ideia": "cores da Refreshing Summer Fun (Coolors): azul-céu e marinho com amarelo e laranja de acento",
   "fonte": "023047-219ebc-8ecae6-ffb703-fb8500",
   "sementes": {
    "tinta": "#022338",
