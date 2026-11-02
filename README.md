@@ -122,10 +122,11 @@ parte do fluxo que sabe procurá-los (`.sabia/toolkits/`, `~/.sabia/toolkits/`, 
 ou skills com `metadata.toolkit`), detecta o tipo do projeto e **propõe, agente por agente**, as skills a ligar (uma confirmação por agente) —
 num projeto 100% Spring Batch, o desenvolvedor recebe as de batch e Java que a pessoa escolher, e não as de REST ou
 frontend. Uma skill de toolkit também pode assumir um passo do Sabiá pelo id (`sa-codificar.codificar.tarefa`): o
-desvio vai no prompt do agente dono. E um toolkit pode trazer o fluxo que escreve um tipo desviável do catálogo
-(`"tipos": {"HF": "<toolkit>.<fluxo>"}`; `HF`, `REG`, `EL`, `ET` e `ATA`), compilado na instalação com o compilador
-do Sabiá, os padrões em camada (Sabiá < toolkit < projeto), os itens que ele acrescenta à revisão (`rubricas`) e a
-versão mínima do Sabiá (`requer`); o catálogo, o envelope OKF, a revisão, o GATE e a publicação continuam do Sabiá.
+desvio vai no prompt do agente dono. E um toolkit pode trazer a skill que escreve um tipo desviável do catálogo,
+com o fluxo e o padrão do tipo (`"tipos": {"HF": {"skill", "fluxo", "padrao"}}`; `HF`, `REG`, `EL`, `ET` e `ATA`), os
+itens que ele acrescenta à revisão (`rubricas`) e a versão mínima do Sabiá (`requer`). Fluxo com passos é só do
+framework: o Sabiá não compila conteúdo de toolkit, e o toolkit não troca padrão do núcleo; o catálogo, o envelope OKF,
+a revisão, o GATE e a publicação continuam do Sabiá.
 Contrato em [`skills/sa-setup/references/toolkits.md`](skills/sa-setup/references/toolkits.md) e
 schema em [`toolkit.schema.json`](skills/sa-setup/assets/toolkit.schema.json).
 
@@ -223,8 +224,8 @@ possível abrir a IDE.
 **Prova do núcleo**, só com fixtures sintéticas (`node --test` em `cli/` e `python3 -m unittest test_gerar_agentes`
 em `skills/sa-setup/scripts/`): o framework deste repositório instalado e compilado no Kiro e no opencode, com o
 grafo de cada fluxo igual ao do mestre, o catálogo sem tipo pendente e a linha Telas = `sim` como condição do
-protótipo, da EL e da P12 nos passos compilados; um projeto front+back com um toolkit de especificação (HF ⇢ o fluxo
-dele, um padrão em camada, um item de rubrica), o passo do projeto por cima dele e as linhas ET, Casos de teste e
+protótipo, da EL e da P12 nos passos compilados; um projeto front+back com um toolkit de especificação (HF ⇢ a skill
+dele, com o fluxo e o padrão do tipo, e um item de rubrica), um passo do Sabiá trocado no projeto e as linhas ET, Casos de teste e
 Telas do `sabia.md` (ET inicial, `CT.csv`, HF ↔ EL, P12 e P13 nos passos compilados); e um projeto batch com o desvio
 da tarefa de job ao agente do toolkit. Nos dois, os agentes são gerados pelo
 `gerar_agentes.py` sobre a instalação, e a `sabia rota` mostra o desvio e a origem de cada passo.

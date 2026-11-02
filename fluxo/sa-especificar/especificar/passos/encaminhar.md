@@ -1,5 +1,5 @@
 ---
-{"resumo": "Mostra o painel do épico e encaminha pela Fase do status.md (sa-prd, sa-fatiar ou o passo fechamentos); a transcrição sem ATA aprovada passa antes pela ata da reunião e, com Telas = sim, a versão nova do protótipo ou a que aguarda o cliente passa antes pelo protótipo; um tipo pode sair pelo fluxo de um toolkit."}
+{"resumo": "Mostra o painel do épico e encaminha pela Fase do status.md (sa-prd, sa-fatiar ou o passo fechamentos); a transcrição sem ATA aprovada passa antes pela ata da reunião e, com Telas = sim, a versão nova do protótipo ou a que aguarda o cliente passa antes pelo protótipo; um tipo pode sair pela skill de um toolkit."}
 ---
 ## Entrada
 
@@ -28,18 +28,18 @@ Próximo: <skill>
 
 ### Toolkit na especificação
 
-Um toolkit pode trazer o fluxo que escreve um tipo desviável do [catálogo](~/.sabia/framework/skills/sabia/references/tipos.md)
-(HF, REG…), no padrão dele ([passos.md](~/.sabia/framework/skills/sabia/references/passos.md#tipos-com-fluxo-de-toolkit)).
+Um toolkit pode trazer a skill que escreve um tipo desviável do [catálogo](~/.sabia/framework/skills/sabia/references/tipos.md)
+(HF, REG…), com o fluxo e o padrão do tipo ou só com as references dela ([passos.md](~/.sabia/framework/skills/sabia/references/passos.md#tipos-com-skill-de-toolkit)).
 
-Quem decide é a configuração do agente: a linha **Tipos com fluxo de toolkit** do seu prompt, gerada do `agentes.json`
+Quem decide é a configuração do agente: a linha **Tipos com skill de toolkit** do seu prompt, gerada do `agentes.json`
 pela setup. É transparente para quem está no fluxo: nada é perguntado nem marcado no `status.md` do épico.
 
-1. **Escrita (passo `sa-prd.prd.escrever`; a ATA, no passo `sa-especificar.reuniao.escrever`).** Cada tipo da linha sai pelo fluxo do toolkit, em linha (a skill dele está
-   ligada a você), e volta ao passo; os demais tipos e o `prd.md` são do Sabiá. Sem a linha → tudo é do Sabiá. O
+1. **Escrita (passo `sa-prd.prd.escrever`; a ATA, no passo `sa-especificar.reuniao.escrever`).** Cada tipo da linha sai pela skill do toolkit, que segue o
+   fluxo e o padrão do tipo pelos caminhos da linha, se a linha os trouxer, senão as references dela (a skill está ligada a você), e volta ao passo; os demais tipos e o `prd.md` são do Sabiá. Sem a linha → tudo é do Sabiá. O
    passo `sa-prd.prd.similares` vem antes e é seu.
 2. **Contrato, antes da revisão P.** `prd.md` com todas as H2 do template (o padrão `sa-prd/prd.md`), `elm/` com os conceitos OKF quando há
    ELM, um arquivo por artefato, com a sigla e o nome do catálogo. A revisão P e o GATE continuam os do Sabiá; os itens
-   de rubrica do toolkit se somam à P (no prompt do `sa-revisor`; sem agente, na seção **Tipos com fluxo de toolkit**
+   de rubrica do toolkit se somam à P (no prompt do `sa-revisor`; sem agente, na seção **Tipos com skill de toolkit**
    do `.sabia/sabia.md`).
 
 ## Saída

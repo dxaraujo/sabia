@@ -9,8 +9,8 @@ saída, ou "procurado em X, não encontrado") e a **correção** esperada. Achad
 
 Regras promovidas (seção Regras aprendidas do `.sabia/sabia.md`) valem como itens extras da rubrica do artefato a que se
 referem, com a severidade registrada nelas. Os itens de rubrica de um toolkit (no prompt do revisor e na seção Tipos com
-fluxo de toolkit do `sabia.md`) também só se somam: nenhum troca, afrouxa ou dispensa um item daqui — P5, P8 e P11
-valem igual no artefato que o fluxo de um toolkit escreve.
+skill de toolkit do `sabia.md`) também só se somam: nenhum troca, afrouxa ou dispensa um item daqui — P5, P8 e P11
+valem igual no artefato que a skill de um toolkit escreve.
 
 ## P — PRD (`prd.md` + `decisoes.md`)
 

@@ -406,87 +406,62 @@ test("rota --mapa: chama e passagens de todo o framework em Mermaid", async () =
 
 const REPO = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 
-/** O toolkit sintético "exemplo" (HF → exemplo.hf), com um padrão em camada sobre o sa-prd/hf.md. */
-function exemplo(base, mudar = {}) {
-  const fm = (d) => `---\n${JSON.stringify(d)}\n---\n`;
+/** O toolkit sintético "casa": HF → a skill casa, com o fluxo e o padrão do tipo como arquivos da pasta. */
+function casa(base, mudar = {}) {
   return escrever(base, {
-    "toolkit.json": { nome: "exemplo", versao: "1.0.0", descricao: "toolkit fictício de especificação", autor: { nome: "Ana Exemplo", area: "Equipe Alfa" },
-      "tipos-de-projeto": ["backend"], skills: [{ caminho: "skills/exemplo/SKILL.md", papeis: ["especificador"] }],
-      fluxos: ["exemplo.hf"], padroes: ["sa-prd/hf.md"], tipos: { HF: "exemplo.hf" }, ...mudar },
-    "skills/exemplo/SKILL.md": "---\nname: exemplo\ndescription: HF do exemplo\n---\n# exemplo\n",
-    "fluxo/exemplo/hf/hf.md": fm({ fluxo: "hf", dono: "sa-especificador", passos: [{ id: "escrever" }] }) + "# HF do exemplo\n",
-    "fluxo/exemplo/hf/passos/escrever.md": fm({ resumo: "Escreve as HF." }) + "## Entrada\n\nx\n\n## Faça\n\nSiga o padrão `sa-prd/hf.md` e volte ao `sa-prd.prd.escrever`.\n\n## Saída\n\ny\n\n## Pare se\n\n—\n",
-    "padrao/sa-prd/hf.md": fm({ resumo: "HF do exemplo." }) + "# HF (exemplo)\n",
+    "toolkit.json": { nome: "casa", versao: "1.0.0", descricao: "toolkit fictício de especificação", autor: { nome: "Ana Exemplo", area: "Equipe Alfa" },
+      "tipos-de-projeto": ["backend"], skills: [{ caminho: "skills/casa/SKILL.md", papeis: ["especificador"] }],
+      tipos: { HF: { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md", padrao: "padrao/padrao-hf.md" } }, ...mudar },
+    "skills/casa/SKILL.md": "---\nname: casa\ndescription: HF da casa\n---\n# casa\n\nSiga o fluxo do tipo.\n",
+    "fluxo/fluxo-hf.md": "# Fluxo HF\n", "padrao/padrao-hf.md": "# Padrão HF\n",
   });
 }
 
-test("toolkit com fluxos: instalar compila para cada alvo (o opencode recebe a compilação), remover apaga a compilação", async () => {
+test("toolkit com tipo → skill: instalar copia a skill como veio (nada compilado), remover apaga; o tipo é validado no baixar", async () => {
   for (const f of ["fluxo", "padrao", "skills", "plugin.json"]) fs.cpSync(path.join(REPO, f), path.join(home, ".sabia/framework", f), { recursive: true });
-  await s.instalarToolkit(exemplo(path.join(raiz, "tk-exemplo")), { alvo: "opencode,kiro" });
-  const oc = fs.readFileSync(skill("exemplo"), "utf8");
-  assert.ok(oc.includes("## Fluxo hf"));
-  const passo = fs.readFileSync(path.join(home, ".config/opencode/skills/exemplo/references/hf/escrever.md"), "utf8");
-  assert.ok(passo.includes("](~/.config/opencode/skills/sa-prd/references/prd/escrever.md)") && passo.includes("](~/.sabia/compilado-toolkits/opencode/exemplo/padrao/sa-prd/hf.md)"));
-  const kiro = path.join(home, ".sabia/compilado-toolkits/kiro/exemplo");
-  assert.ok(fs.readFileSync(path.join(kiro, "skills/exemplo/references/hf/escrever.md"), "utf8").includes("](~/.kiro/powers/installed/sabia/skills/sa-prd/references/prd/escrever.md)"));
-  assert.ok(fs.existsSync(path.join(home, ".sabia/compilado-toolkits/opencode/exemplo/padrao/sa-prd/hf.md")));
-  assert.deepEqual(Object.keys(s.lerInventario().toolkits.exemplo.alvos.opencode.copias), ["~/.config/opencode/skills/exemplo"]);
-  await s.removerToolkit("exemplo", {});
-  assert.ok(!fs.existsSync(skill("exemplo")) && !fs.existsSync(kiro));
-  // tipo que o catálogo não deixa desviar: recusado no baixar, nada gravado
-  await assert.rejects(s.baixarToolkit(exemplo(path.join(raiz, "tk-ruim"), { tipos: { GL: "exemplo.hf" } }), {}), /tipo GL: não é desviável/);
-  assert.ok(!fs.existsSync(path.join(home, ".sabia/toolkits/exemplo")));
+  await s.instalarToolkit(casa(path.join(raiz, "tk-casa")), { alvo: "opencode,kiro" });
+  assert.equal(fs.readFileSync(skill("casa"), "utf8"), "---\nname: casa\ndescription: HF da casa\n---\n# casa\n\nSiga o fluxo do tipo.\n");
+  assert.ok(fs.existsSync(path.join(home, ".sabia/toolkits/casa/fluxo/fluxo-hf.md")) && !fs.existsSync(path.join(home, ".sabia/compilado-toolkits")));
+  assert.deepEqual(Object.keys(s.lerInventario().toolkits.casa.alvos.opencode.copias), ["~/.config/opencode/skills/casa"]);
+  await s.removerToolkit("casa", {});
+  assert.ok(!fs.existsSync(skill("casa")) && !fs.existsSync(path.join(home, ".sabia/toolkits/casa")));
+  // tipo que o catálogo não deixa desviar, e a forma "<tk>.<fluxo>": recusados no baixar, nada gravado
+  const hf = { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md" };
+  await assert.rejects(s.baixarToolkit(casa(path.join(raiz, "tk-ruim"), { tipos: { GL: hf } }), {}), /tipo GL: não é desviável/);
+  await assert.rejects(s.baixarToolkit(casa(path.join(raiz, "tk-str"), { tipos: { HF: "casa.hf" } }), {}), /tipo HF: use \{"skill", "fluxo", "padrao"\}/);
+  assert.ok(!fs.existsSync(path.join(home, ".sabia/toolkits/casa")));
   // o passo que só cria um tipo não aceita desvio por para: o tipo vai por `tipos`
-  const porPasso = exemplo(path.join(raiz, "tk-passo"), { tipos: undefined, skills: [{ caminho: "skills/exemplo/SKILL.md", papeis: ["especificador"],
+  const porPasso = casa(path.join(raiz, "tk-passo"), { tipos: undefined, skills: [{ caminho: "skills/casa/SKILL.md", papeis: ["especificador"],
     passo: { passo: "sa-prd.prd.escrever", para: "épico de exemplo" } }] });
   assert.match(s.validarToolkit(porPasso, null, REPO).join(), /sa-prd\.prd\.escrever não aceita desvio de toolkit \(o tipo HF, REG, EL, ET vai por `tipos`\)/);
 });
 
-test("toolkit com fluxos: atualizar o toolkit recompila também o Kiro; atualizar o Sabiá recompila os toolkits", async () => {
-  const fw = path.join(raiz, "fw");
-  for (const f of ["fluxo", "padrao", "skills", "plugin.json", "mcp.json"]) fs.cpSync(path.join(REPO, f), path.join(fw, f), { recursive: true });
-  await s.instalar({ fonte: fw, alvo: "opencode", semMcp: true });
-  const fonte = exemplo(path.join(raiz, "tk-at"));
-  await s.instalarToolkit(fonte, { alvo: "opencode,kiro" });
-  const doKiro = path.join(home, ".sabia/compilado-toolkits/kiro/exemplo/skills/exemplo/references/hf/escrever.md");
-  escrever(fonte, { "fluxo/exemplo/hf/passos/escrever.md": fs.readFileSync(path.join(fonte, "fluxo/exemplo/hf/passos/escrever.md"), "utf8").replace("Siga", "Agora siga") });
-  respostas = ["s"];  // substituir o toolkit baixado? sim
-  await s.atualizarToolkits("exemplo", {});
-  assert.match(fs.readFileSync(doKiro, "utf8"), /Agora siga/);
-  assert.match(fs.readFileSync(skill("exemplo").replace("SKILL.md", "references/hf/escrever.md"), "utf8"), /Agora siga/);
-  // o framework novo: a compilação dos toolkits é refeita sobre ele
-  const doOpencode = path.join(home, ".sabia/compilado-toolkits/opencode/exemplo/padrao/sa-prd/hf.md");
-  fs.rmSync(doOpencode);
-  fs.appendFileSync(path.join(fw, "README.md"), "\nmudou\n");
-  respostas = ["s"];  // atualizar? sim
-  await s.atualizar({ fonte: fw });
-  assert.ok(fs.existsSync(doOpencode));
-});
-
 test("toolkit: skill com nome do Sabiá (sa-* ou sabia) é recusada", () => {
-  const tk = exemplo(path.join(raiz, "tk-sa"), { skills: [{ caminho: "skills/sa-prd/SKILL.md", papeis: ["especificador"] }] });
+  const tk = casa(path.join(raiz, "tk-sa"), { tipos: undefined, skills: [{ caminho: "skills/sa-prd/SKILL.md", papeis: ["especificador"] }] });
   escrever(tk, { "skills/sa-prd/SKILL.md": "---\nname: sa-prd\ndescription: x\n---\n# sa-prd\n" });
   assert.match(s.validarToolkit(tk).join(), /skill skills\/sa-prd\/SKILL\.md: nome do Sabiá/);
 });
 
-test("rota --fluxo: o desvio por tipo no passo que cria o tipo e a origem toolkit no fluxo do toolkit", () => {
-  const tk = exemplo(path.join(raiz, "tk-rota"));
-  const projeto = escrever(path.join(raiz, "proj-tipo"), { ".sabia/config/agentes.json": { toolkits: { exemplo: { pasta: tk, versao: "1.0.0" } } } });
-  const o = { framework: REPO, projeto };
-  const prd = s.rotaFluxo("sa-prd.prd", o);
-  assert.match(prd, /^tipo ⇢ +escrever: HF +→ exemplo\.hf +toolkit exemplo 1\.0\.0$/m);
+test("rota --fluxo: o tipo → skill do toolkit no passo que cria o tipo", () => {
+  const tk = casa(path.join(raiz, "tk-rota"));
+  const projeto = escrever(path.join(raiz, "proj-tipo"), { ".sabia/config/agentes.json": { toolkits: { casa: { pasta: tk, versao: "1.0.0" } } } });
+  const prd = s.rotaFluxo("sa-prd.prd", { framework: REPO, projeto });
+  assert.match(prd, /^tipo ⇢ +escrever: HF +→ skill casa \(fluxo\/fluxo-hf\.md\) +toolkit casa 1\.0\.0$/m);
   assert.match(prd, /escrever ⇢ +Sabiá/);
-  assert.match(prd, /│ \d escrever ⇢ +│──▶ ⇢ tipo HF → exemplo\.hf \(toolkit exemplo 1\.0\.0\)/);
-  assert.ok(prd.includes("note right of escrever: chama sa-especificar.prototipo · tipo HF ⇢ exemplo.hf"));
-  const hf = s.rotaFluxo("exemplo.hf", o);
-  assert.match(hf, /^fluxo +exemplo\.hf +dono sa-especificador +toolkit exemplo 1\.0\.0$/m);
-  assert.match(hf, /^1 +escrever +toolkit exemplo 1\.0\.0/m);
+  assert.match(prd, /│ \d escrever ⇢ +│──▶ ⇢ tipo HF → skill casa \(fluxo\/fluxo-hf\.md\) \(toolkit casa 1\.0\.0\)/);
+  assert.ok(prd.includes("note right of escrever: chama sa-especificar.prototipo · tipo HF ⇢ skill casa (fluxo/fluxo-hf.md)"));
   // sem o toolkit no projeto: o ⇢ continua (o gancho), sem o tipo ligado
   assert.doesNotMatch(s.rotaFluxo("sa-prd.prd", { framework: REPO, projeto: path.join(raiz, "vazio") }), /^tipo ⇢/m);
   // a ATA desvia em outro passo: no sa-especificar.reuniao.escrever
-  const tkAta = exemplo(path.join(raiz, "tk-rota-ata"), { tipos: { ATA: "exemplo.hf" } });
-  const pAta = escrever(path.join(raiz, "proj-ata"), { ".sabia/config/agentes.json": { toolkits: { exemplo: { pasta: tkAta, versao: "1.0.0" } } } });
-  assert.match(s.rotaFluxo("sa-especificar.reuniao", { framework: REPO, projeto: pAta }), /│ 2 escrever ⇢ +│──▶ ⇢ tipo ATA → exemplo\.hf \(toolkit exemplo 1\.0\.0\)/);
+  const tkAta = casa(path.join(raiz, "tk-rota-ata"), { tipos: { ATA: { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md" } } });
+  const pAta = escrever(path.join(raiz, "proj-ata"), { ".sabia/config/agentes.json": { toolkits: { casa: { pasta: tkAta, versao: "1.0.0" } } } });
+  assert.match(s.rotaFluxo("sa-especificar.reuniao", { framework: REPO, projeto: pAta }), /│ 2 escrever ⇢ +│──▶ ⇢ tipo ATA → skill casa/);
+  // só a skill (references dentro) e a forma antiga "<tk>.<fluxo>": a rota não cai
+  const tkSo = casa(path.join(raiz, "tk-rota-so"), { tipos: { HF: { skill: "skills/casa/SKILL.md" }, REG: "casa.reg" } });
+  const pSo = escrever(path.join(raiz, "proj-so"), { ".sabia/config/agentes.json": { toolkits: { casa: { pasta: tkSo, versao: "1.0.0" } } } });
+  const so = s.rotaFluxo("sa-prd.prd", { framework: REPO, projeto: pSo });
+  assert.match(so, /^tipo ⇢ +escrever: HF +→ skill casa +toolkit casa 1\.0\.0$/m);
+  assert.match(so, /REG +→ \(inválido/);
 });
 
 test("opção com valor sem o valor é recusada sem engolir a seguinte", async () => {

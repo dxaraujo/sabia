@@ -186,25 +186,17 @@ agente.
 | `sa-codificar.codificar.tarefa` | `<nome>` <versão> | <quando usar> | `<skill>` | <`<agente>` | —> |
 <nenhum — sem skill de toolkit com `passo`, ou nenhuma ligada>
 
-## Tipos com fluxo de toolkit
+## Tipos com skill de toolkit
 
-Num tipo desviável do catálogo (`references/tipos.md` da skill `sabia`), o fluxo de um toolkit escreve o artefato no
-passo de desvio do tipo (coluna Desviável, ⇢); o Sabiá continua dono do catálogo, do envelope OKF, da revisão e do
-GATE. O agente dono já tem a linha no prompt; estas tabelas (as que o gerador imprime) valem na sessão sem agente.
-`<alvo>` é a ferramenta da sessão (`kiro` ou `opencode`).
+Num tipo desviável do catálogo (`references/tipos.md` da skill `sabia`), a skill de um toolkit, com o fluxo e o padrão
+do tipo (ou só as references dela), escreve o artefato no passo de desvio do tipo (coluna Desviável, ⇢), no padrão OKF do Sabiá; o Sabiá continua
+dono do catálogo, do envelope OKF, da revisão e do GATE. O agente dono já tem a linha no prompt; estas tabelas (as que o
+gerador imprime) valem na sessão sem agente.
 
-| Tipo | Fluxo | Skill | Toolkit | Passo de desvio |
+| Tipo | Skill | Fluxo e padrão | Toolkit | Passo de desvio |
 |---|---|---|---|---|
-| `<sigla>` | `<toolkit>.<fluxo>` | `~/.sabia/compilado-toolkits/<alvo>/<toolkit>/skills/<skill>/SKILL.md` | `<nome>` <versão> | `<id do passo>` |
+| `<sigla>` | `~/.sabia/toolkits/<toolkit>/skills/<skill>/SKILL.md` | `~/.sabia/toolkits/<toolkit>/<fluxo>` <com o padrão `~/.sabia/toolkits/<toolkit>/<padrão>`> <ou — (as references da skill)> | `<nome>` <versão> | `<id do passo>` |
 <nenhum — sem toolkit com `tipos`>
-
-O padrão do toolkit vale no lugar do da skill (o `.sabia/padrao/` do projeto vale sobre os dois), também na revisão e
-na publicação:
-
-| Padrão | No lugar do da skill | Toolkit |
-|---|---|---|
-| `<skill>/<nome>.md` | `~/.sabia/compilado-toolkits/<alvo>/<toolkit>/padrao/<skill>/<nome>.md` | `<nome>` <versão> |
-<nenhum — sem toolkit com `padroes` sobre um do Sabiá>
 
 Os itens de rubrica do toolkit se somam aos da rubrica do artefato na revisão (nenhum troca um item do Sabiá):
 

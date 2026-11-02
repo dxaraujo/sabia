@@ -1,5 +1,5 @@
 ---
-{"resumo": "Escreve em elm/ a ATA da reunião (padrão sa-especificar/ata.md, envelope OKF, status draft), com o D-nn de cada decisão reservado no decisoes.md, mais a entrada no index.md e no log.md; com fluxo de toolkit para a ATA no prompt, sai por esse fluxo."}
+{"resumo": "Escreve em elm/ a ATA da reunião (padrão sa-especificar/ata.md, envelope OKF, status draft), com o D-nn de cada decisão reservado no decisoes.md, mais a entrada no index.md e no log.md; com skill de toolkit para a ATA no prompt, sai por ela."}
 ---
 ## Entrada
 
@@ -7,9 +7,9 @@ O `.transcricao.md` da reunião (passo `transcricao`), o `decisoes.md` e o `rasc
 
 ## Faça
 
-Tipo `ATA` com fluxo de toolkit no seu prompt (**Tipos com fluxo de toolkit**) → a ATA sai pelo fluxo do toolkit: rode-o
-em linha e volte a este passo ("Toolkit na especificação", no passo `sa-especificar.especificar.encaminhar`). Na
-volta, confira o artefato pelo contrato: arquivo pela coluna Arquivo do catálogo, envelope do `okf-elm.md`,
+Tipo `ATA` com skill de toolkit no seu prompt (**Tipos com skill de toolkit**) → a ATA sai pela skill: carregue-a,
+siga o fluxo e o padrão da ATA pelos caminhos da linha, se a linha os trouxer (senão, a skill), e volte a este passo ("Toolkit na especificação", no
+passo `sa-especificar.especificar.encaminhar`). Na volta, confira o artefato pelo contrato: arquivo pela coluna Arquivo do catálogo, envelope do `okf-elm.md`,
 `status: draft`, entrada no `index.md` e no `log.md`.
 
 Sem ele, crie `elm/ATA-nn-<slug>.md` na pasta do épico (a da base se a linha do épico no `backlog.md` já tem o link `prd`; senão, a de trabalho), com o corpo do padrão

@@ -7,7 +7,7 @@ Os agentes são **gerados**, nunca editados à mão. Cinco fontes:
 | `papeis.json` | [../assets/agents/](../assets/agents/papeis.json) (power) | permissões de cada papel: escrita, registros, nível de shell, push e MCPs |
 | `sa-<papel>.md` | [../assets/agents/](../assets/agents/) (power) | o prompt de cada agente |
 | `agentes.json` | `.sabia/config/agentes.json` (projeto, versionado) | as escolhas do projeto: caminhos, comandos, skills e MCPs por agente |
-| mestres dos fluxos | `~/.sabia/framework/fluxo/<skill>/<fluxo>/<fluxo>.md` (framework instalado; `--framework` troca), mais o `fluxo/tipos.json` e os fluxos dos toolkits do projeto | o dono de cada fluxo, os passos, quais aceitam desvio (`"desvio": true`) e que passo cria cada tipo |
+| mestres dos fluxos | `~/.sabia/framework/fluxo/<skill>/<fluxo>/<fluxo>.md` (framework instalado; `--framework` troca), mais o `fluxo/tipos.json` | o dono de cada fluxo, os passos, quais aceitam desvio (`"desvio": true`) e que passo cria cada tipo |
 | override | `.sabia/fluxo/` e `.sabia/padrao/` (projeto, esparso; harness) | o que o projeto customizou: vira o [delta](#o-prompt-delta-do-override-e-chamada-entre-fluxos) no prompt do dono |
 
 O script [../scripts/gerar_agentes.py](../scripts/gerar_agentes.py) junta as cinco e grava os sete agentes, mais os agentes dos passos de toolkit ligados, em cada alvo (`.kiro/agents/<nome>.json`, `.opencode/agents/<nome>.md`):
@@ -89,16 +89,16 @@ do agente, que o gerador monta depois do `sa-<papel>.md`:
 - **Aviso:** a `base` da cópia difere do original atual (o Sabiá mudou o passo desde a cópia) → compare e funda à mão.
 - **Desvios de toolkit** no passo de toolkit ligado (só em passo com `"desvio": true`): ver
   [toolkits.md](toolkits.md#passos).
-- **Tipos com fluxo de toolkit**, no dono do passo de desvio do tipo (com a skill do fluxo ligada); o padrão do
-  toolkit em camada sobre um do Sabiá, em todos; os itens de rubrica do toolkit, no revisor. Colisão entre toolkits
-  do projeto → recusa (código 1, nada gravado). Ver [toolkits.md](toolkits.md#fluxos-padrões-e-tipos).
+- **Tipos com skill de toolkit** (a skill, com o fluxo e o padrão do tipo por caminho), no dono do passo de desvio
+  do tipo (com a skill ligada); os itens de rubrica do toolkit, no revisor. Colisão entre toolkits do projeto →
+  recusa (código 1, nada gravado). Ver [toolkits.md](toolkits.md#tipos).
 - **Regra de chamada**, em todo agente de papel: chama **em linha** → roda o fluxo chamado e volta ao passo; chama
   **subagente** → chama o agente e continua com a resposta (sem ele, carrega a skill do fluxo); **passa a** → o fluxo
   termina, diz a próxima (o agente dono do outro fluxo) e para.
 
 ## Como as permissões são montadas
 
-- **Leitura:** o projeto e o power (as skills compiladas; no opencode, `~/.config/opencode`), `~/.sabia/toolkits/` e `~/.sabia/compilado-toolkits/`; negados `.env*`, `*.pem`, `*.key`, `~/.ssh`, `~/.aws`, as credenciais dos MCPs
+- **Leitura:** o projeto, o power (as skills compiladas; no opencode, `~/.config/opencode`) e `~/.sabia/toolkits/`; negados `.env*`, `*.pem`, `*.key`, `~/.ssh`, `~/.aws`, as credenciais dos MCPs
   e o bundle. Os agentes leem e procuram com as ferramentas do agente, não com `cat`/`grep` no shell.
 - **Shell — por nível** (`niveis_shell`): `nenhum` (sem a ferramenta de shell) · `leitura` (`git-leitura`,
   `worktree`, `creditos`; o pesquisador) · `trabalho` = **`*`**: liberado para quem escreve no projeto, menos o

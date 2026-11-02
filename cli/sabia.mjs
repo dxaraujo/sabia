@@ -10,7 +10,7 @@ import os from "node:os";
 import path from "node:path";
 import readline from "node:readline/promises";
 import { fileURLToPath } from "node:url";
-import { carregar, carregarToolkit, compilar, compilarToolkit, grafoAscii, LEGENDA, partes, temDesvio, validarToolkitFonte } from "./compilar.mjs";
+import { carregar, compilar, grafoAscii, LEGENDA, partes, temDesvio, validarToolkitFonte } from "./compilar.mjs";
 
 const VERSAO = JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8")).version;
 const REPO = "https://github.com/dxaraujo/sabia.git";
@@ -299,19 +299,6 @@ function compilarPara(alvo, fw) {
   return compilar(fw, sabia("compilado", alvo), { base: baseSabia(alvo), raiz: alvo === "kiro", versao });
 }
 
-const temFonte = (man) => !!(man.fluxos?.length || man.padroes?.length);
-
-/**
- * Compila os fluxos e padrões do toolkit `nome` (em ~/.sabia/toolkits) para o alvo em
- * ~/.sabia/compilado-toolkits/<alvo>/<nome>/. No opencode as skills dele ficam ao lado das do Sabiá; no Kiro ficam
- * no próprio staging, e o gerador as liga aos agentes por skill://, como o power.
- */
-function compilarToolkitPara(alvo, nome) {
-  const raizTk = `~/.sabia/compilado-toolkits/${alvo}/${nome}`;
-  return compilarToolkit(sabia("framework"), sabia("toolkits", nome), sabia("compilado-toolkits", alvo, nome),
-    { base: alvo === "kiro" ? `${raizTk}/skills` : baseSabia(alvo), baseSabia: baseSabia(alvo), raizTk });
-}
-
 async function instalarAlvo(alvo, inv, opcoes) {
   const fw = compilarPara(alvo, sabia("framework"));
   if (alvo === "kiro") {
@@ -398,9 +385,6 @@ export async function atualizar(opcoes = {}) {
       }
       await instalarAlvo(alvo, inv, { ...opcoes, semMcp: true });
     }
-    // os fluxos dos toolkits citam ids do Sabiá: compilados de novo sobre o framework novo
-    for (const [n, tk] of Object.entries(inv.toolkits)) if (fs.existsSync(sabia("toolkits", n, "toolkit.json")) && temFonte(lerJson(sabia("toolkits", n, "toolkit.json"), {})))
-      await copiarToolkit(n, Object.keys(tk.alvos || {}).concat(inv.alvos.kiro ? ["kiro"] : []), tk, opcoes);
   } finally {
     gravarInventario(inv);
   }
@@ -425,7 +409,6 @@ export async function desinstalar(opcoes = {}) {
     if (!Object.keys(inv.alvos).length) {
       fs.rmSync(sabia("framework"), { recursive: true, force: true });
       fs.rmSync(sabia("compilado"), { recursive: true, force: true });
-      fs.rmSync(sabia("compilado-toolkits"), { recursive: true, force: true });
       inv.framework = null;
     }
   } finally {
@@ -464,7 +447,7 @@ export function validarToolkit(pasta, nomeEsperado = null, fw = null) {
   const ganchos = fw && fs.existsSync(path.join(fw, "fluxo")) ? carregar(fw) : null;
   for (const s of m.skills || []) {
     existe(s.caminho, "skills");
-    // a skill do toolkit não ocupa um nome do Sabiá: o fluxo dela trocaria o do Sabiá sem aviso
+    // a skill do toolkit não ocupa um nome do Sabiá: a cópia dela trocaria a do Sabiá sem aviso
     const sk = path.basename(path.dirname(String(s.caminho)));
     if (sk.startsWith("sa-") || sk === "sabia") erros.push(`skill ${s.caminho}: nome do Sabiá (sa-* ou sabia); use outro nome de pasta`);
     if (s.passo?.agente && !agentes.has(s.passo.agente)) erros.push(`passo de ${s.caminho}: agente ${s.passo.agente} não está em agentes`);
@@ -475,8 +458,8 @@ export function validarToolkit(pasta, nomeEsperado = null, fw = null) {
       else if (!g.x.desvio) erros.push(`passo de ${s.caminho}: ${s.passo.passo} não aceita desvio de toolkit${g.x.tipos ? ` (o tipo ${g.x.tipos.join(", ")} vai por \`tipos\`)` : ""}`);
     }
   }
-  if (ganchos && (temFonte(m) || m.tipos || m.rubricas || m.requer)) {
-    try { erros.push(...validarToolkitFonte(carregarToolkit(fw, pasta))); } catch (e) { erros.push(e.message); }
+  if (ganchos && (m.tipos || m.rubricas || m.requer)) {
+    try { erros.push(...validarToolkitFonte(fw, pasta)); } catch (e) { erros.push(e.message); }
   }
   for (const s of m.steering || []) existe(s.caminho, "steering");
   for (const a of m.agentes || []) {
@@ -561,27 +544,18 @@ export async function instalarToolkit(alvo, opcoes = {}) {
   const doInv = Object.keys(inv.alvos);
   const alvos = opcoes.alvo || !doInv.length ? await escolherAlvos(opcoes) : doInv;
   try {
-    await copiarToolkit(baixado, alvos, tk, opcoes);
+    for (const a of alvos.filter((x) => x !== "kiro")) {
+      const reg = (tk.alvos[a] ||= { copias: {} });
+      for (const s of m.skills) {
+        const dir = path.dirname(path.join(pasta, s.caminho));
+        await copiar(dir, path.join(PASTA_SKILLS[a](), path.basename(dir)), reg.copias, opcoes);
+      }
+    }
   } finally {
     gravarInventario(inv);
   }
-  const noKiro = temFonte(m) ? `~/.sabia/compilado-toolkits/kiro/${baixado}` : `~/.sabia/toolkits/${baixado}`;
-  if (alvos.includes("kiro")) ctx.log(`kiro: o gerador liga as skills de ${noKiro} a cada agente (nada copiado para ~/.kiro)`);
+  if (alvos.includes("kiro")) ctx.log(`kiro: o gerador liga as skills de ~/.sabia/toolkits/${baixado} a cada agente (nada copiado para ~/.kiro)`);
   ctx.log('No projeto, peça "atualizar os agentes do Sabiá" para ligar o toolkit.');
-}
-
-/** As skills do toolkit em cada alvo: com fluxos ou padrões, a compilação (o Kiro só compila); sem eles, a pasta como veio. */
-async function copiarToolkit(nome, alvos, tk, opcoes) {
-  const pasta = sabia("toolkits", nome), m = JSON.parse(fs.readFileSync(path.join(pasta, "toolkit.json"), "utf8"));
-  for (const a of alvos) {
-    const st = temFonte(m) ? compilarToolkitPara(a, nome) : null;
-    if (a === "kiro") continue;
-    const reg = (tk.alvos[a] ||= { copias: {} });
-    for (const s of m.skills) {
-      const dir = path.dirname(path.join(pasta, s.caminho));
-      await copiar(st ? path.join(st, "skills", path.basename(dir)) : dir, path.join(PASTA_SKILLS[a](), path.basename(dir)), reg.copias, opcoes);
-    }
-  }
 }
 
 /** Sem argumento, dentro de um projeto: as versões que o `.sabia/config/agentes.json` dele usa. */
@@ -601,7 +575,6 @@ export async function removerToolkit(nome, opcoes = {}) {
   try {
     for (const reg of Object.values(tk?.alvos || {})) await apagar(reg.copias, opcoes);
     fs.rmSync(sabia("toolkits", nome), { recursive: true, force: true });
-    for (const a of ALVOS) fs.rmSync(sabia("compilado-toolkits", a, nome), { recursive: true, force: true });
     delete inv.toolkits[nome];
   } finally {
     gravarInventario(inv);
@@ -614,10 +587,8 @@ export async function atualizarToolkits(nome, opcoes = {}) {
   for (const n of nome ? [nome] : Object.keys(inv.toolkits)) {
     const origem = JSON.parse(fs.readFileSync(sabia("toolkits", n, ".origem.json"), "utf8"));
     const alvo = origem.indice ? n : `${origem.url}${origem.ref ? "@" + origem.ref : ""}`;
-    // tk.alvos só tem os alvos com cópia; o Kiro só compila, então entra pela instalação ou pela compilação que já existe
-    const alvos = Object.keys(inv.toolkits[n]?.alvos || {});
-    if (inv.alvos.kiro || fs.existsSync(sabia("compilado-toolkits", "kiro", n))) alvos.push("kiro");
-    await instalarToolkit(alvo, { ...opcoes, atualizar: true, indice: origem.indice || opcoes.indice, alvo: alvos.join(",") || "kiro" });
+    await instalarToolkit(alvo, { ...opcoes, atualizar: true, indice: origem.indice || opcoes.indice,
+      alvo: Object.keys(inv.toolkits[n]?.alvos || {}).join(",") || "kiro" });
   }
 }
 
@@ -691,13 +662,16 @@ function contextoRota(opcoes) {
   const cfg = lerJson(path.join(projeto, ".sabia", "config", "agentes.json"), {});
   const m = carregar(fw);
   const dirTk = (nome) => { const pasta = cfg.toolkits?.[nome]?.pasta; return !pasta ? sabia("toolkits", nome) : pasta.startsWith("~/") ? longo(pasta) : path.resolve(projeto, pasta); };
-  // os fluxos dos toolkits do projeto entram no modelo, com a origem; os tipos deles viram o desvio por tipo
+  // os tipos dos toolkits do projeto viram o desvio por tipo: a skill do toolkit, com o fluxo do tipo, se o traz
   const tipos = [];
   for (const nome of Object.keys(cfg.toolkits || {})) {
     const man = lerJson(path.join(dirTk(nome), "toolkit.json"), null);
     if (!man) continue;
-    if (temFonte(man)) for (const [q, fl] of Object.entries(carregar(dirTk(nome)).fluxos)) m.fluxos[q] ||= { ...fl, toolkit: `${nome} ${man.versao}` };
-    for (const [sigla, fluxo] of Object.entries(man.tipos || {})) tipos.push({ sigla, fluxo, toolkit: nome, versao: man.versao });
+    for (const [sigla, q] of Object.entries(man.tipos || {})) {
+      if (typeof q?.skill !== "string") { tipos.push({ sigla, fluxo: "(inválido: o tipo no toolkit.json precisa de {\"skill\"}; o gerador recusa)", toolkit: nome, versao: man.versao }); continue; }
+      const sk = path.basename(path.dirname(q.skill));
+      tipos.push({ sigla, fluxo: q.fluxo ? `skill ${sk} (${q.fluxo})` : `skill ${sk}`, toolkit: nome, versao: man.versao });
+    }
   }
   const desvios = (cfg.passos || []).flatMap((e) => {
     const dir = dirTk(e.toolkit);
@@ -723,7 +697,7 @@ function contextoRota(opcoes) {
   return { fw, projeto, m, versao: lerJson(path.join(fw, "plugin.json"), {}).version || "?", desvios, tipos };
 }
 
-/** Os passos do fluxo `q` na ordem, com o que o projeto mudou: origem sabia | toolkit | projeto (corpo trocado) | inserido | removido. */
+/** Os passos do fluxo `q` na ordem, com o que o projeto mudou: origem sabia | projeto (corpo trocado) | inserido | removido. */
 function resolverFluxo(c, q) {
   const fl = c.m.fluxos[q.replace("/", ".")];
   if (!fl) throw new Error(`fluxo ${q} não existe em ${curto(c.fw)} (use skill.fluxo, ex.: sa-codificar.codificar)`);
@@ -732,7 +706,7 @@ function resolverFluxo(c, q) {
   const doProjeto = (id) => path.join(dir, "passos", `${id}.md`);
   const passos = fl.passos.map((x) => {
     const base = lerFm(doProjeto(x.id));
-    const origem = (ops.remover || []).includes(x.id) ? "removido" : base ? "projeto" : fl.toolkit ? "toolkit" : "sabia";
+    const origem = (ops.remover || []).includes(x.id) ? "removido" : base ? "projeto" : "sabia";
     return { ...x, origem, base: base?.base, arq: base ? doProjeto(x.id) : x.arq };
   });
   let falta = [...(ops.inserir || [])];
@@ -816,15 +790,15 @@ export function rotaFluxo(q, opcoes = {}) {
   const c = contextoRota(opcoes);
   const r = resolverFluxo(c, q), { fl } = r;
   const desvios = c.desvios.filter((d) => d.passo?.startsWith(`${r.q}.`));
-  // desvio por tipo: o tipo que o passo cria tem fluxo de toolkit no projeto
+  // desvio por tipo: o tipo que o passo cria tem skill de toolkit no projeto
   const porTipo = (x) => c.tipos.filter((t) => x.tipos?.includes(t.sigla));
-  const origem = (x) => ({ sabia: "Sabiá", toolkit: `toolkit ${fl.toolkit}`, projeto: `projeto${x.base ? ` (base ${x.base})` : ""}`,
+  const origem = (x) => ({ sabia: "Sabiá", projeto: `projeto${x.base ? ` (base ${x.base})` : ""}`,
     inserido: `projeto, inserido depois de ${x.depois}`, removido: "removido no projeto" })[x.origem];
   let n = 0;
   const tabela = [["#", "passo", "origem", "chama", "travas", "saídas"], ...r.passos.map((x) => [
     x.origem === "removido" ? "-" : String(++n), x.id + (temDesvio(x) ? " ⇢" : ""), origem(x), [].concat(x.chama || []).join(", ") || "—",
     (x.travas || []).join(", ") || "—", Object.entries(x.saidas || {}).map(([k, v]) => `${k} → ${v.replace(/^→ /, "passa a ")}`).join("; ") || "—"])];
-  const cab = [["fluxo", r.q, `dono ${fl.d.dono}`, fl.toolkit ? `toolkit ${fl.toolkit}` : `Sabiá ${c.versao}`], ["travas", (fl.d.travas_gerais || []).join(", ") || "—"],
+  const cab = [["fluxo", r.q, `dono ${fl.d.dono}`, `Sabiá ${c.versao}`], ["travas", (fl.d.travas_gerais || []).join(", ") || "—"],
     ...desvios.map((d) => ["desvio ⇢", `${d.passo.split(".")[2]}: ${d.arquivos.join(", ") || `"${d.para}"`}`, `→ ${d.agente || `skill ${d.skill}`}`, `toolkit ${d.toolkit} ${d.versao}`]),
     ...r.passos.flatMap((x) => porTipo(x).map((t) => ["tipo ⇢", `${x.id}: ${t.sigla}`, `→ ${t.fluxo}`, `toolkit ${t.toolkit} ${t.versao}`]))];
 

@@ -28,17 +28,15 @@ function escrever(base, arquivos) {
   return base;
 }
 
-/** O toolkit sintético "exemplo": HF → exemplo.hf, um padrão em camada sobre o sa-prd/hf.md e um item de rubrica. */
-const exemplo = () => escrever(path.join(raiz, "fontes/exemplo"), {
-  "toolkit.json": { nome: "exemplo", versao: "1.0.0", descricao: "toolkit fictício de especificação", autor: { nome: "Ana Exemplo", area: "Equipe Alfa" },
-    "tipos-de-projeto": ["backend", "frontend"], skills: [{ caminho: "skills/exemplo/SKILL.md", papeis: ["especificador"] }],
-    fluxos: ["exemplo.hf"], padroes: ["sa-prd/hf.md"], tipos: { HF: "exemplo.hf" },
+/** O toolkit sintético "casa": HF → a skill casa, com o fluxo e o padrão do tipo como arquivos da pasta, e um item de rubrica. */
+const casa = () => escrever(path.join(raiz, "fontes/casa"), {
+  "toolkit.json": { nome: "casa", versao: "1.0.0", descricao: "toolkit fictício de especificação", autor: { nome: "Ana Exemplo", area: "Equipe Alfa" },
+    "tipos-de-projeto": ["backend", "frontend"], skills: [{ caminho: "skills/casa/SKILL.md", papeis: ["especificador"] }],
+    tipos: { HF: { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md", padrao: "padrao/padrao-hf.md" } },
     rubricas: [{ id: "EX1", tipo: "HF", verificacao: "Toda HF cita a tela de origem", severidade: "IMPORTANTE" }], requer: { sabia: "2.0.0" } },
-  "skills/exemplo/SKILL.md": "---\nname: exemplo\ndescription: HF do exemplo\n---\n# exemplo — histórias\n",
-  "fluxo/exemplo/hf/hf.md": fm({ fluxo: "hf", dono: "sa-especificador", passos: [{ id: "escrever" }, { id: "conferir" }] }) + "# HF do exemplo\n",
-  "fluxo/exemplo/hf/passos/escrever.md": fm({ resumo: "Escreve as HF." }) + "## Entrada\n\nO lote.\n\n## Faça\n\nSiga o padrão `sa-prd/hf.md` e volte ao `sa-prd.prd.escrever`.\n\n## Saída\n\nAs HF.\n\n## Pare se\n\n—\n",
-  "fluxo/exemplo/hf/passos/conferir.md": fm({ resumo: "Confere as HF." }) + "## Entrada\n\nAs HF.\n\n## Faça\n\nConfira.\n\n## Saída\n\nOk.\n\n## Pare se\n\n—\n",
-  "padrao/sa-prd/hf.md": fm({ resumo: "HF do exemplo." }) + "# HF (exemplo)\n",
+  "skills/casa/SKILL.md": "---\nname: casa\ndescription: HF da casa\n---\n# casa — histórias\n\nSiga o fluxo e o padrão do tipo.\n",
+  "fluxo/fluxo-hf.md": "# Fluxo HF\n\nEscreva as HF e confira.\n",
+  "padrao/padrao-hf.md": "# Padrão HF\n",
 });
 
 /** O toolkit sintético "batch-alfa": a tarefa de job vai ao agente batch-job no passo sa-codificar.codificar.tarefa. */
@@ -89,7 +87,7 @@ before(async () => {
   const fw = path.join(raiz, "fw");
   for (const f of ["fluxo", "padrao", "skills", "plugin.json", "mcp.json", "README.md", "LICENSE"]) fs.cpSync(path.join(REPO, f), path.join(fw, f), { recursive: true });
   await s.instalar({ fonte: fw, alvo: "opencode,kiro", semMcp: true });
-  await s.instalarToolkit(exemplo(), { alvo: "opencode,kiro" });
+  await s.instalarToolkit(casa(), { alvo: "opencode,kiro" });
   await s.instalarToolkit(batchAlfa(), { alvo: "opencode,kiro" });
 });
 
@@ -117,32 +115,32 @@ test("prova: o framework compilado nos dois alvos tem o catálogo, o grafo de ca
   assert.match(ler("sa-revisar/references/padrao/rubricas.md"), /^\| P12 \| Com a linha Telas do `sabia\.md` = `sim`:/m);
 });
 
-test("prova front+back: o toolkit exemplo (HF ⇢ exemplo.hf) com o override do projeto por cima, gerado e na rota", { skip: !PYTHON && "sem python3" }, () => {
-  const fonte = path.join(home, ".sabia/toolkits/exemplo/fluxo/exemplo/hf/passos/escrever.md");
+test("prova front+back: o toolkit casa (HF ⇢ skill casa) com o override do projeto num passo do Sabiá, gerado e na rota", { skip: !PYTHON && "sem python3" }, () => {
+  const fonte = path.join(home, ".sabia/framework/fluxo/sa-prd/prd/passos/entender.md");
   const base = sha12(fonte);
-  const proj = projeto("loja", { tipos: "backend, frontend", toolkits: { exemplo: { pasta: "~/.sabia/toolkits/exemplo", versao: "1.0.0" } },
+  const proj = projeto("loja", { tipos: "backend, frontend", toolkits: { casa: { pasta: "~/.sabia/toolkits/casa", versao: "1.0.0" } },
     elm: { ET: "inicial no PRD + as-built", "Casos de teste": "CSV", "REG com dados técnicos": "sim", Telas: "sim" } },
-  { ".sabia/fluxo/exemplo/hf/passos/escrever.md": fm({ base }) + "## Entrada\n\nO lote, com as telas do protótipo aprovado.\n" });
+  { ".sabia/fluxo/sa-prd/prd/passos/entender.md": fm({ base }) + "## Entrada\n\nO pedido, com as telas do protótipo aprovado.\n" });
   const saida = gerar(proj);
-  // o especificador: a linha do tipo, a skill compilada do toolkit e o passo do projeto no lugar do do toolkit
+  // o especificador: a linha do tipo, a skill do toolkit como veio (nada compilado) e o passo do projeto
+  const tk = "~/.sabia/toolkits/casa";
   const e = agenteKiro(proj, "sa-especificador");
-  assert.ok(e.prompt.includes("no passo `sa-prd.prd.escrever`, HF → `exemplo.hf`"));
-  assert.ok(e.prompt.includes("Fluxo `exemplo.hf`:\n- passo `escrever`: leia `.sabia/fluxo/exemplo/hf/passos/escrever.md`"));
-  assert.ok(e.resources.includes("skill://~/.sabia/compilado-toolkits/kiro/exemplo/skills/exemplo/SKILL.md"));
-  assert.ok(agenteOpencode(proj, "sa-especificador").includes("~/.sabia/compilado-toolkits/opencode/exemplo/padrao/sa-prd/hf.md"));
-  assert.ok(agenteKiro(proj, "sa-revisor").prompt.includes("`EX1` (HF) IMPORTANTE — Toda HF cita a tela de origem (toolkit `exemplo`)"));
-  assert.match(saida, /\| `HF` \| `exemplo\.hf` \| `~\/\.sabia\/compilado-toolkits\/<alvo>\/exemplo\/skills\/exemplo\/SKILL\.md` \| `exemplo` 1\.0\.0 \| `sa-prd\.prd\.escrever` \|/);
-  // a rota: o desvio por tipo no sa-prd.prd e o passo do projeto (com a base da fonte do toolkit) no exemplo.hf
+  assert.ok(e.prompt.includes(`no passo \`sa-prd.prd.escrever\`, HF → carregue a skill \`casa\` e siga \`${tk}/fluxo/fluxo-hf.md\` com o padrão \`${tk}/padrao/padrao-hf.md\``));
+  assert.ok(e.prompt.includes("Fluxo `sa-prd.prd`:\n- passo `entender`: leia `.sabia/fluxo/sa-prd/prd/passos/entender.md`"));
+  assert.ok(e.resources.includes(`skill://${tk}/skills/casa/SKILL.md`));
+  assert.ok(agenteOpencode(proj, "sa-especificador").includes(`${tk}/fluxo/fluxo-hf.md`));
+  assert.ok(!fs.existsSync(path.join(home, ".sabia/compilado-toolkits")));
+  assert.equal(fs.readFileSync(path.join(home, ".config/opencode/skills/casa/SKILL.md"), "utf8"), fs.readFileSync(path.join(raiz, "fontes/casa/skills/casa/SKILL.md"), "utf8"));
+  assert.ok(agenteKiro(proj, "sa-revisor").prompt.includes("`EX1` (HF) IMPORTANTE — Toda HF cita a tela de origem (toolkit `casa`)"));
+  assert.match(saida, /\| `HF` \| `~\/\.sabia\/toolkits\/casa\/skills\/casa\/SKILL\.md` \| `~\/\.sabia\/toolkits\/casa\/fluxo\/fluxo-hf\.md` com o padrão `~\/\.sabia\/toolkits\/casa\/padrao\/padrao-hf\.md` \| `casa` 1\.0\.0 \| `sa-prd\.prd\.escrever` \|/);
+  // a rota: o passo do projeto (com a base do Sabiá) e o desvio por tipo no sa-prd.prd
   const o = { projeto: proj };
   const prd = s.rotaFluxo("sa-prd.prd", o);
   assert.deepEqual(ordem(prd), ["1 entender", "2 entrevistar", "3 similares", "4 escrever", "5 revisao", "6 gate"]);
-  assert.match(prd, /^tipo ⇢ +escrever: HF +→ exemplo\.hf +toolkit exemplo 1\.0\.0$/m);
-  assert.match(prd, /│ 4 escrever ⇢ +│──▶ ⇢ tipo HF → exemplo\.hf \(toolkit exemplo 1\.0\.0\)\n.*┘ {4}⇢ por tipo: HF, REG, EL, ET\n/);
-  const hf = s.rotaFluxo("exemplo.hf", o);
-  assert.match(hf, /^fluxo +exemplo\.hf +dono sa-especificador +toolkit exemplo 1\.0\.0$/m);
-  assert.match(hf, new RegExp(`^1 +escrever +projeto \\(base ${base}\\)`, "m"));
-  assert.match(hf, /^2 +conferir +toolkit exemplo 1\.0\.0/m);
-  assert.match(hf, new RegExp(`│ 1 escrever +│──▶ origem: projeto \\(base ${base}\\)`));
+  assert.match(prd, /^tipo ⇢ +escrever: HF +→ skill casa \(fluxo\/fluxo-hf\.md\) +toolkit casa 1\.0\.0$/m);
+  assert.match(prd, /│ 4 escrever ⇢ +│──▶ ⇢ tipo HF → skill casa \(fluxo\/fluxo-hf\.md\) \(toolkit casa 1\.0\.0\)\n.*┘ {4}⇢ por tipo: HF, REG, EL, ET\n/);
+  assert.match(prd, new RegExp(`^1 +entender +projeto \\(base ${base}\\)`, "m"));
+  assert.match(prd, new RegExp(`│ 1 entender +│──▶ origem: projeto \\(base ${base}\\)`));
   // os fluxos novos da especificação, resolvidos no projeto
   const reuniao = s.rotaFluxo("sa-especificar.reuniao", o);
   assert.deepEqual(ordem(reuniao), ["1 transcricao", "2 escrever", "3 aprovar", "4 publicar", "5 decisoes"]);
@@ -175,8 +173,8 @@ test("prova batch: o desvio do batch-alfa na tarefa de job, gerado nos dois alvo
   assert.ok(d.toolsSettings.subagent.availableAgents.includes("batch-job"));
   assert.equal(agenteKiro(proj, "batch-job").prompt, "Codifique o job da tarefa na base develop.\n");
   assert.ok(fs.existsSync(path.join(proj, ".opencode/agents/batch-job.md")));
-  for (const n of ["sa-especificador", "sa-produto"]) assert.ok(!agenteKiro(proj, n).prompt.includes("Tipos com fluxo de toolkit"), n);
-  assert.doesNotMatch(saida, /Tipos com fluxo de toolkit/);
+  for (const n of ["sa-especificador", "sa-produto"]) assert.ok(!agenteKiro(proj, n).prompt.includes("Tipos com skill de toolkit"), n);
+  assert.doesNotMatch(saida, /Tipos com skill de toolkit/);
   // a rota de um arquivo de job: o desvio, o dono com os agentes gerados e o motivo
   const r = s.rota(path.join(proj, "src/main/java/x/ImportarPedidosJobConfig.java"), { projeto: proj });
   assert.match(r, /^dono +sa-desenvolvedor +\.opencode\/agents\/sa-desenvolvedor\.md, \.kiro\/agents\/sa-desenvolvedor\.json$/m);

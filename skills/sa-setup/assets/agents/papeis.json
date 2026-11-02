@@ -55,7 +55,7 @@
     "trabalho": "*"
   },
   "ler": {
-    "permitir": ["./**", "{{POWER}}/**", "~/.sabia/toolkits/**", "~/.sabia/compilado-toolkits/**"],
+    "permitir": ["./**", "{{POWER}}/**", "~/.sabia/toolkits/**"],
     "negar": ["**/.env", "**/.env/**", "**/.env.*", "**/.env.*/**", "**/*.pem", "**/*.pem/**",
         "**/*.key", "**/*.key/**", "~/.ssh/**", "~/.aws/**", "~/.config/mcp-elm/**",
         "~/.config/mcp-gitlabpr/**", "{{BUNDLE}}/**"]

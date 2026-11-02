@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/dxaraujo/sabia/main/skills/sa-setup/assets/toolkit.schema.json",
   "title": "Toolkit do Sabiá",
-  "description": "Manifesto de um toolkit: skills (e opcionalmente steering, comandos, agentes, fluxos, padrões e tipos) para um tipo de projeto ou stack, mantido fora do fluxo Sabiá e descoberto pela skill sa-setup. Três perguntas por skill: quem (papeis), onde (stack e deteccao) e em que passo (passo).",
+  "description": "Manifesto de um toolkit: skills (e opcionalmente steering, comandos, agentes, tipos e rubricas) para um tipo de projeto ou stack, mantido fora do fluxo Sabiá e descoberto pela skill sa-setup. Três perguntas por skill: quem (papeis), onde (stack e deteccao) e em que passo (passo).",
   "type": "object",
   "required": [
     "nome",
@@ -218,31 +218,28 @@
     },
     "tipos": {
       "type": "object",
-      "description": "Opcional: o fluxo do toolkit que escreve um tipo desviável do catálogo do Sabiá (skills/sabia/references/tipos.md), ex.: {\"HF\": \"<toolkit>.hf\"}. O toolkit não cria tipo: a sigla é do catálogo. No passo de desvio do tipo (coluna Desviável do catálogo, ⇢), o dono roda esse fluxo em linha; o fluxo tem o dono desse passo; a linha vai no prompt dele e na seção Tipos com fluxo de toolkit do sabia.md. Dois toolkits do projeto no mesmo tipo → o gerador recusa.",
+      "description": "Opcional: quem escreve um tipo desviável do catálogo do Sabiá (skills/sabia/references/tipos.md): a skill do toolkit, com o fluxo e o padrão do tipo (opcionais: sem eles, a skill segue as references dela), ex.: {\"HF\": {\"skill\": \"skills/<skill>/SKILL.md\", \"fluxo\": \"fluxo/fluxo-hf.md\", \"padrao\": \"padrao/padrao-hf.md\"}}. A skill vai ao dono do passo de desvio (coluna Desviável do catálogo, ⇢) e lê o fluxo e o padrão, quando há, pelo caminho, na pasta instalada do toolkit; o Sabiá não compila conteúdo de toolkit (fluxo com passos é só do framework). O toolkit não cria tipo: a sigla é do catálogo. A linha vai no prompt do dono do passo de desvio e na seção Tipos com skill de toolkit do sabia.md. Dois toolkits do projeto no mesmo tipo → o gerador recusa.",
       "propertyNames": {
         "pattern": "^[A-Z]{2,4}$"
       },
       "additionalProperties": {
-        "type": "string",
-        "pattern": "^[a-z0-9][a-z0-9-]*\\.[a-z][a-z-]*$"
-      }
-    },
-    "fluxos": {
-      "type": "array",
-      "uniqueItems": true,
-      "description": "Opcional: os fluxos do toolkit, pelo id <skill>.<fluxo> (a skill em skills/<skill>/SKILL.md), no formato dos fluxos do Sabiá: fluxo/<skill>/<fluxo>/<fluxo>.md e passos/<id>.md. O sabia toolkits instalar os compila com o compilador do Sabiá; o link para um id sa-* resolve para a skill do Sabiá.",
-      "items": {
-        "type": "string",
-        "pattern": "^[a-z0-9][a-z0-9-]*\\.[a-z][a-z-]*$"
-      }
-    },
-    "padroes": {
-      "type": "array",
-      "uniqueItems": true,
-      "description": "Opcional: padrões do toolkit, <skill>/<nome>.md, em padrao/<skill>/<nome>.md. Com uma skill sa-*, é a camada sobre o padrão do Sabiá de mesmo nome (framework < toolkit < projeto); com uma skill do toolkit, é padrão dela. sa-revisar/rubricas.md não entra: itens novos vão em rubricas.",
-      "items": {
-        "type": "string",
-        "pattern": "^[a-z0-9][a-z0-9-]*/[a-z0-9][a-z0-9.-]*\\.md$"
+        "type": "object",
+        "required": ["skill"],
+        "additionalProperties": false,
+        "properties": {
+          "skill": {
+            "$ref": "#/$defs/skill",
+            "description": "Uma das skills de skills[] (o caminho, ex.: skills/<skill>/SKILL.md)."
+          },
+          "fluxo": {
+            "$ref": "#/$defs/arquivo",
+            "description": "Opcional: o fluxo do tipo, relativo à pasta do toolkit (ex.: fluxo/fluxo-hf.md); sem ele, a skill segue as references dela."
+          },
+          "padrao": {
+            "$ref": "#/$defs/arquivo",
+            "description": "Opcional: o padrão do tipo, relativo à pasta do toolkit (ex.: padrao/padrao-hf.md)."
+          }
+        }
       }
     },
     "rubricas": {
@@ -288,7 +285,7 @@
         "sabia": {
           "type": "string",
           "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+",
-          "description": "Versão mínima do Sabiá instalado (os fluxos do toolkit citam os ids dele)."
+          "description": "Versão mínima do Sabiá instalado (o catálogo de tipos e os ids de passo que o toolkit usa)."
         }
       }
     },

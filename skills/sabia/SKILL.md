@@ -195,8 +195,8 @@ retoma pela skill da fase, que sincroniza o `status.md` pela base.
 ## Tipos de artefato
 
 O catálogo é fechado ([references/tipos.md](references/tipos.md)): sigla, arquivo, passo que cria, padrão, tipo no
-ELM e ordem de publicação. Um toolkit não cria tipo; num tipo desviável (⇢), o fluxo dele escreve o artefato no
-padrão da casa ([references/passos.md](references/passos.md#tipos-com-fluxo-de-toolkit)).
+ELM e ordem de publicação. Um toolkit não cria tipo; num tipo desviável (⇢), a skill dele escreve o artefato pelo
+fluxo e o padrão do tipo ([references/passos.md](references/passos.md#tipos-com-skill-de-toolkit)).
 
 | Tipo | Nasce em | Quando |
 |---|---|---|

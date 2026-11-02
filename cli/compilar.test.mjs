@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { beforeEach, test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { carregar, carregarToolkit, compilar, compilarToolkit, grafoAscii, mapear, reescrever, slug, validar, validarToolkitFonte } from "./compilar.mjs";
+import { carregar, compilar, grafoAscii, mapear, reescrever, slug, validar, validarToolkitFonte } from "./compilar.mjs";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const BASE = "~/.config/opencode/skills";
@@ -272,73 +272,36 @@ test("catálogo: desviavel fora de cria é recusado", () => {
   assert.ok(validar(m).some((e) => /tipo HF: desviavel sa-codificar\.codificar\.pr fora de cria/.test(e)));
 });
 
-/** O toolkit sintético "exemplo": o fluxo exemplo.hf para o tipo HF, um padrão em camada sobre o sa-prd/hf.md e um dele. */
-function exemplo(mudar = {}, extra = {}) {
-  return escrever(path.join(raiz, "exemplo"), {
-    "toolkit.json": { nome: "exemplo", versao: "1.0.0", descricao: "toolkit fictício de especificação", autor: { nome: "Ana Exemplo", area: "Equipe Alfa" },
-      "tipos-de-projeto": ["backend"], skills: [{ caminho: "skills/exemplo/SKILL.md", papeis: ["especificador"] }],
-      fluxos: ["exemplo.hf"], padroes: ["sa-prd/hf.md", "exemplo/campos.md"], tipos: { HF: "exemplo.hf" },
+/** O toolkit sintético "casa": a skill casa, com o fluxo e o padrão do tipo HF como arquivos da pasta (o Sabiá não os compila). */
+function casa(mudar = {}) {
+  const hf = { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md", padrao: "padrao/padrao-hf.md" };
+  return escrever(path.join(raiz, "casa"), {
+    "toolkit.json": { nome: "casa", versao: "1.0.0", descricao: "toolkit fictício", autor: { nome: "Ana Exemplo", area: "Equipe Alfa" },
+      "tipos-de-projeto": ["backend"], skills: [{ caminho: "skills/casa/SKILL.md", papeis: ["especificador"] }], tipos: { HF: hf, ATA: { skill: hf.skill, fluxo: hf.fluxo } },
       rubricas: [{ id: "EX1", tipo: "HF", verificacao: "Toda HF cita o campo de origem", severidade: "IMPORTANTE" }], requer: { sabia: "2.0.0" }, ...mudar },
-    "skills/exemplo/SKILL.md": skill("exemplo", "# exemplo — histórias"),
-    "fluxo/exemplo/hf/hf.md": mestre({ fluxo: "hf", dono: "sa-especificador", passos: [{ id: "escrever", chama: "sa-pesquisar.pesquisar" }, { id: "conferir" }] }, "# HF do exemplo\n"),
-    "fluxo/exemplo/hf/passos/escrever.md": passo("Escreve as HF.", "Siga o padrão `sa-prd/hf.md` e o padrão `exemplo/campos.md`; depois, `exemplo.hf.conferir`; volte ao `sa-prd.prd.escrever`."),
-    "fluxo/exemplo/hf/passos/conferir.md": passo("Confere as HF."),
-    "padrao/sa-prd/hf.md": "---\n{\"resumo\": \"HF do exemplo.\"}\n---\n# HF (exemplo)\n\nEnvelope em [okf](~/.sabia/framework/skills/sa-prd/references/okf-elm.md).\n",
-    "padrao/exemplo/campos.md": "---\n{\"resumo\": \"Campos.\"}\n---\n# Campos\n",
-    ...extra,
+    "skills/casa/SKILL.md": skill("casa", "# casa"), "fluxo/fluxo-hf.md": "# Fluxo HF\n", "padrao/padrao-hf.md": "# Padrão HF\n",
   });
 }
 
-test("toolkit compilado: links sa-* para a skill do Sabiá, padrão em camada em padrao/, só as skills do toolkit no staging", () => {
-  const raizTk = "~/.sabia/compilado-toolkits/opencode/exemplo";
-  const st = compilarToolkit(REPO, exemplo(), path.join(raiz, "st"), { base: BASE, baseSabia: BASE, raizTk });
-  assert.deepEqual(fs.readdirSync(path.join(st, "skills")), ["exemplo"]);
-  const s = out(st, "exemplo/SKILL.md");
-  assert.ok(s.includes("## Fluxo hf") && s.includes("Agente: `sa-especificador`"));
-  assert.match(s, /\[`sa-pesquisar\.pesquisar`\]\(~\/\.config\/opencode\/skills\/sa-pesquisar\/SKILL\.md#fluxo-pesquisar\) \(sa-pesquisador, subagente\)/);
-  const e = out(st, "exemplo/references/hf/escrever.md");
-  assert.ok(e.includes(`o padrão [\`sa-prd/hf.md\`](${raizTk}/padrao/sa-prd/hf.md)`), "camada: o do toolkit");
-  assert.ok(e.includes(`o padrão [\`exemplo/campos.md\`](${BASE}/exemplo/references/padrao/campos.md)`));
-  assert.ok(e.includes(`[\`sa-prd.prd.escrever\`](${BASE}/sa-prd/references/prd/escrever.md)`));
-  assert.ok(e.includes(`[\`exemplo.hf.conferir\`](${BASE}/exemplo/references/hf/conferir.md)`), "id do próprio toolkit");
-  assert.match(fs.readFileSync(path.join(st, "padrao/sa-prd/hf.md"), "utf8"), /^_HF do exemplo\._\n\n# HF \(exemplo\)\n\nEnvelope em \[okf\]\(~\/\.config\/opencode\/skills\/sa-prd\/references\/okf-elm\.md\)/);
-  assert.ok(fs.existsSync(path.join(st, "skills/exemplo/references/hf/grafo.md")));
-  // Kiro: as skills do toolkit no staging dele; as do Sabiá no power
-  const kiro = "~/.sabia/compilado-toolkits/kiro/exemplo";
-  const sk = compilarToolkit(REPO, exemplo(), path.join(raiz, "sk"), { base: `${kiro}/skills`, baseSabia: "~/.kiro/powers/installed/sabia/skills", raizTk: kiro });
-  const ek = out(sk, "exemplo/references/hf/escrever.md");
-  assert.ok(ek.includes("](~/.kiro/powers/installed/sabia/skills/sa-prd/references/prd/escrever.md)"));
-  assert.ok(ek.includes(`](${kiro}/skills/exemplo/references/padrao/campos.md)`) && ek.includes(`](${kiro}/padrao/sa-prd/hf.md)`));
-});
-
-test("toolkit: recusa tipo fora ou não desviável, fluxo e padrão fora do manifesto, rubrica repetida, requer e id inexistente", () => {
-  const erros = (mudar, extra) => { const r = validarToolkitFonte(carregarToolkit(REPO, exemplo(mudar, extra))).join("\n"); fs.rmSync(path.join(raiz, "exemplo"), { recursive: true }); return r; };
+test("toolkit: tipo → skill do toolkit com fluxo e padrão da pasta; recusa tipo fora, não desviável, pendente, forma \"<tk>.<fluxo>\", rubrica e requer", () => {
+  const erros = (mudar, fw = REPO) => { const r = validarToolkitFonte(fw, casa(mudar)).join("\n"); fs.rmSync(path.join(raiz, "casa"), { recursive: true }); return r; };
+  const hf = { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md" };
   assert.equal(erros({}), "");
-  const e = erros({ tipos: { HF: "exemplo.hf", GL: "exemplo.hf", XX: "exemplo.hf", REG: "exemplo.reg" }, padroes: ["sa-prd/hf.md", "sa-prd/nao.md"],
-    rubricas: [{ id: "P2", verificacao: "repete a do Sabiá", severidade: "BLOQUEANTE" }], requer: { sabia: "9.0.0" } },
-  { "fluxo/exemplo/reg/reg.md": mestre({ fluxo: "reg", dono: "sa-especificador", passos: [{ id: "x" }] }), "fluxo/exemplo/reg/passos/x.md": passo("X.", "Veja `sa-prd.prd.nada`."),
-    "padrao/sa-prd/nao.md": "# n\n" });
-  for (const rx of [/tipo GL: não é desviável/, /tipo XX: fora do catálogo/, /tipo REG: exemplo\.reg não está em fluxos/,
-    /fluxo\/exemplo\/reg: fora de fluxos/, /padrão sa-prd\/nao\.md: não é padrão do Sabiá/, /padrao\/exemplo\/campos\.md: fora de padroes/,
-    /rubrica P2: repetida ou já do Sabiá/, /requer o Sabiá 9\.0\.0/, /fluxo\/exemplo\/reg\/passos\/x\.md:\d+: id inexistente `sa-prd\.prd\.nada`/]) assert.match(e, rx);
-  assert.match(erros({ fluxos: ["outra.hf"] }), /fluxo outra\.hf: a skill outra não está em skills/);
-  // tipo desviável ainda pendente no Sabiá instalado: o catálogo do repo não tem, então marca no modelo carregado
-  const mp = carregarToolkit(REPO, exemplo()); mp.tipos.HF = { ...mp.tipos.HF, pendente: true };
-  assert.match(validarToolkitFonte(mp).join("\n"), /tipo HF: pendente no Sabiá instalado/);
-  fs.rmSync(path.join(raiz, "exemplo"), { recursive: true });
-  // o fluxo do tipo roda em linha no dono do passo de desvio: outro dono é recusado
-  assert.match(erros({}, { "fluxo/exemplo/hf/hf.md": mestre({ fluxo: "hf", dono: "sa-desenvolvedor", passos: [{ id: "escrever" }, { id: "conferir" }] }) }),
-    /tipo HF: exemplo\.hf tem dono sa-desenvolvedor; o passo sa-prd\.prd\.escrever é de sa-especificador/);
+  const e = erros({ tipos: { GL: hf, XX: hf, REG: "casa.reg" }, rubricas: [{ id: "P2", verificacao: "repete a do Sabiá", severidade: "BLOQUEANTE" }], requer: { sabia: "9.0.0" } });
+  for (const rx of [/tipo GL: não é desviável/, /tipo XX: fora do catálogo/, /tipo REG: use \{"skill", "fluxo", "padrao"\}/, /rubrica P2: repetida ou já do Sabiá/, /requer o Sabiá 9\.0\.0/]) assert.match(e, rx);
+  assert.match(erros({ tipos: { HF: { ...hf, skill: "skills/outra/SKILL.md" } } }), /tipo HF: a skill skills\/outra\/SKILL\.md não está em skills/);
+  assert.match(erros({ tipos: { HF: { ...hf, fluxo: "fluxo/nao.md" } } }), /tipo HF: falta o fluxo fluxo\/nao\.md na pasta do toolkit/);
+  assert.match(erros({ tipos: { HF: { ...hf, padrao: "../fora.md" } } }), /tipo HF: falta o padrao \.\.\/fora\.md na pasta do toolkit/);
+  // pasta no lugar do arquivo e caminho absoluto: recusados como no gerador
+  assert.match(erros({ tipos: { HF: { ...hf, fluxo: "fluxo" } } }), /tipo HF: falta o fluxo fluxo na pasta do toolkit/);
+  assert.match(erros({ tipos: { HF: { ...hf, fluxo: "/fluxo/fluxo-hf.md" } } }), /tipo HF: falta o fluxo \/fluxo\/fluxo-hf\.md na pasta do toolkit/);
+  // só a skill, com as references dentro: aceito
+  assert.equal(erros({ tipos: { HF: { skill: hf.skill } } }), "");
+  // tipo desviável ainda pendente no Sabiá instalado
+  const fw = escrever(path.join(raiz, "fw-pend"), { "fluxo/tipos.json": { tipos: { HF: { desviavel: ["sa-prd.prd.escrever"], pendente: true } } } });
+  assert.match(erros({ tipos: { HF: hf }, rubricas: [] }, fw), /tipo HF: pendente no Sabiá instalado/);
   const r = erros({ rubricas: [{ id: "EX1", tipo: "HF" }, { id: "ex2", verificacao: "v", severidade: "ALTA" }] });
   for (const rx of [/rubrica EX1: sem verificacao/, /rubrica EX1: severidade ""/, /rubrica ex2: id como EX1/, /rubrica ex2: severidade "ALTA"/]) assert.match(r, rx);
-  // a rubrica do Sabiá não tem camada: o toolkit só acrescenta itens (P5, P8 e P11 fixos)
-  assert.match(erros({ padroes: ["sa-prd/hf.md", "exemplo/campos.md", "sa-revisar/rubricas.md"] }, { "padrao/sa-revisar/rubricas.md": "# r\n\n| P5 | afrouxada | SUGESTÃO |\n" }),
-    /padrão sa-revisar\/rubricas\.md: o toolkit não troca a rubrica do Sabiá/);
-  // listada sem o arquivo: a recusa vem antes do "falta", que mandaria criar o que será recusado
-  const semArq = erros({ padroes: ["sa-prd/hf.md", "exemplo/campos.md", "sa-revisar/rubricas.md"] });
-  assert.match(semArq, /padrão sa-revisar\/rubricas\.md: o toolkit não troca a rubrica do Sabiá/);
-  assert.doesNotMatch(semArq, /falta padrao\/sa-revisar\/rubricas\.md/);
-  assert.throws(() => compilarToolkit(REPO, exemplo({ tipos: { GL: "exemplo.hf" } }), path.join(raiz, "st"), { base: BASE, baseSabia: BASE, raizTk: "~/x" }), /o toolkit exemplo tem 1 erro/);
 });
 
 test("package.json#files leva todo módulo local que o sabia.mjs importa", () => {

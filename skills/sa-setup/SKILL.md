@@ -216,7 +216,7 @@ nome, início da `description`, origem e, se houver, toolkit e papéis. Toolkit 
 → "detectado"; skill com `passo` → a tabela de
 desvios do W5 (o passo pelo id, como `sa-codificar.codificar.tarefa`; `para`, skill e agente), ligados no Passo 6;
 `passo` num passo sem desvio → ❌ na linha, e a skill não é ligada. Toolkit com `tipos` → a tabela de tipos do W5
-(o tipo, o fluxo do toolkit e o passo de desvio do tipo); vai para o projeto com o toolkit. Skill com
+(o tipo, a skill do toolkit com o fluxo do tipo e o passo de desvio); vai para o projeto com o toolkit. Skill com
 `stack`/`deteccao` própria → a coluna Stack diz se casa. Liste também os **agentes do projeto** (`.kiro/agents/*.json`, `~/.kiro/agents/*.json` e
 `.opencode/agents/*.md`, exceto `sa-*`), com o "para quê" tirado da `description` — eles são oferecidos como
 subagentes no Passo 6, sem a pessoa precisar lembrar deles.
@@ -287,10 +287,9 @@ Padrões da proposta:
    prompt do dono; o agente do toolkit fica
    com as permissões do dono ([references/toolkits.md](references/toolkits.md#passos)).
 6. Toolkit com `tipos` ligado ao projeto (em `toolkits` no `agentes.json`): sem pergunta por agente. O gerador põe a
-   linha **Tipos com fluxo de toolkit** no prompt do dono do passo de desvio do tipo, liga a skill do fluxo a ele e
-   imprime a seção **Tipos com fluxo de toolkit** (tipos, padrões em camada e itens de rubrica), que vai para o
-   `sabia.md` como saiu
-   ([references/toolkits.md](references/toolkits.md#fluxos-padrões-e-tipos)).
+   linha **Tipos com skill de toolkit** no prompt do dono do passo de desvio do tipo, liga a skill a ele e
+   imprime a seção **Tipos com skill de toolkit** (tipos e itens de rubrica), que vai para o `sabia.md` como saiu
+   ([references/toolkits.md](references/toolkits.md#tipos)).
 
 Registre também as skills **oferecidas e recusadas** por agente (coluna própria no `sabia.md`): no modo
 atualização, só skill que não está em nenhuma das duas colunas é "nova".

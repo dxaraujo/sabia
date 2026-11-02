@@ -1,5 +1,5 @@
 ---
-{"resumo": "Preenche o prd.md (padrão sa-prd/prd.md) e cria em elm/ um conceito OKF por artefato, mais index.md e log.md, pelas regras de escrita e pelas políticas do sabia.md (ET inicial, REG com dados técnicos, Telas: a EL do protótipo aprovado) e o limite do acordos.md; o tipo com fluxo de toolkit no prompt sai por esse fluxo."}
+{"resumo": "Preenche o prd.md (padrão sa-prd/prd.md) e cria em elm/ um conceito OKF por artefato, mais index.md e log.md, pelas regras de escrita e pelas políticas do sabia.md (ET inicial, REG com dados técnicos, Telas: a EL do protótipo aprovado) e o limite do acordos.md; o tipo com skill de toolkit no prompt sai por ela."}
 ---
 ## Entrada
 
@@ -10,8 +10,9 @@ dela (passo `sa-especificar.prototipo.aprovacao`), ou o `D-nn` `Épico sem tela`
 
 ## Faça
 
-Tipo com fluxo de toolkit no seu prompt (**Tipos com fluxo de toolkit**) → o artefato desse tipo sai pelo fluxo do
-toolkit: rode-o em linha e volte a este passo ("Toolkit na especificação", no passo `sa-especificar.especificar.encaminhar`).
+Tipo com skill de toolkit no seu prompt (**Tipos com skill de toolkit**) → o artefato desse tipo sai pela skill:
+carregue-a, siga o fluxo e o padrão do tipo pelos caminhos da linha, se a linha os trouxer (senão, a skill), e volte a este passo ("Toolkit na
+especificação", no passo `sa-especificar.especificar.encaminhar`).
 Na volta, confira o artefato pelo contrato: arquivo pela coluna Arquivo do catálogo, envelope do `okf-elm.md`,
 `status: draft`, entrada no `index.md` e no `log.md`. Fora dele, complete aqui mesmo e registre no `status.md`.
 Os demais tipos seguem as regras abaixo; o `prd.md`, o `index.md`, o `log.md` e o contrato continuam deste passo.

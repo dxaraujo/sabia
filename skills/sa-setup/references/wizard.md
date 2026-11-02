@@ -242,12 +242,12 @@ Montagem do `pa` (só quando falta): um cartão por bloco, com o cabeçalho
 |---|---|---|---|---|---|
 | 1 | `<toolkit>` <versão> | <`sa-codificar.codificar.tarefa` | ❌ `<id>` não aceita desvio> | <quando usar> | `<skill>` | <`<agente>` | —> |
 
-(só se algum toolkit traz `tipos`) Tipos com fluxo de toolkit — o fluxo do toolkit escreve o tipo no passo de desvio
-dele (coluna Desviável do catálogo):
+(só se algum toolkit traz `tipos`) Tipos com skill de toolkit — a skill do toolkit, com o fluxo e o padrão do tipo,
+escreve o tipo no passo de desvio dele (coluna Desviável do catálogo):
 
-| Tipo | Fluxo | Toolkit | Passo de desvio |
-|---|---|---|---|
-| `<sigla>` | `<toolkit>.<fluxo>` | `<toolkit>` <versão> | `<id do passo>` |
+| Tipo | Skill | Fluxo e padrão | Toolkit | Passo de desvio |
+|---|---|---|---|---|
+| `<sigla>` | `<skill>` | `<fluxo>` <com o padrão `<padrão>`> <ou — (as references da skill)> | `<toolkit>` <versão> | `<id do passo>` |
 
 Agentes do projeto (podem virar subagentes do desenvolvedor e do orquestrador):
 
