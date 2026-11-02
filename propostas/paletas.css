@@ -113,6 +113,7 @@
 
 
 
+
 /* ===== propostas similares à atual: 9 cores na ordem dos papéis da atual (marca, azul, navy, ciano, teal, verde, lima, amarelo,
    laranja), aplicadas puras, com as regras e os neutros da atual. Só o texto se adapta: branco ou quase preto
    (#121821), o que contrastar mais com cada cor (etapas e botões da barra lateral). Seletores com :root para ganhar das
@@ -341,6 +342,81 @@
 :root[data-paleta="i-aurora"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
 :root[data-paleta="i-aurora"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
 :root[data-paleta="i-aurora"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Aurora Code — tecnologia e criatividade em perfeita harmonia */
+:root[data-paleta="j-aurora-code"]{
+  --brand:#6366F1; --blue:#4F46E5; --navy:#312E81; --cyan:#06B6D4; --teal:#0891B2; --green:#22C55E; --lime:#84CC16; --yellow:#F59E0B; --orange:#F97316;
+  --l-epico:#312E81; --l-hitl:#4F46E5; --l-afk:#06B6D4; --l-atd:#22C55E; --l-min:#0891B2; --l-sprint:#F59E0B; --l-rapida:#F97316;
+  --viva-capa:#6366F1; --viva-escuro:#312E81; --viva-destaque:#F59E0B; --viva-tinta:#312E81; --destaque-txt:#121821;
+}
+:root[data-paleta="j-aurora-code"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#312E81; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#4F46E5}
+:root[data-paleta="j-aurora-code"][data-modo="escuro"]{--acento:#827CED}
+:root[data-paleta="j-aurora-code"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#807DD1}
+:root[data-paleta="j-aurora-code"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
+:root[data-paleta="j-aurora-code"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="j-aurora-code"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
+:root[data-paleta="j-aurora-code"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="j-aurora-code"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Sage Flow — equilíbrio entre inovação, natureza e tecnologia (sem azul: o verde-petróleo faz marca e navy) */
+:root[data-paleta="j-sage"]{
+  --brand:#0F766E; --blue:#14B8A6; --navy:#0F766E; --cyan:#06B6D4; --teal:#14B8A6; --green:#65A30D; --lime:#84CC16; --yellow:#FBBF24; --orange:#F97316;
+  --l-epico:#0F766E; --l-hitl:#14B8A6; --l-afk:#06B6D4; --l-atd:#65A30D; --l-min:#14B8A6; --l-sprint:#FBBF24; --l-rapida:#F97316;
+  --viva-capa:#0F766E; --viva-escuro:#0F766E; --viva-destaque:#FBBF24; --viva-tinta:#0F766E; --destaque-txt:#121821;
+}
+:root[data-paleta="j-sage"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#0F766E; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#14B8A6}
+:root[data-paleta="j-sage"][data-modo="escuro"]{--acento:#14B8A6}
+:root[data-paleta="j-sage"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#13968C}
+:root[data-paleta="j-sage"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
+:root[data-paleta="j-sage"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="j-sage"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
+:root[data-paleta="j-sage"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="j-sage"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Quantum Blue — performance e inovação em alto nível */
+:root[data-paleta="j-quantum-blue"]{
+  --brand:#0EA5E9; --blue:#0284C7; --navy:#0F172A; --cyan:#22D3EE; --teal:#06B6D4; --green:#10B981; --lime:#84CC16; --yellow:#FBBF24; --orange:#FB923C;
+  --l-epico:#0F172A; --l-hitl:#0284C7; --l-afk:#22D3EE; --l-atd:#10B981; --l-min:#06B6D4; --l-sprint:#FBBF24; --l-rapida:#FB923C;
+  --viva-capa:#0EA5E9; --viva-escuro:#0F172A; --viva-destaque:#FBBF24; --viva-tinta:#0F172A; --destaque-txt:#121821;
+}
+:root[data-paleta="j-quantum-blue"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#0F172A; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#0284C7}
+:root[data-paleta="j-quantum-blue"][data-modo="escuro"]{--acento:#028ED6}
+:root[data-paleta="j-quantum-blue"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#6986CA}
+:root[data-paleta="j-quantum-blue"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
+:root[data-paleta="j-quantum-blue"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="j-quantum-blue"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
+:root[data-paleta="j-quantum-blue"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="j-quantum-blue"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Prism Tech — clareza, inovação e impacto real (violeta no lugar do navy) */
+:root[data-paleta="j-prism"]{
+  --brand:#4F46E5; --blue:#8B5CF6; --navy:#7C3AED; --cyan:#06B6D4; --teal:#14B8A6; --green:#8ACC15; --lime:#FACC15; --yellow:#FACC15; --orange:#F97316;
+  --l-epico:#7C3AED; --l-hitl:#8B5CF6; --l-afk:#06B6D4; --l-atd:#8ACC15; --l-min:#14B8A6; --l-sprint:#FACC15; --l-rapida:#F97316;
+  --viva-capa:#4F46E5; --viva-escuro:#7C3AED; --viva-destaque:#FACC15; --viva-tinta:#7C3AED; --destaque-txt:#121821;
+}
+:root[data-paleta="j-prism"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#7C3AED; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#8B5CF6}
+:root[data-paleta="j-prism"][data-modo="escuro"]{--acento:#996FF7}
+:root[data-paleta="j-prism"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#9E6DF2}
+:root[data-paleta="j-prism"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
+:root[data-paleta="j-prism"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="j-prism"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
+:root[data-paleta="j-prism"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="j-prism"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Neo Horizon — modernidade, energia e novas possibilidades */
+:root[data-paleta="j-neo"]{
+  --brand:#2563EB; --blue:#1E3A8A; --navy:#0B132B; --cyan:#06B6D4; --teal:#2DD4BF; --green:#A3E635; --lime:#FDE047; --yellow:#F59E0B; --orange:#EA580C;
+  --l-epico:#0B132B; --l-hitl:#1E3A8A; --l-afk:#06B6D4; --l-atd:#A3E635; --l-min:#2DD4BF; --l-sprint:#F59E0B; --l-rapida:#EA580C;
+  --viva-capa:#2563EB; --viva-escuro:#0B132B; --viva-destaque:#F59E0B; --viva-tinta:#0B132B; --destaque-txt:#121821;
+}
+:root[data-paleta="j-neo"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#0B132B; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#1E3A8A}
+:root[data-paleta="j-neo"][data-modo="escuro"]{--acento:#6483DD}
+:root[data-paleta="j-neo"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#6783D8}
+:root[data-paleta="j-neo"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
+:root[data-paleta="j-neo"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="j-neo"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
+:root[data-paleta="j-neo"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="j-neo"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
 
 /* ===== variantes da sóbria: a mesma estrutura (quase tudo branco, destaques no navy e num amarelo em poucos pontos),
    com outras cores. Ficam em <html data-sobria="…"> e não ligam as regras de paleta viva ===== */
