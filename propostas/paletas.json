@@ -27,34 +27,5 @@
     "rapida": "#FB8500"
    }
   }
- },
- "c-petroleo-mostarda": {
-  "nome": "Azul-petróleo e mostarda",
-  "site": "Coolors",
-  "origem": "nova",
-  "ideia": "azul-petróleo e marinho como base, mostarda e laranja de acento, verde-folha de apoio",
-  "fonte": "2e86ab-1b3b6f-a3d5ff-3f7d58-f2c14e-f78154",
-  "sementes": {
-   "tinta": "#12263F",
-   "capa": "#2E86AB",
-   "brand": "#2E86AB",
-   "navy": "#1B3B6F",
-   "cyan": "#A3D5FF",
-   "lime": "#B8E0D2",
-   "green": "#3F7D58",
-   "orange": "#F2C14E",
-   "teal": "#5D737E",
-   "destaque": "#F78154",
-   "cinza": "#5D737E",
-   "linhas": {
-    "epico": "#1B3B6F",
-    "hitl": "#2E86AB",
-    "afk": "#4FB0C6",
-    "atd": "#3F7D58",
-    "min": "#5D737E",
-    "sprint": "#E0A526",
-    "rapida": "#F78154"
-   }
-  }
  }
 }

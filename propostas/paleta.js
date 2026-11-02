@@ -2,8 +2,8 @@
 // Roda no <head> para não piscar; a barra de troca ganha os botões quando a página carrega.
 (function(){
   var root=document.documentElement, q=new URLSearchParams(location.search);
-  var OP={paleta:[["sobria", "Sóbria"], ["atual", "Atual"], ["c-ceu-sol", "Refreshing Summer Fun"], ["c-petroleo-mostarda", "Azul-petróleo e mostarda"]],modo:[['claro','Claro'],['escuro','Escuro']]};
-  var GRUPO={"sobria": "base", "atual": "base", "c-ceu-sol": "Coolors · sua seleção", "c-petroleo-mostarda": "Coolors · nova"};
+  var OP={paleta:[["sobria", "Sóbria"], ["atual", "Atual"], ["c-ceu-sol", "Refreshing Summer Fun"]],modo:[['claro','Claro'],['escuro','Escuro']]};
+  var GRUPO={"sobria": "base", "atual": "base", "c-ceu-sol": "Coolors · sua seleção"};
   var PADRAO={paleta:'sobria',modo:'claro'}, SEM={paleta:'sobria',modo:'claro'}, ROT={paleta:'Paleta',modo:'Modo'}, v={};
   function valido(k,x){return OP[k].some(function(o){return o[0]===x})}
   function ler(k){

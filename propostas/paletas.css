@@ -109,16 +109,4 @@
 [data-paleta="c-ceu-sol"] .panel{--l-epico:#023047; --l-hitl:#219EBC; --l-afk:#5AB4D6; --l-atd:#0F6E7A; --l-min:#5C7A94; --l-sprint:#FFB703; --l-rapida:#FB8500}
 [data-paleta="c-ceu-sol"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#022338}
 
-/* Azul-petróleo e mostarda (Coolors, nova) — azul-petróleo e marinho como base, mostarda e laranja de acento, verde-folha de apoio */
-:root[data-paleta="c-petroleo-mostarda"]{
-  --brand:#2B7D9F; --blue:#2B7D9F; --navy:#1B3B6F; --cyan:#A3D5FF; --lime:#B8E0D2; --green:#3F7D58; --orange:#F2C14E; --teal:#5D737E; --yellow:#F78154;
-  --l-epico:#1B3B6F; --l-hitl:#2E86AB; --l-afk:#3B9DB7; --l-atd:#3F7D58; --l-min:#5D737E; --l-sprint:#BF8B19; --l-rapida:#F76531;
-  --viva-capa:#2B7D9F; --viva-escuro:#1B3B6F; --viva-destaque:#F78154; --viva-tinta:#12263F; --destaque-txt:#12263F;
-}
-:root[data-paleta="c-petroleo-mostarda"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38464D; --title:#1B3B6F; --muted:#657780; --line:#D0D8DD; --soft:#F0F6F9; --grey:#F6F8F9; --grey2:#E7ECEE; --panel-bg:#F6F8F9; --acento:#2B7D9F}
-:root[data-paleta="c-petroleo-mostarda"][data-modo="escuro"]{--acento:#318FB7}
-[data-modo="escuro"][data-paleta="c-petroleo-mostarda"] :is(#map,.itin,.trilho,.chip){--l-epico:#5B87D7}
-[data-paleta="c-petroleo-mostarda"] .panel{--l-epico:#1B3B6F; --l-hitl:#2E86AB; --l-afk:#4FB0C6; --l-atd:#3F7D58; --l-min:#5D737E; --l-sprint:#E0A526; --l-rapida:#F78154}
-[data-paleta="c-petroleo-mostarda"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#12263F}
-
 .proposta select{font:inherit;padding:6px 8px;border:1px solid #d0d4da;border-radius:6px;background:#fff;color:#222;max-width:220px}
