@@ -276,4 +276,14 @@
 :root[data-paleta="a-composta-marinho"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38404D; --title:#22406B; --muted:#677383; --line:#D0D5DD; --soft:#F0F4F9; --grey:#F6F7F9; --grey2:#E7EAEE; --panel-bg:#F6F7F9; --acento:#2C5D8F}
 :root[data-paleta="a-composta-marinho"][data-modo="escuro"]{--acento:#448DC8}
 [data-modo="escuro"][data-paleta="a-composta-marinho"] :is(#map,.itin,.trilho,.chip){--l-epico:#5488CD}
+/* Golden Twilight (Coolors, sua seleção) — marinho e azul-Oxford com amarelos dourados de acento */
+:root[data-paleta="c-golden-twilight"]{
+  --brand:#0A4F8F; --blue:#0A4F8F; --navy:#001D3D; --cyan:#9DB9D9; --lime:#FFE680; --green:#8A6A00; --orange:#FFC300; --teal:#3A4A5E; --yellow:#FFD60A;
+  --l-epico:#001D3D; --l-hitl:#0A4F8F; --l-afk:#5A8FC4; --l-atd:#3B6E8F; --l-min:#5C6B7D; --l-sprint:#B88B00; --l-rapida:#BA8B00;
+  --viva-capa:#003566; --viva-escuro:#001D3D; --viva-destaque:#FFD60A; --viva-tinta:#001D3D; --destaque-txt:#001D3D;
+}
+:root[data-paleta="c-golden-twilight"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38434D; --title:#001D3D; --muted:#677683; --line:#D0D6DD; --soft:#F0F5F9; --grey:#F6F7F9; --grey2:#E7EBEE; --panel-bg:#F6F7F9; --acento:#0A4F8F}
+:root[data-paleta="c-golden-twilight"][data-modo="escuro"]{--acento:#0A88F0}
+[data-modo="escuro"][data-paleta="c-golden-twilight"] :is(#map,.itin,.trilho,.chip){--l-epico:#2E85FF}
+
 .proposta select{font:inherit;padding:6px 8px;border:1px solid #d0d4da;border-radius:6px;background:#fff;color:#222;max-width:220px}

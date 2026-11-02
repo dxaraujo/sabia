@@ -462,5 +462,34 @@
     "rapida": "#E76F51"
    }
   }
+ },
+ "c-golden-twilight": {
+  "nome": "Golden Twilight",
+  "site": "Coolors",
+  "origem": "sua seleção",
+  "ideia": "marinho e azul-Oxford com amarelos dourados de acento",
+  "fonte": "000814-001d3d-003566-ffc300-ffd60a",
+  "sementes": {
+   "tinta": "#001D3D",
+   "capa": "#003566",
+   "brand": "#0A4F8F",
+   "navy": "#001D3D",
+   "cyan": "#9DB9D9",
+   "lime": "#FFE680",
+   "green": "#8A6A00",
+   "orange": "#FFC300",
+   "teal": "#3A4A5E",
+   "destaque": "#FFD60A",
+   "cinza": "#003566",
+   "linhas": {
+    "epico": "#001D3D",
+    "hitl": "#0A4F8F",
+    "afk": "#5A8FC4",
+    "atd": "#3B6E8F",
+    "min": "#5C6B7D",
+    "sprint": "#FFC300",
+    "rapida": "#C99700"
+   }
+  }
  }
 }
