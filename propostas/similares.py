@@ -24,6 +24,11 @@ SIMILARES = {
  'j-quantum-blue': ('Quantum Blue', 'Paletas de IA · 2', 'performance e inovação em alto nível', '#0EA5E9 #0284C7 #0F172A #22D3EE #06B6D4 #10B981 #84CC16 #FBBF24 #FB923C'),
  'j-prism': ('Prism Tech', 'Paletas de IA · 2', 'clareza, inovação e impacto real (violeta no lugar do navy)', '#4F46E5 #8B5CF6 #7C3AED #06B6D4 #14B8A6 #8ACC15 #FACC15 #FACC15 #F97316'),
  'j-neo': ('Neo Horizon', 'Paletas de IA · 2', 'modernidade, energia e novas possibilidades', '#2563EB #1E3A8A #0B132B #06B6D4 #2DD4BF #A3E635 #FDE047 #F59E0B #EA580C'),
+ 'k-explorer': ('IA Explorer', 'Paletas de IA · 3', 'tecnologia e criatividade para ir além', '#6366F1 #4F46E5 #3730A3 #06B6D4 #0891B2 #22C55E #84CC16 #F59E0B #EA580C'),
+ 'k-green': ('Green Core', 'Paletas de IA · 3', 'equilíbrio entre inovação, conhecimento e impacto (sem cor escura: navy #0F766E de fora da paleta)', '#0EA5E9 #06B6D4 #0F766E #14B8A6 #10B981 #84CC16 #A3E635 #FACC15 #F97316'),
+ 'k-deep': ('Deep Tech', 'Paletas de IA · 3', 'performance, escala e alta performance', '#0B63CE #2563EB #1E40AF #06B6D4 #0891B2 #059669 #16A34A #FBBF24 #F97316'),
+ 'k-neon': ('Neon Flow', 'Paletas de IA · 3', 'inovação com energia e possibilidades infinitas (sem cor escura: o rosa faz o navy)', '#8B5CF6 #A855F7 #EC4899 #06B6D4 #14B8A6 #22C55E #A3E635 #F59E0B #FB7185'),
+ 'k-pulse': ('Future Pulse', 'Paletas de IA · 3', 'inteligência, clareza e um amanhã mais aberto', '#3B82F6 #1E3A8A #0F172A #06B6D4 #2DD4BF #86EFAC #FDE047 #F59E0B #FB923C'),
 }
 PAPEIS = ['brand', 'blue', 'navy', 'cyan', 'teal', 'green', 'lime', 'yellow', 'orange']
 ETAPAS = ['cyan', 'lime', 'brand', 'navy', 'green', 'orange', 'teal']   # ordem das etapas no HTML

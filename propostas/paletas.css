@@ -114,6 +114,7 @@
 
 
 
+
 /* ===== propostas similares à atual: 9 cores na ordem dos papéis da atual (marca, azul, navy, ciano, teal, verde, lima, amarelo,
    laranja), aplicadas puras, com as regras e os neutros da atual. Só o texto se adapta: branco ou quase preto
    (#121821), o que contrastar mais com cada cor (etapas e botões da barra lateral). Seletores com :root para ganhar das
@@ -417,6 +418,81 @@
 :root[data-paleta="j-neo"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
 :root[data-paleta="j-neo"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
 :root[data-paleta="j-neo"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* IA Explorer — tecnologia e criatividade para ir além */
+:root[data-paleta="k-explorer"]{
+  --brand:#6366F1; --blue:#4F46E5; --navy:#3730A3; --cyan:#06B6D4; --teal:#0891B2; --green:#22C55E; --lime:#84CC16; --yellow:#F59E0B; --orange:#EA580C;
+  --l-epico:#3730A3; --l-hitl:#4F46E5; --l-afk:#06B6D4; --l-atd:#22C55E; --l-min:#0891B2; --l-sprint:#F59E0B; --l-rapida:#EA580C;
+  --viva-capa:#6366F1; --viva-escuro:#3730A3; --viva-destaque:#F59E0B; --viva-tinta:#3730A3; --destaque-txt:#121821;
+}
+:root[data-paleta="k-explorer"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#3730A3; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#4F46E5}
+:root[data-paleta="k-explorer"][data-modo="escuro"]{--acento:#827CED}
+:root[data-paleta="k-explorer"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#847ED9}
+:root[data-paleta="k-explorer"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
+:root[data-paleta="k-explorer"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="k-explorer"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
+:root[data-paleta="k-explorer"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="k-explorer"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Green Core — equilíbrio entre inovação, conhecimento e impacto (sem cor escura: navy #0F766E de fora da paleta) */
+:root[data-paleta="k-green"]{
+  --brand:#0EA5E9; --blue:#06B6D4; --navy:#0F766E; --cyan:#14B8A6; --teal:#10B981; --green:#84CC16; --lime:#A3E635; --yellow:#FACC15; --orange:#F97316;
+  --l-epico:#0F766E; --l-hitl:#06B6D4; --l-afk:#14B8A6; --l-atd:#84CC16; --l-min:#10B981; --l-sprint:#FACC15; --l-rapida:#F97316;
+  --viva-capa:#0EA5E9; --viva-escuro:#0F766E; --viva-destaque:#FACC15; --viva-tinta:#0F766E; --destaque-txt:#121821;
+}
+:root[data-paleta="k-green"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#0F766E; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#06B6D4}
+:root[data-paleta="k-green"][data-modo="escuro"]{--acento:#06B6D4}
+:root[data-paleta="k-green"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#13968C}
+:root[data-paleta="k-green"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
+:root[data-paleta="k-green"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="k-green"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
+:root[data-paleta="k-green"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="k-green"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Deep Tech — performance, escala e alta performance */
+:root[data-paleta="k-deep"]{
+  --brand:#0B63CE; --blue:#2563EB; --navy:#1E40AF; --cyan:#06B6D4; --teal:#0891B2; --green:#059669; --lime:#16A34A; --yellow:#FBBF24; --orange:#F97316;
+  --l-epico:#1E40AF; --l-hitl:#2563EB; --l-afk:#06B6D4; --l-atd:#059669; --l-min:#0891B2; --l-sprint:#FBBF24; --l-rapida:#F97316;
+  --viva-capa:#0B63CE; --viva-escuro:#1E40AF; --viva-destaque:#FBBF24; --viva-tinta:#1E40AF; --destaque-txt:#121821;
+}
+:root[data-paleta="k-deep"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#1E40AF; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#2563EB}
+:root[data-paleta="k-deep"][data-modo="escuro"]{--acento:#5484EF}
+:root[data-paleta="k-deep"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#6381E4}
+:root[data-paleta="k-deep"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
+:root[data-paleta="k-deep"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="k-deep"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
+:root[data-paleta="k-deep"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="k-deep"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Neon Flow — inovação com energia e possibilidades infinitas (sem cor escura: o rosa faz o navy) */
+:root[data-paleta="k-neon"]{
+  --brand:#8B5CF6; --blue:#A855F7; --navy:#EC4899; --cyan:#06B6D4; --teal:#14B8A6; --green:#22C55E; --lime:#A3E635; --yellow:#F59E0B; --orange:#FB7185;
+  --l-epico:#EC4899; --l-hitl:#A855F7; --l-afk:#06B6D4; --l-atd:#22C55E; --l-min:#14B8A6; --l-sprint:#F59E0B; --l-rapida:#FB7185;
+  --viva-capa:#8B5CF6; --viva-escuro:#EC4899; --viva-destaque:#F59E0B; --viva-tinta:#EC4899; --destaque-txt:#121821;
+}
+:root[data-paleta="k-neon"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#EC4899; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#A855F7}
+:root[data-paleta="k-neon"][data-modo="escuro"]{--acento:#AD5FF7}
+:root[data-paleta="k-neon"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#EC4899}
+:root[data-paleta="k-neon"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(4),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
+:root[data-paleta="k-neon"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(4),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="k-neon"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(4),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
+:root[data-paleta="k-neon"] .tr:is([style*="--l-epico)"],[style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="k-neon"] .tr:not([style*="--l-epico)"],[style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Future Pulse — inteligência, clareza e um amanhã mais aberto */
+:root[data-paleta="k-pulse"]{
+  --brand:#3B82F6; --blue:#1E3A8A; --navy:#0F172A; --cyan:#06B6D4; --teal:#2DD4BF; --green:#86EFAC; --lime:#FDE047; --yellow:#F59E0B; --orange:#FB923C;
+  --l-epico:#0F172A; --l-hitl:#1E3A8A; --l-afk:#06B6D4; --l-atd:#86EFAC; --l-min:#2DD4BF; --l-sprint:#F59E0B; --l-rapida:#FB923C;
+  --viva-capa:#3B82F6; --viva-escuro:#0F172A; --viva-destaque:#F59E0B; --viva-tinta:#0F172A; --destaque-txt:#121821;
+}
+:root[data-paleta="k-pulse"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#0F172A; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#1E3A8A}
+:root[data-paleta="k-pulse"][data-modo="escuro"]{--acento:#6483DD}
+:root[data-paleta="k-pulse"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#6986CA}
+:root[data-paleta="k-pulse"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
+:root[data-paleta="k-pulse"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="k-pulse"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
+:root[data-paleta="k-pulse"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="k-pulse"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
 
 /* ===== variantes da sóbria: a mesma estrutura (quase tudo branco, destaques no navy e num amarelo em poucos pontos),
    com outras cores. Ficam em <html data-sobria="…"> e não ligam as regras de paleta viva ===== */
