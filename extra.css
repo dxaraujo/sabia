@@ -33,3 +33,10 @@ pre.cod .v{color:#b2d235}
 .pontos a{color:var(--blue)}
 .aviso{background:#FFF6E0;border-left:4px solid var(--yellow);padding:10px 14px;border-radius:0 12px 0 0;margin:12px 0;max-width:95ch;font-size:14px}
 .diag .lb{paint-order:stroke;stroke:var(--bg);stroke-width:5px;stroke-linejoin:round}
+/* página Fluxos: um grafo por fluxo, recolhível */
+.legenda-grafo{font:500 13px/1.6 var(--mono);color:var(--title);background:var(--soft);padding:10px 14px;border-radius:var(--r-sm);max-width:100ch}
+details.fluxo{border:1px solid var(--grey2);border-radius:var(--r-sm);margin:10px 0;background:var(--bg)}
+details.fluxo summary{cursor:pointer;padding:12px 14px;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline}
+details.fluxo summary span{font-size:12.5px;color:var(--muted)}
+details.fluxo summary small{flex-basis:100%;color:var(--ink);font-size:13.5px}
+details.fluxo pre.grafo{margin:0 12px 12px;font-size:12.3px;line-height:1.22}

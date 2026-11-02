@@ -20,7 +20,7 @@
     <a class="gh" href="https://github.com/dxaraujo/sabia">GitHub</a>
   </div>
   <nav class="tabs" aria-label="Páginas">
-    <a href="index.html">Início</a><a href="como-funciona.html" aria-current="page">Como funciona</a><a href="papeis.html">Papéis e agentes</a><a href="arquivos.html">Arquivos</a><a href="ciclo.html">Ciclo da fatia</a><a href="toolkits.html">Toolkits</a><a href="elm.html">IBM ELM</a><a href="gates.html">Gates e senioridade</a>
+    <a href="index.html">Início</a><a href="como-funciona.html" aria-current="page">Como funciona</a><a href="fluxos.html">Fluxos</a><a href="papeis.html">Papéis e agentes</a><a href="arquivos.html">Arquivos</a><a href="ciclo.html">Ciclo da fatia</a><a href="toolkits.html">Toolkits</a><a href="elm.html">IBM ELM</a><a href="gates.html">Gates e senioridade</a>
   </nav>
   <header class="sign page"><h1>Como o Sabiá funciona</h1><p class="lead">O Sabiá é escrito como <b>fluxos</b>: cada passo num arquivo, com id, travas e saídas. Na instalação, o CLI <b>compila</b> os fluxos em skills para o Kiro e o opencode, na pasta do usuário. No projeto ficam a configuração, os agentes gerados e o que o projeto customizou.</p>
   <nav class="indice" aria-label="Nesta página"><a href="#camadas">As três camadas</a><a href="#fonte">A fonte: fluxos e passos</a><a href="#ids">Ids, chamadas e passagens</a><a href="#travas">Travas</a><a href="#compilar">A compilação</a><a href="#agentes">Os agentes gerados</a><a href="#execucao">Em execução</a><a href="#rota">sabia rota</a></nav>
@@ -226,7 +226,7 @@ Agente: `sa-produto`. Sem ele, sugira à pessoa usá-lo; …
 Ao começar um passo, leia o arquivo dele (não os dos outros
 passos) e o que ele mandar ler. Travas do fluxo: sim-da-pessoa.</pre></div>
   </div>
-  <div class="bloco"><p>Com dois fluxos ou mais, o <code>SKILL.md</code> abre com a tabela <b>Fluxos</b> (fluxo e quando usar), e o agente escolhe por ela. O agente lê só o índice e, em cada passo, o arquivo desse passo, o que poupa contexto. A seção <b>No projeto</b>, no fim, manda abrir antes <code>.sabia/fluxo/&lt;skill&gt;/&lt;fluxo&gt;/passos/&lt;passo&gt;.md</code>: se o projeto trocou o passo, vale o dele.</p></div>
+  <div class="bloco"><p>Com dois fluxos ou mais, o <code>SKILL.md</code> abre com a tabela <b>Fluxos</b> (fluxo e quando usar), e o agente escolhe por ela. O agente lê só o índice e, em cada passo, o arquivo desse passo, o que poupa contexto. A seção <b>No projeto</b>, no fim, manda abrir antes <code>.sabia/fluxo/&lt;skill&gt;/&lt;fluxo&gt;/passos/&lt;passo&gt;.md</code>: se o projeto trocou o passo, vale o dele. Cada fluxo ganha também um <code>references/&lt;fluxo&gt;/grafo.md</code>, gerado do mestre, com o link logo abaixo da tabela; a página <a href="fluxos.html">Fluxos</a> mostra todos.</p></div>
 </section>
 
 <section id="agentes">
