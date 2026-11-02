@@ -1,8 +1,7 @@
-/* Atlassian Design System com as cores, a fonte e a barra de menus do Evergreen. O que diverge do Evergreen é só
-   o que é do ADS: tamanhos (texto 14/20, títulos 48/28/20), espaçamentos, cantos (4/8px, lozenge 3px) e sombras
+/* Nova versão: forma do Atlassian Design System (ADS) — tamanhos (texto 14/20, títulos 48/28/20), espaçamentos, cantos (4/8px, lozenge 3px) e sombras
    (raised e overlay no lugar de borda + elevação), além dos lozenges em caixa alta. */
 :root{
-  /* cores: as mesmas do evergreen/tema.css */
+  /* cores: neutros azul-acinzentados e azul #3366FF (as paletas atual e sabiá trocam estas) */
   --bg:#ffffff; --card:#ffffff; --ink:#474D66; --title:#101840; --muted:#696F8C; --line:#E6E8F0; --soft:#F4F6FA; --grey:#F9FAFC; --grey2:#EDEFF5;
   --acento:#3366FF; --brand:#3366FF; --brand-hover:#2952CC; --blue:#2952CC; --navy:#101840; --cyan:#25B7CC; --teal:#0F8A99; --green:#52BD94; --lime:#A3E6CD; --yellow:#FFD040; --orange:#FFB020; --red:#D14343;
   --l-epico:#6E62B6; --l-hitl:#3366FF; --l-afk:#25B7CC; --l-atd:#52BD94; --l-min:#317159; --l-sprint:#FFB020; --l-rapida:#DE7548;
@@ -56,7 +55,7 @@ nav.tabs a[aria-current="page"]{background:color-mix(in srgb,var(--acento) 10%,t
 .pdz .dz-passos{border:0;box-shadow:var(--overlay)}
 footer{border-top:1px solid var(--line)}
 
-/* escuro: as cores escuras do Evergreen; as sombras do ADS no escuro */
+/* escuro: neutros grafite e azul claro; as sombras do ADS no escuro */
 :root[data-modo="escuro"]{
   --bg:#1F1F21; --card:#242528; --ink:#CECFD2; --title:#DFE1E5; --muted:#96999E; --line:#3D3F43; --soft:#2B2C2F; --grey:#18191A; --grey2:#333438;
   --acento:#85A3FF; --brand:#5C85FF; --brand-hover:#85A3FF; --blue:#5C85FF; --navy:#44464B;

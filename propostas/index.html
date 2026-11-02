@@ -24,7 +24,7 @@ a{color:inherit}
 .paletas small{color:var(--muted);font-size:13px}
 .sw{display:flex;height:22px;border-radius:6px;overflow:hidden}
 .sw i{flex:1}
-.sistemas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.sistemas{display:grid;grid-template-columns:minmax(0,1fr);max-width:560px;gap:14px}
 .sis{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;text-decoration:none;transition:transform .15s,box-shadow .15s}
 .sis:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.08)}
 .sis:focus-visible{outline:2px solid #2b6cf0;outline-offset:2px}
@@ -36,7 +36,6 @@ a{color:inherit}
 .corpo ul{margin:4px 0 0;padding-left:18px;font-size:13.5px;display:flex;flex-direction:column;gap:2px}
 .abrir{margin-top:auto;padding-top:10px;font-weight:600;font-size:14px}
 .abrir::after{content:" →"}
-.ev .amostra{background:#F3F6FF;color:#101840;font-family:"SF UI Display",-apple-system,sans-serif;font-weight:600}
 .at .amostra{background:#F3F6FF;color:#101840;font-family:"SF UI Display",-apple-system,sans-serif;font-weight:600}
 footer{color:var(--muted);font-size:13px}
 @media (max-width:980px){.sistemas{grid-template-columns:minmax(0,1fr)}.paletas{grid-template-columns:repeat(2,minmax(0,1fr))}.modos{max-width:none}}
@@ -47,7 +46,7 @@ footer{color:var(--muted);font-size:13px}
 <div class="wrap">
   <header>
     <h1>Propostas de design system</h1>
-    <p>A página inicial do Sabiá, com o mesmo conteúdo e o mesmo mapa, em dois sistemas. Escolha a paleta e depois o sistema. Dentro da página, a barra no canto inferior direito troca os dois sem voltar aqui.</p>
+    <p>A página inicial do Sabiá, com o mesmo conteúdo e o mesmo mapa, na nova versão. Escolha a paleta e o modo e abra a página; dentro dela, a barra no canto inferior direito troca os dois sem voltar aqui.</p>
   </header>
 
   <section>
@@ -57,8 +56,8 @@ footer{color:var(--muted);font-size:13px}
         <span class="sw"><i style="background:#BFE2FA"></i><i style="background:#7CC2EE"></i><i style="background:#0A6FC4"></i><i style="background:#1E4263"></i><i style="background:#0B7A7A"></i><i style="background:#8FD6AC"></i><i style="background:#475A6B"></i><i style="background:#FFD447"></i><i style="background:#D9640F"></i><i style="background:#D9483B"></i></span></label>
       <label><input type="radio" name="paleta" value="atual"><b>Atual</b><small>As cores de hoje, iguais às do site em cada lugar, com a forma do sistema.</small>
         <span class="sw"><i style="background:#00BBCE"></i><i style="background:#B2D235"></i><i style="background:#0786E3"></i><i style="background:#2C5168"></i><i style="background:#76B043"></i><i style="background:#FAA61A"></i><i style="background:#0094AD"></i><i style="background:#FEBE10"></i></span></label>
-      <label><input type="radio" name="paleta" value="sobria"><b>Sóbria</b><small>Só as cores do próprio sistema, como na primeira rodada.</small>
-        <span class="sw"><i style="background:#292A2E"></i><i style="background:#6B6E76"></i><i style="background:#DDDEE1"></i><i style="background:#F8F8F8"></i><i style="background:#1868DB"></i></span></label>
+      <label><input type="radio" name="paleta" value="sobria"><b>Sóbria</b><small>Só neutros azul-acinzentados e um azul, sem as cores das etapas.</small>
+        <span class="sw"><i style="background:#101840"></i><i style="background:#474D66"></i><i style="background:#E6E8F0"></i><i style="background:#F4F6FA"></i><i style="background:#3366FF"></i></span></label>
     </div>
   </section>
 
@@ -66,17 +65,16 @@ footer{color:var(--muted);font-size:13px}
     <h2>Modo</h2>
     <div class="paletas modos" role="radiogroup" aria-label="Modo">
       <label><input type="radio" name="modo" value="claro" checked><b>Claro</b><small>Fundo claro, como o site de hoje.</small><span class="sw"><i style="background:#ffffff;box-shadow:inset 0 0 0 1px #dedee4"></i><i style="background:#f2f2f7"></i></span></label>
-      <label><input type="radio" name="modo" value="escuro"><b>Escuro</b><small>Tokens escuros de cada sistema; vale para todas as paletas.</small><span class="sw"><i style="background:#1F1F21"></i><i style="background:#161512"></i></span></label>
+      <label><input type="radio" name="modo" value="escuro"><b>Escuro</b><small>Neutros grafite; vale para todas as paletas.</small><span class="sw"><i style="background:#1F1F21"></i><i style="background:#242528"></i></span></label>
     </div>
   </section>
 
   <section>
-    <h2>Sistema</h2>
+    <h2>Página</h2>
     <div class="sistemas">
-      <a class="sis ev" data-d="evergreen" href="evergreen/index.html?paleta=sabia&amp;modo=claro"><div class="amostra">Aa<span>SF UI</span></div><div class="corpo"><h3>Evergreen</h3><p>Segment</p>
-        <ul><li>Neutros azul-acinzentados</li><li>Cantos de 4 e 8px, sombras de elevação</li><li>Aba ativa com fundo azul-claro</li><li>Badges em caixa alta</li></ul><span class="abrir">Abrir</span></div></a>
-      <a class="sis at" data-d="atlassian" href="atlassian/index.html?paleta=sabia"><div class="amostra">Aa<span>SF UI</span></div><div class="corpo"><h3>Atlassian</h3><p>Atlassian Design System</p>
-        <ul><li>Cores do Evergreen; cartões elevados sem borda</li><li>Cantos de 4 e 8px</li><li>Barra de menus e fonte do Evergreen</li><li>Lozenges em caixa alta</li></ul><span class="abrir">Abrir</span></div></a>    </div>
+      <a class="sis at" data-d="nova" href="nova/index.html?paleta=sabia&amp;modo=claro"><div class="amostra">Aa<span>SF UI</span></div><div class="corpo"><h3>Nova versão</h3><p>Forma do Atlassian Design System</p>
+        <ul><li>Cartões elevados sem borda, cantos de 4 e 8px</li><li>Texto 14/20, títulos 48/28/20</li><li>Aba ativa com fundo</li><li>Lozenges em caixa alta</li></ul><span class="abrir">Abrir</span></div></a>
+    </div>
   </section>
 
   <footer><a href="../index.html">Ver o site atual</a></footer>
