@@ -1,10 +1,11 @@
 /* Nova versão: forma do Atlassian Design System (ADS) — tamanhos (texto 14/20, títulos 48/28/20), espaçamentos, cantos (4/8px, lozenge 3px) e sombras
    (raised e overlay no lugar de borda + elevação), além dos lozenges em caixa alta. */
 :root{
-  /* cores: neutros azul-acinzentados e azul #3366FF (as paletas atual e sabiá trocam estas) */
+  /* cores (paleta sóbria): neutros azul-acinzentados e azul #3366FF nos cartões e na marca; as auxiliares
+     (etapas, linhas do mapa, destaques) vêm da paleta atual. As paletas atual e sabiá trocam estas. */
   --bg:#ffffff; --card:#ffffff; --ink:#474D66; --title:#101840; --muted:#696F8C; --line:#E6E8F0; --soft:#F4F6FA; --grey:#F9FAFC; --grey2:#EDEFF5;
-  --acento:#3366FF; --brand:#3366FF; --brand-hover:#2952CC; --blue:#2952CC; --navy:#101840; --cyan:#25B7CC; --teal:#0F8A99; --green:#52BD94; --lime:#A3E6CD; --yellow:#FFD040; --orange:#FFB020; --red:#D14343;
-  --l-epico:#6E62B6; --l-hitl:#3366FF; --l-afk:#25B7CC; --l-atd:#52BD94; --l-min:#317159; --l-sprint:#FFB020; --l-rapida:#DE7548;
+  --acento:#3366FF; --brand:#3366FF; --brand-hover:#2952CC; --blue:#2952CC; --navy:#101840; --cyan:#00BBCE; --teal:#0094AD; --green:#76B043; --lime:#B2D235; --yellow:#FEBE10; --orange:#FAA61A; --red:#D9534F;
+  --l-epico:#2C5168; --l-hitl:#0086C8; --l-afk:#00BBCE; --l-atd:#76B043; --l-min:#0094AD; --l-sprint:#FEBE10; --l-rapida:#FAA61A;
   --hero-bg:#F3F6FF; --hero-fg:#101840;
   /* forma e profundidade: do ADS */
   --r:8px; --r-sm:4px; --r-xs:3px;
@@ -62,6 +63,7 @@ footer{border-top:1px solid var(--line)}
   --hero-bg:#18191A; --hero-fg:#DFE1E5; --panel-bg:#2B2C2F;
   --raised:0 0 0 1px #3D3F43; --overlay:0 8px 12px #01040475,0 0 1px #01040480;
 }
+[data-modo="escuro"] :is(#map,.itin,.trilho){--l-epico:#7FA6C4}
 [data-modo="escuro"] .top .gh{background:var(--card);border-color:var(--line);color:var(--ink)}
 [data-modo="escuro"] .top .gh:hover{background:var(--soft);color:var(--title)}
 [data-modo="escuro"] nav.tabs a{color:var(--ink)}
