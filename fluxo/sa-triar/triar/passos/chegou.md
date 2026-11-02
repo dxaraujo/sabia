@@ -53,6 +53,13 @@ e `obs` — épicos, fatias e as `### <Categoria>` da `## Sustentação`), no `*
   linha do `backlog.md` (e na da sprint, se houver) e no `**Situação:**` do registro; o IB e a tarefa cancelam no
   EWM (`elm_transicao(<id>, "cancelar")`, com "sim"); na falha, `ELM pendente [<ID> cancelar]` no `**ELM:**` do
   registro;
+- **item de Sustentação devolvido pela `sa-atender` ou pela `sa-executar` por categoria errada** (outra categoria,
+  muda o repositório ou tem regra de negócio em aberto) → **retome a triagem do pedido**: passo `triagem`, com
+  `origem` o `<ID>` devolvido. No passo `registrar`, o item novo (outra categoria: id da série dela; muda o
+  repositório: fatia de Manutenção) fica com o IB do devolvido como item de origem (sem IB novo; o pai passa ao IB
+  da categoria nova, ou à Manutenção, sem o "mantenha e avise"), e o devolvido fica `cancelado`, com o motivo
+  `substituido-por <novo>`, como o registrado por engano (acima), mas no EWM só a tarefa dele fecha, antes (com
+  horas lançadas, `concluir`; sem horas, `cancelar`), e a fechada não é a tarefa do novo;
 - o resto → pare (abaixo).
 
 ## Saída

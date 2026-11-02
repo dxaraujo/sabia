@@ -22,5 +22,5 @@ arquivo; ele precisa estar na branch.
 
 ## Pare se
 
-Sem subagente disponível (agente sem essa ferramenta, passo de workflow)
+Sem subagente disponível (agente sem essa ferramenta)
 → pare e devolva a quem chamou: "plano pronto para análise".

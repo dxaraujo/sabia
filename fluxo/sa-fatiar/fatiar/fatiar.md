@@ -6,7 +6,7 @@
    {"id": "rascunho", "chama": "sa-pesquisar.pesquisar"},
    {"id": "perguntar", "saidas": {"ajuste pedido: repita até o ok": "perguntar"}},
    {"id": "gravar"},
-   {"id": "proximos", "saidas": {"primeiro fatiamento, ou a linha da Especificação ainda iniciada": "→ sa-especificar.especificar", "encaixar as fatias na sprint": "→ sa-planejamento.durante.encaixe", "começar uma fatia já": "→ sa-desenvolver.desenvolver"}}
+   {"id": "proximos", "saidas": {"primeiro fatiamento, ou a linha da Especificação ainda iniciada": "→ sa-especificar.especificar", "alocar as fatias na sprint: fale com o P.O. ou o SM (agente sa-produto)": "fim"}}
  ]}
 ---
 # Fatiar — PRD → fatias verticais

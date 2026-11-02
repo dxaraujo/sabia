@@ -16,13 +16,13 @@ O resultado de cada fatia do lote (passo `fases`).
   🤖 Loop AFK — resultado
   | FT | Resultado | PR | Rodadas (plano/código/aceite) | Observação |
   Aguardando pessoa: <planos para aprovar ([APR] de <login>) · PRs para ler e aprovar ([APR] de <login>) · trocas
-  para HITL (P.O., `sa-planejamento`) · bloqueios com pergunta>
+  de modo (P.O. ou SM, agente `sa-produto`: `sa-planejamento.troca-modo`) · bloqueios com pergunta>
   Merge: cada PR com a [APR] concluída → você, pela `sa-desenvolver`, fluxo `encerrar` ("mergeia a FT-<nnn>")
   ELM pendente [<chave>]: <o que falhou ou ficou sem o MCP `elm`>
   Lições para registrar: <correções que o loop precisou — sa-aprender>
   ```
 - **Horas, numa pergunta só** (com o MCP `elm`): uma tabela `tarefa | horas sugeridas` com as `[DEV]` das
-  fatias que chegaram a `verificada` ou a `aguardando-aprovacao-pr`, ou pararam para a troca para HITL; a pessoa ajusta e confirma de uma vez → `elm_horas(<id>)` →
+  fatias que chegaram a `verificada` ou a `aguardando-aprovacao-pr`, ou pararam na troca de modo; a pessoa ajusta e confirma de uma vez → `elm_horas(<id>)` →
   desconte → `elm_lancar_horas` (lança, não conclui). A conclusão da `[DEV]` é no merge de cada fatia (`sa-desenvolver.encerrar`), com
   o saldo. No AFK, revisão e verificação por subagente não têm tarefa nem horas; as das `[APR]` são lançadas por
   quem aprova, na sessão dele.

@@ -2,8 +2,9 @@
 {"fluxo": "codificar", "dono": "sa-desenvolvedor",
  "travas_gerais": ["sim-da-pessoa", "backpressure", "sem-force"],
  "passos": [
-   {"id": "onde", "saidas": {"fatia `verificada` (AFK)": "pr", "aceita (HITL) ou aguardando-aprovacao-pr (AFK): o merge é da sa-desenvolver": "→ sa-desenvolver.encerrar", "outra fase ou sem status.md": "→ sa-desenvolver.desenvolver", "sem a linha do GATE do plano": "fim"}},
-   {"id": "tarefa", "desvio": true, "travas": ["toolkit-sem-commit"], "saidas": {"ainda há tarefa não marcada": "tarefa", "divergência com o plano que muda o desenho": "→ sa-plano.replanejar"}},
+   {"id": "entrada", "de": "entrada", "sprint": "nao"},
+   {"id": "onde", "saidas": {"fatia `verificada` (AFK)": "pr", "sem a linha do GATE do plano": "fim", "aguardando-aprovacao-pr que virou HITL: pr-aberto, revisor avisado": "→ sa-revisar.hitl"}},
+   {"id": "tarefa", "desvio": true, "papel_1x": ["desenvolvedor", "codificador"], "travas": ["toolkit-sem-commit"], "saidas": {"ainda há tarefa não marcada": "tarefa", "divergência com o plano que muda o desenho": "→ sa-plano.replanejar"}},
    {"id": "validar"},
    {"id": "revisar", "chama": "sa-revisar.revisar", "travas": ["revisao-independente"], "saidas": {"HITL, APROVADO ou a pessoa decide seguir": "pr", "REVISAR": "tarefa", "AFK, 2ª reprovação: bloqueada": "fim"}},
    {"id": "verificar", "chama": "sa-verificar.verificar", "travas": ["aceite-independente"], "saidas": {"REJEITADO": "tarefa", "2ª rejeição seguida: bloqueada": "fim"}},
@@ -12,14 +13,23 @@
 ---
 # Codificar — ciclo curto, verificação sempre
 
-Entrada: `.kiro/specs/<ft>-<slug>/` com o plano aprovado (`status.md` com fase `implementando` ou `retrabalho (de:
-…)`), na branch da fatia. O **modo** do `status.md` decide o caminho até o PR (passo `pr`): **HITL** vai direto, depois
+Deste fluxo: `.kiro/specs/<ft>-<slug>/` com o plano aprovado (`status.md` com fase `implementando`, `revisando`,
+`verificando`, `verificada` ou `retrabalho (de: …)`, ou `bloqueada` de uma delas; ou `aguardando-aprovacao-pr` com
+Modo HITL na base: a troca de modo do P.O. ou do SM cancelou a `[APR] Aprovar PR`), na branch da fatia. O **modo** do `status.md` decide o caminho até o PR (passo `pr`): **HITL** vai direto, depois
 da revisão automática; **AFK** passa antes pela revisão e pela verificação por subagente (passos `revisar` e
 `verificar`). Nos dois, o fluxo termina no PR: a `[DEV]` fica em andamento, e o merge do PR aprovado e a conclusão
 dela são do fluxo `sa-desenvolver.encerrar`. No Kiro, cada tarefa também pode ser executada pelo **"Start task"** do `tasks.md` — as regras valem igual.
 
 Leia antes: `design.md` inteiro, `research.md`, `.sabia/sabia.md` (comandos, regras críticas,
 regras aprendidas).
+
+## Entrada: vizinhos
+
+- sem `status.md` em nenhuma branch (fatia não iniciada) → `sa-desenvolver.desenvolver`
+- `pesquisando`, `planejando`, `aguardando-aprovacao-plano` sem a `[APR]` ou `bloqueada (de: pesquisando | planejando)` → `sa-plano.plano`
+- `aguardando-aprovacao-plano` com a `[APR] Aprovar plano` criada → `sa-revisar.aprovar-plano`
+- `aguardando-aprovacao-pr` (Modo AFK na base) com a `[APR] Aprovar PR` aberta → `sa-revisar.aprovar-pr`
+- `aceita`, ou `aguardando-aprovacao-pr` com a `[APR] Aprovar PR` concluída: o merge → `sa-desenvolver.encerrar`
 
 ## Modo autônomo
 

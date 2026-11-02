@@ -118,8 +118,8 @@ estão em [passos.md](../../sabia/references/passos.md).
 - **Pelo id do passo:** `passo.passo` é o id qualificado (`sa-codificar.codificar.tarefa`); o dono do fluxo no mestre é
   quem recebe o desvio. Só vale em passo com `"desvio": true` no mestre; passo inexistente, ou sem `desvio` → o gerador
   recusa e não grava nada. `arquivos` (globs) e `para` vão juntos na linha do prompt: casou um ou o outro → toolkit.
-- **Toolkit 1.x** (`passo.papel`): ainda aceito, pelo gancho do papel — `especificador` → `sa-prd.prd.escrever`,
-  `desenvolvedor` (ou `codificador`, o nome antigo) → `sa-codificar.codificar.tarefa`.
+- **Toolkit 1.x** (`passo.papel`): ainda aceito, pelo `papel_1x` do passo no mestre — `especificador` →
+  `sa-prd.prd.escrever`, `desenvolvedor` (ou `codificador`, o nome antigo) → `sa-codificar.codificar.tarefa`.
 - **Fora da compilação:** o toolkit não entra nas skills `sa-*` compiladas. A skill compilada leva só o gancho (⇢ na
   tabela do fluxo) no passo com desvio; o desvio vem do projeto: `agentes.json` → prompt do dono, e a tabela **Desvios de
   toolkit** do `sabia.md`, que vale também na sessão sem agente.

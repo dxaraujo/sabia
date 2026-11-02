@@ -36,14 +36,17 @@ Começar um item registrado: hub `sa-iniciar` (diz a skill do papel: `sa-especif
 - Dado de cliente (consulta, extração, tela com dado real) nunca vai para o git: fica em `.sabia/local/<origem>/<id>/`;
   o versionado guarda consulta, contagem, caminho e resumo sem identificar pessoas.
 - Scrumban: a sprint é cadência (meta, review, retro), não contêiner de escopo: o compromisso é a meta; dentro dela,
-  fluxo puxado — a `elegivel` de maior prioridade entra quando o WIP de revisão tem folga. Previsão pela vazão, sem
-  pontos.
+  fluxo puxado — a `elegivel` de maior prioridade entra quando o WIP de revisão tem folga, sempre pelo encaixe
+  (`sa-planejamento`, agente `sa-produto`: o P.O., o SM ou quem puxa com a aprovação do P.O., registrada). Item fora
+  da sprint → "fale com o P.O. ou o SM". Previsão pela vazão, sem pontos.
 - **Modo pela senioridade** de quem implementa (`equipe.json`): Júnior → sempre HITL; Pleno → os critérios da fatia;
   Sênior → AFK por padrão (HITL só com motivo forte, registrado). Só Pleno ou Sênior dispara o `sa-orquestrar`. A `[REV]`
   e a `[APR]` são sempre de um **Dev Sênior** (PR de um Sênior: outro Sênior; único Sênior ativo → ele mesmo,
   `revisor único`). **GATE do plano** pela senioridade: Júnior → sempre; Pleno → pergunta (no loop, vale para o
-  lote); Sênior → nunca (aprova o próprio plano). Fatia AFK cujo plano mostra risco → sugerir HITL; a troca é do
-  P.O. na base. HITL → AFK nunca.
+  lote); Sênior → nunca (aprova o próprio plano). Fatia AFK cujo plano mostra risco → para em `bloqueada`,
+  `aguardando troca de modo`. A troca de modo é só do P.O. ou do SM (agente `sa-produto`): AFK → HITL sem aprovação;
+  HITL → AFK só antes do PR (Sênior direto, Pleno pergunta a ele e anota, Júnior nunca). Na primeira atribuição
+  (fatia `—`), quem assume define o modo pela senioridade.
 - Toda hora tem tarefa (`[ESP]` `[DEV]` `[REV]` `[VER]` e as da Sustentação — `[ATD]` `[IMPL]` `[BD]` `[INF]` `[OPE]` `[EXT]`; no AFK, só a `[DEV]`; `[APR]` do Dev Sênior nos
   gates sem tarefa de papel — aprovar plano, aprovar PR do AFK —, criada quando a fatia chega ao gate; `[GB]
   Gerenciamento do backlog` do SM: só ele lança horas nela; o P.O. nunca lança, nem quando é também o SM, e toda

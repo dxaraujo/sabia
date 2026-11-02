@@ -1,20 +1,20 @@
 ---
-{"resumo": "Confere que quem está na sessão é o Dev Sênior da [APR], vai para a branch da fatia (fase aguardando-aprovacao-plano) e assume (ou reabre) a [APR]."}
+{"resumo": "Trava do papel antes do EWM (Dev Sênior ativo, não quem implementa), a branch atualizada e a [APR] assumida pela regra comum de assumir."}
 ---
 ## Entrada
 
-A tarefa `[APR] FT-<nnn> Aprovar plano` e a fatia em `fase: aguardando-aprovacao-plano`.
+A tarefa `[APR] FT-<nnn> Aprovar plano` e a fatia em `fase: aguardando-aprovacao-plano`, na branch da fatia (passo
+`entrada`).
 
 ## Faça
 
-1. Quem está na sessão é Dev Sênior ativo (`senioridade` no `equipe.json` da base) **e** é o responsável pela `[APR]`
-   (no EWM; sem o MCP `elm`, o `Responsável` do `status.md`)?
-2. Branch da fatia (`git switch <branch>` com "sim"; aberta numa worktree → trabalhe
-   nela, regra do passo `sa-desenvolver.desenvolver.chegou`) e `git pull --ff-only`; a fase tem
-   de ser `aguardando-aprovacao-plano`.
-3. `elm_transicao(<id da [APR]>, "assumir")`; já concluída (replanejar depois da aprovação) → antes,
-   `elm_transicao(<id>, "reabrir")`, na mesma confirmação (sem o MCP `elm` → `ELM pendente [APR FT-<nnn> assumir]`
-   no Histórico).
+1. **Trava do papel**, antes de tocar no EWM: quem está na sessão é Dev Sênior ativo (`senioridade` no
+   `equipe.json` da base) e não é quem implementa a fatia (o `responsavel`), salvo o único Dev Sênior ativo. Sem o MCP
+   `elm`, é também o aprovador registrado: o `Responsável` do `status.md` (em `aguardando-aprovacao-plano`, quem
+   aprova).
+2. `git pull --ff-only` na branch da fatia.
+3. **Assuma a `[APR]`** pela seção Assumir do passo `sa-revisar.aprovar-plano.entrada`. Já concluída (replanejar
+   depois da aprovação) → reabrir, na mesma confirmação. Pendência sem o MCP `elm`: no Histórico do `status.md`.
 
 ## Saída
 
@@ -22,7 +22,7 @@ A `[APR]` assumida, na branch da fatia → passo `ler`.
 
 ## Pare se
 
-- Não é Dev Sênior ativo e responsável pela `[APR]` (item 1) → diga quem é e pare (trocar quem aprova é de
-  quem implementa, no passo `sa-plano.plano.gate`).
+- Não é Dev Sênior ativo, é quem implementa sem ser o único Dev Sênior ativo, ou (sem o MCP) não é o aprovador
+  registrado (item 1) → diga quem pode aprovar e pare.
 - Árvore suja (item 2) → avise e pare.
-- A fase não é `aguardando-aprovacao-plano` (item 2) → diga qual é e pare.
+- A regra comum de assumir parou (a `[APR]` é de outra pessoa; tarefa fechada sem o "sim") → a frase dela e pare.

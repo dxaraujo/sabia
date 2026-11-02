@@ -34,7 +34,7 @@ Regras do ciclo:
   Divergência na tarefa N — Esperado: <o que o plano diz> · Encontrado: <o que o código tem, arquivo:linha>
   · Por que importa: <o que muda>
   ```
-  Muda comportamento de negócio → P.O. (`sa-entrevistar` / `sa-prd`); muda o desenho → `sa-plano.replanejar`. Decisão técnica equivalente → decida e registre no `design.md` (Decisões técnicas).
+  Muda comportamento de negócio → P.O. (agente `sa-produto`: `sa-entrevistar` / `sa-prd`); muda o desenho → `sa-plano.replanejar`. Decisão técnica equivalente → decida e registre no `design.md` (Decisões técnicas).
 - Nada de funcionalidade que a fatia não pediu, mesmo "aproveitando".
 - Duas correções seguidas sem sair do lugar → pare de tentar variações: registre no `status.md` o que foi tentado e
   continue numa sessão nova a partir dele (contexto poluído piora a terceira tentativa); persistindo,

@@ -35,5 +35,5 @@ Arquivo: `.sabia/local/sustentacao/atendimento/AT-012/contas-bloqueadas-2026-09.
 | 2026-10-14T16:20:05 | atendimento | joao.lima | 5753e516 | 1.0.0 | 3.12 |
 
 **ELM:** feito | pendente: <o que falta>
-**Saída:** — | FT-040 (defeito) | D-07 em aberto | lição L-015
+**Saída:** — | FT-040 (defeito, pela triagem) | lição L-015
 ```

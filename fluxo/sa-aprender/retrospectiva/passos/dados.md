@@ -3,7 +3,8 @@
 ---
 ## Entrada
 
-Fim de fatia, épico ou sprint (a de sprint com a pré-condição cumprida: passo `precondicao`).
+Fim de fatia, épico ou sprint (a de sprint chamada pelo passo `sa-planejamento.retrospectiva.retro`, com a
+pré-condição cumprida).
 
 ## Faça
 

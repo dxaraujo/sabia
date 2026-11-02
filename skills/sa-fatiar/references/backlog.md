@@ -66,8 +66,8 @@ separadas por vírgula. Cada item é **uma** linha da tabela — sem quebra de l
 | `bloqueada-por` | as fatias de que ela depende (toda fatia; `—` quando não há) |
 | fatia `obs` | texto livre; convenções: `falta: <…>` (o que impede a DoR); `vinculada a [AT-012](sustentacao/atendimento/AT-012-<slug>.md)` (veio de um atendimento; no EWM, o link `relacionado` com o IB do item: `elm_ligar(wi, wi_destino, tipo relacionado)`); `desmembrada de FT-…` (nas novas) e `substituida-por FT-…` (na dividida e na absorvida pelo juntar); o motivo do cancelamento |
 | `tamanho` | `P` · `M` · `G` |
-| `modo` | `AFK` · `HITL` — proposto na triagem ou no fatiamento (critérios da `sa-fatiar`); o modo final é gravado pela `sa-planejamento` quando a fatia ganha responsável, pela senioridade dele (Júnior → `HITL` · Pleno → os critérios · Sênior → `AFK` por padrão) |
-| `sprint` | chave da sprint `<pai>/Sprint <nn>` (`2026/Sprint 03`: o pai e o número do arquivo `sprints/<pai>/sprint-<nn>.md` — [arquivos.md](../../sa-planejamento/references/arquivos.md#sprintspaisprint-nnmd)) ou `—` (fora de sprint); gravada com `planejada`/`planejado` (`sa-planejamento`) ou ao iniciar fora do planejamento (fatia puxada, épico não planejado). Na virada (`sa-planejamento.retrospectiva`), o item que migra passa à chave da próxima (o épico acompanha a linha dele na Especificação, que migra só se não está `concluida` nem `cancelada`) |
+| `modo` | `AFK` · `HITL` — proposto na triagem ou no fatiamento (critérios da `sa-fatiar`); o modo final é gravado pela `sa-planejamento` quando a fatia ganha responsável e, na fatia `—` não iniciada, por quem a assume (`sa-desenvolver.desenvolver.iniciar`; no loop, o orquestrador), pela senioridade dele (Júnior → `HITL` · Pleno → os critérios · Sênior → `AFK` por padrão) |
+| `sprint` | chave da sprint `<pai>/Sprint <nn>` (`2026/Sprint 03`: o pai e o número do arquivo `sprints/<pai>/sprint-<nn>.md` — [arquivos.md](../../sa-planejamento/references/arquivos.md#sprintspaisprint-nnmd)) ou `—` (fora de sprint); gravada com `planejada`/`planejado` (`sa-planejamento`: o planejamento ou o encaixe durante a sprint). Na virada (`sa-planejamento.retrospectiva`), o item que migra passa à chave da próxima (o épico acompanha a linha dele na Especificação, que migra só se não está `concluida` nem `cancelada`) |
 | `elm` | o item no EWM e as tarefas, com o tipo antes de cada id, separados por ` · ` — o backlog do EWM é a cópia deste arquivo: o item nasce no backlog do produto ao registrar (triagem, GATE do backlog), no estado inicial — onde fica enquanto está fora de sprint —, e muda de iteração ao entrar na sprint; as tarefas nascem na sprint ([elm-sprint.md](../../sa-planejamento/references/elm-sprint.md)). Épico: `IB [<id>](<url>) · ESP [<id>](<url>)`; fatia: `IB [<id>](<url>) · DEV [<id>](<url>) · REV … · VER … · APR …`; item de Sustentação: `IB [<id>](<url>) · ATD [<id>](<url>)` (a tarefa pelo prefixo da categoria, sem colchetes). Fatia ou item de Sustentação que veio de um defeito ou IB do EWM: esse item fica no lugar do IB, com o tipo dele como rótulo (`DF [4567](<url>) · DEV …` · `DF [4567](<url>) · ATD …`). `pendente` (registrado sem o MCP `elm`; criado depois); id sem link (`DF 4567`, nunca `pendente`): item conhecido cujo tratamento no EWM ficou pendente (registrado sem o MCP) — o espelhamento do §0 e a publicação da sprint fazem o que faltou (pai, dono, prefixo no título, link `relacionado`) e gravam o link; `—` (sem ELM) |
 | `concluida-em` | data `AAAA-MM-DD` ou `—` |
 | `creditos` | créditos do Kiro do item, copiados da coluna Créditos do `sprint-<nn>.md` na virada da sprint (`sa-planejamento`; a conclusão grava só na sprint); `—` antes. Fatia: a seção Créditos do `status.md`; épico: só a especificação (a `[ESP]`, do `status.md` do épico), na virada da sprint em que a linha dele na Especificação ficou `concluida`; item de Sustentação: o registro |
@@ -91,7 +91,7 @@ mesmo commit** nos dois arquivos.
 | `nova` | registrada (triagem, fatiamento) ou DoR que deixou de valer (`obs` `falta: …`) | `sa-triar` · `sa-fatiar` · `sa-planejamento` (`sa-planejamento.sprint.previsao`) | backlog |
 | `elegivel` | passou na [Definition of Ready](#definition-of-ready-o-que-faz-uma-fatia-elegivel) da trilha | `sa-triar` · `sa-fatiar` (no fatiamento do PRD) · `sa-planejamento` · `sa-especificar` (`[ESP] FT`) — [completar](#completar-uma-fatia-nova) | backlog |
 | `planejada` | entrou numa sprint (planejamento, encaixe) | `sa-planejamento` | backlog (+ `sprint`) · a linha nasce na sprint |
-| `iniciada` | a `sa-desenvolver` começou: grava na base **e então** cria a branch | `sa-desenvolver.desenvolver.iniciar` · no loop, o orquestrador · a sincronização da `sa-planejamento` ([elm-sprint.md](../../sa-planejamento/references/elm-sprint.md) §9, com a rede de proteção: PR aberto, branch com commits ou `status.md` numa branch) | backlog (+ `responsavel`, se `—`) · sprint (puxada: + `sprint` no backlog, e a linha nasce aqui, com `puxada`, revisor, verificador e `revisor único`) |
+| `iniciada` | a `sa-desenvolver` começou: grava na base **e então** cria a branch | `sa-desenvolver.desenvolver.iniciar` · no loop, o orquestrador · a sincronização da `sa-planejamento` ([elm-sprint.md](../../sa-planejamento/references/elm-sprint.md) §9, com a rede de proteção: PR aberto, branch com commits ou `status.md` numa branch) | backlog (+ `responsavel`, se `—`) · sprint |
 | `pronta` | PR mergeado | `sa-desenvolver.encerrar`, na base · a sincronização da `sa-planejamento` (§9: merge por fora do Sabiá, Créditos e lições `—`) | backlog · sprint · `status.md` da base |
 | `concluida` | consolidada | `sa-consolidar` | backlog (+ `concluida-em`) · sprint (+ Créditos) · `status.md` |
 | `dividida` · `cancelada` | desvios (`obs` `substituida-por FT-…` · o motivo) | `sa-fatiar` · `sa-triar` (Manutenção) | backlog e a linha da sprint |
@@ -99,7 +99,7 @@ mesmo commit** nos dois arquivos.
 - **Em especificação na sprint:** a fatia `nova` que entrou na sprint sem passar na DoR fica `nova`, com `sprint` e
   `obs` `em especificação`, e a linha dela na seção Especificação da sprint, com a `[ESP] FT-<nnn>`
   (`sa-planejamento`). Ela é completada por [Completar uma fatia `nova`](#completar-uma-fatia-nova); a `[DEV]` nasce
-  quando ela, `elegivel`, entrar numa sprint ou for puxada.
+  quando ela, `elegivel`, entrar numa sprint.
 - **Fase:** o detalhe de `iniciada` é a Fase do `status.md` da fatia
   (padrão `sa-desenvolver/status.md`); `pronta` e `concluida` só existem no
   `status.md` da base (regra A base prevalece do padrão).
@@ -128,7 +128,7 @@ mesmo commit** nos dois arquivos.
 | `novo` | — | triado; sem informação para o PRD, a pasta antecipada guarda o `rascunho.md` | `sa-triar` |
 | `elegivel` | — (a linha que saiu da sprint: `elegivel`, com `saiu da sprint`) | passou na DoR do épico ([uma só](#definition-of-ready-o-que-faz-uma-fatia-elegivel): o problema, quem pede, o resultado e o `po`); ou `planejado` cuja `[ESP]` saiu da sprint sem começar (movida no EWM e aceita pelo P.O. na sincronização, §9 do `elm-sprint.md`; ela e o IB do épico, no estado inicial, ficam no backlog do EWM até voltar) | `sa-triar` · `sa-planejamento` |
 | `planejado` (+ `sprint`) | `planejada` | `[ESP]` planejada | `sa-planejamento` |
-| `iniciado` | `iniciada` | `[ESP]` assumida: só a situação vai à base; épico não planejado → + `sprint` (a aberta), e a linha nasce nela com a Observação `puxada` | `sa-especificar.especificar.assumir` |
+| `iniciado` | `iniciada` | `[ESP]` assumida: só a situação vai à base | `sa-especificar.especificar.assumir` |
 | `iniciado` | `concluida` (+ Créditos) | GATE do backlog: a `[ESP]` conclui; o épico segue com as fatias | `sa-especificar.especificar.fechamentos` |
 | `concluido` | — | última fatia concluída, ou a última não terminal cancelada com outra `concluida` (backlog, Fase do `status.md` do épico e EWM); nunca o épico `cancelado`, que fica como está | `sa-consolidar` · `sa-fatiar.refinamento` |
 | `cancelado` | `cancelada` | decisão do P.O.: as fatias não iniciadas ficam `cancelada` e a `[ESP]` conclui com as horas lançadas, na mesma gravação | `sa-fatiar` |
@@ -162,8 +162,8 @@ mesmo commit** nos dois arquivos.
 | fatias de épico criadas (`origem` `EP-nn`, `prioridade` do épico), divididas, juntadas, canceladas; as fichas delas | `sa-fatiar` |
 | fatia de Manutenção (`trilha`, ficha, `obs` `falta:` e `vinculada a`), dividida ou cancelada | `sa-triar` |
 | `sprint`, `responsavel`, `modo` final (pela senioridade), `prioridade` e a ordem das linhas · encaixe durante a sprint · `sprint` dos itens que migram na virada · na sincronização com o EWM, a saída e a entrada aceitas pelo P.O. e o `responsavel` pelo dono da tarefa (§9 do `elm-sprint.md`) | `sa-planejamento` |
-| `responsavel` (se `—`) da fatia que inicia e `sprint` da puxada | `sa-desenvolver.desenvolver.iniciar` (no loop, o orquestrador) |
-| `sprint` do épico não planejado, ao assumir a `[ESP]` | `sa-especificar.especificar.assumir` |
+| `responsavel` e `modo` da primeira atribuição (se `—`) da fatia que inicia, e o revisor e o verificador se ela virou HITL | `sa-desenvolver.desenvolver.iniciar` (no loop, o orquestrador) |
+| `responsavel` (se `—`) do item de Sustentação, ao assumir | `sa-atender`/`sa-executar` |
 | item de Sustentação registrado (id da série, `origem`, `sprint`, `responsavel`, `registro`) e a `### <Categoria>` do primeiro | `sa-triar`; tarefa trazida do EWM: `sa-planejamento` (§9 do `elm-sprint.md`) |
 | `concluida-em` | `sa-consolidar` (fatia) · `sa-atender`/`sa-executar` (item de Sustentação) · `sa-planejamento` (§9: tarefa trazida do EWM já concluída, ou a conhecida concluída no EWM) |
 | `creditos` | a virada da sprint (`sa-planejamento`) |
@@ -216,7 +216,7 @@ merge. As skills citam este bloco em vez de repetir:
    Conflito de id no push → a regra de conflito abaixo.
 5. Ao terminar, ofereça voltar à branch anterior.
 
-**Linha viva.** O item que volta à sprint de onde saiu (puxada, encaixe — `sa-planejamento.durante.encaixe` —, sincronização com o EWM, `sa-especificar`)
+**Linha viva.** O item que volta à sprint de onde saiu (encaixe — `sa-planejamento.durante.encaixe` — ou sincronização com o EWM)
 ganha linha nova no `sprint-<nn>.md`; com duas linhas do mesmo id na sprint aberta, a **viva** — a que se lê e se
 escreve (Status ou Situação, Tarefa ELM, Responsável, Créditos) — é a sem `saiu da sprint`. A com `saiu da sprint` é
 histórico: nunca é editada e não migra na virada. O item que só tem essa linha na sprint está fora dela.

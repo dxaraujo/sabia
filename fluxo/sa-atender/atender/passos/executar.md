@@ -30,3 +30,5 @@ disser "enviei" ou "conclui o AT-<nnn>".
 ## Pare se
 
 - Sem o "ok" da pessoa no rascunho da resposta → não envie: quem envia é a pessoa.
+- Não é atendimento (pedido que exige escrita na base, que muda o comportamento do sistema ou regra que ninguém
+  decidiu) → nada a enviar: "devolva à `sa-triar` (categoria errada, origem AT-<nnn>)" e pare.

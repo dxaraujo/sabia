@@ -10,7 +10,8 @@ Retrospectiva de épico — a consolidação da última fatia o sugere — ou de
 **Lint do conhecimento** (retrospectiva de épico — a consolidação da última fatia o sugere — ou de sprint, ou
 quando a pessoa pedir; nunca a cada fatia): procure contradições entre glossário, ADRs, bundle do ELM (pelo
 `elm_buscar_req_local`) e steering — termo com duas definições, ADR superado sem marcação, regra do ELM que o código não
-segue. Liste como achados na retrospectiva; cada um vira correção na fonte ou fatia nova.
+segue. Liste como achados na retrospectiva; cada um vira correção na fonte ou pedido novo pela `sa-triar` (origem:
+retrospectiva).
 
 ## Saída
 

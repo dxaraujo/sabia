@@ -26,8 +26,6 @@ ALVOS = ("kiro", "opencode")
 POWER_OPENCODE = "~/.config/opencode"
 PH = re.compile(r"\{\{([A-Z_]+)\}\}")
 FM = re.compile(r"\A---\n(.*?)\n---\n", re.S)
-# o gancho de cada papel dos toolkits 1.x (passo.papel); na 2.0 o toolkit diz o passo pelo id
-GANCHO_1X = {"desenvolvedor": "sa-codificar.codificar.tarefa", "especificador": "sa-prd.prd.escrever"}
 CHAMADA = ("Entre fluxos (colunas Chama e Saídas da tabela de cada fluxo no SKILL.md): chama **em linha** → rode você mesmo o"
            " fluxo chamado e volte ao passo; chama **subagente** → chame esse agente e continue com a resposta (sem ele,"
            " carregue a skill do fluxo); **passa a** → este fluxo termina: diga a próxima (o agente dono do outro fluxo) e pare.")
@@ -94,22 +92,29 @@ def ler_fluxos(fw):
     return out
 
 
+def arq_passo(fl, pid):
+    """O arquivo-fonte do passo no framework: passos/<id>.md, ou fluxo/<de>.md no passo compartilhado."""
+    x = next((y for y in fl["passos"] if y["id"] == pid), {})
+    return fl["dir"].parent.parent / f"{x['de']}.md" if x.get("de") else fl["dir"] / "passos" / f"{pid}.md"
+
+
 def gancho(ext, fluxos, toolkit):
-    """(papel dono, id do passo) do desvio de um toolkit: o passo tem de existir e aceitar desvio."""
+    """(papel dono, id do passo) do desvio de um toolkit: o passo tem de existir e aceitar desvio. Toolkit 1.x
+    (`passo.papel`): o passo com desvio cujo `papel_1x` no mestre tem o papel — a mesma regra do ganchoDe() do CLI."""
+    todos = [(f"{q}.{x['id']}", fl, x) for q, fl in fluxos.items() for x in fl["passos"]]
     if "passo" in ext:
-        skill, fluxo, pid = (ext["passo"].split(".") + [None, None])[:3]
-        fl = fluxos.get(f"{skill}.{fluxo}")
-        x = next((y for y in fl["passos"] if y["id"] == pid), None) if fl else None
+        pid, fl, x = next((t for t in todos if t[0] == ext["passo"]), (None, None, None))
         if x is None:
             raise ValueError(f"toolkit {toolkit}: o passo {ext['passo']} não existe no framework")
         if not x.get("desvio"):
             raise ValueError(f"toolkit {toolkit}: o passo {ext['passo']} não aceita desvio de toolkit")
-        return fl["dono"].removeprefix("sa-"), ext["passo"]
-    # shortcut: toolkit 1.x (passo.papel, e "codificador" antes do renome); vira erro quando os toolkits saírem na 2.0
-    papel = {"codificador": "desenvolvedor"}.get(ext.get("papel"), ext.get("papel"))
-    if papel not in GANCHO_1X:
-        raise ValueError(f"toolkit {toolkit}: o papel {papel} não tem passo que aceite desvio")
-    return papel, GANCHO_1X[papel]
+    else:
+        # shortcut: toolkit 1.x (passo.papel); vira erro quando os toolkits saírem na 2.0
+        pid, fl, x = next((t for t in todos if t[2].get("desvio") and ext.get("papel") in t[2].get("papel_1x", [])),
+                          (None, None, None))
+        if x is None:
+            raise ValueError(f"toolkit {toolkit}: o papel {ext.get('papel')} não tem passo que aceite desvio")
+    return fl["dono"].removeprefix("sa-"), pid
 
 
 ID = re.compile(r"[a-z][a-z0-9-]*")
@@ -174,6 +179,8 @@ def override(projeto, fw, fluxos):
             i, depois = o.get("id"), o.get("depois")
             if not isinstance(i, str) or not ID.fullmatch(i) or i in ids or novos.count(i) > 1:
                 erros.append(f"{q}: inserir {i}: id inválido, repetido ou que já existe no fluxo")
+            elif i == "grafo":  # o compilador gera references/<fluxo>/grafo.md
+                erros.append(f"{q}: inserir {i}: id reservado (o grafo gerado do fluxo)")
             elif depois not in ids + novos or depois in removidos or depois == i:
                 erros.append(f"{q}: inserir {i} depois de {depois}: o 'depois' não existe (ou foi removido)")
             else:
@@ -198,7 +205,7 @@ def override(projeto, fw, fluxos):
             elif re.search(r"^## (Travas|Desvios)\b", f.read_text(encoding="utf-8"), re.M):
                 erros.append(f"{caminho}: `## Travas` e `## Desvios` são gerados (catálogo e prompt); tire do arquivo")
             elif pid in ids:
-                com_base(f, fl["dir"] / "passos" / f"{pid}.md", f"{q}.{pid}")
+                com_base(f, arq_passo(fl, pid), f"{q}.{pid}")
                 linhas.append(f"- passo `{pid}`: leia `{caminho}` (no lugar do da skill)")
             elif pid in inseridos:
                 linhas.append(f"- passo `{pid}` (inserido depois de `{inseridos[pid]}`): `{caminho}`")
@@ -542,7 +549,8 @@ def main(argv=None):
     if args.base:  # a setup calcula a base por aqui, nunca por outro caminho
         fw = (args.framework or Path("~/.sabia/framework")).expanduser()
         partes = args.base.split(".")
-        f = fw / "fluxo" / partes[0] / partes[1] / "passos" / f"{partes[2]}.md" if len(partes) == 3 else fw / "padrao" / args.base
+        fl = ler_fluxos(fw).get(".".join(partes[:2])) if len(partes) == 3 else None
+        f = arq_passo(fl, partes[2]) if fl else fw / "padrao" / args.base
         if not f.is_file():
             print(f"não existe no framework: {args.base} ({f})", file=sys.stderr)
             return 1

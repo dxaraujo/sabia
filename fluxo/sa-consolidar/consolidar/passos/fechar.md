@@ -14,8 +14,6 @@ Na base (desde a Entrada do fluxo), com o ELM e o conhecimento feitos (passos `e
   Tarefa ELM (`DEV <id> · REV <id>`…) e Créditos = a soma da seção **Créditos** do `status.md` da base (com as
   linhas que o Dev gravou com a `pronta`) — o `creditos` do `backlog.md` é da virada da sprint; ADRs e glossário do
   passo `conhecimento`.
-- Fatia puxada: a linha dela na sprint (Observação `puxada`) e a `sprint` no backlog já vêm do passo
-  `sa-desenvolver.desenvolver.iniciar` — aqui, só a Tarefa ELM, como acima; ela conta na vazão da sprint.
 - Última fatia do épico concluída (as demais `concluida`, `dividida` ou `cancelada`) → épico `concluido` no
   `backlog.md` e Fase `concluido` no `status.md` do épico, no mesmo commit, e, com ELM, o IB do épico no EWM
   concluído ([conclusão](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md#conclusão-do-ib-e-do-épico), na mesma confirmação do passo `elm`; sem o MCP → `ELM pendente

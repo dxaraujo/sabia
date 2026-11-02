@@ -19,4 +19,5 @@ A aplicação no ar e a massa criada → passo `executar`.
 
 ## Pare se
 
-- Campo Banco do `status.md` = `pendente` → pare: a verificação depende da DDL aplicada em dev.
+- Campo Banco do `status.md` = `pendente` → a verificação depende da DDL aplicada em dev: "DDL em dev: o Dev, ou o
+  item BD pela `sa-executar`" e pare.

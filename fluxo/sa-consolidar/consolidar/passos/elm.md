@@ -24,7 +24,8 @@ Numa confirmação só, nesta ordem, como diz [elm-publicar.md](~/.sabia/framewo
   `status.md`;
 - *tarefas* — a consolidação **não** lança horas nem conclui `[DEV]`, `[REV]`, `[VER]` ou `[APR]`: cada skill de
   papel concluiu a sua (a `[DEV]` no merge, a `[REV]` ao aprovar, a `[VER]` ao aceitar, a `[APR]` na aprovação do
-  plano ou do PR; no AFK não há `[REV]` nem `[VER]`). Tarefa da fatia ainda aberta → mostre qual e de quem, e
+  plano ou do PR; no AFK não há `[REV]` nem `[VER]`). Tarefa da fatia ainda aberta (a `[DEV]` aberta já parou no
+  passo `entrada`) → mostre qual e de quem, e
   registre `ELM pendente [<chave>]: concluir <tarefa> (<login>)`, que a pessoa faz na sessão dela;
 - *backlog* — concluir o IB da fatia (e o do épico, na última fatia — passo `fechar`). Tarefa concluída sem horas não
   trava: a virada aponta. A consolidação é **pré-condição dos ritos de fechamento** da sprint (review, retrospectiva,

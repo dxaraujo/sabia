@@ -1,5 +1,5 @@
 ---
-{"resumo": "Item 4 do bloco Completar uma fatia nova: passou → elegivel e a linha da sprint concluida no mesmo commit, e a [ESP] concluída."}
+{"resumo": "Item 4 do bloco Completar uma fatia nova: passou → elegivel e a linha da sprint concluida no mesmo commit, a [ESP] concluída e o desdobramento."}
 ---
 ## Entrada
 
@@ -12,10 +12,13 @@ da sprint com Situação `concluida`; depois a conclusão da `[ESP]` como na "Co
 `sa-especificar.especificar.fechamentos`.
 Não passou → a `[ESP]` segue; na virada, a linha migra.
 
+**Algum desdobramento?** Pergunte antes de parar: alteração de outro item, regra nova ou demanda que apareceu no
+trabalho → "avise o P.O.: registrar pela `sa-triar` (agente `sa-produto`), com a origem `FT-<nnn>`"; nada → fim.
+
 ## Saída
 
-Passou → fatia `elegivel`, linha `concluida` e a `[ESP]` concluída. Não passou → a `[ESP]` segue. Aqui o fluxo
-termina.
+Passou → fatia `elegivel`, linha `concluida` e a `[ESP]` concluída. Não passou → a `[ESP]` segue. O desdobramento
+dito, se houver. Aqui o fluxo termina.
 
 ## Pare se
 

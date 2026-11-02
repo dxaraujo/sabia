@@ -12,7 +12,8 @@ pergunte se já há alguém definido para algum item (responsável da fatia ou d
 verificador): `FT-031: <login>`, `EP-04: <login>`. Para os que sobrarem, pergunte se quer atribuir agora — a
 sugestão pelo `equipe.json` (papéis, senioridade, horas) só aparece se a pessoa pedir. Não quer → `—`: o item
 entra assim, e quem o assumir vira o responsável (`sa-desenvolver`, `sa-especificar`, `sa-revisar`,
-`sa-verificar`). Com responsável, o modo final sai da senioridade dele (Modo pela
+`sa-verificar`); na fatia, é a primeira atribuição, e quem assume define o modo pela senioridade dele (passo
+`modo`). Com responsável, o modo final sai da senioridade dele (Modo pela
 senioridade, passo `modo`) e a capacidade de cada pessoa é conferida; sem, vale o `modo` do backlog
 até alguém assumir, e só a capacidade do time.
 

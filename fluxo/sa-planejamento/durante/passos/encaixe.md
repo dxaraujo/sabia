@@ -1,22 +1,25 @@
 ---
-{"resumo": "Encaixe: fatia que fura a fila, WIP de revisão no limite, Sustentação com a reserva estourada ou linha encaixe do EWM → decisão do P.O. e gravação na base e no EWM."}
+{"resumo": "A puxada (encaixe): item fora da sprint aberta, Sustentação com a reserva estourada ou linha encaixe do EWM → decisão do P.O. (ou aprovação registrada) e gravação na base e no EWM."}
 ---
 ## Entrada
 
-A `sa-desenvolver` (fura a fila ou WIP de revisão no limite), a `sa-triar` (item de Sustentação com a reserva
-estourada) ou uma linha `encaixe` da sincronização (passo `sincronizar`).
+O caso 3 da entrada de qualquer fluxo (fatia, épico da `[ESP]` ou item de Sustentação sem linha viva na sprint
+aberta), o pedido de puxar um item, a `sa-triar` (item de Sustentação com a reserva estourada) ou uma linha
+`encaixe` da sincronização (passo `sincronizar`).
 
 ## Faça
 
-**Encaixe** — só quando puxar não basta: a fatia `elegivel` que alguém quer começar **não é a do topo** (fura a
-fila) ou o **WIP de revisão está no limite** (de qualquer trilha); a `sa-desenvolver` manda para cá. Item de
+**Encaixe** — é **a puxada**: todo item entra na sprint aberta por aqui. Quem faz: o P.O., o SM ou a pessoa que
+puxa, esta com a orientação ou a aprovação do P.O., **registrada** (quem aprovou e quando); sem ela, o item não
+entra. A puxada natural é a `elegivel` do topo com WIP de revisão folgado; a que **fura a fila** (não é a do topo)
+ou com o **WIP de revisão no limite** (de qualquer trilha) pede a decisão explícita do P.O. Item de
 Sustentação com a reserva estourada é o mesmo encaixe (a `sa-triar` manda para cá; o trazido do EWM já fica na
 sprint, §9, e só se decide se uma fatia sai): a decisão do P.O. vai na linha do item na `## Sustentação` do
 `sprint-<nn>.md`. A fatia fora da sprint cujo IB ou tarefas entraram na iteração da sprint pelo EWM (inclusive uma
 tarefa de papel por fora) chega aqui pela sincronização (§9) como linha `encaixe`: a mesma decisão com o P.O.
 (responsável, modo pela senioridade e, no HITL, revisor e verificador), com a Observação
 `encaixe: trazida do EWM — <decisão> (<quem decidiu>, <data>)`, e a tarefa que já existe é a do papel inferido.
-Mostre ao P.O. a fatia (trilha, tamanho, modo, origem), o que sobra da capacidade (revisão, vazão, HITL; no item de
+Mostre a fatia (trilha, tamanho, modo, origem), o que sobra da capacidade (revisão, vazão, HITL; no item de
 Sustentação, a reserva, cujo usado não soma as linhas com `saiu da sprint`: o item saiu da sprint e não a consome) e
 as opções, com a recomendada:
 - **entra na folga** — cabe sem tirar nada;
@@ -24,14 +27,16 @@ as opções, com a recomendada:
 - **fica para a próxima sprint** (a trazida do EWM: o IB e as tarefas voltam ao backlog do EWM, o IB no estado
   inicial).
 
-Com a decisão do P.O. (ou de quem ele delegou): `status` `planejada`, `sprint`, `responsavel` e o modo final pela
-senioridade (`sa-planejamento.sprint.modo`) no `backlog.md` (e, na fatia HITL, revisor — Dev Sênior, pela regra do
-revisor (`sa-planejamento.sprint.modo`) — e verificador, que não seja quem implementa — as `[REV]`/`[VER]` precisam deles),
-uma linha `planejada` no `sprint-<nn>.md` com a Observação `encaixe: <decisão> (<quem decidiu>, <data>)` (item de
-Sustentação: a `sprint` e a linha `aberto` na `### <Categoria>`, que nasce se for a primeira), pelo bloco [Gravar na
-base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), e no EWM o IB da fatia passa do backlog para a iteração da
+Com a decisão: `status` `planejada` (no épico da `[ESP]`, `planejado`), `sprint`, `responsavel` (o definido, ou `—`:
+quem assumir define o modo pela senioridade) e o modo final pela senioridade (`sa-planejamento.sprint.modo`) no
+`backlog.md` (e, na fatia HITL, revisor — Dev Sênior, pela regra do revisor (`sa-planejamento.sprint.modo`) — e
+verificador, que não seja quem implementa — as `[REV]`/`[VER]` precisam deles), uma linha `planejada` no
+`sprint-<nn>.md` (Fatias, Especificação ou, no item de Sustentação, a linha `aberto` na `### <Categoria>`, que nasce
+se for a primeira) com a Observação `encaixe: <decisão> (<quem aprovou>, <data>)` (puxada por outra pessoa:
+`encaixe: <decisão> (<quem aprovou>, <data>; puxada por <login>)`), pelo bloco [Gravar na
+base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), e no EWM o IB da fatia (no épico, o IB do épico) passa do backlog para a iteração da
 sprint (só `iteracao`), cada tarefa que já existe (a que ficou no backlog do EWM quando a fatia saiu de uma sprint sem
-começar, ou a que o EWM trouxe) move na chamada dela, com o dono e a estimativa do papel — uma por papel: com duas, a
+começar, ou a que o EWM trouxe; no épico, a `[ESP]`) move na chamada dela, com o dono e a estimativa do papel — uma por papel: com duas, a
 que o EWM trouxe é a dele, e a que ficou no backlog não move e é cancelada (`elm_transicao(<id>, "cancelar")`, no
 mesmo "sim"; na falha, `ELM pendente [<tipo> <id> cancelar]` no rodapé da ficha) —, e só nasce o papel que falta
 ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md), topo e §3–4; item de Sustentação: o IB dele muda de iteração e
@@ -44,9 +49,10 @@ voltar a uma sprint, quando movem.
 
 ## Saída
 
-Depois, volte ao passo `sa-desenvolver.desenvolver.compromisso` (o WIP) ou à sincronização (a próxima
-linha `encaixe`, de novo este passo).
+Decidido e gravado → "o executor retoma pela própria skill (`<skill> <id>`)": o fluxo termina. Da sincronização, a
+próxima linha `encaixe` (de novo este passo).
 
 ## Pare se
 
-Sem decisão, a fatia não começa; urgência acelera a decisão, não a dispensa.
+Sem a decisão do P.O., ou sem a aprovação dele registrada, o item não entra; urgência acelera a decisão, não a
+dispensa.

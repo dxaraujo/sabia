@@ -16,5 +16,5 @@ Decisões técnicas resolvidas ou registradas → passo `escrever`.
 
 ## Pare se
 
-Lacuna de **negócio** (regra sem valor, exceção sem comportamento) → **pare**: é do P.O. — `sa-entrevistar` e,
+Lacuna de **negócio** (regra sem valor, exceção sem comportamento) → **pare**: é do P.O. (agente `sa-produto`) — `sa-entrevistar` e,
 se mudar o PRD aprovado, `sa-prd` (mudança depois de aprovado: `sa-prd.mudanca`) — ou a ficha aprovada, `sa-triar`. Nunca decida regra no plano.

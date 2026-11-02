@@ -92,11 +92,11 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
 - FT-027 aceita → merge pelo Dev responsável (<login>, sa-desenvolver, fluxo encerrar) <link>
 - FT-032 aguardando-aprovacao-pr → [APR] Aprovar PR de <Dev Sênior> (sa-revisar); aprovada, o merge pelo Dev (sa-desenvolver, fluxo encerrar) <link>
 - FT-030 verificada → abrir o PR (sa-codificar)
-- FT-026 bloqueada: aguardando troca para HITL → P.O. (sa-planejamento, fluxo troca-modo)
+- FT-026 bloqueada: aguardando troca de modo → P.O. ou SM (agente sa-produto, sa-planejamento, fluxo troca-modo)
 🔁 Retrabalho: FT-026 (de: em-revisao) → o desenvolvedor retoma no mesmo PR (sa-codificar)
 📦 Prontas esperando consolidação: FT-025 (merge há 1 dia) → P.O. ou SM (sa-consolidar, agente sa-produto, [GB])
 
-✅ Elegíveis para começar — as planejadas da sprint, depois as elegivel (por prioridade; empate: a ordem da linha)
+✅ Elegíveis para começar — as planejadas da sprint, depois as elegivel, que entram pelo encaixe (P.O. ou SM) (por prioridade; empate: a ordem da linha)
 | FT | Título | Situação | Prioridade | Tam. | Modo | Depende de |
 
 📄 Produto (épicos pela Fase do status.md)
@@ -123,7 +123,7 @@ fatias `concluida` (Coleta, item 2).
 
 **Sugestão** — nesta ordem: desbloquear quem espera uma pessoa (plano ou PR parado, WIP de revisão estourado, PR
 mergeado sem `pronta` na base) → item de Sustentação com prazo vencendo → terminar a fatia em andamento → começar a
-próxima elegível (a planejada do topo; nenhuma → a `elegivel` do topo; AFK em quantidade → ofereça o `sa-orquestrar`) →
+próxima elegível (a planejada do topo; nenhuma → a `elegivel` do topo, pelo encaixe com o P.O. ou o SM, agente `sa-produto`; AFK em quantidade → ofereça o `sa-orquestrar`) →
 trabalho de produto (PRD/fatiar) para manter o backlog com fatias elegíveis.
 
 ## Inconsistências a apontar

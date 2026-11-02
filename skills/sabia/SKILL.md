@@ -46,7 +46,7 @@ chamada direto:
 | **rápida** | defeito ou ajuste ≤ 1 dia, comportamento certo já conhecido — inclusive o diff que cabe numa frase | `bugfix.md` + `tasks.md` → implementação → PR → revisão → verificação → consolidação (AFK: revisão e verificação antes do PR) |
 | **padrão** | uma fatia do backlog: de um épico, ou sem épico (Manutenção) com regra clara e ficha aprovada pelo P.O. | pesquisa → plano → **GATE do plano** → implementação (TDD) → PR → revisão → verificação → consolidação (AFK: revisão e verificação antes do PR) |
 | **épico** | funcionalidade com várias histórias ou decisão de produto em aberto | entrevista → PRD → **GATE do PRD** → ELM → fatias → **GATE do backlog** → planejamento → cada fatia na trilha padrão |
-| **sustentação** | trabalho que não muda o repositório, numa categoria da tabela **Sustentação** do `sabia.md` — Atendimento (o cliente pede consulta, extração ou explicação), Implantação, Banco de dados, Infra, Operação, Apoio a outros times. Mudança no repositório sem épico é fatia (rápida ou padrão) da Manutenção | triagem: categoria e entrevista curta → item da categoria (`AT-nnn`, `IM-nnn`…) no backlog e o IB dele no EWM (`[AT-nnn] <pedido>`), filho do IB da categoria (nasce com o 1º item dela, filho da `Sustentação`); a tarefa (`[ATD]`, `[IMPL]`…) nasce quando o item entra numa sprint · Atendimento: `sa-atender` (assume → banco só leitura e bundle → resposta com "ok" → saldo de horas → desdobramentos) · demais: `sa-executar` (assumir → registrar → horas → concluir) |
+| **sustentação** | trabalho que não muda o repositório, numa categoria da tabela **Sustentação** do `sabia.md` — Atendimento (o cliente pede consulta, extração ou explicação), Implantação, Banco de dados, Infra, Operação, Apoio a outros times. Mudança no repositório sem épico é fatia (rápida ou padrão) da Manutenção | triagem: categoria e entrevista curta → item da categoria (`AT-nnn`, `IM-nnn`…) no backlog e o IB dele no EWM (`[AT-nnn] <pedido>`), filho do IB da categoria (nasce com o 1º item dela, filho da `Sustentação`); a tarefa (`[ATD]`, `[IMPL]`…) nasce quando o item entra numa sprint · Atendimento: `sa-atender` (assume → banco só leitura e bundle → resposta com "ok" → saldo de horas → desdobramentos) · demais: `sa-executar` (assumir → registrar (trabalho e horas) → encerrar com desdobramento) |
 
 Toda hora trabalhada cabe numa tarefa da sprint: `[ESP]` (especificação do épico), `[DEV]`, `[REV]`, `[VER]` (por
 fatia; no AFK só a `[DEV]`), `[APR]` (por gate com aprovação: plano, PR do AFK), as de Sustentação (`[ATD]`,
@@ -75,7 +75,10 @@ PRODUTO       consolidar (P.O./SM, [GB]): drift marcado pela REV/VER ─► ELM 
 
 **Scrumban:** a sprint é a cadência de inspeção (meta, review, retrospectiva, virada), não escopo congelado. O
 compromisso é a meta; a seleção é previsão, e dentro da sprint o fluxo é puxado, com WIP limitado (a `elegivel` do
-topo entra quando o WIP de revisão tem folga). Previsão pela vazão e pelo lead time, sem pontos.
+topo entra quando o WIP de revisão tem folga). A puxada é sempre o encaixe na `sa-planejamento` (agente
+`sa-produto`): o P.O., o SM ou quem puxa com a aprovação do P.O., registrada; o fluxo de quem executa só confere a
+linha viva na sprint e, sem ela, diz "fale com o P.O. ou o SM" e para. Previsão pela vazão e pelo lead time, sem
+pontos.
 
 ## Gates — sempre de uma pessoa
 
@@ -104,8 +107,9 @@ dispensados.
 | Retrabalho | a `[DEV]`, ainda em andamento, recebe a correção no mesmo PR, que passa de novo pela REV | volta à implementação |
 | Tarefas no EWM | `[DEV]` `[REV]` `[VER]`, cada uma da sua pessoa; `[APR]` do plano, se houver GATE | a `[DEV]`, de quem disparou; as `[APR]` (plano com GATE, PR) do Dev Sênior que aprova |
 
-O modo final sai da **senioridade** de quem implementa (o `responsavel` da fatia, no `equipe.json`), gravado pela
-`sa-planejamento` quando a fatia ganha responsável; antes disso, o `modo` da triagem ou do fatiamento é proposta:
+O modo final sai da **senioridade** de quem implementa (o `responsavel` da fatia, no `equipe.json`), gravado quando a
+fatia ganha responsável — no planejamento, no encaixe ou, na fatia `—` não iniciada, por quem a assume (a primeira
+atribuição, que não é troca); antes disso, o `modo` da triagem ou do fatiamento é proposta:
 
 | Senioridade | Modo |
 |---|---|
@@ -116,11 +120,18 @@ O modo final sai da **senioridade** de quem implementa (o `responsavel` da fatia
 A `[REV]` e a `[APR]` são sempre de um **Dev Sênior**: ele revisa os PRs do Pleno e do Júnior; o PR de um Sênior,
 outro Sênior — se ele é o único Sênior ativo, ele mesmo (`revisor único` na Observação do `sprint-<nn>.md`).
 
-**Troca AFK → HITL** (nunca o contrário): o plano de uma fatia AFK mostra risco (regra sensível, muitos cenários,
-integração externa, mudança de dado) → o fluxo sugere HITL ao Dev; aceita, a fatia para em `bloqueada` com
-`aguardando troca para HITL` e o P.O. (ou SM) troca na `sa-planejamento` (modo no backlog, revisor e verificador de
-menor alocação, `[REV]` e `[VER]` no EWM); o Dev retoma pela `sa-desenvolver`, que só sincroniza o `status.md`. No
-loop, a fatia para sozinha e o lote segue.
+**Troca de modo** — só pelo P.O. ou pelo SM, no agente `sa-produto` (`sa-planejamento`, troca de modo); o Dev não
+troca: o fluxo dele orienta a falar com eles e para. Ninguém aprova: a regra vem da senioridade do responsável.
+
+| Sentido | Janela | Regra |
+|---|---|---|
+| AFK → HITL | qualquer fase viva | sem aprovação; nascem a `[REV]` e a `[VER]` (PR aberto: cancela a `[APR] Aprovar PR`) |
+| HITL → AFK | só sem PR (campo PR do `status.md` = `—`) | Sênior: direto · Pleno: pergunta a ele e anota · Júnior: nunca; cancela no EWM a `[REV]` e a `[VER]` |
+
+A troca pergunta "quer seguir na trilha `<atual>` ou alterar para `<outra>`?" e registra a resposta na Observação
+da sprint. O plano de uma fatia AFK com risco (regra sensível, muitos cenários, integração externa, mudança de dado)
+para em `bloqueada` com `aguardando troca de modo`; no loop, a fatia para sozinha e o lote segue. Feita a troca, o Dev
+retoma pela skill da fase, que sincroniza o `status.md` pela base.
 
 ## Princípios
 

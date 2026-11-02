@@ -142,7 +142,7 @@ de início do cabeçalho (o nome do pai é livre e não ordena) — a do `histor
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | FT-031 | Bloquear a conta após 3 tentativas | EP-03 | M | AFK | joao.lima | — | — | concluida | DEV 669401 | 41.20 | |
 | FT-033 | Avisar o usuário do bloqueio | EP-03 | M | HITL | ana.souza | joao.lima | rita.melo | iniciada | DEV 669410 · REV 669411 · VER 669412 | — | migrada para 2026/Sprint 04 |
-| FT-034 | Corrigir o texto do e-mail | Manutenção | P | AFK | joao.lima | — | — | concluida | DEV 669420 | 6.75 | puxada |
+| FT-034 | Corrigir o texto do e-mail | Manutenção | P | AFK | joao.lima | — | — | concluida | DEV 669420 | 6.75 | encaixe: entra na folga (ana.souza, 2026-10-22) |
 
 ## Especificação
 
@@ -183,7 +183,7 @@ Revisão: <h>h · HITL: <h>h · Especificação: <h>h · Reserva (Sustentação 
 |---|---|---|
 
 ## Números
-Concluídas: <n> fatias (<p> previstas · <q> puxadas) · meta: <atingida | não — por quê> · lead time médio <d> dias · rodadas de revisão por fatia <x> · correções humanas <n>
+Concluídas: <n> fatias (<p> previstas · <q> por encaixe) · meta: <atingida | não — por quê> · lead time médio <d> dias · rodadas de revisão por fatia <x> · correções humanas <n>
 
 | Tipo | Planejadas (h) | Lançadas (h) | Créditos |
 |---|---|---|---|
@@ -207,11 +207,9 @@ Créditos por fatia concluída: <média> · por versão do power sabia: <versão
 quem causa a transição (ou pela sincronização, com a evidência do git: `iniciada` e `pronta`,
 [elm-sprint.md](elm-sprint.md) §9), no mesmo commit do `backlog.md` — listas fechadas e quem grava cada uma em
 [Situações](../../sa-fatiar/references/backlog.md#situações). Fatia: `planejada` → `iniciada` → `pronta` →
-`concluida` (a linha nasce `planejada`; a puxada, `iniciada`; a que sai da sprint fica `nova` ou `elegivel`, com
+`concluida` (a linha nasce `planejada`, também a do encaixe; a que sai da sprint fica `nova` ou `elegivel`, com
 `saiu da sprint`; desvios `dividida`, `cancelada`); o detalhe da `iniciada` é a fase do `status.md`. Especificação:
-`planejada` → `iniciada` → `concluida` · `cancelada` (a do épico assumido sem ter sido planejado nasce `iniciada`,
-pela `sa-especificar`, com Horas previstas `—`, Tarefa ELM `ESP <id>` ou `pendente` e a Observação `puxada`; a que
-sai da sprint fica `elegivel`, com `saiu da sprint`). Sustentação: `aberto` → `em-andamento` → `concluido` ·
+`planejada` → `iniciada` → `concluida` · `cancelada` (a que sai da sprint fica `elegivel`, com `saiu da sprint`). Sustentação: `aberto` → `em-andamento` → `concluido` ·
 `cancelado` (a que sai da sprint fica `aberto`, com `saiu da sprint`). A linha migrada guarda a última situação.
 **O item que volta** à sprint de onde saiu ganha linha nova; a com `saiu da sprint` fica como histórico — nunca é
 editada e não migra na virada —, e a **viva**, que se lê e se escreve, é a sem ela
@@ -219,10 +217,11 @@ editada e não migra na virada —, e a **viva**, que se lê e se escreve, é a 
 
 "Tarefa ELM": as tarefas do item no EWM, com o tipo antes de cada id — nas fatias `DEV <id> · REV <id> · VER <id>`,
 mais `APR <id>` das aprovações criadas no gate (AFK, a `DEV` e as `APR`); `ESP <id>`; `ATD <id>`, `IMPL <id>`… —,
-ou `pendente`, gravada na publicação da sprint ([elm-sprint.md](elm-sprint.md) §4; e pela `sa-consolidar` na
-fatia puxada). Observação: `puxada`, `revisor único`, `encaixe: <decisão> (<quem>, <data>)` (a fatia que entrou pelo
-EWM: `encaixe: trazida do EWM — <decisão> (<quem>, <data>)`), `modo: AFK → HITL (<quem>, <data>, <motivo>)`,
-`modo: AFK mantido (<quem>, <data>)`, `migrada para <chave>`, `migrada de <chave>`, `saiu da sprint: <motivo> (<quem>,
+ou `pendente`, gravada na publicação da sprint ([elm-sprint.md](elm-sprint.md) §4). Observação: `revisor único`, `encaixe: <decisão> (<quem aprovou>, <data>)` — a puxada; por outra pessoa,
+`encaixe: <decisão> (<quem aprovou>, <data>; puxada por <login>)`; a que entrou pelo EWM, `encaixe: trazida do EWM —
+<decisão> (<quem>, <data>)`; a começada por fora, `encaixe: começada por fora (<P.O.>, <data>)` —,
+`modo: <de> → <para> (<quem>, <data>, <motivo>)`, `modo: <atual> mantido (<quem>, <data>)`,
+`modo: HITL → AFK (Pleno <login> aceitou|recusou, <data>)`, `migrada para <chave>`, `migrada de <chave>`, `saiu da sprint: <motivo> (<quem>,
 <data>)` (movida no EWM: `saiu da sprint: movida no EWM para <iteração> (<P.O.>, <data>)`), `trazida do EWM`,
 `concluído no EWM`, `cancelado no EWM` (Sustentação: a tarefa fechou ou foi descartada direto no EWM, [elm-sprint.md](elm-sprint.md)
 §9), `não consolidada` ou texto livre.

@@ -2,7 +2,8 @@
 {"fluxo": "consolidar", "dono": "sa-produto",
  "travas_gerais": ["sim-da-pessoa"],
  "passos": [
-   {"id": "drift", "saidas": {"já concluida": "fim", "sem pronta na base: o merge e o registro do merge são do Dev": "→ sa-desenvolver.encerrar", "drift sim, com épico: o PRD muda antes de publicar": "→ sa-prd.mudanca"}},
+   {"id": "entrada", "de": "entrada", "sprint": "nao"},
+   {"id": "drift", "saidas": {"drift sim, com épico: o PRD muda antes de publicar": "→ sa-prd.mudanca"}},
    {"id": "elm"},
    {"id": "conhecimento"},
    {"id": "fechar", "chama": "sa-aprender.registrar"},
@@ -22,14 +23,15 @@ dono = o SM). A consolidação não repete a revisão nem a verificação: o dri
 
 Entrada: fatia `pronta` — o Dev responsável mergeou o PR aprovado e, conferido o merge, gravou `Fase: pronta` no
 `status.md` da **base** (`sa-desenvolver.encerrar`; merge por fora do Sabiá: a sincronização da sprint,
-[elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §9). Leia a fase dali (`git fetch` e `git show
-origin/<base>:.kiro/specs/<ft>-<slug>/status.md`), com o `status` da linha no `backlog.md` da base: `concluida` em
-qualquer um dos dois → diga "já consolidada em <data>" e pare — nada se repete (ADR, lições, glossário, CT, ELM).
-Sem `pronta` na base (PR aberto, ou mergeado sem o registro) → não consolide: mande o Dev ao fluxo `sa-desenvolver.encerrar`
-(o merge e o registro do merge são dele; mergeado por fora do Sabiá → "sincroniza a sprint") e
-pare. Tudo aqui é gravado na **base**, pelo bloco
-[Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base) (a troca e o `pull --ff-only` vêm antes de
-qualquer passo).
+[elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §9). O passo `entrada` lê a fase
+da base; `concluida` é terminal: nada se repete (ADR, lições, glossário, CT, ELM). Tudo aqui é gravado na **base**,
+pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base) (a troca e o
+`pull --ff-only` vêm antes de qualquer passo).
+
+## Entrada: vizinhos
+
+- sem `pronta` na base, com o PR mergeado pelo Sabiá; ou `pronta` com a `[DEV]` aberta → `sa-desenvolver.encerrar` (agente `sa-desenvolvedor`: o merge, o registro dele e a conclusão da `[DEV]` são do Dev)
+- PR mergeado por fora do Sabiá, sem `pronta` na base → `sa-planejamento.durante.sincronizar` (a sincronização da sprint grava a `pronta` pela evidência do merge)
 
 ## Regras
 

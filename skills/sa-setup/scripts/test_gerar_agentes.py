@@ -232,8 +232,9 @@ class Gerar(unittest.TestCase):
                            {"nome": "batch-step", "descricao": "step", "prompt": "agentes/step.md", "skills": ["skills/teste/SKILL.md"]}]}
         man.update(mudar)
         (pasta / "toolkit.json").write_text(json.dumps(man))
+        # o gancho do toolkit 1.x (passo.papel) vem do `papel_1x` do mestre: precisa do framework
         return {"toolkits": {"batch-alfa": {"pasta": "~/.sabia/toolkits/batch-alfa", "versao": "1.0.0", "sha": "abc"}},
-                "passos": [{"toolkit": "batch-alfa", "skill": "skills/batch/SKILL.md", "agente": True}]}
+                "passos": [{"toolkit": "batch-alfa", "skill": "skills/batch/SKILL.md", "agente": True}], "framework": str(REPO)}
 
     def test_passo_com_agente(self):
         agentes = self.gerar(**self.toolkit())
@@ -378,6 +379,8 @@ class Gerar(unittest.TestCase):
             {".sabia/fluxo/sa-planejamento/review/review.md": '---\n{"inserir": [{"id": "a", "depois": "b"}, {"id": "b", "depois": "a"}]}\n---\n',
              ".sabia/fluxo/sa-planejamento/review/passos/a.md": "x", ".sabia/fluxo/sa-planejamento/review/passos/b.md": "x"},  # ciclo
             {".sabia/fluxo/sa-planejamento/review/review.md": '---\n{"inserir": [{"id": "../x", "depois": "rito"}]}\n---\n'},  # id ruim
+            {".sabia/fluxo/sa-planejamento/review/review.md": '---\n{"inserir": [{"id": "grafo", "depois": "rito"}]}\n---\n',
+             ".sabia/fluxo/sa-planejamento/review/passos/grafo.md": "x"},                              # id reservado
             {".sabia/fluxo/sa-codificar/codificar/codificar.md": '---\n{"inserir": [1,]}\n---\n'},  # JSON inválido
             {".sabia/" + pf: f'---\n{{"base": "{self.base(pf)}"}}\n---\n## Travas\n\n- nenhuma\n'},       # seção gerada no corpo
         ]
@@ -402,7 +405,7 @@ class Gerar(unittest.TestCase):
         cfg = self.toolkit(skills=[{"caminho": "skills/batch/SKILL.md", "papeis": ["desenvolvedor"],
                                     "passo": {"passo": "sa-codificar.codificar.tarefa", "para": "tarefa de job",
                                               "arquivos": ["**/*JobConfig.java"], "agente": "batch-job"}}])
-        c = self.gerar(framework=str(REPO), **cfg)["desenvolvedor"]
+        c = self.gerar(**cfg)["desenvolvedor"]
         self.assertIn("`tarefa de job` (arquivos `**/*JobConfig.java`) → delegue ao subagente `batch-job`", c["prompt"])
         for passo in ("sa-codificar.codificar.validar", "sa-codificar.codificar.nada"):  # sem gancho · inexistente
             cfg["passos"][0]["skill"] = "skills/batch/SKILL.md"
@@ -464,6 +467,13 @@ class Gerar(unittest.TestCase):
             self.assertEqual(efeito(d, "shell", cmd), "deny", cmd)
         self.assertEqual(efeito(self.gerar()["verificador"], "shell", "cd /tmp && curl http://x"), "ask")
 
+    def test_toolkit_1x_pelo_papel_1x_do_mestre(self):
+        fluxos = g.ler_fluxos(REPO)
+        for papel, dono, pid in (("desenvolvedor", "desenvolvedor", "sa-codificar.codificar.tarefa"),
+                                 ("codificador", "desenvolvedor", "sa-codificar.codificar.tarefa"),  # o nome antigo
+                                 ("especificador", "especificador", "sa-prd.prd.escrever")):
+            self.assertEqual(g.gancho({"papel": papel}, fluxos, "t"), (dono, pid), papel)
+
     def test_toolkit_1x_de_papel_sem_gancho_e_recusado(self):
         ruim = self.toolkit(skills=[{"caminho": "skills/batch/SKILL.md", "papeis": ["produto"],
                                      "passo": {"papel": "produto", "para": "algo do produto", "agente": "batch-job"}}])
@@ -479,6 +489,10 @@ class Gerar(unittest.TestCase):
         with contextlib.redirect_stdout(io.StringIO()):
             self.assertEqual(g.main(["--base", "sa-codificar/pr.md", "--framework", str(REPO)]), 0)
             self.assertEqual(g.main(["--base", "sa-codificar.codificar.nada", "--framework", str(REPO)]), 1)
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):  # passo compartilhado: a base é a de fluxo/entrada.md
+            self.assertEqual(g.main(["--base", "sa-codificar.codificar.entrada", "--framework", str(REPO)]), 0)
+        self.assertEqual(out.getvalue().strip(), self.base("fluxo/entrada.md"))
 
     def test_chave_sem_prefixo_falha(self):
         with self.assertRaises(ValueError):

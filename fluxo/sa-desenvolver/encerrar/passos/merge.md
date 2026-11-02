@@ -3,10 +3,9 @@
 ---
 ## Entrada
 
-A fatia chegou a `aceita` (HITL) ou a `aguardando-aprovacao-pr` (AFK): o merge, o registro na base e a conclusão da
-`[DEV]` são do Dev responsável, aqui. Também o PR já mergeado por fora, pela UI do GitLab (a `sa-consolidar` manda
-para cá quando falta a `Fase: pronta` na base): siga do item 5 — a `pronta` só com o merge conferido —, e sem a
-aprovação registrada (abaixo) o aviso do item 9 diz isso.
+A fatia deste fluxo (passo `entrada`): em `aceita` (HITL) ou em `aguardando-aprovacao-pr` (AFK), o merge, o registro
+na base e a conclusão da `[DEV]` são do Dev responsável, aqui. Também o PR já mergeado com a aprovação registrada
+(abaixo; a sessão do merge parou): siga do item 5 — a `pronta` só com o merge conferido.
 
 ## Faça
 
@@ -50,11 +49,13 @@ a aprovação **registrada**, nunca a dita na conversa ("o PR foi aprovado", "po
    mudou>` vazio (a branch local: a remota sai no merge). Não mergeado → pare.
 6. **Registro do merge na base** — pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base),
    variante do Dev; o `status.md` já chegou à base com o merge:
-   - **Lições candidatas** no `status.md` — antes de fechar a `[DEV]`: liste as correções humanas que a fatia
+   - **Lições candidatas** no `status.md` — antes de fechar a `[DEV]`: mantenha as linhas que a revisão, a
+     verificação e a aprovação já gravaram na branch e acrescente a que o aprovador entregou com a `[APR]` (AFK);
+     depois, liste as outras correções humanas que a fatia
      recebeu (tabela Retrabalho; Achados abertos de origem PR ou GATE do plano; bloqueio resolvido por uma pessoa;
      "não é assim" no Histórico) e, com a pessoa, grave uma linha por correção: feito × certo, onde estava o certo e
      a causa proposta (tabela de causas do passo `sa-aprender.registrar.causa`). Correção sem lição
-     (ambiente, digitação) → causa `—`; nenhuma correção → `nenhuma`. O `licoes.md` é da base: quem o grava é a
+     (ambiente, digitação) → causa `—`; `nenhuma` só com a seção vazia e nenhuma correção. O `licoes.md` é da base: quem o grava é a
      consolidação.
    - `Fase: pronta`; no Histórico, `merge do PR <link> por <login>` (AFK: antes, `PR aprovado por <login>, sha <sha>`,
      do comentário da `[APR]` ou a linha que o aprovador entregou); sem o MCP `elm`, também `ELM pendente [<chave>]:

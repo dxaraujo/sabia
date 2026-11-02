@@ -3,10 +3,10 @@
  "quando": ["especificação de épico: EP-nn ou [ESP] EP-nn, da tarefa [ESP] à conclusão dela depois do GATE do backlog", "especificar o EP-03", "pegar a [ESP] do EP-03", "retomar a especificação", "fechar a sessão de especificação"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa"],
  "passos": [
-   {"id": "chegou", "saidas": {"[ESP] FT-nnn: o fluxo fatia": "→ sa-especificar.fatia", "pedido em texto ou épico fora do backlog: não registrado": "→ sa-triar.triar", "não é deste papel, ou concluido/cancelado": "fim", "concluido com a linha da Especificação ainda iniciada": "fechamentos"}},
-   {"id": "assumir", "saidas": {"nenhuma sprint aberta: o planejamento": "→ sa-planejamento.sprint"}},
+   {"id": "entrada", "de": "entrada", "sprint": "exige", "saidas": {"concluido com a Especificação ainda iniciada (só os itens 2–3 de Depois do GATE do backlog)": "fechamentos"}},
+   {"id": "assumir"},
    {"id": "pasta"},
-   {"id": "encaminhar", "chama": ["sa-prd.prd", "sa-fatiar.fatiar"], "saidas": {"aprovado na pasta de trabalho, ou fatiado com a Especificação iniciada": "fechamentos", "fatiado com a Especificação concluida, para dividir, juntar ou cancelar fatias": "→ sa-fatiar.refinamento", "fatiado com a Especificação concluida, sem mais nada": "fim"}},
+   {"id": "encaminhar", "chama": ["sa-prd.prd", "sa-fatiar.fatiar"], "saidas": {"aprovado na pasta de trabalho, ou fatiado com a Especificação iniciada": "fechamentos"}},
    {"id": "fechar-sessao", "saidas": {"sessão sem GATE novo": "fim"}},
    {"id": "fechamentos", "saidas": {"GATE do PRD: PRD aprovado na base": "→ sa-fatiar.fatiar"}}
  ]}
@@ -18,7 +18,15 @@ sessões antes do GATE do PRD. Ele fica registrado na tarefa `[ESP]` do EWM, nã
 recebe a situação do épico (passo `assumir`); o resto vai com o PRD aprovado. Este fluxo é o do papel **Especificador**; o
 épico chega `novo` ou `elegivel` pela `sa-triar` e `planejado` (com a `[ESP]`) pela `sa-planejamento`.
 
+Entrada: `EP-nn` ou `[ESP] EP-nn` — a linha do épico em `## Épicos` do `backlog.md` da base, com a linha viva na seção
+Especificação do `sprint-<nn>.md` aberto (fora da sprint, a entrada manda ao P.O. ou ao SM).
+
 Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configurar o Sabiá") e pare.
+
+## Entrada: vizinhos
+
+- `[ESP] FT-nnn` (fatia `nova` em especificação na sprint) → `sa-especificar.fatia`
+- `fatiado` com a Especificação `concluida` (nada a especificar; dividir, juntar ou cancelar fatias) → `sa-fatiar.refinamento`
 
 ## Regras
 

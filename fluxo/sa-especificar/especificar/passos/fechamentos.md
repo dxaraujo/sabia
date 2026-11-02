@@ -4,7 +4,8 @@
 ## Entrada
 
 Um GATE feito: Fase `aprovado` no `status.md` da pasta de trabalho (GATE do PRD) ou `fatiado` no da base (GATE do
-backlog), com a `[ESP]` aberta.
+backlog), com a `[ESP]` aberta. Ou, pelo passo `entrada`: o épico `concluido` com a linha da Especificação ainda
+`iniciada` (só os itens 2–3 de "Depois do GATE do backlog").
 
 ## Faça
 

@@ -1,6 +1,6 @@
 ---
 {"fluxo": "entrevistar", "dono": "sa-especificador",
- "quando": ["alinhar uma demanda, PRD, fatia ou plano em rodadas até o entendimento confirmado, chamado direto ou pela sa-prd, a sa-fatiar e a sa-plano diante de uma decisão em aberto", "me entreviste", "grill me", "vamos alinhar", "quais decisões estão em aberto", "o que falta definir"],
+ "quando": ["alinhar uma demanda, PRD ou fatia em rodadas até o entendimento confirmado, chamado direto ou pela sa-prd, a sa-fatiar e a sa-triar diante de uma decisão em aberto", "me entreviste", "grill me", "vamos alinhar", "quais decisões estão em aberto", "o que falta definir"],
  "travas_gerais": ["decisao-da-pessoa"],
  "passos": [
    {"id": "arvore"},
@@ -11,15 +11,14 @@
 ---
 # Entrevistar — alinhar antes de escrever
 
-O erro mais caro de um fluxo com agentes é escrever bem a coisa errada. Antes de qualquer PRD, fatia ou plano,
-feche as decisões que as fontes não respondem — o agente **não** preenche lacuna com suposição plausível.
+O erro mais caro de um fluxo com agentes é escrever bem a coisa errada. Antes de qualquer PRD ou fatia, feche
+as decisões que as fontes não respondem — o agente **não** preenche lacuna com suposição plausível.
 
 ## Entrada
 
-- **O que está sendo alinhado:** demanda (texto, work item do EWM), PRD, fatia ou plano técnico.
+- **O que está sendo alinhado:** demanda (texto, work item do EWM), PRD ou fatia.
 - **Onde registrar:** a pasta do épico — até o GATE do PRD, a pasta de trabalho da `sa-especificar`
-  (`.sabia/local/especificacao/<EP>-<slug>/decisoes.md`, fora do git); depois, `<produto>/epicos/<EP>-<slug>/` — ou da fatia
-  (`.kiro/specs/<ft>-<slug>/decisoes.md`) — ou, na triagem de uma fatia sem épico, a seção Decisões da ficha
+  (`.sabia/local/especificacao/<EP>-<slug>/decisoes.md`, fora do git); depois, `<produto>/epicos/<EP>-<slug>/` — ou, na triagem de uma fatia sem épico, a seção Decisões da ficha
   (`<produto>/fatias/FT-<nnn>-<slug>.md`). Quem chamou informa; chamada direta → pergunte uma vez.
 - **Glossário:** o caminho está no `.sabia/sabia.md` (seção Projeto; padrão `.sabia/glossario.md`).
 

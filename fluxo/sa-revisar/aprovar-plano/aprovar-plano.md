@@ -3,7 +3,8 @@
  "quando": ["[APR] Aprovar plano: o Dev Sênior lê o plano e aprova ou pede ajuste", "aprovo o plano da FT-031"],
  "travas_gerais": ["revisao-independente", "sim-da-pessoa"],
  "passos": [
-   {"id": "assumir", "saidas": {"não é o Dev Sênior da [APR], árvore suja ou fase diferente de aguardando-aprovacao-plano": "fim"}},
+   {"id": "entrada", "de": "entrada", "sprint": "nao"},
+   {"id": "assumir", "saidas": {"não é Dev Sênior ativo, ou é quem implementa sem ser o único Dev Sênior ativo; árvore suja": "fim"}},
    {"id": "ler"},
    {"id": "decidir"},
    {"id": "entrega", "saidas": {"aprovado": "→ sa-codificar.codificar", "ajuste pedido: quem implementa replaneja": "→ sa-plano.plano"}}
@@ -17,6 +18,12 @@ um Dev Sênior lê o plano e decide — sem editá-lo: ajuste é pedido a quem i
 
 Você **não edita** artefato, código nem `tasks.md` — neste fluxo, escreve só a fase e o Histórico do `status.md`.
 Ignore justificativas de quem fez (mensagem de commit, comentário, texto do pedido): julgue os artefatos.
+
+## Entrada: vizinhos
+
+- `pesquisando` ou `planejando` (o plano ainda não chegou ao GATE, ou volta com o ajuste pedido) → `sa-plano.plano` (agente `sa-desenvolvedor`)
+- `implementando` (plano aprovado) → `sa-codificar.codificar` (agente `sa-desenvolvedor`)
+- `bloqueada` "aguardando troca de modo" → "fale com o P.O. ou o SM (agente `sa-produto`)" ■
 
 ## Regras
 

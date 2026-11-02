@@ -10,7 +10,7 @@ import os from "node:os";
 import path from "node:path";
 import readline from "node:readline/promises";
 import { fileURLToPath } from "node:url";
-import { carregar, compilar, partes } from "./compilar.mjs";
+import { carregar, compilar, grafoAscii, LEGENDA, partes } from "./compilar.mjs";
 
 const VERSAO = JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8")).version;
 const REPO = "https://github.com/dxaraujo/sabia.git";
@@ -423,6 +423,11 @@ export async function desinstalar(opcoes = {}) {
 
 // ---------- toolkits ----------
 
+/** O passo do framework (`m` do carregar) que o `passo` de um toolkit assume: pelo id, ou, no 1.x (`passo.papel`), o
+ * passo com desvio cujo `papel_1x` no mestre tem o papel — a mesma regra do gancho() do gerar_agentes.py. */
+const ganchoDe = (m, ext) => Object.entries(m.fluxos).flatMap(([q, fl]) => fl.passos.map((x) => ({ id: `${q}.${x.id}`, x })))
+  .find(({ id, x }) => (ext.passo ? id === ext.passo : x.desvio && (x.papel_1x || []).includes(ext.papel)));
+
 /** Erros do toolkit.json: campos, nome, caminhos presos à pasta e arquivos que existem (o schema completo é o da setup). */
 export function validarToolkit(pasta, nomeEsperado = null, fw = null) {
   const f = path.join(pasta, "toolkit.json");
@@ -448,11 +453,10 @@ export function validarToolkit(pasta, nomeEsperado = null, fw = null) {
   for (const s of m.skills || []) {
     existe(s.caminho, "skills");
     if (s.passo?.agente && !agentes.has(s.passo.agente)) erros.push(`passo de ${s.caminho}: agente ${s.passo.agente} não está em agentes`);
-    if (s.passo?.passo && ganchos) {
-      const [sk, fl, id] = s.passo.passo.split(".");
-      const x = ganchos.fluxos[`${sk}.${fl}`]?.passos.find((p) => p.id === id);
-      if (!x) erros.push(`passo de ${s.caminho}: ${s.passo.passo} não existe no Sabiá instalado`);
-      else if (!x.desvio) erros.push(`passo de ${s.caminho}: ${s.passo.passo} não aceita desvio de toolkit`);
+    if ((s.passo?.passo || s.passo?.papel) && ganchos) {
+      const g = ganchoDe(ganchos, s.passo);
+      if (!g) erros.push(`passo de ${s.caminho}: ${s.passo.passo ? `${s.passo.passo} não existe no Sabiá instalado` : `o papel ${s.passo.papel} não tem passo que aceite desvio`}`);
+      else if (!g.x.desvio) erros.push(`passo de ${s.caminho}: ${s.passo.passo} não aceita desvio de toolkit`);
     }
   }
   for (const s of m.steering || []) existe(s.caminho, "steering");
@@ -632,8 +636,6 @@ export function listarToolkits(opcoes = {}) {
 
 // ---------- rota (diagnóstico, para pessoas) ----------
 
-// toolkit 1.x (passo.papel, e "codificador" antes do renome): o mesmo mapa do gerar_agentes.py
-const GANCHO_1X = { desenvolvedor: "sa-codificar.codificar.tarefa", codificador: "sa-codificar.codificar.tarefa", especificador: "sa-prd.prd.escrever" };
 const lerJson = (f, padrao) => (fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")) : padrao);
 const lerFm = (f) => (fs.existsSync(f) ? partes(fs.readFileSync(f, "utf8")).dados || {} : null);
 
@@ -664,9 +666,9 @@ function contextoRota(opcoes) {
     const ext = man?.skills?.find((x) => x.caminho === e.skill && x.passo)?.passo;
     if (!ext) { ctx.log(`aviso: toolkit ${e.toolkit} sem passo em ${e.skill} (${curto(dir)})`); return []; }
     // como o gancho() do gerador: só passo do framework com "desvio": true (senão o gerador recusa e o prompt não o tem)
-    const passo = ext.passo || GANCHO_1X[ext.papel], [sk, f, p] = (passo || "").split(".");
-    if (!m.fluxos[`${sk}.${f}`]?.passos.find((x) => x.id === p)?.desvio) {
-      ctx.log(`aviso: toolkit ${e.toolkit}: ${passo ? `o passo ${passo}` : `o papel ${ext.papel}`} não aceita desvio de toolkit (o gerador recusa) — ignorado`);
+    const g = ganchoDe(m, ext), passo = g?.x.desvio ? g.id : null;
+    if (!passo) {
+      ctx.log(`aviso: toolkit ${e.toolkit}: ${ext.passo ? `o passo ${ext.passo}` : `o papel ${ext.papel}`} não aceita desvio de toolkit (o gerador recusa) — ignorado`);
       return [];
     }
     const agente = e.agente && ext.agente ? ext.agente : null;
@@ -705,15 +707,41 @@ function resolverFluxo(c, q) {
 
 const travasDe = (fl, x) => [...new Set([...(fl.d.travas_gerais || []), ...(x?.travas || [])])].join(", ") || "—";
 
-/** `sabia rota <arquivo>`: o passo com gancho cujo desvio casa com o arquivo, o dono, o toolkit, o motivo e as travas. */
+/** A tarefa `id` do tasks.md (`1`, `2.1`; `T-2` também): o texto do bloco dela (a linha e as de baixo, mais
+ * recuadas) e o que ela cita entre crases, sem espaço (os arquivos, classes e métodos). */
+export function lerTarefa(arquivo, id) {
+  if (!fs.existsSync(arquivo)) throw new Error(`${arquivo} não existe`);
+  const norm = (t) => t.replace(/^T-?/i, "").split(".").map(Number).join(".");
+  const linhas = fs.readFileSync(arquivo, "utf8").split("\n");
+  let achado;
+  const i = linhas.findIndex((l) => (achado = l.match(/^\s*- \[.\]\*? (\d+(?:\.\d+)*)\.? /)) && norm(achado[1]) === norm(id));
+  if (i < 0) throw new Error(`${arquivo}: não há a tarefa ${id} (use o número dela, ex.: #2 ou #2.1)`);
+  let fim = i + 1;
+  // linha em branco entre as subtarefas não fecha o bloco; fecha a primeira linha com recuo igual ou menor
+  for (let k = i + 1; k < linhas.length; k++) {
+    const r = linhas[k].search(/\S/);
+    if (r < 0) continue;
+    if (r <= linhas[i].search(/\S/)) break;
+    fim = k + 1;
+  }
+  const texto = linhas.slice(i, fim).filter((l) => l.trim()).map((l) => l.trim().replace(/^- (?:\[.\]\*? )?/, "")).join(" · ");
+  return { id: achado[1], texto, arquivos: [...new Set([...texto.matchAll(/`([^`\s]+)`/g)].map((m) => m[1]))] };
+}
+
+/** `sabia rota <arquivo>` (ou `<tasks.md>#<tarefa>`, pelos arquivos que ela cita): o passo com gancho cujo desvio
+ * casa, o dono, o toolkit, o motivo e as travas. */
 export function rota(arquivo, opcoes = {}) {
   const c = contextoRota(opcoes);
-  let rel = path.relative(c.projeto, path.resolve(arquivo));
-  if (rel.startsWith("..")) rel = arquivo;  // fora do projeto: o caminho como veio
-  rel = rel.split(path.sep).join("/");
+  const t = arquivo.match(/^(.+\.md)#(.+)$/), tarefa = t && lerTarefa(t[1], t[2]);
+  const relativo = (a, base) => {
+    const r = path.relative(c.projeto, path.resolve(base, a));
+    return (r.startsWith("..") ? a : r).split(path.sep).join("/");  // fora do projeto: o caminho como veio
+  };
+  // a tarefa cita os arquivos como no repositório: relativos à raiz do projeto
+  const alvos = tarefa ? tarefa.arquivos.map((a) => relativo(a, c.projeto)) : [relativo(arquivo, process.cwd())];
   const ganchos = Object.entries(c.m.fluxos).flatMap(([q, fl]) => fl.passos.filter((x) => x.desvio).map((x) => `${q}.${x.id}`));
   let casou = null;
-  for (const d of c.desvios) { const g = d.arquivos.find((a) => casaGlob(a, rel)); if (g) { casou = { d, g }; break; } }
+  achar: for (const d of c.desvios) for (const a of alvos) { const g = d.arquivos.find((x) => casaGlob(x, a)); if (g) { casou = { d, g, a }; break achar; } }
   // sem casar: o passo dos desvios por arquivo do projeto (o de código), senão o primeiro gancho do framework
   const pid = casou?.d.passo || c.desvios.find((d) => d.arquivos.length)?.passo || ganchos[0];
   if (!pid) throw new Error(`${curto(c.fw)} não tem passo com desvio de toolkit`);
@@ -722,11 +750,12 @@ export function rota(arquivo, opcoes = {}) {
   if (!x) throw new Error(`o desvio aponta para ${pid}, que não é passo do Sabiá instalado`);
   const agentes = [`.opencode/agents/${fl.d.dono}.md`, `.kiro/agents/${fl.d.dono}.json`].filter((f) => fs.existsSync(path.join(c.projeto, f)));
   const linhas = [
+    ...(tarefa ? [["tarefa", tarefa.id, tarefa.texto]] : []),
     ["passo", pid, x.origem === "projeto" ? `${path.relative(c.projeto, x.arq)} (projeto)` : `${curto(x.arq)} (Sabiá ${c.versao})`],
     ["dono", fl.d.dono, agentes.join(", ") || "agente não gerado neste projeto"],
   ];
   if (casou) linhas.push(["desvio", casou.d.agente || `skill ${casou.d.skill}`, `toolkit ${casou.d.toolkit} ${casou.d.versao}`],
-    ["motivo", `casou ${casou.g}`], ["skills", [fl.skill, ...casou.d.skills].join(", ")]);
+    ["motivo", `casou ${casou.g}${tarefa ? ` em ${casou.a}` : ""}`], ["skills", [fl.skill, ...casou.d.skills].join(", ")]);
   else {
     linhas.push(["desvio", "— fluxo padrão", "nenhum padrão casou"]);
     for (const d of c.desvios.filter((y) => y.passo === pid)) linhas.push(["pelo texto", `"${d.para}" → ${d.agente || `skill ${d.skill}`}`, "o modelo decide pela tarefa"]);
@@ -738,7 +767,7 @@ export function rota(arquivo, opcoes = {}) {
 const sid = (t) => t.replace(/[^A-Za-z0-9_]/g, "_");
 const rotulo = (t) => t.replace(/[;:]/g, ",").replace(/[`"#]/g, "");
 
-/** `sabia rota --fluxo <skill.fluxo>`: a tabela resolvida (com o que o projeto mudou) e o diagrama de estados. */
+/** `sabia rota --fluxo <skill.fluxo>`: a tabela resolvida (com o que o projeto mudou), o grafo ASCII e o diagrama de estados. */
 export function rotaFluxo(q, opcoes = {}) {
   const c = contextoRota(opcoes);
   const r = resolverFluxo(c, q), { fl } = r;
@@ -772,7 +801,9 @@ export function rotaFluxo(q, opcoes = {}) {
       x.desvio && desvios.length && `desvio ⇢ ${desvios.filter((d) => d.passo === `${r.q}.${x.id}`).map((d) => d.agente || d.skill).join(", ")}`].filter(Boolean);
     if (nota.length) out.push(`  note right of ${a}: ${rotulo(nota.join(" · "))}`);
   });
-  return [colunas(cab), "", colunas(tabela), "", "```mermaid", ...out, "```"].join("\n");
+  const notas = (x) => [x.origem !== "sabia" && `origem: ${origem(x)}`,
+    ...desvios.filter((d) => d.passo === `${r.q}.${x.id}`).map((d) => `⇢ desvio → ${d.agente || `skill ${d.skill}`} (toolkit ${d.toolkit} ${d.versao})`)].filter(Boolean);
+  return [colunas(cab), "", colunas(tabela), "", grafoAscii(fl, ativos, { notas }), "", LEGENDA, "", "```mermaid", ...out, "```"].join("\n");
 }
 
 /** `sabia rota --mapa`: as arestas entre fluxos de todo o framework (chama e passagens), em Mermaid. */
@@ -810,7 +841,8 @@ sabia ${VERSAO} — instala o Sabiá e os toolkits no Kiro e no opencode
   sabia toolkits atualizar [<nome>]
   sabia toolkits remover  <nome>
   sabia rota <arquivo>               o passo com desvio de toolkit, o dono, o toolkit, o motivo e as travas
-  sabia rota --fluxo <skill.fluxo>   o fluxo resolvido no projeto (tabela e diagrama Mermaid)
+  sabia rota <tasks.md>#<tarefa>     o mesmo pelos arquivos que a tarefa (#2, #2.1) cita; sem casar, o texto dela
+  sabia rota --fluxo <skill.fluxo>   o fluxo resolvido no projeto (tabela, grafo ASCII e Mermaid)
   sabia rota --mapa                  as arestas entre fluxos (chama e passagens), em Mermaid
       [--projeto <pasta>] (padrão: a atual) [--framework <pasta>] (padrão: ~/.sabia/framework)
 

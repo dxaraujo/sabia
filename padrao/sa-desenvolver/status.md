@@ -32,10 +32,11 @@
            Sênior) → pronta (merge pelo Dev, [DEV] concluída) → concluida (consolidação)
            mudanças pedidas na [APR] → retrabalho (de: aguardando-aprovacao-pr) → implementando → …
            → aguardando-aprovacao-pr
-     AFK → HITL (nunca o contrário): plano com risco → bloqueada (de: planejando), "aguardando troca para HITL",
-           [DEV] interrompida (horas lançadas, sem conclusão) → o P.O. troca na base (sa-planejamento, fluxo
-           troca-modo: revisor e verificador na linha da sprint) → o Dev retoma pela sa-desenvolver (passo chegou):
-           Modo: HITL, ids da [REV] e da [VER], fase planejando → GATE pela senioridade → segue o HITL até pronta → concluida
+     Troca de modo: só pelo P.O. ou pelo SM (agente sa-produto, sa-planejamento fluxo troca-modo), na base; o Dev
+           nunca troca. AFK com risco no plano → bloqueada (de: planejando), "aguardando troca de modo", [DEV]
+           interrompida (horas lançadas, sem conclusão) → o P.O. ou o SM troca (AFK → HITL: revisor e verificador na
+           linha da sprint; HITL → AFK, só antes do PR: a [REV] e a [VER] canceladas) → o Dev retoma pela sa-plano
+           (passo gate): Modo e ids pela base, fase planejando → GATE pela senioridade → segue no modo novo
      Conflito no merge (sa-desenvolver, fluxo encerrar) → retrabalho (de: aceita | aguardando-aprovacao-pr), com a linha
            `conflito no merge` no Histórico: a sa-codificar atualiza a branch e segue — HITL volta a pr-aberto, e
            o revisor e o verificador reabrem a [REV] e a [VER] concluídas (passo assumir da sa-revisar e da
@@ -46,8 +47,11 @@
      (elm-sprint.md §9) também grava pronta, pela evidência do merge (Créditos e lições —).
      A base prevalece: pronta e concluida só existem no status.md da base (a pasta da fatia chega lá com o merge).
      O status.md de origin/<base> em pronta ou concluida vale sobre o da branch, que fica parado na fase do merge;
-     e o da branch de fatia dividida ou cancelada no backlog.md da base não conta. Painel, WIP (sa-desenvolver,
-     sa-orquestrar) e roteamento (sa-iniciar, sa-desenvolver passo chegou) leem por esta regra.
+     e o da branch de fatia dividida ou cancelada no backlog.md da base não conta. O Modo, o revisor e o
+     verificador também: os do backlog.md e da linha da sprint na base valem sobre os do status.md (a troca de modo
+     grava lá); quem retoma a fatia grava no status.md o Modo e os ids da [REV] e da [VER] (ou os tira, canceladas),
+     num commit, antes de seguir. Painel, WIP (sa-desenvolver, sa-orquestrar) e roteamento (sa-iniciar, o passo de
+     entrada dos fluxos) leem por esta regra.
      Entrega (todo papel do HITL): commit → push → conferir no remoto → só então concluir a tarefa e avisar.
      Desvio: `bloqueada (de: <fase>)`, com motivo e a pergunta exata; resolvido, a fatia volta à fase de origem.
      aguardando-aprovacao-plano = o plano espera a [APR] Aprovar plano de um Dev Sênior; durante a análise
@@ -69,8 +73,8 @@
      (cenário ajustado na verificação) marcam; no AFK o subagente põe a linha no relatório e quem conduz grava aqui.
      Só passa de `não` para `sim`; outro `sim` acrescenta o motivo. A consolidação só lê (sim → nova versão do PRD
      ou da ficha antes de publicar).
-     Retrabalho: incrementado por quem reprova (revisor ou verificador, HITL) ou, no AFK, pelo orquestrador ou pelo
-     passo do workflow que registra a verificação REJEITADA. -->
+     Retrabalho: incrementado por quem reprova (revisor ou verificador, HITL) ou, no AFK, pelo orquestrador ou, sem o loop,
+     pelo desenvolvedor no passo `sa-codificar.codificar.verificar` que registra a verificação REJEITADA. -->
 
 ## Achados abertos
 
@@ -84,7 +88,7 @@
 
 <!-- HITL: uma linha por reprovação na REV ou na VER, gravada por quem reprovou; as horas, pelo desenvolvedor ao
      entregar o PR atualizado (a [DEV] segue aberta até o merge). AFK: uma linha por verificação REJEITADA (Papel `verificação (AFK)`), gravada pelo
-     orquestrador ou pelo passo registrar_verificacao do workflow; e uma por mudanças pedidas na [APR] Aprovar PR
+     orquestrador ou, sem o loop, pelo desenvolvedor (passo `sa-codificar.codificar.verificar`); e uma por mudanças pedidas na [APR] Aprovar PR
      (Papel `APR`), gravada por quem aprova; a [DEV] só é concluída no merge, Horas `—`. -->
 
 | # | Papel | Motivo (relatório) | Data | Horas na [DEV] (retrabalho) |
@@ -92,9 +96,10 @@
 
 ## Lições candidatas
 
-<!-- Gravadas pelo Dev responsável depois do merge, no status.md da base (sa-desenvolver, fluxo encerrar, item 6), antes
-     de concluir a [DEV]: uma linha por correção humana que a fatia recebeu. Correção sem lição (ambiente,
-     digitação) → `—` na causa; nenhuma correção → uma linha `nenhuma`. A sa-consolidar as leva para o licoes.md
+<!-- A revisão, a verificação e a aprovação acrescentam as suas na branch, no commit delas; o Dev responsável, depois
+     do merge, no status.md da base (sa-desenvolver, fluxo encerrar, item 6), antes de concluir a [DEV], mantém
+     essas, acrescenta a que o aprovador entregou (AFK) e uma linha por outra correção humana. Correção sem lição
+     (ambiente, digitação) → `—` na causa; seção vazia e nenhuma correção → uma linha `nenhuma`. A sa-consolidar as leva para o licoes.md
      (sa-aprender) e grava o L-nnn. -->
 
 | # | Correção (origem) | Feito × certo | Onde estava o certo | Causa proposta | L-nnn |

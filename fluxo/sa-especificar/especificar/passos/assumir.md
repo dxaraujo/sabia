@@ -1,31 +1,31 @@
 ---
-{"resumo": "Grava na base o épico iniciado e a linha da Especificação na sprint aberta (um commit) e assume a [ESP] no EWM."}
+{"resumo": "Completa a DoR do épico (regra da sa-triar), grava na base o épico iniciado e a linha da Especificação (um commit) e assume a [ESP] pela regra comum de assumir."}
 ---
 ## Entrada
 
-O épico e a `[ESP]` do passo `chegou`.
+O épico na sprint aberta (passo `entrada`): a linha em `## Épicos` do `backlog.md` da base e a `[ESP]` pela coluna
+`elm` (`ESP <id>`) ou pela Tarefa ELM da linha dele na seção Especificação do `sprint-<nn>.md` (sem id → `pendente`).
 
 ## Faça
 
-1. **Situação na base** — a exceção ao "nada vai à base antes do GATE do PRD" (Regras): pelo bloco
+1. **DoR do épico** — a do [`backlog.md`](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#definition-of-ready-o-que-faz-uma-fatia-elegivel)
+   (o problema, quem pede, o resultado e o `po`): `elegivel` ou adiante já passou; `novo`, confira agora. Faltando →
+   liste e complete com a pessoa os campos da linha, pela regra "complete o registro" do passo
+   `sa-triar.triar.chegou` (sem id novo; passou → `elegivel`) — é trabalho desta `[ESP]`, que entrou na sprint
+   assim —, no commit do item 2.
+2. **Situação na base** — a exceção ao "nada vai à base antes do GATE do PRD" (Regras): pelo bloco
    [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), o épico `iniciado` no `backlog.md` e a linha
-   dele na seção Especificação do `sprint-<nn>.md` aberto com Situação `iniciada`; um commit, `EP-<nn> iniciar`.
-   Épico não planejado → no backlog, `sprint` = a chave da sprint aberta, e a linha nasce agora (quem assume, Horas
-   previstas `—`, `ESP <id>` — a que ficou no backlog do EWM — ou `pendente`, Observação `puxada`), nova mesmo se a
-   sprint tem a dele com `saiu da sprint` (histórico, pela Linha viva); nenhuma sprint aberta (planejamento ainda não
-   feito) → ofereça a `sa-planejamento` e não comece (nada na base nem no EWM). Já `iniciado` (retomada) → nada a
-   gravar.
-2. **EWM** — `elm_transicao(id, "assumir")`, com "sim" (já minha → `ja_estava`, nada a fazer; de outra pessoa →
-   `conflito`: pergunte e repita com `forcar: true`). Épico não planejado → antes, no mesmo "sim", o IB do épico vai
-   para a iteração da sprint, só com `iteracao`, e a `[ESP]` que ficou no backlog do EWM (passo `chegou`) move com ele:
-   `elm_atualizar_wi([id], iteracao = a da sprint, dono = quem assume)`, com `estimativa_h` se faltar
-   ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md), topo e §3). Sem o MCP `elm` →
-   `ELM pendente [<chave>]: assumir [ESP] EP-<nn>` no `rascunho.md` da pasta de trabalho.
+   dele na seção Especificação do `sprint-<nn>.md` aberto com Situação `iniciada` (Responsável `—` → quem assume);
+   um commit, `EP-<nn> iniciar`. Já `iniciado` (retomada) → nada a gravar.
+3. **EWM** — `[ESP]` ainda fora da iteração da sprint (a publicação ou o encaixe falhou) → antes, mova-a com o IB do
+   épico ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) topo e §3), com "sim".
+   Depois, a `[ESP]` pela seção Assumir do passo `sa-especificar.especificar.entrada`, com "sim". Pendência sem o
+   MCP `elm`: no `rascunho.md` da pasta de trabalho.
 
 ## Saída
 
-O épico `iniciado` na base e a `[ESP]` assumida (ou `ELM pendente`) → passo `pasta`.
+A DoR conferida, o épico `iniciado` na base e a `[ESP]` assumida (ou `ELM pendente`) → passo `pasta`.
 
 ## Pare se
 
-Nenhuma sprint aberta (planejamento ainda não feito) → ofereça a `sa-planejamento` e não comece (nada na base nem no EWM).
+- A regra comum de assumir parou (a `[ESP]` é de outra pessoa; tarefa fechada sem o "sim") → a frase dela e pare.

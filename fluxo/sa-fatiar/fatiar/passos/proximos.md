@@ -1,5 +1,5 @@
 ---
-{"resumo": "Na mesma resposta da gravação, diz os próximos passos (sa-especificar, EWM, sa-planejamento, sa-desenvolver) e para."}
+{"resumo": "Na mesma resposta da gravação, diz os próximos passos (sa-especificar, EWM, o P.O. ou o SM para alocar) e para."}
 ---
 ## Entrada
 
@@ -13,8 +13,8 @@ Próximos passos, na mesma resposta:
   `sa-especificar EP-<nn>`": ela conclui a `[ESP]`.
 - Com ELM: os IBs das fatias já estão no backlog do EWM; entrar na sprint só muda o "Planejado para"
   ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §3).
-- **`sa-planejamento`** — encaixar as fatias na sprint.
-- Para começar uma fatia já: "vamos trabalhar na FT-031" (`sa-desenvolver`, ou o hub `sa-iniciar`).
+- Para alocar as fatias na sprint (ou começar uma já): "fale com o P.O. ou o SM (agente `sa-produto`)" — o
+  planejamento e o encaixe são deles.
 
 ## Saída
 

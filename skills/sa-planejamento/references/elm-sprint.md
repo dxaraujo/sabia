@@ -13,7 +13,7 @@ coluna `elm`. **Todo trabalho tem pai**: épico → IB → tarefa; o que não ve
 item que saiu da sprint sem começar (`sa-planejamento.durante.encaixe`, ou §9: fatia, `[ESP]`, Sustentação), até ele voltar a uma, e a `[GB]`
 do fluxo `sa-planejamento.inicial`, até a primeira sprint (§2).
 
-**Tarefa que já existe** (o item volta a uma sprint — publicação, encaixe (`sa-planejamento.durante.encaixe`), puxada, `sa-especificar` — com tarefas
+**Tarefa que já existe** (o item volta a uma sprint — publicação, encaixe (`sa-planejamento.durante.encaixe`, a puxada) — com tarefas
 que ficaram no backlog do EWM): **move, nunca recria**. Cada uma numa chamada própria, com o dono e a estimativa do
 papel dela no novo planejamento — `elm_atualizar_wi([id], iteracao, dono, estimativa_h)`: a `[DEV]` com o
 responsável, a `[REV]` com o revisor, a `[VER]` com o verificador, a da Sustentação com quem faz (`—` → sem `dono`:
@@ -21,10 +21,10 @@ a tarefa mantém o que tinha) —; o IB e o épico
 movem só com `iteracao`, na chamada única do §3 (o dono do IB segue o P.O.). **Só nasce o papel que falta**,
 conferido com `elm_listar_wi(pai = IB)` — não pelo prefixo do título, que a pessoa pode ter mantido; a tarefa
 descartada e a que tem pendência de cancelamento aberta não contam (o papel nasce de novo, e a velha segue com a
-pendência). O papel que o novo modo não tem (a fatia HITL que volta AFK, pela senioridade do novo responsável) não
-move: é cancelado, `elm_transicao(<id>, "cancelar")`, no mesmo "sim" — sem o MCP, com `precondicao` ou erro →
+pendência). O papel que o novo modo não tem (a fatia HITL que volta AFK, pela senioridade do novo responsável ou pela troca de
+modo, §7) não move: é cancelado, `elm_transicao(<id>, "cancelar")`, no mesmo "sim" — sem o MCP, com `precondicao` ou erro →
 `ELM pendente [<tipo> <id> cancelar]` onde a fatia guarda as pendências (`elm.md`, Pendências: o rodapé da ficha; na
-puxada, que já gravou `iniciada`, o Histórico do `status.md`) —, e a sincronização não o compara mais (§9).
+primeira atribuição, que já gravou `iniciada`, o Histórico do `status.md`) —, e a sincronização não o compara mais (§9).
 
 ## Estrutura no EWM (padrão)
 
@@ -255,13 +255,21 @@ Fica no estado inicial. Ids: `IB [<id>](<url>) · ATD [<id>](<url>)` na coluna `
 filha) é a dele: move em vez de nascer (topo). Concluir o item é concluir a tarefa **e** o IB dele, na mesma
 confirmação (`sa-atender`, `sa-executar`).
 
-## 7. Troca AFK → HITL (só pelo fluxo `sa-planejamento.troca-modo`)
+## 7. Troca de modo (só pelo fluxo `sa-planejamento.troca-modo`, pelo P.O. ou pelo SM)
 
-Cria a `[REV]` e a `[VER]` como no §4 (mesmo pai da `[DEV]`), com o revisor e o verificador da decisão — só o papel
-que falta: a que já existe move, e a que tem pendência de cancelamento não conta (topo). A `[DEV]` não muda. HITL →
-AFK não existe.
+A `[DEV]` não muda; tudo no mesmo "sim" da troca.
+
+- **AFK → HITL** (qualquer fase viva): cria a `[REV]` e a `[VER]` como no §4 (mesmo pai da `[DEV]`), com o revisor e
+  o verificador da decisão — só o papel que falta: a que já existe move, e a que tem pendência de cancelamento não
+  conta (topo). PR aberto (`aguardando-aprovacao-pr`) → cancela a `[APR] FT-<nnn> Aprovar PR` existente.
+- **HITL → AFK** (só sem PR: campo PR do `status.md` = `—`): cancela a `[REV]` e a `[VER]` existentes, `elm_transicao(<id>, "cancelar")`; sem o
+  MCP, com `precondicao` ou erro → `ELM pendente [<REV|VER> FT-<nnn> cancelar]` no rodapé da ficha, e a
+  sincronização não as compara mais (§9). A `[APR] Aprovar plano`, se houver, fica: o GATE do plano vale nos dois
+  modos.
 
 ## 8. `[APR]` no gate (chamada pela `sa-plano`, pelo passo `sa-codificar.codificar.pr` ou pela `sa-orquestrar`)
+
+A `[APR] Aprovar PR` é só do AFK: na troca para HITL com o PR aberto, ela é cancelada (§7).
 
 `elm_listar_wi(pai = IB, titulo_prefixo "[APR] FT-<nnn> Aprovar <plano|PR>")` → já existe: é ela (volta a ser
 aprovada depois de ajustes). Senão `elm_criar_wi(tipo tarefa, "[APR] FT-<nnn> Aprovar <plano|PR>", pai = IB, dono = o
@@ -317,7 +325,7 @@ comparação: o resultado é sempre a tabela do passo 4 ou a linha do passo 6.
    - a **publicação pendente** — a linha viva (a com `saiu da sprint` é histórico) com Tarefa ELM `pendente` (ou sem
      id nenhum, numa linha não iniciada: a sessão parou entre gravar o arquivo e publicar), ou cujo item tem `elm`
      `pendente` ou id sem link, e sem os ids no `status.md` —, que vira a linha `EWM: publicar (§1–4)`, nunca "sai da
-     sprint"; a puxada `iniciada` tem Tarefa ELM `—` de propósito: os ids dela estão no `status.md`;
+     sprint";
    - o **item do backlog sem IB** — fora da sprint, não terminal, com `elm` `—`, `pendente` ou id sem link (o
      registrado antes da regra, sem o MCP ou com falha) —, que vira a linha `EWM: criar no backlog (§0, passo 4)`,
      agrupada no item como as outras;
@@ -486,14 +494,14 @@ linha), nunca `arquivo:`.
 Verificador da linha nem o Revisor (salvo `revisor único`) e o modo não muda pela
 senioridade (`sa-planejamento.sprint.modo`) dele — Júnior só em fatia HITL; Sênior em fatia AFK, ou HITL com o
 motivo já na `obs`; Pleno quando os critérios da `sa-fatiar` dão o modo atual, com a confirmação do P.O. na linha;
-fora disso, o dono volta (trocar o responsável com troca de modo é do P.O.). Fatia `iniciada` em diante: o dono da
+fora disso, o dono volta (trocar o responsável com troca de modo é do P.O. ou do SM). Fatia `iniciada` em diante: o dono da
 `[DEV]` é **quem implementa** — só o dono lança horas, e outro Dev pode retomar a fatia (trocar o responsável é do
 planejamento, e esta sincronização é dele). A referência é o Responsável da **linha viva** da sprint (a sem `saiu da
-sprint`): o arquivo recebe o dono (esse Responsável e o `responsavel` do backlog, que depois de uma puxada podem
+sprint`): o arquivo recebe o dono (esse Responsável e o `responsavel` do backlog, que depois da primeira atribuição podem
 diferir) se ele é Dev ativo, não é o Verificador nem o Revisor da linha (salvo `revisor único`) e não é Júnior numa
-fatia AFK (aí é o fluxo `sa-planejamento.troca-modo`, com o P.O.); senão, a `[DEV]` volta para o
+fatia AFK (aí é o fluxo `sa-planejamento.troca-modo`, com o P.O. ou o SM); senão, a `[DEV]` volta para o
 Responsável da linha viva, e o `responsavel` do backlog passa a ser o mesmo. Dono igual ao Responsável da linha viva e
-diferente do `responsavel` do backlog (a puxada de quem não era o responsável) → `arquivo: responsavel = <dono>`, só
+diferente do `responsavel` do backlog (a primeira atribuição de quem não era o responsável) → `arquivo: responsavel = <dono>`, só
 no backlog: o valor velho bloquearia a pessoa como verificadora ou revisora. O Responsável do `status.md` não serve de
 referência: no GATE do plano ele é o aprovador.
 
@@ -503,8 +511,8 @@ destas linhas grava a situação como a `sa-desenvolver` grava, e é a sincroniz
 | Arquivo | Git | Solução proposta | Outras |
 |---|---|---|---|
 | antes de `pronta` | PR mergeado na base | arquivo: `pronta (merge <sha> por fora do Sabiá)`, como no fluxo `sa-desenvolver.encerrar` — o `status.md` da base (criado se faltar) com `Fase: pronta` e, no Histórico, `merge do PR <link> por fora do Sabiá (sha <sha>)`, Lições candidatas `—` e Créditos `—` (ninguém fechou a sessão; a virada aponta); `pronta` no backlog e na linha da sprint; as partes no EWM vão nas linhas das tarefas, logo abaixo (EWM: concluir a `[DEV]`, com as horas já lançadas; EWM: cancelar a `[APR]`, a `[REV]` e a `[VER]` abertas), e `<n>: manter` nesta linha mantém também as delas; depois, a `sa-consolidar` leva a `concluida` | manter: o Dev registra pelo fluxo `sa-desenvolver.encerrar` |
-| `planejada` · `iniciada` (ou `elegivel`: a puxada) | PR aberto, e o `status.md` antes da fase do PR ou sem ele | arquivo: `iniciada`, se ainda não é (como no passo `sa-desenvolver.desenvolver.iniciar`; a `elegivel`, com a linha `puxada` na sprint), e o `status.md` na fase do PR — `pr-aberto` no HITL, `aguardando-aprovacao-pr` no AFK —, criado se faltar · no AFK, sem a `[APR] FT-<nnn> Aprovar PR` → EWM: criá-la pelo §8 (dono = o Dev Sênior e estimativa que a pessoa der na linha; sem eles, manter), com o id no campo ELM do `status.md` · EWM: na `elegivel` (a puxada), o IB (ou a origem) e as tarefas que já existem → a iteração da sprint, com o dono e a estimativa do papel (como no passo `sa-desenvolver.desenvolver.iniciar`, ao assumir a `[DEV]`) | — |
-| `planejada` (ou `elegivel`) | branch com commits, sem PR; ou `status.md` numa branch | arquivo: `iniciada (status.md na branch)`, como no passo `sa-desenvolver.desenvolver.iniciar` — sem `status.md`, ele nasce na branch com `Fase: implementando` · EWM: na `elegivel` (a puxada), o IB (ou a origem) e as tarefas que já existem → a iteração da sprint, com o dono e a estimativa do papel (como no passo `sa-desenvolver.desenvolver.iniciar`, ao assumir a `[DEV]`) | — |
+| `planejada` · `iniciada` (ou `elegivel`: começada por fora) | PR aberto, e o `status.md` antes da fase do PR ou sem ele | arquivo: `iniciada`, se ainda não é (como no passo `sa-desenvolver.desenvolver.iniciar`; a `elegivel`, com a linha na sprint e a Observação `encaixe: começada por fora (<P.O.>, <data>)`), e o `status.md` na fase do PR — `pr-aberto` no HITL, `aguardando-aprovacao-pr` no AFK —, criado se faltar · no AFK, sem a `[APR] FT-<nnn> Aprovar PR` → EWM: criá-la pelo §8 (dono = o Dev Sênior e estimativa que a pessoa der na linha; sem eles, manter), com o id no campo ELM do `status.md` · EWM: na `elegivel` (começada por fora), o IB (ou a origem) e as tarefas que já existem → a iteração da sprint, com o dono e a estimativa do papel (como no passo `sa-desenvolver.desenvolver.iniciar`, ao assumir a `[DEV]`) | — |
+| `planejada` (ou `elegivel`) | branch com commits, sem PR; ou `status.md` numa branch | arquivo: `iniciada (status.md na branch)`, como no passo `sa-desenvolver.desenvolver.iniciar` — sem `status.md`, ele nasce na branch com `Fase: implementando` · EWM: na `elegivel` (começada por fora), o IB (ou a origem) e as tarefas que já existem → a iteração da sprint, com o dono e a estimativa do papel (como no passo `sa-desenvolver.desenvolver.iniciar`, ao assumir a `[DEV]`) | — |
 | não terminal | PR fechado sem merge | manter: o Dev diz — retomar, ou cancelar pela `sa-fatiar` | — |
 | `sprint-<nn>.md` × `backlog.md` diferentes (a situação do item) | — | arquivo: a mais adiantada pelas evidências (git, EWM, `status.md`), nos dois; sem evidência, manter, com as duas versões na linha | arquivo: a outra |
 

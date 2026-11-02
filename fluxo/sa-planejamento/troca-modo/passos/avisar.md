@@ -1,5 +1,5 @@
 ---
-{"resumo": "Avisa o Dev: ele retoma pela sa-iniciar → sa-desenvolver, que sincroniza o status.md com a troca."}
+{"resumo": "Avisa o Dev pela dona da fase gravada (sem passagem): sa-plano, sa-codificar ou sa-desenvolver; no HITL novo, também o revisor e o verificador."}
 ---
 ## Entrada
 
@@ -7,7 +7,16 @@ A troca gravada (passo `gravar`).
 
 ## Faça
 
-Avise o Dev: ele retoma pela `sa-iniciar` → `sa-desenvolver`, que sincroniza o `status.md` com a troca.
+Diga ao Dev por onde ele retoma, pela fase gravada no `status.md`:
+
+- fatia `planejada`, ou `iniciada` sem `status.md` → "o Dev começa pela `sa-desenvolver FT-<nnn>`";
+- `pesquisando`, `planejando`, `bloqueada (de: planejando)` → "o Dev retoma pela `sa-plano FT-<nnn>`" (o GATE no
+  modo gravado);
+- `aguardando-aprovacao-plano` → "o aprovador segue pela `sa-revisar` (`[APR] Aprovar plano`)";
+- `implementando`, `revisando`, `verificando`, `verificada`, `aguardando-aprovacao-pr`, `retrabalho` → "o Dev retoma
+  pela `sa-codificar FT-<nnn>`".
+
+No HITL novo, avise também o revisor e o verificador: a `[REV]` e a `[VER]` são deles quando o PR abrir.
 
 ## Saída
 

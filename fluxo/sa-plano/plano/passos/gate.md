@@ -1,28 +1,46 @@
 ---
-{"resumo": "AFK com risco: sugere HITL. GATE do plano pela senioridade de quem implementa: com GATE, [APR] para um Dev Sênior; sem GATE, fase implementando. Quem aprova é a sa-revisar."}
+{"resumo": "AFK com risco: grava bloqueada aguardando troca de modo e orienta o P.O. ou o SM; volta da troca pela base. GATE do plano pela senioridade de quem implementa: com GATE, [APR] para um Dev Sênior; sem GATE, fase implementando. Quem aprova é a sa-revisar."}
 ---
 ## Entrada
 
-`ANALISE: OK` (passo `analise`). Ou retomando em `aguardando-aprovacao-plano` sem `[APR]`, ou de volta da troca de
-modo, já no HITL.
+`ANALISE: OK` (passo `analise`). Ou, pelo passo `entrada`: retomando em `aguardando-aprovacao-plano` sem `[APR]`, ou
+em `bloqueada (de: planejando)` com `aguardando troca de modo`.
 
 ## Faça
 
-### Fatia AFK com risco → sugerir HITL
+O **Modo** é o da base (regra A base prevalece do padrão `sa-desenvolver/status.md`): diverge do `status.md` →
+sincronize como ela manda, num commit, antes do GATE.
+
+### Volta da troca de modo
+
+`bloqueada (de: planejando)` com `aguardando troca de modo`: leia a base sem trocar de branch — `git fetch` e
+`git show origin/<base>:<produto>/backlog.md` e `…/sprints/<pai>/sprint-<nn>.md`. A troca vale registrada lá pelo P.O.
+ou pelo SM (`sa-planejamento.troca-modo`), na Observação `modo: …` da linha da fatia:
+- **trocou** → mostre o modo novo, com o revisor e o verificador das colunas Revisor e Verificador da linha da sprint
+  (o Histórico não é a fonte), e, com "sim", sincronize o `status.md` pela regra A base prevalece (`Modo`, os ids da
+  `[REV]` e da `[VER]` da coluna "Tarefa ELM", `Bloqueio: —`, fase `planejando`); commit e push. A `[DEV]`, pela
+  seção Assumir do passo `sa-plano.plano.entrada`. Siga para o GATE abaixo, no modo novo;
+- **manteve** (`modo: AFK mantido`) → `Bloqueio: —`, fase `planejando`, commit, e o GATE abaixo no AFK;
+- **nada registrado** → "a troca de modo espera o P.O. ou o SM (agente `sa-produto`)" e pare.
+
+Na troca, o Dev não grava na base nem cria ou cancela tarefa.
+
+### Fatia AFK com risco
 
 `Modo: AFK` e o plano mostra risco — regra de negócio sensível, muitos cenários, integração externa, mudança de
-dado (diga qual) → **sugira** ao Dev trocar para HITL. A troca é do P.O. (ou do SM), na base; aqui só se para.
-**HITL → AFK nunca:** nem sugira nem aceite.
+dado (diga qual) → mostre o risco e **pergunte** se o Dev pede a troca para HITL. A troca de modo é só do P.O. ou do
+SM, na base; aqui só se para.
 
-- Dev não aceita → o GATE abaixo, no AFK.
-- Dev aceita → `fase: bloqueada (de: planejando)`, Bloqueio `aguardando troca para HITL` · motivo: `<risco>`, linha
+- Não pede → o GATE abaixo, no AFK.
+- Pede → `fase: bloqueada (de: planejando)`, Bloqueio `aguardando troca de modo` · motivo: `<risco>`, linha
   no Histórico e os créditos da sessão ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4); commit com os artefatos do plano e o `status.md` (`registrar plano`) → push → conferir no remoto
   (como na Entrega do passo `sa-codificar.codificar.pr`) → horas da sessão na
   `[DEV]` (`elm_horas(<id>)` → desconte → `elm_lancar_horas(<id>, <h>)`, com "sim"; sem o MCP `elm` →
-  `ELM pendente [DEV FT-<nnn> horas]`) — ela fica
-  **interrompida**, sem conclusão → avise o P.O. (troca pela `sa-planejamento.troca-modo`). Não troque
-  de branch nem grave na base. A sessão pode ser encerrada: feita a troca, o Dev retoma pela `sa-iniciar` →
-  `sa-desenvolver`, que sincroniza o `status.md` e devolve a fatia a este passo `gate`, já no HITL.
+  `ELM pendente [DEV FT-<nnn> horas]`) — ela fica **interrompida**, sem conclusão → "A troca de modo é do P.O. ou do
+  SM: fale com eles (agente `sa-produto`, `sa-planejamento.troca-modo`)" e pare. Não troque de branch nem grave na
+  base. Feita a troca, o Dev retoma pela `sa-plano FT-<nnn>` (Volta da troca de modo, acima).
+
+O Dev pede a troca de uma fatia HITL para AFK → nada gravado aqui: a mesma frase, e o GATE segue no modo registrado.
 
 ### GATE do plano — pela senioridade de quem implementa
 
@@ -70,10 +88,13 @@ nunca neste fluxo nem na sessão de quem implementa.
 ## Saída
 
 Com GATE → `fase: aguardando-aprovacao-plano`, a `[APR]` e o aprovador avisado. Sem GATE → `fase: implementando`;
-próximo: `sa-codificar`. Dev aceitou a troca → `fase: bloqueada (de: planejando)` e o P.O. avisado.
+próximo: `sa-codificar`. AFK com risco e o Dev pediu a troca → `fase: bloqueada (de: planejando)`, `aguardando troca
+de modo`, e o Dev orientado a falar com o P.O. ou o SM.
 
 ## Pare se
 
-- Dev aceita a troca para HITL → a sessão pode ser encerrada (acima); não troque de branch nem grave na base.
+- O Dev pediu a troca de modo → "fale com o P.O. ou o SM (agente `sa-produto`)" e pare; a sessão pode ser encerrada
+  (acima); não troque de branch nem grave na base.
+- Volta da troca sem nada registrado na base → a mesma frase e pare.
 - Com GATE: avisado o aprovador, pare — a aprovação nunca é nesta sessão.
 - Sem GATE: diga a próxima (`sa-codificar`) e pare.

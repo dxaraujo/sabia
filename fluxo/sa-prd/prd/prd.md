@@ -6,9 +6,9 @@
    {"id": "entender", "chama": "sa-pesquisar.pesquisar", "saidas": {"sem registro na triagem": "→ sa-triar.triar", "sem a pasta de trabalho": "→ sa-especificar.especificar"}},
    {"id": "entrevistar", "chama": "sa-entrevistar.entrevistar"},
    {"id": "similares"},
-   {"id": "escrever", "desvio": true},
+   {"id": "escrever", "desvio": true, "papel_1x": ["especificador"]},
    {"id": "revisao", "chama": "sa-revisar.revisar", "saidas": {"achado que é decisão de negócio": "entrevistar"}},
-   {"id": "gate", "saidas": {"decisão em aberto que muda comportamento": "entrevistar", "primeiro GATE aprovado": "→ sa-especificar.especificar", "mudança depois de aprovado, aprovada": "→ sa-fatiar.refinamento"}}
+   {"id": "gate", "saidas": {"decisão em aberto que muda comportamento": "entrevistar", "primeiro GATE aprovado": "→ sa-especificar.especificar", "mudança depois de aprovado, aprovada: volta a quem chamou, ou o P.O. retoma pela sa-consolidar": "fim"}}
  ]}
 ---
 # PRD — O quê e por quê (épico)

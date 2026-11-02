@@ -22,6 +22,22 @@ export function partes(texto) {
 export const slug = (titulo) => titulo.trim().toLowerCase().replace(/`/g, "").replace(/[^\p{L}\p{N} _-]/gu, "").replace(/ /g, "-");
 const ancoras = (texto) => new Set([...texto.matchAll(/^#+ (.+)$/gm)].map((m) => slug(m[1])));
 
+export const VIZINHOS = "## Entrada: vizinhos";
+export const SPRINT = ["exige", "nao"];
+
+/** As linhas "- <estado> → <destino>" da seção Entrada: vizinhos do corpo do mestre (null sem a seção). */
+function vizinhos(corpo, pulo) {
+  const ls = corpo.split("\n"), i = ls.findIndex((l) => l.trim() === VIZINHOS);
+  if (i < 0) return null;
+  const out = [];
+  for (let j = i + 1; j < ls.length && !/^#{1,6} /.test(ls[j]); j++) {
+    if (!ls[j].trim()) continue;
+    const t = ls[j].trim(), k = t.lastIndexOf(" → ");
+    out.push({ n: pulo + j + 1, ...(t.startsWith("- ") && k > 2 ? { estado: t.slice(2, k), destino: t.slice(k + 3) } : {}) });
+  }
+  return out;
+}
+
 /** Lê a fonte inteira: fluxos, passos, regras, padrões, travas e papéis. */
 export function carregar(fw) {
   const m = { fw, fluxos: {}, regras: {}, padroes: {}, travas: {}, subag: {}, skillsAgente: {} };
@@ -42,10 +58,11 @@ export function carregar(fw) {
       if (!fs.existsSync(mestre)) continue;
       const p = partes(ler(mestre));
       const passos = (p.dados?.passos || []).map((x) => {
-        const arq = path.join(ds, f, "passos", `${x.id}.md`);
+        // passo compartilhado ({"de": "entrada"}): o corpo vem de fluxo/<de>.md, não de passos/
+        const arq = x.de ? path.join(dirFluxo, `${x.de}.md`) : path.join(ds, f, "passos", `${x.id}.md`);
         return { ...x, arq, ...(fs.existsSync(arq) ? partes(ler(arq)) : { dados: null, corpo: "", pulo: 0 }) };
       });
-      m.fluxos[`${s}.${f}`] = { skill: s, fluxo: f, arq: mestre, d: p.dados || {}, corpo: p.corpo, pulo: p.pulo, passos };
+      m.fluxos[`${s}.${f}`] = { skill: s, fluxo: f, arq: mestre, d: p.dados || {}, corpo: p.corpo, pulo: p.pulo, passos, vizinhos: vizinhos(p.corpo, p.pulo) };
     }
   }
   const dirPadrao = path.join(fw, "padrao");
@@ -82,6 +99,7 @@ export function validar(m) {
   const e = (f, n, msg) => erros.push(`${rel(f)}:${n}: ${msg}`);
   const porSkill = {};
   for (const fl of Object.values(m.fluxos)) (porSkill[fl.skill] ||= []).push(fl);
+  const papeis1x = {};  // papel do toolkit 1.x (passo.papel) → o passo com desvio dele: um só
 
   for (const [q, fl] of Object.entries(m.fluxos)) {
     const { d } = fl;
@@ -93,18 +111,46 @@ export function validar(m) {
       ? mds(path.join(path.dirname(fl.arq), "passos")).map((f) => f.slice(0, -3)).filter((x) => !ids.includes(x)) : [];
     for (const o of orfaos) e(fl.arq, 2, `passo ${o} órfão (tem arquivo, não está no mestre)`);
     for (const t of d.travas_gerais || []) if (!m.travas[t]) e(fl.arq, 2, `trava ${t} fora do catálogo`);
+    if (fl.passos.some((x) => x.de) && !fl.vizinhos?.length)
+      e(fl.arq, 2, `passo entrada sem a seção "${VIZINHOS}" no corpo do mestre (uma linha "- <estado> → <dona>" por vizinho)`);
+    for (const v of fl.vizinhos || []) {
+      const alvos = v.destino ? [...v.destino.matchAll(ID)].map((r) => r[1]) : [];
+      if (!alvos.length && !v.destino?.endsWith("■")) { e(fl.arq, v.n, 'vizinho fora do formato "- <estado> → `sa-x.f[.p]`" ou "- <estado> → <frase> ■"'); continue; }
+      for (const q2 of alvos) {
+        const r = resolverId(m, q2);
+        if (!r) continue;  // o id inexistente já sai na varredura do texto
+        if (r.fl === fl) e(fl.arq, v.n, `vizinho → ${q2}: é deste fluxo → declare como saída do passo entrada ("saidas" no mestre)`);
+        else if (!m.subag[r.fl.d.dono]) e(fl.arq, v.n, `vizinho → ${q2}: o dono ${r.fl.d.dono} não é agente do papeis.json`);
+        else if (r.passo && r.fl.d.dono !== d.dono) e(fl.arq, v.n, `vizinho → ${q2}: passo de outro agente (${r.fl.d.dono}) → use o fluxo (${r.fl.skill}.${r.fl.fluxo})`);
+      }
+    }
     for (const x of fl.passos) {
+      if (x.id === "grafo") e(fl.arq, 2, "passo grafo: id reservado (o compilador gera references/<fluxo>/grafo.md)");
+      if (x.id === "entrada" && !x.de) e(fl.arq, 2, 'passo entrada: id reservado ao passo compartilhado → {"id": "entrada", "de": "entrada", "sprint": "exige|nao"}');
+      if (x.de) {
+        if (!SPRINT.includes(x.sprint)) e(fl.arq, 2, `passo ${x.id}: sprint "${x.sprint ?? ""}" (use ${SPRINT.join(" ou ")})`);
+        if (fs.existsSync(path.join(path.dirname(fl.arq), "passos", `${x.id}.md`))) e(fl.arq, 2, `passo ${x.id}: vem de fluxo/${x.de}.md; apague passos/${x.id}.md`);
+        if (!fs.existsSync(x.arq)) { e(fl.arq, 2, `passo ${x.id}: de "${x.de}" sem fluxo/${x.de}.md`); continue; }
+      }
       if (!x.dados) { e(x.arq, 1, `passo ${x.id} sem arquivo ou sem front-matter`); continue; }
       if (!x.dados.resumo) e(x.arq, 2, "passo sem resumo");
       for (const sec of ["## Entrada", "## Faça", "## Saída", "## Pare se"]) if (!x.corpo.includes(sec)) e(x.arq, 1, `falta ${sec}`);
       for (const t of x.travas || []) if (!m.travas[t]) e(fl.arq, 2, `passo ${x.id}: trava ${t} fora do catálogo`);
+      for (const p of x.papel_1x || []) {
+        if (!x.desvio) e(fl.arq, 2, `passo ${x.id}: papel_1x sem "desvio": true`);
+        else if (papeis1x[p]) e(fl.arq, 2, `passo ${x.id}: papel_1x ${p} já é de ${papeis1x[p]}`);
+        papeis1x[p] ||= `${q}.${x.id}`;
+      }
       for (const c of [].concat(x.chama || [])) {
         const r = resolverId(m, c);
         if (!r) e(fl.arq, 2, `passo ${x.id}: chama ${c} inexistente`);
         else if (!modoChamada(m, d.dono, r.fl)) e(fl.arq, 2, `passo ${x.id}: chama ${c} (dono ${r.fl.d.dono}), mas ${d.dono} não tem a skill nem esse subagente → use passagem (→)`);
       }
       for (const [cond, dest] of Object.entries(x.saidas || {})) {
-        if (dest === "fim" || ids.includes(dest) || (dest.startsWith("→ ") && resolverId(m, dest.slice(2).trim()))) continue;
+        const r = dest.startsWith("→ ") ? resolverId(m, dest.slice(2).trim()) : null;
+        if (r?.passo && r.fl.d.dono !== d.dono)
+          e(fl.arq, 2, `passo ${x.id}: saída "${cond}" passa ao passo ${dest.slice(2).trim()}, de outro agente (${r.fl.d.dono}) → use o fluxo (→ ${r.fl.skill}.${r.fl.fluxo})`);
+        if (dest === "fim" || ids.includes(dest) || r) continue;
         e(fl.arq, 2, `passo ${x.id}: saída "${cond}" → "${dest}" (use id do fluxo, fim ou "→ skill.fluxo[.passo]" existente)`);
       }
     }
@@ -161,7 +207,7 @@ export function validar(m) {
       if (/`sa-[a-z]+\/[a-z-]+\/passos\/|`sa-[a-z]+\/regras\.md`/.test(linha)) e(t.arq, n, "caminho de fluxo/ em code-span → id do passo");
     });
   }
-  return erros;
+  return [...new Set(erros)];  // o passo compartilhado repete os mesmos erros em cada fluxo
 }
 
 // ---------------------------------------------------------------- reescrita
@@ -232,6 +278,43 @@ const destinoId = (base, r) => (r.passo ? `${base}/${r.fl.skill}/references/${r.
 const cel = (t) => String(t).replace(/\|/g, "\\|").replace(/\n/g, " ");
 const italico = (resumo) => (resumo ? `_${resumo}_\n\n` : "");
 
+export const LEGENDA = "↓ segue · ↑ volta · ↺ repete · ⇄ chama · ⇒ passa a (o fluxo termina) · ↪ vizinhos da entrada (diga a dona e pare) · ■ fim · 🔒 trava · ⇢ passo com desvio de toolkit";
+
+/**
+ * O grafo ASCII do fluxo `fl` (de carregar): uma caixa por passo de `passos` (o rota passa os resolvidos no projeto) e, à
+ * direita, chama, travas e saídas. `notas(x)` acrescenta linhas no topo das anotações (origem, desvio ligado).
+ */
+export function grafoAscii(fl, passos = fl.passos, { notas = () => [] } = {}) {
+  const ids = passos.map((x) => x.id), out = [];
+  const rot = (x, i) => `${i + 1} ${x.id}${x.sprint ? ` [${x.sprint}]` : ""}${x.desvio ? " ⇢" : ""}`;
+  // 26 colunas cabem os ids do Sabiá; um id longo inserido pelo projeto alarga a caixa (par, por causa do ┬ central)
+  const W = 2 * Math.ceil(Math.max(26, ...passos.map((x, i) => rot(x, i).length + 4)) / 2);
+  const cond = (c) => (c.length > 60 ? c.slice(0, 57) + "…" : c);
+  out.push(`${fl.skill}.${fl.fluxo}   dono ${fl.d.dono}   travas ${(fl.d.travas_gerais || []).join(", ") || "—"}`, "");
+  passos.forEach((x, i) => {
+    const lado = [...notas(x)];
+    // os vizinhos numa linha só: a entrada diz a dona e para, não é passagem de trabalho (⇒)
+    const viz = x.de ? (fl.vizinhos || []).filter((v) => v.destino).map((v) => [...v.destino.matchAll(ID)][0]?.[1] || `■ ${cond(v.estado.replace(/`/g, ""))}`) : [];
+    if (viz.length) lado.push(`↪ vizinhos (diga e pare): ${[...new Set(viz)].join(" · ")}`);
+    if (x.chama) lado.push(`⇄ chama ${[].concat(x.chama).join(", ")}`);
+    if (x.travas?.length) lado.push(`🔒 ${x.travas.join(", ")}`);
+    for (const [c, dest] of Object.entries(x.saidas || {})) {
+      const j = ids.indexOf(dest);
+      const seta = dest.startsWith("→ ") ? `⇒ passa a ${dest.slice(2).trim()}` : dest === "fim" ? "■ fim" : dest === x.id ? `↺ ${dest}` : j >= 0 && j < i ? `↑ volta a ${dest}` : `↓ ${dest}`;
+      lado.push(`${seta}  (${cond(c)})`);
+    }
+    const ultimo = i === passos.length - 1;
+    out.push(`  ┌${"─".repeat(W - 2)}┐`);
+    out.push(`  │ ${rot(x, i).padEnd(W - 4)} │${lado[0] ? `──▶ ${lado[0]}` : ""}`);
+    out.push((ultimo ? `  └${"─".repeat(W - 2)}┘` : `  └${"─".repeat(W / 2 - 2)}┬${"─".repeat(W / 2 - 1)}┘`) + (lado[1] ? `    ${lado[1]}` : ""));
+    for (const l of lado.slice(2)) out.push(`${" ".repeat(W + 6)}${l}`);
+    if (!ultimo) out.push(`  ${" ".repeat(W / 2 - 1)}▼`);
+  });
+  return out.join("\n");
+}
+
+const grafoMd = (fl) => [`# Grafo de ${fl.skill}.${fl.fluxo}`, "", "```", grafoAscii(fl), "```", "", LEGENDA, ""].join("\n");
+
 const NO_PROJETO = `## No projeto
 
 Antes de ler o arquivo de um passo (\`…/skills/<skill>/references/<fluxo>/<passo>.md\`, de qualquer skill), tente abrir
@@ -281,6 +364,7 @@ function skillMd(m, s, fmYaml, h1, ctx) {
       }).join("<br>") || "—";
       out.push(`| ${i + 1} | \`${x.id}\`${x.desvio ? " ⇢" : ""} | [${x.id}.md](${arq}) | ${cel(chama)} | ${cel((x.travas || []).join(", ") || "—")} | ${cel(saidas)} |`);
     });
+    out.push("", `Grafo: [grafo.md](${base}/${s}/references/${fl.fluxo}/grafo.md)`);
     out.push("", "Ao começar um passo, leia o arquivo dele (não os dos outros passos) e o que ele mandar ler. Sem Saídas, segue para o",
       `próximo da lista. Travas do fluxo: ${(fl.d.travas_gerais || []).map((t) => `\`${t}\``).join(", ") || "—"}.`, "");
   }
@@ -353,11 +437,13 @@ export function compilar(fw, staging, { base, raiz = false, versao = null } = {}
     if (comFluxo.has(s)) {
       const h1 = (fonte.slice(fmYaml.length).match(/^# .+$/m) || [`# ${s}`])[0];
       fs.writeFileSync(path.join(out, "SKILL.md"), skillMd(m, s, comVersao(fmYaml, versao), h1, ctx));
-      for (const fl of fluxosDa(m, s))
-        for (const x of fl.passos) {
-          fs.mkdirSync(path.join(out, "references", fl.fluxo), { recursive: true });
-          fs.writeFileSync(path.join(out, "references", fl.fluxo, `${x.id}.md`), italico(x.dados.resumo) + reescrever(x.corpo, x.arq, ctx).replace(/^\n+/, ""));
-        }
+      for (const fl of fluxosDa(m, s)) {
+        fs.mkdirSync(path.join(out, "references", fl.fluxo), { recursive: true });
+        fs.writeFileSync(path.join(out, "references", fl.fluxo, "grafo.md"), grafoMd(fl));
+        const linhaSprint = (x) => (x.de ? `Sprint deste fluxo: \`${x.sprint}\`. Vizinhos: a seção Entrada: vizinhos do [Fluxo ${fl.fluxo}](${base}/${s}/SKILL.md#${slug(`Fluxo ${fl.fluxo}`)}).\n\n` : "");
+        for (const x of fl.passos)
+          fs.writeFileSync(path.join(out, "references", fl.fluxo, `${x.id}.md`), italico(x.dados.resumo) + linhaSprint(x) + reescrever(x.corpo, x.arq, ctx).replace(/^\n+/, ""));
+      }
     } else if (fmYaml) {
       fs.writeFileSync(path.join(out, "SKILL.md"), comVersao(fmYaml, versao) + reescrever(fonte.slice(fmYaml.length), path.join(dir, "SKILL.md"), ctx));
     }

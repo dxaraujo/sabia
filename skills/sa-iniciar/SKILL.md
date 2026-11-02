@@ -1,6 +1,6 @@
 ---
 name: sa-iniciar
-description: "Start hub of the Sabiá flow — receives an already registered work item (FT-031, EP-03, AT-012, IM-003, a DF or IB the backlog knows, a [DEV] [REV] [APR] [VER] [ESP] [GB] [ATD] [IMPL] [BD] [INF] [OPE] [EXT] task) or \"minha próxima tarefa\", figures out its type and says which role skill to use: sa-desenvolver (Dev), sa-revisar (Revisor and [APR]), sa-verificar (QA), sa-especificar (Especificador), sa-atender (Atendimento), sa-executar (the other Sustentação categories), sa-codificar (verified AFK slice (fatia): open the PR), sa-consolidar (slice in pronta: PR merged) or sa-planejamento (mode switch, sprint); a new request or an item outside the backlog goes to sa-triar. Use when the user says \"iniciar\", \"começar\", \"pegar a task 123\", \"vamos trabalhar na FT-031\", \"iniciar o AT-012\", \"minha próxima tarefa\", \"o que eu pego agora?\"."
+description: "Start hub of the Sabiá flow — receives an already registered work item (FT-031, EP-03, AT-012, IM-003, a DF or IB the backlog knows, a [DEV] [REV] [APR] [VER] [ESP] [GB] [ATD] [IMPL] [BD] [INF] [OPE] [EXT] task) or \"minha próxima tarefa\", figures out its type and says which role skill to use: sa-desenvolver (Dev), sa-revisar (Revisor and [APR]), sa-verificar (QA), sa-especificar (Especificador), sa-atender (Atendimento), sa-executar (the other Sustentação categories), sa-plano or sa-codificar (by the slice (fatia) phase), sa-consolidar (slice in pronta: PR merged) or sa-planejamento (mode switch, sprint); a new request or an item outside the backlog goes to sa-triar. Use when the user says \"iniciar\", \"começar\", \"pegar a task 123\", \"vamos trabalhar na FT-031\", \"iniciar o AT-012\", \"minha próxima tarefa\", \"o que eu pego agora?\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
@@ -23,7 +23,8 @@ A base prevalece do padrão [`sa-desenvolver/status.md`](~/.sabia/framework/padr
 da base (ids locais e as colunas `origem` e `elm`, inclusive as `### <Categoria>` da `## Sustentação`); (3) o EWM
 (`elm_ler_wi`), se a sessão tem o MCP `elm` (o título da tarefa traz o tipo: `[DEV] FT-031 …`); (4) perguntar à
 pessoa. Id que não está em (1) nem (2) não está registrado. Fatia `concluida`, `dividida` ou `cancelada` no
-`backlog.md` → mostre a situação (e a `obs`) e pare: o `status.md` de uma branch não vale.
+`backlog.md` → mostre a situação (e a `obs`) e pare: o `status.md` de uma branch não vale. Exceção: o `EP-nn`
+`concluido` com a linha da Especificação ainda `iniciada` no `sprint-<nn>.md` → Passo 2.
 
 **Número do EWM** (DF, IB): quem decide é o tipo do id local da linha que o tem na coluna `elm` (`FT-`, `EP-`, `AT-`,
 `IM-`…), não o tipo do work item. O IB `Sustentação`, `Manutenção` ou de uma categoria não é item de trabalho:
@@ -43,18 +44,27 @@ diga o que ele é e peça o item.
 | tarefa `[VER]` | **`sa-verificar`** | Verificador (QA) / `sa-verificador` |
 | `AT-nnn`, tarefa `[ATD]` | **`sa-atender`** | quem atende / `sa-produto` |
 | `IM-`, `BD-`, `IN-`, `OP-`, `EX-nnn` (as demais categorias da tabela **Sustentação** do `sabia.md`), tarefa `[IMPL]` `[BD]` `[INF]` `[OPE]` `[EXT]` | **`sa-executar`** | quem faz / `sa-produto` |
+| `EP-nn` `concluido` com a linha da Especificação `iniciada` | **`sa-especificar`** (retoma os fechamentos) | Especificador / `sa-especificador` |
+| `EP-nn` `fatiado` com a Especificação `concluida` (dividir, juntar ou cancelar fatias) | **`sa-fatiar.refinamento`** | Especificador / `sa-especificador` |
 | fatia `iniciada` no `backlog.md` sem `status.md` em nenhuma branch (a sessão parou entre o registro e a branch) | **`sa-desenvolver`** (retomada pelo passo `sa-desenvolver.desenvolver.iniciar` — só o `responsavel` da linha retoma) | Dev responsável / `sa-desenvolvedor` |
+| fatia em `pesquisando`, `planejando`, `bloqueada (de: pesquisando \| planejando)` (inclusive com `aguardando troca de modo`: a volta da troca é dela) ou `aguardando-aprovacao-plano` sem a `[APR] Aprovar plano` | **`sa-plano`** | Dev / `sa-desenvolvedor` |
+| fatia em `aguardando-aprovacao-plano` com a `[APR] Aprovar plano` aberta | **`sa-revisar.aprovar-plano`** | Aprovador (Dev Sênior) / `sa-revisor` |
+| fatia em `implementando`, `revisando`, `verificando` ou `retrabalho`, ou `bloqueada (de: implementando \| revisando \| verificando)`, ou `aguardando-aprovacao-pr` com Modo HITL na base (a troca de modo cancelou a `[APR] Aprovar PR`) | **`sa-codificar`** | Dev / `sa-desenvolvedor` |
+| fatia em `pr-aberto` ou `em-revisao` (a `[VER]` dela espera a revisão: diga e pare) | **`sa-revisar.hitl`** | Revisor / `sa-revisor` |
+| fatia em `em-verificacao` | **`sa-verificar`** | Verificador (QA) / `sa-verificador` |
 | fatia em `verificada` (AFK) | **`sa-codificar.codificar.pr`** (abrir o PR) | Dev / `sa-desenvolvedor` |
 | fatia em `aceita` (HITL), ou em `aguardando-aprovacao-pr` (AFK) com a `[APR] Aprovar PR` concluída — qualquer item dela, menos a `[APR]` | **`sa-desenvolver.encerrar`** (merge do PR aprovado) | Dev responsável / `sa-desenvolvedor` |
-| fatia em `aguardando-aprovacao-pr` (AFK) sem a `[APR] Aprovar PR` concluída | **`sa-revisar.aprovar-pr`** | Aprovador (Dev Sênior) / `sa-revisor` |
-| fatia em `bloqueada` com `aguardando troca para HITL` | **`sa-planejamento.troca-modo`** (na base); feita a troca, o Dev retoma pela **`sa-desenvolver`** | P.O. ou SM / `sa-produto` · Dev / `sa-desenvolvedor` |
+| fatia em `aguardando-aprovacao-pr` (Modo AFK na base) sem a `[APR] Aprovar PR` concluída | **`sa-revisar.aprovar-pr`** | Aprovador (Dev Sênior) / `sa-revisor` |
+| PR da fatia mergeado sem `pronta`: pelo Sabiá (a fatia em `aceita`, ou em `aguardando-aprovacao-pr` com a `[APR]` concluída; a sessão do merge parou) · por fora | pelo Sabiá → **`sa-desenvolver.encerrar`** · por fora → "sincroniza a sprint" (**`sa-planejamento`**) | Dev responsável / `sa-desenvolvedor` · P.O. ou SM / `sa-produto` |
+| tarefa `[DEV]` fechada com o PR mergeado, ou fatia `pronta` com a `[DEV]` aberta | **`sa-desenvolver.encerrar`** | Dev responsável / `sa-desenvolvedor` |
 | fatia `pronta` (na base) | **`sa-consolidar`** (processo de produto, na `[GB]`) | P.O. ou SM / `sa-produto` |
 | tarefa `[GB] Gerenciamento do backlog` | pedido de sprint (planejar, ritos, "sincroniza a sprint") → **`sa-planejamento`**; senão, fatias `pronta` → **`sa-consolidar`** (uma por vez); nenhuma → **`sa-triar`** | SM (o dono) ou P.O. / `sa-produto` |
 
-As linhas `fatia …` valem sobre as do item (`FT-nnn`, `[DEV]`…) e leem a fase pela regra A base prevalece (Passo 1).
-Tarefa `[DEV]` ou de Sustentação já fechada no EWM encaminha igual: a `sa-desenvolver`, a `sa-atender` e a
-`sa-executar` mostram o estado e oferecem reabrir ou fechar o item
-(a `[DEV]` com o PR mergeado, pelo fluxo `sa-desenvolver.encerrar`; o item de Sustentação, `concluido`).
+As linhas qualificadas (`fatia …`, PR mergeado, tarefa fechada, `EP-nn` `concluido`) valem sobre as do item
+(`FT-nnn`, `[DEV]`…) e leem a fase pela regra A base prevalece (Passo 1). Outra tarefa já fechada no EWM encaminha
+igual: a skill do papel mostra o estado e oferece reabrir com "sim"; sem ele, "sincroniza a sprint" (P.O. ou SM).
+Esta é a única tabela completa estado → skill: cada fluxo de papel declara só os seus vizinhos e manda o resto
+para cá.
 
 ```
 🔀 <item> — <título> · <tipo> · <fase do status.md | status do backlog>
@@ -89,7 +99,8 @@ Responda com a instrução e **pare**: nunca invoque nem simule a skill do papel
    (`sa-planejamento`, P.O. ou SM), que a traz com o mesmo id — como item de Sustentação ou como tarefa de papel de
    uma fatia ou épico ([elm-sprint.md](../sa-planejamento/references/elm-sprint.md) §9).
 3. A pessoa escolhe → Passo 2 com o item escolhido. Nenhuma tarefa → diga e ofereça "próxima fatia"
-   (`sa-desenvolver`) ou a `sa-status`.
+   (`sa-desenvolver`, uma `planejada` da sprint) ou a `sa-status`; item fora da sprint → "fale com o P.O. ou o SM
+   (agente `sa-produto`)": a puxada é o encaixe.
 
 ## Regras
 

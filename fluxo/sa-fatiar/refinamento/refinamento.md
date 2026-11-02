@@ -3,7 +3,7 @@
  "quando": ["o backlog do épico já existe: dividir, juntar, cancelar ou criar fatias, ou cancelar o épico", "refinar o backlog", "a FT-033 está grande demais", "faltou uma fatia", "cancelar o EP-05"],
  "travas_gerais": ["sim-da-pessoa"],
  "passos": [
-   {"id": "refinar", "saidas": {"refinamento gravado": "→ sa-fatiar.fatiar.proximos", "fatia de Manutenção: é da sa-triar": "→ sa-triar.triar", "fatia nova com cenário novo sem o PRD alterado": "→ sa-prd.mudanca"}}
+   {"id": "refinar", "chama": "sa-prd.mudanca", "saidas": {"refinamento gravado": "→ sa-fatiar.fatiar.proximos", "fatia de Manutenção: é da sa-triar": "→ sa-triar.triar", "GATE da mudança do PRD sem aprovação": "fim"}}
  ]}
 ---
 # Refinamento — o backlog já existe

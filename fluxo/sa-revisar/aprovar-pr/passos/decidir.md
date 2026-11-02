@@ -15,9 +15,11 @@ A decisão da pessoa (passo `ler`) e o `sha` do PR (passo `assumir`).
    conclusão (`elm_lancar_horas`, `elm_transicao(<id>, "concluir")`). Avise o Dev responsável: o merge é dele (`sa-desenvolver.encerrar`),
    que confere essa `[APR]`. Sem o MCP `elm` → entregue ao Dev a linha `PR aprovado por <login>, sha <sha>`, a linha de créditos e a
    pendência `ELM pendente [APR FT-<nnn> concluir]: lançar <h>h e concluir (<login>)` — ele as grava na base, no
-   commit `FT-<nnn> registrar merge`.
+   commit `FT-<nnn> registrar merge`. Se a pessoa corrigiu algo nesta sessão, entregue também a linha da lição, que o
+   Dev grava nas **Lições candidatas** com o merge.
 2. **Mudanças pedidas** → cada uma em Achados abertos (origem: PR), `fase: retrabalho (de: aguardando-aprovacao-pr)`,
-   "retrabalho" + 1 em Rodadas, uma linha na tabela Retrabalho (papel APR) e os créditos da sessão ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4). Commit
+   "retrabalho" + 1 em Rodadas, uma linha na tabela Retrabalho (papel APR), os créditos da sessão ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4) e, se a
+   pessoa corrigiu algo nesta sessão, uma linha nas **Lições candidatas** (a consolidação a registra). Commit
    (`FT-<nnn> aprovação do PR: mudanças pedidas`) → push → conferir no remoto (como no passo `sa-revisar.hitl.entrega`) → horas
    da sessão na `[APR]` (lança, não conclui) → avise o Dev responsável. A `[APR]` fica em andamento e é a mesma na
    nova aprovação.

@@ -250,6 +250,10 @@ test("o passo do toolkit pelo id: só em passo do Sabiá com gancho de desvio", 
   assert.match(s.validarToolkit(toolkit(path.join(raiz, "a"), comPasso("sa-codificar.codificar.validar")), null, repo).join(), /não aceita desvio/);
   assert.match(s.validarToolkit(toolkit(path.join(raiz, "b"), comPasso("sa-codificar.codificar.nada")), null, repo).join(), /não existe/);
   assert.deepEqual(s.validarToolkit(toolkit(path.join(raiz, "c"), comPasso("sa-codificar.codificar.nada"))), []);  // sem framework: fica para a setup
+  // toolkit 1.x: o papel vale pelo `papel_1x` do mestre (codificador é o nome antigo de desenvolvedor)
+  const comPapel = (papel) => ({ skills: [{ caminho: "skills/batch/SKILL.md", papeis: ["desenvolvedor"], passo: { papel, para: "job de batch" } }] });
+  for (const p of ["desenvolvedor", "codificador", "especificador"]) assert.deepEqual(s.validarToolkit(toolkit(path.join(raiz, `p-${p}`), comPapel(p)), null, repo), [], p);
+  assert.match(s.validarToolkit(toolkit(path.join(raiz, "p-x"), comPapel("arquiteto")), null, repo).join(), /o papel arquiteto não tem passo que aceite desvio/);
 });
 
 test("toolkit inválido é recusado e nada é gravado", async () => {
@@ -293,7 +297,7 @@ function cenarioRota() {
     "plugin.json": { name: "sabia", version: "2.0.0" },
     "fluxo/travas.json": { travas: { "sim-da-pessoa": { texto: "sim" }, "toolkit-sem-commit": { texto: "sem commit" }, "revisao-independente": { texto: "outro revisa" } } },
     "fluxo/sa-codificar/codificar/codificar.md": mestre({ fluxo: "codificar", dono: "sa-desenvolvedor", travas_gerais: ["sim-da-pessoa"], passos: [
-      { id: "tarefa", desvio: true, travas: ["toolkit-sem-commit"], saidas: { "ainda há tarefa: não marcada": "tarefa" } },
+      { id: "tarefa", desvio: true, papel_1x: ["desenvolvedor", "codificador"], travas: ["toolkit-sem-commit"], saidas: { "ainda há tarefa: não marcada": "tarefa" } },
       { id: "revisar", chama: "sa-revisar.revisar", travas: ["revisao-independente"], saidas: { REVISAR: "tarefa" } },
       { id: "rito", removivel: true },
       { id: "pr", saidas: { "PR aberto": "→ sa-revisar.hitl", "sem GATE": "fim" } }] }),
@@ -349,7 +353,43 @@ test("rota de um arquivo: o desvio que casa, o dono, o motivo e as travas; sem c
   assert.match(fora, /agente não gerado neste projeto/);
 });
 
-test("rota --fluxo: a ordem com o que o projeto mudou e o diagrama de estados", () => {
+test("rota do toolkit 1.x: o passo vem do papel_1x do mestre", () => {
+  const o = cenarioRota();
+  escrever(path.join(home, ".sabia/toolkits/kt1x"), { "toolkit.json": { nome: "kt1x", versao: "0.9.0",
+    skills: [{ caminho: "skills/kt/SKILL.md", passo: { papel: "codificador", para: "kotlin", arquivos: ["**/*.kt"] } }] } });
+  const projeto = escrever(path.join(raiz, "proj1x"), { ".sabia/config/agentes.json": { toolkits: { kt1x: { pasta: "~/.sabia/toolkits/kt1x" } },
+    passos: [{ toolkit: "kt1x", skill: "skills/kt/SKILL.md" }] } });
+  const r = s.rota("src/A.kt", { framework: o.framework, projeto });
+  assert.match(r, /^passo +sa-codificar\.codificar\.tarefa /m);
+  assert.match(r, /^desvio +skill kt +toolkit kt1x 0\.9\.0$/m);
+});
+
+test("rota de uma tarefa do tasks.md: casa pelos arquivos que ela cita; sem casar, o texto dela e os para", () => {
+  const o = cenarioRota();
+  const tasks = path.join(escrever(path.join(raiz, "spec"), { "tasks.md": ["# Implementation Plan: FT-001 x", "", "## Tasks", "",
+    "- [ ] 1. Job de importação", "  - [ ] 1.1 Teste em `src/main/java/x/ImportarPedidosJobConfigTest.java` (vermelho)",
+    "  - [ ] 1.2 Implementar `src/main/java/x/ImportarPedidosJobConfig.java` (verde)", "  - Pronto quando: `mvn test` verde",
+    "- [x] 2. DTO do pedido", "  - [ ] 2.1 Criar `src/main/java/x/PedidoDto.java`", ""].join("\n") }), "tasks.md");
+  const com = s.rota(`${tasks}#1`, o);
+  assert.match(com, /^tarefa +1 +1\. Job de importação · 1\.1 Teste em/m);
+  assert.match(com, /^desvio +batch-job +toolkit batch-alfa 1\.0\.0$/m);
+  assert.match(com, /^motivo +casou \*\*\/\*JobConfig\.java em src\/main\/java\/x\/ImportarPedidosJobConfig\.java$/m);
+  const sem = s.rota(`${tasks}#T-2`, o);
+  assert.match(sem, /^tarefa +2 +2\. DTO do pedido · 2\.1 Criar `src\/main\/java\/x\/PedidoDto\.java`$/m);
+  assert.match(sem, /^desvio +— fluxo padrão +nenhum padrão casou$/m);
+  assert.match(sem, /^pelo texto +"tarefa de job" → batch-job/m);
+  assert.deepEqual(s.lerTarefa(tasks, "1.2").arquivos, ["src/main/java/x/ImportarPedidosJobConfig.java"]);
+  assert.throws(() => s.rota(`${tasks}#9`, o), /não há a tarefa 9/);
+  // em andamento no Kiro ([-]), linha em branco entre subtarefas e caminho ./ ou absoluto no projeto
+  const t2 = path.join(escrever(path.join(raiz, "spec2"), { "tasks.md": ["- [-] 3. Mãe", "", "  - [ ] 3.1 Teste `./src/A.java`", "",
+    `  - [ ] 3.2 Job \`${path.join(o.projeto, "src/x/CargaJobConfig.java")}\``, "- [ ] 4. Outra `src/B.java`",
+    `- [ ] 5. Só o absoluto \`${path.join(o.projeto, "lib/x/CargaJobConfig.java")}\``, ""].join("\n") }), "tasks.md");
+  assert.deepEqual(s.lerTarefa(t2, "3").arquivos, ["./src/A.java", path.join(o.projeto, "src/x/CargaJobConfig.java")]);
+  assert.match(s.rota(`${t2}#3`, o), /^motivo +casou src\/\*\.java em src\/A\.java$/m);
+  assert.match(s.rota(`${t2}#5`, o), /^motivo +casou \*\*\/\*JobConfig\.java em lib\/x\/CargaJobConfig\.java$/m);
+});
+
+test("rota --fluxo: a ordem com o que o projeto mudou, o grafo ASCII e o diagrama de estados", () => {
   const o = cenarioRota();
   const t = s.rotaFluxo("sa-codificar/codificar", o);
   const linhas = t.split("\n");
@@ -360,6 +400,14 @@ test("rota --fluxo: a ordem com o que o projeto mudou e o diagrama de estados", 
   assert.match(t, /tarefa ⇢ +projeto \(base 3f9a1c0b7e21\)/);
   assert.match(t, /metricas +projeto, inserido depois de revisar/);
   assert.match(t, /rito +removido no projeto/);
+  // o grafo ASCII resolvido: inserido com a origem, removido fora, desvio ligado com o toolkit
+  const g = t.slice(t.indexOf("sa-codificar.codificar   dono"), t.indexOf("```mermaid"));
+  assert.deepEqual([...g.matchAll(/│ (\d+ [a-z0-9-]+)/g)].map((x) => x[1]), ["1 tarefa", "2 revisar", "3 metricas", "4 fim2", "5 pr"]);
+  assert.match(g, /│ 1 tarefa ⇢ +│──▶ origem: projeto \(base 3f9a1c0b7e21\)\n.*┘ {4}⇢ desvio → batch-job \(toolkit batch-alfa 1\.0\.0\)\n {32}🔒 toolkit-sem-commit\n {32}↺ tarefa/);
+  assert.match(g, /│ 3 metricas +│──▶ origem: projeto, inserido depois de revisar/);
+  assert.match(g, /↑ volta a tarefa  \(REVISAR\)/);
+  assert.match(g, /⇒ passa a sa-revisar\.hitl  \(PR aberto\)/);
+  assert.ok(!g.includes("rito") && g.includes("↓ segue · ↑ volta"));
   const mm = t.slice(t.indexOf("```mermaid"));
   for (const l of ["stateDiagram-v2", "[*] --> tarefa", "tarefa --> tarefa: ainda há tarefa, não marcada", "revisar --> metricas: projeto (inserido)",
     "metricas --> fim2: projeto (inserido)", "fim2 --> pr", 'state "sa-revisar.hitl" as x_sa_revisar_hitl', "pr --> x_sa_revisar_hitl: PR aberto (passagem)",

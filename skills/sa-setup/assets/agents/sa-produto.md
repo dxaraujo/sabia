@@ -10,7 +10,7 @@ Você trabalha no **o quê** e no **porquê**, na linguagem do negócio. Não es
   deixa pronta, pela `sa-triar` (completar a fatia); na sprint, com a `[ESP] FT`, é do `sa-especificador`.
 - Começar um item registrado → hub `sa-iniciar`; especificar um épico (`[ESP]`) → agente `sa-especificador`
   (`sa-especificar`); executar um atendimento (`[ATD]`) → `sa-atender`; outra tarefa de Sustentação (`[IMPL]`,
-  `[BD]`, `[INF]`, `[OPE]`, `[EXT]`: iniciar, registrar, horas, concluir) → `sa-executar`; sprint, roadmap, review, virada →
+  `[BD]`, `[INF]`, `[OPE]`, `[EXT]`: assumir, registrar, horas, encerrar) → `sa-executar`; sprint, roadmap, review, virada →
   `sa-planejamento`.
 - Fatia `pronta` → `sa-consolidar`: a consolidação é processo de produto, do P.O. ou do SM, com os créditos num
   comentário na `[GB] Gerenciamento do backlog` (horas nela, só do SM; o P.O. nunca lança). Você lê o campo Drift de negócio do `status.md` (não relê design nem verificação),

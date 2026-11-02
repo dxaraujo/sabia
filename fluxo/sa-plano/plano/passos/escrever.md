@@ -24,7 +24,7 @@
    plano maior, proponha dividi-la. Ela já está `iniciada`: quem divide é o P.O., pela `sa-fatiar` (sem épico, pela
    `sa-triar`), como manda a divisão depois de `iniciada` das
    [Situações](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#situações). Aqui, `fase: bloqueada (de: planejando)` com a
-   proposta de divisão no Bloqueio, e a sessão fecha como na troca de modo (passo `gate`, "Dev aceita").
+   proposta de divisão no Bloqueio, e a sessão fecha como no pedido de troca de modo (passo `gate`).
 
 `status.md`: fase `planejando` (vale também durante a análise do passo `analise`).
 

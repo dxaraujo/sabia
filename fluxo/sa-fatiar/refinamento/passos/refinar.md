@@ -1,5 +1,5 @@
 ---
-{"resumo": "Divide, junta, cancela ou cria fatias, cancela o épico e reaplica a Definition of Ready, no backlog.md e na sprint, num commit, com o EWM acompanhando."}
+{"resumo": "Divide, junta, cancela ou cria fatias (cenário novo: chama sa-prd.mudanca antes), cancela o épico e reaplica a Definition of Ready, no backlog.md e na sprint, num commit, com o EWM acompanhando."}
 ---
 ## Entrada
 
@@ -37,7 +37,8 @@ refinamento é o do passo `sa-fatiar.fatiar.perguntar`.
   [pendências](~/.sabia/framework/skills/sabia/references/elm.md#pendências)). As fatias `iniciada` em diante não mudam aqui: mostre-as ao
   P.O. (cancelar uma iniciada é o item acima).
 - **Nova fatia:** no fim de `## Fatias`, como no passo `sa-fatiar.fatiar.gravar` (a linha no `backlog.md` e o IB no backlog do EWM, como lá).
-- **Fatia nova com cenário novo** exige PRD alterado antes (`sa-prd.mudanca`).
+- **Fatia nova com cenário novo** exige PRD alterado antes: chame `sa-prd.mudanca` (revisão P e GATE) e, com a
+  mudança aprovada, siga aqui com a fatia nova.
 - **Definition of Ready** ([critérios](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#definition-of-ready-o-que-faz-uma-fatia-elegivel)): a
   cada refinamento, grave `elegivel` nas `nova` que passam; a `elegivel` ou `planejada` que deixou de passar volta a
   `nova` com `falta:` — a `planejada` sai da sprint pela [Volta](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#situações) (no EWM, o IB e as
@@ -50,5 +51,5 @@ O refinamento gravado na base, num commit → os próximos passos do passo `sa-f
 ## Pare se
 
 - Fatia de Manutenção → é da `sa-triar`: diga isso e pare.
-- Fatia nova com cenário novo sem o PRD alterado → `sa-prd.mudanca` antes; pare.
+- GATE da mudança do PRD sem aprovação → a fatia nova com cenário novo não entra: diga o que ficou em aberto e pare.
 - Fatia `pronta` ou `concluida` → nunca é alterada (Regras): mudança de comportamento entregue = fatia nova.

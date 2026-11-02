@@ -34,11 +34,13 @@ Aprovar? (o P.O. ou quem ele delegou)
 - Primeiro GATE aprovado → próximo: "use
   `sa-especificar EP-<nn>`" — ela fecha a sessão, leva o PRD aprovado para a base e diz o que vem depois
   (publicação no ELM e `sa-fatiar`).
-- Mudança depois de aprovado → próximo: a [publicação dos requisitos](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md#requisitos-conceitos-okf-de-elm--doors-next) alterados (se a publicação é `na-aprovacao`)
-  e o refinamento das fatias afetadas (`sa-fatiar.refinamento`).
+- Mudança depois de aprovado → próximo: a [publicação dos requisitos](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md#requisitos-conceitos-okf-de-elm--doors-next) alterados (se a publicação é `na-aprovacao`).
+  Chamada pelo `sa-fatiar.refinamento` (⇄) → volte a ele, que segue com a fatia nova; vinda do drift da
+  consolidação → "avise o P.O.: retome pela `sa-consolidar FT-<nnn>`"; pedido direto, com fatias afetadas → diga
+  que o refinamento delas é o `sa-fatiar.refinamento`.
 
 ## Pare se
 
 - Primeiro GATE aprovado: diga o próximo e pare.
-- Mudança depois de aprovado: diga o próximo e pare — chamada pela `sa-consolidar` (drift), devolva a ela,
-  que segue para a publicação.
+- Mudança depois de aprovado, fora do refinamento: diga o próximo e pare — vinda do drift, a consolidação é do
+  P.O., no agente `sa-produto`.

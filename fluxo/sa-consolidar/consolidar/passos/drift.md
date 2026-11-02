@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-Fatia `pronta` na base, já na base (Entrada do fluxo), e o campo **Drift de negócio** do `status.md`.
+Fatia `pronta` na base, já na base (passo `entrada`), e o campo **Drift de negócio** do `status.md`.
 
 ## Faça
 
@@ -25,5 +25,4 @@ O drift resolvido (PRD ou ficha em nova versão, ou nada a mudar) → passo `elm
 
 ## Pare se
 
-- `concluida` no `status.md` ou no `backlog.md` da base → diga "já consolidada em <data>" e pare — nada se repete.
-- Sem `pronta` na base → não consolide: mande o Dev ao fluxo `sa-desenvolver.encerrar` e pare.
+- Drift `sim` com épico → o PRD muda antes: passe ao especificador (`sa-prd.mudanca`) e pare.

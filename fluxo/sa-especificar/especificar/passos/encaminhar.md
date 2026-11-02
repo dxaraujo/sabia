@@ -22,7 +22,6 @@ Próximo: <skill>
 | `aprovado` na pasta de trabalho (`prd` `—` no `backlog.md`) | **passo `fechamentos`** deste fluxo — levar para a base |
 | `aprovado` na base | **`sa-fatiar`**; depois do GATE do backlog, volte aqui (passo `fechamentos`) |
 | `fatiado`, Especificação ainda `iniciada` na sprint | **passo `fechamentos`** deste fluxo — concluir a `[ESP]` |
-| `fatiado`, Especificação `concluida` | nada a especificar; dividir, juntar ou cancelar fatias → `sa-fatiar.refinamento`; completar uma fatia `nova` → [Completar uma fatia `nova`](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#completar-uma-fatia-nova) (na sprint, a `[ESP] FT` dela; no backlog, o `sa-produto`) |
 
 ### Toolkit na especificação
 
@@ -43,8 +42,9 @@ setup. É transparente para quem está no fluxo: nada é perguntado nem marcado 
 ## Saída
 
 A próxima skill dita (e a sessão segue nela, até o passo `fechar-sessao`), ou, em `aprovado` na pasta de trabalho
-ou `fatiado` com a Especificação `iniciada`, o passo `fechamentos`.
+ou `fatiado` com a Especificação `iniciada`, o passo `fechamentos`. `fatiado` com a Especificação `concluida` não
+chega aqui: é vizinho, no passo `entrada`.
 
 ## Pare se
 
-`fatiado`, Especificação `concluida` → nada a especificar: diga a próxima (tabela) e pare.
+Nenhum caso próprio deste passo.

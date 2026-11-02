@@ -27,9 +27,9 @@ tamanho parecido e prevê pela **vazão** (fatias concluídas por sprint) e pelo
 (opcionais só no IB do EWM, para quem usa o relatório de velocidade de lá).
 
 **A sprint é cadência, não contêiner de escopo:** o time se compromete com a **meta**; a seleção do planejamento é
-uma **previsão**. Dentro da sprint o fluxo é **puxado** — terminou uma fatia, a `elegivel` do topo entra, enquanto o
-WIP de revisão humana tiver folga (a `sa-desenvolver` puxa, sem cerimônia). O Encaixe (passo
-`sa-planejamento.durante.encaixe`) fica para quem fura a fila ou estoura o WIP.
+uma **previsão**. Dentro da sprint o fluxo é **puxado** — terminou uma fatia, a `elegivel` do topo entra enquanto o
+WIP de revisão humana tiver folga —, e a puxada é sempre o Encaixe (passo `sa-planejamento.durante.encaixe`), pelo
+P.O., pelo SM ou por quem puxa com a aprovação do P.O., registrada.
 Toda hora do time cabe numa tarefa da sprint, em seis frentes: entrega `[DEV]`, revisão `[REV]`, aprovação `[APR]`
 (do Dev Sênior, nos gates sem tarefa de papel: plano e PR do AFK), verificação `[VER]`, especificação `[ESP]` e
 Sustentação (`[ATD]`, `[IMPL]`, `[BD]`, `[INF]`, `[OPE]`, `[EXT]` — tabela **Sustentação** do `sabia.md`; as fatias

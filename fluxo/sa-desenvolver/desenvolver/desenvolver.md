@@ -1,29 +1,40 @@
 ---
 {"fluxo": "desenvolver", "dono": "sa-desenvolvedor",
- "quando": ["começar ou retomar uma fatia já no backlog (compromisso, `iniciada` na base, branch, pasta, `[DEV]`) e encaminhar pela fase", "vamos trabalhar na FT-031", "pegar a [DEV] da FT-031", "corrigir o defeito 4567", "próxima fatia", "retomar a FT-031"],
+ "quando": ["começar uma fatia planejada na sprint aberta (compromisso, `iniciada` na base, branch, pasta, `[DEV]`) ou retomar a que parou entre o registro e a branch", "vamos trabalhar na FT-031", "pegar a [DEV] da FT-031", "corrigir o defeito 4567", "próxima fatia", "retomar a FT-031"],
  "travas_gerais": ["sim-da-pessoa"],
  "passos": [
-   {"id": "chegou", "saidas": {"fatia já iniciada, ou iniciada sem status.md (o responsavel retoma)": "iniciar", "pronta ou concluida na base": "encaminhar", "troca AFK → HITL registrada": "→ sa-plano.plano.gate", "troca AFK → HITL nem registrada nem recusada: a troca é do P.O.": "→ sa-planejamento.troca-modo", "item não registrado": "→ sa-triar.triar", "item fora do papel, dividida ou cancelada": "fim"}},
-   {"id": "trilha", "saidas": {"trilha registrada não serve": "→ sa-triar.triar"}},
-   {"id": "compromisso", "saidas": {"fora da sprint, fura a fila ou estoura o WIP, sem o encaixe decidido": "→ sa-planejamento.durante.encaixe", "falhou outro item": "fim"}},
-   {"id": "iniciar", "saidas": {"[DEV] já fechada e PR mergeado": "→ sa-desenvolver.encerrar", "push da iniciada recusado": "fim"}},
-   {"id": "encaminhar", "saidas": {"pesquisando, planejando ou aguardando-aprovacao-plano": "→ sa-plano.plano", "implementando, revisando ou retrabalho": "→ sa-codificar.codificar", "verificando (AFK)": "→ sa-verificar.verificar", "verificada (AFK)": "→ sa-codificar.codificar.pr", "pr-aberto ou em-revisao (HITL)": "→ sa-revisar.hitl", "em-verificacao (HITL)": "→ sa-verificar.verificar", "aguardando-aprovacao-pr (AFK)": "→ sa-revisar.aprovar-pr", "aceita, [APR] concluída, ou pronta com a [DEV] aberta: o merge é desta skill": "→ sa-desenvolver.encerrar", "pronta, sem [DEV] aberta": "→ sa-consolidar.consolidar", "aguardando troca para HITL": "→ sa-planejamento.troca-modo", "AFK com várias fatias planejadas na sprint (oferta)": "→ sa-orquestrar.orquestrar"}}
+   {"id": "entrada", "de": "entrada", "sprint": "exige", "saidas": {"iniciada sem status.md em nenhuma branch: só o responsavel retoma": "iniciar"}},
+   {"id": "compromisso", "saidas": {"trilha registrada não serve": "→ sa-triar.triar", "outro item falhou (responsável, Júnior em AFK, DoR, registro, dono do pai)": "fim"}},
+   {"id": "iniciar", "saidas": {"fatia iniciada: Próximo sa-plano": "→ sa-plano.plano", "[DEV] já fechada e PR mergeado": "→ sa-desenvolver.encerrar", "push da iniciada recusado": "fim"}}
  ]}
 ---
 # Desenvolver — compromisso e início do código
 
 Começar é um compromisso: daqui em diante a fatia consome a capacidade do time e o lead time corre. Por isso este
-fluxo só começa o que já está registrado e planejado; a entrada de trabalho novo é da **`sa-triar`**. É o fluxo do
-papel **Dev**: grava `iniciada` na base e assume a `[DEV]` da fatia (passo `iniciar`), encaminha cada fase para a skill dela
-(passo `encaminhar`) e, no merge do PR aprovado, grava `pronta` na base e encerra a `[DEV]` (`sa-desenvolver.encerrar`). Revisão (`[REV]`),
+fluxo só começa o que já está registrado e planejado na sprint aberta; a entrada de trabalho novo é da **`sa-triar`**,
+e a puxada para a sprint, do encaixe (P.O. ou SM, agente `sa-produto`). É o fluxo do papel **Dev**: confere o
+compromisso, grava `iniciada` na base e assume a `[DEV]` da fatia (passo `iniciar`); o merge do PR aprovado, a
+`pronta` na base e a conclusão da `[DEV]` são a outra linha do tempo (`sa-desenvolver.encerrar`). Revisão (`[REV]`),
 verificação (`[VER]`), especificação (`[ESP]`) e os itens `AT-`, `IM-`… da Sustentação (`[ATD]`, `[IMPL]`…) têm
-skill própria; a fatia de Manutenção (`FT-`) é deste papel. Na dúvida sobre o item, o hub **`sa-iniciar`** diz qual.
+skill própria; a fatia de Manutenção (`FT-`) é deste papel.
+
+Deste fluxo: a fatia registrada, `planejada` na sprint aberta e sem `status.md` em nenhuma branch; ou `iniciada` no
+`backlog.md` sem `status.md` em nenhuma branch (a sessão parou entre o registro e a branch: passo `iniciar`). "Próxima
+fatia" → a `planejada` de maior prioridade da sprint aberta (empate: a mais acima na tabela), de quem pede ou com
+`responsavel` `—`, sem `status.md` em nenhuma branch ou worktree; nenhuma → "fale com o P.O. ou o SM (agente
+`sa-produto`)" e pare.
+
+## Entrada: vizinhos
+
+- `pesquisando`, `planejando`, `aguardando-aprovacao-plano` sem a `[APR]` ou `bloqueada (de: pesquisando | planejando)`, inclusive "aguardando troca de modo" → `sa-plano.plano`
+- `aguardando-aprovacao-plano` com a `[APR] Aprovar plano` criada → `sa-revisar.aprovar-plano`
+- `implementando`, `revisando`, `verificando`, `verificada`, `retrabalho (de: …)` `bloqueada (de: implementando | revisando | verificando)` ou `aguardando-aprovacao-pr` com Modo HITL na base (troca de modo) → `sa-codificar.codificar`
+- `aceita`, `aguardando-aprovacao-pr` com a `[APR] Aprovar PR` concluída, ou `pronta` com a `[DEV]` aberta → `sa-desenvolver.encerrar`
 
 ## Regras
 
-- Só começa o que está registrado e planejado: pedido novo ou item fora do backlog vai para a `sa-triar`; fatia
-  fora da sprint, para o encaixe.
+- Só começa o que está registrado e na sprint aberta (passo `entrada`); nunca puxe item para a sprint: é do encaixe.
 - O EWM (ou a pessoa) é a fonte dos dados do item; o código, do comportamento atual; o `status.md`, da fase (regra A
   base prevalece).
 - Nunca invente dados de work item.
-- Não invoque nem simule outra skill do fluxo: diga a próxima (passo `encaminhar`) e pare.
+- Não invoque nem simule outra skill do fluxo: diga a próxima e pare.

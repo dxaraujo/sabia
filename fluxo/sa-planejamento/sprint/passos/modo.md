@@ -1,10 +1,11 @@
 ---
-{"resumo": "Modo pela senioridade: o modo final da fatia sai da senioridade de quem implementa; a [REV] é sempre de um Dev Sênior; HITL → AFK nunca."}
+{"resumo": "Modo pela senioridade: o modo final da fatia sai da senioridade de quem implementa, também na primeira atribuição; a [REV] é sempre de um Dev Sênior; a troca é só pela Troca de modo."}
 ---
 ## Entrada
 
 A fatia ganha responsável — na seleção da sprint (passo `responsaveis`), no encaixe
-(`sa-planejamento.durante.encaixe`) ou, se ela entrou sem responsável, quando alguém a assume (`sa-desenvolver.desenvolver.compromisso`).
+(`sa-planejamento.durante.encaixe`) ou, se ela entrou sem responsável, quando alguém a assume (a primeira
+atribuição: `sa-desenvolver.desenvolver.compromisso`, ou o lote do `sa-orquestrar`).
 
 ## Faça
 
@@ -27,8 +28,11 @@ Observação da linha da fatia no `sprint-<nn>.md`. Conte essas revisões, e as 
 revisão dos Sêniores. A senioridade também decide o GATE do plano (Júnior sempre, Pleno se pedir, Sênior nunca —
 passo `sa-plano.plano.gate`).
 
-Fatia `iniciada` só troca de **AFK para HITL**, pela Troca de modo (fluxo `sa-planejamento.troca-modo`);
-**HITL → AFK nunca** — nem sugerido nem aceito.
+**Primeira atribuição** (fatia com responsável `—`, não iniciada): não é troca — quem assume define o modo pela
+senioridade dele, por esta tabela, e a `[REV]`/`[VER]` nascem ou são canceladas no mesmo "sim"
+([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md), topo e §7). Com responsável
+definido, a troca de modo, nos dois sentidos, é só pelo fluxo `sa-planejamento.troca-modo`, pelo P.O. ou pelo SM
+(agente `sa-produto`).
 
 ## Saída
 
@@ -37,5 +41,5 @@ volte a quem chamou.
 
 ## Pare se
 
-Pedido de HITL → AFK, ou de troca de modo de fatia `iniciada` fora da Troca de modo → diga que é pelo fluxo
-`sa-planejamento.troca-modo` (só AFK → HITL) e não troque.
+Pedido de troca de modo de fatia com responsável definido, fora da Troca de modo → diga que é pelo fluxo
+`sa-planejamento.troca-modo` (P.O. ou SM, agente `sa-produto`) e não troque.

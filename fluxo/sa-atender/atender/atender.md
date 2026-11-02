@@ -2,11 +2,11 @@
 {"fluxo": "atender", "dono": "sa-produto",
  "travas_gerais": ["sim-da-pessoa"],
  "passos": [
-   {"id": "chegou", "saidas": {"pedido novo ou AT fora do backlog; não é atendimento": "→ sa-triar.triar", "outra categoria da Sustentação": "→ sa-executar.executar", "AT concluido ou cancelado": "fim"}},
-   {"id": "assumir", "saidas": {"AT fora da sprint aberta: a decisão é do P.O.": "→ sa-planejamento.durante.encaixe"}},
-   {"id": "executar", "chama": "sa-pesquisar.pesquisar"},
+   {"id": "entrada", "de": "entrada", "sprint": "exige", "saidas": {"pedido novo ou AT fora do backlog": "→ sa-triar.triar", "AT terminal, ou fora da sprint aberta (P.O. ou SM)": "fim"}},
+   {"id": "assumir"},
+   {"id": "executar", "chama": "sa-pesquisar.pesquisar", "saidas": {"não é atendimento (categoria errada)": "→ sa-triar.triar"}},
    {"id": "finalizar"},
-   {"id": "desdobramentos", "saidas": {"gerar alteração (defeito ou mudança)": "→ sa-triar.triar", "regra que ninguém decidiu": "→ sa-entrevistar.entrevistar", "consulta reaproveitável: lição": "→ sa-aprender.registrar", "arquivar": "fim"}}
+   {"id": "desdobramentos", "saidas": {"alteração (defeito ou mudança) ou regra que ninguém decidiu": "→ sa-triar.triar", "consulta reaproveitável: lição": "→ sa-aprender.registrar", "nada": "fim"}}
  ]}
 ---
 # Atender — atender sem perder o rastro
@@ -16,9 +16,14 @@ e segue. É a categoria **Atendimento** da **Sustentação** — a única catego
 (Implantação, Banco de dados, Infra, Operação, Apoio a outros times) usam a [`sa-executar`](~/.sabia/framework/skills/sa-executar/SKILL.md).
 A **`sa-triar`** registra a demanda (`AT-nnn`, linha na `### Atendimento` da `## Sustentação` do `backlog.md`, IB
 `[AT-nnn]` no EWM; a tarefa `[ATD]` nasce quando o AT entra numa sprint); este fluxo é o de quem **atende**: assume
-a `[ATD]`, executa e finaliza, deixando um registro versionado **sem dado de cliente**.
+a `[ATD]`, executa e finaliza, deixando um registro versionado **sem dado de cliente**. Entra o `AT-nnn`, a `[ATD]
+AT-nnn` ou o número do EWM do IB `[AT-nnn]` ou da `[ATD]`.
 
 Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configurar o Sabiá") e pare.
+
+## Entrada: vizinhos
+
+- `IM-`, `BD-`, `IN-`, `OP-`, `EX-nnn` ou a tarefa `[IMPL]` `[BD]` `[INF]` `[OPE]` `[EXT]` (outra categoria da Sustentação) → `sa-executar.executar`
 
 ## Arquivos
 

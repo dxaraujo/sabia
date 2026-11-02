@@ -1,5 +1,5 @@
 ---
-{"resumo": "Créditos, commit do relatório e do status.md, push da branch do PR, conferência no remoto e só então a [REV] (concluir ou manter) e o aviso ao próximo papel."}
+{"resumo": "Créditos (e a lição, se houver), commit do relatório e do status.md, push da branch do PR, conferência no remoto e só então a [REV] (concluir ou manter) e o aviso ao próximo papel."}
 ---
 ## Entrada
 
@@ -9,8 +9,9 @@ O relatório e o `status.md` com a fase do veredito (passo `veredito`).
 
 **Entrega**, nesta ordem — o próximo só acha o seu trabalho no remoto:
 
-1. créditos da sessão no `status.md` ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4); commit do relatório e do `status.md`
-   (`FT-<nnn> revisão <N>: <veredito>`);
+1. créditos da sessão no `status.md` ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4) e,
+   se a pessoa corrigiu algo nesta sessão, uma linha nas **Lições candidatas** (a consolidação a registra); commit
+   do relatório e do `status.md` (`FT-<nnn> revisão <N>: <veredito>`);
 2. push da branch do PR (`git push origin <branch>`, nunca a base; o Kiro pergunta). Push recusado (pela
    pessoa ou pela regra) → entregue o comando pronto e espere a pessoa dizer que publicou;
 3. **confira no remoto:** `git fetch` e `git rev-parse HEAD` = `git rev-parse origin/<branch>`;

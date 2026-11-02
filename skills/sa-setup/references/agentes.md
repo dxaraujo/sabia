@@ -7,7 +7,7 @@ Os agentes são **gerados**, nunca editados à mão. Cinco fontes:
 | `papeis.json` | [../assets/agents/](../assets/agents/papeis.json) (power) | permissões de cada papel: escrita, registros, nível de shell, push e MCPs |
 | `sa-<papel>.md` | [../assets/agents/](../assets/agents/) (power) | o prompt de cada agente |
 | `agentes.json` | `.sabia/config/agentes.json` (projeto, versionado) | as escolhas do projeto: caminhos, comandos, skills e MCPs por agente |
-| mestres dos fluxos | `~/.sabia/framework/fluxo/<skill>/<fluxo>/<fluxo>.md` (framework instalado; `--framework` troca) | o dono de cada fluxo, os passos e quais aceitam desvio (`"desvio": true`) |
+| mestres dos fluxos | `~/.sabia/framework/fluxo/<skill>/<fluxo>/<fluxo>.md` (framework instalado; `--framework` troca) | o dono de cada fluxo, os passos e quais aceitam desvio (`"desvio": true`; o `papel_1x` diz o papel dos toolkits 1.x que cai nele) |
 | override | `.sabia/fluxo/` e `.sabia/padrao/` (projeto, esparso; harness) | o que o projeto customizou: vira o [delta](#o-prompt-delta-do-override-e-chamada-entre-fluxos) no prompt do dono |
 
 O script [../scripts/gerar_agentes.py](../scripts/gerar_agentes.py) junta as cinco e grava os sete agentes, mais os agentes dos passos de toolkit ligados, em cada alvo (`.kiro/agents/<nome>.json`, `.opencode/agents/<nome>.md`):

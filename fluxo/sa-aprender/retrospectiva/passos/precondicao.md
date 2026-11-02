@@ -1,23 +1,20 @@
 ---
-{"resumo": "Só de sprint: antes dos dados, a pré-condição dos ritos de fechamento inteira (sincronização com o EWM e consolidação)."}
+{"resumo": "Retrospectiva de sprint pedida direto → \"use a sa-planejamento (retrospectiva)\" e para; chamada por ela, ou de fatia ou de épico → dados."}
 ---
 ## Entrada
 
-Retrospectiva de **sprint**. De fatia ou de épico → passo `dados`.
+O pedido de retrospectiva, ou a chamada do passo `sa-planejamento.retrospectiva.retro`.
 
 ## Faça
 
-De **sprint**: antes dos dados, a pré-condição dos ritos de fechamento (`sa-planejamento.review.sincronizar` e
-`sa-planejamento.review.consolidacao`)
-inteira — a sincronização com o EWM ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §9, com a rede
-de proteção: sempre a tabela com as divergências e as por fora, ou a linha `🔄 <chave> × EWM: iguais — <n> itens
-conferidos`; sem o MCP `elm` → avise "sincronização com o EWM não feita" e siga, só com as linhas do git) e a
-consolidação.
+Retrospectiva de **sprint** pedida direto → "use a `sa-planejamento` (retrospectiva)": lá rodam a pré-condição dos
+ritos de fechamento, as horas, o fechamento e a virada. Chamada pelo passo `sa-planejamento.retrospectiva.retro`
+(a pré-condição já cumprida), ou de fatia ou de épico → siga.
 
 ## Saída
 
-Cumprida → passo `dados`.
+Siga → passo `dados`. Sprint pedida direto → a frase acima: o fluxo termina.
 
 ## Pare se
 
-Fatia `pronta` que a espera (a consolidação) → pare, salvo decisão do P.O.
+Retrospectiva de sprint fora do passo `sa-planejamento.retrospectiva.retro` → a frase acima e pare.

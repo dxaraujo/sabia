@@ -202,7 +202,9 @@ sessão, por exemplo); concluir é da skill do papel, com o saldo. No AFK há a 
    listar|baixar|instalar|atualizar|remover` (`npm i -g sabia` deixa o comando `sabia`; `npx sabia --ajuda` mostra
    todos). Instale pelo CLI, não pelo painel **Powers** a partir deste repositório: as skills do repositório são a
    fonte, e o que roda é a compilação. Para ver por onde um arquivo passa (o passo com desvio, o dono, o toolkit e as
-   travas): `sabia rota <arquivo>`; o fluxo resolvido no projeto: `sabia rota --fluxo <skill.fluxo>`.
+   travas): `sabia rota <arquivo>`, ou `sabia rota <spec>/tasks.md#2.1` (pelos arquivos que a tarefa cita; sem casar,
+   mostra o texto dela e os `para` dos desvios); o fluxo resolvido no projeto (tabela, grafo ASCII e Mermaid):
+   `sabia rota --fluxo <skill.fluxo>`.
 2. No projeto, peça **"configurar o Sabiá"** e confirme as propostas (os padrões vêm marcados; uma confirmação por bloco).
 3. Comece: **"nova demanda: …"** (a `sa-triar` faz a triagem e registra no backlog; épico → PRD), **"iniciar a
    FT-031"** ou **"minha próxima tarefa"** (o hub `sa-iniciar` diz a skill do papel), **"corrigir o defeito 4567"**
