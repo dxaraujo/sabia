@@ -1,5 +1,5 @@
 ---
-{"resumo": "Gera o CT.csv na pasta da fatia, um caso por cenário verificado, no padrão sa-verificar/ct-csv.md, para a consolidação criar os casos no ETM."}
+{"resumo": "Gera o CT.csv na pasta da fatia, um caso por cenário verificado, no padrão sa-verificar/ct-csv.md, para a consolidação criar os casos no ETM ou entregá-lo como CSV (linha Casos de teste do sabia.md)."}
 ---
 ## Entrada
 
@@ -9,10 +9,10 @@ passo `decisao`. Algum rejeitado ou ⚠️ → pule este passo: siga para o pass
 ## Faça
 
 Gere `CT.csv` na pasta da fatia — um caso por cenário verificado — no formato do padrão `sa-verificar/ct-csv.md`.
-Na consolidação, depois do merge, a `sa-consolidar`
+Na consolidação, depois do merge, pela linha Casos de teste do `sabia.md`: `ETM` → a `sa-consolidar`
 cria a partir dele um caso de teste por cenário no ETM, já ligado à história (`elm_criar_ct`,
-[elm-publicar.md](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md)); o CSV também é a
-alternativa para importar à mão quando a criação falha.
+[elm-publicar.md](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md)), e o CSV é a
+alternativa para importar à mão quando a criação falha; `CSV` → o próprio `CT.csv` é a entrega.
 
 Rodadas: quem pediu a verificação incrementa "verificação" (a `sa-codificar` ou o orquestrador); só no
 pedido direto de uma pessoa, incremente você.

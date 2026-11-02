@@ -1,9 +1,10 @@
 ---
-{"resumo": "Preenche o prd.md (padrão sa-prd/prd.md) e cria em elm/ um conceito OKF por artefato, mais index.md e log.md, pelas regras de escrita; o tipo com fluxo de toolkit no prompt sai por esse fluxo."}
+{"resumo": "Preenche o prd.md (padrão sa-prd/prd.md) e cria em elm/ um conceito OKF por artefato, mais index.md e log.md, pelas regras de escrita e pelas políticas do sabia.md (ET inicial, REG com dados técnicos) e o limite do acordos.md; o tipo com fluxo de toolkit no prompt sai por esse fluxo."}
 ---
 ## Entrada
 
-O `decisoes.md` e as decisões do passo `similares`.
+O `decisoes.md` e as decisões do passo `similares`; a seção ELM do `.sabia/sabia.md` (linhas ET e REG com dados
+técnicos) e a linha Especificação do `<produto>/acordos.md`.
 
 ## Faça
 
@@ -22,7 +23,8 @@ só aponta para eles. Regras de escrita:
 - **Histórias** pequenas o bastante para caber em poucas fatias; cada uma com cenários que cubram: caminho feliz,
   o que **não** deve ser aceito, repetição/reexecução, erro em um item (a operação continua? o que fica
   registrado?). "Então" sempre verificável — nada de "corretamente".
-- **Regras** testáveis, com valores, uma por bloco, citando a decisão de origem (`D-nn`) ou a fonte.
+- **Regras** testáveis, com valores, uma por bloco, citando a decisão de origem (`D-nn`) ou a fonte. Linha REG com
+  dados técnicos = `sim` → a seção `## Dados` do padrão, quando a regra lê ou grava dado; `não` → sem ela.
 - **Alteração** de comportamento documentado → traga o artefato do bundle da `sa-sync` pelo
   `elm_ler_req_local` (`id` = o id; o `markdown` devolvido é o arquivo inteiro) e grave-o em `elm/`, mantendo `resource`, `id` e o `sources` do ELM; ponha
   `status: draft` e um `generated` novo; reescreva no estado **depois** da mudança. Sem bundle, leia o artefato
@@ -33,10 +35,15 @@ só aponta para eles. Regras de escrita:
 - **HF → REG** sempre por link para o arquivo da regra: na publicação ele vira **embed**. Relações entre requisitos
   (restringe, satisfaz) vão na seção `## Relações` do conceito — ficam só no repositório.
 - **Decisões de implementação** sem caminho de arquivo e sem código — módulos, interfaces e contratos.
+- **ET inicial** — só com a linha ET = `inicial no PRD + as-built`: uma `ET-<slug>.md` do épico,
+  no padrão `sa-prd/et.md` (título `ET - EP-<nn> <título>`), escrita das Decisões de implementação do `prd.md` e das
+  `D-nn`, ligando as histórias que atende; entra na tabela do PRD como os outros artefatos. Com `só as-built` ou
+  `não publica`, nenhuma ET aqui: a as-built é do PR da fatia (passo `sa-codificar.codificar.pr`).
 - **Decisões de teste:** proponha os **pontos de teste** (seams) — o mais alto possível, idealmente um por
   comportamento — e confirme com a pessoa: é por eles que as fatias vão provar que funcionam.
 - Termos do glossário em todo o texto; termo novo já registrado pela entrevista.
-- Mais de ~8 histórias ou mais de um objetivo de negócio → proponha dividir em dois épicos antes de escrever.
+- **Limite do épico:** o da linha Especificação do `acordos.md` (toda história conta, inclusive as desdobradas de
+  outra); sem a linha, ~8 histórias e um objetivo de negócio. Passou → proponha dividir em dois épicos antes de escrever.
 
 ## Saída
 
@@ -44,5 +51,6 @@ só aponta para eles. Regras de escrita:
 
 ## Pare se
 
-- Mais de ~8 histórias ou mais de um objetivo de negócio → a proposta de dividir vem antes da escrita (acima).
+- Acima do limite do épico (linha Especificação do `acordos.md`; sem ela, ~8 histórias ou mais de um objetivo de
+  negócio) → a proposta de dividir vem antes da escrita (acima).
 - Artefato que surgir na escrita passa pelo passo `similares` antes de virar arquivo.

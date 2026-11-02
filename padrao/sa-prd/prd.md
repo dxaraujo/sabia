@@ -40,6 +40,7 @@ atualizado: <AAAA-MM-DD>
 | HF-02 | [HF - <nome>](elm/HF-02-<slug>.md) | <description> | novo (verificado <AAAA-MM-DD>) |
 | REG-01 | — (existente no ELM) | <description> | reusa <id> |
 | GL | [<termo>](elm/GL-<termo>.md) | <definição curta> | novo (verificado <AAAA-MM-DD>) |
+| ET | [ET - EP-<nn> <título>](elm/ET-<slug>.md) | <description> — só com a linha ET = `inicial no PRD + as-built` | novo (verificado <AAAA-MM-DD>) |
 
 ## Decisões de implementação
 

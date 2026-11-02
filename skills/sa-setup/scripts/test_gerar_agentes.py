@@ -487,7 +487,8 @@ class Gerar(unittest.TestCase):
                  (lambda: self.exemplo(rubricas=[{"id": "P2", "verificacao": "repete", "severidade": "BLOQUEANTE"}]), "rubrica P2 já é de Sabiá"),
                  (lambda: self.exemplo(tipos={"EL": "exemplo.hf"}), "tipo EL → exemplo.hf: o tipo tem de ser desviável e não pendente"),
                  (lambda: self.exemplo(tipos={"GL": "exemplo.hf"}), "tipo GL"),
-                 (lambda: self.exemplo(tipos={"ET": "exemplo.hf"}), "tipo ET"),  # sem ponto de desvio até a ET inicial no PRD
+                 (lambda: self.exemplo(tipos={"CT": "exemplo.hf"}), "tipo CT"),  # CT não desvia (sem fluxo de toolkit)
+                 (lambda: self.exemplo(padroes=["sa-prd/hf.md", "sa-revisar/rubricas.md"]), "padrão sa-revisar/rubricas.md: o toolkit não troca a rubrica do Sabiá"),
                  (lambda: self.exemplo(rubricas=[{"id": "EX1", "tipo": "HF"}]), "rubrica EX1: precisa de id, verificacao e severidade"),
                  (lambda: self.exemplo(dono="sa-desenvolvedor"), "tipo HF: exemplo.hf tem dono sa-desenvolvedor; o passo sa-prd.prd.escrever é de sa-especificador")]
         for toolkits, erro in casos:

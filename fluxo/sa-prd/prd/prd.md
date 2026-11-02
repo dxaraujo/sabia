@@ -36,6 +36,7 @@ sessão com o P.O." e pare.
 ## Regras
 
 - Nunca invente regra, valor ou ator: sem fonte e sem decisão de uma pessoa, é `em aberto`.
-- O PRD não tem caminho de arquivo, nome de classe nem SQL — isso é do plano da fatia.
+- O PRD não tem caminho de arquivo, nome de classe nem SQL — isso é do plano da fatia. Nomes técnicos só na ET
+  inicial e na seção de dados da REG, pelas políticas da seção ELM do `sabia.md`.
 - Escreva no idioma do projeto; nomes de sistemas, tabelas e campos na forma original.
 - Não invoque nem simule outra skill além das que os passos mandam chamar (`sa-entrevistar`, o subagente revisor): depois do GATE, diga a próxima e pare.

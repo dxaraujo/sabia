@@ -212,7 +212,10 @@ Duas mensagens: a proposta (Status `⏸️ ainda não rodado`) e, depois do `ok`
 | 3 | ADRs | <`.sabia/adr` (existe) | `.sabia/adr` (será criada) | não há> | <🔍 | 📐 | 🙋> |
 | 4 | Usa ELM | <sim — `pa_<nome>.json` | não> | <🔍 | 🙋> |
 | 5 | Bundle do RM | <`docs/elm/<nome>` · <n> documentos | não baixado — `sa-sync` depois | ➖> | <🔍 | 🧩> |
-| 6 | Regras do ELM | publicar requisitos na aprovação · ET não publica · fatia dividida = filhos do item | 📐 |
+| 6 | Regras do ELM | publicar requisitos na aprovação · fatia dividida = filhos do item | 📐 |
+| 7 | ET (especificação técnica) | <não publica ⭐ | só as-built (o Dev, no PR) | inicial no PRD + as-built (ET do épico e da fatia, ligadas)> | 📐 |
+| 8 | Casos de teste | <ETM ⭐ (o `pa` tem `qm`) | CSV ⭐ (sem `qm` ou sem ELM: o `CT.csv` é a entrega) | decide o bloco 9 ⭐ (o `pa` é montado depois: ETM com `qm`, senão CSV)> | <🔍 | 📐 | 🧩> |
+| 9 | REG com dados técnicos | <não ⭐ | sim (a regra traz tabela e campo; a P9 não vale nessa seção)> | 📐 |
 ```
 
 Montagem do `pa` (só quando falta): um cartão por bloco, com o cabeçalho

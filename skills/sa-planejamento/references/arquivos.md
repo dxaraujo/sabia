@@ -82,6 +82,7 @@ URL abaixo, nunca um caminho local:
 | Cerimônias | planejamento (seg, 1h) · review (última qui, 30 min) · retrospectiva (última qui, 30 min) |
 | WIP | 1 fatia por sessão de agente · fatias esperando pessoa (`aguardando-aprovacao-plano`, `pr-aberto`, `em-revisao`, `em-verificacao`, `aceita`, `verificada`, `aguardando-aprovacao-pr`) ≤ 2 por revisor · PR parado > 1 dia: destravar antes de fatia nova (exceção fica registrada: `WIP excedido`) |
 | Tamanhos | P (horas) · M (≈ 1 dia) · G (2–3 dias) · maior → dividir (sem pontos; a previsão é pela vazão) |
+| Especificação | Épico com até 8 histórias (toda história conta, inclusive as desdobradas de outra) e um objetivo de negócio; mais → propor dividir em dois épicos antes de escrever o PRD |
 | Reserva (Sustentação + retrabalho) | 20% das horas da sprint do time, para a Sustentação sem mudança no repositório (toda categoria; a Manutenção entra pela vazão, como as fatias de épico) e o retrabalho da sprint anterior (fatias migradas primeiro); na virada, o P.O. pode mudar o % olhando o consumido (muda aqui, com "ok") |
 | Lançamento de horas | Cadência do time (padrão: ao fechar cada sessão de trabalho), em qualquer tarefa assumida; na conclusão, só o saldo. Lançar não conclui. Na `[GB]`, só o SM lança; o P.O. nunca lança (nem quando é também o SM): os créditos das sessões do P.O. e do SM vão num comentário na `[GB]` |
 

@@ -16,7 +16,7 @@
 | Rodadas | revisão do plano 0 · revisão do código 0 · verificação 0 · retrabalho 0 |
 | PR | — |
 | Bloqueio | — (ou: `<motivo>` · pergunta: `<pergunta exata>` — junto com `Fase: bloqueada (de: <fase>)`) |
-| ELM | <IB <id> (DF <id>, se o item da fatia é o defeito de origem) · DEV <id> · REV <id> · VER <id> (AFK: só DEV) · APR <id> (criadas nos gates) · CT <ids> (consolidação) \| sem ELM \| pendente> — os rótulos da coluna `elm` do backlog |
+| ELM | <IB <id> (DF <id>, se o item da fatia é o defeito de origem) · DEV <id> · REV <id> · VER <id> (AFK: só DEV) · APR <id> (criadas nos gates) · CT <ids> \| CT CSV <caminho> (consolidação, pela linha Casos de teste) \| sem ELM \| pendente> — os rótulos da coluna `elm` do backlog |
 | Banco (DDL) | <não se aplica \| pendente \| aplicada em dev \| aplicada em prod> |
 | Drift de negócio | — (marcado pela REV e pela VER: `não` \| `sim — <motivo>`) |
 

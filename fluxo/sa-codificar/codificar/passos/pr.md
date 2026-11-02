@@ -1,5 +1,5 @@
 ---
-{"resumo": "ADRs e ET as-built, branch atualizada pela base, texto do PR (padrão sa-codificar/pr.md), commit, push conferido, PR pelo gitlabpr, [APR] no AFK, status.md, horas e aviso."}
+{"resumo": "ADRs e ET as-built (ligada à ET inicial do épico, se houver), branch atualizada pela base, texto do PR (padrão sa-codificar/pr.md), commit, push conferido, PR pelo gitlabpr, [APR] no AFK, status.md, horas e aviso."}
 ---
 ## Entrada
 
@@ -14,11 +14,16 @@ Push e PR são do Dev: o agente `sa-desenvolvedor` (o Kiro confirma cada um) ou 
    (contexto · decisão · consequências · origem FT-<nnn>), descrevendo o que o código faz. Vai no PR: o Dev Sênior
    o julga na `[REV]` ou na `[APR]` (rubrica C15); a pasta de ADRs do projeto é artefato de produto (nunca em branch
    de fatia) — a consolidação o leva para lá.
-   **ET as-built** (só se a linha ET da seção ELM do `sabia.md` diz `as-built no merge`): `.kiro/specs/<ft>-<slug>/elm/ET-<slug>.md`,
-   conceito OKF no formato de [okf-elm.md](~/.sabia/framework/skills/sa-prd/references/okf-elm.md) (`type` = o tipo de ET do projeto, título
-   `ET - FT-<nnn> <título>`, `status: draft`), escrito do `design.md` e do código do PR: interfaces, contratos, dados,
-   integrações e decisões técnicas — nada do que não foi feito. Retrabalho que muda o que ela descreve a atualiza no
-   mesmo PR. Vai no PR e é julgada com os ADRs (rubrica C15); quem a publica no ELM é a consolidação.
+   **ET as-built** (só se a linha ET da seção ELM do `sabia.md` diz `só as-built` ou `inicial no PRD + as-built`):
+   `.kiro/specs/<ft>-<slug>/elm/ET-<slug>.md`, conceito OKF no formato de
+   [okf-elm.md](~/.sabia/framework/skills/sa-prd/references/okf-elm.md) (`type` = o tipo de ET do projeto, título
+   `ET - FT-<nnn> <título>`, `status: draft`) com o corpo do padrão `sa-prd/et.md`, escrito do `design.md` e do
+   código do PR: interfaces, contratos, dados, integrações e decisões técnicas — nada do que não foi feito. Fatia de
+   épico com ET inicial (`<produto>/epicos/<EP>-<slug>/elm/ET-*.md`) → ligada a ela: o **Elabora** aponta para a
+   inicial (o id publicado, se houver, vira `[<id>](<id>)` na publicação) e ela entra em `sources` como as entradas
+   `prd` e `d-nn` — `id: et-inicial`, `resource:` o caminho relativo da ET inicial e o título; nunca a URI do ELM
+   nem `id: elm`, que é a do próprio artefato. Fatia sem épico, ou épico sem ET inicial → sem ligação. Retrabalho que muda o que ela descreve a atualiza no mesmo PR. Vai no PR e é julgada
+   com os ADRs (rubrica C15); quem a publica no ELM é a consolidação.
 1. Branch atualizada com a base? `git fetch` e `git diff --name-only HEAD...origin/<base>`: vazio, ou só
    `<produto>/backlog.md`, `<produto>/sprints/**` e `.kiro/specs/` de outras fatias (os registros de situação que o
    time grava na base) → atualizada. Outro caminho (código, PRD, ficha) → desatualizada: numa sessão com a

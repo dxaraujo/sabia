@@ -11,7 +11,7 @@ no repositório, então o rascunho e a versão oficial se leem do mesmo jeito.
 | Origem | Pasta (um bundle OKF pequeno) |
 |---|---|
 | épico (PRD) | até o GATE do PRD, na pasta de trabalho local `.sabia/local/especificacao/<EP>-<slug>/elm/` (fora do git, anexada na `[ESP]`); aprovado, `<produto>/epicos/<EP>-<slug>/elm/` na base |
-| ET as-built de uma fatia (o Dev, no PR; publicada na consolidação) | `.kiro/specs/<ft>-<slug>/elm/` |
+| ET as-built de uma fatia (o Dev, no PR; publicada na consolidação; a ET inicial do épico, quando há, fica na pasta do épico) | `.kiro/specs/<ft>-<slug>/elm/` |
 | regra da ficha de uma fatia padrão sem épico (`sa-consolidar`, as-built) | `.kiro/specs/<ft>-<slug>/elm/` |
 
 ```
@@ -95,6 +95,7 @@ prosa (§6.1):
 | HF → REG | link relativo para o arquivo da REG |
 | HF/REG → termo | link relativo para o `GL-*.md` |
 | restringe, satisfaz, elabora (requisito ↔ requisito) | prosa + link na seção `## Relações` |
+| ET as-built → ET inicial do épico | link relativo no **Elabora** do corpo (padrão `sa-prd/et.md`): é publicado |
 
 A seção `## Relações` e os atributos (`verified`, `status`) ficam só no repositório. O resto do corpo é o texto
 publicado — como cada link vira no ELM: [elm-publicar.md](../../sa-consolidar/references/elm-publicar.md#requisitos-conceitos-okf-de-elm--doors-next), item 2.
@@ -128,6 +129,9 @@ okf_version: "0.2"
 
 # Termos
 * [Tentativa de login](GL-tentativa-de-login.md) - <description>
+
+# Especificação técnica
+* [ET - EP-03 Bloqueio por tentativas](ET-bloqueio-por-tentativas.md) - <description>
 ```
 
 `log.md`: `# Directory Update Log`, seções `## AAAA-MM-DD` (mais nova primeiro), itens `* **Creation**: …`,

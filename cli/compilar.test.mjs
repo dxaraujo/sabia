@@ -259,10 +259,10 @@ test("o repo real compila nos dois alvos e todo link da saída resolve", { skip:
 test("desvio por tipo no repo: o passo que cria um tipo desviável tem ⇢ e os tipos, sem \"desvio\": true", () => {
   const m = carregar(REPO), x = m.fluxos["sa-prd.prd"].passos.find((p) => p.id === "escrever");
   assert.ok(!x.desvio);
-  assert.deepEqual(x.tipos, ["HF", "REG"]);
-  assert.match(grafoAscii(m.fluxos["sa-prd.prd"]), /│ 4 escrever ⇢ +│──▶ ⇢ por tipo: HF, REG\n/);
+  assert.deepEqual(x.tipos, ["HF", "REG", "ET"]);
+  assert.match(grafoAscii(m.fluxos["sa-prd.prd"]), /│ 4 escrever ⇢ +│──▶ ⇢ por tipo: HF, REG, ET\n/);
   assert.ok(!m.fluxos["sa-prd.prd"].passos.some((p) => p.id === "similares" && p.tipos));
-  // só os passos de "desviavel" do catálogo: a ET as-built do PR e a REG da ficha da fatia sem épico ficam do Sabiá
+  // só os passos de "desviavel" do catálogo: a ET as-built do PR e a REG da ficha da fatia sem épico ficam do Sabiá (a ET inicial desvia)
   for (const [q, id] of [["sa-codificar.codificar", "pr"], ["sa-consolidar.consolidar", "elm"]]) {
     assert.ok(!m.fluxos[q].passos.find((p) => p.id === id).tipos, `${q}.${id}`);
     assert.doesNotMatch(grafoAscii(m.fluxos[q]), new RegExp(`\\d ${id} ⇢|por tipo`), `${q}.${id}`);
@@ -330,6 +330,13 @@ test("toolkit: recusa tipo fora, não desviável ou pendente, fluxo e padrão fo
     /tipo HF: exemplo\.hf tem dono sa-desenvolvedor; o passo sa-prd\.prd\.escrever é de sa-especificador/);
   const r = erros({ rubricas: [{ id: "EX1", tipo: "HF" }, { id: "ex2", verificacao: "v", severidade: "ALTA" }] });
   for (const rx of [/rubrica EX1: sem verificacao/, /rubrica EX1: severidade ""/, /rubrica ex2: id como EX1/, /rubrica ex2: severidade "ALTA"/]) assert.match(r, rx);
+  // a rubrica do Sabiá não tem camada: o toolkit só acrescenta itens (P5, P8 e P11 fixos)
+  assert.match(erros({ padroes: ["sa-prd/hf.md", "exemplo/campos.md", "sa-revisar/rubricas.md"] }, { "padrao/sa-revisar/rubricas.md": "# r\n\n| P5 | afrouxada | SUGESTÃO |\n" }),
+    /padrão sa-revisar\/rubricas\.md: o toolkit não troca a rubrica do Sabiá/);
+  // listada sem o arquivo: a recusa vem antes do "falta", que mandaria criar o que será recusado
+  const semArq = erros({ padroes: ["sa-prd/hf.md", "exemplo/campos.md", "sa-revisar/rubricas.md"] });
+  assert.match(semArq, /padrão sa-revisar\/rubricas\.md: o toolkit não troca a rubrica do Sabiá/);
+  assert.doesNotMatch(semArq, /falta padrao\/sa-revisar\/rubricas\.md/);
   assert.throws(() => compilarToolkit(REPO, exemplo({ tipos: { GL: "exemplo.hf" } }), path.join(raiz, "st"), { base: BASE, baseSabia: BASE, raizTk: "~/x" }), /o toolkit exemplo tem 1 erro/);
 });
 

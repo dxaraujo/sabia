@@ -15,13 +15,16 @@ Numa confirmação só, nesta ordem, como diz [elm-publicar.md](~/.sabia/framewo
 - *regra da ficha* (fatia padrão sem épico com regra nova ou alterada) — gerar o conceito OKF da regra as-built
   em `.kiro/specs/<ft>-<slug>/elm/` (formato do `okf-elm.md` da `sa-prd`; alteração → a partir do artefato do
   bundle), mostrar e, com o `verified` humano, publicar como os requisitos;
-- *especificação técnica* — se a linha ET do `sabia.md` diz `as-built no merge`: a ET **as-built** chegou escrita
-  pelo Dev no PR (`elm/ET-<slug>.md`) e foi julgada com o código (rubrica C15); você não a escreve nem a reescreve.
+- *especificação técnica* — se a linha ET do `sabia.md` diz `só as-built` ou `inicial no PRD + as-built`: a ET
+  **as-built** chegou escrita pelo Dev no PR (`elm/ET-<slug>.md`) e foi julgada com o código (rubrica C15); você
+  não a escreve nem a reescreve.
   O `verified` humano é de quem aprovou o código: `{ by: human:<login>, at: <data da aprovação> }` do revisor
   (`revisao-codigo-<N>.md` APROVADO, HITL) ou do Dev Sênior da `[APR] Aprovar PR` (AFK), com `status: stable`.
-  Sem a ET no PR → `ELM pendente [ET FT-<nnn> escrever]` para o Dev, que a entrega num PR curto;
-- *casos de teste* — um por cenário verificado (`verificacao.md`/`CT.csv`); ids no `verificacao.md` e no
-  `status.md`;
+  Sem a ET no PR → `ELM pendente [ET FT-<nnn> escrever]` para o Dev, que a entrega num PR curto. Fatia de épico com
+  ET inicial → a as-built sobe ligada a ela (seção ET as-built do `elm-publicar.md`);
+- *casos de teste* — pela linha Casos de teste do `sabia.md`: `ETM` (com `qm` no `pa`) → um por cenário verificado
+  (`verificacao.md`/`CT.csv`), ids no `verificacao.md` e no `status.md`; `CSV` (ou sem `qm`) → o `CT.csv` é a
+  entrega, sem ELM pendente;
 - *tarefas* — a consolidação **não** lança horas nem conclui `[DEV]`, `[REV]`, `[VER]` ou `[APR]`: cada skill de
   papel concluiu a sua (a `[DEV]` no merge, a `[REV]` ao aprovar, a `[VER]` ao aceitar, a `[APR]` na aprovação do
   plano ou do PR; no AFK não há `[REV]` nem `[VER]`). Tarefa da fatia ainda aberta (a `[DEV]` aberta já parou no

@@ -101,6 +101,8 @@ function versaoMenor(a, b) {
 /** O arquivo `f` está dentro da pasta `raiz` (caminhos relativos ou absolutos)? */
 const sob = (raiz, f) => path.resolve(f).startsWith(path.resolve(raiz) + path.sep);
 
+const RUBRICAS = "sa-revisar/rubricas.md";  // o toolkit só acrescenta itens (campo rubricas), nunca a camada
+
 /** Erros da fonte do toolkit (de carregarToolkit): o toolkit.json bate com fluxo/ e padrao/, tipos, rubricas, requer e o validar. */
 export function validarToolkitFonte(m) {
   const { man } = m, erros = [], dele = (arq) => sob(m.fw, arq);
@@ -116,7 +118,8 @@ export function validarToolkitFonte(m) {
   for (const s of fonte ? m.skills : []) if (!fs.existsSync(path.join(m.fw, "skills", s, "SKILL.md"))) erros.push(`skill ${s}: com fluxos ou padrões, as skills ficam em skills/<nome>/SKILL.md`);
   for (const p of man.padroes || []) {
     const [s, n] = p.split("/"), meu = m.padroes[s]?.find((x) => x.nome === n && dele(x.arq));
-    if (!meu) erros.push(`padrão ${p}: falta padrao/${p}`);
+    if (p === RUBRICAS) erros.push(`padrão ${p}: o toolkit não troca a rubrica do Sabiá (P5, P8 e P11 ficam fixos); itens novos vão em rubricas`);
+    else if (!meu) erros.push(`padrão ${p}: falta padrao/${p}`);
     // camada só sobre padrão que o Sabiá tem; padrão novo é de uma skill do toolkit
     else if (!m.skills.includes(s) && !fs.existsSync(path.join(m.fwSabia, "padrao", p))) erros.push(`padrão ${p}: não é padrão do Sabiá nem de uma skill do toolkit`);
   }

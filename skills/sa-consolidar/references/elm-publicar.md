@@ -9,7 +9,8 @@ Entrada: a pasta `elm/` do épico ou, numa fatia padrão sem épico, a da fatia.
 com um `verified` humano posterior ao `generated.at`; o resto aparece na prévia como "aguardando aprovação". Os tipos
 com Requisito `não` no catálogo ficam fora (a ATA tem a seção dela, abaixo).
 Ordem: a **de publicação** do [catálogo de tipos](../../sabia/references/tipos.md), de baixo para cima, para cada um
-nascer com os ids que cita (a ET segue a seção ET as-built abaixo).
+nascer com os ids que cita. A ET inicial do épico (linha ET = `inicial no PRD + as-built`) entra nessa ordem, com os
+requisitos; a as-built da fatia segue a seção ET as-built abaixo.
 
 1. **Conceito novo** (sem `resource`): a coluna "No ELM" do PRD/ficha tem de dizer `novo (verificado <data>)`; sem
    isso → [similares](../../sa-prd/references/similares.md) só para ele. Acerto `igual`/`sobrepõe` → não cria: devolve
@@ -36,16 +37,27 @@ Fora da ordem de publicação e da política Publicar requisitos: cada ATA sobe 
    `ATA` em `rm.artefatos` — e `elm_ligar(wi = id da [ESP], req = id da ATA)`, numa confirmação.
 3. **Grave de volta** na ATA, como no item 4 dos requisitos; `**Publication**` no `log.md`.
 
-## ET as-built (só se a seção ELM do `sabia.md` disser `as-built no merge`)
+## ET as-built (só se a linha ET da seção ELM do `sabia.md` disser `só as-built` ou `inicial no PRD + as-built`)
 
 A ET chega no PR (`.kiro/specs/<ft>-<slug>/elm/ET-<slug>.md`); publique como um requisito (sigla `ET`) e
-`elm_ligar(wi = IB, req = ET)`.
+`elm_ligar(wi = IB, req = ET)`. Uma ET por fatia: nunca sobre o id da inicial. A entrada `et-inicial` do `sources`
+(caminho relativo da inicial, sem URI) não entra no `modificado_em` nem no conflito: esses vêm só da `id: elm`.
+
+- **Fatia de épico com ET inicial:** o **Elabora** dela vira `[<id da inicial>](<id da inicial>)` no texto, como
+  um requisito já publicado (item 2 dos requisitos). Inicial ainda sem id → publique-a antes, pela ordem dos
+  requisitos; sem o "sim" para ela → `ELM pendente [ET FT-<nnn> ligar]` e a as-built sobe com o título da inicial.
+- **Fatia sem épico** (ou épico sem ET inicial): sem ligação.
 
 ## Casos de teste (cenários `✅ aceito` do `verificacao.md`)
 
+Pela linha **Casos de teste** da seção ELM do `sabia.md`:
+- **`CSV`**, ou o `pa` sem `qm`: o `CT.csv` da fatia é a entrega — nenhum `elm_criar_ct` e nenhuma `ELM pendente`.
+  Diga o caminho dele (o time o importa no ETM se quiser); no campo ELM do `status.md`, `CT CSV <caminho>`.
+- **`ETM`**, com `qm` no `pa`: como abaixo.
+
 Para cada cenário sem id ao lado: `elm_criar_ct(titulo = Resumo do CT.csv, cenario_md = Descrição, reqs = ids das
 histórias que ele cobre — sem épico: a regra da ficha —, wi = IB)` → grave o id ao lado do cenário e no campo ELM do
-`status.md` (`CT <id>, …`). Erro (`permissao`, `config` sem `qm`) → `ELM pendente [CT FT-<nnn> criar]` e o `CT.csv`
+`status.md` (`CT <id>, …`). Erro `permissao` → `ELM pendente [CT FT-<nnn> criar]` e o `CT.csv`
 para importar à mão no ETM; com os ids que a pessoa informar, `elm_ligar(ct, req)` e `elm_ligar(wi, ct)`.
 
 ## Conclusão do IB e do épico

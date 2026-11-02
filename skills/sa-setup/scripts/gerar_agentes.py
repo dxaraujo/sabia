@@ -246,7 +246,9 @@ def fonte_toolkits(projeto, cfg, fw, fluxos):
             if meu(f"fluxo {q}", nome):
                 fluxos[q] = {**fl, "toolkit": nome}
         for p in man.get("padroes", []):
-            if meu(f"padrão {p}", nome):
+            if p == "sa-revisar/rubricas.md":  # o toolkit só acrescenta itens (rubricas); P5, P8 e P11 ficam fixos
+                erros.append(f"toolkit {nome}: padrão {p}: o toolkit não troca a rubrica do Sabiá; itens novos vão em rubricas")
+            elif meu(f"padrão {p}", nome):
                 fontes[p] = real / "padrao" / p
                 if p.startswith("sa-"):  # camada sobre o do Sabiá; o da skill do toolkit já vai com ela
                     linhas_padrao[p] = f"- padrão `{p}`: `{comp}/padrao/{p}` (toolkit `{nome}`; no lugar do da skill)"

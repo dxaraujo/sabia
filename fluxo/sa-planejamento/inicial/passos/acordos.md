@@ -1,5 +1,5 @@
 ---
-{"resumo": "Acordos do time (acordos.md): cadência Scrumban, WIP, DoR e DoD, tamanho, reserva e cadência de horas; depois deles, grava a equipe."}
+{"resumo": "Acordos do time (acordos.md): cadência Scrumban, WIP, DoR e DoD, tamanho, limites da especificação, reserva e cadência de horas; depois deles, grava a equipe."}
 ---
 ## Entrada
 
@@ -17,6 +17,9 @@ A equipe confirmada (passo `equipe`), ainda não gravada.
 - **Definition of Ready** e **Definition of Done** (padrão no `arquivos.md`);
 - tamanho: `P`/`M`/`G` — só para a Definition of Ready e para saber quando dividir (maior que G → dividir);
   pontos por tamanho, só se o time os quiser no EWM;
+- **especificação** (linha `Especificação`, lida no passo `sa-prd.prd.escrever`): o limite do épico (padrão até
+  **8 histórias**, toda história conta, inclusive as desdobradas de outra, e um objetivo de negócio; passou →
+  propor dividir em dois épicos);
 - **reserva (Sustentação + retrabalho)** (padrão **20% das horas da sprint do time**) — cobre a
   **Sustentação** sem mudança no repositório (toda categoria: `[ATD]`, `[IMPL]`…; a Manutenção não: as fatias
   dela entram pela vazão, como as de épico) e o **retrabalho da sprint anterior** (o que falta das fatias

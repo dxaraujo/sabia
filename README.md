@@ -73,7 +73,7 @@ Fontes no fim deste arquivo.
 | `sa-codificar` | TDD + backpressure, commits pequenos, revisão e PR (termina no PR) |
 | `sa-revisar` | revisão independente: PRD (P), plano (L), código (C, dois eixos) |
 | `sa-verificar` | aceite de ponta a ponta com evidência; `CT.csv` para o ETM |
-| `sa-consolidar` | fatia `pronta` (pós-merge) → `concluida`, processo de produto (P.O. ou SM, agente `sa-produto`, créditos num comentário na `[GB]`; horas só do SM): drift marcado pela revisão e pela verificação, ELM as-built (requisitos, ET, casos de teste criados no ETM), ADRs do PR, glossário, conclusão |
+| `sa-consolidar` | fatia `pronta` (pós-merge) → `concluida`, processo de produto (P.O. ou SM, agente `sa-produto`, créditos num comentário na `[GB]`; horas só do SM): drift marcado pela revisão e pela verificação, ELM as-built (requisitos, ET, casos de teste (ETM ou CSV, pela política)), ADRs do PR, glossário, conclusão |
 | `sa-sync` | sincroniza o bundle OKF do DOORS Next nas duas vias (plano, baixar, enviar, conflitos) e, depois de baixar, pergunta se indexa o bundle local |
 | `sa-orquestrar` | fatias AFK até o PR, uma worktree por fatia, uma fase por contexto limpo |
 | `sa-aprender` | lições, promoção de regras, retrospectiva com dados, casos de avaliação |

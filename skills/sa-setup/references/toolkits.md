@@ -160,7 +160,8 @@ padrao/sa-prd/hf.md                camada sobre o padrão do Sabiá de mesmo nom
   agentes ("no lugar do da skill"); o `.sabia/padrao/` do projeto vale sobre os dois. O override do projeto
   (`.sabia/fluxo/`) também vale sobre os passos dos fluxos do toolkit, com a `base` tirada da fonte do toolkit.
 - **Colisão:** dois toolkits do projeto no mesmo tipo, no mesmo padrão, no mesmo id de fluxo ou de item de rubrica →
-  o gerador recusa e não grava nada. Item de rubrica com o id de um do Sabiá também.
+  o gerador recusa e não grava nada. Item de rubrica com o id de um do Sabiá também, e o padrão `sa-revisar/rubricas.md`
+  no `padroes`: o toolkit só acrescenta itens (`rubricas`); P5, P8 e P11 valem igual no que o fluxo dele escreve.
 
 ## Proposta por agente
 

@@ -239,7 +239,7 @@
     "padroes": {
       "type": "array",
       "uniqueItems": true,
-      "description": "Opcional: padrões do toolkit, <skill>/<nome>.md, em padrao/<skill>/<nome>.md. Com uma skill sa-*, é a camada sobre o padrão do Sabiá de mesmo nome (framework < toolkit < projeto); com uma skill do toolkit, é padrão dela.",
+      "description": "Opcional: padrões do toolkit, <skill>/<nome>.md, em padrao/<skill>/<nome>.md. Com uma skill sa-*, é a camada sobre o padrão do Sabiá de mesmo nome (framework < toolkit < projeto); com uma skill do toolkit, é padrão dela. sa-revisar/rubricas.md não entra: itens novos vão em rubricas.",
       "items": {
         "type": "string",
         "pattern": "^[a-z0-9][a-z0-9-]*/[a-z0-9][a-z0-9.-]*\\.md$"

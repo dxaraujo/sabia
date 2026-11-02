@@ -8,7 +8,9 @@ depois); **SUGESTÃO** não reprova nem reabre ciclo. Todo achado tem **evidênc
 saída, ou "procurado em X, não encontrado") e a **correção** esperada. Achado sem evidência não é achado.
 
 Regras promovidas (seção Regras aprendidas do `.sabia/sabia.md`) valem como itens extras da rubrica do artefato a que se
-referem, com a severidade registrada nelas.
+referem, com a severidade registrada nelas. Os itens de rubrica de um toolkit (no prompt do revisor e na seção Tipos com
+fluxo de toolkit do `sabia.md`) também só se somam: nenhum troca, afrouxa ou dispensa um item daqui — P5, P8 e P11
+valem igual no artefato que o fluxo de um toolkit escreve.
 
 ## P — PRD (`prd.md` + `decisoes.md`)
 
@@ -22,9 +24,10 @@ referem, com a severidade registrada nelas.
 | P6 | Comportamento já documentado no ELM é **alterado** ou **reutilizado**, não duplicado: todo artefato tem a coluna "No ELM" preenchida (`reusa`, `altera` ou `novo (verificado <data>)`) com a decisão no `decisoes.md`; conceito novo sem verificação, ou com acerto `igual`/`sobrepõe` sem motivo registrado — conferir também no bundle (pelo `elm_buscar_req_local`) | BLOQUEANTE |
 | P7 | Termos canônicos do glossário em todo o texto; nenhum sinônimo listado em "Evitar" | IMPORTANTE |
 | P8 | Nenhuma decisão `em aberto` que mude comportamento | BLOQUEANTE |
-| P9 | Sem caminho de arquivo, classe, SQL ou código | SUGESTÃO |
+| P9 | Sem caminho de arquivo, classe, SQL ou código — fora da ET (P13) e, com a linha REG com dados técnicos = `sim` do `sabia.md`, da seção `## Dados` da REG | SUGESTÃO |
 | P10 | Fora de escopo explícito | SUGESTÃO |
 | P11 | Conceitos OKF v0.2 em `elm/` conformes (checklist "Conformidade" de `okf-elm.md` da `sa-prd`): frontmatter que faz parse, `type` e `tags` do mapeamento do projeto, só chaves do OKF v0.2 (+ `id`), `status: draft` antes do GATE (fora a ATA aprovada), HF ligando as suas REGs, links que resolvem, `index.md` completo | BLOQUEANTE |
+| P13 | Com a linha ET do `sabia.md` = `inicial no PRD + as-built`: uma ET inicial do épico em `elm/` (padrão `sa-prd/et.md`), que cobre as Decisões de implementação do `prd.md` (módulos, contratos, dados, integrações), liga as histórias que atende e cita a origem de cada item (`D-nn`, PRD, artefato do ELM ou fonte); nada que o PRD e as decisões não sustentem. Com outro valor, nenhuma ET no PRD | BLOQUEANTE |
 
 Fecho: `RESULTADO: PRONTO` ou `RESULTADO: AJUSTAR`.
 
@@ -75,7 +78,7 @@ Reprovação em qualquer eixo é `REVISAR`.
 | C12 | Nomes do domínio = termos canônicos do glossário; nomes técnicos no padrão dos vizinhos | IMPORTANTE |
 | C13 | Módulos profundos: interface pequena para o que esconde; sem abstração especulativa, camada a mais ou duplicação evitável | IMPORTANTE |
 | C14 | Sem `TODO`/`FIXME`, print/log de depuração ou código comentado; registros obrigatórios da estrutura (rotas, menus, agendamentos, migrações) presentes | IMPORTANTE |
-| C15 | Cada decisão do `design.md` com "Vira ADR? sim" tem o ADR no PR, em `.kiro/specs/<ft>-<slug>/adr/` (contexto · decisão · consequências · origem FT-nnn), e ele descreve o que o código faz; com a linha ET do `sabia.md` = `as-built no merge`, a ET em `elm/ET-<slug>.md` também está no PR e descreve o que o diff faz (interfaces, contratos, dados), nada além | IMPORTANTE |
+| C15 | Cada decisão do `design.md` com "Vira ADR? sim" tem o ADR no PR, em `.kiro/specs/<ft>-<slug>/adr/` (contexto · decisão · consequências · origem FT-nnn), e ele descreve o que o código faz; com a linha ET do `sabia.md` = `só as-built` ou `inicial no PRD + as-built`, a ET em `elm/ET-<slug>.md` também está no PR, no padrão `sa-prd/et.md`, descreve o que o diff faz (interfaces, contratos, dados), nada além, e, na fatia de épico com ET inicial, a liga no Elabora | IMPORTANTE |
 
 Calibragem: seja cético (o autor tende a achar que terminou), mas aponte só o que afeta **correção, requisito,
 segurança ou manutenção real**. Gosto pessoal e "eu faria diferente" são SUGESTÃO, quando muito — perseguir cada
