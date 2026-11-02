@@ -88,25 +88,10 @@
     </div>
   </section>
 
-  <section id="novo">
-    <div class="lead-sec"><h2>O que muda na 2.0</h2><p>O fluxo é o mesmo. O que muda é como ele é escrito, instalado e estendido.</p></div>
-    <div class="scroll"><table><thead><tr><th>Antes (1.x)</th><th>2.0</th></tr></thead><tbody>
-     <tr><td>cada skill trazia o procedimento inteiro no <code>SKILL.md</code></td><td><b>fluxos</b> com um arquivo por passo e ids <code>skill.fluxo.passo</code>, compilados na instalação (<a href="como-funciona.html">como funciona</a>)</td></tr>
-     <tr><td>Kiro, Claude Code e opencode</td><td><b>Kiro (motor v3) e opencode</b>, instalados pelo <code>npx sabia instalar</code></td></tr>
-     <tr><td>customizar = editar a skill</td><td>override esparso em <code>.sabia/fluxo/</code> e <code>.sabia/padrao/</code>, pela <code>sa-setup</code>; o agente dono recebe só o delta (<a href="toolkits.html#customizar">customizar</a>)</td></tr>
-     <tr><td>toolkit pelo papel (<code>passo.papel</code>)</td><td>pelo id do passo (<code>passo.passo</code>, com <code>arquivos</code>); o 1.x ainda é aceito (<a href="toolkits.html#desvio">desvio</a>)</td></tr>
-     <tr><td><code>.sabia/verificar.sh</code> antes de cada commit</td><td>o passo <code>sa-codificar.codificar.validar</code>, com a seção Comandos do <code>sabia.md</code></td></tr>
-     <tr><td>glossário e ADRs em <code>docs/</code></td><td><code>.sabia/glossario.md</code> e <code>.sabia/adr/</code></td></tr>
-     <tr><td>shell por lista de comandos</td><td>liberado para quem escreve no projeto, menos o <code>negar</code> e o push do papel</td></tr>
-     <tr><td><code>sa-codificador</code>, <code>sa-loop</code></td><td><code>sa-desenvolvedor</code> (papel <code>desenvolvedor</code>), <code>sa-orquestrar</code> (o agente <code>sa-orquestrador</code> fica)</td></tr>
-    </tbody></table></div>
-    <p style="margin-top:10px;max-width:90ch">Num projeto da 1.x, peça "atualizar a configuração do Sabiá": a setup apaga o <code>verificar.sh</code>, grava a versão no <code>agentes.json</code>, refaz o <code>sabia.md</code> preservando as Regras aprendidas e regenera os agentes.</p>
-  </section>
-
   <section id="explorar">
     <div class="lead-sec"><h2>Explore o fluxo</h2><p>O mapa mostra o caminho. Estas páginas mostram quem faz cada passo, o que fica gravado e onde uma pessoa aprova.</p></div>
     <div class="portas">
-      <a class="porta" href="como-funciona.html" style="--c:var(--navy)"><span class="n">2.0</span><h3>Como funciona</h3><p>Fluxos e passos na fonte, a compilação das skills na instalação, os agentes gerados e a execução, em diagramas.</p><span class="ir">Ver por dentro</span></a>
+      <a class="porta" href="como-funciona.html" style="--c:var(--navy)"><span class="n">fonte</span><h3>Como funciona</h3><p>Fluxos e passos na fonte, a compilação das skills na instalação, os agentes gerados e a execução, em diagramas.</p><span class="ir">Ver por dentro</span></a>
       <a class="porta" href="papeis.html" style="--c:var(--blue)"><span class="n">7</span><h3>Papéis e agentes</h3><p>Quem faz o quê, a tarefa de cada papel e os agentes gerados com permissões mínimas.</p><span class="ir">Ver os papéis</span></a>
       <a class="porta" href="arquivos.html" style="--c:var(--green)"><span class="n">git</span><h3>Arquivos</h3><p>O que vai para o git, o que fica local e o que a setup instala, arquivo por arquivo.</p><span class="ir">Ver a árvore</span></a>
       <a class="porta" href="ciclo.html" style="--c:var(--cyan)"><span class="n">HITL</span><h3>Ciclo da fatia</h3><p>As fases do <code>status.md</code> em HITL e AFK, e as situações no backlog e na sprint.</p><span class="ir">Ver o ciclo</span></a>
