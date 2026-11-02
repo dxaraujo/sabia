@@ -56,3 +56,21 @@ nav.tabs a[aria-current="page"]::after{content:"";position:absolute;left:8px;rig
 .pdz .dz-passos{border:1px solid var(--line);box-shadow:0 8px 24px rgba(140,149,159,.2)}
 .pdz .dz-passos .prox{background:#1F883D;box-shadow:none;padding-left:16px}
 footer{border-top:1px solid var(--line)}
+
+/* escuro: tokens do tema dark default do Primer */
+:root[data-modo="escuro"]{
+  --bg:#0D1117; --card:#0D1117; --ink:#F0F6FC; --title:#F0F6FC; --muted:#9198A1; --line:#3D444D; --soft:#151B23; --grey:#151B23; --grey2:#262C36;
+  --brand:#4493F8; --brand-hover:#539BF5; --blue:#4493F8; --navy:#3D444D;
+  --cyan:#79C0FF; --teal:#39C5CF; --green:#3FB950; --yellow:#D29922; --orange:#DB6D28; --red:#F85149;
+  --l-epico:#AB7DF8; --l-hitl:#4493F8; --l-afk:#79C0FF; --l-atd:#3FB950; --l-min:#39C5CF; --l-sprint:#D29922; --l-rapida:#DB6D28;
+  --hero-bg:#010409; --hero-fg:#F0F6FC; --panel-bg:#151B23;
+}
+[data-modo="escuro"] .sign.hero{border:1px solid var(--line)}
+[data-modo="escuro"] .top .gh,[data-modo="escuro"] .chip:not([aria-pressed="true"]){background:#212830;border-color:var(--line);color:var(--ink)}
+[data-modo="escuro"] .top .gh:hover,[data-modo="escuro"] .chip:hover{background:#262C36}
+[data-modo="escuro"] nav.tabs a{color:var(--ink)}
+[data-modo="escuro"] nav.tabs a:hover{background:rgba(101,108,118,.2)}
+[data-modo="escuro"] .ficha{border-color:var(--line)}
+[data-modo="escuro"] .porta:hover{border-color:#4493F8}
+[data-modo="escuro"] .porta .n{color:color-mix(in srgb,var(--c) 70%,#fff)}
+[data-modo="escuro"] .porta .ir{color:#4493F8}

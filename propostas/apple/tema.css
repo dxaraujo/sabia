@@ -61,3 +61,21 @@ nav.tabs a[aria-current="page"]{background:#fff;color:var(--ink);font-weight:600
 .mapnote{background:#fff}
 footer{border-top:.5px solid var(--line)}
 .svc{background:#fff}.svc code{background:var(--soft)}
+
+/* escuro: cores de sistema do modo escuro (fundo preto, cartões #1C1C1E) */
+:root[data-modo="escuro"]{
+  --bg:#000000; --card:#1C1C1E; --ink:#F5F5F7; --title:#F5F5F7; --muted:#98989D; --line:#38383A; --soft:#2C2C2E; --grey:#1C1C1E; --grey2:#3A3A3C;
+  --brand:#0A84FF; --brand-hover:#409CFF; --blue:#0A84FF; --navy:#3A3A3C;
+  --cyan:#64D2FF; --teal:#40C8E0; --green:#30D158; --lime:#63E6E2; --yellow:#FFD60A; --orange:#FF9F0A; --red:#FF453A;
+  --l-epico:#5E5CE6; --l-hitl:#0A84FF; --l-afk:#64D2FF; --l-atd:#30D158; --l-min:#63E6E2; --l-sprint:#FFD60A; --l-rapida:#FF9F0A;
+  --hero-fg:#F5F5F7; --panel-bg:#1C1C1E;
+}
+[data-modo="escuro"] body::before{background:rgba(0,0,0,.8)}
+[data-modo="escuro"] nav.tabs{background:rgba(44,44,46,.6);border-color:rgba(255,255,255,.1);box-shadow:0 6px 24px rgba(0,0,0,.5)}
+[data-modo="escuro"] nav.tabs a:hover{background:rgba(120,120,128,.24)}
+[data-modo="escuro"] nav.tabs a[aria-current="page"]{background:#636366;color:#fff;box-shadow:none}
+[data-modo="escuro"] .top .gh{color:#0A84FF;background:rgba(10,132,255,.18)}
+[data-modo="escuro"] .razoes article{background:var(--card)}
+[data-modo="escuro"] .chip:not([aria-pressed="true"]),[data-modo="escuro"] code{background:rgba(118,118,128,.24)}
+[data-modo="escuro"] .pdz .dz-passos{background:rgba(28,28,30,.7);border-color:rgba(255,255,255,.1)}
+[data-modo="escuro"] .porta .ir{color:#0A84FF}

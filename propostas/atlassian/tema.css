@@ -53,3 +53,20 @@ nav.tabs a[aria-current="page"]{background:none;color:#1868DB;border-bottom-colo
 .pdz .dz-passos{border:0;box-shadow:var(--overlay)}
 .pdz .dz-passos .prox{background:#1868DB;box-shadow:none;padding-left:16px}
 footer{border-top:1px solid var(--line)}
+
+/* escuro: tokens do tema escuro do ADS */
+:root[data-modo="escuro"]{
+  --bg:#1F1F21; --card:#242528; --ink:#CECFD2; --title:#DFE1E5; --muted:#96999E; --line:#3D3F43; --soft:#2B2C2F; --grey:#18191A; --grey2:#333438;
+  --brand:#669DF1; --brand-hover:#8FB8F6; --blue:#669DF1; --navy:#44464B;
+  --raised:0 0 0 1px #3D3F43; --overlay:0 8px 12px #01040475,0 0 1px #01040480;
+  --hero-bg:#18191A; --hero-fg:#DFE1E5; --panel-bg:#2B2C2F;
+}
+[data-modo="escuro"] .top .gh{background:var(--soft);color:var(--ink)}
+[data-modo="escuro"] .top .gh:hover{background:var(--grey2);color:var(--title)}
+[data-modo="escuro"] nav.tabs a{color:var(--muted)}
+[data-modo="escuro"] nav.tabs a:hover{color:var(--ink);border-bottom-color:#5D5F65}
+[data-modo="escuro"] nav.tabs a[aria-current="page"]{color:#669DF1;border-bottom-color:#669DF1}
+[data-modo="escuro"] :is(.sign.hero .lead,.lead-sec p,.install .how){color:var(--muted)}
+[data-modo="escuro"] .install button{color:#1F1F21}
+[data-modo="escuro"] .porta .n{background:color-mix(in srgb,var(--c) 24%,var(--card));color:color-mix(in srgb,var(--c) 55%,#fff)}
+[data-modo="escuro"] .porta .ir{color:#669DF1}

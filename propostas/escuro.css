@@ -1,0 +1,21 @@
+/* Modo escuro: <html data-modo="escuro">. Cada tema define os tokens escuros no tema.css; aqui, as superfícies que o
+   site fixou em branco passam a usar os tokens. No mapa, nas trilhas e nas portas, o --navy vira a cor do texto: ali ele
+   desenha linhas e estações, que precisam aparecer no fundo escuro. Fora deles, o navy segue escuro (fundo de texto branco). */
+:root[data-modo="escuro"]{color-scheme:dark}
+[data-modo="escuro"] :is(.mapbox,.panel,.chip:not([aria-pressed="true"]),.maptools button,.ficha,.porta,.tree,.ewmtree,.pdz .dz-vista,.install .url,.scroll){background:var(--card)}
+[data-modo="escuro"] :is(.tag,.svc code,.flowr span,.mapnote,.svc:not(:hover):not(.sel)){background:var(--soft)}
+[data-modo="escuro"] .pdz .dz-passos{background:color-mix(in srgb,var(--card) 94%,transparent)}
+[data-modo="escuro"] .pdz .dz-passos .ant{background:var(--soft);color:var(--ink)}
+[data-modo="escuro"] .note,[data-modo="escuro"] .aviso{background:color-mix(in srgb,var(--yellow) 14%,var(--card))}
+[data-modo="escuro"] .note.warn{background:color-mix(in srgb,var(--red) 16%,var(--card))}
+[data-modo="escuro"] .svc:hover b,[data-modo="escuro"] .svc.sel b,[data-modo="escuro"] .svc:hover span,[data-modo="escuro"] .svc.sel span{color:#fff}
+[data-modo="escuro"] .install code{color:var(--ink)}
+
+/* mapa, trilhas e portas */
+[data-modo="escuro"] :is(#map,.itin,.trilho,.portas,.mapnote){--navy:var(--ink)}
+[data-modo="escuro"] svg .st:not(.g-gate):not(:hover):not(.sel) .body,[data-modo="escuro"] svg .xlab rect,[data-modo="escuro"] .pdz .dz-via rect,[data-modo="escuro"] svg .train .tb{fill:var(--card)}
+[data-modo="escuro"] svg .st .gtxt{fill:var(--card)}
+[data-modo="escuro"] svg .halo-t{stroke:var(--card)}
+[data-modo="escuro"] .pdz .dz-casing path{stroke:var(--card)}
+[data-modo="escuro"] .itin .dot,[data-modo="escuro"] .trilho li::after{background:var(--card)}
+[data-modo="escuro"] .itin li.gate .dot,[data-modo="escuro"] .trilho li.ok::after{background:var(--navy)}

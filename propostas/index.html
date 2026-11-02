@@ -15,6 +15,7 @@ header p{margin:8px 0 0;color:var(--muted);max-width:72ch}
 h2{margin:0 0 12px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 a{color:inherit}
 .paletas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.modos{grid-template-columns:repeat(2,minmax(0,1fr));max-width:calc((100% - 10px) * 2 / 3)}
 .paletas label{display:flex;flex-direction:column;gap:10px;padding:14px 16px;background:var(--card);border:1.5px solid var(--line);border-radius:12px;cursor:pointer}
 .paletas label:has(input:checked){border-color:var(--sel);box-shadow:0 0 0 1px var(--sel)}
 .paletas label:has(input:focus-visible){outline:2px solid #2b6cf0;outline-offset:2px}
@@ -41,7 +42,7 @@ a{color:inherit}
 .ap .amostra{background:#F2F2F7;color:#1D1D1F;font-family:-apple-system,"SF Pro Display","Inter",sans-serif;font-weight:700}
 footer{color:var(--muted);font-size:13px}
 @media (max-width:980px){.sistemas{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:620px){.sistemas,.paletas{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:620px){.sistemas,.paletas{grid-template-columns:minmax(0,1fr)}.modos{max-width:none}}
 </style>
 </head>
 <body>
@@ -64,9 +65,17 @@ footer{color:var(--muted);font-size:13px}
   </section>
 
   <section>
+    <h2>Modo</h2>
+    <div class="paletas modos" role="radiogroup" aria-label="Modo">
+      <label><input type="radio" name="modo" value="claro" checked><b>Claro</b><small>Fundo claro, como o site de hoje.</small><span class="sw"><i style="background:#ffffff;box-shadow:inset 0 0 0 1px #dedee4"></i><i style="background:#f2f2f7"></i></span></label>
+      <label><input type="radio" name="modo" value="escuro"><b>Escuro</b><small>Tokens escuros de cada sistema; vale para as três paletas.</small><span class="sw"><i style="background:#0d1117"></i><i style="background:#1c1c1e"></i></span></label>
+    </div>
+  </section>
+
+  <section>
     <h2>Sistema</h2>
     <div class="sistemas">
-      <a class="sis ev" data-d="evergreen" href="evergreen/index.html?paleta=nova"><div class="amostra">Aa<span>SF UI</span></div><div class="corpo"><h3>Evergreen</h3><p>Segment</p>
+      <a class="sis ev" data-d="evergreen" href="evergreen/index.html?paleta=nova&amp;modo=claro"><div class="amostra">Aa<span>SF UI</span></div><div class="corpo"><h3>Evergreen</h3><p>Segment</p>
         <ul><li>Neutros azul-acinzentados</li><li>Cantos de 4 e 8px, sombras de elevação</li><li>Aba ativa com fundo azul-claro</li><li>Badges em caixa alta</li></ul><span class="abrir">Abrir</span></div></a>
       <a class="sis at" data-d="atlassian" href="atlassian/index.html?paleta=nova"><div class="amostra">Aa<span>Inter</span></div><div class="corpo"><h3>Atlassian</h3><p>Atlassian Design System</p>
         <ul><li>Texto grafite, cartões elevados sem borda</li><li>Cantos de 4 e 8px</li><li>Abas sublinhadas</li><li>Lozenges em caixa alta</li></ul><span class="abrir">Abrir</span></div></a>
@@ -81,13 +90,12 @@ footer{color:var(--muted);font-size:13px}
 </div>
 <script>
 (function(){
-  var radios=document.querySelectorAll('input[name=paleta]'), p;
-  try{p=localStorage.getItem('sabia-paleta')}catch(e){}
-  radios.forEach(function(r){if(r.value===p) r.checked=true});
+  var radios=document.querySelectorAll('input[name=paleta],input[name=modo]');
+  radios.forEach(function(r){var s;try{s=localStorage.getItem('sabia-'+r.name)}catch(e){} if(r.value===s) r.checked=true});
+  function val(n){var v=document.querySelector('input[name='+n+']:checked').value;try{localStorage.setItem('sabia-'+n,v)}catch(e){} return v}
   function links(){
-    var v=document.querySelector('input[name=paleta]:checked').value;
-    try{localStorage.setItem('sabia-paleta',v)}catch(e){}
-    document.querySelectorAll('.sis').forEach(function(a){a.href=a.dataset.d+'/index.html?paleta='+v});
+    var q='?paleta='+val('paleta')+'&modo='+val('modo');
+    document.querySelectorAll('.sis').forEach(function(a){a.href=a.dataset.d+'/index.html'+q});
   }
   radios.forEach(function(r){r.addEventListener('change',links)});
   links();

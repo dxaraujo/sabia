@@ -51,3 +51,21 @@ nav.tabs a[aria-current="page"]{background:#EBF0FF;color:#3366FF}
 .pdz .dz-ficha{box-shadow:var(--e2)}
 .pdz .dz-passos{border:1px solid var(--line);box-shadow:var(--e2)}
 footer{border-top:1px solid var(--line)}
+
+/* escuro: o Evergreen não tem modo escuro oficial; derivado dos cinzas azulados dele (gray900 #101840 como base) */
+:root[data-modo="escuro"]{
+  --bg:#0B1029; --card:#121A3A; --ink:#C1C4D6; --title:#F4F5F9; --muted:#8F95B2; --line:#283163; --soft:#19224A; --grey:#121A3A; --grey2:#232C57;
+  --brand:#5C85FF; --brand-hover:#85A3FF; --blue:#5C85FF; --navy:#33407A;
+  --e1:0 0 0 1px #283163; --e2:0 0 0 1px #283163,0 8px 16px -6px rgba(0,0,0,.6);
+  --hero-bg:#121A3A; --hero-fg:#F4F5F9; --panel-bg:#19224A;
+}
+[data-modo="escuro"] .top .gh{background:var(--card);border-color:var(--line);color:var(--ink)}
+[data-modo="escuro"] .top .gh:hover{background:var(--soft);color:var(--title)}
+[data-modo="escuro"] nav.tabs a{color:var(--ink)}
+[data-modo="escuro"] nav.tabs a:hover{background:var(--soft);color:var(--title)}
+[data-modo="escuro"] nav.tabs a[aria-current="page"]{background:rgba(92,133,255,.18);color:#85A3FF}
+[data-modo="escuro"] .sign.hero,[data-modo="escuro"] .install .url,[data-modo="escuro"] .chip{border-color:var(--line)}
+[data-modo="escuro"] .install button{color:#0B1029}
+[data-modo="escuro"] .porta:hover{border-color:#5C85FF}
+[data-modo="escuro"] .porta .n{background:color-mix(in srgb,var(--c) 22%,var(--card));color:color-mix(in srgb,var(--c) 55%,#fff)}
+[data-modo="escuro"] .porta .ir{color:#85A3FF}
