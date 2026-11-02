@@ -62,83 +62,48 @@
 [data-modo="escuro"][data-paleta] .etapas li,[data-modo="escuro"][data-paleta] .passos li{box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
 [data-modo="escuro"][data-paleta] .porta .n{color:color-mix(in oklab,var(--c) 80%,#fff)}
 
-/* "atual" fiel ao site de hoje (sabia.css): as mesmas cores em cada lugar; forma, tamanho e sombra seguem o sistema */
+/* "atual" fiel ao site de hoje (sabia.css): as mesmas cores em cada lugar; forma, tamanho e sombra seguem o sistema.
+   A "sabia" usa estas mesmas regras de uso; só os valores das cores mudam (bloco no fim do arquivo). */
 :root[data-paleta="atual"]:not([data-modo="escuro"]){
   --bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#2C5168; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7;
   --acento:#0086C8;
 }
 :root[data-paleta="atual"]{--red:#D9534F}
-[data-paleta="atual"] :focus-visible{outline-color:var(--yellow)}
-[data-paleta="atual"] :is(.top .gh,.chip:not([aria-pressed="true"])){border-color:var(--line);color:var(--title)}
-[data-paleta="atual"] .top .gh:hover{border-color:var(--blue);color:var(--blue);background:#fff}
-[data-paleta="atual"] nav.tabs a{color:var(--title)}
-[data-paleta="atual"] nav.tabs a:hover{background:var(--blue);color:#fff}
-[data-paleta="atual"] nav.tabs a[aria-current="page"]{background:var(--navy);color:#fff}
-[data-paleta="atual"] .lead-sec h2::before{display:none}
-[data-paleta="atual"] .ficha .fh{background:var(--navy);color:#fff;border-bottom:0}
-[data-paleta="atual"] .ficha .fh::before{background:var(--green)}
-[data-paleta="atual"] .ficha .fh b{color:#fff}
-[data-paleta="atual"] .ficha .fh span,[data-paleta="atual"] .ph .sk,[data-paleta="atual"] .ph .nav{color:#cfe3f1}
-[data-paleta="atual"] .etapas .claro code{background:rgba(44,81,104,.12)}
-[data-paleta="atual"] .controls .lbl{color:var(--title)}
-[data-paleta="atual"] :is(.kv dt,.blk h4,.senbox b){color:var(--blue)}
-[data-paleta="atual"] .senbox div.on{background:var(--navy)}
-[data-paleta="atual"] .senbox div.on b{color:var(--yellow)}
-[data-paleta="atual"] .itin li.cur .dot{background:var(--yellow);border-color:var(--navy);box-shadow:0 0 0 4px rgba(254,190,16,.35)}
-[data-paleta="atual"] .razoes article{background:var(--soft)}
-[data-paleta="atual"] .porta{border:1.5px solid var(--line)}
-[data-paleta="atual"] .porta:hover{border-color:var(--blue)}
-[data-paleta="atual"] .porta .n{color:var(--c)}
-[data-paleta="atual"] .porta .ir{color:var(--blue)}
-[data-paleta="atual"] footer{border-top-color:var(--soft)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) :focus-visible{outline-color:var(--yellow)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) :is(.top .gh,.chip:not([aria-pressed="true"])){border-color:var(--line);color:var(--title)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .top .gh:hover{border-color:var(--blue);color:var(--blue);background:#fff}
+:is([data-paleta="atual"],[data-paleta="sabia"]) nav.tabs a{color:var(--title)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) nav.tabs a:hover{background:var(--blue);color:#fff}
+:is([data-paleta="atual"],[data-paleta="sabia"]) nav.tabs a[aria-current="page"]{background:var(--navy);color:#fff}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .lead-sec h2::before{display:none}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .ficha .fh{background:var(--navy);color:#fff;border-bottom:0}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .ficha .fh::before{background:var(--green)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .ficha .fh b{color:#fff}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .ficha .fh span,:is([data-paleta="atual"],[data-paleta="sabia"]) .ph .sk,:is([data-paleta="atual"],[data-paleta="sabia"]) .ph .nav{color:#cfe3f1}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .etapas .claro code{background:color-mix(in srgb,var(--navy) 12%,transparent)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .controls .lbl{color:var(--title)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) :is(.kv dt,.blk h4,.senbox b){color:var(--blue)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .senbox div.on{background:var(--navy)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .senbox div.on b{color:var(--yellow)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .itin li.cur .dot{background:var(--yellow);border-color:var(--navy);box-shadow:0 0 0 4px color-mix(in srgb,var(--yellow) 35%,transparent)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .razoes article{background:var(--soft)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .porta{border:1.5px solid var(--line)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .porta:hover{border-color:var(--blue)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .porta .n{color:var(--c)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .porta .ir{color:var(--blue)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) footer{border-top-color:var(--soft)}
 
-/* "sabia": paleta semântica, com a atual como referência (azul de marca e marinho no mesmo matiz). Cada cor diz uma
-   coisa só, em todo o site:
-     ardósia (cinzas)        neutro e registro ............ textos, bordas, etapa Consolidação
-     céu → azul → marinho    a demanda ganhando definição . Triagem, Alinhamento, Fatiamento, Plano; linhas Épico e HITL
-     teal                    o agente de IA executa ....... etapa Implementação, linha AFK
-     verde                   funciona, com evidência ...... etapa Verificação, linhas de Sustentação
-     amarelo (acento)        uma pessoa decide ............ gates, ciclo da sprint, estação atual, botão Copiar
-     laranja                 atalho ....................... trilha rápida
-     coral                   voltou ....................... retrabalho
-   Cores vivas, como as de hoje; o texto de cada etapa é branco ou marinho, o que contrastar mais (≥ 4,5:1 em todas).
-   As linhas claras do mapa (teal, verde, amarelo, laranja) ficam abaixo de 3:1 no fundo branco, como o ciano e o amarelo de hoje. */
+/* "sabia": a atual como base, só com as cores trocadas. Mesmos papéis de cada variável, valores mais vivos e com
+   contraste: azul de marca e marinho mais profundos, menta no lugar do lima, laranja mais quente, amarelo mais limpo
+   como acento, neutros frios no lugar do cinza puro. Texto das etapas: claras com marinho ≥ 4,6:1, escuras com branco ≥ 4,5:1
+   (na atual, Fatiamento, Implementação e Consolidação ficam entre 2,6 e 3,8:1). */
 :root[data-paleta="sabia"]{
-  --cyan:#7DD3FC; --lime:#38BDF8; --brand:#0971D9; --blue:#0971D9; --navy:#123E7C; --green:#00BFAE; --orange:#2ED47A; --teal:#4A6A8A; --yellow:#FFCC00; --red:#FF4D4F;
-  --l-epico:#123E7C; --l-hitl:#0971D9; --l-afk:#00A99A; --l-atd:#1FB866; --l-min:#6BAA1F; --l-sprint:#F5B800; --l-rapida:#FF7A00;
-  --volta:#FF4D4F; --decide:#F5B800;
-  --viva-capa:#0971D9; --viva-escuro:#123E7C; --viva-destaque:#FFCC00; --viva-tinta:#0B2545;
+  --brand:#0A74E0; --blue:#0069C2; --navy:#173F6B; --cyan:#22C3E6; --teal:#0E7FA6; --green:#16854E; --lime:#5FD4B0; --yellow:#FFD21F; --orange:#FF8C1A; --red:#E5484D;
+  --l-epico:#173F6B; --l-hitl:#0A74E0; --l-afk:#22C3E6; --l-atd:#16854E; --l-min:#0E7FA6; --l-sprint:#FFD21F; --l-rapida:#FF8C1A;
+  --viva-capa:#0A74E0; --viva-escuro:#173F6B; --viva-destaque:#FFD21F; --viva-tinta:#173F6B;
 }
 :root[data-paleta="sabia"]:not([data-modo="escuro"]){
-  --bg:#FFFFFF; --card:#FFFFFF; --ink:#22313F; --title:#0B2545; --muted:#5E6E7D; --line:#D3DDE6; --soft:#EEF4F9; --grey:#F4F7FA; --grey2:#E3EAF0; --panel-bg:#F4F7FA;
-  --acento:#0A6FC4;
+  --bg:#ffffff; --card:#ffffff; --ink:#36424F; --title:#173F6B; --muted:#64748B; --line:#CBD5E1; --soft:#EDF5FC; --grey:#F4F7FA; --grey2:#E3E9EF; --panel-bg:#F4F7FA;
+  --acento:#0069C2;
 }
-:root[data-paleta="sabia"][data-modo="escuro"]{
-  --bg:#121A22; --card:#1A2530; --ink:#DDE5EC; --title:#F0F4F8; --muted:#98A8B6; --line:#2C3A47; --soft:#22303C; --grey:#16202A; --grey2:#2A3846; --panel-bg:#22303C;
-  --acento:#6CB4F0; --viva-capa:#0A5BB5; --viva-escuro:#163B6B;
-}
-[data-modo="escuro"][data-paleta="sabia"] :is(#map,.itin,.trilho){--l-epico:#6FA3E8}
-/* cores vivas: cada etapa usa o texto que contrasta melhor com a sua cor (a Implementação, em teal claro, pede marinho) */
-[data-paleta="sabia"] .etapas li:nth-child(5){color:var(--viva-tinta)}
-[data-paleta="sabia"] .etapas li:nth-child(5) code{background:rgba(0,0,0,.08)}
-[data-paleta="sabia"] :is(.top .gh,.chip:not([aria-pressed="true"])){border-color:var(--line)}
-/* voltou = coral (no site de hoje, o retrabalho usa o laranja) */
-[data-paleta="sabia"] svg .x-loop .xpath{stroke:var(--volta)}
-[data-paleta="sabia"] svg .x-loop .xlab rect{stroke:var(--volta)}
-[data-paleta="sabia"] .tr.k-loop{--tc:var(--volta)}
-[data-paleta="sabia"] .lg-loop{border-top-color:var(--volta)}
-/* uma pessoa decide = amarelo: gates, estação atual */
-:root[data-paleta="sabia"] svg .st.g-gate .body{fill:var(--yellow);stroke:var(--viva-tinta)}
-:root[data-paleta="sabia"] svg .st.g-gate .gtxt{fill:var(--viva-tinta)}
-:root[data-paleta="sabia"] .itin li.gate .dot{background:var(--yellow);border-color:var(--viva-tinta)}
-:root[data-paleta="sabia"] .itin li.cur .dot{background:var(--yellow);border-color:var(--viva-tinta);box-shadow:0 0 0 4px rgba(255,204,0,.45)}
-:root[data-paleta="sabia"] .trilho li.agora::after{background:var(--yellow);border-color:var(--viva-tinta);box-shadow:0 0 0 5px rgba(255,204,0,.45)}
-[data-paleta="sabia"] .senbox div.on{background:var(--navy)}
-[data-paleta="sabia"] .senbox div.on b{color:var(--yellow)}
-/* portas com a cor do que cada página trata (o HTML fixa --c inline; por isso o !important) */
-[data-paleta="sabia"] .porta[href$="como-funciona.html"]{--c:var(--navy)!important}
-[data-paleta="sabia"] .porta[href$="papeis.html"]{--c:var(--blue)!important}
-[data-paleta="sabia"] .porta[href$="arquivos.html"],[data-paleta="sabia"] .porta[href$="elm.html"]{--c:var(--teal)!important}
-[data-paleta="sabia"] .porta[href$="ciclo.html"]{--c:var(--blue)!important}
-[data-paleta="sabia"] .porta[href$="toolkits.html"]{--c:var(--green)!important}
-[data-paleta="sabia"] .porta[href$="gates.html"]{--c:var(--decide)!important}
+[data-modo="escuro"][data-paleta="sabia"] :is(#map,.itin,.trilho){--l-epico:#6E9FD6}
