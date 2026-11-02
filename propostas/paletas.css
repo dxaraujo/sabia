@@ -111,6 +111,237 @@
 [data-paleta="sabia"] .etapas li:is(:nth-child(3),:nth-child(5)) code{background:rgba(0,0,0,.08)}
 [data-paleta="sabia"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"]){color:#022338}
 
+
+
+/* ===== propostas similares à atual: 9 cores na ordem dos papéis da atual (marca, azul, navy, ciano, teal, verde, lima, amarelo,
+   laranja), aplicadas puras, com as regras e os neutros da atual. Só o texto se adapta: branco ou quase preto
+   (#121821), o que contrastar mais com cada cor (etapas e botões da barra lateral). Seletores com :root para ganhar das
+   regras de texto da atual (.claro:first-child) ===== */
+/* Arctic Innovation — tecnológica, contemporânea e sofisticada */
+:root[data-paleta="arctic"]{
+  --brand:#3659A8; --blue:#5279C7; --navy:#34465F; --cyan:#48A6B8; --teal:#347F91; --green:#69977B; --lime:#A1B78B; --yellow:#D5B96A; --orange:#D88B62;
+  --l-epico:#34465F; --l-hitl:#5279C7; --l-afk:#48A6B8; --l-atd:#69977B; --l-min:#347F91; --l-sprint:#D5B96A; --l-rapida:#D88B62;
+  --viva-capa:#3659A8; --viva-escuro:#34465F; --viva-destaque:#D5B96A; --viva-tinta:#34465F; --destaque-txt:#121821;
+}
+:root[data-paleta="arctic"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#34465F; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#5279C7}
+:root[data-paleta="arctic"][data-modo="escuro"]{--acento:#6588CD}
+:root[data-paleta="arctic"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#6D89AF}
+:root[data-paleta="arctic"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
+:root[data-paleta="arctic"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="arctic"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
+:root[data-paleta="arctic"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="arctic"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Botanical Tech — tecnologia com natureza, saúde e bem-estar */
+:root[data-paleta="botanical"]{
+  --brand:#426B91; --blue:#557F9C; --navy:#3C5360; --cyan:#58A5A0; --teal:#39877E; --green:#6D9B62; --lime:#A0B77A; --yellow:#D6B77D; --orange:#C98C69;
+  --l-epico:#3C5360; --l-hitl:#557F9C; --l-afk:#58A5A0; --l-atd:#6D9B62; --l-min:#39877E; --l-sprint:#D6B77D; --l-rapida:#C98C69;
+  --viva-capa:#426B91; --viva-escuro:#3C5360; --viva-destaque:#D6B77D; --viva-tinta:#3C5360; --destaque-txt:#121821;
+}
+:root[data-paleta="botanical"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#3C5360; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#557F9C}
+:root[data-paleta="botanical"][data-modo="escuro"]{--acento:#618CA9}
+:root[data-paleta="botanical"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#678BA0}
+:root[data-paleta="botanical"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
+:root[data-paleta="botanical"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="botanical"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
+:root[data-paleta="botanical"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="botanical"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Digital Spectrum — mais ousada, jovem e com personalidade digital */
+:root[data-paleta="digital"]{
+  --brand:#514B9A; --blue:#6D62B7; --navy:#383D62; --cyan:#627FC0; --teal:#478FAF; --green:#5B9B89; --lime:#9BB65D; --yellow:#D4A65A; --orange:#D77C58;
+  --l-epico:#383D62; --l-hitl:#6D62B7; --l-afk:#627FC0; --l-atd:#5B9B89; --l-min:#478FAF; --l-sprint:#D4A65A; --l-rapida:#D77C58;
+  --viva-capa:#514B9A; --viva-escuro:#383D62; --viva-destaque:#D4A65A; --viva-tinta:#383D62; --destaque-txt:#121821;
+}
+:root[data-paleta="digital"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#383D62; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#6D62B7}
+:root[data-paleta="digital"][data-modo="escuro"]{--acento:#877EC4}
+:root[data-paleta="digital"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#7E84B5}
+:root[data-paleta="digital"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
+:root[data-paleta="digital"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="digital"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
+:root[data-paleta="digital"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="digital"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Mineral Balance — elegante, equilibrada e institucional */
+:root[data-paleta="mineral"]{
+  --brand:#536D8A; --blue:#71879C; --navy:#414D5C; --cyan:#6C9B9D; --teal:#527E83; --green:#829B78; --lime:#B0B68A; --yellow:#D1B58B; --orange:#C58F79;
+  --l-epico:#414D5C; --l-hitl:#71879C; --l-afk:#6C9B9D; --l-atd:#829B78; --l-min:#527E83; --l-sprint:#D1B58B; --l-rapida:#C58F79;
+  --viva-capa:#536D8A; --viva-escuro:#414D5C; --viva-destaque:#D1B58B; --viva-tinta:#414D5C; --destaque-txt:#121821;
+}
+:root[data-paleta="mineral"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#414D5C; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#71879C}
+:root[data-paleta="mineral"][data-modo="escuro"]{--acento:#748A9E}
+:root[data-paleta="mineral"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#7889A0}
+:root[data-paleta="mineral"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
+:root[data-paleta="mineral"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="mineral"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
+:root[data-paleta="mineral"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="mineral"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Aurora Spectrum — mais expressiva, luminosa e diferenciada */
+:root[data-paleta="aurora"]{
+  --brand:#465FAD; --blue:#6577C5; --navy:#39466F; --cyan:#55A7C9; --teal:#4B8FAD; --green:#73A66E; --lime:#B0C36A; --yellow:#E0C16A; --orange:#E39A60;
+  --l-epico:#39466F; --l-hitl:#6577C5; --l-afk:#55A7C9; --l-atd:#73A66E; --l-min:#4B8FAD; --l-sprint:#E0C16A; --l-rapida:#E39A60;
+  --viva-capa:#465FAD; --viva-escuro:#39466F; --viva-destaque:#E0C16A; --viva-tinta:#39466F; --destaque-txt:#121821;
+}
+:root[data-paleta="aurora"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#39466F; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#6577C5}
+:root[data-paleta="aurora"][data-modo="escuro"]{--acento:#7484CB}
+:root[data-paleta="aurora"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#7585B8}
+:root[data-paleta="aurora"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
+:root[data-paleta="aurora"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="aurora"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
+:root[data-paleta="aurora"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="aurora"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Pastel / Suave — mais leve e moderna, menos agressiva aos olhos */
+:root[data-paleta="v-pastel"]{
+  --brand:#5EB1EC; --blue:#4FA1D6; --navy:#537B93; --cyan:#64D5E2; --teal:#51B5C7; --green:#96C96C; --lime:#C3DC63; --yellow:#FFCD43; --orange:#FBB846;
+  --l-epico:#537B93; --l-hitl:#4FA1D6; --l-afk:#64D5E2; --l-atd:#96C96C; --l-min:#51B5C7; --l-sprint:#FFCD43; --l-rapida:#FBB846;
+  --viva-capa:#5EB1EC; --viva-escuro:#537B93; --viva-destaque:#FFCD43; --viva-tinta:#537B93; --destaque-txt:#121821;
+}
+:root[data-paleta="v-pastel"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#537B93; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#4FA1D6}
+:root[data-paleta="v-pastel"][data-modo="escuro"]{--acento:#4FA1D6}
+:root[data-paleta="v-pastel"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#638DA7}
+:root[data-paleta="v-pastel"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
+:root[data-paleta="v-pastel"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="v-pastel"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
+:root[data-paleta="v-pastel"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="v-pastel"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Neon / Alta saturação — mais enérgica, para destacar muito a atenção */
+:root[data-paleta="v-neon"]{
+  --brand:#0095FF; --blue:#009AE5; --navy:#1E465E; --cyan:#00D9F0; --teal:#00ADC9; --green:#7ED13B; --lime:#C6EC2A; --yellow:#FFCB00; --orange:#FFAC12;
+  --l-epico:#1E465E; --l-hitl:#009AE5; --l-afk:#00D9F0; --l-atd:#7ED13B; --l-min:#00ADC9; --l-sprint:#FFCB00; --l-rapida:#FFAC12;
+  --viva-capa:#0095FF; --viva-escuro:#1E465E; --viva-destaque:#FFCB00; --viva-tinta:#1E465E; --destaque-txt:#121821;
+}
+:root[data-paleta="v-neon"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#1E465E; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#009AE5}
+:root[data-paleta="v-neon"][data-modo="escuro"]{--acento:#009AE5}
+:root[data-paleta="v-neon"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#3D8EBF}
+:root[data-paleta="v-neon"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
+:root[data-paleta="v-neon"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="v-neon"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
+:root[data-paleta="v-neon"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="v-neon"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Corporativa / Sóbria — amarelo e verde menos vibrantes, tom mais sério */
+:root[data-paleta="v-corporativa"]{
+  --brand:#106FA8; --blue:#0A6E9B; --navy:#244052; --cyan:#0AA2B2; --teal:#098296; --green:#608F37; --lime:#95AF2D; --yellow:#D6A111; --orange:#D18B17;
+  --l-epico:#244052; --l-hitl:#0A6E9B; --l-afk:#0AA2B2; --l-atd:#608F37; --l-min:#098296; --l-sprint:#D6A111; --l-rapida:#D18B17;
+  --viva-capa:#106FA8; --viva-escuro:#244052; --viva-destaque:#D6A111; --viva-tinta:#244052; --destaque-txt:#121821;
+}
+:root[data-paleta="v-corporativa"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#244052; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#0A6E9B}
+:root[data-paleta="v-corporativa"][data-modo="escuro"]{--acento:#0D90CB}
+:root[data-paleta="v-corporativa"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#528DB3}
+:root[data-paleta="v-corporativa"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
+:root[data-paleta="v-corporativa"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="v-corporativa"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
+:root[data-paleta="v-corporativa"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="v-corporativa"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Retrô / Vintage — tons levemente queimados, menos digitais */
+:root[data-paleta="v-retro"]{
+  --brand:#247BB6; --blue:#1B7AA3; --navy:#3C5463; --cyan:#26A3B0; --teal:#228696; --green:#6D9747; --lime:#A1B93F; --yellow:#E4B127; --orange:#DB992B;
+  --l-epico:#3C5463; --l-hitl:#1B7AA3; --l-afk:#26A3B0; --l-atd:#6D9747; --l-min:#228696; --l-sprint:#E4B127; --l-rapida:#DB992B;
+  --viva-capa:#247BB6; --viva-escuro:#3C5463; --viva-destaque:#E4B127; --viva-tinta:#3C5463; --destaque-txt:#121821;
+}
+:root[data-paleta="v-retro"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#3C5463; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#1B7AA3}
+:root[data-paleta="v-retro"][data-modo="escuro"]{--acento:#2091C2}
+:root[data-paleta="v-retro"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#678CA3}
+:root[data-paleta="v-retro"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
+:root[data-paleta="v-retro"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="v-retro"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
+:root[data-paleta="v-retro"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="v-retro"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Minimalista — peso nos azuis e cianos; amarelo e laranja só como destaque */
+:root[data-paleta="v-minimalista"]{
+  --brand:#0B73BF; --blue:#036E9E; --navy:#253B47; --cyan:#00A9BA; --teal:#03889D; --green:#5F9E2C; --lime:#A1C21F; --yellow:#E0A80D; --orange:#DE9314;
+  --l-epico:#253B47; --l-hitl:#036E9E; --l-afk:#00A9BA; --l-atd:#5F9E2C; --l-min:#03889D; --l-sprint:#E0A80D; --l-rapida:#DE9314;
+  --viva-capa:#0B73BF; --viva-escuro:#253B47; --viva-destaque:#E0A80D; --viva-tinta:#253B47; --destaque-txt:#121821;
+}
+:root[data-paleta="v-minimalista"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#253B47; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#036E9E}
+:root[data-paleta="v-minimalista"][data-modo="escuro"]{--acento:#0491D0}
+:root[data-paleta="v-minimalista"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#5B8EAA}
+:root[data-paleta="v-minimalista"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
+:root[data-paleta="v-minimalista"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="v-minimalista"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
+:root[data-paleta="v-minimalista"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="v-minimalista"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Nebula Tech — tecnologia de ponta com energia e criatividade */
+:root[data-paleta="i-nebula"]{
+  --brand:#4F46E5; --blue:#3B82F6; --navy:#0F172A; --cyan:#06B6D4; --teal:#0891B2; --green:#84CC16; --lime:#BEF264; --yellow:#F59E0B; --orange:#F97316;
+  --l-epico:#0F172A; --l-hitl:#3B82F6; --l-afk:#06B6D4; --l-atd:#84CC16; --l-min:#0891B2; --l-sprint:#F59E0B; --l-rapida:#F97316;
+  --viva-capa:#4F46E5; --viva-escuro:#0F172A; --viva-destaque:#F59E0B; --viva-tinta:#0F172A; --destaque-txt:#121821;
+}
+:root[data-paleta="i-nebula"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#0F172A; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#3B82F6}
+:root[data-paleta="i-nebula"][data-modo="escuro"]{--acento:#4085F6}
+:root[data-paleta="i-nebula"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#6986CA}
+:root[data-paleta="i-nebula"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
+:root[data-paleta="i-nebula"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="i-nebula"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
+:root[data-paleta="i-nebula"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="i-nebula"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* AI Horizon — equilíbrio entre inovação e bem-estar */
+:root[data-paleta="i-horizon"]{
+  --brand:#2563EB; --blue:#0EA5E9; --navy:#1D4ED8; --cyan:#14B8A6; --teal:#0F766E; --green:#65A30D; --lime:#A3E635; --yellow:#FBBF24; --orange:#F97316;
+  --l-epico:#1D4ED8; --l-hitl:#0EA5E9; --l-afk:#14B8A6; --l-atd:#65A30D; --l-min:#0F766E; --l-sprint:#FBBF24; --l-rapida:#F97316;
+  --viva-capa:#2563EB; --viva-escuro:#1D4ED8; --viva-destaque:#FBBF24; --viva-tinta:#1D4ED8; --destaque-txt:#121821;
+}
+:root[data-paleta="i-horizon"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#1D4ED8; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#0EA5E9}
+:root[data-paleta="i-horizon"][data-modo="escuro"]{--acento:#0EA5E9}
+:root[data-paleta="i-horizon"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#5D82E9}
+:root[data-paleta="i-horizon"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
+:root[data-paleta="i-horizon"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="i-horizon"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
+:root[data-paleta="i-horizon"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="i-horizon"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Quantum Flow — inteligência, fluidez e performance */
+:root[data-paleta="i-quantum"]{
+  --brand:#0B63CE; --blue:#0066B3; --navy:#1E293B; --cyan:#00D1D1; --teal:#0EA5A4; --green:#22C55E; --lime:#A7F3D0; --yellow:#F59E0B; --orange:#FB923C;
+  --l-epico:#1E293B; --l-hitl:#0066B3; --l-afk:#00D1D1; --l-atd:#22C55E; --l-min:#0EA5A4; --l-sprint:#F59E0B; --l-rapida:#FB923C;
+  --viva-capa:#0B63CE; --viva-escuro:#1E293B; --viva-destaque:#F59E0B; --viva-tinta:#1E293B; --destaque-txt:#121821;
+}
+:root[data-paleta="i-quantum"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#1E293B; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#0066B3}
+:root[data-paleta="i-quantum"][data-modo="escuro"]{--acento:#0089F0}
+:root[data-paleta="i-quantum"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#6C87B4}
+:root[data-paleta="i-quantum"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
+:root[data-paleta="i-quantum"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="i-quantum"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
+:root[data-paleta="i-quantum"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="i-quantum"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Infinity Gradient — design arrojado com gradientes de impacto */
+:root[data-paleta="i-infinity"]{
+  --brand:#6366F1; --blue:#8B5CF6; --navy:#312E81; --cyan:#06B6D4; --teal:#0891B2; --green:#84CC16; --lime:#D9F99D; --yellow:#F59E0B; --orange:#F97316;
+  --l-epico:#312E81; --l-hitl:#8B5CF6; --l-afk:#06B6D4; --l-atd:#84CC16; --l-min:#0891B2; --l-sprint:#F59E0B; --l-rapida:#F97316;
+  --viva-capa:#6366F1; --viva-escuro:#312E81; --viva-destaque:#F59E0B; --viva-tinta:#312E81; --destaque-txt:#121821;
+}
+:root[data-paleta="i-infinity"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#312E81; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#8B5CF6}
+:root[data-paleta="i-infinity"][data-modo="escuro"]{--acento:#996FF7}
+:root[data-paleta="i-infinity"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#807DD1}
+:root[data-paleta="i-infinity"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
+:root[data-paleta="i-infinity"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="i-infinity"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
+:root[data-paleta="i-infinity"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="i-infinity"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Tech Aurora — tecnologia, clareza e um futuro mais aberto */
+:root[data-paleta="i-aurora"]{
+  --brand:#1E40AF; --blue:#0EA5E9; --navy:#075985; --cyan:#14B8A6; --teal:#0F766E; --green:#86EFAC; --lime:#FDE68A; --yellow:#F59E0B; --orange:#EA580C;
+  --l-epico:#075985; --l-hitl:#0EA5E9; --l-afk:#14B8A6; --l-atd:#86EFAC; --l-min:#0F766E; --l-sprint:#F59E0B; --l-rapida:#EA580C;
+  --viva-capa:#1E40AF; --viva-escuro:#075985; --viva-destaque:#F59E0B; --viva-tinta:#075985; --destaque-txt:#121821;
+}
+:root[data-paleta="i-aurora"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#075985; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#0EA5E9}
+:root[data-paleta="i-aurora"][data-modo="escuro"]{--acento:#0EA5E9}
+:root[data-paleta="i-aurora"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#0B8DD3}
+:root[data-paleta="i-aurora"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
+:root[data-paleta="i-aurora"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="i-aurora"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
+:root[data-paleta="i-aurora"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="i-aurora"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
 /* ===== variantes da sóbria: a mesma estrutura (quase tudo branco, destaques no navy e num amarelo em poucos pontos),
    com outras cores. Ficam em <html data-sobria="…"> e não ligam as regras de paleta viva ===== */
 /* Sóbria - Sabiá: navy #023047 e azul-céu #219EBC da Refreshing Summer Fun; amarelo #FFB703 de destaque;
