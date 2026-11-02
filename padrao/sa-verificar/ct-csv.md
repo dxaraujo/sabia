@@ -1,9 +1,11 @@
 ---
-{"resumo": "Formato do CT.csv da fatia: um caso de teste por cenário verificado, para criar ou importar no ETM."}
+{"resumo": "Formato do CT.csv da fatia: a evidência da execução de cada cenário verificado, ligada ao CT planejado do PRD (ou um CT novo), para ligar, criar ou importar no ETM."}
 ---
-# `CT.csv` — casos de teste para importação no ETM
+# `CT.csv` — evidências dos casos de teste da fatia
 
-Um caso por cenário **verificado** (aceito com evidência) da fatia. Na consolidação, `elm_criar_ct` cria cada caso no ETM, com o Resumo como título e a Descrição como cenário, já
+Uma linha por cenário **verificado** (aceito com evidência) da fatia: a execução do CT planejado que o prova (padrão
+`sa-prd/ct.md`, aprovado no GATE do PRD) ou, sem ele, um CT novo. Na consolidação, o CT planejado já no ETM é
+ligado ao IB, e `elm_criar_ct` cria cada CT novo, com o Resumo como título e a Descrição como cenário, já
 ligado ([elm-publicar.md](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md)). Sem permissão de criar no ETM ou sem
 o MCP `elm`, o arquivo é importado à mão (Importar → CSV) e os links são feitos depois (`elm_ligar`).
 
@@ -22,7 +24,7 @@ linha `CT.csv` da seção ELM do `sabia.md` — o template de importação do ET
 | # | Coluna | Valor |
 |---|---|---|
 | 1 | Tipo | tipo de artefato de teste da importação (padrão: Caso de Teste) |
-| 2 | Resumo | `<FT-nnn> <título curto> : CT<nn> - <título do cenário>` |
+| 2 | Resumo | `<FT-nnn> <título curto> : CT<nn> - <título do cenário>` (o `CT<nn>` do CT planejado; CT novo, `CT<FT-nnn>-<nn>`, com a fatia e a sequência dela, para não colidir com outra fatia do épico) |
 | 3 | Responsável | login do ELM de quem verificou (AFK, verificado por subagente: quem disparou o loop, ou o Dev da fatia — o responsável da `[DEV]`) |
 | 4 | Status | estado inicial (padrão do projeto) |
 | 5 | Categoria | do projeto, se houver |
@@ -34,6 +36,9 @@ linha `CT.csv` da seção ELM do `sabia.md` — o template de importação do ET
 ```
 "OBJETIVO:
 <o que o caso comprova> (HF-01 · cenário 1.2; REG-01)
+
+CT PLANEJADO:
+- <CT-nn-<slug>.md (ETM <id> | só no repositório) | novo: descoberto na verificação>  (informativo: a consolidação lê o id do conceito)
 
 PRÉ-CONDIÇÕES:
 - <massa: script/fixture e o estado criado>

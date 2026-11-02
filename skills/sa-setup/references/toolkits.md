@@ -102,7 +102,7 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
 | `skills[].papeis` | **quem:** pré-seleciona a skill na proposta de cada agente (`produto`, `especificador`, `pesquisador`, `desenvolvedor`, `revisor`, `verificador`, `orquestrador`) — uma skill pode servir a vários |
 | `skills[].stack`, `skills[].deteccao` | **onde:** a stack da skill (ex.: `java 17`, `react`); com `deteccao`, a setup só a pré-marca se o repositório casar |
 | `skills[].passo` | **em que passo:** opcional — a skill assume o passo de um agente do Sabiá, pelo id (`passo`: `sa-codificar.codificar.tarefa`, o único com `"desvio": true` no mestre), com o `para` e, opcionais, os `arquivos` (globs) e o `agente` a quem delegar — ver [Passos](#passos) |
-| `tipos` | opcional — `{"HF": {"skill": "skills/<skill>/SKILL.md", "fluxo": "<arquivo>", "padrao": "<arquivo>"}}` (a skill do toolkit, com o fluxo e o padrão do tipo, relativos à pasta do toolkit; o padrão é opcional): o toolkit escreve um tipo desviável do catálogo (`HF`, `REG`, `EL` e `ET` no `sa-prd.prd.escrever`; `ATA` no `sa-especificar.reuniao.escrever`; `GL` e `CT` não desviam) — ver [Tipos](#tipos) |
+| `tipos` | opcional — `{"HF": {"skill": "skills/<skill>/SKILL.md", "fluxo": "<arquivo>", "padrao": "<arquivo>"}}` (a skill do toolkit, com o fluxo e o padrão do tipo, relativos à pasta do toolkit; o padrão é opcional): o toolkit escreve um tipo desviável do catálogo (`HF`, `REG`, `EL`, `ET` e `CT` no `sa-prd.prd.escrever`; `ET` também no `sa-consolidar.consolidar.elm`; `ATA` no `sa-especificar.reuniao.escrever`; `GL` não desvia) — ver [Tipos](#tipos) |
 | `rubricas` | opcional — itens que o toolkit **acrescenta** à revisão: `id` (maiúsculas e número, ex.: `EX1`), `verificacao`, `severidade` (`BLOQUEANTE`, `IMPORTANTE` ou `SUGESTÃO`) e, opcional, o `tipo`; vão no prompt do revisor |
 | `requer` | opcional — `{"sabia": "<versão mínima>"}`: o toolkit usa o catálogo de tipos e ids de passo do Sabiá; abaixo dela, o CLI recusa o toolkit |
 | `autor` | **obrigatório:** `nome` e `area` de quem fez e responde pelo toolkit (`email` opcional). Aparece no W5 e no `sabia toolkits listar`; toolkit sem autor é recusado |
@@ -160,13 +160,14 @@ padrao/padrao-hf.md                padrão do tipo HF, idem
 ```
 
 - **Tipo → skill:** a sigla é do catálogo (o toolkit não cria tipo), desviável e não pendente; a skill é uma das
-  `skills[]`; o fluxo e o padrão, opcionais, são arquivos da pasta do toolkit (sem eles, `{"skill": …}` só, a skill segue as references dela). A skill vai ao dono do passo de desvio
-  (coluna Desviável do catálogo), e o gerador põe no prompt dele a linha **Tipos com skill de toolkit**: no passo, o
+  `skills[]`; o fluxo e o padrão, opcionais, são arquivos da pasta do toolkit (sem eles, `{"skill": …}` só, a skill segue as references dela). A skill vai ao dono de cada passo de desvio
+  (coluna Desviável do catálogo) e traz em `papeis` o papel de cada um (`ET`: `especificador` e `produto`); sem ele, o
+  CLI e o gerador recusam o toolkit, dizendo o papel que falta. O gerador põe no prompt de cada dono a linha **Tipos com skill de toolkit**: no passo, o
   tipo sai pela skill, que segue o fluxo com o padrão, quando há, pelo caminho na pasta instalada (`~/.sabia/toolkits/<toolkit>/`,
   de leitura para todos os agentes), escrevendo no padrão OKF do Sabiá, e volta ao passo. O gerador imprime a seção
   que a setup grava no `sabia.md`: o fluxo, o padrão e a skill de cada tipo, e os itens de rubrica.
 - **Padrão do núcleo:** o toolkit não troca padrão do Sabiá. O tipo que não vai por `tipos`, e o tipo fora do passo de
-  desvio (a ET as-built, no `sa-codificar.codificar.pr`), usam o padrão do Sabiá; o `.sabia/padrao/` do projeto vale só
+  desvio (a ET as-built escrita no PR, `sa-codificar.codificar.pr`), usam o padrão do Sabiá; o `.sabia/padrao/` do projeto vale só
   sobre um padrão do Sabiá.
 - **Links:** nos arquivos do toolkit, o link para o Sabiá segue o estilo do repositório
   (`~/.sabia/framework/skills/<sa-x>/references/...`). O Sabiá não confere esses links: um quebrado só aparece quando o

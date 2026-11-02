@@ -26,7 +26,7 @@ Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configura
 ## Entrada: vizinhos
 
 - `[ESP] FT-nnn` (fatia `nova` em especificação na sprint) → `sa-especificar.fatia`
-- `fatiado` com a Especificação `concluida` (nada a especificar; dividir, juntar ou cancelar fatias) → `sa-fatiar.refinamento`
+- `fatiado` com a Especificação `concluida` (nada a especificar; cancelar fatias ou o épico) → `sa-fatiar.refinamento`
 
 ## Regras
 

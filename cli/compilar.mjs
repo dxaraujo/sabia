@@ -102,7 +102,13 @@ export function validarToolkitFonte(fw, tk) {
     else if (!t.desviavel?.length) erros.push(`tipo ${sg}: não é desviável no catálogo`);
     else if (t.pendente) erros.push(`tipo ${sg}: pendente no Sabiá instalado (ainda sem o passo que o cria)`);
     if (!q || typeof q !== "object") { erros.push(`tipo ${sg}: use {"skill", "fluxo", "padrao"} (a skill do toolkit; o fluxo e o padrão do tipo, opcionais)`); continue; }
-    if (!(man.skills || []).some((s) => s.caminho === q.skill)) erros.push(`tipo ${sg}: a skill ${q.skill} não está em skills`);
+    const sk = (man.skills || []).find((s) => s.caminho === q.skill);
+    if (!sk) erros.push(`tipo ${sg}: a skill ${q.skill} não está em skills`);
+    // o gerador liga a skill ao dono de cada passo de desvio: sem o papel em "papeis", o toolkit não declara esse uso
+    else if (t?.desviavel) for (const c of t.desviavel) {
+      const papel = resolverId(m, c)?.fl.d.dono?.replace(/^sa-/, "");
+      if (papel && !(sk.papeis || []).includes(papel)) erros.push(`tipo ${sg}: a skill ${q.skill} não traz o papel ${papel} em papeis (dono do passo de desvio ${c})`);
+    }
     for (const k of ["fluxo", "padrao"].filter((k) => k in q))
       if (!relativo(q[k]) || !sob(tk, path.join(tk, q[k])) || !fs.statSync(path.join(tk, q[k]), { throwIfNoEntry: false })?.isFile()) erros.push(`tipo ${sg}: falta o ${k} ${q[k]} na pasta do toolkit`);
   }

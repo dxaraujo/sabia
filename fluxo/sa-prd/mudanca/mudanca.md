@@ -12,9 +12,8 @@ Entrada: épico com o PRD aprovado na base (`<produto>/epicos/<EP>-<slug>/`) e u
 Antes do fatiamento (Fase `aprovado`), a mudança segue na mesma `[ESP]`, ainda aberta: da pessoa ou da ATA de uma
 reunião (`sa-especificar.reuniao`). Depois do fatiamento (Fase `fatiado`), só a correção do que o PRD já tem
 (cenário errado ou que falta numa história existente, valor de regra), por pedido explícito: da pessoa, da ATA, do
-drift (`sa-consolidar`: o código entregue não é o que a HF aprovada diz), da `sa-verificar`, do `sa-plano`, de
-completar a fatia (`sa-especificar.fatia`) ou do `sa-fatiar.refinamento` (que chama este fluxo e segue depois do
-GATE). Escopo novo (história, regra ou ator que o PRD não tem) depois do fatiamento não muda o PRD: é épico ou fatia
+drift (`sa-consolidar`: o código entregue não é o que a HF aprovada diz), da `sa-verificar`, do `sa-plano` ou de
+completar a fatia (`sa-especificar.fatia`); as fatias do backlog não mudam com ela. Escopo novo (história, regra ou ator que o PRD não tem) depois do fatiamento não muda o PRD: é épico ou fatia
 nova pela `sa-triar`.
 
 Leia antes: `.sabia/sabia.md` (ELM, caminhos, papéis) e o steering de produto que ele aponta.

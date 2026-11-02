@@ -451,6 +451,18 @@ class Gerar(unittest.TestCase):
             f"| `ATA` | `{pasta}/skills/casa/SKILL.md` | `{pasta}/fluxo/fluxo-reuniao.md` | `casa` 1.0.0 | `sa-especificar.reuniao.escrever` |", "",
             "| Item de rubrica | Tipo | Severidade | Verificação | Toolkit |", "|---|---|---|---|---|",
             "| `EX1` | HF | IMPORTANTE | Toda HF cita o campo de origem | `casa` 1.0.0 |"])
+        # a ET desvia no prd.escrever e no consolidar.elm: com os dois papéis, a skill vai aos dois donos; o CT planejado, ao especificador
+        pasta_et = self.casa(ET={"skill": "skills/casa/SKILL.md"}, CT={"skill": "skills/casa/SKILL.md"})
+        man = self.home / ".sabia/toolkits/casa/toolkit.json"
+        m = json.loads(man.read_text())
+        m["skills"][0]["papeis"] = ["especificador", "produto"]
+        man.write_text(json.dumps(m))
+        agentes = self.gerar(toolkits=pasta_et)
+        self.assertIn("no passo `sa-consolidar.consolidar.elm`, ET → carregue a skill `casa` e siga as references dela", agentes["produto"]["prompt"])
+        self.assertIn("no passo `sa-prd.prd.escrever`, ET → carregue a skill `casa`", agentes["especificador"]["prompt"])
+        self.assertIn("CT → carregue a skill `casa`", agentes["especificador"]["prompt"])
+        self.assertNotIn("CT →", agentes["produto"]["prompt"] + agentes["verificador"]["prompt"])
+        self.assertEqual([r for r in agentes["produto"]["resources"] if "casa" in r], [f"skill://{pasta}/skills/casa/SKILL.md"])
         # o REG só desvia no prd.escrever: o consolidar.elm (sa-produto) não recebe a linha nem a skill
         agentes = self.gerar(toolkits=self.casa(REG={"skill": "skills/casa/SKILL.md", "fluxo": "fluxo/fluxo-hf.md"}))
         self.assertIn("no passo `sa-prd.prd.escrever`, REG → carregue a skill `casa`", agentes["especificador"]["prompt"])
@@ -510,7 +522,8 @@ class Gerar(unittest.TestCase):
         casos = [(lambda: {**self.casa(), **self.casa("outro", rubricas=[], HF={**sk, "skill": "skills/outro/SKILL.md"})}, "tipo HF já é de toolkit casa"),
                  (lambda: self.casa(rubricas=[{"id": "P2", "verificacao": "repete", "severidade": "BLOQUEANTE"}]), "rubrica P2 já é de Sabiá"),
                  (lambda: self.casa(GL=sk), "tipo GL → skills/casa/SKILL.md: use {skill, fluxo, padrao} (fluxo e padrao opcionais); o tipo tem de ser desviável e não pendente"),
-                 (lambda: self.casa(CT=sk), "tipo CT"),  # CT não desvia
+                 # a skill vai ao dono de cada passo de desvio: a ET também desvia na consolidação (sa-produto)
+                 (lambda: self.casa(ET=sk), "toolkit casa: tipo ET: a skill skills/casa/SKILL.md não traz o papel produto em papeis (dono do passo de desvio sa-consolidar.consolidar.elm)"),
                  (lambda: self.casa(HF="casa.hf"), "tipo HF → casa.hf: use {skill, fluxo, padrao}"),  # o fluxo compilado é só do framework
                  (lambda: self.casa(HF={**sk, "fluxo": "fluxo/nao.md"}), "o fluxo arquivos da pasta do toolkit"),
                  (lambda: self.casa(HF={**sk, "padrao": "padrao/nao.md"}), "o fluxo e o padrao arquivos da pasta do toolkit"),

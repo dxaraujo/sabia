@@ -1,6 +1,6 @@
 # Artefatos do ELM em OKF v0.2
 
-Cada artefato que vai para o DOORS Next — um tipo do [catálogo](../../sabia/references/tipos.md) com ELM `DOORS` — nasce
+Cada artefato que vai ao ELM — um tipo do [catálogo](../../sabia/references/tipos.md) com ELM `DOORS` ou, o CT planejado, `ETM` — nasce
 como **um conceito OKF v0.2** (Open Knowledge Format,
 [SPEC.md](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md), versão 0.2) **na pasta da
 spec**, até ser aprovado e publicado. É o mesmo formato do bundle que a `sa-sync` mantém
@@ -21,6 +21,7 @@ elm/
   GL-tentativa-de-login.md
   REG-01-bloqueio-apos-3-tentativas.md
   HF-01-bloquear-conta.md
+  CT-01-bloquear-apos-terceira-falha.md
 ```
 
 - **Nunca dentro do bundle da `sa-sync`** (`rm.download` do `pa`): lá só a `sa-sync` grava, e um sincronismo regravaria
@@ -52,10 +53,10 @@ generated: { by: sabia/2.0.0, at: 2026-10-14T13:00:00Z }   # §5.2: quem escreve
 
 | Campo (OKF v0.2) | Uso no Sabiá |
 |---|---|
-| `type` (obrigatório) | nome do tipo no DOORS Next — o `tipo` da sigla em `rm.artefatos` do `pa_<nome>.json` (ex.: `História de Usuário`, `Regra`, `Termos de Glossário`) |
+| `type` (obrigatório) | nome do tipo no DOORS Next — o `tipo` da sigla em `rm.artefatos` do `pa_<nome>.json` (ex.: `História de Usuário`, `Regra`, `Termos de Glossário`); o CT planejado, o do ETM (padrão `sa-prd/ct.md`) |
 | `title` | título no ELM: `HF - <nome>`, `REG - <nome>`, o termo |
 | `description` | uma frase; vai para o `index.md` |
-| `tags` | `[<pasta do RM>]` — a `pasta` da sigla em `rm.artefatos` |
+| `tags` | `[<pasta do RM>]` — a `pasta` da sigla em `rm.artefatos`; o CT planejado não tem |
 | `resource` | **ausente até publicar**; depois, a URI do artefato no ELM. Decide criar × atualizar |
 | `sources` | o PRD, as decisões e, numa alteração, o próprio artefato do ELM (`resource` = URI, `last_modified` = última modificação no ELM vista por nós) |
 | `generated` | `by: sabia/<versão do power>` (ator `<producer>/<version>`, §7); `at` = última mudança de conteúdo |
@@ -136,6 +137,9 @@ okf_version: "0.2"
 
 # Especificação técnica
 * [ET - EP-03 Bloqueio por tentativas](ET-bloqueio-por-tentativas.md) - <description>
+
+# Casos de teste
+* [CT01 - Bloquear após a terceira falha](CT-01-bloquear-apos-terceira-falha.md) - <description>
 ```
 
 `log.md`: `# Directory Update Log`, seções `## AAAA-MM-DD` (mais nova primeiro), itens `* **Creation**: …`,
@@ -146,7 +150,8 @@ okf_version: "0.2"
 1. Todo `.md` de `elm/` (fora `index.md` e `log.md`) tem frontmatter YAML que faz parse, com `type` não vazio.
 2. Só chaves do OKF v0.2, mais `id` (e as que vieram do bundle numa cópia).
 3. `status` presente; `draft` antes do GATE, fora a ATA aprovada (`stable` desde a aprovação dela).
-4. `type` e `tags` existem em `rm.artefatos` do `pa_<nome>.json`.
+4. `type` e `tags` existem em `rm.artefatos` do `pa_<nome>.json` — fora o tipo com ELM `ETM` (o CT planejado): `type` =
+   a coluna Tipo da linha `CT.csv` da seção ELM do `sabia.md`, sem `tags`.
 5. Toda HF tem cenários; todo conceito liga os que cita dos tipos da sua coluna Embute (a HF, as suas REGs); HF e
    EL ligadas nos dois sentidos; todo link relativo aponta para um arquivo que existe.
 6. `index.md` lista todos os conceitos; `log.md` com datas `AAAA-MM-DD`.

@@ -21,10 +21,11 @@
    desenvolvedor, pela configuração dele (os desvios do prompt).
 4. Skills do toolkit ligadas ao agente: consulte a da stack para a forma do programa (camadas, nomes, testes).
 5. Limite: plano que passa de ~200 linhas no total ou de ~8 tarefas → a fatia está grande: em vez de escrever um
-   plano maior, proponha dividi-la. Ela já está `iniciada`: quem divide é o P.O., pela `sa-fatiar` (sem épico, pela
-   `sa-triar`), como manda a divisão depois de `iniciada` das
-   [Situações](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#situações). Aqui, `fase: bloqueada (de: planejando)` com a
-   proposta de divisão no Bloqueio, e a sessão fecha como no pedido de troca de modo (passo `gate`).
+   plano maior, `fase: bloqueada (de: planejando)` com a proposta no Bloqueio, e a sessão fecha como no pedido de
+   troca de modo (passo `gate`). Ela já está `iniciada`, e quem decide é o P.O., pelas
+   [Situações](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#situações): fatia de épico → seguir com ela (plano acima do
+   limite) ou cancelá-la pela `sa-fatiar.refinamento` e registrar as partes como fatia nova pela `sa-triar`
+   (`origem EP-<nn>`); fatia sem épico → a divisão pela `sa-triar`.
 
 `status.md`: fase `planejando` (vale também durante a análise do passo `analise`).
 
@@ -34,5 +35,5 @@ Os artefatos do plano na pasta da fatia, `fase: planejando` → passo `analise`.
 
 ## Pare se
 
-Plano acima do limite (item 5) → `fase: bloqueada (de: planejando)` com a proposta de divisão; a sessão fecha como
+Plano acima do limite (item 5) → `fase: bloqueada (de: planejando)` com a proposta para o P.O.; a sessão fecha como
 na troca de modo e para.

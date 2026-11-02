@@ -478,7 +478,7 @@ linha), nunca `arquivo:`.
 |---|---|---|---|
 | `planejada` · `iniciada`, sem merge (o PR mergeado é a linha **Git**, abaixo) | `[DEV]` concluída | EWM: reabrir a `[DEV]` (ela conclui no merge, `sa-desenvolver.encerrar`) | manter: o Dev confere |
 | `planejada`, sem evidência do git (branch, PR, `status.md` numa branch) | `[DEV]` em andamento | manter: a fatia começa pela `sa-desenvolver` (com a evidência, as linhas **Git e arquivos**, abaixo) | — |
-| não terminal | tarefa ou IB descartado | manter: dividir ou cancelar é da `sa-fatiar` (P.O.) | EWM: reabrir |
+| não terminal | tarefa ou IB descartado | manter: cancelar é da `sa-fatiar` (P.O.) | EWM: reabrir |
 | antes de `concluida` | IB concluído | EWM: reabrir o IB (ele fecha na `sa-consolidar`) | — |
 | `concluida` | IB aberto | EWM: concluir o IB | — |
 | `cancelada` | IB ou tarefa aberta (reaberta) | EWM: cancelar (`elm_transicao(<id>, "cancelar")`) | manter |
@@ -571,7 +571,7 @@ e arquivos**), que vai para a sprint:
 | Arquivo | EWM | Solução proposta | Outras |
 |---|---|---|---|
 | não terminal, fora da sprint | IB aberto fora do estado inicial (em andamento…) | EWM: voltar ao estado inicial | — |
-| fatia ou épico não terminal, fora da sprint | IB descartado ou concluído | manter: dividir ou cancelar é da `sa-fatiar` (P.O.) | EWM: voltar ao estado inicial |
+| fatia ou épico não terminal, fora da sprint | IB descartado ou concluído | manter: cancelar é da `sa-fatiar` (P.O.) | EWM: voltar ao estado inicial |
 | Sustentação `aberto`, fora da sprint | IB do item descartado ou concluído | arquivo: `cancelado` ou `concluido`, como nas linhas da tarefa (Sustentação, acima) | EWM: voltar ao estado inicial |
 | — | IB sem dono | EWM: dono = o P.O. (no épico, o `po` da linha) | — |
 

@@ -202,8 +202,8 @@ fluxo e o padrão do tipo ([references/passos.md](references/passos.md#tipos-com
 |---|---|---|
 | `GL` `REG` `HF` | `sa-prd.prd.escrever` (a `REG` também na ficha da fatia sem épico, `sa-consolidar.consolidar.elm`) | todo épico |
 | `EL` | `sa-prd.prd.escrever`, uma por tela, lida do protótipo que o cliente aprovou (`sa-especificar.prototipo`) | linha Telas = `sim` do `sabia.md` |
-| `ET` | inicial por épico no `sa-prd.prd.escrever`; as-built por fatia no `sa-codificar.codificar.pr`, ligada à inicial | linha ET do `sabia.md` |
-| `CT` | `sa-verificar.verificar.casos` (`CT.csv`); no ETM, na consolidação | linha Casos de teste do `sabia.md` |
+| `ET` | inicial por épico no `sa-prd.prd.escrever`; as-built por fatia no `sa-codificar.codificar.pr`, ligada à inicial (com toolkit do tipo, ajustada por ele no `sa-consolidar.consolidar.elm`) | linha ET do `sabia.md` |
+| `CT` | planejado da HF no `sa-prd.prd.escrever` (no ETM, na publicação); a evidência de cada um no `CT.csv` do `sa-verificar.verificar.casos` (CT novo da verificação, no ETM na consolidação) | linha Casos de teste do `sabia.md` |
 | `ATA` | `sa-especificar.reuniao`, da transcrição em `reunioes/` (que nunca sai da máquina), com a `[ESP]` aberta | cada reunião com o cliente |
 
 ## Fronteiras de fase

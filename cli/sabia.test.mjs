@@ -429,11 +429,13 @@ test("toolkit com tipo → skill: instalar copia a skill como veio (nada compila
   const hf = { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md" };
   await assert.rejects(s.baixarToolkit(casa(path.join(raiz, "tk-ruim"), { tipos: { GL: hf } }), {}), /tipo GL: não é desviável/);
   await assert.rejects(s.baixarToolkit(casa(path.join(raiz, "tk-str"), { tipos: { HF: "casa.hf" } }), {}), /tipo HF: use \{"skill", "fluxo", "padrao"\}/);
+  // a skill do tipo sem o papel dono de um passo de desvio (a ET também desvia na consolidação, do produto)
+  await assert.rejects(s.baixarToolkit(casa(path.join(raiz, "tk-papel"), { tipos: { ET: hf } }), {}), /tipo ET: a skill skills\/casa\/SKILL\.md não traz o papel produto em papeis/);
   assert.ok(!fs.existsSync(path.join(home, ".sabia/toolkits/casa")));
   // o passo que só cria um tipo não aceita desvio por para: o tipo vai por `tipos`
   const porPasso = casa(path.join(raiz, "tk-passo"), { tipos: undefined, skills: [{ caminho: "skills/casa/SKILL.md", papeis: ["especificador"],
     passo: { passo: "sa-prd.prd.escrever", para: "épico de exemplo" } }] });
-  assert.match(s.validarToolkit(porPasso, null, REPO).join(), /sa-prd\.prd\.escrever não aceita desvio de toolkit \(o tipo HF, REG, EL, ET vai por `tipos`\)/);
+  assert.match(s.validarToolkit(porPasso, null, REPO).join(), /sa-prd\.prd\.escrever não aceita desvio de toolkit \(o tipo HF, REG, EL, ET, CT vai por `tipos`\)/);
 });
 
 test("toolkit: skill com nome do Sabiá (sa-* ou sabia) é recusada", () => {

@@ -6,7 +6,7 @@
    {"id": "entrada", "de": "entrada", "sprint": "nao", "saidas": {"aguardando-aprovacao-plano sem a [APR], ou bloqueada \"aguardando troca de modo\"": "gate"}},
    {"id": "pesquisa", "chama": "sa-pesquisar.pesquisar"},
    {"id": "decisoes", "saidas": {"lacuna de negócio: é do P.O.": "fim"}},
-   {"id": "escrever", "saidas": {"plano grande demais: proposta de divisão, bloqueada (de: planejando)": "fim"}},
+   {"id": "escrever", "saidas": {"plano grande demais: bloqueada (de: planejando), o P.O. decide (de épico: seguir ou cancelar e registrar as partes pela sa-triar; sem épico: dividir pela sa-triar)": "fim"}},
    {"id": "analise", "chama": "sa-revisar.revisar", "travas": ["revisao-independente"], "saidas": {"AJUSTAR, falta do plano": "escrever", "AJUSTAR, falta do PRD": "decisoes", "sem subagente: plano pronto para análise": "fim"}},
    {"id": "gate", "saidas": {"com GATE: aprovador avisado": "→ sa-revisar.aprovar-plano", "sem GATE: fase implementando": "→ sa-codificar.codificar", "AFK com risco: bloqueada, a troca é do P.O. ou do SM": "fim"}}
  ]}
@@ -45,5 +45,5 @@ e a pergunta fica para a sessão dele); nada de ELM (`ELM pendente [<chave>]`).
 ## Regras
 
 - Não invoque nem simule outra skill do fluxo: termine dizendo a próxima (`sa-codificar`, o Dev Sênior da `[APR]`,
-  o P.O. ou o SM na troca de modo, o P.O. na divisão) e pare. A `sa-pesquisar` e o subagente revisor, que os passos mandam
+  o P.O. ou o SM na troca de modo, o P.O. no plano grande demais) e pare. A `sa-pesquisar` e o subagente revisor, que os passos mandam
   chamar, fazem parte deste fluxo.

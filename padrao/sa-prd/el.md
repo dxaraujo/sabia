@@ -10,7 +10,7 @@ aprovada do protótipo (o `D-nn` `Protótipo v<N> aprovado` da última versão r
 
 ```markdown
 **Tela:** <nome da tela, como o usuário a vê> · **Objetivo:** <o que o ator faz nela> · **Atores:** <…> ·
-**Protótipo:** `prototipo-v<N>-<slug>.<ext>` (anexo da [ESP] <id>), aprovado em D-<nn>
+**Protótipo:** `prototipo-v<N>-<slug>.<ext>` (em `prototipo/` da pasta do épico e anexo da [ESP] <id>), aprovado em D-<nn>
 
 ## Campos
 | Campo (rótulo) | Tipo | Obrigatório | Formato e exemplo fictício | Regra · origem |

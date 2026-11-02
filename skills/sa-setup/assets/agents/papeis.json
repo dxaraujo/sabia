@@ -97,7 +97,7 @@
       "push": "negar",
       "mcp_libera": ["+elm-leitura", "elm/elm_buscar_req", "elm/elm_ler_req"],
       "mcp_pergunta": ["+elm-tarefa", "elm/elm_criar_wi", "elm/elm_atualizar_wi", "elm/elm_ligar",
-          "elm/elm_publicar_req"]
+          "elm/elm_publicar_req", "elm/elm_criar_ct"]
     },
     "pesquisador": {
       "description": "Sabiá researcher, read-only on the code — reads the code, the ELM documentation in the repository and the database (queries only) and returns facts with file:line as the content of research.md, which the caller writes, without giving opinions or proposing solutions. Use it to research a slice (fatia) before the plan and to look up facts during interviews and PRDs.",

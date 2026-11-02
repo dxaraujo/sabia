@@ -64,7 +64,7 @@ separadas por vírgula. Cada item é **uma** linha da tabela — sem quebra de l
 | `ficha` | toda fatia: `[ficha](fatias/FT-<nnn>-<slug>.md)` — formato por trilha no padrão `sa-triar/ficha.md` (de Manutenção: escrita pela `sa-triar`; de épico: pela `sa-fatiar`) |
 | `cobre` | `HF-nn#c.c` (cenário) e `REG-nn` do PRD do épico; `—` na fatia de Manutenção (os cenários da padrão ficam na ficha, `C<n>`) |
 | `bloqueada-por` | as fatias de que ela depende (toda fatia; `—` quando não há) |
-| fatia `obs` | texto livre; convenções: `falta: <…>` (o que impede a DoR); `vinculada a [AT-012](sustentacao/atendimento/AT-012-<slug>.md)` (veio de um atendimento; no EWM, o link `relacionado` com o IB do item: `elm_ligar(wi, wi_destino, tipo relacionado)`); `desmembrada de FT-…` (nas novas) e `substituida-por FT-…` (na dividida e na absorvida pelo juntar); o motivo do cancelamento |
+| fatia `obs` | texto livre; convenções: `falta: <…>` (o que impede a DoR); `vinculada a [AT-012](sustentacao/atendimento/AT-012-<slug>.md)` (veio de um atendimento; no EWM, o link `relacionado` com o IB do item: `elm_ligar(wi, wi_destino, tipo relacionado)`); `desmembrada de FT-…` (nas novas) e `substituida-por FT-…` (na dividida) — só na divisão da fatia de Manutenção; o motivo do cancelamento |
 | `tamanho` | `P` · `M` · `G` |
 | `modo` | `AFK` · `HITL` — proposto na triagem ou no fatiamento (critérios da `sa-fatiar`); o modo final é gravado pela `sa-planejamento` quando a fatia ganha responsável e, na fatia `—` não iniciada, por quem a assume (`sa-desenvolver.desenvolver.iniciar`; no loop, o orquestrador), pela senioridade dele (Júnior → `HITL` · Pleno → os critérios · Sênior → `AFK` por padrão) |
 | `sprint` | chave da sprint `<pai>/Sprint <nn>` (`2026/Sprint 03`: o pai e o número do arquivo `sprints/<pai>/sprint-<nn>.md` — [arquivos.md](../../sa-planejamento/references/arquivos.md#sprintspaisprint-nnmd)) ou `—` (fora de sprint); gravada com `planejada`/`planejado` (`sa-planejamento`: o planejamento ou o encaixe durante a sprint). Na virada (`sa-planejamento.retrospectiva`), o item que migra passa à chave da próxima (o épico acompanha a linha dele na Especificação, que migra só se não está `concluida` nem `cancelada`) |
@@ -94,7 +94,7 @@ mesmo commit** nos dois arquivos.
 | `iniciada` | a `sa-desenvolver` começou: grava na base **e então** cria a branch | `sa-desenvolver.desenvolver.iniciar` · no loop, o orquestrador · a sincronização da `sa-planejamento` ([elm-sprint.md](../../sa-planejamento/references/elm-sprint.md) §9, com a rede de proteção: PR aberto, branch com commits ou `status.md` numa branch) | backlog (+ `responsavel`, se `—`) · sprint |
 | `pronta` | PR mergeado | `sa-desenvolver.encerrar`, na base · a sincronização da `sa-planejamento` (§9: merge por fora do Sabiá, Créditos e lições `—`) | backlog · sprint · `status.md` da base |
 | `concluida` | consolidada | `sa-consolidar` | backlog (+ `concluida-em`) · sprint (+ Créditos) · `status.md` |
-| `dividida` · `cancelada` | desvios (`obs` `substituida-por FT-…` · o motivo) | `sa-fatiar` · `sa-triar` (Manutenção) | backlog e a linha da sprint |
+| `dividida` · `cancelada` | desvios (`obs` `substituida-por FT-…` · o motivo) | `dividida`: só a `sa-triar` (Manutenção) · `cancelada`: `sa-fatiar` (P.O.) · `sa-triar` (Manutenção) | backlog e a linha da sprint |
 
 - **Em especificação na sprint:** a fatia `nova` que entrou na sprint sem passar na DoR fica `nova`, com `sprint` e
   `obs` `em especificação`, e a linha dela na seção Especificação da sprint, com a `[ESP] FT-<nnn>`
@@ -110,10 +110,12 @@ mesmo commit** nos dois arquivos.
   <motivo> (<quem>, <data>)`; no EWM, o IB e as tarefas voltam ao backlog, o IB no estado inicial
   (`elm_transicao(<IB>, "reabrir")`, se saiu dele), e ficam lá até ela voltar a uma sprint, quando movem (elm-sprint.md, topo e §3).
   De `iniciada` em diante nada volta: a fatia para em `bloqueada (de: <fase>)` no `status.md`, com o motivo, até o
-  P.O. decidir. Juntar só entre fatias não iniciadas (a absorvida: `cancelada` com `substituida-por`).
-- **Dividida ou cancelada depois de `iniciada`:** a `sa-fatiar` (ou a `sa-triar`, na de Manutenção) conclui as
-  tarefas abertas da fatia com as horas lançadas, avisa o Dev para fechar o PR, e as novas nascem `nova` com `obs`
-  `desmembrada de FT-…`. Os leitores ignoram o `status.md` da branch de fatia `dividida` ou `cancelada` na base.
+  P.O. decidir. A fatia de épico se divide ou se junta só antes do GATE do backlog (no rascunho, passo
+  `sa-fatiar.fatiar.perguntar`); no backlog, não se altera mais: o P.O. ainda a cancela (`sa-fatiar.refinamento`), e
+  cenário novo é épico ou fatia nova pela `sa-triar`.
+- **Cancelada depois de `iniciada`** (ou dividida, na de Manutenção): a `sa-fatiar` (ou a `sa-triar`, na de
+  Manutenção) conclui as tarefas abertas da fatia com as horas lançadas, avisa o Dev para fechar o PR, e as novas da
+  divisão nascem `nova` com `obs` `desmembrada de FT-…`. Os leitores ignoram o `status.md` da branch de fatia `dividida` ou `cancelada` na base.
 - **Cancelar no EWM** é `elm_transicao(<id>, "cancelar")`, um por id, com "sim": o IB da fatia `cancelada` (e as
   tarefas, se ela não foi iniciada); na falha (sem o MCP, `precondicao`, erro), `ELM pendente [FT-… cancelar]`.
   As pendências da fatia não iniciada, `dividida` ou `cancelada` — inclusive a conclusão das tarefas sem o MCP —
@@ -159,7 +161,7 @@ mesmo commit** nos dois arquivos.
 | `status` | quem causa a transição — [Situações](#situações) |
 | épico registrado (`po`, `pasta`, `obs`) | `sa-triar` |
 | épico `prd` e `pasta` (se estava `—`), no GATE do PRD | `sa-especificar` |
-| fatias de épico criadas (`origem` `EP-nn`, `prioridade` do épico), divididas, juntadas, canceladas; as fichas delas | `sa-fatiar` |
+| fatias de épico criadas (no GATE do backlog, com `origem` `EP-nn` e a `prioridade` do épico) e canceladas; as fichas delas | `sa-fatiar` |
 | fatia de Manutenção (`trilha`, ficha, `obs` `falta:` e `vinculada a`), dividida ou cancelada | `sa-triar` |
 | `sprint`, `responsavel`, `modo` final (pela senioridade), `prioridade` e a ordem das linhas · encaixe durante a sprint · `sprint` dos itens que migram na virada · na sincronização com o EWM, a saída e a entrada aceitas pelo P.O. e o `responsavel` pelo dono da tarefa (§9 do `elm-sprint.md`) | `sa-planejamento` |
 | `responsavel` e `modo` da primeira atribuição (se `—`) da fatia que inicia, e o revisor e o verificador se ela virou HITL | `sa-desenvolver.desenvolver.iniciar` (no loop, o orquestrador) |
@@ -195,8 +197,9 @@ aprovado. Quem faz depende de onde ela está:
 
 1. Decisão em aberto → **`sa-entrevistar`**, com a pessoa.
 2. Ficha incompleta (Objetivo, Cobre, Como verificar) → complete-a no formato da
-   ficha (o padrão `sa-triar/ficha.md`).
-3. Cenário de aceite que o PRD do épico não tem → **`sa-prd`** (mudança depois de aprovado: `sa-prd.mudanca`).
+   ficha (o padrão `sa-triar/ficha.md`). Na fatia de épico, o Cobre é o do GATE do backlog e não muda.
+3. Cenário de aceite que a fatia de épico não cobre → ela não ganha cenário nem cobertura: o cenário novo vai à
+   **`sa-triar`** (épico ou fatia nova, `origem EP-<nn>`).
 4. Confira a DoR acima. Passou → `elegivel` no `backlog.md` (sem o `falta:` e o `em especificação`), pelo bloco
    [Gravar na base](#gravar-na-base); não passou → atualize o `falta:`.
 

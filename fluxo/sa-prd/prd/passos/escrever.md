@@ -1,10 +1,10 @@
 ---
-{"resumo": "Preenche o prd.md (padrão sa-prd/prd.md) e cria em elm/ um conceito OKF por artefato, mais index.md e log.md, pelas regras de escrita e pelas políticas do sabia.md (ET inicial, REG com dados técnicos, Telas: a EL do protótipo aprovado) e o limite do acordos.md; o tipo com skill de toolkit no prompt sai por ela."}
+{"resumo": "Preenche o prd.md (padrão sa-prd/prd.md) e cria em elm/ um conceito OKF por artefato, mais index.md e log.md, pelas regras de escrita e pelas políticas do sabia.md (ET inicial, REG com dados técnicos, Telas: a EL do protótipo aprovado, Casos de teste: o CT planejado de cada cenário) e o limite do acordos.md; o tipo com skill de toolkit no prompt sai por ela."}
 ---
 ## Entrada
 
 O `decisoes.md` e as decisões do passo `similares`; a seção ELM do `.sabia/sabia.md` (linhas ET, REG com dados
-técnicos e Telas) e a linha Especificação do `<produto>/acordos.md`. Com Telas = `sim`, o protótipo aprovado: o
+técnicos, Telas e Casos de teste) e a linha Especificação do `<produto>/acordos.md`. Com Telas = `sim`, o protótipo aprovado: o
 `D-nn` `Protótipo v<N> aprovado` da última versão registrada (o maior `prototipo-v<N>-*` em `prototipo/`) e o arquivo
 dela (passo `sa-especificar.prototipo.aprovacao`), ou o `D-nn` `Épico sem tela`.
 
@@ -49,6 +49,10 @@ só aponta para eles. Regras de escrita:
   nenhuma EL.
 - **Decisões de teste:** proponha os **pontos de teste** (seams) — o mais alto possível, idealmente um por
   comportamento — e confirme com a pessoa: é por eles que as fatias vão provar que funcionam.
+- **Casos de teste planejados (CT)** — da HF, no mesmo lote: um `CT-nn-<slug>.md` por cenário, no padrão
+  `sa-prd/ct.md`, com o resultado esperado igual ao "Então" do cenário; entram na tabela do PRD e são aprovados no
+  GATE com os demais. Pela linha Casos de teste: `ETM` → sobem ao ETM na publicação dos requisitos; `CSV` → ficam
+  no repositório. A execução e a evidência são da verificação da fatia (`CT.csv`, passo `sa-verificar.verificar.casos`).
 - Termos do glossário em todo o texto; termo novo já registrado pela entrevista.
 - **Limite do épico:** o da linha Especificação do `acordos.md` (toda história conta, inclusive as desdobradas de
   outra); sem a linha, ~8 histórias e um objetivo de negócio. Passou → proponha dividir em dois épicos antes de escrever.

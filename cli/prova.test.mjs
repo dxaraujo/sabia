@@ -138,7 +138,7 @@ test("prova front+back: o toolkit casa (HF ⇢ skill casa) com o override do pro
   const prd = s.rotaFluxo("sa-prd.prd", o);
   assert.deepEqual(ordem(prd), ["1 entender", "2 entrevistar", "3 similares", "4 escrever", "5 revisao", "6 gate"]);
   assert.match(prd, /^tipo ⇢ +escrever: HF +→ skill casa \(fluxo\/fluxo-hf\.md\) +toolkit casa 1\.0\.0$/m);
-  assert.match(prd, /│ 4 escrever ⇢ +│──▶ ⇢ tipo HF → skill casa \(fluxo\/fluxo-hf\.md\) \(toolkit casa 1\.0\.0\)\n.*┘ {4}⇢ por tipo: HF, REG, EL, ET\n/);
+  assert.match(prd, /│ 4 escrever ⇢ +│──▶ ⇢ tipo HF → skill casa \(fluxo\/fluxo-hf\.md\) \(toolkit casa 1\.0\.0\)\n.*┘ {4}⇢ por tipo: HF, REG, EL, ET, CT\n/);
   assert.match(prd, new RegExp(`^1 +entender +projeto \\(base ${base}\\)`, "m"));
   assert.match(prd, new RegExp(`│ 1 entender +│──▶ origem: projeto \\(base ${base}\\)`));
   // os fluxos novos da especificação, resolvidos no projeto

@@ -12,7 +12,8 @@
 Num projeto com tela (linha **Telas** = `sim` na seção ELM do `.sabia/sabia.md`), o PRD só começa com um protótipo
 aprovado pelo cliente: é dele que o lote do PRD tira os leiautes (EL, no passo `sa-prd.prd.escrever`). O protótipo é
 **entrada**, não requisito: feito fora do Sabiá, entra como anexo da `[ESP]`, numa versão `v<N>`, e a aprovação do
-cliente vira um `D-nn` no `decisoes.md`. O fluxo volta a quem chamou; enquanto o protótipo não chega, o cliente não
+cliente vira um `D-nn` no `decisoes.md`; com o PRD aprovado, as versões registradas vão com a pasta do épico para a
+base. O fluxo volta a quem chamou; enquanto o protótipo não chega, o cliente não
 responde ou a versão do ajuste não vem, a sessão fecha. Épico sem tela num projeto com tela → um `D-nn` da pessoa, e
 o lote do PRD não cria EL.
 

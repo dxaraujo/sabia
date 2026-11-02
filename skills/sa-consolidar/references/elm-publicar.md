@@ -7,7 +7,7 @@ Formato dos conceitos: [../../sa-prd/references/okf-elm.md](../../sa-prd/referen
 
 Entrada: a pasta `elm/` do épico ou, numa fatia padrão sem épico, a da fatia. Publica só conceito `status: stable`
 com um `verified` humano posterior ao `generated.at`; o resto aparece na prévia como "aguardando aprovação". Os tipos
-com Requisito `não` no catálogo ficam fora (a ATA tem a seção dela, abaixo).
+com Requisito `não` no catálogo ficam fora (a ATA e o CT planejado têm a seção deles, abaixo).
 Ordem: a **de publicação** do [catálogo de tipos](../../sabia/references/tipos.md), de baixo para cima, para cada um
 nascer com os ids que cita (GL → REG → EL → HF → ET), com a **2ª passada HF ↔ EL** (item 5) logo depois das HFs e
 antes da ET. A ET inicial do épico (linha ET = `inicial no PRD + as-built`) entra nessa ordem, com os requisitos; a
@@ -32,6 +32,16 @@ as-built da fatia segue a seção ET as-built abaixo.
 
 Depois: sugira a `sa-sync` (baixar) para o bundle receber a versão oficial.
 
+## CT planejado (`CT-nn-<slug>.md` de `elm/` → ETM)
+
+Na mesma publicação e no mesmo "sim" dos requisitos, depois das HFs (o CT nasce ligado a elas), pela linha **Casos
+de teste** da seção ELM do `sabia.md`:
+- **`ETM`**, com `qm` no `pa`: cada CT `stable`, com um `verified` humano posterior ao `generated.at` e sem
+  `resource` → `elm_criar_ct(titulo = title, cenario_md = o corpo sem a seção `## Relações`, reqs = ids das HFs que
+  ele prova)`; grave de volta como no item 4 dos requisitos. Erro `permissao` → `ELM pendente [CT-<nn> EP-<nn>
+  criar]`.
+- **`CSV`**, ou o `pa` sem `qm`: o CT planejado fica no repositório — nada sobe e nenhuma `ELM pendente`.
+
 ## ATA (reunião da `[ESP]`)
 
 Fora da ordem de publicação e da política Publicar requisitos: cada ATA sobe na aprovação dela, pelo passo
@@ -54,15 +64,19 @@ A ET chega no PR (`.kiro/specs/<ft>-<slug>/elm/ET-<slug>.md`); publique como um 
   requisitos; sem o "sim" para ela → `ELM pendente [ET FT-<nnn> ligar]` e a as-built sobe com o título da inicial.
 - **Fatia sem épico** (ou épico sem ET inicial): sem ligação.
 
-## Casos de teste (cenários `✅ aceito` do `verificacao.md`)
+## Casos de teste da fatia (o `CT.csv`, com as evidências dos cenários `✅ aceito` do `verificacao.md`)
 
 Pela linha **Casos de teste** da seção ELM do `sabia.md`:
 - **`CSV`**, ou o `pa` sem `qm`: o `CT.csv` da fatia é a entrega — nenhum `elm_criar_ct` e nenhuma `ELM pendente`.
   Diga o caminho dele (o time o importa no ETM se quiser); no campo ELM do `status.md`, `CT CSV <caminho>`.
 - **`ETM`**, com `qm` no `pa`: como abaixo.
 
-Para cada cenário sem id ao lado: `elm_criar_ct(titulo = Resumo do CT.csv, cenario_md = Descrição, reqs = ids das
-histórias que ele cobre — sem épico: a regra da ficha —, wi = IB)` → grave o id ao lado do cenário e no campo ELM do
+Linha do `CT.csv` ligada a um CT planejado → o id vem do `resource`/`id` do `CT-nn-<slug>.md` em `elm/` do épico,
+lido depois da publicação dos requisitos no mesmo "sim" (seção CT planejado, acima), nunca da Descrição do `CT.csv`
+(informativa). Com id → não cria: `elm_ligar(wi = IB, ct = id)` e o id ao lado do cenário; ainda sem id → crie-o
+como na seção CT planejado e grave de volta no conceito, depois `elm_ligar(wi = IB, ct = id)`. Só a linha de CT
+novo é criada do CSV: `elm_criar_ct(titulo = Resumo do CT.csv, cenario_md = Descrição, reqs = ids das
+histórias que ele cobre — sem épico: a regra da ficha —, wi = IB)`. Grave o id ao lado do cenário e no campo ELM do
 `status.md` (`CT <id>, …`). Erro `permissao` → `ELM pendente [CT FT-<nnn> criar]` e o `CT.csv`
 para importar à mão no ETM; com os ids que a pessoa informar, `elm_ligar(ct, req)` e `elm_ligar(wi, ct)`.
 

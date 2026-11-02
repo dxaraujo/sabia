@@ -244,10 +244,15 @@ def fonte_toolkits(projeto, cfg, fw, fluxos):
                              f" o tipo tem de ser desviável e não pendente no catálogo, a skill uma das skills do toolkit"
                              + (f", e o {' e o '.join(ks)} arquivos da pasta do toolkit" if ks else ""))
                 continue
-            if not meu(f"tipo {sg}", nome):
-                continue
             # só os passos de "desviavel" do catálogo: nos outros passos de cria, o tipo é sempre do Sabiá
             criam = [c for c in tipo["desviavel"] if ".".join(c.split(".")[:2]) in fluxos]
+            papeis = next(x for x in man["skills"] if x["caminho"] == q["skill"]).get("papeis", [])
+            falta = [(p, c) for c in criam if (p := fluxos[".".join(c.split(".")[:2])]["dono"].removeprefix("sa-")) not in papeis]
+            if falta:  # a skill vai ao dono do passo de desvio: o toolkit tem de declarar esse papel
+                erros += [f"toolkit {nome}: tipo {sg}: a skill {q['skill']} não traz o papel {p} em papeis (dono do passo de desvio {c})" for p, c in falta]
+                continue
+            if not meu(f"tipo {sg}", nome):
+                continue
             sk = Path(q["skill"]).parent.name
             fl = f"`{pasta}/{q['fluxo']}`" if q.get("fluxo") else ""
             pd = f"o padrão `{pasta}/{q['padrao']}`" if q.get("padrao") else ""

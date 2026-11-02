@@ -141,7 +141,7 @@ categoria; tarefas filhas na sprint; cenário verificado → *Caso de Teste* (ET
 Todo artefato é de um tipo do catálogo fechado ([`fluxo/tipos.json`](fluxo/tipos.json); compilado em
 `skills/sabia/references/tipos.md`): `HF` história, `REG` regra, `GL` termo, `EL` leiaute (uma por tela, com a
 política Telas = `sim`, lido do protótipo que o cliente aprovou), `ET` especificação técnica (inicial no PRD e
-as-built por fatia, pela política ET), `CT` caso de teste (`CT.csv` ou ETM, pela política) e `ATA` (a ata de cada
+as-built por fatia, pela política ET), `CT` caso de teste (planejado da HF no PRD e aprovado no GATE; a evidência da execução no `CT.csv` da verificação; ETM ou repositório, pela política) e `ATA` (a ata de cada
 reunião com o cliente durante a `[ESP]`, escrita da transcrição, que fica só local). Cada um nasce como um conceito
 **OKF v0.2** na pasta da spec (o mesmo formato do bundle da `sa-sync`), com aprovação registrada em `verified`; os
 requisitos sobem para o DOORS Next só depois do GATE, de baixo para cima (`GL` → `REG` → `EL` → `HF` → `ET`), com
@@ -150,8 +150,8 @@ dela. Atributos e links entre
 requisitos ficam registrados nos conceitos, porque o MCP não os grava. Detalhes em [`skills/sabia/references/elm.md`](skills/sabia/references/elm.md)
 e [`skills/sa-consolidar/references/elm-publicar.md`](skills/sa-consolidar/references/elm-publicar.md).
 
-Na consolidação, o agente cria no ETM um caso de teste por cenário verificado, com o link **valida**
-(`elm_criar_ct`); sem permissão de criar no ETM, o `CT.csv` é importado à mão. O MCP `elm` ainda não grava atributos de requisito, links requisito↔requisito, módulos, change sets nem baselines: quando o
+Com a política Casos de teste = `ETM`, o CT planejado sobe ao ETM na publicação dos requisitos, e na consolidação o
+agente o liga ao IB e cria só o CT novo da verificação, com o link **valida** (`elm_criar_ct`); sem permissão de criar no ETM, o `CT.csv` é importado à mão. O MCP `elm` ainda não grava atributos de requisito, links requisito↔requisito, módulos, change sets nem baselines: quando o
 processo do projeto exige algum deles, a skill do passo entrega o roteiro manual e registra a pendência.
 
 ## Pré-requisitos

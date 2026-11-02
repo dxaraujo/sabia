@@ -70,5 +70,5 @@ Item novo → passo `triagem`; item que já existe → a ação da lista acima.
 
 - Árvore suja ao trocar para a base (bloco Gravar na base).
 - Fatia `nova` na sprint, com a `[ESP] FT` → não é aqui: "use `sa-especificar FT-<nnn>`".
-- Item que já existe, fora dos casos acima → pare: começar ou retomar é pelo hub **`sa-iniciar`**; dividir, juntar ou cancelar uma fatia de épico é
-  refinamento na **`sa-fatiar`**.
+- Item que já existe, fora dos casos acima → pare: começar ou retomar é pelo hub **`sa-iniciar`**; cancelar uma fatia de épico é
+  refinamento na **`sa-fatiar`** (depois do GATE do backlog, a fatia não se divide nem se junta).

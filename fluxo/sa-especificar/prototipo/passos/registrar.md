@@ -36,7 +36,8 @@ A pasta de trabalho `.sabia/local/especificacao/<EP>-<slug>/` (passo `sa-especif
    `elm` ou com falha → `ELM pendente [<chave>]: anexar prototipo-v<N> na [ESP] EP-<nn>` no `rascunho.md`, e o
    fluxo segue.
 
-O protótipo não vai para a base: o registro é o anexo da `[ESP]`.
+Até o GATE do PRD, o registro é o anexo da `[ESP]`; com o PRD aprovado, as versões registradas vão com a pasta do
+épico para a base (passo `sa-especificar.especificar.fechamentos`), e o anexo continua.
 
 ## Saída
 

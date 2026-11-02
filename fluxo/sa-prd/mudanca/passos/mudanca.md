@@ -18,7 +18,7 @@ O PRD aprovado só muda por um pedido explícito. A versão sai da Fase do `stat
 - **`fatiado` (depois do fatiamento)** — só a correção do que o PRD já tem (cenário errado ou que falta numa
   história existente, valor de regra), na versão de correção (sobe o número depois do ponto: `1.1`, `2.1`…), por
   pedido explícito: da pessoa, da ATA (`sa-especificar.reuniao`), do drift (`sa-consolidar`), da `sa-verificar`, do
-  `sa-plano`, de completar a fatia (`sa-especificar.fatia`) ou do `sa-fatiar.refinamento`. Escopo novo (história,
+  `sa-plano` ou de completar a fatia (`sa-especificar.fatia`). Escopo novo (história,
   regra ou ator que o PRD não tem) → o PRD não muda: épico ou fatia nova pela `sa-triar` (`origem EP-<nn>`).
 
 Registre no rodapé (versão, quando há, data e o que mudou), Fase `em-revisao (de: aprovado|fatiado)`, com a Fase

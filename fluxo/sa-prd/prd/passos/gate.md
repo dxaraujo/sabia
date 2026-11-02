@@ -42,12 +42,13 @@ Em Artefatos, uma contagem por tipo do [catálogo](~/.sabia/framework/skills/sab
   `sa-prd.mudanca.mudanca`):
   - `de: aprovado` (antes do fatiamento) → "use `sa-especificar EP-<nn>`": a sessão segue na mesma `[ESP]`, que a fecha e diz o que
     vem depois (`sa-fatiar`);
-  - `de: fatiado` (correção depois do fatiamento): chamada pelo `sa-fatiar.refinamento` (⇄) → volte a ele, que segue com a fatia
-    nova; vinda do drift da consolidação → "avise o P.O.: retome pela `sa-consolidar FT-<nnn>`"; da verificação, do
-    plano, de completar a fatia, da ATA ou pedido direto, com fatias afetadas → diga que o refinamento delas é o `sa-fatiar.refinamento`.
+  - `de: fatiado` (correção depois do fatiamento): vinda do drift da consolidação → "avise o P.O.: retome pela
+    `sa-consolidar FT-<nnn>`"; da verificação, do plano, de completar a fatia, da ATA ou pedido direto → as fatias
+    do backlog não mudam; cenário que falta em fatia nenhuma → "épico ou fatia nova pela `sa-triar` (`origem
+    EP-<nn>`)".
 
 ## Pare se
 
 - Primeiro GATE aprovado, ou mudança antes do fatiamento aprovada: diga o próximo e pare.
-- Correção depois do fatiamento, fora do refinamento: diga o próximo e pare — vinda do drift, a consolidação é do
+- Correção depois do fatiamento: diga o próximo e pare — vinda do drift, a consolidação é do
   P.O., no agente `sa-produto`.

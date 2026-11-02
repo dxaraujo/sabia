@@ -34,7 +34,7 @@ atas, sim, pelo `elm/`). Crie a pasta vazia se não existir.
 
 **`prototipo/`** — só com a linha Telas = `sim` do `sabia.md`: onde a pessoa põe o arquivo de cada versão do
 protótipo de tela; o registro e a aprovação do cliente saem pelo `sa-especificar.prototipo`, e cada versão vai à
-`[ESP]` como anexo, não à base. Crie a pasta vazia se não existir.
+`[ESP]` como anexo; com o PRD aprovado, as registradas vão com a pasta para a base. Crie a pasta vazia se não existir.
 
 O `rascunho.md` é o **caderno do levantamento**: o que o cliente contou, exemplos reais, dúvidas para a próxima
 reunião, com a data de cada sessão. Decisões vão para o `decisoes.md` (`D-nn`), nunca só para o rascunho.

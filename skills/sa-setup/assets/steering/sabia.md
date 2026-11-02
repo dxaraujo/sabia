@@ -124,7 +124,7 @@ Na worktree do `sa-orquestrar`: `cd .sabia/local/wt/<ft> && <comando>`. Falha de
 | Usa ELM | `<sim — .kiro/config/elm/pa_<nome>.json (padrão; outros: …) | não>` — o MCP `elm` lê o `pa`; regras em `references/elm.md` da skill `sabia`; sem o MCP, a escrita vira `ELM pendente` |
 | Publicar requisitos | `<na-aprovacao | no-merge>` (itens do EWM: nascem no backlog do produto do `pa` — `ccm.backlog` — e mudam de iteração ao entrar na sprint) |
 | ET | `<não publica | só as-built | inicial no PRD + as-built>` — só as-built: uma ET por fatia, escrita pelo Dev no PR; inicial no PRD + as-built: também uma ET inicial por épico, no lote do PRD (rubrica P13), e a as-built de cada fatia do épico ligada a ela (padrão `sa-prd/et.md`) |
-| Casos de teste | `<CSV | ETM>` — CSV: o `CT.csv` da fatia é a entrega, sem ELM pendente; ETM: a consolidação cria um caso por cenário (`elm_criar_ct`; precisa do `qm` no `pa`) |
+| Casos de teste | `<CSV | ETM>` — o CT planejado nasce da HF no lote do PRD e é aprovado no GATE; a verificação grava no `CT.csv` da fatia a evidência de cada um. CSV: o CT planejado fica no repositório e o `CT.csv` é a entrega, sem ELM pendente; ETM: o CT planejado sobe na publicação dos requisitos e a consolidação o liga ao IB, criando só o CT novo (`elm_criar_ct`; precisa do `qm` no `pa`) |
 | REG com dados técnicos | `<não | sim>` — sim: a regra pode ter `## Dados` (tabela e campo na forma original), onde a P9 não vale |
 | Telas | `<não | sim>` — sim: antes do PRD, o protótipo aprovado pelo cliente (`sa-especificar.prototipo`, a aprovação num `D-nn`); no lote do PRD, uma EL por tela, lida dele (padrão `sa-prd/el.md`, rubrica P12) |
 | Manual no DOORS Next | `<change set, módulo, links restringe, baseline | nada>` |

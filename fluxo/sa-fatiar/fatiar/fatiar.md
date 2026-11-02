@@ -12,7 +12,7 @@
 # Fatiar — PRD → fatias verticais
 
 Entrada: o PRD aprovado — `Fase: aprovado` no `status.md` do épico, na base (`<produto>/epicos/<EP>-<slug>/`, com o
-`prd.md`; no refinamento, `fatiado`, ou `aprovado` depois de uma mudança no PRD). Saída: fatias no
+`prd.md`; no refinamento, `fatiado`). Saída: fatias no
 `<produto>/backlog.md` (formato em [references/backlog.md](~/.sabia/framework/skills/sa-fatiar/references/backlog.md)) e a ficha de cada uma (`<produto>/fatias/FT-<nnn>-<slug>.md`, formato
 "padrão de épico" do padrão `sa-triar/ficha.md`).
 
@@ -26,7 +26,9 @@ sessão com o P.O." e pare.
 
 - Nunca crie fatia por camada técnica ou por papel ("especificar X", "testar X") — o trabalho de todos os papéis
   na mesma fatia é a mesma fatia.
-- Nunca altere fatia `pronta` ou `concluida` (já na base). Mudança de comportamento entregue = fatia nova.
+- Dividir, juntar ou mudar uma fatia, só antes do GATE do backlog (passo `perguntar`). Depois dele, no backlog, a
+  fatia não se altera mais: o P.O. ainda pode cancelá-la (`sa-fatiar.refinamento`), e cenário novo é épico ou fatia
+  nova pela `sa-triar`.
 - Tamanho não é promessa de prazo: é o sinal de que a fatia cabe num PR revisável.
 - Não invoque nem simule outra skill além das que os passos mandam chamar (subagente pesquisador): depois
   do GATE do backlog, diga os próximos passos (passo `proximos`) e pare.

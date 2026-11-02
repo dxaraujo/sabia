@@ -15,6 +15,8 @@ O item lido no passo `chegou` (novo, ou a fatia sem épico que voltou, com o mes
 | **sustentação** | trabalho que não muda o repositório, numa das categorias da tabela **Sustentação** do `sabia.md` (Atendimento: consulta, extração, explicação ou conferência pedida pelo cliente; Implantação; Banco de dados; Infra; Operação; Apoio a outros times) | item da categoria (`AT-nnn`, `IM-nnn`…) na `### <Categoria>` da `## Sustentação`, com o registro, a sprint sugerida e o IB do item (a tarefa da categoria, `[ATD]`, `[IMPL]`…, nasce quando ele entra numa sprint) (a triagem registra; quem executa: **`sa-atender`** no Atendimento, a **`sa-executar`** nas demais) |
 
 - Fatia de um épico não passa de novo por aqui: o épico foi triado na entrada e as fatias dele vêm da `sa-fatiar`.
+  Cenário novo de um épico já fatiado entra aqui como épico novo ou fatia sem épico (`obs` `origem EP-<nn>`), pela
+  trilha que couber.
 - Diga a trilha e o motivo numa linha; dúvida entre duas → sim/não pela mais leve (rápida, depois padrão, depois épico). Padrão que precisaria de mais de
   ~3 cenários de comportamentos diferentes, ou de mais de uma regra nova independente → é épico.
 - **Padrão:** rodadas da `sa-entrevistar` até as regras e os cenários fecharem, gravando na seção Decisões da

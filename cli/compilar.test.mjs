@@ -256,14 +256,18 @@ test("o repo real compila nos dois alvos e todo link da saída resolve", () => {
 test("desvio por tipo no repo: o passo que cria um tipo desviável tem ⇢ e os tipos, sem \"desvio\": true", () => {
   const m = carregar(REPO), x = m.fluxos["sa-prd.prd"].passos.find((p) => p.id === "escrever");
   assert.ok(!x.desvio);
-  assert.deepEqual(x.tipos, ["HF", "REG", "EL", "ET"]);
-  assert.match(grafoAscii(m.fluxos["sa-prd.prd"]), /│ 4 escrever ⇢ +│──▶ ⇢ por tipo: HF, REG, EL, ET\n/);
+  assert.deepEqual(x.tipos, ["HF", "REG", "EL", "ET", "CT"]);
+  assert.match(grafoAscii(m.fluxos["sa-prd.prd"]), /│ 4 escrever ⇢ +│──▶ ⇢ por tipo: HF, REG, EL, ET, CT\n/);
   assert.ok(!m.fluxos["sa-prd.prd"].passos.some((p) => p.id === "similares" && p.tipos));
-  // só os passos de "desviavel" do catálogo: a ET as-built do PR e a REG da ficha da fatia sem épico ficam do Sabiá (a ET inicial desvia)
-  for (const [q, id] of [["sa-codificar.codificar", "pr"], ["sa-consolidar.consolidar", "elm"]]) {
+  // só os passos de "desviavel" do catálogo: a ET as-built do PR, o CT.csv da verificação e a REG da ficha da fatia sem
+  // épico ficam do Sabiá; a ET inicial e o CT planejado desviam no PRD, e a ET as-built também na consolidação
+  for (const [q, id] of [["sa-codificar.codificar", "pr"], ["sa-verificar.verificar", "casos"]]) {
     assert.ok(!m.fluxos[q].passos.find((p) => p.id === id).tipos, `${q}.${id}`);
     assert.doesNotMatch(grafoAscii(m.fluxos[q]), new RegExp(`\\d ${id} ⇢|por tipo`), `${q}.${id}`);
   }
+  assert.deepEqual(m.fluxos["sa-consolidar.consolidar"].passos.find((p) => p.id === "elm").tipos, ["ET"]);
+  assert.match(grafoAscii(m.fluxos["sa-consolidar.consolidar"]), /│ 3 elm ⇢ +│──▶ ⇢ por tipo: ET\n/);
+  assert.deepEqual(m.tipos.CT.cria, ["sa-prd.prd.escrever", "sa-verificar.verificar.casos"]);
 });
 
 test("catálogo: desviavel fora de cria é recusado", () => {
@@ -297,6 +301,13 @@ test("toolkit: tipo → skill do toolkit com fluxo e padrão da pasta; recusa ti
   assert.match(erros({ tipos: { HF: { ...hf, fluxo: "/fluxo/fluxo-hf.md" } } }), /tipo HF: falta o fluxo \/fluxo\/fluxo-hf\.md na pasta do toolkit/);
   // só a skill, com as references dentro: aceito
   assert.equal(erros({ tipos: { HF: { skill: hf.skill } } }), "");
+  // a skill do tipo traz em papeis o dono de cada passo de desvio: a ET desvia no PRD (especificador) e na consolidação (produto)
+  assert.match(erros({ tipos: { ET: { skill: hf.skill } } }), /tipo ET: a skill skills\/casa\/SKILL\.md não traz o papel produto em papeis \(dono do passo de desvio sa-consolidar\.consolidar\.elm\)/);
+  assert.doesNotMatch(erros({ tipos: { ET: { skill: hf.skill } } }), /papel especificador/);
+  assert.equal(erros({ tipos: { ET: { skill: hf.skill } }, skills: [{ caminho: hf.skill, papeis: ["especificador", "produto"] }] }), "");
+  assert.match(erros({ skills: [{ caminho: hf.skill, papeis: ["produto"] }] }), /tipo HF: .*papel especificador.*\n.*tipo ATA: .*papel especificador/);
+  // o CT planejado desvia no PRD
+  assert.equal(erros({ tipos: { CT: { skill: hf.skill } } }), "");
   // tipo desviável ainda pendente no Sabiá instalado
   const fw = escrever(path.join(raiz, "fw-pend"), { "fluxo/tipos.json": { tipos: { HF: { desviavel: ["sa-prd.prd.escrever"], pendente: true } } } });
   assert.match(erros({ tipos: { HF: hf }, rubricas: [] }, fw), /tipo HF: pendente no Sabiá instalado/);

@@ -45,7 +45,7 @@ diga o que ele é e peça o item.
 | `AT-nnn`, tarefa `[ATD]` | **`sa-atender`** | quem atende / `sa-produto` |
 | `IM-`, `BD-`, `IN-`, `OP-`, `EX-nnn` (as demais categorias da tabela **Sustentação** do `sabia.md`), tarefa `[IMPL]` `[BD]` `[INF]` `[OPE]` `[EXT]` | **`sa-executar`** | quem faz / `sa-produto` |
 | `EP-nn` `concluido` com a linha da Especificação `iniciada` | **`sa-especificar`** (retoma os fechamentos) | Especificador / `sa-especificador` |
-| `EP-nn` `fatiado` com a Especificação `concluida` (dividir, juntar ou cancelar fatias) | **`sa-fatiar.refinamento`** | Especificador / `sa-especificador` |
+| `EP-nn` `fatiado` com a Especificação `concluida` (cancelar fatias ou o épico; as fatias não se alteram mais) | **`sa-fatiar.refinamento`** | Especificador / `sa-especificador` |
 | fatia `iniciada` no `backlog.md` sem `status.md` em nenhuma branch (a sessão parou entre o registro e a branch) | **`sa-desenvolver`** (retomada pelo passo `sa-desenvolver.desenvolver.iniciar` — só o `responsavel` da linha retoma) | Dev responsável / `sa-desenvolvedor` |
 | fatia em `pesquisando`, `planejando`, `bloqueada (de: pesquisando \| planejando)` (inclusive com `aguardando troca de modo`: a volta da troca é dela) ou `aguardando-aprovacao-plano` sem a `[APR] Aprovar plano` | **`sa-plano`** | Dev / `sa-desenvolvedor` |
 | fatia em `aguardando-aprovacao-plano` com a `[APR] Aprovar plano` aberta | **`sa-revisar.aprovar-plano`** | Aprovador (Dev Sênior) / `sa-revisor` |

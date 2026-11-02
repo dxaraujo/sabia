@@ -30,9 +30,9 @@ atualizado: <AAAA-MM-DD>
 
 ## Histórias, regras e termos (artefatos do ELM)
 
-<!-- Cada história (HF), regra (REG), termo novo (GL) e leiaute (EL) é um conceito OKF v0.2 próprio em elm/ (formato em
-     okf-elm.md da skill sa-prd): é o que sobe para o DOORS Next depois do GATE. Aqui fica só o índice.
-     Cenários são os critérios de aceite: cada um é verificável e vira caso de teste (ETM). -->
+<!-- Cada história (HF), regra (REG), termo novo (GL), leiaute (EL), ET e caso de teste planejado (CT) é um conceito OKF
+     v0.2 próprio em elm/ (formato em okf-elm.md da skill sa-prd): é o que sobe ao ELM depois do GATE (o CT, ao ETM).
+     Aqui fica só o índice. Cenários são os critérios de aceite: cada um é verificável e tem o seu CT. -->
 
 | Artefato | Arquivo | Resumo | No ELM |
 |---|---|---|---|
@@ -42,6 +42,7 @@ atualizado: <AAAA-MM-DD>
 | GL | [<termo>](elm/GL-<termo>.md) | <definição curta> | novo (verificado <AAAA-MM-DD>) |
 | EL-01 | [EL - <tela>](elm/EL-01-<slug>.md) | <description> — só com a linha Telas = `sim` | novo (verificado <AAAA-MM-DD>) |
 | ET | [ET - EP-<nn> <título>](elm/ET-<slug>.md) | <description> — só com a linha ET = `inicial no PRD + as-built` | novo (verificado <AAAA-MM-DD>) |
+| CT-01 | [CT01 - <título do cenário>](elm/CT-01-<slug>.md) | <objetivo> (HF-01 · cenário 1.2) | novo (verificado <AAAA-MM-DD>) |
 
 ## Decisões de implementação
 

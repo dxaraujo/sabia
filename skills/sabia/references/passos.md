@@ -49,8 +49,9 @@ passo, o toolkit que declara `tipos` (`{"HF": {"skill": "skills/<skill>/SKILL.md
 o padrão do tipo, lidos pelo caminho na pasta do toolkit, ou, sem eles, as references dela; depois, volta ao passo. Fluxo com passos é só do framework: o Sabiá não compila
 conteúdo de toolkit.
 
-- **Como o agente sabe:** a linha **Tipos com skill de toolkit** do prompt do dono do passo de desvio (gerada do
-  `agentes.json`: todo toolkit ligado ao projeto com `tipos`), com a skill do toolkit ligada a ele; sem agente, a seção
+- **Como o agente sabe:** a linha **Tipos com skill de toolkit** do prompt do dono de cada passo de desvio (gerada do
+  `agentes.json`: todo toolkit ligado ao projeto com `tipos`), com a skill do toolkit ligada a ele — a skill traz em
+  `papeis` o papel de cada dono, senão o CLI e o gerador recusam o toolkit; sem agente, a seção
   **Tipos com skill de toolkit** do `.sabia/sabia.md` (a skill, o fluxo e o padrão de cada tipo, e os itens de rubrica).
 - **Contrato, na volta ao passo:** o arquivo pela coluna Arquivo, o envelope do `okf-elm.md`, `status: draft` e a
   entrada no `index.md` e no `log.md`. Fora dele → o dono completa no próprio passo e registra no `status.md`.

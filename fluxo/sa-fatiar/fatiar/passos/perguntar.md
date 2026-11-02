@@ -18,8 +18,9 @@ Cobertura: <c>/<c> cenários · Ponta a ponta (tracer bullet): FT-<…> — <gat
 - Alguma fatia deveria ser HITL/AFK ao contrário?
 ```
 
-Ajuste e repita até "ok". Esse "ok" é o **GATE do backlog** (P.O. ou time no refinamento) — e não vale sem a
-fatia ponta a ponta.
+Ajuste (dividir, juntar ou mudar uma fatia) e repita até "ok". Esse "ok" é o **GATE do backlog** (o P.O.) — e não
+vale sem a fatia ponta a ponta. Depois dele, as fatias não se alteram mais: só o cancelamento pelo P.O.
+(`sa-fatiar.refinamento`).
 
 ## Saída
 
