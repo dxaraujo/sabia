@@ -37,8 +37,23 @@ Sabiá" e "atualizar os agentes do Sabiá". Requer o `mcp-elm` ≥ 3.5.1, que l�
 
 A 1.1.0 tira do `.kiro/` o que é do Sabiá e não do Kiro: configuração, steering, local, scripts e a pasta do produto
 vão para `.sabia/` (o `.kiro/steering/sabia.md` vira um ponteiro); `.kiro/specs/`, `.kiro/agents/` e
-`.kiro/config/elm|elk/` ficam. O hook `sa-backpressure` e as receitas de Kiro Workflows saem: a verificação antes do
-commit é o `.sabia/verificar.sh`. A setup, em modo atualização, oferece mover os arquivos de um projeto 1.0.0.
+`.kiro/config/elm|elk/` ficam. O hook `sa-backpressure` e as receitas de Kiro Workflows saem. A setup, em modo
+atualização, oferece mover os arquivos de um projeto 1.0.0.
+
+## O que mudou na 2.0
+
+| Antes (1.x) | 2.0 |
+|---|---|
+| cada skill trazia o procedimento inteiro no `SKILL.md` | **fluxos** (`fluxo/<skill>/<fluxo>/`: mestre + um arquivo por passo, ids `skill.fluxo.passo`) e **padrões** (`padrao/<skill>/`); o `sabia instalar` os **compila** (as-built) nas skills da pasta do usuário |
+| Kiro, Claude Code e opencode | **Kiro (motor v3) e opencode**; o Claude Code saiu |
+| `.sabia/verificar.sh` antes de cada commit | o passo `sa-codificar.codificar.validar`, que roda a seção Comandos do `sabia.md` |
+| glossário e ADRs em `docs/` | `.sabia/glossario.md` e `.sabia/adr/` |
+| customizar = editar a skill | override esparso em `.sabia/fluxo/` e `.sabia/padrao/`, pela `sa-setup`; o agente dono recebe só o delta |
+| shell por lista de comandos | liberado para quem escreve no projeto, menos o `negar` e o push do papel |
+| toolkit pelo papel (`passo.papel`) | pelo id do passo (`passo.passo`, com `arquivos`), só em passo que aceita desvio; o 1.x ainda é aceito |
+| `sa-codificador`, `sa-loop` | `sa-desenvolvedor` (papel `desenvolvedor`), `sa-orquestrar` (o agente `sa-orquestrador` fica) |
+
+Sem migração: o projeto da 1.x roda a setup de novo ("atualizar a configuração do Sabiá").
 
 ## Fundamentos
 
@@ -100,8 +115,10 @@ de `skills/sa-setup/assets/`:
 | Arquivo | O quê |
 |---|---|
 | `.sabia/sabia.md` (e o ponteiro `.kiro/steering/sabia.md`) | o único steering do fluxo (sempre carregado): resumo, configuração do projeto (pasta do produto, comandos, verificação, git, banco, autonomia, ELM, agentes) e regras aprendidas |
-| `.sabia/config/agentes.json` | as escolhas do projeto para os agentes (caminhos, comandos, skills e MCPs por agente) — a entrada do gerador |
-| agentes de cada ferramenta do time: `.kiro/agents/sa-*.json` · `.opencode/agents/sa-*.md` · `.claude/agents/sa-*.md` (+ regras no `.claude/settings.json`) | `produto`, `especificador`, `pesquisador`, `desenvolvedor`, `revisor`, `verificador`, `orquestrador` — gerados pelo script da setup a partir do `agentes.json`, cada um com as skills e MCPs que a pessoa liberou |
+| `.sabia/config/agentes.json` | as escolhas do projeto para os agentes (caminhos, comandos, skills e MCPs por agente) e a versão do Sabiá — a entrada do gerador |
+| agentes de cada ferramenta do time: `.kiro/agents/sa-*.json` · `.opencode/agents/sa-*.md` | `produto`, `especificador`, `pesquisador`, `desenvolvedor`, `revisor`, `verificador`, `orquestrador` — gerados pelo script da setup a partir do `agentes.json`, cada um com as skills e MCPs que a pessoa liberou |
+| `.sabia/glossario.md` · `.sabia/adr/` | glossário e ADRs, quando o projeto ainda não os tem em outro lugar |
+| `.sabia/fluxo/` · `.sabia/padrao/` (só ao customizar) | o passo, as operações do mestre ou o padrão que o projeto mudou ("customizar …" na `sa-setup`) |
 | `.sabia/http.sh` (opcional) | única chamada HTTP que o verificador faz sem perguntar: só à URL de teste, com corpo da pasta `massa/`; o backpressure antes de cada commit (compila, testa, roda o lint e a cobertura) é o passo `validar` da `sa-codificar`, com os Comandos do `sabia.md` |
 | pasta do produto (proposta pela setup; padrão `.sabia/planejamento`) | `backlog.md`, épicos e PRDs, `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<iteração pai>/`, `sustentacao/<pasta>/`, `aprendizado/` — versionada; o que é local fica em `.sabia/local/` (fora do git) |
 
@@ -114,10 +131,11 @@ pesquisador só consulta o bundle local. Sem o MCP, a escrita vira pendência re
 
 Cada agente tem as permissões mínimas do papel, definidas uma vez em
 [`skills/sa-setup/assets/agents/papeis.json`](skills/sa-setup/assets/agents/papeis.json) e geradas no campo
-`permissions` do Kiro: lê o projeto e o power, mas não `.env`, chaves, `~/.ssh`, `~/.aws` nem as credenciais do ELM;
-escreve só o que produz; no shell, só o que o papel usa — git de leitura e, conforme o papel, `add`/`commit` e os
-comandos de build e verificação —, e o resto o Kiro pergunta. Merge,
-rebase, `--force`, `reset --hard` e `git -C` (que esconde o subcomando das regras) são negados em todos; push com
+`permissions` do Kiro e no `permission` do opencode: lê o projeto e o power, mas não `.env`, chaves, `~/.ssh`, `~/.aws` nem as credenciais do ELM;
+escreve só o que produz (nunca o harness: configuração, agentes, `.sabia/fluxo/`, `.sabia/padrao/`); o shell é
+liberado para quem escreve no projeto (o pesquisador só lê), menos o que a regra nega. Merge,
+rebase, `--force`, `reset --hard`, `git -C` (que esconde o subcomando das regras), credenciais e os arquivos do
+harness no comando são negados em todos; push com
 confirmação a cada um (`ask`), só da branch da fatia, no orquestrador, no desenvolvedor, no revisor e no verificador —
 e, no desenvolvedor e no orquestrador, o da base com os registros de situação (`backlog.md`, `sprints/**` e o
 `status.md` da fatia, conferidos antes; quem desenvolve precisa de push na base); o merge do PR aprovado é do Dev
@@ -131,7 +149,8 @@ O fluxo não sabe programar em nenhuma stack: o conhecimento de Java, Spring Bat
 parte do fluxo que sabe procurá-los (`.sabia/toolkits/`, `~/.sabia/toolkits/`, powers instalados com `toolkit.json`,
 ou skills com `metadata.toolkit`), detecta o tipo do projeto e **propõe, agente por agente**, as skills a ligar (uma confirmação por agente) —
 num projeto 100% Spring Batch, o desenvolvedor recebe as de batch e Java que a pessoa escolher, e não as de REST ou
-frontend. Contrato em [`skills/sa-setup/references/toolkits.md`](skills/sa-setup/references/toolkits.md) e
+frontend. Uma skill de toolkit também pode assumir um passo do Sabiá pelo id (`sa-codificar.codificar.tarefa`,
+`sa-prd.prd.escrever`): o toolkit fica fora da compilação, e o desvio vai no prompt do agente dono. Contrato em [`skills/sa-setup/references/toolkits.md`](skills/sa-setup/references/toolkits.md) e
 schema em [`toolkit.schema.json`](skills/sa-setup/assets/toolkit.schema.json).
 
 ## IBM ELM
@@ -153,9 +172,9 @@ processo do projeto exige algum deles, a skill do passo entrega o roteiro manual
 
 ## Pré-requisitos
 
-- Uma das ferramentas: Kiro IDE 1.x ou Kiro CLI 2.32+ na engine V3 (`--agent-engine v3`; a V2 não lê as permissões
-  dos agentes), Claude Code (conferido no 2.1.314) ou opencode (conferido no 2.1.3); repositório git com branch base
-  e PRs; e `uv` para os scripts da setup e da `sa-status`. No Claude Code e no opencode, a proteção por papel é
+- Uma das ferramentas: Kiro IDE 1.x ou Kiro CLI 2.32+ no motor V3 (`--agent-engine v3`, obrigatório; na V2 o agente
+  dá "Mode not found") ou opencode (conferido no 2.1.3); repositório git com branch base
+  e PRs; e `uv` para os scripts da setup e da `sa-status`. No opencode, a proteção por papel é
   menor que no Kiro: o gerador lista o que não tem tradução.
 - Kiro Web não lê `~/.kiro`: os agentes do projeto aparecem lá, mas sem as skills do power — use a IDE ou o CLI.
 - MCPs do próprio power (o `mcp.json` os sobe com `uvx`): [`mcp-elm`](https://pypi.org/project/mcp-elm/), que também consulta o
@@ -176,11 +195,14 @@ sessão, por exemplo); concluir é da skill do papel, com o saldo. No AFK há a 
 ## Primeiros passos
 
 1. Instale com o CLI (Node 18+): **`npx sabia instalar`**. Ele baixa o Sabiá para `~/.sabia/framework/`,
-   pergunta as ferramentas do time e instala em cada uma no padrão dela — no Kiro, o power; no Claude Code e no
-   opencode, as skills em `~/.claude/skills/` ou `~/.config/opencode/skills/` e os MCPs do `mcp.json` —, registrando
-   tudo em `~/.sabia/inventario.json`. Depois: `sabia atualizar`, `sabia desinstalar` e `sabia toolkits
+   pergunta as ferramentas do time (Kiro, opencode), **compila** as skills (fluxos, padrões e skills do framework) em
+   `~/.sabia/compilado/<alvo>/` e as instala na pasta do usuário — no Kiro, o power (`kiro-cli powers install`); no
+   opencode, as skills em `~/.config/opencode/skills/` e os MCPs do `mcp.json` —, registrando
+   tudo em `~/.sabia/inventario.json`. Nada vai para o projeto. Depois: `sabia atualizar` (recompila), `sabia desinstalar` e `sabia toolkits
    listar|baixar|instalar|atualizar|remover` (`npm i -g sabia` deixa o comando `sabia`; `npx sabia --ajuda` mostra
-   todos). O Kiro também aceita o power pelo painel **Powers**, a partir deste repositório.
+   todos). Instale pelo CLI, não pelo painel **Powers** a partir deste repositório: as skills do repositório são a
+   fonte, e o que roda é a compilação. Para ver por onde um arquivo passa (o passo com desvio, o dono, o toolkit e as
+   travas): `sabia rota <arquivo>`; o fluxo resolvido no projeto: `sabia rota --fluxo <skill.fluxo>`.
 2. No projeto, peça **"configurar o Sabiá"** e confirme as propostas (os padrões vêm marcados; uma confirmação por bloco).
 3. Comece: **"nova demanda: …"** (a `sa-triar` faz a triagem e registra no backlog; épico → PRD), **"iniciar a
    FT-031"** ou **"minha próxima tarefa"** (o hub `sa-iniciar` diz a skill do papel), **"corrigir o defeito 4567"**

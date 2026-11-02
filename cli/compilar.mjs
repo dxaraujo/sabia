@@ -13,7 +13,7 @@ const skillsDe = (fw) => fs.readdirSync(path.join(fw, "skills")).filter((d) => d
 const mds = (dir) => (fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => f.endsWith(".md")).sort() : []);
 
 /** Front-matter JSON (fluxo/, padrao/) e o corpo, com as linhas do front-matter preservadas para o número de linha. */
-function partes(texto) {
+export function partes(texto) {
   const m = texto.match(FM);
   return m ? { dados: JSON.parse(m[1]), corpo: texto.slice(m[0].length), pulo: m[0].split("\n").length - 1 } : { dados: null, corpo: texto, pulo: 0 };
 }

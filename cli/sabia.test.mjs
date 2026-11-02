@@ -35,24 +35,28 @@ beforeEach(() => {
   s.ctx.perguntar = async (texto, padrao) => (respostas.length ? respostas.shift() : padrao);
   s.ctx.exec = (cmd, args) => {
     chamadas.push([cmd, ...args].join(" "));
-    if (cmd === "claude" && args[1] === "get") return { status: 1, stdout: "", stderr: "" };  // MCP ainda não existe
     return { status: 0, stdout: "", stderr: "" };
   };
 });
 
-const skill = (alvo, nome) => path.join(home, alvo === "claude" ? ".claude/skills" : ".config/opencode/skills", nome, "SKILL.md");
+const skill = (nome) => path.join(home, ".config/opencode/skills", nome, "SKILL.md");
 
-test("instala no Claude Code e no opencode, com o inventário", async () => {
-  await s.instalar({ fonte: framework("fw", "1.1.0"), alvo: "claude,opencode" });
-  for (const a of ["claude", "opencode"]) assert.equal(fs.readFileSync(skill(a, "sa-setup"), "utf8"), "sa-setup 1.1.0");
+test("instala no opencode e no Kiro, com o inventário; o claude não é mais alvo", async () => {
+  await s.instalar({ fonte: framework("fw", "1.1.0"), alvo: "opencode,kiro" });
+  assert.equal(fs.readFileSync(skill("sa-setup"), "utf8"), "sa-setup 1.1.0");
   assert.ok(fs.existsSync(path.join(home, ".sabia/framework/skills/sa-setup/SKILL.md")));
   const inv = s.lerInventario();
   assert.equal(inv.framework.versao, "1.1.0");
-  assert.deepEqual(Object.keys(inv.alvos.claude.copias).sort(), ["~/.claude/skills/sa-codificar", "~/.claude/skills/sa-setup", "~/.claude/skills/sabia"]);
-  assert.match(inv.alvos.claude.copias["~/.claude/skills/sa-setup"]["SKILL.md"], /^[0-9a-f]{64}$/);
-  assert.deepEqual(inv.alvos.claude.mcp, ["elm"]);
-  assert.ok(chamadas.includes("claude mcp add --scope user elm -e UV_SYSTEM_CERTS=true -- uvx mcp-elm@latest"));
+  const p = "~/.config/opencode/skills/";
+  assert.deepEqual(Object.keys(inv.alvos.opencode.copias).sort(), [`${p}sa-codificar`, `${p}sa-setup`, `${p}sabia`]);
+  assert.match(inv.alvos.opencode.copias[`${p}sa-setup`]["SKILL.md"], /^[0-9a-f]{64}$/);
+  assert.deepEqual(inv.alvos.opencode.mcp, ["elm"]);
+  assert.deepEqual(inv.alvos.kiro, { power: "sabia" });
   assert.ok(chamadas.includes("opencode mcp add --global --env UV_SYSTEM_CERTS=true elm -- uvx mcp-elm@latest"));
+  assert.ok(!chamadas.some((c) => c.startsWith("claude")));
+  await assert.rejects(s.instalar({ fonte: framework("fw", "1.1.0"), alvo: "claude" }), /ferramenta desconhecida: claude \(use kiro, opencode\)/);
+  assert.ok(!("claude" in s.lerInventario().alvos));
+  assert.deepEqual(s.PASTA_SKILLS.claude, undefined);
 });
 
 test("MCP que já existe não é registrado nem entra no inventário", async () => {
@@ -64,26 +68,48 @@ test("MCP que já existe não é registrado nem entra no inventário", async () 
 });
 
 test("skill que já existe e não é do Sabiá é recusada", async () => {
-  escrever(home, { ".claude/skills/sa-setup/SKILL.md": "de outra pessoa" });
-  await assert.rejects(s.instalar({ fonte: framework("fw", "1.1.0"), alvo: "claude", semMcp: true }), /não foi instalado pelo Sabiá/);
-  assert.equal(fs.readFileSync(skill("claude", "sa-setup"), "utf8"), "de outra pessoa");
+  escrever(home, { ".config/opencode/skills/sa-setup/SKILL.md": "de outra pessoa" });
+  await assert.rejects(s.instalar({ fonte: framework("fw", "1.1.0"), alvo: "opencode", semMcp: true }), /não foi instalado pelo Sabiá/);
+  assert.equal(fs.readFileSync(skill("sa-setup"), "utf8"), "de outra pessoa");
 });
 
 test("atualizar mostra a diferença, troca as cópias, tira a skill que saiu e pergunta pela alterada à mão", async () => {
-  await s.instalar({ fonte: framework("fw1", "1.1.0"), alvo: "claude", semMcp: true });
-  fs.writeFileSync(skill("claude", "sa-codificar"), "mexi");
+  await s.instalar({ fonte: framework("fw1", "1.1.0"), alvo: "opencode", semMcp: true });
+  fs.writeFileSync(skill("sa-codificar"), "mexi");
   respostas = ["s", "n"];  // atualizar? sim · sobrescrever a alterada à mão? não
   await s.atualizar({ fonte: framework("fw2", "1.2.0", ["sabia", "sa-setup", "sa-codificar"]) });
-  assert.equal(fs.readFileSync(skill("claude", "sa-setup"), "utf8"), "sa-setup 1.2.0");
-  assert.equal(fs.readFileSync(skill("claude", "sa-codificar"), "utf8"), "mexi");
+  assert.equal(fs.readFileSync(skill("sa-setup"), "utf8"), "sa-setup 1.2.0");
+  assert.equal(fs.readFileSync(skill("sa-codificar"), "utf8"), "mexi");
   assert.equal(s.lerInventario().framework.versao, "1.2.0");
 
   await s.atualizar({ fonte: framework("fw3", "1.3.0", ["sabia", "sa-setup"]) });  // padrão das respostas: "n"
   assert.equal(s.lerInventario().framework.versao, "1.2.0");
   respostas = ["s", "s"];
   await s.atualizar({ fonte: framework("fw3b", "1.3.0", ["sabia", "sa-setup"]) });
-  assert.ok(!fs.existsSync(skill("claude", "sa-codificar")));
-  assert.ok(!("~/.claude/skills/sa-codificar" in s.lerInventario().alvos.claude.copias));
+  assert.ok(!fs.existsSync(skill("sa-codificar")));
+  assert.ok(!("~/.config/opencode/skills/sa-codificar" in s.lerInventario().alvos.opencode.copias));
+});
+
+test("alvo claude de um inventário antigo: atualizar ignora; desinstalar apaga só as cópias registradas, sem MCP", async () => {
+  await s.instalar({ fonte: framework("fw1", "1.1.0"), alvo: "opencode", semMcp: true });
+  const velha = escrever(path.join(home, ".claude/skills/sa-setup"), { "SKILL.md": "sa-setup 1.1.0" });
+  escrever(home, { ".claude/skills/minha/SKILL.md": "minha" });
+  const inv = s.lerInventario();
+  inv.alvos.claude = { copias: { "~/.claude/skills/sa-setup": s.hashes(velha) }, mcp: ["elm"] };
+  s.gravarInventario(inv);
+  const logs = [];
+  s.ctx.log = (...xs) => logs.push(xs.join(" "));
+  respostas = ["s"];
+  await s.atualizar({ fonte: framework("fw2", "1.2.0") });
+  assert.equal(fs.readFileSync(skill("sa-setup"), "utf8"), "sa-setup 1.2.0");
+  assert.equal(fs.readFileSync(path.join(velha, "SKILL.md"), "utf8"), "sa-setup 1.1.0");
+  assert.ok(logs.some((l) => /claude: não é mais alvo do Sabiá .* ignorado/.test(l)));
+  await s.desinstalar({ alvo: "claude" });
+  assert.ok(!fs.existsSync(velha));
+  assert.ok(fs.existsSync(path.join(home, ".claude/skills/minha/SKILL.md")));
+  assert.ok(!chamadas.some((c) => c.startsWith("claude")));
+  assert.ok(logs.some((l) => /claude: os MCPs elm ficam/.test(l)));
+  assert.ok(!("claude" in s.lerInventario().alvos) && "opencode" in s.lerInventario().alvos);
 });
 
 test("skill de fluxo é compilada: os passos gerados entram no inventário e o passo editado à mão é detectado", async () => {
@@ -108,15 +134,11 @@ test("skill de fluxo é compilada: os passos gerados entram no inventário e o p
 });
 
 test("desinstalar apaga só o que o inventário registrou", async () => {
-  await s.instalar({ fonte: framework("fw", "1.1.0"), alvo: "claude,kiro" });
-  escrever(home, { ".claude/skills/minha/SKILL.md": "minha" });
+  await s.instalar({ fonte: framework("fw", "1.1.0"), alvo: "opencode,kiro" });
+  escrever(home, { ".config/opencode/skills/minha/SKILL.md": "minha", ".config/opencode/opencode.json": { mcp: { servers: { elm: {}, meu: {} } } } });
   await s.desinstalar({});
-  assert.ok(!fs.existsSync(skill("claude", "sa-setup")));
-  assert.ok(fs.existsSync(skill("claude", "minha")));
-  assert.ok(chamadas.includes("claude mcp remove --scope user elm"));
-  await s.instalar({ fonte: framework("fw", "1.1.0"), alvo: "opencode" });
-  escrever(home, { ".config/opencode/opencode.json": { mcp: { servers: { elm: {}, meu: {} } } } });
-  await s.desinstalar({});
+  assert.ok(!fs.existsSync(skill("sa-setup")));
+  assert.ok(fs.existsSync(skill("minha")));
   assert.deepEqual(JSON.parse(fs.readFileSync(path.join(home, ".config/opencode/opencode.json"), "utf8")).mcp.servers, { meu: {} });
   assert.ok(chamadas.some((c) => c.startsWith("kiro-cli powers install ")));
   assert.ok(chamadas.includes("kiro-cli powers uninstall sabia"));
@@ -196,10 +218,10 @@ test("toolkit pelo índice: baixa, instala nas ferramentas, atualiza e remove pe
     ".claude-plugin/marketplace.json": { name: "idx", plugins: [{ name: "batch-alfa", version: "1.0.0", source: "./batch-alfa" }] },
   });
   toolkit(path.join(indice, "batch-alfa"));
-  await s.instalarToolkit("batch-alfa", { indice, alvo: "claude,kiro" });
+  await s.instalarToolkit("batch-alfa", { indice, alvo: "opencode,kiro" });
   assert.ok(fs.existsSync(path.join(home, ".sabia/toolkits/batch-alfa/toolkit.json")));
   assert.equal(JSON.parse(fs.readFileSync(path.join(home, ".sabia/toolkits/batch-alfa/.origem.json"), "utf8")).indice, indice);
-  assert.equal(fs.readFileSync(skill("claude", "batch"), "utf8"), "batch");
+  assert.equal(fs.readFileSync(skill("batch"), "utf8"), "batch");
   assert.ok(!fs.existsSync(path.join(home, ".kiro")));  // o Kiro lê de ~/.sabia/toolkits
   const linhas = s.listarToolkits({ indice });
   assert.deepEqual([linhas[0][0], linhas[0][2], linhas[0][3]], ["batch-alfa", "1.0.0", "1.0.0"]);
@@ -207,16 +229,16 @@ test("toolkit pelo índice: baixa, instala nas ferramentas, atualiza e remove pe
   fs.writeFileSync(path.join(indice, "batch-alfa/skills/batch/SKILL.md"), "batch 2");
   respostas = ["s"];
   await s.atualizarToolkits("batch-alfa", {});
-  assert.equal(fs.readFileSync(skill("claude", "batch"), "utf8"), "batch 2");
+  assert.equal(fs.readFileSync(skill("batch"), "utf8"), "batch 2");
 
   const projeto = escrever(path.join(raiz, "projeto"), { ".sabia/config/agentes.json": { toolkits: { "batch-alfa": { versao: "1.0.0" } } } });
   const cwd = process.cwd();
   process.chdir(projeto);
   try { await s.instalarDoProjeto({ indice }); } finally { process.chdir(cwd); }  // a mesma versão: nada a fazer
-  assert.equal(fs.readFileSync(skill("claude", "batch"), "utf8"), "batch 2");
+  assert.equal(fs.readFileSync(skill("batch"), "utf8"), "batch 2");
 
   await s.removerToolkit("batch-alfa", {});
-  assert.ok(!fs.existsSync(skill("claude", "batch")));
+  assert.ok(!fs.existsSync(skill("batch")));
   assert.ok(!fs.existsSync(path.join(home, ".sabia/toolkits/batch-alfa")));
   assert.deepEqual(s.lerInventario().toolkits, {});
 });
@@ -257,6 +279,109 @@ test("banner: o sabiá colorido ao lado do nome; sem cores, só o nome", () => {
 test("linha de comando: ajuda e comando desconhecido", async () => {
   assert.equal(await s.main(["--ajuda"]), 0);
   assert.equal(await s.main(["voar"]), 1);
-  assert.deepEqual(s.lerArgs(["toolkits", "instalar", "x", "--alvo", "claude", "--sem-mcp"]),
-    { posicionais: ["toolkits", "instalar", "x"], opcoes: { alvo: "claude", semMcp: true } });
+  assert.deepEqual(s.lerArgs(["toolkits", "instalar", "x", "--alvo", "opencode", "--sem-mcp"]),
+    { posicionais: ["toolkits", "instalar", "x"], opcoes: { alvo: "opencode", semMcp: true } });
+  assert.deepEqual(s.lerArgs(["rota", "--mapa", "--fluxo", "sa-x.f", "--projeto", "p"]),
+    { posicionais: ["rota"], opcoes: { mapa: true, fluxo: "sa-x.f", projeto: "p" } });
+  assert.equal(await s.main(["rota"]), 1);  // sem arquivo, --fluxo nem --mapa: a ajuda
+});
+
+// framework mínimo com fluxo, um toolkit com passo.passo e arquivos, e um projeto com override
+function cenarioRota() {
+  const mestre = (d) => `---\n${JSON.stringify(d)}\n---\n# ${d.fluxo}\n`;
+  const fw = escrever(path.join(raiz, "fw-rota"), {
+    "plugin.json": { name: "sabia", version: "2.0.0" },
+    "fluxo/travas.json": { travas: { "sim-da-pessoa": { texto: "sim" }, "toolkit-sem-commit": { texto: "sem commit" }, "revisao-independente": { texto: "outro revisa" } } },
+    "fluxo/sa-codificar/codificar/codificar.md": mestre({ fluxo: "codificar", dono: "sa-desenvolvedor", travas_gerais: ["sim-da-pessoa"], passos: [
+      { id: "tarefa", desvio: true, travas: ["toolkit-sem-commit"], saidas: { "ainda há tarefa: não marcada": "tarefa" } },
+      { id: "revisar", chama: "sa-revisar.revisar", travas: ["revisao-independente"], saidas: { REVISAR: "tarefa" } },
+      { id: "rito", removivel: true },
+      { id: "pr", saidas: { "PR aberto": "→ sa-revisar.hitl", "sem GATE": "fim" } }] }),
+    "fluxo/sa-revisar/revisar/revisar.md": mestre({ fluxo: "revisar", dono: "sa-revisor", passos: [{ id: "ler" }] }),
+    "fluxo/sa-revisar/hitl/hitl.md": mestre({ fluxo: "hitl", dono: "sa-revisor", passos: [{ id: "aprovar-pr", saidas: { pronto: "→ sa-codificar.codificar.pr" } }] }),
+  });
+  escrever(path.join(home, ".sabia/toolkits/batch-alfa"), {
+    "toolkit.json": { nome: "batch-alfa", versao: "1.0.0",
+      skills: [{ caminho: "skills/batch/SKILL.md", passo: { passo: "sa-codificar.codificar.tarefa", para: "tarefa de job", arquivos: ["src/*.java", "**/*JobConfig.java"], agente: "batch-job" } },
+        { caminho: "skills/sql/SKILL.md", passo: { passo: "sa-codificar.codificar.revisar", para: "sql", arquivos: ["**/*.sql"] } },  // passo sem gancho
+        { caminho: "skills/kt/SKILL.md", passo: { papel: "arquiteto", para: "kotlin", arquivos: ["**/*.kt"] } }],  // papel 1.x sem gancho
+      agentes: [{ nome: "batch-job", prompt: "agentes/job.md", skills: ["skills/batch/SKILL.md", "skills/java/SKILL.md"] }] },
+  });
+  const projeto = escrever(path.join(raiz, "proj"), {
+    ".sabia/config/agentes.json": { toolkits: { "batch-alfa": { pasta: "~/.sabia/toolkits/batch-alfa", versao: "1.0.0" } },
+      passos: [{ toolkit: "batch-alfa", skill: "skills/batch/SKILL.md", agente: true },
+        { toolkit: "batch-alfa", skill: "skills/sql/SKILL.md" }, { toolkit: "batch-alfa", skill: "skills/kt/SKILL.md" }] },
+    ".sabia/fluxo/sa-codificar/codificar/codificar.md": '---\n{"inserir": [{"id": "fim2", "depois": "metricas"}, {"id": "metricas", "depois": "revisar"}], "remover": ["rito"]}\n---\n',
+    ".sabia/fluxo/sa-codificar/codificar/passos/tarefa.md": '---\n{"base": "3f9a1c0b7e21"}\n---\n## Entrada\n',
+    ".sabia/fluxo/sa-codificar/codificar/passos/metricas.md": "---\n{}\n---\n## Entrada\n",
+    ".sabia/fluxo/sa-codificar/codificar/passos/fim2.md": "---\n{}\n---\n## Entrada\n",
+    ".opencode/agents/sa-desenvolvedor.md": "agente",
+  });
+  return { framework: fw, projeto };
+}
+
+test("glob do passo.arquivos: ** atravessa /, * não", () => {
+  assert.ok(s.casaGlob("**/*JobConfig.java", "src/main/java/a/ImportarJobConfig.java"));
+  assert.ok(s.casaGlob("**/*JobConfig.java", "ImportarJobConfig.java"));
+  assert.ok(s.casaGlob("**/batch/**/*Step*.java", "src/batch/x/y/LerStep1.java"));
+  assert.ok(!s.casaGlob("src/*.java", "src/a/B.java"));
+  assert.ok(!s.casaGlob("**/*JobConfig.java", "src/JobConfig.javax"));
+  assert.ok(!s.casaGlob("a.b", "axb"));  // ponto é literal
+});
+
+test("rota de um arquivo: o desvio que casa, o dono, o motivo e as travas; sem casar, o fluxo padrão", () => {
+  const o = cenarioRota();
+  const com = s.rota(path.join(o.projeto, "src/main/java/x/ImportarPedidosJobConfig.java"), o);
+  assert.match(com, /^passo +sa-codificar\.codificar\.tarefa +\.sabia\/fluxo\/sa-codificar\/codificar\/passos\/tarefa\.md \(projeto\)$/m);
+  assert.match(com, /^dono +sa-desenvolvedor +\.opencode\/agents\/sa-desenvolvedor\.md$/m);
+  assert.match(com, /^desvio +batch-job +toolkit batch-alfa 1\.0\.0$/m);
+  assert.match(com, /^motivo +casou \*\*\/\*JobConfig\.java$/m);
+  assert.match(com, /^skills +sa-codificar, batch, java$/m);
+  assert.match(com, /^travas +sim-da-pessoa, toolkit-sem-commit$/m);
+  const sem = s.rota("src/main/java/x/PedidoDto.java", o);
+  assert.match(sem, /^desvio +— fluxo padrão +nenhum padrão casou$/m);
+  assert.match(sem, /^pelo texto +"tarefa de job" → batch-job/m);
+  // desvio em passo sem gancho (ou papel 1.x sem gancho): o gerador recusa, a rota não o mostra
+  for (const f of ["db/x.sql", "src/A.kt"]) assert.match(s.rota(f, o), /^desvio +— fluxo padrão/m);
+  // sem o projeto: o passo do Sabiá, sem agente gerado
+  const fora = s.rota("x.java", { framework: o.framework, projeto: path.join(raiz, "vazio") });
+  assert.match(fora, /^passo +sa-codificar\.codificar\.tarefa +.*fw-rota\/fluxo\/sa-codificar\/codificar\/passos\/tarefa\.md \(Sabiá 2\.0\.0\)$/m);
+  assert.match(fora, /agente não gerado neste projeto/);
+});
+
+test("rota --fluxo: a ordem com o que o projeto mudou e o diagrama de estados", () => {
+  const o = cenarioRota();
+  const t = s.rotaFluxo("sa-codificar/codificar", o);
+  const linhas = t.split("\n");
+  const ordem = linhas.filter((l) => /^(\d+|-) {2}/.test(l)).map((l) => l.split(/\s+/).slice(0, 2).join(" "));
+  assert.deepEqual(ordem, ["1 tarefa", "2 revisar", "3 metricas", "4 fim2", "- rito", "5 pr"]);
+  assert.match(t, /^fluxo +sa-codificar\.codificar +dono sa-desenvolvedor +Sabiá 2\.0\.0$/m);
+  assert.match(t, /^desvio ⇢ +tarefa: src\/\*\.java, \*\*\/\*JobConfig\.java +→ batch-job +toolkit batch-alfa 1\.0\.0$/m);
+  assert.match(t, /tarefa ⇢ +projeto \(base 3f9a1c0b7e21\)/);
+  assert.match(t, /metricas +projeto, inserido depois de revisar/);
+  assert.match(t, /rito +removido no projeto/);
+  const mm = t.slice(t.indexOf("```mermaid"));
+  for (const l of ["stateDiagram-v2", "[*] --> tarefa", "tarefa --> tarefa: ainda há tarefa, não marcada", "revisar --> metricas: projeto (inserido)",
+    "metricas --> fim2: projeto (inserido)", "fim2 --> pr", 'state "sa-revisar.hitl" as x_sa_revisar_hitl', "pr --> x_sa_revisar_hitl: PR aberto (passagem)",
+    "pr --> [*]: sem GATE", "pr --> [*]", "note right of tarefa: corpo do projeto (base 3f9a1c0b7e21) · desvio ⇢ batch-job", "note right of revisar: chama sa-revisar.revisar"])
+    assert.ok(mm.includes(`\n  ${l}\n`) || mm.includes(`${l}\n`), l);
+  assert.ok(!/rito/.test(mm));
+  assert.throws(() => s.rotaFluxo("sa-x.nada", o), /fluxo sa-x\.nada não existe/);
+});
+
+test("rota --mapa: chama e passagens de todo o framework em Mermaid", async () => {
+  const o = cenarioRota();
+  const t = s.rotaMapa(o);
+  for (const l of ["flowchart LR", 'sa_codificar_codificar["sa-codificar.codificar"]', "sa_codificar_codificar -->|revisar| sa_revisar_revisar",
+    "sa_codificar_codificar -.->|pr| sa_revisar_hitl", "sa_revisar_hitl -.->|aprovar-pr| sa_codificar_codificar"]) assert.ok(t.includes(l), l);
+  const logs = [];
+  s.ctx.log = (x) => logs.push(x);
+  assert.equal(await s.main(["rota", "--mapa", "--framework", o.framework]), 0);
+  assert.equal(logs[0], t);
+  assert.equal(await s.main(["rota", "x.java", "--framework", path.join(raiz, "nada")]), 1);  // sem fluxo/: erro, não trava
+});
+
+test("opção com valor sem o valor é recusada sem engolir a seguinte", async () => {
+  assert.throws(() => s.lerArgs(["rota", "--fluxo", "--framework", "x"]), /--fluxo precisa de um valor/);
+  assert.equal(await s.main(["rota", "--fluxo"]), 1);
 });

@@ -17,6 +17,12 @@ o sistema faz; o repositório guarda como cada mudança foi feita.
 Configuração do projeto: `.sabia/sabia.md` (gerado pela **`sa-setup`**). Sem ele, comece por
 "configurar o Sabiá".
 
+**As-built:** as skills `sa-*` que rodam são compiladas pelo `sabia instalar` (e `atualizar`) na pasta do usuário, a
+partir dos fluxos, dos padrões e das skills do framework (`~/.sabia/framework/`): no opencode, `~/.config/opencode/skills/`;
+no Kiro, o power (motor v3: `kiro-cli --agent-engine v3`). Os fluxos existem só no framework, e nada é copiado para o
+projeto; o que o projeto customiza fica em `.sabia/fluxo/` e `.sabia/padrao/` e chega pelo agente dono do fluxo.
+Ferramentas: **Kiro** (IDE ou CLI no motor v3) e **opencode**.
+
 ## Trilhas (o tamanho decide a cerimônia)
 
 Toda demanda nova entra pela **`sa-triar`**: ela decide a trilha e registra o trabalho no backlog — inclusive a
@@ -164,11 +170,13 @@ loop, a fatia para sozinha e o lote segue.
 
 | Caminho | O quê |
 |---|---|
-| `.sabia/sabia.md` | o único steering do fluxo: resumo, configuração do projeto e regras aprendidas |
-| `.kiro/agents/sa-*.json` | agentes (criados pela setup, com as skills escolhidas por agente) |
+| `.sabia/sabia.md` | o único steering do fluxo: resumo, configuração do projeto e regras aprendidas (a setup grava o arquivo e preserva a seção Regras aprendidas, que é do `sa-produto`) |
+| `.sabia/config/agentes.json` | as escolhas do projeto para os agentes, com a versão do Sabiá (`"sabia"`: a setup avisa quando difere da instalada) |
+| `.kiro/agents/sa-*.json` · `.opencode/agents/sa-*.md` | agentes (criados pela setup, com as skills escolhidas por agente e o que o projeto customizou) |
 | `<produto>/` — a pasta escolhida na setup (padrão `.sabia/planejamento`), registrada no `sabia.md` | `backlog.md`, `epicos/<EP>-<slug>/` (PRDs), `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<pai>/sprint-<nn>.md` (a sprint segue a iteração pai do EWM; chave `2026/Sprint 03`), `sustentacao/<pasta>/` (a pasta de cada categoria na tabela **Sustentação** do `sabia.md`), `aprendizado/` (só na branch base) |
 | `.kiro/specs/<ft>-<slug>/` | uma pasta por fatia: `status.md`, `research.md`, spec do Kiro, revisões, verificação |
-| glossário · ADRs · bundle do ELM | caminhos na seção Projeto do `sabia.md` |
+| glossário · ADRs · bundle do ELM | caminhos na seção Projeto do `sabia.md` (padrão: `.sabia/glossario.md` e `.sabia/adr/`) |
+| `.sabia/fluxo/` · `.sabia/padrao/` | override esparso: só o passo, as operações do mestre ou o padrão que o projeto customizou, pela `sa-setup` ("customizar …"); nenhum agente escreve |
 | `.sabia/http.sh` | da setup: chamada HTTP do verificador (opcional); o backpressure antes de cada commit é o passo `sa-codificar.codificar.validar`, com os Comandos do `sabia.md` |
 | `.sabia/local/` (fora do git) | worktrees do loop, log dos lotes, dados de cliente (extrações, evidências com dado real), especificação em andamento (`especificacao/<EP>/`, até o GATE do PRD) |
 

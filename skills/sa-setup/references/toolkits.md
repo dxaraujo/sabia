@@ -38,7 +38,7 @@ e quais verificações a `sa-verificar` usa para executar os cenários de aceite
 2. **Projeto:** `.sabia/toolkits/*/toolkit.json` (o toolkit do próprio projeto, versionado)
 3. **Powers instalados:** `~/.kiro/powers/installed/*/toolkit.json` (um toolkit pode ser distribuído como power;
    não achou nada ali → `~/.kiro/powers/**/toolkit.json`)
-4. **Sem manifesto** (toolkit implícito): skills em `.kiro/skills/`, `.claude/skills/`, `.opencode/skills/` e
+4. **Sem manifesto** (toolkit implícito): skills em `.kiro/skills/`, `.opencode/skills/` e
    `.agents/skills/` (no projeto e no home) e em `~/.kiro/powers/installed/*/skills/`, cada uma `*/SKILL.md`, cujo
    frontmatter traga `metadata.toolkit` (nome do toolkit) — e, opcionalmente, `metadata.papeis` e
    `metadata.tipos-de-projeto`. Skills com o mesmo `metadata.toolkit` formam um toolkit (sem passos nem agentes:
@@ -69,7 +69,8 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
   },
   "skills": [
     { "caminho": "skills/spring-batch-job/SKILL.md", "papeis": ["desenvolvedor", "revisor"], "stack": ["spring-batch 5"],
-      "passo": { "papel": "desenvolvedor", "para": "tarefa que cria ou altera um job ou step", "agente": "batch-job" } },
+      "passo": { "passo": "sa-codificar.codificar.tarefa", "para": "tarefa que cria ou altera um job ou step",
+                 "arquivos": ["**/*JobConfig.java", "**/batch/**/*Step*.java"], "agente": "batch-job" } },
     { "caminho": "skills/spring-batch-teste/SKILL.md", "papeis": ["desenvolvedor", "verificador"] },
     { "caminho": "skills/java/SKILL.md", "papeis": ["desenvolvedor", "revisor", "pesquisador"] }
   ],
@@ -97,9 +98,9 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
 |---|---|
 | `tipos-de-projeto` | casa com o tipo detectado → o toolkit vira **sugestão** (nunca é ligado sem a pessoa dizer sim) |
 | `deteccao` | `arquivos` existe na raiz (ou em módulos) **e** algum `contem` aparece nele → toolkit "detectado" |
-| `skills[].papeis` | **quem:** pré-seleciona a skill na proposta de cada agente (`produto`, `especificador`, `pesquisador`, `desenvolvedor`, `revisor`, `verificador`, `orquestrador`) — uma skill pode servir a vários |
+| `skills[].papeis` | **quem:** pré-seleciona a skill na proposta de cada agente (`produto`, `especificador`, `pesquisador`, `desenvolvedor` — era `codificador`: toolkit com o nome antigo em `papeis` precisa de versão nova —, `revisor`, `verificador`, `orquestrador`) — uma skill pode servir a vários |
 | `skills[].stack`, `skills[].deteccao` | **onde:** a stack da skill (ex.: `java 17`, `react`); com `deteccao`, a setup só a pré-marca se o repositório casar |
-| `skills[].passo` | **em que passo:** opcional — a skill assume o passo de um agente do Sabiá (`papel`: `especificador`, `desenvolvedor`), com o `para` e, opcional, o `agente` a quem delegar — ver [Passos](#passos) |
+| `skills[].passo` | **em que passo:** opcional — a skill assume o passo de um agente do Sabiá, pelo id (`passo`: `sa-codificar.codificar.tarefa` ou `sa-prd.prd.escrever`, os únicos com `"desvio": true` no mestre), com o `para` e, opcionais, os `arquivos` (globs) e o `agente` a quem delegar — ver [Passos](#passos). Toolkit 1.x: `papel` (`especificador`, `desenvolvedor`) no lugar do id, ainda aceito |
 | `autor` | **obrigatório:** `nome` e `area` de quem fez e responde pelo toolkit (`email` opcional). Aparece no W5 e no `sabia toolkits listar`; toolkit sem autor é recusado |
 | `customiza` | opcional: o toolkit é uma **cópia modificada** de outro (`toolkit`, a `versao` de onde saiu e as `mudancas`) — ver [Customização](#customização) |
 | `agentes[]` | agentes neutros do toolkit (nome, descrição, prompt, skills, subagentes); sem campo de permissão |
@@ -110,13 +111,22 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
 ## Passos
 
 Uma skill de toolkit sem `passo` é **de apoio**: o agente a carrega quando o artefato pede. Com `passo`, ela assume
-um passo definido de um agente do Sabiá, e a configuração do agente decide quando usá-la (os **Passos de toolkit**
-que o gerador põe no prompt do dono; nada é marcado no `status.md` nem no `tasks.md`); os passos, o briefing e o contrato de cada um
+um passo definido de um agente do Sabiá, e a configuração do agente decide quando usá-la (a linha **Desvios de toolkit
+no passo `<id>`** que o gerador põe no prompt do dono; nada é marcado no `status.md` nem no `tasks.md`); os passos, o briefing e o contrato de cada um
 estão em [passos.md](../../sabia/references/passos.md).
+
+- **Pelo id do passo:** `passo.passo` é o id qualificado (`sa-codificar.codificar.tarefa`); o dono do fluxo no mestre é
+  quem recebe o desvio. Só vale em passo com `"desvio": true` no mestre; passo inexistente, ou sem `desvio` → o gerador
+  recusa e não grava nada. `arquivos` (globs) e `para` vão juntos na linha do prompt: casou um ou o outro → toolkit.
+- **Toolkit 1.x** (`passo.papel`): ainda aceito, pelo gancho do papel — `especificador` → `sa-prd.prd.escrever`,
+  `desenvolvedor` (ou `codificador`, o nome antigo) → `sa-codificar.codificar.tarefa`.
+- **Fora da compilação:** o toolkit não entra nas skills `sa-*` compiladas. A skill compilada leva só o gancho (⇢ na
+  tabela do fluxo) no passo com desvio; o desvio vem do projeto: `agentes.json` → prompt do dono, e a tabela **Desvios de
+  toolkit** do `sabia.md`, que vale também na sessão sem agente.
 
 - A setup lista os passos no W5 e os oferece no W6 do agente dono (`sa-especificador`, `sa-desenvolvedor`). Ligado,
   vai no `agentes.json` (`toolkits`: pasta, versão e sha usados; `passos`: toolkit, skill e se usa o agente) e na
-  tabela **Passos de toolkit** do `sabia.md`.
+  tabela **Desvios de toolkit** do `sabia.md`.
 - **Agente neutro:** o toolkit traz só a definição (`agentes[]`) e o prompt em `.md`. O gerador cria o agente com
   as regras do papel dono do passo, nunca mais que isso, mais as skills e os MCPs ligados ao dono (de outros
   toolkits, como o `java`, e do projeto; não os subagentes), e o liga como subagente do dono com o `para`; os

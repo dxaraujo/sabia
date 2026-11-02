@@ -379,6 +379,7 @@ class Gerar(unittest.TestCase):
              ".sabia/fluxo/sa-planejamento/review/passos/a.md": "x", ".sabia/fluxo/sa-planejamento/review/passos/b.md": "x"},  # ciclo
             {".sabia/fluxo/sa-planejamento/review/review.md": '---\n{"inserir": [{"id": "../x", "depois": "rito"}]}\n---\n'},  # id ruim
             {".sabia/fluxo/sa-codificar/codificar/codificar.md": '---\n{"inserir": [1,]}\n---\n'},  # JSON inválido
+            {".sabia/" + pf: f'---\n{{"base": "{self.base(pf)}"}}\n---\n## Travas\n\n- nenhuma\n'},       # seção gerada no corpo
         ]
         for arquivos in ruins:
             for f in (self.projeto / ".sabia").glob("fluxo"), (self.projeto / ".sabia").glob("padrao"):

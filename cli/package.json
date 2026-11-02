@@ -1,7 +1,7 @@
 {
   "name": "sabia",
   "version": "2.0.0-alpha.1",
-  "description": "Instala, atualiza e desinstala o Sabiá e os toolkits dele no Kiro, no Claude Code e no opencode, com um inventário em ~/.sabia/.",
+  "description": "Instala, atualiza e desinstala o Sabiá e os toolkits dele no Kiro e no opencode, com um inventário em ~/.sabia/, e explica a rota dos fluxos (sabia rota).",
   "type": "module",
   "bin": {
     "sabia": "sabia.mjs"
@@ -26,7 +26,6 @@
   "keywords": [
     "sabia",
     "kiro",
-    "claude-code",
     "opencode",
     "skills",
     "agentes"

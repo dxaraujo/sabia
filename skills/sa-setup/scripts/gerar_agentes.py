@@ -195,6 +195,8 @@ def override(projeto, fw, fluxos):
                 erros.append(f"{f.relative_to(projeto)}: fora de passos/")
             elif pid in removidos:
                 erros.append(f"{caminho}: o passo foi removido no {fl['fluxo']}.md (apague a cópia ou não o remova)")
+            elif re.search(r"^## (Travas|Desvios)\b", f.read_text(encoding="utf-8"), re.M):
+                erros.append(f"{caminho}: `## Travas` e `## Desvios` são gerados (catálogo e prompt); tire do arquivo")
             elif pid in ids:
                 com_base(f, fl["dir"] / "passos" / f"{pid}.md", f"{q}.{pid}")
                 linhas.append(f"- passo `{pid}`: leia `{caminho}` (no lugar do da skill)")

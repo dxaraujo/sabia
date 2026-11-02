@@ -4,7 +4,7 @@ inclusion: always
 
 # Sabiá — <nome do projeto>
 
-Este repositório usa o fluxo **Sabiá** (power `sabia`): alinhar antes de escrever, fatias verticais pequenas, plano
+Este repositório usa o fluxo **Sabiá** (skills `sa-*`): alinhar antes de escrever, fatias verticais pequenas, plano
 aprovado por um Dev Sênior (GATE pela senioridade), teste primeiro com backpressure, revisão e verificação independentes, PR lido por uma
 pessoa, e o IBM ELM como registro oficial da documentação. Como funciona: skill `sabia`. Toda demanda nova: `sa-triar`.
 Começar um item registrado: hub `sa-iniciar` (diz a skill do papel: `sa-especificar`, `sa-desenvolver`,
@@ -64,7 +64,7 @@ Começar um item registrado: hub `sa-iniciar` (diz a skill do papel: `sa-especif
   pelo `status.md`; em `pronta` e `concluida` vale o da base — regra A base prevalece do padrão
   `sa-desenvolver/status.md`); produto na pasta abaixo.
 
-> Gerado pela `sa-setup` (power `sabia` <x.y.z>) em <AAAA-MM-DD>. Para mudar: "atualizar a configuração do Sabiá".
+> Gerado pela `sa-setup` (Sabiá <x.y.z>) em <AAAA-MM-DD>. Para mudar: "atualizar a configuração do Sabiá".
 > As skills e os agentes `sa-*` leem os valores daqui.
 
 ## Projeto
@@ -167,19 +167,22 @@ regra vale pelo tipo de id, não pelo nome Sustentação.
 | `sa-verificador` | <…> | <…> | <…> | <padrão> | — |
 | `sa-orquestrador` | <…> | <…> | — | <padrão> | os `sa-*` <+ do projeto> |
 
-## Passos de toolkit
+## Desvios de toolkit
 
-Num passo de um agente do Sabiá, a skill de um toolkit assume o trabalho; o Sabiá continua dono da revisão, do
-GATE, do passo `sa-codificar.codificar.validar` e do commit (`references/passos.md` da skill `sabia`).
+Num passo do Sabiá que aceita desvio (`sa-codificar.codificar.tarefa`, `sa-prd.prd.escrever`), a skill de um toolkit
+assume o trabalho; o Sabiá continua dono da revisão, do GATE, do passo `sa-codificar.codificar.validar` e do commit
+(`references/passos.md` da skill `sabia`). O agente dono já tem o desvio no prompt; esta tabela vale na sessão sem
+agente.
 
 | Passo | Toolkit | Para | Skill | Agente |
 |---|---|---|---|---|
-| <`especificador` | `desenvolvedor`> | `<nome>` <versão> | <quando usar> | `<skill>` | <`<agente>` | —> |
+| <`sa-codificar.codificar.tarefa` | `sa-prd.prd.escrever`> | `<nome>` <versão> | <quando usar> | `<skill>` | <`<agente>` | —> |
 <nenhum — sem skill de toolkit com `passo`, ou nenhuma ligada>
 
 ## Regras aprendidas
 
-Regras de **julgamento** promovidas pela `sa-aprender` (lições em `<produto>/aprendizado/licoes.md`). O revisor
+Regras de **julgamento** promovidas pela `sa-aprender` (lições em `<produto>/aprendizado/licoes.md`), que grava só
+esta seção (fluxo `sa-aprender.promover`, agente `sa-produto`); a `sa-setup` a preserva ao regravar este arquivo. O revisor
 as cobra como itens da rubrica; o plano as respeita. Erro mecânico não entra aqui: vira lint, teste, hook ou CI.
 Formato: `### R-<nn> · <título> · aplica a: <desenvolvedor | revisor | plano | PRD | todos> · severidade: <BLOQUEANTE | IMPORTANTE>`,
 a regra em 1–2 frases imperativas, `- ✅ <certo> · ❌ <errado>`, `- Origem: L-<nnn>`.

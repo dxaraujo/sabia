@@ -7,7 +7,7 @@ ou da pessoa. `<a | b>` no cartão = escolha **uma** das opções (o `|` não va
 como separador.
 
 **Só o que é das ferramentas do time.** Linha, aviso ou valor de uma ferramenta fora dos `alvos` não aparece, nem com
-➖: a linha cujo item termina em `(Kiro)`, `(Claude Code)` ou `(opencode)` sai quando a ferramenta não está nos alvos,
+➖: a linha cujo item termina em `(Kiro)` ou `(opencode)` sai quando a ferramenta não está nos alvos,
 e os números das outras não mudam. `(se a sessão é do Kiro)` vale pela ferramenta desta sessão. Onde o cartão diz "a
 ferramenta", use o nome da que está nos alvos.
 
@@ -98,7 +98,8 @@ independentes, PR lido por uma pessoa e o ELM como registro —, em sprints com 
 | 5 | `kiro-cli`, que valida os agentes (Kiro) | <✅ <versão> | ➖ sem ele, a validação da etapa 9 é só a do gerador> |
 | 6 | Credencial do ELM | <✅ responde como `<usuário>` | ⏸️ <motivo> | ➖ projeto sem ELM> |
 | 7 | Credencial do GitLab | <⏸️ arquivo existe — a conexão é testada na etapa 3 | ❌ sem arquivo — modelo na etapa 3> |
-| 8 | Ferramentas do time | <só as dos alvos, separadas por ` · `: <ferramenta> ✅ 🔍 <onde detectou> | <ferramenta> ❌ skills do Sabiá não instaladas — `<comando>`> |
+| 8 | Ferramentas do time | <só as dos alvos, separadas por ` · `: <ferramenta> ✅ 🔍 <onde detectou> | <ferramenta> ❌ skills do Sabiá não instaladas — `<comando>`> (Kiro: só no motor v3 — a IDE ou `kiro-cli --agent-engine v3`) |
+| 9 | Sabiá instalado | <✅ <versão> | ⚠️ o projeto foi configurado com o Sabiá <versão do agentes.json> e o seu é o <versão> — `npx sabia atualizar` ou regenerar com a sua> |
 
 Na linha 8, as ferramentas fora dos alvos não aparecem; a pessoa acrescenta uma com `8: + <ferramenta>`.
 
@@ -122,8 +123,9 @@ No lugar da tabela de etapas do W0 (a pré-checagem continua):
 | 3 | Git, PR e banco | <base `<…>` · PR <…> · banco <…>> | <➖ | ⚠️ …> |
 | 4 | Produto e ELM | <`<pasta>` · `pa_<nome>.json`> | <➖ | ⚠️ …> |
 | 5 | Skills | <n> skills · <n> agentes do projeto | <➖ | ⚠️ <n> novas: `<…>` · <n> sumiram: `<…>`> |
-| 6 | Agentes | gerados pelo power <versão> | <➖ | ⚠️ power atualizado → regenerar> |
-| 7 | Automação | `verificar.sh` <[✅] | ➖> | <➖ | ⚠️ …> |
+| 6 | Agentes | gerados com o Sabiá <versão do agentes.json> | <➖ | ⚠️ o seu é o <versão instalada> → regenerar> |
+| 7 | Automação | backpressure (passo `sa-codificar.codificar.validar`) <[✅] | ➖ sem comandos> · `http.sh` <[✅] | ➖> | <➖ | ⚠️ …> |
+| 8 | Migração | <➖ | ⚠️ projeto da 1.x → 2.0: sai o `.sabia/verificar.sh` · `"sabia"` no `agentes.json` · "Desvios de toolkit" pelo id do passo> | <➖ | ⚠️ entra no W8> |
 
 > ❓ **O que muda?**
 > `nada` só regenera agentes e scripts · `<n>` refaz a etapa <n> · `<n>,<m>` refaz várias
@@ -231,11 +233,11 @@ Montagem do `pa` (só quando falta): um cartão por bloco, com o cabeçalho
 (se há toolkit com `customiza`) Logo abaixo da tabela, uma linha por cópia: `↳ <cópia> customiza <base> <versão>, por <autor.nome> (<autor.area>): <mudanças>`
 — com a base também presente, `<base>` fica fora (substituído pela cópia); base mais nova que a versão da cópia → ⚠️.
 
-(só se alguma skill traz `passo`) Passos de toolkit — a skill assume um passo do Sabiá; ligados na próxima etapa:
+(só se alguma skill traz `passo`) Desvios de toolkit — a skill assume um passo do Sabiá que aceita desvio; ligados na próxima etapa:
 
 | # | Toolkit | Passo | Para | Skill | Agente |
 |---|---|---|---|---|---|
-| 1 | `<toolkit>` <versão> | <`especificador` | `desenvolvedor`> | <quando usar> | `<skill>` | <`<agente>` | —> |
+| 1 | `<toolkit>` <versão> | <`sa-codificar.codificar.tarefa` | `sa-prd.prd.escrever` | ❌ `<id>` não aceita desvio> | <quando usar> | `<skill>` | <`<agente>` | —> |
 
 Agentes do projeto (podem virar subagentes do desenvolvedor e do orquestrador):
 
@@ -243,8 +245,23 @@ Agentes do projeto (podem virar subagentes do desenvolvedor e do orquestrador):
 |---|---|---|---|
 | 1 | `<nome do agente>` | <início da description> | <✅ | ⚠️ tem campo `hooks` — a IDE ignora> |
 
+<o bloco Fluxos (W5-F)>
+
 > ❓ **Falta alguma skill ou agente que eu não achei?**
 > `ok` segue · `<caminho>` acrescenta
+```
+
+## W5-F · Fluxos (Passo 5)
+
+Na mesma mensagem do W5, antes da pergunta; também no C4 ("o que este projeto mudou?"):
+
+```
+### 🔀 Fluxos — o que este projeto customizou
+| # | Ponto | Mudança | Arquivo | Base |
+|---|---|---|---|---|
+| 1 | `<skill>.<fluxo>.<passo> | <skill>/<nome>.md>` | <trocado | inserido depois de `<passo>` | removido | padrão trocado> | `<.sabia/fluxo/… | .sabia/padrao/…>` | <✅ igual à do Sabiá instalado | ⚠️ a base mudou desde a cópia — compare e funda à mão | ➖ inserido ou removido | ❌ <sem `base` | não é passo nem padrão do Sabiá> — o gerador recusa> |
+
+Nada customizado → a linha `| — | o Sabiá como vem | ➖ |`. Para mudar: "customizar …", "descustomizar …".
 ```
 
 ## W6 · Um agente (Passo 6) — sete cartões, um por mensagem
@@ -271,8 +288,8 @@ Agentes do projeto (podem virar subagentes do desenvolvedor e do orquestrador):
 | [✅] | <n> | `sa-revisor` | análise do plano e revisão do código |
 | [ ] | <n> | `<agente do projeto>` | <início da description> |
 
-(só `sa-especificador` e `sa-desenvolvedor`, se há passo de toolkit deles no W5)
-| | # | Passo de toolkit | Para | Agente |
+(só `sa-especificador` e `sa-desenvolvedor`, se há desvio de toolkit deles no W5)
+| | # | Desvio de toolkit | Para | Agente |
 |---|---|---|---|---|
 | <[✅] | [ ]> | <n> | `<skill>` · toolkit `<nome>` | <quando usar> | <[ ] `<agente>` — delegar a ele | — sem agente> |
 
@@ -285,8 +302,8 @@ Agentes do projeto (podem virar subagentes do desenvolvedor e do orquestrador):
 > `ok` · `tirar 3,5` · `pôr 7` · `só 1,2` · `nenhuma skill` · `modelo: <nome>` · `as mesmas do sa-<outro>`
 ```
 
-Linhas numeradas em sequência pelas quatro tabelas (skills, MCPs, subagentes, passos), para "tirar 3,5" valer em
-qualquer uma. No passo, `pôr <n>` liga a skill e `agente <n>` marca também o agente (só com a skill ligada).
+Linhas numeradas em sequência pelas quatro tabelas (skills, MCPs, subagentes, desvios), para "tirar 3,5" valer em
+qualquer uma. No desvio, `pôr <n>` liga a skill e `agente <n>` marca também o agente (só com a skill ligada).
 As linhas `elm` e `gitlabpr` são fixas do papel (não se tiram por projeto); a do `gitlabpr` só existe no produto,
 desenvolvedor, revisor e orquestrador — o MCP serve só ao PR.
 Toda opção aparece — marcada ou não —, na ordem: marcadas primeiro, depois as desmarcadas. Depois de um ajuste,
@@ -300,7 +317,7 @@ mostre o cartão de novo com as caixas atualizadas antes de pedir o "ok" final d
 
 | # | Item | Valor | Fonte |
 |---|---|---|---|
-| 1 | `.sabia/verificar.sh` | <[✅] compila, testa, lint e cobertura antes de cada commit | ➖ sem comandos> | 📐 |
+| 1 | Backpressure (passo `sa-codificar.codificar.validar`) | <[✅] roda os Comandos do `sabia.md` — compila, testa, lint e cobertura — antes de cada commit | ➖ sem comandos> | 📐 fixo |
 | 2 | GATE do plano | pela senioridade: Júnior sempre · Pleno pergunta · Sênior nunca | 📐 fixo |
 | 3 | Paralelo no loop | 1 fatia por vez (máx. 3) | 📐 |
 | 4 | Push e PR no loop | 🟡 a ferramenta pergunta a cada lote | 📐 |
@@ -322,7 +339,8 @@ mostre o cartão de novo com as caixas atualizadas antes de pedir o "ok" final d
 | Git | base `<…>` · prefixo `<…>` · commit `<…>` · PR <…> |
 | Produto | `<pasta>` · glossário <…> · ADRs <…> |
 | ELM | <`pa_<nome>.json` ✅ válido · time <…> | não usa> |
-| Automação | `verificar.sh` <[✅] | ➖> · paralelo <n> |
+| Automação | backpressure pelo passo `sa-codificar.codificar.validar` <[✅] | ➖ sem comandos> · paralelo <n> |
+| Fluxos | <➖ o Sabiá como vem | <n> customizações — bloco Fluxos da etapa 5 (<n> ⚠️ base mudou)> |
 
 ### Agentes
 <a tabela que o gerador imprimiu (sem `--gravar`), colada como está — mesmas colunas, mesma ordem>
@@ -330,16 +348,13 @@ mostre o cartão de novo com as caixas atualizadas antes de pedir o "ok" final d
 ### Arquivos
 | Arquivo | Ação |
 |---|---|
-| `.sabia/sabia.md` | <criar | alterar — diff abaixo | manter> |
-| `.sabia/config/agentes.json` | rascunho gravado (nenhuma ferramenta carrega) |
+| `.sabia/sabia.md` | <criar | alterar — diff abaixo (Regras aprendidas preservadas) | manter> |
+| `.sabia/config/agentes.json` | rascunho gravado (nenhuma ferramenta carrega) · `"sabia": "<versão instalada>"` |
 | `.kiro/config/elm/pa_<nome>.json` | <gravado e validado no bloco 10 | manter | ➖> |
 | `.kiro/agents/*.json`, os 7 e os dos toolkits (Kiro) | <criar | alterar — diff abaixo> |
 | `.kiro/steering/sabia.md`, ponteiro do `sabia.md` (Kiro) | <criar | manter> |
-| `.claude/agents/*.md` e `.claude/settings.json` (Claude Code) | <criar | alterar — diff abaixo> |
-| `CLAUDE.md` com `@.sabia/sabia.md` (Claude Code) | <criar | acrescentar | manter> |
 | `.opencode/agents/*.md`, os 7 e os dos toolkits (opencode) | <criar | alterar — diff abaixo> |
 | `opencode.json` com `.sabia/sabia.md` em `instructions` (opencode) | <criar | acrescentar | manter> |
-| `.sabia/verificar.sh` | <criar | alterar | ➖> |
 | `.sabia/http.sh` | <criar | ➖> |
 | `<produto>/` | <criar backlog.md, aprendizado/licoes.md, fatias/ | acrescentar <…> | manter> |
 | `<glossário>` | <criar | manter | ➖ não há> |
@@ -363,14 +378,13 @@ por engano, diga `regravar <arquivo>`.
 |---|---|---|
 | 1 | Agentes gerados = os combinados (tabela do gerador) | <✅ | ❌ <diferença>> |
 | 2 | `kiro-cli agent validate` nos agentes (Kiro) | <✅ | ❌ <agente: campo> | ➖ sem kiro-cli> |
-| 3 | `sh .sabia/verificar.sh` | <✅ ok | ❌ <primeiro comando que falhou> | ⏸️ não rodado | ➖> |
+| 3 | Comandos do `sabia.md`, um a um | <✅ <comando> <tempo> · … | ❌ <primeiro comando que falhou: erro em uma linha> | ⏸️ não rodado | ➖> |
 | 4 | `pa` do ELM válido (`elm_status`) | <✅ | ❌ <faltando> | ➖> |
 | 5 | GitLab responde (`gitlab_listar_mrs`) | <✅ | ⏸️ <motivo> | ➖> |
 | 6 | Caminhos citados no `sabia.md` e nos agentes existem | <✅ | ❌ <caminho>> |
 | 7 | Ferramentas que varrem a raiz ignoram `.sabia/local/` | <✅ | ⚠️ <ferramenta>> |
 | 8 | Workspace confiável (Kiro) | <✅ | ⚠️ confie no workspace para carregar agentes e skills> |
-| 9 | `claude plugin validate .claude/agents` (Claude Code) | <✅ | ❌ <arquivo: erro>> |
-| 10 | `opencode debug agents` lista os `sa-*` (opencode) | <✅ | ❌ <agente que falta>> |
+| 9 | `opencode debug agents` lista os `sa-*` (opencode) | <✅ | ❌ <agente que falta>> |
 ```
 
 Depois, numa mensagem só:
@@ -396,4 +410,73 @@ Depois, numa mensagem só:
 
 > ❓ **Faço o commit?**
 > `ok` commita · `não` deixa para você
+```
+
+## C1 · Customizar — achar o ponto
+
+```
+## 🔀 Customizar · <o pedido, em poucas palavras>
+Achei o ponto assim — confira.
+
+| # | Passo | Travas | Saídas |
+|---|---|---|---|
+| 1 | `<passo>` | <travas | —> | <saídas | —> |
+| 2 | `<passo>` 👉 | <…> | <…> |
+
+**<skill>.<fluxo>.<passo>** · <resumo do passo>
+
+(se há mais de um candidato) as opções numeradas logo acima da pergunta, a melhor com `⭐ (recomendado)`.
+
+> ❓ **É este o ponto?**
+> `ok` · `<n>` escolhe outra linha · `<id>` diz o ponto
+```
+
+## C2 · Customizar — a forma
+
+```
+## 🔀 Customizar · `<skill>.<fluxo>.<passo>`
+
+| # | Forma | O que acontece |
+|---|---|---|
+| 1 | trocar o passo | cópia inteira em `.sabia/fluxo/<skill>/<fluxo>/passos/<passo>.md`, com a `base`, para você editar |
+| 2 | inserir um passo depois deste | `.sabia/fluxo/<skill>/<fluxo>/passos/<novo>.md` com as quatro seções + `inserir` no `<fluxo>.md` do projeto |
+| 3 | remover o passo | <`remover` no `<fluxo>.md` do projeto | ➖ não removível — <trava `<id>` | não é `removivel`>> |
+| 4 | trocar o padrão `<skill>/<nome>.md` | <cópia em `.sabia/padrao/<skill>/<nome>.md`, com a `base` | ➖ o passo não usa padrão> |
+
+As travas do fluxo continuam valendo em qualquer forma.
+
+> ❓ **Qual forma?**
+> `<n>` · `<n>: <id do passo novo>` (inserir) · `parar` sai sem gravar
+```
+
+## C3 · Customizar — regenerar
+
+Também no "descustomizar" (a coluna Ação diz "apagar").
+
+```
+## 🔀 Customizar · `<skill>.<fluxo>.<passo>`
+
+| Arquivo | Ação |
+|---|---|
+| `<.sabia/fluxo/… | .sabia/padrao/…>` | <criado — diff contra o original abaixo | alterado | apagar> |
+| `<.sabia/fluxo/<skill>/<fluxo>/<fluxo>.md>` | <`inserir` · `remover` | apagar — ficou vazio | ➖> |
+| `<.kiro/agents/<dono>.json · .opencode/agents/<dono>.md>` | <alterar — o delta no prompt, diff abaixo | manter> |
+
+(se o gerador avisou) `⚠️ <aviso do gerador>`
+(se o gerador recusou) o cartão de bloqueio com a mensagem dele — nada é gravado.
+
+> ❓ **Gravo?**
+> `ok` regenera os agentes · `editar` volta ao arquivo · `parar` deixa o override sem regenerar
+```
+
+## C4 · O que este projeto mudou?
+
+```
+## 🔀 O que este projeto mudou · <projeto>
+<o bloco Fluxos (W5-F)>
+
+<por linha: o diff do override contra o original compilado — trocado, padrão; o arquivo inteiro — inserido>
+
+> ❓ **Quer mudar algo?**
+> `ok` · `customizar <n>` · `descustomizar <n>` · `fundir <n>` (base ⚠️)
 ```

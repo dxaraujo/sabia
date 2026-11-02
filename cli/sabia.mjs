@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Sabiá CLI — instala, atualiza e desinstala o Sabiá e os toolkits no Kiro, no Claude Code e no opencode.
+// Sabiá CLI — instala, atualiza e desinstala o Sabiá e os toolkits no Kiro e no opencode, e explica a rota (`sabia rota`).
 // ~/.sabia/ é a fonte (framework/ e toolkits/), cada ferramenta recebe uma cópia no padrão dela, e o
 // ~/.sabia/inventario.json registra cada cópia (com o hash de cada arquivo) e cada MCP: atualizar e desinstalar
 // mexem só no que está lá. Só a biblioteca padrão do Node 18+.
@@ -10,12 +10,12 @@ import os from "node:os";
 import path from "node:path";
 import readline from "node:readline/promises";
 import { fileURLToPath } from "node:url";
-import { carregar, compilar } from "./compilar.mjs";
+import { carregar, compilar, partes } from "./compilar.mjs";
 
 const VERSAO = JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8")).version;
 const REPO = "https://github.com/dxaraujo/sabia.git";
 const INDICE = "https://github.com/dxaraujo/sabia-toolkits.git";
-const ALVOS = ["kiro", "claude", "opencode"];
+const ALVOS = ["kiro", "opencode"];
 const NOME = [
   "                               ▄▄▀",
   "███████╗ █████╗ ██████╗ ██╗ █████╗",
@@ -106,7 +106,6 @@ export const curto = (p) => (p.startsWith(home() + path.sep) ? "~/" + path.relat
 export const longo = (p) => (p.startsWith("~/") ? path.join(home(), ...p.slice(2).split("/")) : p);
 
 export const PASTA_SKILLS = {
-  claude: () => path.join(home(), ".claude", "skills"),
   opencode: () => path.join(home(), ".config", "opencode", "skills"),
 };
 
@@ -229,7 +228,7 @@ function temComando(cmd) {
 }
 
 export function detectarAlvos() {
-  return ALVOS.filter((a) => temComando({ kiro: "kiro-cli", claude: "claude", opencode: "opencode" }[a]));
+  return ALVOS.filter((a) => temComando({ kiro: "kiro-cli", opencode: "opencode" }[a]));
 }
 
 async function escolherAlvos(opcoes) {
@@ -277,23 +276,17 @@ function tirarMcpDoOpencode(nome) {
   }
 }
 
-async function registrarMcps(alvo, fw, reg) {
+/** Os MCPs do framework no opencode (no Kiro, vão no mcp.json do power). */
+async function registrarMcps(fw, reg) {
   reg.mcp ||= [];
-  const ja = alvo === "opencode" ? mcpsDoOpencode() : [];
+  const ja = mcpsDoOpencode();
   for (const [nome, s] of Object.entries(servidoresMcp(fw))) {
+    if (ja.includes(nome)) { ctx.log(`MCP ${nome} já existe no opencode — mantido`); continue; }
     const env = Object.entries(s.env || {}).map(([k, v]) => `${k}=${v}`);
-    let r;
-    if (alvo === "claude") {
-      if (ctx.exec("claude", ["mcp", "get", nome]).status === 0) { ctx.log(`MCP ${nome} já existe no Claude Code — mantido`); continue; }
-      // o nome vem antes do -e, que aceita vários valores e engoliria o nome
-      r = ctx.exec("claude", ["mcp", "add", "--scope", "user", nome, ...env.flatMap((e) => ["-e", e]), "--", s.command, ...s.args]);
-    } else {
-      if (ja.includes(nome)) { ctx.log(`MCP ${nome} já existe no opencode — mantido`); continue; }
-      r = ctx.exec("opencode", ["mcp", "add", "--global", ...env.flatMap((e) => ["--env", e]), nome, "--", s.command, ...s.args]);
-    }
-    if (r.status !== 0) throw new Error(`MCP ${nome} no ${alvo}: ${(r.stderr || r.error?.message || "").trim()}`);
+    const r = ctx.exec("opencode", ["mcp", "add", "--global", ...env.flatMap((e) => ["--env", e]), nome, "--", s.command, ...s.args]);
+    if (r.status !== 0) throw new Error(`MCP ${nome} no opencode: ${(r.stderr || r.error?.message || "").trim()}`);
     if (!reg.mcp.includes(nome)) reg.mcp.push(nome);
-    ctx.log(`MCP ${nome} registrado no ${alvo}`);
+    ctx.log(`MCP ${nome} registrado no opencode`);
   }
 }
 
@@ -322,11 +315,9 @@ async function instalarAlvo(alvo, inv, opcoes) {
   }
   const reg = (inv.alvos[alvo] ||= { copias: {}, mcp: [] });
   for (const s of skillsDoFluxo(fw)) await copiar(path.join(fw, "skills", s), path.join(PASTA_SKILLS[alvo](), s), reg.copias, opcoes);
-  if (!opcoes.semMcp) await registrarMcps(alvo, sabia("framework"), reg);
-  if (alvo === "opencode") {
-    const velhas = fs.existsSync(PASTA_SKILLS.opencode()) ? fs.readdirSync(PASTA_SKILLS.opencode()).filter((d) => /^sdd/.test(d)) : [];
-    if (velhas.length) ctx.log(`aviso: skills antigas no opencode concorrem com as sa-*: ${velhas.join(", ")} (remova se não usa mais)`);
-  }
+  if (!opcoes.semMcp) await registrarMcps(sabia("framework"), reg);
+  const velhas = (fs.existsSync(PASTA_SKILLS.opencode()) ? fs.readdirSync(PASTA_SKILLS.opencode()) : []).filter((d) => /^sdd/.test(d));
+  if (velhas.length) ctx.log(`aviso: skills antigas no opencode concorrem com as sa-*: ${velhas.join(", ")} (remova se não usa mais)`);
 }
 
 /** Baixa o framework para uma pasta temporária e diz o que muda em relação a ~/.sabia/framework/. */
@@ -387,6 +378,8 @@ export async function atualizar(opcoes = {}) {
   inv.framework = { ...inv.framework, versao: novo.versao, sha: novo.sha, compilador: VERSAO, instalado_em: new Date().toISOString() };
   try {
     for (const alvo of Object.keys(inv.alvos)) {
+      // alvo que saiu do Sabiá (o claude, na 2.0): fica como está; `sabia desinstalar --alvo <ele>` apaga as cópias
+      if (!ALVOS.includes(alvo)) { ctx.log(`${alvo}: não é mais alvo do Sabiá (${ALVOS.join(", ")}) — ignorado; tire com sabia desinstalar --alvo ${alvo}`); continue; }
       if (alvo !== "kiro") {  // skill que saiu do framework sai da ferramenta
         const copias = inv.alvos[alvo].copias;
         const fica = new Set(skillsDoFluxo(sabia("framework")).map((s) => curto(path.join(PASTA_SKILLS[alvo](), s))));
@@ -412,10 +405,8 @@ export async function desinstalar(opcoes = {}) {
       for (const tk of Object.values(inv.toolkits)) if (tk.alvos?.[alvo]) { await apagar(tk.alvos[alvo].copias, opcoes); delete tk.alvos[alvo]; }
       if (alvo === "kiro") ctx.exec("kiro-cli", ["powers", "uninstall", reg.power]);
       else await apagar(reg.copias, opcoes);
-      for (const nome of reg.mcp || []) {
-        if (alvo === "claude") ctx.exec("claude", ["mcp", "remove", "--scope", "user", nome]);
-        else tirarMcpDoOpencode(nome);
-      }
+      if (alvo === "opencode") for (const nome of reg.mcp || []) tirarMcpDoOpencode(nome);
+      else if (reg.mcp?.length) ctx.log(`${alvo}: os MCPs ${reg.mcp.join(", ")} ficam (o Sabiá não mexe mais no ${alvo}); tire à mão se não usa`);
       if (alvo !== "kiro" && Object.keys(reg.copias).length) continue;  // ficou cópia alterada à mão
       delete inv.alvos[alvo];
       ctx.log(`${alvo}: Sabiá desinstalado`);
@@ -544,7 +535,8 @@ export async function instalarToolkit(alvo, opcoes = {}) {
   // mesmos nomes de skill e de agente: as duas no usuário se sobrescreveriam
   if (rival) throw new Error(`${baixado} e ${rival} são versões do mesmo toolkit (base ${familia}); instale um só: sabia toolkits remover ${rival}`);
   const tk = (inv.toolkits[baixado] ||= { versao: m.versao, alvos: {} });
-  const alvos = opcoes.alvo ? opcoes.alvo.split(",") : Object.keys(inv.alvos).length ? Object.keys(inv.alvos) : await escolherAlvos(opcoes);
+  const doInv = Object.keys(inv.alvos).filter((a) => ALVOS.includes(a));
+  const alvos = opcoes.alvo || !doInv.length ? await escolherAlvos(opcoes) : doInv;
   try {
     for (const a of alvos.filter((x) => x !== "kiro")) {
       const reg = (tk.alvos[a] ||= { copias: {} });
@@ -590,7 +582,7 @@ export async function atualizarToolkits(nome, opcoes = {}) {
     const origem = JSON.parse(fs.readFileSync(sabia("toolkits", n, ".origem.json"), "utf8"));
     const alvo = origem.indice ? n : `${origem.url}${origem.ref ? "@" + origem.ref : ""}`;
     await instalarToolkit(alvo, { ...opcoes, atualizar: true, indice: origem.indice || opcoes.indice,
-      alvo: Object.keys(inv.toolkits[n]?.alvos || {}).join(",") || "kiro" });
+      alvo: Object.keys(inv.toolkits[n]?.alvos || {}).filter((a) => ALVOS.includes(a)).join(",") || "kiro" });
   }
 }
 
@@ -638,13 +630,178 @@ export function listarToolkits(opcoes = {}) {
   return linhas;
 }
 
+// ---------- rota (diagnóstico, para pessoas) ----------
+
+// toolkit 1.x (passo.papel, e "codificador" antes do renome): o mesmo mapa do gerar_agentes.py
+const GANCHO_1X = { desenvolvedor: "sa-codificar.codificar.tarefa", codificador: "sa-codificar.codificar.tarefa", especificador: "sa-prd.prd.escrever" };
+const lerJson = (f, padrao) => (fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")) : padrao);
+const lerFm = (f) => (fs.existsSync(f) ? partes(fs.readFileSync(f, "utf8")).dados || {} : null);
+
+/** Glob do `passo.arquivos`: `**` atravessa `/`; `*` e `?` não. */
+export function casaGlob(glob, arquivo) {
+  const rx = glob.replace(/[.+^${}()|[\]\\]/g, "\\$&").replace(/\*\*\/|\*\*|\*|\?/g, (t) => ({ "**/": "(?:.*/)?", "**": ".*", "*": "[^/]*", "?": "[^/]" })[t]);
+  return new RegExp(`^${rx}$`).test(arquivo);
+}
+
+/** Colunas alinhadas; a última sem preenchimento. */
+const colunas = (linhas) => {
+  const w = [];
+  for (const l of linhas) l.slice(0, -1).forEach((c, i) => { w[i] = Math.max(w[i] || 0, c.length); });
+  return linhas.map((l) => l.map((c, i) => (i < l.length - 1 ? c.padEnd(w[i]) : c)).join("  ").trimEnd()).join("\n");
+};
+
+/** Framework instalado (ou --framework), projeto (ou --projeto) e os desvios ligados nele, como o gerador os resolve. */
+function contextoRota(opcoes) {
+  const fw = path.resolve(opcoes.framework || sabia("framework"));
+  if (!fs.existsSync(path.join(fw, "fluxo"))) throw new Error(`${curto(fw)} não tem fluxo/: rode \`sabia instalar\` ou passe --framework`);
+  const projeto = path.resolve(opcoes.projeto || process.cwd());
+  const cfg = lerJson(path.join(projeto, ".sabia", "config", "agentes.json"), {});
+  const m = carregar(fw);
+  const desvios = (cfg.passos || []).flatMap((e) => {
+    const pasta = cfg.toolkits?.[e.toolkit]?.pasta;
+    const dir = !pasta ? sabia("toolkits", e.toolkit) : pasta.startsWith("~/") ? longo(pasta) : path.resolve(projeto, pasta);
+    const man = lerJson(path.join(dir, "toolkit.json"), null);
+    const ext = man?.skills?.find((x) => x.caminho === e.skill && x.passo)?.passo;
+    if (!ext) { ctx.log(`aviso: toolkit ${e.toolkit} sem passo em ${e.skill} (${curto(dir)})`); return []; }
+    // como o gancho() do gerador: só passo do framework com "desvio": true (senão o gerador recusa e o prompt não o tem)
+    const passo = ext.passo || GANCHO_1X[ext.papel], [sk, f, p] = (passo || "").split(".");
+    if (!m.fluxos[`${sk}.${f}`]?.passos.find((x) => x.id === p)?.desvio) {
+      ctx.log(`aviso: toolkit ${e.toolkit}: ${passo ? `o passo ${passo}` : `o papel ${ext.papel}`} não aceita desvio de toolkit (o gerador recusa) — ignorado`);
+      return [];
+    }
+    const agente = e.agente && ext.agente ? ext.agente : null;
+    const skills = agente ? (man.agentes || []).find((a) => a.nome === agente)?.skills || [] : [e.skill];
+    return [{ toolkit: e.toolkit, versao: man.versao, passo, para: ext.para, arquivos: ext.arquivos || [],
+      agente, skill: path.basename(path.dirname(e.skill)), skills: skills.map((x) => path.basename(path.dirname(x))) }];
+  });
+  return { fw, projeto, m, versao: lerJson(path.join(fw, "plugin.json"), {}).version || "?", desvios };
+}
+
+/** Os passos do fluxo `q` na ordem, com o que o projeto mudou: origem sabia | projeto (corpo trocado) | inserido | removido. */
+function resolverFluxo(c, q) {
+  const fl = c.m.fluxos[q.replace("/", ".")];
+  if (!fl) throw new Error(`fluxo ${q} não existe em ${curto(c.fw)} (use skill.fluxo, ex.: sa-codificar.codificar)`);
+  const dir = path.join(c.projeto, ".sabia", "fluxo", fl.skill, fl.fluxo);
+  const ops = lerFm(path.join(dir, `${fl.fluxo}.md`)) || {};
+  const doProjeto = (id) => path.join(dir, "passos", `${id}.md`);
+  const passos = fl.passos.map((x) => {
+    const base = lerFm(doProjeto(x.id));
+    const origem = (ops.remover || []).includes(x.id) ? "removido" : base ? "projeto" : "sabia";
+    return { ...x, origem, base: base?.base, arq: base ? doProjeto(x.id) : x.arq };
+  });
+  let falta = [...(ops.inserir || [])];
+  while (falta.length) {  // em qualquer ordem, inclusive depois de outro inserido
+    const prontos = falta.filter((o) => passos.some((x) => x.id === o.depois));
+    if (!prontos.length) { ctx.log(`aviso: ${q}: inserir ${falta.map((o) => `${o.id} depois de ${o.depois}`).join(", ")}: o 'depois' não existe`); break; }
+    for (const o of prontos) {
+      let i = passos.findIndex((x) => x.id === o.depois);
+      while (passos[i + 1]?.depois === o.depois) i++;
+      passos.splice(i + 1, 0, { id: o.id, depois: o.depois, origem: "inserido", arq: doProjeto(o.id) });
+    }
+    falta = falta.filter((o) => !prontos.includes(o));
+  }
+  return { fl, q: `${fl.skill}.${fl.fluxo}`, passos };
+}
+
+const travasDe = (fl, x) => [...new Set([...(fl.d.travas_gerais || []), ...(x?.travas || [])])].join(", ") || "—";
+
+/** `sabia rota <arquivo>`: o passo com gancho cujo desvio casa com o arquivo, o dono, o toolkit, o motivo e as travas. */
+export function rota(arquivo, opcoes = {}) {
+  const c = contextoRota(opcoes);
+  let rel = path.relative(c.projeto, path.resolve(arquivo));
+  if (rel.startsWith("..")) rel = arquivo;  // fora do projeto: o caminho como veio
+  rel = rel.split(path.sep).join("/");
+  const ganchos = Object.entries(c.m.fluxos).flatMap(([q, fl]) => fl.passos.filter((x) => x.desvio).map((x) => `${q}.${x.id}`));
+  let casou = null;
+  for (const d of c.desvios) { const g = d.arquivos.find((a) => casaGlob(a, rel)); if (g) { casou = { d, g }; break; } }
+  // sem casar: o passo dos desvios por arquivo do projeto (o de código), senão o primeiro gancho do framework
+  const pid = casou?.d.passo || c.desvios.find((d) => d.arquivos.length)?.passo || ganchos[0];
+  if (!pid) throw new Error(`${curto(c.fw)} não tem passo com desvio de toolkit`);
+  const { fl, passos } = resolverFluxo(c, pid.split(".").slice(0, 2).join("."));
+  const x = passos.find((y) => y.id === pid.split(".")[2]);
+  if (!x) throw new Error(`o desvio aponta para ${pid}, que não é passo do Sabiá instalado`);
+  const agentes = [`.opencode/agents/${fl.d.dono}.md`, `.kiro/agents/${fl.d.dono}.json`].filter((f) => fs.existsSync(path.join(c.projeto, f)));
+  const linhas = [
+    ["passo", pid, x.origem === "projeto" ? `${path.relative(c.projeto, x.arq)} (projeto)` : `${curto(x.arq)} (Sabiá ${c.versao})`],
+    ["dono", fl.d.dono, agentes.join(", ") || "agente não gerado neste projeto"],
+  ];
+  if (casou) linhas.push(["desvio", casou.d.agente || `skill ${casou.d.skill}`, `toolkit ${casou.d.toolkit} ${casou.d.versao}`],
+    ["motivo", `casou ${casou.g}`], ["skills", [fl.skill, ...casou.d.skills].join(", ")]);
+  else {
+    linhas.push(["desvio", "— fluxo padrão", "nenhum padrão casou"]);
+    for (const d of c.desvios.filter((y) => y.passo === pid)) linhas.push(["pelo texto", `"${d.para}" → ${d.agente || `skill ${d.skill}`}`, "o modelo decide pela tarefa"]);
+  }
+  linhas.push(["travas", travasDe(fl, x)]);
+  return colunas(linhas);
+}
+
+const sid = (t) => t.replace(/[^A-Za-z0-9_]/g, "_");
+const rotulo = (t) => t.replace(/[;:]/g, ",").replace(/[`"#]/g, "");
+
+/** `sabia rota --fluxo <skill.fluxo>`: a tabela resolvida (com o que o projeto mudou) e o diagrama de estados. */
+export function rotaFluxo(q, opcoes = {}) {
+  const c = contextoRota(opcoes);
+  const r = resolverFluxo(c, q), { fl } = r;
+  const desvios = c.desvios.filter((d) => d.passo?.startsWith(`${r.q}.`));
+  const origem = (x) => ({ sabia: "Sabiá", projeto: `projeto${x.base ? ` (base ${x.base})` : ""}`,
+    inserido: `projeto, inserido depois de ${x.depois}`, removido: "removido no projeto" })[x.origem];
+  let n = 0;
+  const tabela = [["#", "passo", "origem", "chama", "travas", "saídas"], ...r.passos.map((x) => [
+    x.origem === "removido" ? "-" : String(++n), x.id + (x.desvio ? " ⇢" : ""), origem(x), [].concat(x.chama || []).join(", ") || "—",
+    (x.travas || []).join(", ") || "—", Object.entries(x.saidas || {}).map(([k, v]) => `${k} → ${v.replace(/^→ /, "passa a ")}`).join("; ") || "—"])];
+  const cab = [["fluxo", r.q, `dono ${fl.d.dono}`, `Sabiá ${c.versao}`], ["travas", (fl.d.travas_gerais || []).join(", ") || "—"],
+    ...desvios.map((d) => ["desvio ⇢", `${d.passo.split(".")[2]}: ${d.arquivos.join(", ") || `"${d.para}"`}`, `→ ${d.agente || `skill ${d.skill}`}`, `toolkit ${d.toolkit} ${d.versao}`])];
+
+  const out = ["stateDiagram-v2"], declarados = new Set();
+  const estado = (id, nome = id) => {
+    const s = sid(id);
+    if (s !== nome && !declarados.has(s)) { declarados.add(s); out.push(`  state "${nome}" as ${s}`); }
+    return s;
+  };
+  const ativos = r.passos.filter((x) => x.origem !== "removido");
+  ativos.forEach((x, i) => {
+    const a = estado(x.id), prox = ativos[i + 1];
+    if (!i) out.push(`  [*] --> ${a}`);
+    for (const [cond, dest] of Object.entries(x.saidas || {})) {
+      if (dest === "fim") out.push(`  ${a} --> [*]: ${rotulo(cond)}`);
+      else if (dest.startsWith("→ ")) { const q2 = dest.slice(2).trim(); out.push(`  ${a} --> ${estado(`x_${q2}`, q2)}: ${rotulo(cond)} (passagem)`); }
+      else if (ativos.some((y) => y.id === dest)) out.push(`  ${a} --> ${estado(dest)}: ${rotulo(cond)}`);
+    }
+    out.push(prox ? `  ${a} --> ${estado(prox.id)}${prox.origem === "inserido" ? ": projeto (inserido)" : ""}` : `  ${a} --> [*]`);
+    const nota = [x.chama && `chama ${[].concat(x.chama).join(", ")}`, x.origem === "projeto" && `corpo do projeto${x.base ? ` (base ${x.base})` : ""}`,
+      x.desvio && desvios.length && `desvio ⇢ ${desvios.filter((d) => d.passo === `${r.q}.${x.id}`).map((d) => d.agente || d.skill).join(", ")}`].filter(Boolean);
+    if (nota.length) out.push(`  note right of ${a}: ${rotulo(nota.join(" · "))}`);
+  });
+  return [colunas(cab), "", colunas(tabela), "", "```mermaid", ...out, "```"].join("\n");
+}
+
+/** `sabia rota --mapa`: as arestas entre fluxos de todo o framework (chama e passagens), em Mermaid. */
+export function rotaMapa(opcoes = {}) {
+  const c = contextoRota(opcoes);
+  const out = ["flowchart LR"], nos = new Set(), vistas = new Set();
+  const no = (q) => { const s = sid(q); if (!nos.has(s)) { nos.add(s); out.push(`  ${s}["${q}"]`); } return s; };
+  for (const [q, fl] of Object.entries(c.m.fluxos))
+    for (const x of fl.passos) {
+      const arestas = [...[].concat(x.chama || []).map((d) => [d, "-->"]),
+        ...Object.values(x.saidas || {}).filter((d) => d.startsWith("→ ")).map((d) => [d.slice(2).trim(), "-.->"])];
+      for (const [d, seta] of arestas) {
+        const q2 = d.split(".").slice(0, 2).join(".");
+        if (vistas.has(`${q} ${seta} ${q2} ${x.id}`)) continue;
+        vistas.add(`${q} ${seta} ${q2} ${x.id}`);
+        out.push(`  ${no(q)} ${seta}|${x.id}| ${no(q2)}`);
+      }
+    }
+  return [`Fluxos do Sabiá ${c.versao}: --> chama (volta ao passo) · -.-> passagem (o fluxo termina e segue no outro); rótulo = passo de origem`,
+    "", "```mermaid", ...out, "```"].join("\n");
+}
+
 // ---------- linha de comando ----------
 
 const AJUDA = `${BANNER}
 
-sabia ${VERSAO} — instala o Sabiá e os toolkits no Kiro, no Claude Code e no opencode
+sabia ${VERSAO} — instala o Sabiá e os toolkits no Kiro e no opencode
 
-  sabia instalar   [--alvo kiro,claude,opencode] [--versao X] [--fonte <pasta|url-git>[@ref]]
+  sabia instalar   [--alvo kiro,opencode] [--versao X] [--fonte <pasta|url-git>[@ref]]
   sabia atualizar  [--versao X]
   sabia desinstalar [--alvo …]
   sabia toolkits listar   [--indice <url-git|pasta>]
@@ -652,6 +809,10 @@ sabia ${VERSAO} — instala o Sabiá e os toolkits no Kiro, no Claude Code e no 
   sabia toolkits instalar <nome>[@versao] | <url-git>[@ref]  [--alvo …]   (sem argumento, no projeto: as versões dele)
   sabia toolkits atualizar [<nome>]
   sabia toolkits remover  <nome>
+  sabia rota <arquivo>               o passo com desvio de toolkit, o dono, o toolkit, o motivo e as travas
+  sabia rota --fluxo <skill.fluxo>   o fluxo resolvido no projeto (tabela e diagrama Mermaid)
+  sabia rota --mapa                  as arestas entre fluxos (chama e passagens), em Mermaid
+      [--projeto <pasta>] (padrão: a atual) [--framework <pasta>] (padrão: ~/.sabia/framework)
 
   --sim       responde "sim" às confirmações (cópia alterada à mão continua perguntando, salvo --forcar)
   --forcar    sobrescreve o que não foi instalado pelo Sabiá ou foi alterado à mão
@@ -666,14 +827,17 @@ export function lerArgs(argv) {
     const a = argv[i];
     if (!a.startsWith("--")) { posicionais.push(a); continue; }
     const chave = a.slice(2).replace(/-(\w)/g, (_, c) => c.toUpperCase());
-    if (["sim", "forcar", "semMcp", "ajuda", "help"].includes(chave)) opcoes[chave] = true;
+    if (["sim", "forcar", "semMcp", "mapa", "ajuda", "help"].includes(chave)) opcoes[chave] = true;
+    else if (argv[i + 1] === undefined || argv[i + 1].startsWith("--")) throw new Error(`--${a.slice(2)} precisa de um valor`);
     else opcoes[chave] = argv[++i];
   }
   return { posicionais, opcoes };
 }
 
 export async function main(argv = process.argv.slice(2)) {
-  const { posicionais: [cmd, sub, arg], opcoes } = lerArgs(argv);
+  let args;
+  try { args = lerArgs(argv); } catch (e) { console.error(`sabia: ${e.message}`); return 1; }
+  const { posicionais: [cmd, sub, arg], opcoes } = args;
   if (opcoes.sim) {  // cópia alterada à mão continua perguntando: só o --forcar passa por cima
     const antes = ctx.perguntar;
     ctx.perguntar = async (texto, padrao) => (/alterado à mão/.test(texto) ? antes(texto, padrao) : /\[s\/N\]/.test(texto) ? "s" : padrao);
@@ -687,6 +851,8 @@ export async function main(argv = process.argv.slice(2)) {
     else if (cmd === "toolkits" && sub === "instalar") await (arg ? instalarToolkit(arg, opcoes) : instalarDoProjeto(opcoes));
     else if (cmd === "toolkits" && sub === "atualizar") await atualizarToolkits(arg, opcoes);
     else if (cmd === "toolkits" && sub === "remover" && arg) await removerToolkit(arg, opcoes);
+    else if (cmd === "rota" && (sub || opcoes.fluxo || opcoes.mapa))
+      ctx.log(opcoes.mapa ? rotaMapa(opcoes) : opcoes.fluxo ? rotaFluxo(opcoes.fluxo, opcoes) : rota(sub, opcoes));
     else { ctx.log(AJUDA); return cmd && !opcoes.ajuda && !opcoes.help ? 1 : 0; }
     return 0;
   } catch (e) {
