@@ -16,15 +16,15 @@ body{font:400 14px/20px var(--body)}
 h1,h2,h3,h4{font-weight:650;letter-spacing:0}
 code{background:var(--soft);color:var(--ink)}
 
-.top{padding-block:12px}
+.top{border-bottom:1px solid var(--line);padding-block:14px}
 .brand{font:650 20px/1 var(--display)}
 .top .gh{font:500 14px/1 var(--body);color:var(--ink);padding:9px 12px;border:0;background:#0515240F}
 .top .gh:hover{background:#0B120E24;color:var(--ink)}
-nav.tabs{gap:0;padding-block:0;border-bottom:2px solid var(--line)}
-nav.tabs a{background:none;color:#505258;font:500 14px/20px var(--body);padding:12px 8px 10px;margin:0 6px -2px 0;border-radius:0;border-bottom:2px solid transparent}
-nav.tabs a:first-child{padding-left:0}
-nav.tabs a:hover{background:none;color:var(--ink);border-bottom-color:#B7B9BE}
-nav.tabs a[aria-current="page"]{background:none;color:var(--acento);border-bottom-color:var(--acento)}
+/* barra de menus igual à do Evergreen */
+nav.tabs{border-bottom:0;gap:4px;padding-block:10px}
+nav.tabs a{background:none;color:var(--ink);font:500 14px/1 var(--body);padding:9px 12px;border-radius:4px}
+nav.tabs a:hover{background:var(--soft);color:var(--title)}
+nav.tabs a[aria-current="page"]{background:color-mix(in srgb,var(--acento) 10%,transparent);color:var(--acento)}
 
 .sign.hero h1{font-size:clamp(32px,4.2vw,48px);line-height:1.12;letter-spacing:-.015em}
 .sign.hero .lead{color:#505258;font-size:16px;line-height:24px}
@@ -63,9 +63,9 @@ footer{border-top:1px solid var(--line)}
 }
 [data-modo="escuro"] .top .gh{background:var(--soft);color:var(--ink)}
 [data-modo="escuro"] .top .gh:hover{background:var(--grey2);color:var(--title)}
-[data-modo="escuro"] nav.tabs a{color:var(--muted)}
-[data-modo="escuro"] nav.tabs a:hover{color:var(--ink);border-bottom-color:#5D5F65}
-[data-modo="escuro"] nav.tabs a[aria-current="page"]{color:var(--acento);border-bottom-color:var(--acento)}
+[data-modo="escuro"] nav.tabs a{color:var(--ink)}
+[data-modo="escuro"] nav.tabs a:hover{background:var(--soft);color:var(--title)}
+[data-modo="escuro"] nav.tabs a[aria-current="page"]{background:color-mix(in srgb,var(--acento) 18%,transparent);color:var(--acento)}
 [data-modo="escuro"] :is(.sign.hero .lead,.lead-sec p,.install .how){color:var(--muted)}
 [data-modo="escuro"] .install button{color:#1F1F21}
 [data-modo="escuro"] .porta .n{background:color-mix(in srgb,var(--c) 24%,var(--card));color:color-mix(in srgb,var(--c) 55%,#fff)}
