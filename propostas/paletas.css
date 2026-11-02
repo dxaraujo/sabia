@@ -118,85 +118,11 @@
 
 
 
+
 /* ===== propostas similares à atual: 9 cores na ordem dos papéis da atual (marca, azul, navy, ciano, teal, verde, lima, amarelo,
    laranja), aplicadas puras, com as regras e os neutros da atual. Só o texto se adapta: branco ou quase preto
    (#121821), o que contrastar mais com cada cor (etapas e botões da barra lateral). Seletores com :root para ganhar das
    regras de texto da atual (.claro:first-child) ===== */
-/* Arctic Innovation — tecnológica, contemporânea e sofisticada */
-:root[data-paleta="arctic"]{
-  --brand:#3659A8; --blue:#5279C7; --navy:#34465F; --cyan:#48A6B8; --teal:#347F91; --green:#69977B; --lime:#A1B78B; --yellow:#D5B96A; --orange:#D88B62;
-  --l-epico:#34465F; --l-hitl:#5279C7; --l-afk:#48A6B8; --l-atd:#69977B; --l-min:#347F91; --l-sprint:#D5B96A; --l-rapida:#D88B62;
-  --viva-capa:#3659A8; --viva-escuro:#34465F; --viva-destaque:#D5B96A; --viva-tinta:#34465F; --destaque-txt:#121821;
-}
-:root[data-paleta="arctic"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#34465F; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#5279C7}
-:root[data-paleta="arctic"][data-modo="escuro"]{--acento:#6588CD}
-:root[data-paleta="arctic"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#6D89AF}
-:root[data-paleta="arctic"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
-:root[data-paleta="arctic"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="arctic"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
-:root[data-paleta="arctic"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="arctic"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Botanical Tech — tecnologia com natureza, saúde e bem-estar */
-:root[data-paleta="botanical"]{
-  --brand:#426B91; --blue:#557F9C; --navy:#3C5360; --cyan:#58A5A0; --teal:#39877E; --green:#6D9B62; --lime:#A0B77A; --yellow:#D6B77D; --orange:#C98C69;
-  --l-epico:#3C5360; --l-hitl:#557F9C; --l-afk:#58A5A0; --l-atd:#6D9B62; --l-min:#39877E; --l-sprint:#D6B77D; --l-rapida:#C98C69;
-  --viva-capa:#426B91; --viva-escuro:#3C5360; --viva-destaque:#D6B77D; --viva-tinta:#3C5360; --destaque-txt:#121821;
-}
-:root[data-paleta="botanical"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#3C5360; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#557F9C}
-:root[data-paleta="botanical"][data-modo="escuro"]{--acento:#618CA9}
-:root[data-paleta="botanical"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#678BA0}
-:root[data-paleta="botanical"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
-:root[data-paleta="botanical"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="botanical"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
-:root[data-paleta="botanical"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="botanical"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Digital Spectrum — mais ousada, jovem e com personalidade digital */
-:root[data-paleta="digital"]{
-  --brand:#514B9A; --blue:#6D62B7; --navy:#383D62; --cyan:#627FC0; --teal:#478FAF; --green:#5B9B89; --lime:#9BB65D; --yellow:#D4A65A; --orange:#D77C58;
-  --l-epico:#383D62; --l-hitl:#6D62B7; --l-afk:#627FC0; --l-atd:#5B9B89; --l-min:#478FAF; --l-sprint:#D4A65A; --l-rapida:#D77C58;
-  --viva-capa:#514B9A; --viva-escuro:#383D62; --viva-destaque:#D4A65A; --viva-tinta:#383D62; --destaque-txt:#121821;
-}
-:root[data-paleta="digital"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#383D62; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#6D62B7}
-:root[data-paleta="digital"][data-modo="escuro"]{--acento:#877EC4}
-:root[data-paleta="digital"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#7E84B5}
-:root[data-paleta="digital"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
-:root[data-paleta="digital"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="digital"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
-:root[data-paleta="digital"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="digital"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Mineral Balance — elegante, equilibrada e institucional */
-:root[data-paleta="mineral"]{
-  --brand:#536D8A; --blue:#71879C; --navy:#414D5C; --cyan:#6C9B9D; --teal:#527E83; --green:#829B78; --lime:#B0B68A; --yellow:#D1B58B; --orange:#C58F79;
-  --l-epico:#414D5C; --l-hitl:#71879C; --l-afk:#6C9B9D; --l-atd:#829B78; --l-min:#527E83; --l-sprint:#D1B58B; --l-rapida:#C58F79;
-  --viva-capa:#536D8A; --viva-escuro:#414D5C; --viva-destaque:#D1B58B; --viva-tinta:#414D5C; --destaque-txt:#121821;
-}
-:root[data-paleta="mineral"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#414D5C; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#71879C}
-:root[data-paleta="mineral"][data-modo="escuro"]{--acento:#748A9E}
-:root[data-paleta="mineral"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#7889A0}
-:root[data-paleta="mineral"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
-:root[data-paleta="mineral"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="mineral"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
-:root[data-paleta="mineral"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="mineral"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Aurora Spectrum — mais expressiva, luminosa e diferenciada */
-:root[data-paleta="aurora"]{
-  --brand:#465FAD; --blue:#6577C5; --navy:#39466F; --cyan:#55A7C9; --teal:#4B8FAD; --green:#73A66E; --lime:#B0C36A; --yellow:#E0C16A; --orange:#E39A60;
-  --l-epico:#39466F; --l-hitl:#6577C5; --l-afk:#55A7C9; --l-atd:#73A66E; --l-min:#4B8FAD; --l-sprint:#E0C16A; --l-rapida:#E39A60;
-  --viva-capa:#465FAD; --viva-escuro:#39466F; --viva-destaque:#E0C16A; --viva-tinta:#39466F; --destaque-txt:#121821;
-}
-:root[data-paleta="aurora"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#39466F; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#6577C5}
-:root[data-paleta="aurora"][data-modo="escuro"]{--acento:#7484CB}
-:root[data-paleta="aurora"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#7585B8}
-:root[data-paleta="aurora"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
-:root[data-paleta="aurora"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="aurora"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
-:root[data-paleta="aurora"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="aurora"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
 /* Pastel / Suave — mais leve e moderna, menos agressiva aos olhos */
 :root[data-paleta="v-pastel"]{
   --brand:#5EB1EC; --blue:#4FA1D6; --navy:#537B93; --cyan:#64D5E2; --teal:#51B5C7; --green:#96C96C; --lime:#C3DC63; --yellow:#FFCD43; --orange:#FBB846;
@@ -211,81 +137,6 @@
 :root[data-paleta="v-pastel"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
 :root[data-paleta="v-pastel"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
 :root[data-paleta="v-pastel"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Neon / Alta saturação — mais enérgica, para destacar muito a atenção */
-:root[data-paleta="v-neon"]{
-  --brand:#0095FF; --blue:#009AE5; --navy:#1E465E; --cyan:#00D9F0; --teal:#00ADC9; --green:#7ED13B; --lime:#C6EC2A; --yellow:#FFCB00; --orange:#FFAC12;
-  --l-epico:#1E465E; --l-hitl:#009AE5; --l-afk:#00D9F0; --l-atd:#7ED13B; --l-min:#00ADC9; --l-sprint:#FFCB00; --l-rapida:#FFAC12;
-  --viva-capa:#0095FF; --viva-escuro:#1E465E; --viva-destaque:#FFCB00; --viva-tinta:#1E465E; --destaque-txt:#121821;
-}
-:root[data-paleta="v-neon"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#1E465E; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#009AE5}
-:root[data-paleta="v-neon"][data-modo="escuro"]{--acento:#009AE5}
-:root[data-paleta="v-neon"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#3D8EBF}
-:root[data-paleta="v-neon"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
-:root[data-paleta="v-neon"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="v-neon"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
-:root[data-paleta="v-neon"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="v-neon"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Corporativa / Sóbria — amarelo e verde menos vibrantes, tom mais sério */
-:root[data-paleta="v-corporativa"]{
-  --brand:#106FA8; --blue:#0A6E9B; --navy:#244052; --cyan:#0AA2B2; --teal:#098296; --green:#608F37; --lime:#95AF2D; --yellow:#D6A111; --orange:#D18B17;
-  --l-epico:#244052; --l-hitl:#0A6E9B; --l-afk:#0AA2B2; --l-atd:#608F37; --l-min:#098296; --l-sprint:#D6A111; --l-rapida:#D18B17;
-  --viva-capa:#106FA8; --viva-escuro:#244052; --viva-destaque:#D6A111; --viva-tinta:#244052; --destaque-txt:#121821;
-}
-:root[data-paleta="v-corporativa"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#244052; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#0A6E9B}
-:root[data-paleta="v-corporativa"][data-modo="escuro"]{--acento:#0D90CB}
-:root[data-paleta="v-corporativa"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#528DB3}
-:root[data-paleta="v-corporativa"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
-:root[data-paleta="v-corporativa"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="v-corporativa"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
-:root[data-paleta="v-corporativa"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="v-corporativa"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Retrô / Vintage — tons levemente queimados, menos digitais */
-:root[data-paleta="v-retro"]{
-  --brand:#247BB6; --blue:#1B7AA3; --navy:#3C5463; --cyan:#26A3B0; --teal:#228696; --green:#6D9747; --lime:#A1B93F; --yellow:#E4B127; --orange:#DB992B;
-  --l-epico:#3C5463; --l-hitl:#1B7AA3; --l-afk:#26A3B0; --l-atd:#6D9747; --l-min:#228696; --l-sprint:#E4B127; --l-rapida:#DB992B;
-  --viva-capa:#247BB6; --viva-escuro:#3C5463; --viva-destaque:#E4B127; --viva-tinta:#3C5463; --destaque-txt:#121821;
-}
-:root[data-paleta="v-retro"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#3C5463; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#1B7AA3}
-:root[data-paleta="v-retro"][data-modo="escuro"]{--acento:#2091C2}
-:root[data-paleta="v-retro"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#678CA3}
-:root[data-paleta="v-retro"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
-:root[data-paleta="v-retro"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="v-retro"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
-:root[data-paleta="v-retro"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="v-retro"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Minimalista — peso nos azuis e cianos; amarelo e laranja só como destaque */
-:root[data-paleta="v-minimalista"]{
-  --brand:#0B73BF; --blue:#036E9E; --navy:#253B47; --cyan:#00A9BA; --teal:#03889D; --green:#5F9E2C; --lime:#A1C21F; --yellow:#E0A80D; --orange:#DE9314;
-  --l-epico:#253B47; --l-hitl:#036E9E; --l-afk:#00A9BA; --l-atd:#5F9E2C; --l-min:#03889D; --l-sprint:#E0A80D; --l-rapida:#DE9314;
-  --viva-capa:#0B73BF; --viva-escuro:#253B47; --viva-destaque:#E0A80D; --viva-tinta:#253B47; --destaque-txt:#121821;
-}
-:root[data-paleta="v-minimalista"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#253B47; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#036E9E}
-:root[data-paleta="v-minimalista"][data-modo="escuro"]{--acento:#0491D0}
-:root[data-paleta="v-minimalista"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#5B8EAA}
-:root[data-paleta="v-minimalista"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
-:root[data-paleta="v-minimalista"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="v-minimalista"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
-:root[data-paleta="v-minimalista"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="v-minimalista"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Nebula Tech — tecnologia de ponta com energia e criatividade */
-:root[data-paleta="i-nebula"]{
-  --brand:#4F46E5; --blue:#3B82F6; --navy:#0F172A; --cyan:#06B6D4; --teal:#0891B2; --green:#84CC16; --lime:#BEF264; --yellow:#F59E0B; --orange:#F97316;
-  --l-epico:#0F172A; --l-hitl:#3B82F6; --l-afk:#06B6D4; --l-atd:#84CC16; --l-min:#0891B2; --l-sprint:#F59E0B; --l-rapida:#F97316;
-  --viva-capa:#4F46E5; --viva-escuro:#0F172A; --viva-destaque:#F59E0B; --viva-tinta:#0F172A; --destaque-txt:#121821;
-}
-:root[data-paleta="i-nebula"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#0F172A; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#3B82F6}
-:root[data-paleta="i-nebula"][data-modo="escuro"]{--acento:#4085F6}
-:root[data-paleta="i-nebula"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#6986CA}
-:root[data-paleta="i-nebula"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
-:root[data-paleta="i-nebula"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="i-nebula"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
-:root[data-paleta="i-nebula"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="i-nebula"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
 
 /* AI Horizon — equilíbrio entre inovação e bem-estar */
 :root[data-paleta="i-horizon"]{
@@ -347,96 +198,6 @@
 :root[data-paleta="i-aurora"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
 :root[data-paleta="i-aurora"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
 
-/* Aurora Code — tecnologia e criatividade em perfeita harmonia */
-:root[data-paleta="j-aurora-code"]{
-  --brand:#6366F1; --blue:#4F46E5; --navy:#312E81; --cyan:#06B6D4; --teal:#0891B2; --green:#22C55E; --lime:#84CC16; --yellow:#F59E0B; --orange:#F97316;
-  --l-epico:#312E81; --l-hitl:#4F46E5; --l-afk:#06B6D4; --l-atd:#22C55E; --l-min:#0891B2; --l-sprint:#F59E0B; --l-rapida:#F97316;
-  --viva-capa:#6366F1; --viva-escuro:#312E81; --viva-destaque:#F59E0B; --viva-tinta:#312E81; --destaque-txt:#121821;
-}
-:root[data-paleta="j-aurora-code"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#312E81; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#4F46E5}
-:root[data-paleta="j-aurora-code"][data-modo="escuro"]{--acento:#827CED}
-:root[data-paleta="j-aurora-code"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#807DD1}
-:root[data-paleta="j-aurora-code"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
-:root[data-paleta="j-aurora-code"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="j-aurora-code"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
-:root[data-paleta="j-aurora-code"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="j-aurora-code"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Sage Flow — equilíbrio entre inovação, natureza e tecnologia (sem azul: o verde-petróleo faz marca e navy) */
-:root[data-paleta="j-sage"]{
-  --brand:#0F766E; --blue:#14B8A6; --navy:#0F766E; --cyan:#06B6D4; --teal:#14B8A6; --green:#65A30D; --lime:#84CC16; --yellow:#FBBF24; --orange:#F97316;
-  --l-epico:#0F766E; --l-hitl:#14B8A6; --l-afk:#06B6D4; --l-atd:#65A30D; --l-min:#14B8A6; --l-sprint:#FBBF24; --l-rapida:#F97316;
-  --viva-capa:#0F766E; --viva-escuro:#0F766E; --viva-destaque:#FBBF24; --viva-tinta:#0F766E; --destaque-txt:#121821;
-}
-:root[data-paleta="j-sage"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#0F766E; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#14B8A6}
-:root[data-paleta="j-sage"][data-modo="escuro"]{--acento:#14B8A6}
-:root[data-paleta="j-sage"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#13968C}
-:root[data-paleta="j-sage"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
-:root[data-paleta="j-sage"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="j-sage"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
-:root[data-paleta="j-sage"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="j-sage"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Quantum Blue — performance e inovação em alto nível */
-:root[data-paleta="j-quantum-blue"]{
-  --brand:#0EA5E9; --blue:#0284C7; --navy:#0F172A; --cyan:#22D3EE; --teal:#06B6D4; --green:#10B981; --lime:#84CC16; --yellow:#FBBF24; --orange:#FB923C;
-  --l-epico:#0F172A; --l-hitl:#0284C7; --l-afk:#22D3EE; --l-atd:#10B981; --l-min:#06B6D4; --l-sprint:#FBBF24; --l-rapida:#FB923C;
-  --viva-capa:#0EA5E9; --viva-escuro:#0F172A; --viva-destaque:#FBBF24; --viva-tinta:#0F172A; --destaque-txt:#121821;
-}
-:root[data-paleta="j-quantum-blue"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#0F172A; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#0284C7}
-:root[data-paleta="j-quantum-blue"][data-modo="escuro"]{--acento:#028ED6}
-:root[data-paleta="j-quantum-blue"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#6986CA}
-:root[data-paleta="j-quantum-blue"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
-:root[data-paleta="j-quantum-blue"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="j-quantum-blue"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
-:root[data-paleta="j-quantum-blue"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="j-quantum-blue"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Prism Tech — clareza, inovação e impacto real (violeta no lugar do navy) */
-:root[data-paleta="j-prism"]{
-  --brand:#4F46E5; --blue:#8B5CF6; --navy:#7C3AED; --cyan:#06B6D4; --teal:#14B8A6; --green:#8ACC15; --lime:#FACC15; --yellow:#FACC15; --orange:#F97316;
-  --l-epico:#7C3AED; --l-hitl:#8B5CF6; --l-afk:#06B6D4; --l-atd:#8ACC15; --l-min:#14B8A6; --l-sprint:#FACC15; --l-rapida:#F97316;
-  --viva-capa:#4F46E5; --viva-escuro:#7C3AED; --viva-destaque:#FACC15; --viva-tinta:#7C3AED; --destaque-txt:#121821;
-}
-:root[data-paleta="j-prism"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#7C3AED; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#8B5CF6}
-:root[data-paleta="j-prism"][data-modo="escuro"]{--acento:#996FF7}
-:root[data-paleta="j-prism"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#9E6DF2}
-:root[data-paleta="j-prism"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
-:root[data-paleta="j-prism"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="j-prism"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
-:root[data-paleta="j-prism"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="j-prism"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Neo Horizon — modernidade, energia e novas possibilidades */
-:root[data-paleta="j-neo"]{
-  --brand:#2563EB; --blue:#1E3A8A; --navy:#0B132B; --cyan:#06B6D4; --teal:#2DD4BF; --green:#A3E635; --lime:#FDE047; --yellow:#F59E0B; --orange:#EA580C;
-  --l-epico:#0B132B; --l-hitl:#1E3A8A; --l-afk:#06B6D4; --l-atd:#A3E635; --l-min:#2DD4BF; --l-sprint:#F59E0B; --l-rapida:#EA580C;
-  --viva-capa:#2563EB; --viva-escuro:#0B132B; --viva-destaque:#F59E0B; --viva-tinta:#0B132B; --destaque-txt:#121821;
-}
-:root[data-paleta="j-neo"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#0B132B; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#1E3A8A}
-:root[data-paleta="j-neo"][data-modo="escuro"]{--acento:#6483DD}
-:root[data-paleta="j-neo"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#6783D8}
-:root[data-paleta="j-neo"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
-:root[data-paleta="j-neo"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="j-neo"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
-:root[data-paleta="j-neo"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="j-neo"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* IA Explorer — tecnologia e criatividade para ir além */
-:root[data-paleta="k-explorer"]{
-  --brand:#6366F1; --blue:#4F46E5; --navy:#3730A3; --cyan:#06B6D4; --teal:#0891B2; --green:#22C55E; --lime:#84CC16; --yellow:#F59E0B; --orange:#EA580C;
-  --l-epico:#3730A3; --l-hitl:#4F46E5; --l-afk:#06B6D4; --l-atd:#22C55E; --l-min:#0891B2; --l-sprint:#F59E0B; --l-rapida:#EA580C;
-  --viva-capa:#6366F1; --viva-escuro:#3730A3; --viva-destaque:#F59E0B; --viva-tinta:#3730A3; --destaque-txt:#121821;
-}
-:root[data-paleta="k-explorer"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#3730A3; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#4F46E5}
-:root[data-paleta="k-explorer"][data-modo="escuro"]{--acento:#827CED}
-:root[data-paleta="k-explorer"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#847ED9}
-:root[data-paleta="k-explorer"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
-:root[data-paleta="k-explorer"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="k-explorer"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
-:root[data-paleta="k-explorer"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="k-explorer"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
 /* Green Core — equilíbrio entre inovação, conhecimento e impacto (sem cor escura: navy #0F766E de fora da paleta) */
 :root[data-paleta="k-green"]{
   --brand:#0EA5E9; --blue:#06B6D4; --navy:#0F766E; --cyan:#14B8A6; --teal:#10B981; --green:#84CC16; --lime:#A3E635; --yellow:#FACC15; --orange:#F97316;
@@ -452,36 +213,6 @@
 :root[data-paleta="k-green"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
 :root[data-paleta="k-green"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
 
-/* Deep Tech — performance, escala e alta performance */
-:root[data-paleta="k-deep"]{
-  --brand:#0B63CE; --blue:#2563EB; --navy:#1E40AF; --cyan:#06B6D4; --teal:#0891B2; --green:#059669; --lime:#16A34A; --yellow:#FBBF24; --orange:#F97316;
-  --l-epico:#1E40AF; --l-hitl:#2563EB; --l-afk:#06B6D4; --l-atd:#059669; --l-min:#0891B2; --l-sprint:#FBBF24; --l-rapida:#F97316;
-  --viva-capa:#0B63CE; --viva-escuro:#1E40AF; --viva-destaque:#FBBF24; --viva-tinta:#1E40AF; --destaque-txt:#121821;
-}
-:root[data-paleta="k-deep"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#1E40AF; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#2563EB}
-:root[data-paleta="k-deep"][data-modo="escuro"]{--acento:#5484EF}
-:root[data-paleta="k-deep"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#6381E4}
-:root[data-paleta="k-deep"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
-:root[data-paleta="k-deep"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="k-deep"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
-:root[data-paleta="k-deep"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="k-deep"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Neon Flow — inovação com energia e possibilidades infinitas (sem cor escura: o rosa faz o navy) */
-:root[data-paleta="k-neon"]{
-  --brand:#8B5CF6; --blue:#A855F7; --navy:#EC4899; --cyan:#06B6D4; --teal:#14B8A6; --green:#22C55E; --lime:#A3E635; --yellow:#F59E0B; --orange:#FB7185;
-  --l-epico:#EC4899; --l-hitl:#A855F7; --l-afk:#06B6D4; --l-atd:#22C55E; --l-min:#14B8A6; --l-sprint:#F59E0B; --l-rapida:#FB7185;
-  --viva-capa:#8B5CF6; --viva-escuro:#EC4899; --viva-destaque:#F59E0B; --viva-tinta:#EC4899; --destaque-txt:#121821;
-}
-:root[data-paleta="k-neon"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#EC4899; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#A855F7}
-:root[data-paleta="k-neon"][data-modo="escuro"]{--acento:#AD5FF7}
-:root[data-paleta="k-neon"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#EC4899}
-:root[data-paleta="k-neon"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(4),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
-:root[data-paleta="k-neon"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(4),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="k-neon"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(4),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
-:root[data-paleta="k-neon"] .tr:is([style*="--l-epico)"],[style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="k-neon"] .tr:not([style*="--l-epico)"],[style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
 /* Future Pulse — inteligência, clareza e um amanhã mais aberto */
 :root[data-paleta="k-pulse"]{
   --brand:#3B82F6; --blue:#1E3A8A; --navy:#0F172A; --cyan:#06B6D4; --teal:#2DD4BF; --green:#86EFAC; --lime:#FDE047; --yellow:#F59E0B; --orange:#FB923C;
@@ -496,23 +227,6 @@
 :root[data-paleta="k-pulse"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
 :root[data-paleta="k-pulse"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
 :root[data-paleta="k-pulse"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Midnight Violet — feita para interface escura: midnight, violeta elétrico, menta neural e lima ácida de CTA */
-:root[data-paleta="m-midnight"]{
-  --brand:#6D5BFF; --blue:#6D5BFF; --navy:#171326; --cyan:#A78BFA; --teal:#777287; --green:#22D3B4; --lime:#FFB86B; --yellow:#B7F34A; --orange:#FF6B70;
-  --l-epico:#171326; --l-hitl:#6D5BFF; --l-afk:#A78BFA; --l-atd:#22D3B4; --l-min:#777287; --l-sprint:#B7F34A; --l-rapida:#FF6B70;
-  --viva-capa:#6D5BFF; --viva-escuro:#171326; --viva-destaque:#B7F34A; --viva-tinta:#171326; --destaque-txt:#121821;
-}
-:root[data-paleta="m-midnight"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#171326; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#6D5BFF}
-:root[data-paleta="m-midnight"][data-modo="escuro"]{--acento:#8475FF}
-:root[data-paleta="m-midnight"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#8C7EBF}
-:root[data-paleta="m-midnight"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
-:root[data-paleta="m-midnight"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="m-midnight"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
-:root[data-paleta="m-midnight"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="m-midnight"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-:root[data-paleta="m-midnight"]:not([data-modo="escuro"]){--soft:#F4F0FF; --muted:#777287; --line:#DDD8EC; --grey:#F7F5FF; --grey2:#E8E4F5; --panel-bg:#F7F5FF; --ink:#2A2540}
-:root[data-paleta="m-midnight"][data-modo="escuro"]{--bg:#171326; --card:#201B35; --soft:#2A2442; --grey:#201B35; --grey2:#2A2442; --line:#3A3352; --panel-bg:#201B35; --ink:#F4F0FF; --title:#F4F0FF; --muted:#A7A2B8; --hero-bg:#201B35; --navy:#352D5C; --viva-escuro:#352D5C}
 
 /* ===== variantes da sóbria: a mesma estrutura (quase tudo branco, destaques no navy e num amarelo em poucos pontos),
    com outras cores. Ficam em <html data-sobria="…"> e não ligam as regras de paleta viva ===== */

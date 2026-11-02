@@ -4,34 +4,13 @@ import colorsys, html, json, re
 
 T = '#121821'
 SIMILARES = {
- 'arctic': ('Arctic Innovation', 'Direções', 'tecnológica, contemporânea e sofisticada', '#3659A8 #5279C7 #34465F #48A6B8 #347F91 #69977B #A1B78B #D5B96A #D88B62'),
- 'botanical': ('Botanical Tech', 'Direções', 'tecnologia com natureza, saúde e bem-estar', '#426B91 #557F9C #3C5360 #58A5A0 #39877E #6D9B62 #A0B77A #D6B77D #C98C69'),
- 'digital': ('Digital Spectrum', 'Direções', 'mais ousada, jovem e com personalidade digital', '#514B9A #6D62B7 #383D62 #627FC0 #478FAF #5B9B89 #9BB65D #D4A65A #D77C58'),
- 'mineral': ('Mineral Balance', 'Direções', 'elegante, equilibrada e institucional', '#536D8A #71879C #414D5C #6C9B9D #527E83 #829B78 #B0B68A #D1B58B #C58F79'),
- 'aurora': ('Aurora Spectrum', 'Direções', 'mais expressiva, luminosa e diferenciada', '#465FAD #6577C5 #39466F #55A7C9 #4B8FAD #73A66E #B0C36A #E0C16A #E39A60'),
  'v-pastel': ('Pastel / Suave', 'Variações da atual', 'mais leve e moderna, menos agressiva aos olhos', '#5EB1EC #4FA1D6 #537B93 #64D5E2 #51B5C7 #96C96C #C3DC63 #FFCD43 #FBB846'),
- 'v-neon': ('Neon / Alta saturação', 'Variações da atual', 'mais enérgica, para destacar muito a atenção', '#0095FF #009AE5 #1E465E #00D9F0 #00ADC9 #7ED13B #C6EC2A #FFCB00 #FFAC12'),
- 'v-corporativa': ('Corporativa / Sóbria', 'Variações da atual', 'amarelo e verde menos vibrantes, tom mais sério', '#106FA8 #0A6E9B #244052 #0AA2B2 #098296 #608F37 #95AF2D #D6A111 #D18B17'),
- 'v-retro': ('Retrô / Vintage', 'Variações da atual', 'tons levemente queimados, menos digitais', '#247BB6 #1B7AA3 #3C5463 #26A3B0 #228696 #6D9747 #A1B93F #E4B127 #DB992B'),
- 'v-minimalista': ('Minimalista', 'Variações da atual', 'peso nos azuis e cianos; amarelo e laranja só como destaque', '#0B73BF #036E9E #253B47 #00A9BA #03889D #5F9E2C #A1C21F #E0A80D #DE9314'),
- 'i-nebula': ('Nebula Tech', 'Paletas de IA', 'tecnologia de ponta com energia e criatividade', '#4F46E5 #3B82F6 #0F172A #06B6D4 #0891B2 #84CC16 #BEF264 #F59E0B #F97316'),
  'i-horizon': ('AI Horizon', 'Paletas de IA', 'equilíbrio entre inovação e bem-estar', '#2563EB #0EA5E9 #1D4ED8 #14B8A6 #0F766E #65A30D #A3E635 #FBBF24 #F97316'),
  'i-quantum': ('Quantum Flow', 'Paletas de IA', 'inteligência, fluidez e performance', '#0B63CE #0066B3 #1E293B #00D1D1 #0EA5A4 #22C55E #A7F3D0 #F59E0B #FB923C'),
  'i-infinity': ('Infinity Gradient', 'Paletas de IA', 'design arrojado com gradientes de impacto', '#6366F1 #8B5CF6 #312E81 #06B6D4 #0891B2 #84CC16 #D9F99D #F59E0B #F97316'),
  'i-aurora': ('Tech Aurora', 'Paletas de IA', 'tecnologia, clareza e um futuro mais aberto', '#1E40AF #0EA5E9 #075985 #14B8A6 #0F766E #86EFAC #FDE68A #F59E0B #EA580C'),
- 'j-aurora-code': ('Aurora Code', 'Paletas de IA · 2', 'tecnologia e criatividade em perfeita harmonia', '#6366F1 #4F46E5 #312E81 #06B6D4 #0891B2 #22C55E #84CC16 #F59E0B #F97316'),
- 'j-sage': ('Sage Flow', 'Paletas de IA · 2', 'equilíbrio entre inovação, natureza e tecnologia (sem azul: o verde-petróleo faz marca e navy)', '#0F766E #14B8A6 #0F766E #06B6D4 #14B8A6 #65A30D #84CC16 #FBBF24 #F97316'),
- 'j-quantum-blue': ('Quantum Blue', 'Paletas de IA · 2', 'performance e inovação em alto nível', '#0EA5E9 #0284C7 #0F172A #22D3EE #06B6D4 #10B981 #84CC16 #FBBF24 #FB923C'),
- 'j-prism': ('Prism Tech', 'Paletas de IA · 2', 'clareza, inovação e impacto real (violeta no lugar do navy)', '#4F46E5 #8B5CF6 #7C3AED #06B6D4 #14B8A6 #8ACC15 #FACC15 #FACC15 #F97316'),
- 'j-neo': ('Neo Horizon', 'Paletas de IA · 2', 'modernidade, energia e novas possibilidades', '#2563EB #1E3A8A #0B132B #06B6D4 #2DD4BF #A3E635 #FDE047 #F59E0B #EA580C'),
- 'k-explorer': ('IA Explorer', 'Paletas de IA · 3', 'tecnologia e criatividade para ir além', '#6366F1 #4F46E5 #3730A3 #06B6D4 #0891B2 #22C55E #84CC16 #F59E0B #EA580C'),
  'k-green': ('Green Core', 'Paletas de IA · 3', 'equilíbrio entre inovação, conhecimento e impacto (sem cor escura: navy #0F766E de fora da paleta)', '#0EA5E9 #06B6D4 #0F766E #14B8A6 #10B981 #84CC16 #A3E635 #FACC15 #F97316'),
- 'k-deep': ('Deep Tech', 'Paletas de IA · 3', 'performance, escala e alta performance', '#0B63CE #2563EB #1E40AF #06B6D4 #0891B2 #059669 #16A34A #FBBF24 #F97316'),
- 'k-neon': ('Neon Flow', 'Paletas de IA · 3', 'inovação com energia e possibilidades infinitas (sem cor escura: o rosa faz o navy)', '#8B5CF6 #A855F7 #EC4899 #06B6D4 #14B8A6 #22C55E #A3E635 #F59E0B #FB7185'),
  'k-pulse': ('Future Pulse', 'Paletas de IA · 3', 'inteligência, clareza e um amanhã mais aberto', '#3B82F6 #1E3A8A #0F172A #06B6D4 #2DD4BF #86EFAC #FDE047 #F59E0B #FB923C'),
- 'm-midnight': ('Midnight Violet', 'Paletas de IA · 4', 'feita para interface escura: midnight, violeta elétrico, menta neural e lima ácida de CTA', '#6D5BFF #6D5BFF #171326 #A78BFA #777287 #22D3B4 #FFB86B #B7F34A #FF6B70',
-  'P:not([data-modo="escuro"]){--soft:#F4F0FF; --muted:#777287; --line:#DDD8EC; --grey:#F7F5FF; --grey2:#E8E4F5; --panel-bg:#F7F5FF; --ink:#2A2540}\n'
-  'P[data-modo="escuro"]{--bg:#171326; --card:#201B35; --soft:#2A2442; --grey:#201B35; --grey2:#2A2442; --line:#3A3352; --panel-bg:#201B35; --ink:#F4F0FF; --title:#F4F0FF; --muted:#A7A2B8; --hero-bg:#201B35; --navy:#352D5C; --viva-escuro:#352D5C}\n'),
 }
 PAPEIS = ['brand', 'blue', 'navy', 'cyan', 'teal', 'green', 'lime', 'yellow', 'orange']
 ETAPAS = ['cyan', 'lime', 'brand', 'navy', 'green', 'orange', 'teal']   # ordem das etapas no HTML
