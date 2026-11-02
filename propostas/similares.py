@@ -6,6 +6,10 @@ T = '#121821'
 SIMILARES = {
  'i-quantum': ('Quantum Flow', 'Paletas de IA', 'inteligência, fluidez e performance', '#0B63CE #0066B3 #1E293B #00D1D1 #0EA5A4 #22C55E #A7F3D0 #F59E0B #FB923C'),
  'k-green': ('Green Core', 'Paletas de IA · 3', 'equilíbrio entre inovação, conhecimento e impacto (sem cor escura: navy #0F766E de fora da paleta)', '#0EA5E9 #06B6D4 #0F766E #14B8A6 #10B981 #84CC16 #A3E635 #FACC15 #F97316'),
+ 'r-quantum': ('Quantum Flow · revisada', 'Revisadas pelas críticas', 'azul #0B63CE como principal, slate #1E293B, acento âmbar exclusivo; linhas do mapa com 3:1 e separadas por matiz e luz; neutros slate', '#0B63CE #0B5CAD #1E293B #00D1D1 #0F766E #16A34A #A7F3D0 #F59E0B #FB923C',
+  "P{--l-epico:#1E293B; --l-hitl:#0B63CE; --l-afk:#0891B2; --l-atd:#15803D; --l-min:#64748B; --l-sprint:#D97706; --l-rapida:#BE123C; --red:#DC2626}\nP:not([data-modo=\"escuro\"]){--ink:#334155; --muted:#64748B; --line:#CBD5E1; --soft:#F1F5F9; --grey:#F8FAFC; --grey2:#E2E8F0; --panel-bg:#F8FAFC}\nP .tr{color:#FFFFFF}\nP .tr:is([style*=\"--l-afk)\"],[style*=\"--l-sprint)\"]){color:#121821}\n"),
+ 'r-green': ('Green Core · revisada', 'Revisadas pelas críticas', 'azul-oceano #0369A1 como principal e marinho #0C4A6E no lugar do teal emprestado; amarelo só como acento; menos verdes nas linhas; neutros slate', '#0369A1 #0369A1 #0C4A6E #0EA5E9 #0F766E #65A30D #A3E635 #FACC15 #F97316',
+  "P{--l-epico:#0C4A6E; --l-hitl:#0369A1; --l-afk:#0891B2; --l-atd:#15803D; --l-min:#64748B; --l-sprint:#A16207; --l-rapida:#BE123C; --red:#DC2626}\nP:not([data-modo=\"escuro\"]){--ink:#334155; --muted:#64748B; --line:#CBD5E1; --soft:#F1F5F9; --grey:#F8FAFC; --grey2:#E2E8F0; --panel-bg:#F8FAFC}\nP .tr{color:#FFFFFF}\nP .tr:is([style*=\"--l-afk)\"]){color:#121821}\n"),
 }
 PAPEIS = ['brand', 'blue', 'navy', 'cyan', 'teal', 'green', 'lime', 'yellow', 'orange']
 ETAPAS = ['cyan', 'lime', 'brand', 'navy', 'green', 'orange', 'teal']   # ordem das etapas no HTML

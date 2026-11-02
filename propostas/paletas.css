@@ -122,6 +122,7 @@
 
 
 
+
 /* ===== propostas similares à atual: 9 cores na ordem dos papéis da atual (marca, azul, navy, ciano, teal, verde, lima, amarelo,
    laranja), aplicadas puras, com as regras e os neutros da atual. Só o texto se adapta: branco ou quase preto
    (#121821), o que contrastar mais com cada cor (etapas e botões da barra lateral). Seletores com :root para ganhar das
@@ -155,6 +156,44 @@
 :root[data-paleta="k-green"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
 :root[data-paleta="k-green"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
 :root[data-paleta="k-green"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Quantum Flow · revisada — azul #0B63CE como principal, slate #1E293B, acento âmbar exclusivo; linhas do mapa com 3:1 e separadas por matiz e luz; neutros slate */
+:root[data-paleta="r-quantum"]{
+  --brand:#0B63CE; --blue:#0B5CAD; --navy:#1E293B; --cyan:#00D1D1; --teal:#0F766E; --green:#16A34A; --lime:#A7F3D0; --yellow:#F59E0B; --orange:#FB923C;
+  --l-epico:#1E293B; --l-hitl:#0B5CAD; --l-afk:#00D1D1; --l-atd:#16A34A; --l-min:#0F766E; --l-sprint:#F59E0B; --l-rapida:#FB923C;
+  --viva-capa:#0B63CE; --viva-escuro:#1E293B; --viva-destaque:#F59E0B; --viva-tinta:#1E293B; --destaque-txt:#121821;
+}
+:root[data-paleta="r-quantum"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#1E293B; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#0B5CAD}
+:root[data-paleta="r-quantum"][data-modo="escuro"]{--acento:#1E87F1}
+:root[data-paleta="r-quantum"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#6C87B4}
+:root[data-paleta="r-quantum"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
+:root[data-paleta="r-quantum"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="r-quantum"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
+:root[data-paleta="r-quantum"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="r-quantum"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+:root[data-paleta="r-quantum"]{--l-epico:#1E293B; --l-hitl:#0B63CE; --l-afk:#0891B2; --l-atd:#15803D; --l-min:#64748B; --l-sprint:#D97706; --l-rapida:#BE123C; --red:#DC2626}
+:root[data-paleta="r-quantum"]:not([data-modo="escuro"]){--ink:#334155; --muted:#64748B; --line:#CBD5E1; --soft:#F1F5F9; --grey:#F8FAFC; --grey2:#E2E8F0; --panel-bg:#F8FAFC}
+:root[data-paleta="r-quantum"] .tr{color:#FFFFFF}
+:root[data-paleta="r-quantum"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"]){color:#121821}
+
+/* Green Core · revisada — azul-oceano #0369A1 como principal e marinho #0C4A6E no lugar do teal emprestado; amarelo só como acento; menos verdes nas linhas; neutros slate */
+:root[data-paleta="r-green"]{
+  --brand:#0369A1; --blue:#0369A1; --navy:#0C4A6E; --cyan:#0EA5E9; --teal:#0F766E; --green:#65A30D; --lime:#A3E635; --yellow:#FACC15; --orange:#F97316;
+  --l-epico:#0C4A6E; --l-hitl:#0369A1; --l-afk:#0EA5E9; --l-atd:#65A30D; --l-min:#0F766E; --l-sprint:#FACC15; --l-rapida:#F97316;
+  --viva-capa:#0369A1; --viva-escuro:#0C4A6E; --viva-destaque:#FACC15; --viva-tinta:#0C4A6E; --destaque-txt:#121821;
+}
+:root[data-paleta="r-green"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#0C4A6E; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#0369A1}
+:root[data-paleta="r-green"][data-modo="escuro"]{--acento:#048DD8}
+:root[data-paleta="r-green"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#178ED3}
+:root[data-paleta="r-green"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
+:root[data-paleta="r-green"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="r-green"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
+:root[data-paleta="r-green"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="r-green"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+:root[data-paleta="r-green"]{--l-epico:#0C4A6E; --l-hitl:#0369A1; --l-afk:#0891B2; --l-atd:#15803D; --l-min:#64748B; --l-sprint:#A16207; --l-rapida:#BE123C; --red:#DC2626}
+:root[data-paleta="r-green"]:not([data-modo="escuro"]){--ink:#334155; --muted:#64748B; --line:#CBD5E1; --soft:#F1F5F9; --grey:#F8FAFC; --grey2:#E2E8F0; --panel-bg:#F8FAFC}
+:root[data-paleta="r-green"] .tr{color:#FFFFFF}
+:root[data-paleta="r-green"] .tr:is([style*="--l-afk)"]){color:#121821}
 
 /* ===== variantes da sóbria: a mesma estrutura (quase tudo branco, destaques no navy e num amarelo em poucos pontos),
    com outras cores. Ficam em <html data-sobria="…"> e não ligam as regras de paleta viva ===== */
