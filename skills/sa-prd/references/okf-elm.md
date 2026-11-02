@@ -1,8 +1,9 @@
 # Artefatos do ELM em OKF v0.2
 
-Cada artefato que vai para o DOORS Next — história (HF), regra (REG), termo (GL) — nasce como **um conceito OKF
-v0.2** (Open Knowledge Format, [SPEC.md](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md),
-versão 0.2) **na pasta da spec**, até ser aprovado e publicado. É o mesmo formato do bundle que a `sa-sync` mantém
+Cada artefato que vai para o DOORS Next — um tipo do [catálogo](../../sabia/references/tipos.md) com ELM `DOORS` — nasce
+como **um conceito OKF v0.2** (Open Knowledge Format,
+[SPEC.md](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md), versão 0.2) **na pasta da
+spec**, até ser aprovado e publicado. É o mesmo formato do bundle que a `sa-sync` mantém
 no repositório, então o rascunho e a versão oficial se leem do mesmo jeito.
 
 ## Onde fica
@@ -26,8 +27,8 @@ elm/
   ou apagaria o rascunho.
 - O **Concept ID** do OKF (o caminho do arquivo dentro de `elm/`, sem `.md`) é a chave estável do artefato. Ele não
   muda depois de criado; o id do ELM fica em `resource`/`id`.
-- Nome do arquivo: `HF-nn-<slug>.md`, `REG-nn-<slug>.md`, `GL-<termo-kebab>.md` — o rótulo local (`HF-01`) é o
-  mesmo que o PRD e o backlog (`cobre`) usam.
+- Nome do arquivo: a coluna Arquivo do [catálogo](../../sabia/references/tipos.md) (`HF-nn-<slug>.md`,
+  `GL-<termo-kebab>.md`…) — o rótulo local (`HF-01`) é o mesmo que o PRD e o backlog (`cobre`) usam.
 
 ## Frontmatter — só campos do OKF v0.2
 
@@ -100,36 +101,7 @@ publicado — como cada link vira no ELM: [elm-publicar.md](../../sa-consolidar/
 
 ### Corpo por tipo
 
-**História (HF)** — um comportamento observável:
-
-```markdown
-**Como** <ator>, **quero** <capacidade>, **para** <benefício>.
-
-**Gatilho:** <ação na tela | chamada de API | agendamento | evento> · **Entradas:** <…> · **Pré-condições:** <…>
-
-## Cenários
-1.1 <caminho feliz>
-**Dado que** <estado antes>
-**Quando** <o ator faz X>
-**Então** <efeito verificável: valor gravado, resposta, mensagem, contagem>
-**Conforme** a regra [REG-01 <nome>](REG-01-<slug>.md)
-
-1.2 <o que NÃO deve ser aceito/processado>
-1.3 <repetição / reexecução: rodar de novo não duplica nem corrompe>
-1.4 <erro em um item: a operação continua? o que fica registrado?>
-
-## Regras
-- [REG-01 <nome>](REG-01-<slug>.md)
-
-## Relações
-- <restringe / satisfaz / elabora, com link — só local>
-```
-
-**Regra (REG)** — um enunciado testável, com valores ("Após **3** tentativas inválidas em **15 minutos**, a conta
-fica **Bloqueada** por **30 minutos**."), a origem como nota de rodapé ligada ao `sources` (`[^d-02]`) e, se
-houver, `## Relações`.
-
-**Termo (GL)** — a definição; `**Evitar:**` com os sinônimos que não devem ser usados.
+O corpo é o do padrão do tipo, na coluna Padrão do [catálogo](../../sabia/references/tipos.md).
 
 ## Ciclo de vida
 
@@ -167,5 +139,6 @@ okf_version: "0.2"
 2. Só chaves do OKF v0.2, mais `id` (e as que vieram do bundle numa cópia).
 3. `status` presente; `draft` antes do GATE.
 4. `type` e `tags` existem em `rm.artefatos` do `pa_<nome>.json`.
-5. Toda HF tem cenários e liga as suas REGs; todo link relativo aponta para um arquivo que existe.
+5. Toda HF tem cenários; todo conceito liga os que cita dos tipos da sua coluna Embute (a HF, as suas REGs); todo
+   link relativo aponta para um arquivo que existe.
 6. `index.md` lista todos os conceitos; `log.md` com datas `AAAA-MM-DD`.

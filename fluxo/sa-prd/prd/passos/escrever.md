@@ -10,9 +10,10 @@ O `decisoes.md` e as decisões do passo `similares`.
 O épico casa com o `para` de um desvio do seu prompt → a escrita é a do toolkit
 ("Toolkit na especificação", no passo `sa-especificar.especificar.encaminhar`); o contrato abaixo continua.
 
-Preencha o padrão `sa-prd/prd.md` (o `prd.md`) e crie, em `elm/`, um arquivo por artefato (`HF-nn-<slug>.md`,
-`REG-nn-<slug>.md`, `GL-<termo>.md`), com `status: draft`, `sources` (PRD, decisões), `generated` e o corpo do tipo
-(formato em [references/okf-elm.md](~/.sabia/framework/skills/sa-prd/references/okf-elm.md)), mais o `index.md` e uma entrada no `log.md`. O `prd.md`
+Preencha o padrão `sa-prd/prd.md` (o `prd.md`) e crie, em `elm/`, um arquivo por artefato, de um tipo do
+[catálogo](~/.sabia/framework/skills/sabia/references/tipos.md) que este passo cria, fora os pendentes (nome pela coluna Arquivo), com
+`status: draft`, `sources` (PRD, decisões), `generated` e o corpo do padrão do tipo (envelope em
+[references/okf-elm.md](~/.sabia/framework/skills/sa-prd/references/okf-elm.md)), mais o `index.md` e uma entrada no `log.md`. O `prd.md`
 só aponta para eles. Regras de escrita:
 
 - **Histórias** pequenas o bastante para caber em poucas fatias; cada uma com cenários que cubram: caminho feliz,

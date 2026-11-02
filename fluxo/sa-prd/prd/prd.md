@@ -16,11 +16,11 @@
 Saída, na **pasta de trabalho** da especificação — `.sabia/local/especificacao/<EP>-<slug>/`, fora do git, montada
 pela **`sa-especificar`** — até o GATE; depois dele, a `sa-especificar` a leva para `<produto>/epicos/<EP>-<slug>/`: o `prd.md` no formato do
 padrão `sa-prd/prd.md`, o `decisoes.md` e a pasta `elm/` com **um conceito OKF
-v0.2 por história, regra e termo novo** — o formato de [references/okf-elm.md](~/.sabia/framework/skills/sa-prd/references/okf-elm.md), o mesmo do
+v0.2 por artefato novo**, de um tipo do [catálogo](~/.sabia/framework/skills/sabia/references/tipos.md) — o formato de [references/okf-elm.md](~/.sabia/framework/skills/sa-prd/references/okf-elm.md), o mesmo do
 bundle que a `sa-sync` mantém. São esses arquivos que sobem para o DOORS Next depois do GATE; até lá, ficam aqui.
 
 O PRD é um **registro de decisões** e a **proposta de mudança** da documentação oficial — não um documento vivo.
-Depois de aprovado, as histórias (HF), regras (REG) e termos (GL) vão para o DOORS Next ([publicação](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md)), que é a fonte
+Depois de aprovado, os artefatos vão para o DOORS Next ([publicação](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md)), que é a fonte
 oficial; o que vale a longo prazo é o ELM, o glossário e os ADRs. Se o PRD afirma algo que ninguém decidiu, é um
 defeito do PRD. Toda demanda entra pela `sa-triar`; só o que ela classifica como **épico** chega aqui. Uma fatia
 com regra clara é trilha padrão sem épico, com uma ficha no lugar do PRD.

@@ -7,15 +7,18 @@ Formato dos conceitos: [../../sa-prd/references/okf-elm.md](../../sa-prd/referen
 
 Entrada: a pasta `elm/` do épico ou, numa fatia padrão sem épico, a da fatia. Publica só conceito `status: stable`
 com um `verified` humano posterior ao `generated.at`; o resto aparece na prévia como "aguardando aprovação".
-Ordem **de baixo para cima** — termos (`GL`), regras (`REG`), histórias (`HF`) — para cada um nascer com os ids que cita.
+Ordem: a **de publicação** do [catálogo de tipos](../../sabia/references/tipos.md), de baixo para cima, para cada um
+nascer com os ids que cita (a ET segue a seção ET as-built abaixo).
 
 1. **Conceito novo** (sem `resource`): a coluna "No ELM" do PRD/ficha tem de dizer `novo (verificado <data>)`; sem
    isso → [similares](../../sa-prd/references/similares.md) só para ele. Acerto `igual`/`sobrepõe` → não cria: devolve
    à `sa-prd`; o lote segue.
 2. **Texto:** o corpo sem a seção `## Relações`; regra ou termo já publicado → `[<id>](<id>)`; conceito sem id → só
-   o título. Regras citadas por uma história vão em `embutir` (embed); o resto fica hyperlink.
+   o título. Os conceitos dos tipos da coluna Embute do catálogo (as regras citadas por uma história) vão em
+   `embutir` (embed); o resto fica hyperlink.
 3. `elm_publicar_req(sigla = o prefixo do conceito, titulo, texto_md, id?, modificado_em = last_modified da entrada
-   do ELM em sources, embutir = ids das regras)`. Erro `conflito` → mostre os dois lados e pergunte (regra 5).
+   do ELM em sources, embutir = ids dos conceitos embutidos)`. Erro `conflito` → mostre os dois lados e pergunte
+   (regra 5).
 4. **Grave de volta** no conceito: `resource`, `id` e `{id: elm, resource, last_modified}` em `sources`; `**Publication**`
    no `log.md`; termos, o id também na coluna ELM do glossário.
 

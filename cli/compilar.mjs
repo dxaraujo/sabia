@@ -38,11 +38,12 @@ function vizinhos(corpo, pulo) {
   return out;
 }
 
-/** Lê a fonte inteira: fluxos, passos, regras, padrões, travas e papéis. */
+/** Lê a fonte inteira: fluxos, passos, regras, padrões, travas, tipos e papéis. */
 export function carregar(fw) {
-  const m = { fw, fluxos: {}, regras: {}, padroes: {}, travas: {}, subag: {}, skillsAgente: {} };
+  const m = { fw, fluxos: {}, regras: {}, padroes: {}, travas: {}, tipos: {}, subag: {}, skillsAgente: {} };
   const dirFluxo = path.join(fw, "fluxo");
   if (fs.existsSync(path.join(dirFluxo, "travas.json"))) m.travas = json(path.join(dirFluxo, "travas.json")).travas;
+  if (fs.existsSync(path.join(dirFluxo, "tipos.json"))) m.tipos = json(path.join(dirFluxo, "tipos.json")).tipos || {};
   const papeis = path.join(fw, "skills/sa-setup/assets/agents/papeis.json");
   if (fs.existsSync(papeis))
     for (const [k, v] of Object.entries(json(papeis).papeis)) {
@@ -70,6 +71,19 @@ export function carregar(fw) {
     m.padroes[s] = mds(path.join(dirPadrao, s)).map((n) => ({ nome: n, arq: path.join(dirPadrao, s, n), ...partes(ler(path.join(dirPadrao, s, n))) }));
   return m;
 }
+
+/** As siglas na ordem de publicação: cada uma depois das do seu "depois" (a ordem do catálogo desempata); null com ciclo. */
+export function ordemTipos(tipos) {
+  const feitos = [], resto = Object.keys(tipos);
+  while (resto.length) {
+    const i = resto.findIndex((s) => (tipos[s].depois || []).every((d) => feitos.includes(d) || !tipos[d]));
+    if (i < 0) return null;
+    feitos.push(...resto.splice(i, 1));
+  }
+  return feitos;
+}
+
+const padraoExiste = (m, ref) => { const [s, n] = ref.split("/"); return !!m.padroes[s]?.some((p) => p.nome === n); };
 
 const fluxosDa = (m, s) => Object.values(m.fluxos).filter((f) => f.skill === s);
 
@@ -149,6 +163,28 @@ export function validar(m) {
       }
     }
   }
+
+  const arqTipos = path.join(m.fw, "fluxo", "tipos.json");
+  const rubrica = new Set([...(m.padroes["sa-revisar"]?.find((p) => p.nome === "rubricas.md")?.corpo || "").matchAll(/^\| ([A-Z]\d+) \|/gm)].map((r) => r[1]));
+  let forma = true;
+  for (const [sg, t] of Object.entries(m.tipos)) {
+    const naoLista = ["cria", "depois", "embute", "rubrica"].filter((k) => t[k] != null && !Array.isArray(t[k]));
+    for (const k of naoLista) e(arqTipos, 1, `tipo ${sg}: ${k} tem de ser lista`);
+    if (naoLista.length) { forma = false; continue; }
+    if (!/^[A-Z]{2,4}$/.test(sg) || !t.nome) e(arqTipos, 1, `tipo ${sg}: sigla de 2 a 4 maiúsculas e nome`);
+    // sigla única: o JSON.parse junta chaves repetidas; a conferência é no texto
+    else if ((ler(arqTipos).match(new RegExp(`"${sg}"\\s*:\\s*\\{`, "g")) || []).length > 1) e(arqTipos, 1, `tipo ${sg}: sigla repetida`);
+    if (!["DOORS", "ETM"].includes(t.elm)) e(arqTipos, 1, `tipo ${sg}: elm "${t.elm ?? ""}" (use DOORS ou ETM)`);
+    if (!t.cria?.length) e(arqTipos, 1, `tipo ${sg}: sem cria`);
+    // tipo pendente: declarado antes do padrão e do fluxo que o escrevem
+    for (const c of t.pendente ? [] : t.cria || []) if (!resolverId(m, c)?.passo) e(arqTipos, 1, `tipo ${sg}: cria ${c} não é passo de fluxo`);
+    if (t.padrao && !t.pendente && !padraoExiste(m, t.padrao)) e(arqTipos, 1, `tipo ${sg}: padrão ${t.padrao} inexistente`);
+    for (const d of [...(t.depois || []), ...(t.embute || [])]) if (!m.tipos[d]) e(arqTipos, 1, `tipo ${sg}: ${d} fora do catálogo`);
+    for (const r of t.pendente ? [] : t.rubrica || []) if (!rubrica.has(r)) e(arqTipos, 1, `tipo ${sg}: rubrica ${r} fora de rubricas.md`);
+    if (t.pendente && t.cria?.length && t.cria.every((c) => resolverId(m, c)?.passo) && (!t.padrao || padraoExiste(m, t.padrao)))
+      e(arqTipos, 1, `tipo ${sg}: cria e padrão já existem; tire o "pendente"`);
+  }
+  if (forma && !ordemTipos(m.tipos)) e(arqTipos, 1, `ciclo no "depois" dos tipos`);
 
   const textos = [];
   for (const fl of Object.values(m.fluxos)) {
@@ -376,6 +412,27 @@ function skillMd(m, s, fmYaml, h1, ctx) {
   return out.join("\n");
 }
 
+/** references/tipos.md da skill sabia: o catálogo de fluxo/tipos.json em tabela, com a ordem de publicação. */
+function tiposMd(m, ctx) {
+  const { base } = ctx;
+  const ord = ordemTipos(m.tipos), sim = (b) => (b ? "sim" : "não"), lista = (xs) => (xs?.length ? xs.join(", ") : "—");
+  const padrao = (t) => !t.padrao ? "— (corpo no passo que cria)" : t.pendente ? `\`${t.padrao}\`` : `[\`${t.padrao}\`](${base}/${t.padrao.replace("/", "/references/padrao/")})`;
+  const out = ["# Tipos de artefato", "",
+    "Catálogo fechado: todo artefato da especificação e do ELM é de um destes tipos, e um toolkit não cria tipo (só troca o",
+    "passo que escreve um tipo desviável). O envelope OKF de todos é o do `okf-elm.md` da `sa-prd`;",
+    "o corpo é o do padrão do tipo. Tipo **pendente** está declarado, mas ainda não tem padrão nem fluxo: não é criado nem publicado.", "",
+    "| Sigla | Nome | Arquivo | Cria | Padrão | ELM | Requisito | Desviável | Publica depois de | Embute | Rubrica |",
+    "|---|---|---|---|---|---|---|---|---|---|---|"];
+  for (const sg of Object.keys(m.tipos)) {
+    const t = m.tipos[sg];
+    out.push(`| \`${sg}\`${t.pendente ? " (pendente)" : ""} | ${cel(t.nome)} | \`${cel(t.arquivo || "—")}\` | ${t.cria.map((c) => `\`${c}\``).join("<br>")} | ${padrao(t)} | ${t.elm} | ${sim(t.requisito)} | ${sim(t.desviavel)} | ${lista(t.depois)} | ${lista(t.embute)} | ${lista(t.rubrica)} |`);
+  }
+  const pub = ord.filter((sg) => m.tipos[sg].requisito && !m.tipos[sg].pendente);
+  out.push("", `**Ordem de publicação dos requisitos** (coluna Requisito, de baixo para cima, para cada um nascer com os ids que cita): ${pub.map((sg) => `\`${sg}\``).join(" → ")}.`,
+    "Os tipos de Embute entram em embed (`embutir`) no texto de quem os cita; os demais links ficam hyperlink.", "");
+  return reescrever(out.join("\n"), path.join(m.fw, "skills/sabia/references/tipos.md"), ctx);
+}
+
 const comVersao = (fmYaml, versao) => (versao ? fmYaml.replace(/^(\s+version:\s*)"[^"]*"/m, `$1"${versao}"`) : fmYaml);
 
 function copiarArvore(origem, destino, transformar) {
@@ -445,6 +502,10 @@ export function compilar(fw, staging, { base, raiz = false, versao = null } = {}
       fs.mkdirSync(path.join(out, "references", "padrao"), { recursive: true });
       fs.writeFileSync(path.join(out, "references", "padrao", p.nome), italico(p.dados?.resumo) + reescrever(p.corpo, p.arq, ctx).replace(/^\n+/, ""));
     }
+  }
+  if (Object.keys(m.tipos).length && fs.existsSync(path.join(staging, "skills/sabia"))) {
+    fs.mkdirSync(path.join(staging, "skills/sabia/references"), { recursive: true });
+    fs.writeFileSync(path.join(staging, "skills/sabia/references/tipos.md"), tiposMd(m, ctx));
   }
   if (raiz) for (const f of ["plugin.json", "mcp.json", "README.md", "LICENSE"]) if (fs.existsSync(path.join(fw, f))) fs.copyFileSync(path.join(fw, f), path.join(staging, f));
   const ruins = conferirSaida(staging, base);

@@ -1,8 +1,9 @@
-# Similares no ELM (antes de criar HF, REG ou GL — só leitura)
+# Similares no ELM (antes de criar um requisito — só leitura)
 
 Chamado pela `sa-prd`, pela `sa-triar` (regra da ficha de uma fatia sem épico) e pela publicação de um conceito
-novo. Não pede confirmação. Entrada: por artefato proposto, a sigla (`HF` | `REG` | `GL`), o título provisório e 3–6
-palavras-chave do domínio (termos do glossário, sinônimos da entrevista, atores, valores).
+novo. Não pede confirmação. Entrada: por artefato proposto, a sigla (um tipo do [catálogo](../../sabia/references/tipos.md)
+que o `sa-prd.prd.escrever` cria, fora os pendentes), o título provisório e 3–6 palavras-chave do domínio (termos do
+glossário, sinônimos da entrevista, atores, valores).
 
 1. **Bundle** (pasta `rm.download` do `pa`), pelo `elm_buscar_req_local`: um pelo título e um por palavra-chave
    (sem bundle baixado → erro `nao_encontrado` campo `bundle`: diga isso, ofereça a `sa-sync` e siga só no passo 2).

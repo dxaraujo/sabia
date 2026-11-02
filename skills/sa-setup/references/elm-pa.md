@@ -163,7 +163,7 @@ descoberta trouxer um tipo de link de dependência — mostre-o e confirme.
 
 ## 8. DOORS Next
 
-Para cada sigla — `HF` (história), `REG` (regra), `GL` (termo de glossário), `ET` (especificação técnica) — pergunte o
+Para cada sigla do [catálogo de tipos](../../sabia/references/tipos.md) com ELM `DOORS` (fora as pendentes), pergunte o
 tipo de artefato (lista `rm.tipos`) e a pasta (lista `rm.pastas`), com a recomendada pelo nome. Projeto sem uma delas
 → a sigla fica de fora. **Bundle** (`rm.download`): procure no repositório pastas com `index.md` de `okf_version` e
 mostre; senão sugira `docs/elm/<nome>` e pergunte.

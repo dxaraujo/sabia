@@ -12,11 +12,13 @@ Mostre à pessoa:
 
 ```
 📄 PRD EP-<nn> — <título>
-Histórias: <n> (<c> cenários) · Regras: <n> · Termos novos: <n> · No ELM: reusa <ids | —> · altera <ids | —> · novos verificados <n>
+Artefatos: HF <n> (<c> cenários) · REG <n> · GL <n> novos · … · No ELM: reusa <ids | —> · altera <ids | —> · novos verificados <n>
 Decisões: <d> decididas · <a> em aberto (<bloqueantes>)
 Revisão: <OK na rodada N | achados aceitos: …>
 Aprovar? (o P.O. ou quem ele delegou)
 ```
+
+Em Artefatos, uma contagem por tipo do [catálogo](~/.sabia/framework/skills/sabia/references/tipos.md) que o passo `escrever` cria, fora os pendentes.
 
 - Decisão **em aberto que muda comportamento** → não há aprovação; volte à entrevista.
 - Aprovado → Fase `aprovado` no `status.md` do épico; no `prd.md`, versão `1.0`, data e quem aprovou no rodapé. Em

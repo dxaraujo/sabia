@@ -128,6 +128,34 @@ test("validação: recusa a fonte com erro, com arquivo:linha", () => {
   assert.match(validar(g).join("\n"), /fluxo\/sa-b\/y\/y\.md:2: passo grafo: id reservado/);
 });
 
+test("tipos: catálogo validado (sigla, cria, padrão, depois sem ciclo, rubrica) e tipos.md com a ordem de publicação", () => {
+  const rub = { "padrao/sa-revisar/rubricas.md": "---\n{\"resumo\": \"r\"}\n---\n| # | V | S |\n|---|---|---|\n| P1 | x | B |\n" };
+  const tipos = (t) => ({ "fluxo/tipos.json": { tipos: t }, ...rub });
+  const ok = { GL: { nome: "Termo", cria: ["sa-a.a.ini"], padrao: "sa-a/modelo.md", elm: "DOORS", requisito: true, depois: [] },
+    HF: { nome: "História", cria: ["sa-a.a.rev"], elm: "DOORS", requisito: true, depois: ["GL", "XX"], embute: ["GL"], rubrica: ["P1"] },
+    XX: { nome: "Novo", cria: ["sa-a.z.q"], padrao: "sa-a/nao.md", elm: "DOORS", requisito: true, rubrica: ["P9"], pendente: true } };
+  const st = compilar(fixture(tipos(ok)), path.join(raiz, "st"), { base: BASE });
+  const t = out(st, "sabia/references/tipos.md");
+  assert.match(t, /`GL` → `HF`\./);
+  assert.match(t, /\| `XX` \(pendente\) \|/);
+  assert.match(t, /\[`sa-a\/modelo\.md`\]\(~\/\.config\/opencode\/skills\/sa-a\/references\/padrao\/modelo\.md\)/);
+  const e = validar(carregar(fixture(tipos({ ...ok, GL: { ...ok.GL, cria: ["sa-a.a"], padrao: "sa-a/nao.md", depois: ["HF"] }, HF: { ...ok.HF, rubrica: ["P2"] } })))).join("\n");
+  for (const rx of [/tipo GL: cria sa-a\.a não é passo/, /tipo GL: padrão sa-a\/nao\.md inexistente/, /tipo HF: rubrica P2 fora/, /ciclo no "depois"/]) assert.match(e, rx);
+  assert.doesNotMatch(e, /tipo XX/);
+  const pr = validar(carregar(fixture(tipos({ ...ok, GL: { ...ok.GL, pendente: true } })))).join("\n");
+  assert.match(pr, /tipo GL: cria e padrão já existem; tire o "pendente"/);
+  const f = validar(carregar(fixture(tipos({ gl: { cria: ["sa-a.a.ini"], elm: "DOORS" }, ZZ: { nome: "z", elm: "X", cria: [] },
+    YY: { nome: "y", elm: "DOORS", cria: ["sa-a.a.ini"], depois: ["QQ"], embute: ["WW"] } })))).join("\n");
+  for (const rx of [/tipo gl: sigla de 2 a 4/, /tipo ZZ: elm "X"/, /tipo ZZ: sem cria/, /tipo YY: QQ fora do catálogo/, /tipo YY: WW fora do catálogo/]) assert.match(f, rx);
+  const l = validar(carregar(fixture(tipos({ GL: { ...ok.GL, cria: "sa-a.a.ini", depois: "HF" } })))).join("\n");
+  assert.match(l, /tipo GL: cria tem de ser lista/);
+  assert.match(l, /tipo GL: depois tem de ser lista/);
+  assert.doesNotMatch(l, /não é passo|ciclo/);
+  assert.deepEqual(validar(carregar(fixture({ "fluxo/tipos.json": {}, ...rub }))).filter((x) => /tipo/.test(x)), []);
+  fs.writeFileSync(path.join(raiz, "fw/fluxo/tipos.json"), '{"tipos": {"GL": {"nome": "a", "cria": ["sa-a.a.ini"], "elm": "ETM"}, "GL": {"nome": "b", "cria": ["sa-a.a.ini"], "elm": "ETM"}}}');
+  assert.match(validar(carregar(path.join(raiz, "fw"))).join("\n"), /tipo GL: sigla repetida/);
+});
+
 test("chama: em linha (mesmo dono ou skill do agente), subagente, e recusa quando não é nenhum", () => {
   const ok = fixture({ "fluxo/sa-a/a/a.md": mestre({ fluxo: "a", dono: "sa-um", passos: [{ id: "ini", chama: ["sa-a.a.rev", "sa-b.x"] }, { id: "rev" }] }) });
   assert.deepEqual(validar(carregar(ok)), []);
