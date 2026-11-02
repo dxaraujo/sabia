@@ -4,7 +4,6 @@ import colorsys, html, json, re
 
 T = '#121821'
 SIMILARES = {
- 'v-pastel': ('Pastel / Suave', 'Variações da atual', 'mais leve e moderna, menos agressiva aos olhos', '#5EB1EC #4FA1D6 #537B93 #64D5E2 #51B5C7 #96C96C #C3DC63 #FFCD43 #FBB846'),
  'i-horizon': ('AI Horizon', 'Paletas de IA', 'equilíbrio entre inovação e bem-estar', '#2563EB #0EA5E9 #1D4ED8 #14B8A6 #0F766E #65A30D #A3E635 #FBBF24 #F97316'),
  'i-quantum': ('Quantum Flow', 'Paletas de IA', 'inteligência, fluidez e performance', '#0B63CE #0066B3 #1E293B #00D1D1 #0EA5A4 #22C55E #A7F3D0 #F59E0B #FB923C'),
  'i-infinity': ('Infinity Gradient', 'Paletas de IA', 'design arrojado com gradientes de impacto', '#6366F1 #8B5CF6 #312E81 #06B6D4 #0891B2 #84CC16 #D9F99D #F59E0B #F97316'),
