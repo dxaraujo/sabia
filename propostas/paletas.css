@@ -1,11 +1,6 @@
 /* Paletas vivas sobre qualquer proposta: <html data-paleta="atual|…">. Sem o atributo, fica a sóbria do sistema.
    O sistema dá fonte, forma e componentes; a paleta dá a identidade: capa cheia, etapas coloridas, trilho de 7 cores.
    "atual" reaproveita as cores de hoje, iguais às do site em cada lugar; a sóbria é o sistema sem paleta (nova/tema.css). */
-:root[data-paleta="atual"]{
-  --brand:#0786E3; --blue:#0086C8; --navy:#2C5168; --cyan:#00BBCE; --teal:#0094AD; --green:#76B043; --lime:#B2D235; --yellow:#FEBE10; --orange:#FAA61A;
-  --l-epico:#2C5168; --l-hitl:#0086C8; --l-afk:#00BBCE; --l-atd:#76B043; --l-min:#0094AD; --l-sprint:#FEBE10; --l-rapida:#FAA61A;
-  --viva-capa:#0786E3; --viva-escuro:#2C5168; --viva-destaque:#FEBE10; --viva-tinta:#2C5168;
-}
 /* o trilho: as sete etapas em sequência, assinatura no lugar das faixas inclinadas do deck */
 :root[data-paleta]{--viva-trilho:linear-gradient(90deg,var(--cyan) 0 14.29%,var(--lime) 0 28.57%,var(--brand) 0 42.86%,var(--navy) 0 57.14%,var(--green) 0 71.43%,var(--orange) 0 85.71%,var(--teal) 0)}
 
@@ -58,16 +53,11 @@
 .proposta button[aria-pressed="true"]{background:#222;color:#fff}
 
 /* paletas no escuro: o épico (navy) clareia no mapa; blocos ganham borda sutil */
-[data-modo="escuro"][data-paleta="atual"] :is(#map,.itin,.trilho){--l-epico:#7FA6C4}
 [data-modo="escuro"][data-paleta] .etapas li,[data-modo="escuro"][data-paleta] .passos li{box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
 [data-modo="escuro"][data-paleta] .porta .n{color:color-mix(in oklab,var(--c) 80%,#fff)}
 
 /* "atual" fiel ao site de hoje (sabia.css): as mesmas cores em cada lugar; forma, tamanho e sombra seguem o sistema.
    Toda paleta viva usa estas mesmas regras; cada uma troca só os valores das cores. */
-:root[data-paleta="atual"]:not([data-modo="escuro"]){
-  --bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#2C5168; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7;
-  --acento:#0086C8;
-}
 :root[data-paleta]{--red:#D9534F}
 [data-paleta] :focus-visible{outline-color:var(--yellow)}
 [data-paleta] :is(.top .gh,.chip:not([aria-pressed="true"])){border-color:var(--line);color:var(--title)}
