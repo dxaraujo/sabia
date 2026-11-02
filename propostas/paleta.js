@@ -24,7 +24,30 @@
       s.innerHTML='<b>'+ROT[k]+'</b>'+OP[k].map(function(o){return '<button type="button" data-k="'+k+'" data-v="'+o[0]+'">'+o[1]+'</button>'}).join('');
       nav.appendChild(s);
     }
-    nav.addEventListener('click',function(e){var b=e.target.closest('[data-k]'); if(b) aplicar(b.dataset.k,b.dataset.v)});
+    nav.addEventListener('click',function(e){
+      var b=e.target.closest('[data-k]'); if(b) aplicar(b.dataset.k,b.dataset.v);
+      if(e.target.closest('a')) salvarRolagem();
+    });
     for(var j in OP) aplicar(j,v[j]);
   });
+
+  // Rolagem entre propostas: as alturas mudam de um tema para outro, então guarda a seção do topo da tela e quanto dela
+  // já passou, e volta ao mesmo ponto relativo na outra página.
+  var MARCOS='.sign.hero,section[id],footer';
+  function salvarRolagem(){
+    var els=document.querySelectorAll(MARCOS), y=window.scrollY, m={i:-1,f:0};
+    for(var i=els.length-1;i>=0;i--){
+      var t=els[i].getBoundingClientRect().top+y;
+      if(t<=y+1){m={i:i,f:Math.min(1,(y-t)/els[i].offsetHeight)};break}
+    }
+    try{sessionStorage.setItem('sabia-rolagem',JSON.stringify(m))}catch(e){}
+  }
+  function restaurarRolagem(){
+    var m; try{m=JSON.parse(sessionStorage.getItem('sabia-rolagem'));sessionStorage.removeItem('sabia-rolagem')}catch(e){}
+    if(!m||m.i<0) return;
+    var el=document.querySelectorAll(MARCOS)[m.i]; if(!el) return;
+    window.scrollTo(0,el.getBoundingClientRect().top+window.scrollY+m.f*el.offsetHeight);
+  }
+  // espera fontes e mapa assentarem, senão a posição calculada muda logo depois
+  window.addEventListener('load',function(){(document.fonts?document.fonts.ready:Promise.resolve()).then(restaurarRolagem)});
 })();
