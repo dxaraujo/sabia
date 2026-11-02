@@ -27,34 +27,6 @@ estação. Escolha a linha (épico, fatia HITL ou AFK, Sustentação, ciclo da s
 e a trilha da fatia; a ficha ao lado mostra papel, agente, tarefa no EWM, arquivos, chamadas ao ELM e as transições de
 cada passo. Fonte: branch `gh-pages` deste repositório.
 
-## Origem
-
-O Sabiá 1.0.0 nasce do power `sdd` 3.4.4, mantido antes no repositório
-[`dxaraujo/kiro`](https://github.com/dxaraujo/kiro) (arquivado, com o histórico de versões). Não há migração
-automática: o projeto que usava o `sdd` desinstala o power antigo, instala o Sabiá, move a pasta `.kiro/config/sdd/`
-para `.sabia/config/` (os `pa_<nome>.json` vão para `.kiro/config/elm/`) e pede "atualizar a configuração do
-Sabiá" e "atualizar os agentes do Sabiá". Requer o `mcp-elm` ≥ 3.5.1, que lê `.kiro/config/elm/`.
-
-A 1.1.0 tira do `.kiro/` o que é do Sabiá e não do Kiro: configuração, steering, local, scripts e a pasta do produto
-vão para `.sabia/` (o `.kiro/steering/sabia.md` vira um ponteiro); `.kiro/specs/`, `.kiro/agents/` e
-`.kiro/config/elm|elk/` ficam. O hook `sa-backpressure` e as receitas de Kiro Workflows saem. A setup, em modo
-atualização, oferece mover os arquivos de um projeto 1.0.0.
-
-## O que mudou na 2.0
-
-| Antes (1.x) | 2.0 |
-|---|---|
-| cada skill trazia o procedimento inteiro no `SKILL.md` | **fluxos** (`fluxo/<skill>/<fluxo>/`: mestre + um arquivo por passo, ids `skill.fluxo.passo`) e **padrões** (`padrao/<skill>/`); o `sabia instalar` os **compila** (as-built) nas skills da pasta do usuário |
-| Kiro, Claude Code e opencode | **Kiro (motor v3) e opencode**; o Claude Code saiu |
-| `.sabia/verificar.sh` antes de cada commit | o passo `sa-codificar.codificar.validar`, que roda a seção Comandos do `sabia.md` |
-| glossário e ADRs em `docs/` | `.sabia/glossario.md` e `.sabia/adr/` |
-| customizar = editar a skill | override esparso em `.sabia/fluxo/` e `.sabia/padrao/`, pela `sa-setup`; o agente dono recebe só o delta |
-| shell por lista de comandos | liberado para quem escreve no projeto, menos o `negar` e o push do papel |
-| toolkit pelo papel (`passo.papel`) | pelo id do passo (`passo.passo`, com `arquivos`), só em passo que aceita desvio; o 1.x ainda é aceito |
-| `sa-codificador`, `sa-loop` | `sa-desenvolvedor` (papel `desenvolvedor`), `sa-orquestrar` (o agente `sa-orquestrador` fica) |
-
-Sem migração: o projeto da 1.x roda a setup de novo ("atualizar a configuração do Sabiá").
-
 ## Fundamentos
 
 | # | Princípio | Quem defende |
@@ -220,23 +192,15 @@ Não use o `/upgrade-agent` (nem `kiro-cli agent upgrade`) nos agentes `sa-*`: q
 **Documentação oficial do Kiro**, lida inteira nas páginas `.md` de `kiro.dev/docs` em 14/10/2026 (powers, skills,
 steering, custom agents e referência de configuração, subagentes, permissões, hooks, specs, workflows, CLI V3 e
 migração), mais o schema do `plugin.json` (Agent Plugins) e a especificação Agent Skills. Uma auditoria do power
-contra essas páginas gerou as correções que o Sabiá herdou do `sdd`: `git -C` negado, leitura restrita, confirmação de push e PR,
-delegação a subagente sem pergunta por agente, falha do hook na saída de erro, pausa e falha dos passos de workflow
-por `send_message`, chamada HTTP do verificador por script.
+contra essas páginas gerou as correções do Sabiá: `git -C` negado, leitura restrita, confirmação de push e PR,
+delegação a subagente sem pergunta por agente, chamada HTTP do verificador por script.
 
-Com o **Kiro CLI 2.31.0** (o binário oficial), no `sdd` 2.x, quando os agentes eram templates no formato universal (V2 + V3):
+Com o **Kiro CLI 2.31.0** (o binário oficial):
 
-- `kiro-cli powers install <pasta>` instala o power em `~/.kiro/powers/installed/<nome do power>/` (hoje `sabia/`), com todas as skills,
+- `kiro-cli powers install <pasta>` instala o power em `~/.kiro/powers/installed/sabia/`, com todas as skills,
   `references/` e `assets/` — o caminho que a setup usa nos agentes;
-- o bloco `permissions` dos templates foi gerado pelo próprio `kiro-cli agent upgrade` a partir do `toolsSettings`
-  (V2) e conferido regra a regra; depois receberam o que só existe na V3: `skill` liberada (com leitura restrita o
-  conversor avisa que cada skill pediria aprovação), `ask` de push/PR no orquestrador e de `curl`/`wget` no
-  verificador. `subagent/<nome>` em `tools` e a regra `subagent` vêm do conversor (de `availableAgents` e
-  `trustedAgents`);
-- os seis agentes, com os placeholders preenchidos, passam no `kiro-cli agent validate`, aparecem no
-  `kiro-cli agent list`, e o `kiro-cli agent upgrade --dry-run` os deixa intactos (`out of sync (not rebuilt)`);
-- o formato `.md` de agente **não** é carregado pela engine V2 do CLI (ainda a padrão), por isso os agentes são
-  JSON universais; padrões de comando encadeado (`cd … && …`) são descartados pelo conversor, por isso as
+- o formato `.md` de agente **não** é carregado pela engine V2 do CLI (ainda a padrão), por isso os agentes do Kiro
+  são JSON; padrões de comando encadeado (`cd … && …`) são descartados pelo `kiro-cli agent upgrade`, por isso as
   permissões usam comandos simples;
 - o `http.sh` foi exercitado contra um servidor local (método, caminho e corpo fora da pasta `massa/` recusados).
 

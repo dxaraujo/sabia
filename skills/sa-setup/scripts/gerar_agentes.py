@@ -82,7 +82,7 @@ def sha12(arquivo):
 
 
 def ler_fluxos(fw):
-    """Os mestres do framework instalado: {"sa-x.f": {skill, fluxo, dono, passos, dir}}. Sem fluxo/ (1.x), vazio."""
+    """Os mestres do framework instalado: {"sa-x.f": {skill, fluxo, dono, passos, dir}}. Sem fluxo/, vazio (o gerar() recusa)."""
     out = {}
     for m in sorted((fw / "fluxo").glob("*/*/*.md")) if (fw / "fluxo").is_dir() else []:
         if m.stem == m.parent.name:
@@ -99,21 +99,16 @@ def arq_passo(fl, pid):
 
 
 def gancho(ext, fluxos, toolkit):
-    """(papel dono, id do passo) do desvio de um toolkit: o passo tem de existir e aceitar desvio. Toolkit 1.x
-    (`passo.papel`): o passo com desvio cujo `papel_1x` no mestre tem o papel — a mesma regra do ganchoDe() do CLI."""
-    todos = [(f"{q}.{x['id']}", fl, x) for q, fl in fluxos.items() for x in fl["passos"]]
-    if "passo" in ext:
-        pid, fl, x = next((t for t in todos if t[0] == ext["passo"]), (None, None, None))
-        if x is None:
-            raise ValueError(f"toolkit {toolkit}: o passo {ext['passo']} não existe no framework")
-        if not x.get("desvio"):
-            raise ValueError(f"toolkit {toolkit}: o passo {ext['passo']} não aceita desvio de toolkit")
-    else:
-        # shortcut: toolkit 1.x (passo.papel); vira erro quando os toolkits saírem na 2.0
-        pid, fl, x = next((t for t in todos if t[2].get("desvio") and ext.get("papel") in t[2].get("papel_1x", [])),
-                          (None, None, None))
-        if x is None:
-            raise ValueError(f"toolkit {toolkit}: o papel {ext.get('papel')} não tem passo que aceite desvio")
+    """(papel dono, id do passo) do desvio de um toolkit: o passo tem de existir e aceitar desvio — a mesma regra do
+    ganchoDe() do CLI."""
+    if "passo" not in ext:
+        raise ValueError(f"toolkit {toolkit}: passo sem o id (use o id do passo em passo.passo)")
+    pid, fl, x = next(((f"{q}.{x['id']}", fl, x) for q, fl in fluxos.items() for x in fl["passos"]
+                       if f"{q}.{x['id']}" == ext["passo"]), (None, None, None))
+    if x is None:
+        raise ValueError(f"toolkit {toolkit}: o passo {ext['passo']} não existe no framework")
+    if not x.get("desvio"):
+        raise ValueError(f"toolkit {toolkit}: o passo {ext['passo']} não aceita desvio de toolkit")
     return fl["dono"].removeprefix("sa-"), pid
 
 
@@ -134,9 +129,6 @@ def override(projeto, fw, fluxos):
             avisos.append(f"{f.relative_to(projeto)}: a base mudou desde a cópia ({b} → {sha12(original)}): compare e funda à mão")
 
     tem = [f for d in (".sabia/fluxo", ".sabia/padrao") if (projeto / d).is_dir() for f in (projeto / d).rglob("*") if f.is_file()]
-    if tem and not fluxos:
-        raise ValueError(f"o projeto tem override em .sabia/fluxo ou .sabia/padrao, mas {fw} não tem fluxo/ (Sabiá 1.x ou "
-                         "ausente): rode `sabia instalar` ou passe --framework")
     por_fluxo = {}
     for f in sorted(tem):
         rel = f.relative_to(projeto).parts[1:]  # ("fluxo"|"padrao", ...)
@@ -161,7 +153,7 @@ def override(projeto, fw, fluxos):
         if fora := sorted(set(ops) - {"inserir", "remover", "liberar"}):
             erros.append(f"{q}: no {fl['fluxo']}.md do projeto só valem inserir, remover e liberar (não {', '.join(fora)})")
         if ops.get("liberar"):
-            erros.append(f"{q}: nenhuma trava pode ser liberada na 2.0 ({ops['liberar']})")
+            erros.append(f"{q}: nenhuma trava pode ser liberada ({ops['liberar']})")
         ins, rem = ops.get("inserir", []), ops.get("remover", [])
         if not isinstance(ins, list) or not all(isinstance(o, dict) for o in ins) or not isinstance(rem, list):
             erros.append(f"{q}: inserir é uma lista de {{id, depois}} e remover uma lista de ids")
@@ -285,7 +277,7 @@ def texto_passos(papel, passos):
     return "\n".join(out)
 
 
-def agente(nome, p, base, cfg, ext=None, tk=None, fluxo=None):
+def agente(nome, p, base, cfg, ext=None, tk=None, fluxo=""):
     """O agente sa-<nome>; com `tk`, o agente do toolkit, com as regras do papel <nome>, dono do passo."""
     valores = {"POWER": cfg.get("power", "~/.kiro/powers/installed/sabia"), "PRODUTO": cfg["produto"], "GLOSSARIO": cfg.get("glossario"), "ADR": cfg.get("adr"),
                "BASE": cfg["base"], "BUNDLE": cfg.get("bundle"), "MASSA": cfg.get("massa")}
@@ -322,7 +314,7 @@ def agente(nome, p, base, cfg, ext=None, tk=None, fluxo=None):
         regras += [regra("fs_write", "allow", ["./**"]),
                    regra("fs_write", "deny", preencher(harness + alheios, valores))]
     nivel = base["niveis_shell"][p["shell"]]
-    if nivel == "*":  # decisão 2 da 2.0: o shell é liberado para quem escreve; restam o `negar` e o push do papel
+    if nivel == "*":  # o shell é liberado para quem escreve; restam o `negar` e o push do papel
         regras.append(regra("shell", "allow", ["*"]))
     else:
         for g in nivel:
@@ -355,7 +347,7 @@ def agente(nome, p, base, cfg, ext=None, tk=None, fluxo=None):
     prompt = prompt.replace("{{PASSOS}}", texto_passos(nome, ext.get("passos", [])))
     prompt = prompt.replace("{{SUBAGENTES}}", "Subagentes do projeto: " + ", ".join(f"`{s['nome']}` ({s['para']})" for s in subs_projeto)
                             if subs_projeto else "")
-    if not tk and fluxo is not None:  # fluxo None = framework sem fluxo/ (1.x): sem delta nem chamada
+    if not tk:
         prompt = prompt.rstrip() + "\n\n" + "\n\n".join(x for x in (fluxo, CHAMADA) if x)
     prompt = re.sub(r"\n{3,}", "\n\n", PH.sub(lambda m: valores.get(m.group(1)) or "não há", prompt)).rstrip() + "\n"
 
@@ -505,6 +497,8 @@ def gerar(projeto: Path, cfg: dict) -> dict:
         raise ValueError(f"agentes.json: agente desconhecido {desconhecidos}; use {nomes}")
     fw = Path(cfg.get("framework") or "~/.sabia/framework").expanduser()
     fluxos = ler_fluxos(fw)
+    if not fluxos:
+        raise ValueError(f"{fw} não tem os fluxos (fluxo/ ausente ou sem mestres): rode `sabia instalar` ou passe --framework")
     gerar.avisos = []
     delta, padroes, avisos = override(projeto, fw, fluxos)
     gerar.avisos = avisos
@@ -516,7 +510,7 @@ def gerar(projeto: Path, cfg: dict) -> dict:
     if fora := sorted(set(por_papel) - set(base["papeis"])):
         raise ValueError(f"toolkit: passo de papel desconhecido {fora}")
     agentes = {f"sa-{n}.json": agente(n, p, base, cfg, por_papel.get(n),
-                                   fluxo=texto_fluxos(n, fluxos, delta, padroes) if fluxos else None)
+                                   fluxo=texto_fluxos(n, fluxos, delta, padroes))
                for n, p in base["papeis"].items()}
     for n, tk in do_toolkit.items():
         agentes[f"{n}.json"] = agente(tk["papel"], base["papeis"][tk["papel"]], base, cfg, tk=tk)

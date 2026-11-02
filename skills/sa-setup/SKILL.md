@@ -4,7 +4,7 @@ description: "9-step wizard, in Brazilian Portuguese and with standardized cards
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "1.1.3"
+  version: "2.0.0-alpha.1"
 ---
 
 # sa-setup — Configurar o fluxo no projeto
@@ -108,19 +108,7 @@ trocar para a sessão padrão e pare.
    configuração atual e pergunte o que mudar ("nada — só regenerar os agentes", útil depois de
    atualizar o Sabiá ou um toolkit). Refaça só o que mudou nas respostas, mas agentes e scripts
    **sempre** a partir do Sabiá instalado: os agentes pelo gerador, com o `.sabia/config/agentes.json` do projeto,
-   e o `http.sh` do template. Mostre o diff de cada um. Projeto da 1.0.0 (`.kiro/steering/sabia.md`
-   com conteúdo, `.kiro/config/sabia/`, `.kiro/hooks/sabia.json` ou `.kiro/workflows/sa-*`) → avise que a 1.1.0 mudou
-   para `.sabia/` e ofereça mover, com o diff e o "ok": `.kiro/config/sabia/` → `.sabia/config/`,
-   `.kiro/steering/sabia.md` → `.sabia/sabia.md` (fica o ponteiro), `.kiro/sabia/http.sh` → `.sabia/http.sh`,
-   `.kiro/local/` → `.sabia/local/` (sem worktree aberta) e o padrão `.kiro/planejamento` → `.sabia/planejamento`;
-   o hook e as receitas saem.
-   Projeto da 1.x (o `agentes.json` sem `"sabia"`, ou com versão `1.`) → avise que a 2.0 muda três coisas e ofereça,
-   no W8, com o diff e o "ok": (a) **o `.sabia/verificar.sh` sai** (apagar; o backpressure é o passo
-   `sa-codificar.codificar.validar`, que roda os Comandos do `sabia.md`); (b) **o `agentes.json` ganha `"sabia"`** com
-   a versão instalada; (c) **a tabela "Passos de toolkit" do `sabia.md` vira "Desvios de toolkit"**, refeita do
-   template com o passo pelo id (`sa-codificar.codificar.tarefa`, `sa-prd.prd.escrever`), não pelo papel. O
-   `sabia.md` é refeito do template com as mesmas respostas (não só trocar termos), preservando `## Regras
-   aprendidas`. Glossário e ADRs ficam onde o projeto os configurou.
+   e o `http.sh` do template. Mostre o diff de cada um.
 5. **Pré-checagem** (tabela do W0): shell, `uv --version` (o gerador dos agentes precisa; sem ele → como instalar
    e pare), `kiro-cli --version` (só com o Kiro nos alvos; opcional), a versão do Sabiá (item 1b), `elm_status(projeto=<raiz>)` (credencial do ELM; sem `pa` ainda, ele responde com `faltando`, o que é normal aqui) e se
    `~/.config/mcp-gitlabpr/gitlabpr.properties` existe (sem abrir). Mostre o W0 e espere o "ok" antes do Passo 1.
@@ -217,12 +205,11 @@ mais longa (10 blocos) e o que ela decide.
 Siga [references/toolkits.md](references/toolkits.md): procure toolkits (com e sem manifesto) e skills avulsas
 do projeto (`.kiro/skills/*/SKILL.md`), do usuário (`~/.kiro/skills/*/SKILL.md`) e de outros powers
 (`~/.kiro/powers/installed/*/skills/*/SKILL.md`; não achou nada ali → `~/.kiro/powers/**/skills/*/SKILL.md`),
-**exceto** as do fluxo (`sabia`, `sa-*`; e `sdd`, `sdd-*`, `sdd2`, `sdd2-*` de uma instalação antiga). Para cada uma:
+**exceto** as do fluxo (`sabia`, `sa-*`). Para cada uma:
 nome, início da `description`, origem e, se houver, toolkit e papéis. Toolkit cujo `deteccao` casa com o projeto
 → "detectado"; skill com `passo` → a tabela de
 desvios do W5 (o passo pelo id, como `sa-codificar.codificar.tarefa`; `para`, skill e agente), ligados no Passo 6;
-toolkit 1.x (`passo.papel`) → o id do passo que aceita desvio no papel (desenvolvedor → `sa-codificar.codificar.tarefa`,
-especificador → `sa-prd.prd.escrever`); `passo` num passo sem desvio → ❌ na linha, e a skill não é ligada. Skill com
+`passo` num passo sem desvio → ❌ na linha, e a skill não é ligada. Skill com
 `stack`/`deteccao` própria → a coluna Stack diz se casa. Liste também os **agentes do projeto** (`.kiro/agents/*.json`, `~/.kiro/agents/*.json` e
 `.opencode/agents/*.md`, exceto `sa-*`), com o "para quê" tirado da `description` — eles são oferecidos como
 subagentes no Passo 6, sem a pessoa precisar lembrar deles.
@@ -438,7 +425,7 @@ pergunta por mensagem, linhas numeradas, nada gravado sem "ok"). As skills compi
    candidato → numerados, o melhor com ⭐.
 2. **Escolher a forma (C2):** **trocar** o passo (cópia inteira, para editar) · **inserir** um passo novo depois de
    outro · **remover** (só passo com `removivel` e sem trava: veja no mestre do framework, `~/.sabia/framework` →
-   `fluxo/<skill>/<fluxo>/<fluxo>.md`; senão diga qual trava o prende — nenhuma se libera na 2.0 — e ofereça trocar)
+   `fluxo/<skill>/<fluxo>/<fluxo>.md`; senão diga qual trava o prende — nenhuma se libera — e ofereça trocar)
    · **trocar um padrão**.
 3. **Copiar** (com o "ok" do C2; é o rascunho que a pessoa edita, os agentes só mudam no item 5). A `base` vem
    **sempre** de `uv run --no-project python <pasta desta skill>/scripts/gerar_agentes.py --base <id>` (o sha do

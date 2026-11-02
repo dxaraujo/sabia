@@ -17,15 +17,13 @@ tabela do fluxo) no passo com desvio, e o desvio vem do projeto.
 
 No `toolkit.json`, `passo.passo` é o id do passo (`sa-codificar.codificar.tarefa`), com o `para` e, opcionais, os
 `arquivos` (globs) e o `agente`. Só vale em passo com `"desvio": true` no mestre — hoje os dois da tabela abaixo.
-Toolkit 1.x, com `passo.papel` no lugar do id: ainda aceito, pelo papel da primeira coluna (`codificador` é o nome
-antigo de `desenvolvedor`).
 
 ## Os passos
 
-| Passo (`passo.passo` · 1.x: `passo.papel`) | Dono | Como o agente sabe | Contrato de saída |
+| Passo (`passo.passo`) | Dono | Como o agente sabe | Contrato de saída |
 |---|---|---|---|
-| `sa-prd.prd.escrever` · `especificador` | agente `sa-especificador`, na `sa-especificar`; a escrita do passo `sa-prd.prd.escrever` passa para o toolkit | os **Desvios de toolkit** do prompt do `sa-especificador`: o épico que casa com o `para` vai ao toolkit no passo `sa-prd.prd.escrever`, sem pergunta e sem marca no `status.md` | `prd.md` com as H2 do padrão `sa-prd/prd.md`; conceitos OKF em `elm/` quando há ELM; extras em `.md` na pasta de trabalho (vão como anexo e para a base no GATE). O passo `sa-prd.prd.similares`, a revisão P e o GATE continuam do Sabiá |
-| `sa-codificar.codificar.tarefa` · `desenvolvedor` | agente `sa-desenvolvedor`, na `sa-codificar`, por tarefa | os **Desvios de toolkit** do prompt do `sa-desenvolvedor`: a tarefa que casa com o `para` ou com os `arquivos` vai ao toolkit na `sa-codificar`, sem marca no `tasks.md` | código e testes da tarefa, dentro do escopo dela, e o resumo dos arquivos. O Sabiá roda o passo `sa-codificar.codificar.validar` (evidência, não afirmação) e faz o commit. O toolkit não faz commit, push nem PR |
+| `sa-prd.prd.escrever` | agente `sa-especificador`, na `sa-especificar`; a escrita do passo `sa-prd.prd.escrever` passa para o toolkit | os **Desvios de toolkit** do prompt do `sa-especificador`: o épico que casa com o `para` vai ao toolkit no passo `sa-prd.prd.escrever`, sem pergunta e sem marca no `status.md` | `prd.md` com as H2 do padrão `sa-prd/prd.md`; conceitos OKF em `elm/` quando há ELM; extras em `.md` na pasta de trabalho (vão como anexo e para a base no GATE). O passo `sa-prd.prd.similares`, a revisão P e o GATE continuam do Sabiá |
+| `sa-codificar.codificar.tarefa` | agente `sa-desenvolvedor`, na `sa-codificar`, por tarefa | os **Desvios de toolkit** do prompt do `sa-desenvolvedor`: a tarefa que casa com o `para` ou com os `arquivos` vai ao toolkit na `sa-codificar`, sem marca no `tasks.md` | código e testes da tarefa, dentro do escopo dela, e o resumo dos arquivos. O Sabiá roda o passo `sa-codificar.codificar.validar` (evidência, não afirmação) e faz o commit. O toolkit não faz commit, push nem PR |
 
 ## Sem agente e com agente
 

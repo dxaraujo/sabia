@@ -131,7 +131,7 @@ de início do cabeçalho (o nome do pai é livre e não ordena) — a do `histor
 **Meta:** <resultado de negócio>
 **Iteração no EWM:** <pai>/<nome> | —   (o caminho que o `elm_iteracao` recebe: `2026/Sprint 03`)
 **Plano no EWM:** <nome> - <nome curto da meta>   (o `plano` do `elm_iteracao`: `Sprint 03 - Exportar o relatório de contas`)
-**Power sabia:** <versões usadas, crescente: 1.0.0 · 1.0.1>   (o planejamento grava a da abertura; a virada acrescenta as das linhas de créditos)
+**Power sabia:** <versões usadas, crescente: 2.0.0 · 2.0.1>   (o planejamento grava a da abertura; a virada acrescenta as das linhas de créditos)
 **Situação:** <aberta | fechada>   (a virada grava `fechada`; o painel usa a última `aberta`)
 **Fechamento sem consolidar:** <FT-… (<P.O.>, <data>)>   (só quando o P.O. decide fechar com fatia de PR mergeado sem consolidação)
 **Publicação no EWM:** pendente   (só enquanto o §1 do [elm-sprint.md](elm-sprint.md) não rodou: planejamento sem o MCP ou com falha, ou a próxima, gravada no passo `sa-planejamento.retrospectiva.recalcular` da virada; a publicação a tira)
@@ -170,7 +170,7 @@ Reserva (Sustentação + retrabalho): <h>h · consumido: <h>h · retrabalho migr
 
 | Data | Atividade | Login | Sessão Kiro | Power sabia | Créditos |
 |---|---|---|---|---|---|
-| 2026-10-06T10:41:12 | planejamento | ana.souza | 9ec1dcaa | 1.0.0 | 2.40 |
+| 2026-10-06T10:41:12 | planejamento | ana.souza | 9ec1dcaa | 2.0.0 | 2.40 |
 
 ## Capacidade
 Revisão: <h>h · HITL: <h>h · Especificação: <h>h · Reserva (Sustentação + retrabalho): <h>h · Vazão prevista: <n> fatias (previsão; o compromisso é a meta)

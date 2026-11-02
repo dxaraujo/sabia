@@ -45,7 +45,7 @@ sources:                                      # §5.1: de onde o conteúdo veio
   - id: d-02
     resource: ../decisoes.md
     title: Decisão D-02
-generated: { by: sabia/1.0.0, at: 2026-10-14T13:00:00Z }   # §5.2: quem escreveu e quando mudou por último
+generated: { by: sabia/2.0.0, at: 2026-10-14T13:00:00Z }   # §5.2: quem escreveu e quando mudou por último
 ---
 ```
 

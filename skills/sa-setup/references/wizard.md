@@ -125,7 +125,6 @@ No lugar da tabela de etapas do W0 (a pré-checagem continua):
 | 5 | Skills | <n> skills · <n> agentes do projeto | <➖ | ⚠️ <n> novas: `<…>` · <n> sumiram: `<…>`> |
 | 6 | Agentes | gerados com o Sabiá <versão do agentes.json> | <➖ | ⚠️ o seu é o <versão instalada> → regenerar> |
 | 7 | Automação | backpressure (passo `sa-codificar.codificar.validar`) <[✅] | ➖ sem comandos> · `http.sh` <[✅] | ➖> | <➖ | ⚠️ …> |
-| 8 | Migração | <➖ | ⚠️ projeto da 1.x → 2.0: sai o `.sabia/verificar.sh` · `"sabia"` no `agentes.json` · "Desvios de toolkit" pelo id do passo> | <➖ | ⚠️ entra no W8> |
 
 > ❓ **O que muda?**
 > `nada` só regenera agentes e scripts · `<n>` refaz a etapa <n> · `<n>,<m>` refaz várias

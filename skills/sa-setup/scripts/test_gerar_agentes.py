@@ -41,7 +41,8 @@ class Gerar(unittest.TestCase):
         self.velho_home, os.environ["HOME"] = os.environ.get("HOME"), str(self.home)
         self.cfg = {"power": "~/power", "produto": ".sabia/planejamento", "glossario": "docs/glossario.md", "adr": "docs/adr",
                     "base": "develop", "bundle": "docs/elm/pa", "massa": None, "elm": True, "push_pr_no_loop": True,
-                    "http_sh": True, "comandos": {"build": ["mvn test*"], "verificacao": ["mvn spring-boot:run*"]}}
+                    "http_sh": True, "comandos": {"build": ["mvn test*"], "verificacao": ["mvn spring-boot:run*"]},
+                    "framework": str(REPO)}
 
     def tearDown(self):
         os.environ["HOME"] = self.velho_home
@@ -226,13 +227,13 @@ class Gerar(unittest.TestCase):
             (pasta / f).write_text("x {{BASE}}" if f.startswith("agentes") else "x")
         man = {"nome": "batch-alfa", "versao": "1.0.0",
                "skills": [{"caminho": "skills/batch/SKILL.md", "papeis": ["desenvolvedor"],
-                           "passo": {"papel": "desenvolvedor", "para": "tarefa de job", "agente": "batch-job"}}],
+                           "passo": {"passo": "sa-codificar.codificar.tarefa", "para": "tarefa de job", "agente": "batch-job"}}],
                "agentes": [{"nome": "batch-job", "descricao": "job", "prompt": "agentes/job.md", "skills": ["skills/batch/SKILL.md"],
                             "subagentes": ["batch-step"]},
                            {"nome": "batch-step", "descricao": "step", "prompt": "agentes/step.md", "skills": ["skills/teste/SKILL.md"]}]}
         man.update(mudar)
         (pasta / "toolkit.json").write_text(json.dumps(man))
-        # o gancho do toolkit 1.x (passo.papel) vem do `papel_1x` do mestre: precisa do framework
+        # o gancho (passo.passo) vem do mestre: precisa do framework
         return {"toolkits": {"batch-alfa": {"pasta": "~/.sabia/toolkits/batch-alfa", "versao": "1.0.0", "sha": "abc"}},
                 "passos": [{"toolkit": "batch-alfa", "skill": "skills/batch/SKILL.md", "agente": True}], "framework": str(REPO)}
 
@@ -280,13 +281,13 @@ class Gerar(unittest.TestCase):
         self.assertIn("`tarefa de job` → carregue a skill `batch` e faça o passo por ela", agentes["desenvolvedor"]["prompt"])
 
     def test_toolkit_invalido_e_recusado(self):
-        skill = lambda caminho, **passo: {"caminho": caminho, "papeis": ["desenvolvedor"], "passo": {"papel": "desenvolvedor", "para": "p", **passo}}
+        skill = lambda caminho, **passo: {"caminho": caminho, "papeis": ["desenvolvedor"], "passo": {"passo": "sa-codificar.codificar.tarefa", "para": "p", **passo}}
         ruins = [{"agentes": [{"nome": "sa-job", "descricao": "j", "prompt": "agentes/job.md"}],
                   "skills": [skill("skills/batch/SKILL.md", agente="sa-job")]},
                  {"skills": [skill("../fora/SKILL.md")]},
                  {"skills": [skill("skills/batch/SKILL.md", agente="batch-job")],
                   "agentes": [{"nome": "batch-job", "descricao": "j", "prompt": "/etc/passwd"}]},
-                 {"skills": [skill("skills/batch/SKILL.md", papel="faxineiro")]},
+                 {"skills": [skill("skills/batch/SKILL.md", passo="sa-codificar.codificar.nada")]},
                  {"skills": [{"caminho": "skills/batch/SKILL.md", "papeis": ["desenvolvedor"]}]}]  # skill sem `passo`
         for mudar in ruins:
             cfg = self.toolkit(**mudar)
@@ -322,10 +323,10 @@ class Gerar(unittest.TestCase):
         self.assertEqual(g.main(["--projeto", str(self.projeto), "--gravar"]), 0)
         self.assertEqual(len(list((self.projeto / ".opencode/agents").glob("sa-*.md"))), 7)
         self.assertFalse((self.projeto / ".kiro/agents").exists())
-        for alvo in ("cursor", "claude"):  # o Claude Code saiu dos alvos na 2.0
+        for alvo in ("cursor",):  # só kiro e opencode são alvos
             self.assertEqual(g.main(["--projeto", str(self.projeto), "--alvo", alvo]), 1)
 
-    # ---- fluxos (F3): delta do override do projeto, recusas, desvio pelo id e regra de chamada
+    # ---- fluxos: delta do override do projeto, recusas, desvio pelo id e regra de chamada
     def com_fluxo(self, arquivos, **mudar):
         for f, c in arquivos.items():
             (self.projeto / f).parent.mkdir(parents=True, exist_ok=True)
@@ -441,13 +442,9 @@ class Gerar(unittest.TestCase):
         for t in ("- passo `rito`: removido neste projeto", "- passo `a` (inserido depois de `consolidacao`)", "- passo `b` (inserido depois de `a`)"):
             self.assertIn(t, p)
 
-    def test_framework_sem_fluxo_recusa_override_e_nao_poe_a_chamada(self):
-        for a in self.gerar().values():  # HOME de teste: ~/.sabia/framework não existe
-            self.assertNotIn("chama **em linha**", a["prompt"])
-        (self.projeto / ".sabia/fluxo/sa-codificar/codificar/passos").mkdir(parents=True)
-        (self.projeto / ".sabia/fluxo/sa-codificar/codificar/passos/validar.md").write_text("x")
-        with self.assertRaisesRegex(ValueError, "não tem fluxo/"):
-            g.gerar(self.projeto, self.cfg)
+    def test_framework_sem_fluxo_recusa(self):
+        with self.assertRaisesRegex(ValueError, "não tem os fluxos"):
+            g.gerar(self.projeto, {**self.cfg, "framework": str(self.home / ".sabia/framework")})
 
     def test_sabia_md_so_do_produto_e_so_na_raiz(self):
         agentes = self.gerar()
@@ -467,17 +464,10 @@ class Gerar(unittest.TestCase):
             self.assertEqual(efeito(d, "shell", cmd), "deny", cmd)
         self.assertEqual(efeito(self.gerar()["verificador"], "shell", "cd /tmp && curl http://x"), "ask")
 
-    def test_toolkit_1x_pelo_papel_1x_do_mestre(self):
-        fluxos = g.ler_fluxos(REPO)
-        for papel, dono, pid in (("desenvolvedor", "desenvolvedor", "sa-codificar.codificar.tarefa"),
-                                 ("codificador", "desenvolvedor", "sa-codificar.codificar.tarefa"),  # o nome antigo
-                                 ("especificador", "especificador", "sa-prd.prd.escrever")):
-            self.assertEqual(g.gancho({"papel": papel}, fluxos, "t"), (dono, pid), papel)
-
-    def test_toolkit_1x_de_papel_sem_gancho_e_recusado(self):
-        ruim = self.toolkit(skills=[{"caminho": "skills/batch/SKILL.md", "papeis": ["produto"],
-                                     "passo": {"papel": "produto", "para": "algo do produto", "agente": "batch-job"}}])
-        with self.assertRaisesRegex(ValueError, "não tem passo que aceite desvio"):
+    def test_passo_sem_id_e_recusado(self):
+        ruim = self.toolkit(skills=[{"caminho": "skills/batch/SKILL.md", "papeis": ["desenvolvedor"],
+                                     "passo": {"papel": "desenvolvedor", "para": "tarefa de job", "agente": "batch-job"}}])
+        with self.assertRaisesRegex(ValueError, r"passo sem o id \(use o id do passo em passo\.passo\)"):
             g.gerar(self.projeto, {**self.cfg, **ruim})
 
     def test_base_pela_linha_de_comando(self):

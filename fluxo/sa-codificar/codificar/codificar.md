@@ -4,7 +4,7 @@
  "passos": [
    {"id": "entrada", "de": "entrada", "sprint": "nao"},
    {"id": "onde", "saidas": {"fatia `verificada` (AFK)": "pr", "sem a linha do GATE do plano": "fim", "aguardando-aprovacao-pr que virou HITL: pr-aberto, revisor avisado": "→ sa-revisar.hitl"}},
-   {"id": "tarefa", "desvio": true, "papel_1x": ["desenvolvedor", "codificador"], "travas": ["toolkit-sem-commit"], "saidas": {"ainda há tarefa não marcada": "tarefa", "divergência com o plano que muda o desenho": "→ sa-plano.replanejar"}},
+   {"id": "tarefa", "desvio": true, "travas": ["toolkit-sem-commit"], "saidas": {"ainda há tarefa não marcada": "tarefa", "divergência com o plano que muda o desenho": "→ sa-plano.replanejar"}},
    {"id": "validar"},
    {"id": "revisar", "chama": "sa-revisar.revisar", "travas": ["revisao-independente"], "saidas": {"HITL, APROVADO ou a pessoa decide seguir": "pr", "REVISAR": "tarefa", "AFK, 2ª reprovação: bloqueada": "fim"}},
    {"id": "verificar", "chama": "sa-verificar.verificar", "travas": ["aceite-independente"], "saidas": {"REJEITADO": "tarefa", "2ª rejeição seguida: bloqueada": "fim"}},

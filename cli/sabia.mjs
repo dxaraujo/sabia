@@ -290,7 +290,7 @@ async function registrarMcps(fw, reg) {
   }
 }
 
-/** Compila o framework para o alvo em ~/.sabia/compilado/<alvo>/ (seção 11 do plano da 2.0). */
+/** Compila o framework para o alvo em ~/.sabia/compilado/<alvo>/. */
 function compilarPara(alvo, fw) {
   const versao = JSON.parse(fs.readFileSync(path.join(fw, "plugin.json"), "utf8")).version;
   const base = alvo === "kiro" ? "~/.kiro/powers/installed/sabia/skills" : curto(PASTA_SKILLS[alvo]());
@@ -309,15 +309,11 @@ async function instalarAlvo(alvo, inv, opcoes) {
     if (r.status !== 0) throw new Error(`kiro-cli powers install: ${(r.stderr || r.error?.message || "").trim()}`);
     inv.alvos.kiro = { power: "sabia" };
     ctx.log("power sabia instalado no Kiro");
-    if (fs.existsSync(path.join(home(), ".kiro", "powers", "installed", "sdd")))
-      ctx.log("aviso: o power antigo sdd ainda está no Kiro e concorre com o sabia (desinstale pelo painel Powers se não usa mais)");
     return;
   }
   const reg = (inv.alvos[alvo] ||= { copias: {}, mcp: [] });
   for (const s of skillsDoFluxo(fw)) await copiar(path.join(fw, "skills", s), path.join(PASTA_SKILLS[alvo](), s), reg.copias, opcoes);
   if (!opcoes.semMcp) await registrarMcps(sabia("framework"), reg);
-  const velhas = (fs.existsSync(PASTA_SKILLS.opencode()) ? fs.readdirSync(PASTA_SKILLS.opencode()) : []).filter((d) => /^sdd/.test(d));
-  if (velhas.length) ctx.log(`aviso: skills antigas no opencode concorrem com as sa-*: ${velhas.join(", ")} (remova se não usa mais)`);
 }
 
 /** Baixa o framework para uma pasta temporária e diz o que muda em relação a ~/.sabia/framework/. */
@@ -378,8 +374,6 @@ export async function atualizar(opcoes = {}) {
   inv.framework = { ...inv.framework, versao: novo.versao, sha: novo.sha, compilador: VERSAO, instalado_em: new Date().toISOString() };
   try {
     for (const alvo of Object.keys(inv.alvos)) {
-      // alvo que saiu do Sabiá (o claude, na 2.0): fica como está; `sabia desinstalar --alvo <ele>` apaga as cópias
-      if (!ALVOS.includes(alvo)) { ctx.log(`${alvo}: não é mais alvo do Sabiá (${ALVOS.join(", ")}) — ignorado; tire com sabia desinstalar --alvo ${alvo}`); continue; }
       if (alvo !== "kiro") {  // skill que saiu do framework sai da ferramenta
         const copias = inv.alvos[alvo].copias;
         const fica = new Set(skillsDoFluxo(sabia("framework")).map((s) => curto(path.join(PASTA_SKILLS[alvo](), s))));
@@ -406,7 +400,6 @@ export async function desinstalar(opcoes = {}) {
       if (alvo === "kiro") ctx.exec("kiro-cli", ["powers", "uninstall", reg.power]);
       else await apagar(reg.copias, opcoes);
       if (alvo === "opencode") for (const nome of reg.mcp || []) tirarMcpDoOpencode(nome);
-      else if (reg.mcp?.length) ctx.log(`${alvo}: os MCPs ${reg.mcp.join(", ")} ficam (o Sabiá não mexe mais no ${alvo}); tire à mão se não usa`);
       if (alvo !== "kiro" && Object.keys(reg.copias).length) continue;  // ficou cópia alterada à mão
       delete inv.alvos[alvo];
       ctx.log(`${alvo}: Sabiá desinstalado`);
@@ -423,10 +416,10 @@ export async function desinstalar(opcoes = {}) {
 
 // ---------- toolkits ----------
 
-/** O passo do framework (`m` do carregar) que o `passo` de um toolkit assume: pelo id, ou, no 1.x (`passo.papel`), o
- * passo com desvio cujo `papel_1x` no mestre tem o papel — a mesma regra do gancho() do gerar_agentes.py. */
+/** O passo do framework (`m` do carregar) que o `passo` de um toolkit assume, pelo id — a mesma regra do gancho() do
+ * gerar_agentes.py. */
 const ganchoDe = (m, ext) => Object.entries(m.fluxos).flatMap(([q, fl]) => fl.passos.map((x) => ({ id: `${q}.${x.id}`, x })))
-  .find(({ id, x }) => (ext.passo ? id === ext.passo : x.desvio && (x.papel_1x || []).includes(ext.papel)));
+  .find(({ id }) => id === ext.passo);
 
 /** Erros do toolkit.json: campos, nome, caminhos presos à pasta e arquivos que existem (o schema completo é o da setup). */
 export function validarToolkit(pasta, nomeEsperado = null, fw = null) {
@@ -453,9 +446,10 @@ export function validarToolkit(pasta, nomeEsperado = null, fw = null) {
   for (const s of m.skills || []) {
     existe(s.caminho, "skills");
     if (s.passo?.agente && !agentes.has(s.passo.agente)) erros.push(`passo de ${s.caminho}: agente ${s.passo.agente} não está em agentes`);
-    if ((s.passo?.passo || s.passo?.papel) && ganchos) {
+    if (s.passo && !s.passo.passo) erros.push(`passo de ${s.caminho}: use o id do passo (passo.passo)`);
+    else if (s.passo && ganchos) {
       const g = ganchoDe(ganchos, s.passo);
-      if (!g) erros.push(`passo de ${s.caminho}: ${s.passo.passo ? `${s.passo.passo} não existe no Sabiá instalado` : `o papel ${s.passo.papel} não tem passo que aceite desvio`}`);
+      if (!g) erros.push(`passo de ${s.caminho}: ${s.passo.passo} não existe no Sabiá instalado`);
       else if (!g.x.desvio) erros.push(`passo de ${s.caminho}: ${s.passo.passo} não aceita desvio de toolkit`);
     }
   }
@@ -539,7 +533,7 @@ export async function instalarToolkit(alvo, opcoes = {}) {
   // mesmos nomes de skill e de agente: as duas no usuário se sobrescreveriam
   if (rival) throw new Error(`${baixado} e ${rival} são versões do mesmo toolkit (base ${familia}); instale um só: sabia toolkits remover ${rival}`);
   const tk = (inv.toolkits[baixado] ||= { versao: m.versao, alvos: {} });
-  const doInv = Object.keys(inv.alvos).filter((a) => ALVOS.includes(a));
+  const doInv = Object.keys(inv.alvos);
   const alvos = opcoes.alvo || !doInv.length ? await escolherAlvos(opcoes) : doInv;
   try {
     for (const a of alvos.filter((x) => x !== "kiro")) {
@@ -586,7 +580,7 @@ export async function atualizarToolkits(nome, opcoes = {}) {
     const origem = JSON.parse(fs.readFileSync(sabia("toolkits", n, ".origem.json"), "utf8"));
     const alvo = origem.indice ? n : `${origem.url}${origem.ref ? "@" + origem.ref : ""}`;
     await instalarToolkit(alvo, { ...opcoes, atualizar: true, indice: origem.indice || opcoes.indice,
-      alvo: Object.keys(inv.toolkits[n]?.alvos || {}).filter((a) => ALVOS.includes(a)).join(",") || "kiro" });
+      alvo: Object.keys(inv.toolkits[n]?.alvos || {}).join(",") || "kiro" });
   }
 }
 
@@ -665,10 +659,15 @@ function contextoRota(opcoes) {
     const man = lerJson(path.join(dir, "toolkit.json"), null);
     const ext = man?.skills?.find((x) => x.caminho === e.skill && x.passo)?.passo;
     if (!ext) { ctx.log(`aviso: toolkit ${e.toolkit} sem passo em ${e.skill} (${curto(dir)})`); return []; }
+    if (!ext.passo) {
+      ctx.log(`aviso: toolkit ${e.toolkit}: o passo de ${e.skill} não tem o id: use o id do passo (passo.passo)`
+        + ` e reinstale o toolkit (\`sabia toolkits atualizar ${e.toolkit}\`) — ignorado`);
+      return [];
+    }
     // como o gancho() do gerador: só passo do framework com "desvio": true (senão o gerador recusa e o prompt não o tem)
     const g = ganchoDe(m, ext), passo = g?.x.desvio ? g.id : null;
     if (!passo) {
-      ctx.log(`aviso: toolkit ${e.toolkit}: ${ext.passo ? `o passo ${ext.passo}` : `o papel ${ext.papel}`} não aceita desvio de toolkit (o gerador recusa) — ignorado`);
+      ctx.log(`aviso: toolkit ${e.toolkit}: o passo ${ext.passo} não aceita desvio de toolkit (o gerador recusa) — ignorado`);
       return [];
     }
     const agente = e.agente && ext.agente ? ext.agente : null;

@@ -4,7 +4,7 @@ description: "Agile project planning in the Sabiá flow, tuned for teams that wo
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "1.1.3"
+  version: "2.0.0-alpha.1"
 ---
 
 # sa-planejamento — Planejar o fluxo, não só o calendário

@@ -4,7 +4,7 @@ description: "Breaks an approved PRD of the Sabiá flow into vertical slices (fa
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "1.1.3"
+  version: "2.0.0-alpha.1"
 ---
 
 # sa-fatiar — PRD → fatias verticais

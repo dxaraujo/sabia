@@ -113,7 +113,6 @@ test("validação: recusa a fonte com erro, com arquivo:linha", () => {
   const casos = {
     "fluxo/sa-a/a/passos/orfao.md": [passo("x"), /passo orfao órfão/],
     "fluxo/sa-b/y/y.md": [mestre({ fluxo: "y", dono: "sa-dois", passos: [{ id: "fim" }] }), /falta "quando"/],
-    "fluxo/sa-b/x/x.md": [mestre({ fluxo: "x", dono: "sa-dois", quando: ["q"], passos: [{ id: "olhar", papel_1x: ["desenvolvedor"] }] }), /passo olhar: papel_1x sem "desvio": true/],
     "fluxo/sa-a/a/a.md": [mestre({ fluxo: "a", dono: "sa-um", travas_gerais: ["nao-existe"], passos: [{ id: "ini", saidas: { z: "nada" } }, { id: "rev", chama: "sa-zz.q" }] }), /trava nao-existe fora do catálogo[\s\S]*saída "z"[\s\S]*chama sa-zz\.q inexistente/],
   };
   for (const [f, [conteudo, erro]] of Object.entries(casos)) {

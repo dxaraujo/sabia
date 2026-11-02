@@ -1,5 +1,5 @@
 ---
-{"resumo": "Roda os comandos da seção Comandos do sabia.md (compilar, testes, lint, cobertura com gate) e para no primeiro vermelho; substitui o verificar.sh."}
+{"resumo": "Roda os comandos da seção Comandos do sabia.md (compilar, testes, lint, cobertura com gate) e para no primeiro vermelho."}
 ---
 ## Entrada
 

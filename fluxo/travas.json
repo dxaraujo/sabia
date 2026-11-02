@@ -1,5 +1,5 @@
 {
-  "$comment": "Catálogo das travas do Sabiá. O gerador escreve o texto curto de cada trava no índice do prompt do agente; o corpo dos passos nunca as repete. Na 2.0 nenhuma é liberável (liberavel_por vazio); numa 2.x, liberavel_por: [\"projeto\"] e {\"liberar\": [...], \"motivo\", \"por\"} no mestre do projeto.",
+  "$comment": "Catálogo das travas do Sabiá. O gerador escreve o texto curto de cada trava no índice do prompt do agente; o corpo dos passos nunca as repete. Nenhuma é liberável (liberavel_por vazio); o formato prevê liberavel_por: [\"projeto\"] e {\"liberar\": [...], \"motivo\", \"por\"} no mestre do projeto.",
   "travas": {
     "sim-da-pessoa": {"texto": "commit, push e escrita no ELM só com o \"sim\" da pessoa; o GATE para a sessão", "liberavel_por": []},
     "backpressure": {"texto": "nada é dado como pronto nem comitado sem o passo validar verde: compilando, testes passando, lint e cobertura com o gate", "liberavel_por": []},

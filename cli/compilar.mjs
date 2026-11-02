@@ -1,5 +1,5 @@
 // Compilador as-built do Sabiá: fluxo/ + padrao/ + skills/ (a fonte, no framework) → skills comuns (SKILL.md +
-// references/) numa pasta de staging, uma por alvo. Seção 11 do plano da 2.0.
+// references/) numa pasta de staging, uma por alvo.
 import fs from "node:fs";
 import path from "node:path";
 
@@ -92,14 +92,13 @@ function modoChamada(m, dono, alvo) {
 
 // ---------------------------------------------------------------- validação
 
-/** Erros "arquivo:linha: mensagem" da fonte (as regras do conferidor da F2.0). Lista vazia = pronta para compilar. */
+/** Erros "arquivo:linha: mensagem" da fonte. Lista vazia = pronta para compilar. */
 export function validar(m) {
   const erros = [];
   const rel = (f) => path.relative(m.fw, f);
   const e = (f, n, msg) => erros.push(`${rel(f)}:${n}: ${msg}`);
   const porSkill = {};
   for (const fl of Object.values(m.fluxos)) (porSkill[fl.skill] ||= []).push(fl);
-  const papeis1x = {};  // papel do toolkit 1.x (passo.papel) → o passo com desvio dele: um só
 
   for (const [q, fl] of Object.entries(m.fluxos)) {
     const { d } = fl;
@@ -136,11 +135,6 @@ export function validar(m) {
       if (!x.dados.resumo) e(x.arq, 2, "passo sem resumo");
       for (const sec of ["## Entrada", "## Faça", "## Saída", "## Pare se"]) if (!x.corpo.includes(sec)) e(x.arq, 1, `falta ${sec}`);
       for (const t of x.travas || []) if (!m.travas[t]) e(fl.arq, 2, `passo ${x.id}: trava ${t} fora do catálogo`);
-      for (const p of x.papel_1x || []) {
-        if (!x.desvio) e(fl.arq, 2, `passo ${x.id}: papel_1x sem "desvio": true`);
-        else if (papeis1x[p]) e(fl.arq, 2, `passo ${x.id}: papel_1x ${p} já é de ${papeis1x[p]}`);
-        papeis1x[p] ||= `${q}.${x.id}`;
-      }
       for (const c of [].concat(x.chama || [])) {
         const r = resolverId(m, c);
         if (!r) e(fl.arq, 2, `passo ${x.id}: chama ${c} inexistente`);

@@ -45,7 +45,7 @@ e quais verificações a `sa-verificar` usa para executar os cenários de aceite
    esses só existem com manifesto).
 5. **Skills avulsas** (sem toolkit): entram no inventário geral; a pessoa decide por agente, como qualquer outra.
 
-Ficam de fora do inventário: as skills deste power (`sabia`, `sa-*`) e `sdd`, `sdd-*`, `sdd2`, `sdd2-*` de uma instalação antiga.
+Ficam de fora do inventário: as skills deste power (`sabia`, `sa-*`).
 
 Use `glob`/`ls` nesses caminhos (expandindo `~` para o home). Pastas inexistentes são normais — siga sem comentar.
 Nunca leia arquivos de credenciais que encontrar no caminho.
@@ -98,9 +98,9 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
 |---|---|
 | `tipos-de-projeto` | casa com o tipo detectado → o toolkit vira **sugestão** (nunca é ligado sem a pessoa dizer sim) |
 | `deteccao` | `arquivos` existe na raiz (ou em módulos) **e** algum `contem` aparece nele → toolkit "detectado" |
-| `skills[].papeis` | **quem:** pré-seleciona a skill na proposta de cada agente (`produto`, `especificador`, `pesquisador`, `desenvolvedor` — era `codificador`: toolkit com o nome antigo em `papeis` precisa de versão nova —, `revisor`, `verificador`, `orquestrador`) — uma skill pode servir a vários |
+| `skills[].papeis` | **quem:** pré-seleciona a skill na proposta de cada agente (`produto`, `especificador`, `pesquisador`, `desenvolvedor`, `revisor`, `verificador`, `orquestrador`) — uma skill pode servir a vários |
 | `skills[].stack`, `skills[].deteccao` | **onde:** a stack da skill (ex.: `java 17`, `react`); com `deteccao`, a setup só a pré-marca se o repositório casar |
-| `skills[].passo` | **em que passo:** opcional — a skill assume o passo de um agente do Sabiá, pelo id (`passo`: `sa-codificar.codificar.tarefa` ou `sa-prd.prd.escrever`, os únicos com `"desvio": true` no mestre), com o `para` e, opcionais, os `arquivos` (globs) e o `agente` a quem delegar — ver [Passos](#passos). Toolkit 1.x: `papel` (`especificador`, `desenvolvedor`) no lugar do id, ainda aceito |
+| `skills[].passo` | **em que passo:** opcional — a skill assume o passo de um agente do Sabiá, pelo id (`passo`: `sa-codificar.codificar.tarefa` ou `sa-prd.prd.escrever`, os únicos com `"desvio": true` no mestre), com o `para` e, opcionais, os `arquivos` (globs) e o `agente` a quem delegar — ver [Passos](#passos) |
 | `autor` | **obrigatório:** `nome` e `area` de quem fez e responde pelo toolkit (`email` opcional). Aparece no W5 e no `sabia toolkits listar`; toolkit sem autor é recusado |
 | `customiza` | opcional: o toolkit é uma **cópia modificada** de outro (`toolkit`, a `versao` de onde saiu e as `mudancas`) — ver [Customização](#customização) |
 | `agentes[]` | agentes neutros do toolkit (nome, descrição, prompt, skills, subagentes); sem campo de permissão |
@@ -118,8 +118,6 @@ estão em [passos.md](../../sabia/references/passos.md).
 - **Pelo id do passo:** `passo.passo` é o id qualificado (`sa-codificar.codificar.tarefa`); o dono do fluxo no mestre é
   quem recebe o desvio. Só vale em passo com `"desvio": true` no mestre; passo inexistente, ou sem `desvio` → o gerador
   recusa e não grava nada. `arquivos` (globs) e `para` vão juntos na linha do prompt: casou um ou o outro → toolkit.
-- **Toolkit 1.x** (`passo.papel`): ainda aceito, pelo `papel_1x` do passo no mestre — `especificador` →
-  `sa-prd.prd.escrever`, `desenvolvedor` (ou `codificador`, o nome antigo) → `sa-codificar.codificar.tarefa`.
 - **Fora da compilação:** o toolkit não entra nas skills `sa-*` compiladas. A skill compilada leva só o gancho (⇢ na
   tabela do fluxo) no passo com desvio; o desvio vem do projeto: `agentes.json` → prompt do dono, e a tabela **Desvios de
   toolkit** do `sabia.md`, que vale também na sessão sem agente.

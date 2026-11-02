@@ -4,7 +4,7 @@ description: "Skill for whoever handles support in the Sabiá flow — carries o
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "1.1.3"
+  version: "2.0.0-alpha.1"
 ---
 
 # sa-atender — Atender sem perder o rastro

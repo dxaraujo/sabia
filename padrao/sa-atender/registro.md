@@ -32,7 +32,7 @@ Arquivo: `.sabia/local/sustentacao/atendimento/AT-012/contas-bloqueadas-2026-09.
 ## Créditos
 | Data | Papel | Login | Sessão Kiro | Power sabia | Créditos |
 |---|---|---|---|---|---|
-| 2026-10-14T16:20:05 | atendimento | joao.lima | 5753e516 | 1.0.0 | 3.12 |
+| 2026-10-14T16:20:05 | atendimento | joao.lima | 5753e516 | 2.0.0 | 3.12 |
 
 **ELM:** feito | pendente: <o que falta>
 **Saída:** — | FT-040 (defeito, pela triagem) | lição L-015

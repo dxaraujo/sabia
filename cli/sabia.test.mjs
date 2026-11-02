@@ -41,7 +41,7 @@ beforeEach(() => {
 
 const skill = (nome) => path.join(home, ".config/opencode/skills", nome, "SKILL.md");
 
-test("instala no opencode e no Kiro, com o inventário; o claude não é mais alvo", async () => {
+test("instala no opencode e no Kiro, com o inventário; cursor é ferramenta desconhecida", async () => {
   await s.instalar({ fonte: framework("fw", "1.1.0"), alvo: "opencode,kiro" });
   assert.equal(fs.readFileSync(skill("sa-setup"), "utf8"), "sa-setup 1.1.0");
   assert.ok(fs.existsSync(path.join(home, ".sabia/framework/skills/sa-setup/SKILL.md")));
@@ -53,10 +53,8 @@ test("instala no opencode e no Kiro, com o inventário; o claude não é mais al
   assert.deepEqual(inv.alvos.opencode.mcp, ["elm"]);
   assert.deepEqual(inv.alvos.kiro, { power: "sabia" });
   assert.ok(chamadas.includes("opencode mcp add --global --env UV_SYSTEM_CERTS=true elm -- uvx mcp-elm@latest"));
-  assert.ok(!chamadas.some((c) => c.startsWith("claude")));
-  await assert.rejects(s.instalar({ fonte: framework("fw", "1.1.0"), alvo: "claude" }), /ferramenta desconhecida: claude \(use kiro, opencode\)/);
-  assert.ok(!("claude" in s.lerInventario().alvos));
-  assert.deepEqual(s.PASTA_SKILLS.claude, undefined);
+  await assert.rejects(s.instalar({ fonte: framework("fw", "1.1.0"), alvo: "cursor" }), /ferramenta desconhecida: cursor \(use kiro, opencode\)/);
+  assert.ok(!("cursor" in s.lerInventario().alvos));
 });
 
 test("MCP que já existe não é registrado nem entra no inventário", async () => {
@@ -88,28 +86,6 @@ test("atualizar mostra a diferença, troca as cópias, tira a skill que saiu e p
   await s.atualizar({ fonte: framework("fw3b", "1.3.0", ["sabia", "sa-setup"]) });
   assert.ok(!fs.existsSync(skill("sa-codificar")));
   assert.ok(!("~/.config/opencode/skills/sa-codificar" in s.lerInventario().alvos.opencode.copias));
-});
-
-test("alvo claude de um inventário antigo: atualizar ignora; desinstalar apaga só as cópias registradas, sem MCP", async () => {
-  await s.instalar({ fonte: framework("fw1", "1.1.0"), alvo: "opencode", semMcp: true });
-  const velha = escrever(path.join(home, ".claude/skills/sa-setup"), { "SKILL.md": "sa-setup 1.1.0" });
-  escrever(home, { ".claude/skills/minha/SKILL.md": "minha" });
-  const inv = s.lerInventario();
-  inv.alvos.claude = { copias: { "~/.claude/skills/sa-setup": s.hashes(velha) }, mcp: ["elm"] };
-  s.gravarInventario(inv);
-  const logs = [];
-  s.ctx.log = (...xs) => logs.push(xs.join(" "));
-  respostas = ["s"];
-  await s.atualizar({ fonte: framework("fw2", "1.2.0") });
-  assert.equal(fs.readFileSync(skill("sa-setup"), "utf8"), "sa-setup 1.2.0");
-  assert.equal(fs.readFileSync(path.join(velha, "SKILL.md"), "utf8"), "sa-setup 1.1.0");
-  assert.ok(logs.some((l) => /claude: não é mais alvo do Sabiá .* ignorado/.test(l)));
-  await s.desinstalar({ alvo: "claude" });
-  assert.ok(!fs.existsSync(velha));
-  assert.ok(fs.existsSync(path.join(home, ".claude/skills/minha/SKILL.md")));
-  assert.ok(!chamadas.some((c) => c.startsWith("claude")));
-  assert.ok(logs.some((l) => /claude: os MCPs elm ficam/.test(l)));
-  assert.ok(!("claude" in s.lerInventario().alvos) && "opencode" in s.lerInventario().alvos);
 });
 
 test("skill de fluxo é compilada: os passos gerados entram no inventário e o passo editado à mão é detectado", async () => {
@@ -171,7 +147,7 @@ function toolkit(base, mudar = {}) {
     "agentes/job.md": "job",
     "toolkit.json": { nome: "batch-alfa", versao: "1.0.0", descricao: "toolkit fictício", autor: { nome: "Ana Exemplo", area: "Equipe Alfa" },
       "tipos-de-projeto": ["batch"],
-      skills: [{ caminho: "skills/batch/SKILL.md", papeis: ["desenvolvedor"], passo: { papel: "desenvolvedor", para: "job", agente: "batch-job" } }],
+      skills: [{ caminho: "skills/batch/SKILL.md", papeis: ["desenvolvedor"], passo: { passo: "sa-codificar.codificar.tarefa", para: "job", agente: "batch-job" } }],
       agentes: [{ nome: "batch-job", descricao: "codifica um job", prompt: "agentes/job.md", skills: ["skills/batch/SKILL.md"] }], ...mudar },
   });
 }
@@ -250,10 +226,9 @@ test("o passo do toolkit pelo id: só em passo do Sabiá com gancho de desvio", 
   assert.match(s.validarToolkit(toolkit(path.join(raiz, "a"), comPasso("sa-codificar.codificar.validar")), null, repo).join(), /não aceita desvio/);
   assert.match(s.validarToolkit(toolkit(path.join(raiz, "b"), comPasso("sa-codificar.codificar.nada")), null, repo).join(), /não existe/);
   assert.deepEqual(s.validarToolkit(toolkit(path.join(raiz, "c"), comPasso("sa-codificar.codificar.nada"))), []);  // sem framework: fica para a setup
-  // toolkit 1.x: o papel vale pelo `papel_1x` do mestre (codificador é o nome antigo de desenvolvedor)
-  const comPapel = (papel) => ({ skills: [{ caminho: "skills/batch/SKILL.md", papeis: ["desenvolvedor"], passo: { papel, para: "job de batch" } }] });
-  for (const p of ["desenvolvedor", "codificador", "especificador"]) assert.deepEqual(s.validarToolkit(toolkit(path.join(raiz, `p-${p}`), comPapel(p)), null, repo), [], p);
-  assert.match(s.validarToolkit(toolkit(path.join(raiz, "p-x"), comPapel("arquiteto")), null, repo).join(), /o papel arquiteto não tem passo que aceite desvio/);
+  // passo sem o id (passo.papel) é recusado, com ou sem o framework
+  const semId = { skills: [{ caminho: "skills/batch/SKILL.md", papeis: ["desenvolvedor"], passo: { papel: "desenvolvedor", para: "job de batch" } }] };
+  for (const fw of [repo, null]) assert.match(s.validarToolkit(toolkit(path.join(raiz, `p-${!!fw}`), semId), null, fw).join(), /passo de skills\/batch\/SKILL\.md: use o id do passo \(passo\.passo\)/);
 });
 
 test("toolkit inválido é recusado e nada é gravado", async () => {
@@ -297,7 +272,7 @@ function cenarioRota() {
     "plugin.json": { name: "sabia", version: "2.0.0" },
     "fluxo/travas.json": { travas: { "sim-da-pessoa": { texto: "sim" }, "toolkit-sem-commit": { texto: "sem commit" }, "revisao-independente": { texto: "outro revisa" } } },
     "fluxo/sa-codificar/codificar/codificar.md": mestre({ fluxo: "codificar", dono: "sa-desenvolvedor", travas_gerais: ["sim-da-pessoa"], passos: [
-      { id: "tarefa", desvio: true, papel_1x: ["desenvolvedor", "codificador"], travas: ["toolkit-sem-commit"], saidas: { "ainda há tarefa: não marcada": "tarefa" } },
+      { id: "tarefa", desvio: true, travas: ["toolkit-sem-commit"], saidas: { "ainda há tarefa: não marcada": "tarefa" } },
       { id: "revisar", chama: "sa-revisar.revisar", travas: ["revisao-independente"], saidas: { REVISAR: "tarefa" } },
       { id: "rito", removivel: true },
       { id: "pr", saidas: { "PR aberto": "→ sa-revisar.hitl", "sem GATE": "fim" } }] }),
@@ -307,14 +282,13 @@ function cenarioRota() {
   escrever(path.join(home, ".sabia/toolkits/batch-alfa"), {
     "toolkit.json": { nome: "batch-alfa", versao: "1.0.0",
       skills: [{ caminho: "skills/batch/SKILL.md", passo: { passo: "sa-codificar.codificar.tarefa", para: "tarefa de job", arquivos: ["src/*.java", "**/*JobConfig.java"], agente: "batch-job" } },
-        { caminho: "skills/sql/SKILL.md", passo: { passo: "sa-codificar.codificar.revisar", para: "sql", arquivos: ["**/*.sql"] } },  // passo sem gancho
-        { caminho: "skills/kt/SKILL.md", passo: { papel: "arquiteto", para: "kotlin", arquivos: ["**/*.kt"] } }],  // papel 1.x sem gancho
+        { caminho: "skills/sql/SKILL.md", passo: { passo: "sa-codificar.codificar.revisar", para: "sql", arquivos: ["**/*.sql"] } }],  // passo sem gancho
       agentes: [{ nome: "batch-job", prompt: "agentes/job.md", skills: ["skills/batch/SKILL.md", "skills/java/SKILL.md"] }] },
   });
   const projeto = escrever(path.join(raiz, "proj"), {
     ".sabia/config/agentes.json": { toolkits: { "batch-alfa": { pasta: "~/.sabia/toolkits/batch-alfa", versao: "1.0.0" } },
       passos: [{ toolkit: "batch-alfa", skill: "skills/batch/SKILL.md", agente: true },
-        { toolkit: "batch-alfa", skill: "skills/sql/SKILL.md" }, { toolkit: "batch-alfa", skill: "skills/kt/SKILL.md" }] },
+        { toolkit: "batch-alfa", skill: "skills/sql/SKILL.md" }] },
     ".sabia/fluxo/sa-codificar/codificar/codificar.md": '---\n{"inserir": [{"id": "fim2", "depois": "metricas"}, {"id": "metricas", "depois": "revisar"}], "remover": ["rito"]}\n---\n',
     ".sabia/fluxo/sa-codificar/codificar/passos/tarefa.md": '---\n{"base": "3f9a1c0b7e21"}\n---\n## Entrada\n',
     ".sabia/fluxo/sa-codificar/codificar/passos/metricas.md": "---\n{}\n---\n## Entrada\n",
@@ -345,23 +319,24 @@ test("rota de um arquivo: o desvio que casa, o dono, o motivo e as travas; sem c
   const sem = s.rota("src/main/java/x/PedidoDto.java", o);
   assert.match(sem, /^desvio +— fluxo padrão +nenhum padrão casou$/m);
   assert.match(sem, /^pelo texto +"tarefa de job" → batch-job/m);
-  // desvio em passo sem gancho (ou papel 1.x sem gancho): o gerador recusa, a rota não o mostra
-  for (const f of ["db/x.sql", "src/A.kt"]) assert.match(s.rota(f, o), /^desvio +— fluxo padrão/m);
+  // desvio em passo sem gancho: o gerador recusa, a rota não o mostra
+  assert.match(s.rota("db/x.sql", o), /^desvio +— fluxo padrão/m);
   // sem o projeto: o passo do Sabiá, sem agente gerado
   const fora = s.rota("x.java", { framework: o.framework, projeto: path.join(raiz, "vazio") });
   assert.match(fora, /^passo +sa-codificar\.codificar\.tarefa +.*fw-rota\/fluxo\/sa-codificar\/codificar\/passos\/tarefa\.md \(Sabiá 2\.0\.0\)$/m);
   assert.match(fora, /agente não gerado neste projeto/);
 });
 
-test("rota do toolkit 1.x: o passo vem do papel_1x do mestre", () => {
-  const o = cenarioRota();
-  escrever(path.join(home, ".sabia/toolkits/kt1x"), { "toolkit.json": { nome: "kt1x", versao: "0.9.0",
-    skills: [{ caminho: "skills/kt/SKILL.md", passo: { papel: "codificador", para: "kotlin", arquivos: ["**/*.kt"] } }] } });
-  const projeto = escrever(path.join(raiz, "proj1x"), { ".sabia/config/agentes.json": { toolkits: { kt1x: { pasta: "~/.sabia/toolkits/kt1x" } },
-    passos: [{ toolkit: "kt1x", skill: "skills/kt/SKILL.md" }] } });
-  const r = s.rota("src/A.kt", { framework: o.framework, projeto });
-  assert.match(r, /^passo +sa-codificar\.codificar\.tarefa /m);
-  assert.match(r, /^desvio +skill kt +toolkit kt1x 0\.9\.0$/m);
+test("rota: toolkit instalado com o passo sem o id avisa o que fazer e não desvia", () => {
+  const o = cenarioRota(), logs = [];
+  const tk = path.join(home, ".sabia/toolkits/batch-alfa/toolkit.json"), man = JSON.parse(fs.readFileSync(tk, "utf8"));
+  delete man.skills[0].passo.passo;
+  fs.writeFileSync(tk, JSON.stringify(man));
+  s.ctx.log = (x) => logs.push(x);
+  try {
+    assert.match(s.rota(path.join(o.projeto, "src/main/java/x/ImportarPedidosJobConfig.java"), o), /^desvio +— fluxo padrão/m);
+  } finally { s.ctx.log = () => {}; }
+  assert.ok(logs.some((x) => /não tem o id: use o id do passo \(passo\.passo\) e reinstale o toolkit \(`sabia toolkits atualizar batch-alfa`\)/.test(x)));
 });
 
 test("rota de uma tarefa do tasks.md: casa pelos arquivos que ela cita; sem casar, o texto dela e os para", () => {

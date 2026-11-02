@@ -7,7 +7,7 @@ Os agentes são **gerados**, nunca editados à mão. Cinco fontes:
 | `papeis.json` | [../assets/agents/](../assets/agents/papeis.json) (power) | permissões de cada papel: escrita, registros, nível de shell, push e MCPs |
 | `sa-<papel>.md` | [../assets/agents/](../assets/agents/) (power) | o prompt de cada agente |
 | `agentes.json` | `.sabia/config/agentes.json` (projeto, versionado) | as escolhas do projeto: caminhos, comandos, skills e MCPs por agente |
-| mestres dos fluxos | `~/.sabia/framework/fluxo/<skill>/<fluxo>/<fluxo>.md` (framework instalado; `--framework` troca) | o dono de cada fluxo, os passos e quais aceitam desvio (`"desvio": true`; o `papel_1x` diz o papel dos toolkits 1.x que cai nele) |
+| mestres dos fluxos | `~/.sabia/framework/fluxo/<skill>/<fluxo>/<fluxo>.md` (framework instalado; `--framework` troca) | o dono de cada fluxo, os passos e quais aceitam desvio (`"desvio": true`) |
 | override | `.sabia/fluxo/` e `.sabia/padrao/` (projeto, esparso; harness) | o que o projeto customizou: vira o [delta](#o-prompt-delta-do-override-e-chamada-entre-fluxos) no prompt do dono |
 
 O script [../scripts/gerar_agentes.py](../scripts/gerar_agentes.py) junta as cinco e grava os sete agentes, mais os agentes dos passos de toolkit ligados, em cada alvo (`.kiro/agents/<nome>.json`, `.opencode/agents/<nome>.md`):
@@ -84,8 +84,8 @@ do agente, que o gerador monta depois do `sa-<papel>.md`:
   por fluxos de vários donos). Sem override → nada.
 - **Recusa** (código 1, nada gravado): arquivo que não é `.md` ou não é passo ou padrão do Sabiá; cópia sem `base`;
   no `<f>.md` do projeto, operação que não seja `inserir` ou `remover` (`liberar` existe no formato, mas nenhuma trava
-  é liberável na 2.0); `remover` de passo sem `removivel` ou com trava; `inserir` com id inválido, repetido, `depois`
-  inexistente, em ciclo ou sem o arquivo; override com um framework 1.x (sem os fluxos).
+  é liberável); `remover` de passo sem `removivel` ou com trava; `inserir` com id inválido, repetido, `depois`
+  inexistente, em ciclo ou sem o arquivo; override com um framework sem os fluxos (`fluxo/` ausente ou incompleto).
 - **Aviso:** a `base` da cópia difere do original atual (o Sabiá mudou o passo desde a cópia) → compare e funda à mão.
 - **Desvios de toolkit** no passo de toolkit ligado (só em passo com `"desvio": true`): ver
   [toolkits.md](toolkits.md#passos).
