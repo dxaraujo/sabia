@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { beforeEach, test } from "node:test";
+import { afterEach, beforeEach, test } from "node:test";
 import * as s from "./sabia.mjs";
 
 let raiz, home, chamadas, respostas;
@@ -38,6 +38,8 @@ beforeEach(() => {
     return { status: 0, stdout: "", stderr: "" };
   };
 });
+
+afterEach(() => fs.rmSync(raiz, { recursive: true, force: true }));
 
 const skill = (nome) => path.join(home, ".config/opencode/skills", nome, "SKILL.md");
 

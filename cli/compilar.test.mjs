@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { beforeEach, test } from "node:test";
+import { afterEach, beforeEach, test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { carregar, compilar, grafoAscii, mapear, reescrever, slug, validar, validarToolkitFonte } from "./compilar.mjs";
 
@@ -52,6 +52,7 @@ function fixture(extra = {}) {
 }
 
 beforeEach(() => { raiz = fs.mkdtempSync(path.join(os.tmpdir(), "sabia-comp-")); });
+afterEach(() => fs.rmSync(raiz, { recursive: true, force: true }));
 
 const out = (st, f) => fs.readFileSync(path.join(st, "skills", f), "utf8");
 

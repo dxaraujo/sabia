@@ -193,8 +193,13 @@ export function separarRef(fonte) {
  * Baixa `url` (ou copia a pasta local) na `ref`, confere o `sha` e devolve { pasta, sha }. Clona com o git da
  * pessoa (credencial, SSH, CA), sem submódulos; nunca guarda token nem executa nada do que baixou.
  */
+// as cópias baixadas são lidas e copiadas para ~/.sabia durante o comando; somem quando o processo termina
+const temporarios = new Set();
+process.on("exit", () => { for (const t of temporarios) fs.rmSync(t, { recursive: true, force: true }); });
+
 export function baixar(url, { ref = null, sha = null, subpasta = null } = {}) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "sabia-"));
+  temporarios.add(tmp);
   const repo = path.join(tmp, "repo");
   let atual = null;
   if (fs.existsSync(url) && fs.statSync(url).isDirectory()) {
