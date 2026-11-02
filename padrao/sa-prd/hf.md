@@ -1,5 +1,5 @@
 ---
-{"resumo": "Corpo da história (HF): Como/quero/para, gatilho, cenários Dado/Quando/Então com a regra que conforma, regras e relações (o envelope OKF fica no okf-elm.md da sa-prd)."}
+{"resumo": "Corpo da história (HF): Como/quero/para, gatilho, telas (EL), cenários Dado/Quando/Então com a regra que conforma, regras e relações (o envelope OKF fica no okf-elm.md da sa-prd)."}
 ---
 # História (HF)
 
@@ -9,6 +9,7 @@
 **Como** <ator>, **quero** <capacidade>, **para** <benefício>.
 
 **Gatilho:** <ação na tela | chamada de API | agendamento | evento> · **Entradas:** <…> · **Pré-condições:** <…>
+**Telas:** [EL-01 <tela>](EL-01-<slug>.md)   <!-- só com a linha Telas = sim do sabia.md; sem tela na história, a linha sai -->
 
 ## Cenários
 1.1 <caminho feliz>

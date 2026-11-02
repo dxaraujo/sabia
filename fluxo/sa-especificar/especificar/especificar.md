@@ -1,12 +1,12 @@
 ---
 {"fluxo": "especificar", "dono": "sa-especificador",
- "quando": ["especificação de épico: EP-nn ou [ESP] EP-nn, da tarefa [ESP] à conclusão dela depois do GATE do backlog", "especificar o EP-03", "pegar a [ESP] do EP-03", "retomar a especificação", "fechar a sessão de especificação", "tenho a transcrição da reunião", "registrar a ata da reunião"],
+ "quando": ["especificação de épico: EP-nn ou [ESP] EP-nn, da tarefa [ESP] à conclusão dela depois do GATE do backlog", "especificar o EP-03", "pegar a [ESP] do EP-03", "retomar a especificação", "fechar a sessão de especificação", "tenho a transcrição da reunião", "registrar a ata da reunião", "tenho o protótipo", "o cliente aprovou o protótipo"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa"],
  "passos": [
    {"id": "entrada", "de": "entrada", "sprint": "exige", "saidas": {"concluido com a Especificação ainda iniciada (só os itens 2–3 de Depois do GATE do backlog)": "fechamentos"}},
    {"id": "assumir"},
    {"id": "pasta"},
-   {"id": "encaminhar", "chama": ["sa-especificar.reuniao", "sa-prd.prd", "sa-fatiar.fatiar"], "saidas": {"aprovado na pasta de trabalho, ou fatiado com a Especificação iniciada": "fechamentos"}},
+   {"id": "encaminhar", "chama": ["sa-especificar.reuniao", "sa-especificar.prototipo", "sa-prd.prd", "sa-fatiar.fatiar"], "saidas": {"aprovado na pasta de trabalho, ou fatiado com a Especificação iniciada": "fechamentos"}},
    {"id": "fechar-sessao", "saidas": {"sessão sem GATE novo": "fim"}},
    {"id": "fechamentos", "saidas": {"GATE do PRD: PRD aprovado na base": "→ sa-fatiar.fatiar"}}
  ]}

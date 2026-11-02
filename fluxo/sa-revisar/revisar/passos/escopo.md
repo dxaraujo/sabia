@@ -9,7 +9,7 @@ O pedido: PRD de um épico, plano de uma fatia ou código de uma fatia.
 
 | Pedido | Rubrica | Entrada |
 |---|---|---|
-| PRD de um épico | **P** | `prd.md`, os conceitos de `elm/`, `decisoes.md`, glossário, bundle do ELM pelo `elm_buscar_req_local` (para P6) |
+| PRD de um épico | **P** | `prd.md`, os conceitos de `elm/`, `decisoes.md`, glossário, bundle do ELM pelo `elm_buscar_req_local` (para P6); com a linha Telas = `sim` do `sabia.md`, ela e o arquivo do protótipo aprovado em `prototipo/` (o da última versão registrada, com o `D-nn` `Protótipo v<N> aprovado`) (para P12) |
 | plano de uma fatia | **L** | `.kiro/specs/<ft>/`: `research.md`, `requirements.md`, `design.md`, `tasks.md`; PRD do épico; `backlog.md` (`cobre`) |
 | código de uma fatia | **C** | diff `git diff origin/<base>...HEAD` (worktree: `cd <worktree> && git diff origin/<base>...HEAD`), a pasta da fatia, o PRD |
 

@@ -15,7 +15,7 @@ o GATE. Monte-a pela primeira fonte que existir:
    EWM devolve UTC; o rascunho, hora local) e nunca pelo mtime dos arquivos, que muda a cada download → mostre as duas datas e pergunte se baixa os anexos (item 2)
    por cima da pasta local.
 2. **A `[ESP]` tem anexos** (`elm_anexo(id, "listar")`) → outra pessoa ou máquina já trabalhou: baixe cada `.md`
-   (`elm_anexo(id, "baixar", caminho)`) para a pasta (os de `elm/` para `elm/`, pelo prefixo `elm-` do nome do anexo). Mostre a
+   (`elm_anexo(id, "baixar", caminho)`) para a pasta (os de `elm/` para `elm/`, pelo prefixo `elm-` do nome do anexo) e cada `prototipo-v<N>-*` para `prototipo/`. Mostre a
    data do último comentário de sessão.
 3. **Só a base** → copie `rascunho.md`, `decisoes.md` e `status.md` de `<produto>/epicos/<EP>-<slug>/` em
    `origin/<base>` (`git show origin/<base>:<caminho>`, depois de `git fetch`; criados pela triagem).
@@ -32,12 +32,17 @@ situação fica no `backlog.md`), o início e os créditos de cada sessão. A tr
 `sa-especificar.reuniao`. Só nesta máquina: nenhuma das três fontes a traz, e ela não vai para anexo nem base (as
 atas, sim, pelo `elm/`). Crie a pasta vazia se não existir.
 
+**`prototipo/`** — só com a linha Telas = `sim` do `sabia.md`: onde a pessoa põe o arquivo de cada versão do
+protótipo de tela; o registro e a aprovação do cliente saem pelo `sa-especificar.prototipo`, e cada versão vai à
+`[ESP]` como anexo, não à base. Crie a pasta vazia se não existir.
+
 O `rascunho.md` é o **caderno do levantamento**: o que o cliente contou, exemplos reais, dúvidas para a próxima
 reunião, com a data de cada sessão. Decisões vão para o `decisoes.md` (`D-nn`), nunca só para o rascunho.
 
 ## Saída
 
-A pasta de trabalho com `rascunho.md`, `decisoes.md`, o `status.md` do épico e `reunioes/` → passo `encaminhar`.
+A pasta de trabalho com `rascunho.md`, `decisoes.md`, o `status.md` do épico, `reunioes/` e, com Telas = `sim`,
+`prototipo/` → passo `encaminhar`.
 
 ## Pare se
 

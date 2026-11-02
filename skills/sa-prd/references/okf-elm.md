@@ -94,6 +94,7 @@ prosa (§6.1):
 |---|---|
 | HF → REG | link relativo para o arquivo da REG |
 | HF/REG → termo | link relativo para o `GL-*.md` |
+| HF ↔ EL (Telas = `sim`) | link relativo nos dois corpos: a HF na linha `**Telas:**`, a EL em `## Histórias`; na publicação, a 2ª passada grava os ids nos dois |
 | restringe, satisfaz, elabora (requisito ↔ requisito) | prosa + link na seção `## Relações` |
 | ET as-built → ET inicial do épico | link relativo no **Elabora** do corpo (padrão `sa-prd/et.md`): é publicado |
 
@@ -130,6 +131,9 @@ okf_version: "0.2"
 # Termos
 * [Tentativa de login](GL-tentativa-de-login.md) - <description>
 
+# Leiautes
+* [EL - Desbloqueio da conta](EL-01-desbloqueio-da-conta.md) - <description>
+
 # Especificação técnica
 * [ET - EP-03 Bloqueio por tentativas](ET-bloqueio-por-tentativas.md) - <description>
 ```
@@ -143,6 +147,6 @@ okf_version: "0.2"
 2. Só chaves do OKF v0.2, mais `id` (e as que vieram do bundle numa cópia).
 3. `status` presente; `draft` antes do GATE, fora a ATA aprovada (`stable` desde a aprovação dela).
 4. `type` e `tags` existem em `rm.artefatos` do `pa_<nome>.json`.
-5. Toda HF tem cenários; todo conceito liga os que cita dos tipos da sua coluna Embute (a HF, as suas REGs); todo
-   link relativo aponta para um arquivo que existe.
+5. Toda HF tem cenários; todo conceito liga os que cita dos tipos da sua coluna Embute (a HF, as suas REGs); HF e
+   EL ligadas nos dois sentidos; todo link relativo aponta para um arquivo que existe.
 6. `index.md` lista todos os conceitos; `log.md` com datas `AAAA-MM-DD`.

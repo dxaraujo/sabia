@@ -30,7 +30,7 @@ atualizado: <AAAA-MM-DD>
 
 ## Histórias, regras e termos (artefatos do ELM)
 
-<!-- Cada história (HF), regra (REG) e termo novo (GL) é um conceito OKF v0.2 próprio em elm/ (formato em
+<!-- Cada história (HF), regra (REG), termo novo (GL) e leiaute (EL) é um conceito OKF v0.2 próprio em elm/ (formato em
      okf-elm.md da skill sa-prd): é o que sobe para o DOORS Next depois do GATE. Aqui fica só o índice.
      Cenários são os critérios de aceite: cada um é verificável e vira caso de teste (ETM). -->
 
@@ -40,6 +40,7 @@ atualizado: <AAAA-MM-DD>
 | HF-02 | [HF - <nome>](elm/HF-02-<slug>.md) | <description> | novo (verificado <AAAA-MM-DD>) |
 | REG-01 | — (existente no ELM) | <description> | reusa <id> |
 | GL | [<termo>](elm/GL-<termo>.md) | <definição curta> | novo (verificado <AAAA-MM-DD>) |
+| EL-01 | [EL - <tela>](elm/EL-01-<slug>.md) | <description> — só com a linha Telas = `sim` | novo (verificado <AAAA-MM-DD>) |
 | ET | [ET - EP-<nn> <título>](elm/ET-<slug>.md) | <description> — só com a linha ET = `inicial no PRD + as-built` | novo (verificado <AAAA-MM-DD>) |
 
 ## Decisões de implementação

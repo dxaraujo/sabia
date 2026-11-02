@@ -485,8 +485,7 @@ class Gerar(unittest.TestCase):
         casos = [(lambda: {**self.exemplo(), **self.exemplo("outro", padroes=[], rubricas=[], tipos={"HF": "outro.hf"})}, "tipo HF já é de toolkit exemplo"),
                  (lambda: {**self.exemplo(), **self.exemplo("outro", tipos={}, rubricas=[])}, "padrão sa-prd/hf.md já é de toolkit exemplo"),
                  (lambda: self.exemplo(rubricas=[{"id": "P2", "verificacao": "repete", "severidade": "BLOQUEANTE"}]), "rubrica P2 já é de Sabiá"),
-                 (lambda: self.exemplo(tipos={"EL": "exemplo.hf"}), "tipo EL → exemplo.hf: o tipo tem de ser desviável e não pendente"),
-                 (lambda: self.exemplo(tipos={"GL": "exemplo.hf"}), "tipo GL"),
+                 (lambda: self.exemplo(tipos={"GL": "exemplo.hf"}), "tipo GL → exemplo.hf: o tipo tem de ser desviável e não pendente"),
                  (lambda: self.exemplo(tipos={"CT": "exemplo.hf"}), "tipo CT"),  # CT não desvia (sem fluxo de toolkit)
                  (lambda: self.exemplo(padroes=["sa-prd/hf.md", "sa-revisar/rubricas.md"]), "padrão sa-revisar/rubricas.md: o toolkit não troca a rubrica do Sabiá"),
                  (lambda: self.exemplo(rubricas=[{"id": "EX1", "tipo": "HF"}]), "rubrica EX1: precisa de id, verificacao e severidade"),
@@ -495,6 +494,13 @@ class Gerar(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, re.escape(erro), msg=erro):
                 g.gerar(self.projeto, {**self.cfg, "toolkits": toolkits()})
             import shutil; shutil.rmtree(self.home / ".sabia")
+
+    def test_tipo_pendente_no_catalogo_e_recusado(self):
+        fw = Path(self.tmp.name) / "fw"
+        (fw / "fluxo").mkdir(parents=True)
+        (fw / "fluxo/tipos.json").write_text(json.dumps({"tipos": {"HF": {"desviavel": ["sa-prd.prd.escrever"], "pendente": True}}}))
+        with self.assertRaisesRegex(ValueError, re.escape("tipo HF → exemplo.hf: o tipo tem de ser desviável e não pendente")):
+            g.fonte_toolkits(self.projeto, {"toolkits": self.exemplo()}, fw, {})
 
     def test_escrever_do_prd_nao_aceita_desvio_por_passo(self):
         ruim = self.toolkit(skills=[{"caminho": "skills/batch/SKILL.md", "papeis": ["especificador"],

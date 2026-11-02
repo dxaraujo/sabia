@@ -160,8 +160,8 @@ de bloqueio com o erro em uma linha; a pessoa decide (corrigir o comando, seguir
 
 ## Passo 4 — Produto, conhecimento e ELM (cartão W4)
 
-O W4 mostra as nove linhas de uma vez (pasta do produto, glossário, ADRs, ELM, bundle, regras do ELM e as três
-políticas: ET, casos de teste e REG com dados técnicos), com uma pergunta. Glossário e ADRs aparecem sempre, mesmo
+O W4 mostra as dez linhas de uma vez (pasta do produto, glossário, ADRs, ELM, bundle, regras do ELM e as quatro
+políticas: ET, casos de teste, REG com dados técnicos e Telas), com uma pergunta. Glossário e ADRs aparecem sempre, mesmo
 quando a resposta é "não há". Faltando o `pa`, a montagem dele vem depois do "ok" do W4, em cartões próprios (um
 bloco por mensagem); antes do bloco 0, avise que é a parte mais longa (10 blocos) e o que ela decide.
 
@@ -181,11 +181,12 @@ bloco por mensagem); antes do bloco 0, avise que é a parte mais longa (10 bloco
      pessoa, escolhido de uma lista que você mostra; nada de deduzir nome, `qname`, time code ou enumeração, nem de
      copiar de um `pa` antigo sem mostrar a origem. O `pa` inteiro é mostrado para conferência antes de gravar, e a
      validação com itens de teste é recomendada.
-   - **Políticas** (linhas 7 a 9 do W4; a pessoa troca na resposta ao W4, e vale também com `Usa ELM: não`): **ET**
+   - **Políticas** (linhas 7 a 10 do W4; a pessoa troca na resposta ao W4, e vale também com `Usa ELM: não`): **ET**
      `não publica` | `só as-built` | `inicial no PRD + as-built` (padrão `não publica`); **Casos de teste** `ETM` |
      `CSV` (padrão: `ETM` com `qm` no `pa`, senão `CSV` — sem `qm`, `ETM` não vale; `pa` montado depois do W4 → a
      linha 8 mostra `<decide o bloco 9>` e o bloco 9 do `elm-pa.md` decide); **REG com dados técnicos** `não` |
-     `sim` (padrão `não`). Vão nas linhas de mesmo nome da seção ELM do `sabia.md`.
+     `sim` (padrão `não`); **Telas** `sim` | `não` (padrão `sim` quando os Tipos do projeto, do W1, incluem
+     `frontend`; senão `não`). Vão nas linhas de mesmo nome da seção ELM do `sabia.md`.
    - Seção ELM do `sabia.md`, sem perguntas (linha 6 do W4): publicar requisitos `na-aprovacao`, manual `nada`,
      pontos `não`, fatia dividida "filhos do item original", títulos das tarefas e colunas do `CT.csv` do template;
      a categoria do IB de defeito é a do bloco 5 do `elm-pa.md`. A Sustentação não é perguntada: o IB `Sustentação`

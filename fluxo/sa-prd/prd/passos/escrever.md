@@ -1,10 +1,12 @@
 ---
-{"resumo": "Preenche o prd.md (padrão sa-prd/prd.md) e cria em elm/ um conceito OKF por artefato, mais index.md e log.md, pelas regras de escrita e pelas políticas do sabia.md (ET inicial, REG com dados técnicos) e o limite do acordos.md; o tipo com fluxo de toolkit no prompt sai por esse fluxo."}
+{"resumo": "Preenche o prd.md (padrão sa-prd/prd.md) e cria em elm/ um conceito OKF por artefato, mais index.md e log.md, pelas regras de escrita e pelas políticas do sabia.md (ET inicial, REG com dados técnicos, Telas: a EL do protótipo aprovado) e o limite do acordos.md; o tipo com fluxo de toolkit no prompt sai por esse fluxo."}
 ---
 ## Entrada
 
-O `decisoes.md` e as decisões do passo `similares`; a seção ELM do `.sabia/sabia.md` (linhas ET e REG com dados
-técnicos) e a linha Especificação do `<produto>/acordos.md`.
+O `decisoes.md` e as decisões do passo `similares`; a seção ELM do `.sabia/sabia.md` (linhas ET, REG com dados
+técnicos e Telas) e a linha Especificação do `<produto>/acordos.md`. Com Telas = `sim`, o protótipo aprovado: o
+`D-nn` `Protótipo v<N> aprovado` da última versão registrada (o maior `prototipo-v<N>-*` em `prototipo/`) e o arquivo
+dela (passo `sa-especificar.prototipo.aprovacao`), ou o `D-nn` `Épico sem tela`.
 
 ## Faça
 
@@ -39,6 +41,11 @@ só aponta para eles. Regras de escrita:
   no padrão `sa-prd/et.md` (título `ET - EP-<nn> <título>`), escrita das Decisões de implementação do `prd.md` e das
   `D-nn`, ligando as histórias que atende; entra na tabela do PRD como os outros artefatos. Com `só as-built` ou
   `não publica`, nenhuma ET aqui: a as-built é do PR da fatia (passo `sa-codificar.codificar.pr`).
+- **Leiautes (EL)** — só com a linha Telas = `sim`: uma `EL-nn-<slug>.md` por tela que as histórias usam, no padrão
+  `sa-prd/el.md`, lida da versão aprovada do protótipo, a última registrada (nunca de outra versão nem de memória). A HF cita a EL da tela
+  (`**Telas:**`) e a EL lista as HFs que a usam (`## Histórias`): os dois sentidos, no mesmo lote. Campo, ação ou
+  mensagem do protótipo sem história, regra ou `D-nn` → `em aberto`. Com `não`, ou com o `D-nn` `Épico sem tela`,
+  nenhuma EL.
 - **Decisões de teste:** proponha os **pontos de teste** (seams) — o mais alto possível, idealmente um por
   comportamento — e confirme com a pessoa: é por eles que as fatias vão provar que funcionam.
 - Termos do glossário em todo o texto; termo novo já registrado pela entrevista.
@@ -54,3 +61,6 @@ só aponta para eles. Regras de escrita:
 - Acima do limite do épico (linha Especificação do `acordos.md`; sem ela, ~8 histórias ou mais de um objetivo de
   negócio) → a proposta de dividir vem antes da escrita (acima).
 - Artefato que surgir na escrita passa pelo passo `similares` antes de virar arquivo.
+- Telas = `sim` sem o `D-nn` `Protótipo v<N> aprovado` da última versão registrada e sem o `D-nn` `Épico sem tela` →
+  `sa-especificar.prototipo` (chama e volta) antes do lote: aprovado ou sem tela, siga; aguardando o protótipo, o
+  cliente ou a versão do ajuste, ali a sessão fecha.

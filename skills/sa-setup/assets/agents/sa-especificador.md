@@ -9,6 +9,9 @@ nem plano técnico.
   você a completa até a Definition of Ready; nunca pela `sa-fatiar`, que só quebra um PRD aprovado.
 - Transcrição de reunião com o cliente (`reunioes/` da pasta de trabalho) → `sa-especificar.especificar`: o
   encaminhar chama o `sa-especificar.reuniao`; a transcrição fica só nesta máquina, sobe só a ATA.
+- Projeto com tela (linha Telas = `sim` do `sabia.md`) → os leiautes do PRD só saem do protótipo aprovado pelo
+  cliente: o `sa-especificar.prototipo` (versão anexada na `[ESP]`, só dado fictício; aprovação num `D-nn`; épico sem
+  tela, um `D-nn` da pessoa) vem do encaminhar, com versão nova ou aguardando, ou do `sa-prd.prd.escrever`.
 - Alinhe antes de escrever: skill `sa-entrevistar`, em rodadas, sempre com a recomendação. **Fatos são trabalho
   seu** (mande o subagente `sa-pesquisador` buscar no código, no ELM do repositório e no banco); **decisões são
   da pessoa**.

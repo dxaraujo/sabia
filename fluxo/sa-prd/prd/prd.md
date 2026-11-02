@@ -6,7 +6,7 @@
    {"id": "entender", "chama": "sa-pesquisar.pesquisar", "saidas": {"sem registro na triagem": "→ sa-triar.triar", "sem a pasta de trabalho": "→ sa-especificar.especificar"}},
    {"id": "entrevistar", "chama": ["sa-entrevistar.entrevistar", "sa-especificar.reuniao"]},
    {"id": "similares"},
-   {"id": "escrever"},
+   {"id": "escrever", "chama": "sa-especificar.prototipo"},
    {"id": "revisao", "chama": "sa-revisar.revisar", "saidas": {"achado que é decisão de negócio": "entrevistar"}},
    {"id": "gate", "saidas": {"decisão em aberto que muda comportamento": "entrevistar", "primeiro GATE aprovado": "→ sa-especificar.especificar", "mudança depois de aprovado, aprovada: volta a quem chamou, ou o P.O. retoma pela sa-consolidar": "fim"}}
  ]}

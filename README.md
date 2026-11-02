@@ -60,7 +60,7 @@ Fontes no fim deste arquivo.
 | `sa-status` | painel "onde parei", WIP de revisão, próxima ação de maior alavanca |
 | `sa-triar` | entrada de toda demanda nova: triagem em qualquer trilha, duplicados, ficha da fatia padrão sem épico, registro no backlog (inclusive a Sustentação: categoria, AT-nnn/IM-nnn…, IB do item no EWM; a tarefa `[ATD]`/`[IMPL]`… nasce quando o item entra numa sprint), importação de itens do EWM, "mais algum item?" — não começa nada |
 | `sa-iniciar` | hub: recebe o item registrado (ou "minha próxima tarefa") e diz a skill do papel |
-| `sa-especificar` | Especificador: assume a `[ESP]`, conduz entrevista → PRD → fatias numa pasta local até o GATE, registra cada sessão na tarefa (comentário + anexos) e faz a ATA de cada reunião com o cliente a partir da transcrição |
+| `sa-especificar` | Especificador: assume a `[ESP]`, conduz entrevista → PRD → fatias numa pasta local até o GATE, registra cada sessão na tarefa (comentário + anexos), faz a ATA de cada reunião com o cliente a partir da transcrição e, em projeto com tela, registra o protótipo e a aprovação do cliente antes do PRD |
 | `sa-desenvolver` | Dev: compromisso (Definition of Ready, sprint/encaixe, WIP), `iniciada` na base, branch, pasta, assume a `[DEV]`; retomada pela fase; merge do PR aprovado, `pronta` na base e conclusão da `[DEV]` |
 | `sa-entrevistar` | alinhamento em rodadas (grill), decisões e glossário |
 | `sa-prd` | PRD do épico (o quê e por quê) e GATE do PRD |

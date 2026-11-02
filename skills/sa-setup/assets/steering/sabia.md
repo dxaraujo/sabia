@@ -126,6 +126,7 @@ Na worktree do `sa-orquestrar`: `cd .sabia/local/wt/<ft> && <comando>`. Falha de
 | ET | `<não publica | só as-built | inicial no PRD + as-built>` — só as-built: uma ET por fatia, escrita pelo Dev no PR; inicial no PRD + as-built: também uma ET inicial por épico, no lote do PRD (rubrica P13), e a as-built de cada fatia do épico ligada a ela (padrão `sa-prd/et.md`) |
 | Casos de teste | `<CSV | ETM>` — CSV: o `CT.csv` da fatia é a entrega, sem ELM pendente; ETM: a consolidação cria um caso por cenário (`elm_criar_ct`; precisa do `qm` no `pa`) |
 | REG com dados técnicos | `<não | sim>` — sim: a regra pode ter `## Dados` (tabela e campo na forma original), onde a P9 não vale |
+| Telas | `<não | sim>` — sim: antes do PRD, o protótipo aprovado pelo cliente (`sa-especificar.prototipo`, a aprovação num `D-nn`); no lote do PRD, uma EL por tela, lida dele (padrão `sa-prd/el.md`, rubrica P12) |
 | Manual no DOORS Next | `<change set, módulo, links restringe, baseline | nada>` |
 | Fatia dividida no EWM | `<itens novos como filhos do item original | fecha o original e cria itens novos>` |
 | Pontos P/M/G no EWM | `<não | 2 · 3 · 5>` (opcional; o planejamento prevê pela vazão) |

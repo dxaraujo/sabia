@@ -259,8 +259,8 @@ test("o repo real compila nos dois alvos e todo link da saída resolve", { skip:
 test("desvio por tipo no repo: o passo que cria um tipo desviável tem ⇢ e os tipos, sem \"desvio\": true", () => {
   const m = carregar(REPO), x = m.fluxos["sa-prd.prd"].passos.find((p) => p.id === "escrever");
   assert.ok(!x.desvio);
-  assert.deepEqual(x.tipos, ["HF", "REG", "ET"]);
-  assert.match(grafoAscii(m.fluxos["sa-prd.prd"]), /│ 4 escrever ⇢ +│──▶ ⇢ por tipo: HF, REG, ET\n/);
+  assert.deepEqual(x.tipos, ["HF", "REG", "EL", "ET"]);
+  assert.match(grafoAscii(m.fluxos["sa-prd.prd"]), /│ 4 escrever ⇢ +│──▶ ⇢ por tipo: HF, REG, EL, ET\n/);
   assert.ok(!m.fluxos["sa-prd.prd"].passos.some((p) => p.id === "similares" && p.tipos));
   // só os passos de "desviavel" do catálogo: a ET as-built do PR e a REG da ficha da fatia sem épico ficam do Sabiá (a ET inicial desvia)
   for (const [q, id] of [["sa-codificar.codificar", "pr"], ["sa-consolidar.consolidar", "elm"]]) {
@@ -314,17 +314,21 @@ test("toolkit compilado: links sa-* para a skill do Sabiá, padrão em camada em
   assert.ok(ek.includes(`](${kiro}/skills/exemplo/references/padrao/campos.md)`) && ek.includes(`](${kiro}/padrao/sa-prd/hf.md)`));
 });
 
-test("toolkit: recusa tipo fora, não desviável ou pendente, fluxo e padrão fora do manifesto, rubrica repetida, requer e id inexistente", () => {
+test("toolkit: recusa tipo fora ou não desviável, fluxo e padrão fora do manifesto, rubrica repetida, requer e id inexistente", () => {
   const erros = (mudar, extra) => { const r = validarToolkitFonte(carregarToolkit(REPO, exemplo(mudar, extra))).join("\n"); fs.rmSync(path.join(raiz, "exemplo"), { recursive: true }); return r; };
   assert.equal(erros({}), "");
-  const e = erros({ tipos: { HF: "exemplo.hf", GL: "exemplo.hf", XX: "exemplo.hf", EL: "exemplo.hf", REG: "exemplo.reg" }, padroes: ["sa-prd/hf.md", "sa-prd/nao.md"],
+  const e = erros({ tipos: { HF: "exemplo.hf", GL: "exemplo.hf", XX: "exemplo.hf", REG: "exemplo.reg" }, padroes: ["sa-prd/hf.md", "sa-prd/nao.md"],
     rubricas: [{ id: "P2", verificacao: "repete a do Sabiá", severidade: "BLOQUEANTE" }], requer: { sabia: "9.0.0" } },
   { "fluxo/exemplo/reg/reg.md": mestre({ fluxo: "reg", dono: "sa-especificador", passos: [{ id: "x" }] }), "fluxo/exemplo/reg/passos/x.md": passo("X.", "Veja `sa-prd.prd.nada`."),
     "padrao/sa-prd/nao.md": "# n\n" });
-  for (const rx of [/tipo GL: não é desviável/, /tipo XX: fora do catálogo/, /tipo EL: pendente/, /tipo REG: exemplo\.reg não está em fluxos/,
+  for (const rx of [/tipo GL: não é desviável/, /tipo XX: fora do catálogo/, /tipo REG: exemplo\.reg não está em fluxos/,
     /fluxo\/exemplo\/reg: fora de fluxos/, /padrão sa-prd\/nao\.md: não é padrão do Sabiá/, /padrao\/exemplo\/campos\.md: fora de padroes/,
     /rubrica P2: repetida ou já do Sabiá/, /requer o Sabiá 9\.0\.0/, /fluxo\/exemplo\/reg\/passos\/x\.md:\d+: id inexistente `sa-prd\.prd\.nada`/]) assert.match(e, rx);
   assert.match(erros({ fluxos: ["outra.hf"] }), /fluxo outra\.hf: a skill outra não está em skills/);
+  // tipo desviável ainda pendente no Sabiá instalado: o catálogo do repo não tem, então marca no modelo carregado
+  const mp = carregarToolkit(REPO, exemplo()); mp.tipos.HF = { ...mp.tipos.HF, pendente: true };
+  assert.match(validarToolkitFonte(mp).join("\n"), /tipo HF: pendente no Sabiá instalado/);
+  fs.rmSync(path.join(raiz, "exemplo"), { recursive: true });
   // o fluxo do tipo roda em linha no dono do passo de desvio: outro dono é recusado
   assert.match(erros({}, { "fluxo/exemplo/hf/hf.md": mestre({ fluxo: "hf", dono: "sa-desenvolvedor", passos: [{ id: "escrever" }, { id: "conferir" }] }) }),
     /tipo HF: exemplo\.hf tem dono sa-desenvolvedor; o passo sa-prd\.prd\.escrever é de sa-especificador/);

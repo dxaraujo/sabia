@@ -165,7 +165,8 @@ descoberta trouxer um tipo de link de dependência — mostre-o e confirme.
 
 Para cada sigla do [catálogo de tipos](../../sabia/references/tipos.md) com ELM `DOORS` (fora as pendentes), pergunte o
 tipo de artefato (lista `rm.tipos`) e a pasta (lista `rm.pastas`), com a recomendada pelo nome. Projeto sem uma delas
-→ a sigla fica de fora. **Bundle** (`rm.download`): procure no repositório pastas com `index.md` de `okf_version` e
+→ a sigla fica de fora. `EL` só com a linha Telas = `sim` do W4 (recomendada: o tipo de leiaute ou de tela da PA);
+com `não`, a sigla fica de fora sem perguntar. **Bundle** (`rm.download`): procure no repositório pastas com `index.md` de `okf_version` e
 mostre; senão sugira `docs/elm/<nome>` e pergunte.
 
 ## 9. ETM

@@ -439,7 +439,7 @@ test("toolkit com fluxos: instalar compila para cada alvo (o opencode recebe a c
   // o passo que só cria um tipo não aceita desvio por para: o tipo vai por `tipos`
   const porPasso = exemplo(path.join(raiz, "tk-passo"), { tipos: undefined, skills: [{ caminho: "skills/exemplo/SKILL.md", papeis: ["especificador"],
     passo: { passo: "sa-prd.prd.escrever", para: "épico de exemplo" } }] });
-  assert.match(s.validarToolkit(porPasso, null, REPO).join(), /sa-prd\.prd\.escrever não aceita desvio de toolkit \(o tipo HF, REG, ET vai por `tipos`\)/);
+  assert.match(s.validarToolkit(porPasso, null, REPO).join(), /sa-prd\.prd\.escrever não aceita desvio de toolkit \(o tipo HF, REG, EL, ET vai por `tipos`\)/);
 });
 
 test("toolkit com fluxos: atualizar o toolkit recompila também o Kiro; atualizar o Sabiá recompila os toolkits", async () => {
@@ -477,7 +477,7 @@ test("rota --fluxo: o desvio por tipo no passo que cria o tipo e a origem toolki
   assert.match(prd, /^tipo ⇢ +escrever: HF +→ exemplo\.hf +toolkit exemplo 1\.0\.0$/m);
   assert.match(prd, /escrever ⇢ +Sabiá/);
   assert.match(prd, /│ \d escrever ⇢ +│──▶ ⇢ tipo HF → exemplo\.hf \(toolkit exemplo 1\.0\.0\)/);
-  assert.ok(prd.includes("note right of escrever: tipo HF ⇢ exemplo.hf"));
+  assert.ok(prd.includes("note right of escrever: chama sa-especificar.prototipo · tipo HF ⇢ exemplo.hf"));
   const hf = s.rotaFluxo("exemplo.hf", o);
   assert.match(hf, /^fluxo +exemplo\.hf +dono sa-especificador +toolkit exemplo 1\.0\.0$/m);
   assert.match(hf, /^1 +escrever +toolkit exemplo 1\.0\.0/m);

@@ -3,7 +3,8 @@
 Chamado pela `sa-prd`, pela `sa-triar` (regra da ficha de uma fatia sem épico) e pela publicação de um conceito
 novo. Não pede confirmação. Entrada: por artefato proposto, a sigla (um tipo do [catálogo](../../sabia/references/tipos.md)
 que o `sa-prd.prd.escrever` cria, fora os pendentes), o título provisório e 3–6 palavras-chave do domínio (termos do
-glossário, sinônimos da entrevista, atores, valores).
+glossário, sinônimos da entrevista, atores, valores). Leiaute (`EL`, só com a linha Telas = `sim`): o título é o nome
+da tela e as palavras-chave, os rótulos dos campos e das ações do protótipo aprovado.
 
 1. **Bundle** (pasta `rm.download` do `pa`), pelo `elm_buscar_req_local`: um pelo título e um por palavra-chave
    (sem bundle baixado → erro `nao_encontrado` campo `bundle`: diga isso, ofereça a `sa-sync` e siga só no passo 2).
@@ -23,6 +24,6 @@ glossário, sinônimos da entrevista, atores, valores).
    | REG-01 Limite de tentativas | 2101 · REG - Tentativas de login · Regra · 04-Regras | igual | reutilizar 2101 |
    ```
 
-   **igual → reutilizar** (HF embute a REG existente, cita a HF, linka o termo pelo id) · **sobrepõe → alterar** o
+   **igual → reutilizar** (HF embute a REG existente, cita a HF e a EL da mesma tela, linka o termo pelo id) · **sobrepõe → alterar** o
    existente (caminho "Alteração" do passo `sa-prd.prd.escrever`) · **relacionado → criar novo**, citando o existente em `## Relações`
    · **nenhum → criar novo** (`novo (verificado <data>)`). A decisão é da pessoa.

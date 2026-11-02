@@ -9,6 +9,7 @@
     "po-decide-fechamento": {"texto": "só o P.O. fecha a sprint sem consolidar", "liberavel_por": []},
     "toolkit-sem-commit": {"texto": "o toolkit devolve código e testes, sem commit, push nem PR", "liberavel_por": []},
     "sem-force": {"texto": "nunca --force; a branch se atualiza sempre por merge da base, nunca por rebase", "liberavel_por": []},
-    "decisao-da-pessoa": {"texto": "nunca invente regra, valor ou ator: sem fonte e sem decisão de uma pessoa, é em aberto", "liberavel_por": []}
+    "decisao-da-pessoa": {"texto": "nunca invente regra, valor ou ator: sem fonte e sem decisão de uma pessoa, é em aberto", "liberavel_por": []},
+    "aprovacao-do-cliente": {"texto": "o protótipo só vale aprovado pelo cliente, num D-nn com quem (nome e papel), data, versão vN e evidência (ATA ou e-mail); nunca deduzida nem dada por quem especifica", "liberavel_por": []}
   }
 }

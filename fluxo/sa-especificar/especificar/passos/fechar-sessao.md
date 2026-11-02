@@ -19,8 +19,8 @@ Registrar? (sim)
 ```
 
 Com "sim": primeiro a linha de créditos no `status.md` do épico ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4) — depois do GATE do PRD, no da
-base, no commit que o fatiamento já faz —; então `elm_comentar` (o resumo), `elm_anexo(id, "enviar", caminho)` para cada `.md` da pasta de trabalho fora de `reunioes/` (a transcrição não
-sobe; os de `elm/`, com as atas, com o prefixo `elm-`, para não colidir com o nome de outro arquivo) e `elm_lancar_horas(id, horas)` (lança;
+base, no commit que o fatiamento já faz —; então `elm_comentar` (o resumo), `elm_anexo(id, "enviar", caminho)` para cada `.md` da pasta de trabalho fora de `reunioes/` e de `prototipo/` (a transcrição não
+sobe; o protótipo já subiu no registro da versão; os de `elm/`, com as atas, com o prefixo `elm-`, para não colidir com o nome de outro arquivo) e `elm_lancar_horas(id, horas)` (lança;
 não conclui). Sem o MCP `elm` ou com falha → `ELM pendente [<chave>]: registrar sessão [ESP] EP-<nn> (<data>)` no `rascunho.md`, e o
 próximo fechamento registra.
 
