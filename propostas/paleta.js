@@ -3,7 +3,7 @@
 (function(){
   var root=document.documentElement, q=new URLSearchParams(location.search);
   var OP={paleta:[['sobria','Sóbria'],['atual','Atual'],['sabia','Sabiá']],modo:[['claro','Claro'],['escuro','Escuro']]};
-  var PADRAO={paleta:'sabia',modo:'claro'}, SEM={paleta:'sobria',modo:'claro'}, ROT={paleta:'Paleta',modo:'Modo'}, v={};
+  var PADRAO={paleta:'sabia',modo:'claro'}, SEM={paleta:'',modo:'claro'}, ROT={paleta:'Paleta',modo:'Modo'}, v={};
   function valido(k,x){return OP[k].some(function(o){return o[0]===x})}
   function ler(k){
     var x=q.get(k);
