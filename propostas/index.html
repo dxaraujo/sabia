@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sabiá · propostas de design system</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..800&family=Mona+Sans:wght@400..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..800&display=swap">
 <style>
 :root{--bg:#f6f6f8;--card:#fff;--ink:#1c1c22;--muted:#686873;--line:#dedee4;--sel:#1c1c22;color-scheme:light}
 *{box-sizing:border-box}
@@ -24,7 +24,7 @@ a{color:inherit}
 .paletas small{color:var(--muted);font-size:13px}
 .sw{display:flex;height:22px;border-radius:6px;overflow:hidden}
 .sw i{flex:1}
-.sistemas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.sistemas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .sis{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;text-decoration:none;transition:transform .15s,box-shadow .15s}
 .sis:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.08)}
 .sis:focus-visible{outline:2px solid #2b6cf0;outline-offset:2px}
@@ -38,7 +38,6 @@ a{color:inherit}
 .abrir::after{content:" →"}
 .ev .amostra{background:#F3F6FF;color:#101840;font-family:"SF UI Display",-apple-system,sans-serif;font-weight:600}
 .at .amostra{background:#F8F8F8;color:#292A2E;font-family:"Inter",sans-serif;font-weight:650}
-.pr .amostra{background:#0D1117;color:#F0F6FC;font-family:"Mona Sans",sans-serif;font-weight:600}
 footer{color:var(--muted);font-size:13px}
 @media (max-width:980px){.sistemas{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:620px){.sistemas,.paletas{grid-template-columns:minmax(0,1fr)}.modos{max-width:none}}
@@ -48,18 +47,18 @@ footer{color:var(--muted);font-size:13px}
 <div class="wrap">
   <header>
     <h1>Propostas de design system</h1>
-    <p>A página inicial do Sabiá, com o mesmo conteúdo e o mesmo mapa, em três sistemas. Escolha a paleta e depois o sistema. Dentro da página, a barra no canto inferior direito troca os dois sem voltar aqui.</p>
+    <p>A página inicial do Sabiá, com o mesmo conteúdo e o mesmo mapa, em dois sistemas. Escolha a paleta e depois o sistema. Dentro da página, a barra no canto inferior direito troca os dois sem voltar aqui.</p>
   </header>
 
   <section>
     <h2>Paleta</h2>
     <div class="paletas" role="radiogroup" aria-label="Paleta">
-      <label><input type="radio" name="paleta" value="nova" checked><b>Nova</b><small>Própria: ferrugem do sabiá, jabuticaba, ipês, lavanda, água, mata e rio.</small>
-        <span class="sw"><i style="background:#3CC6D6"></i><i style="background:#B9A5F5"></i><i style="background:#C2440F"></i><i style="background:#3B1E40"></i><i style="background:#1A7A4C"></i><i style="background:#F27DB2"></i><i style="background:#0E6E85"></i><i style="background:#F6C33B"></i></span></label>
+      <label><input type="radio" name="paleta" value="terra" checked><b>Terra</b><small>Candidata a substituir a atual: neutros quentes de papel e carvão, cores cozidas e um laranja de sinal. Sem roxo.</small>
+        <span class="sw"><i style="background:#5FC2BA"></i><i style="background:#E3A93B"></i><i style="background:#B5471D"></i><i style="background:#2B2A26"></i><i style="background:#4D6B26"></i><i style="background:#8CB8E0"></i><i style="background:#19646E"></i><i style="background:#FF6B35"></i><i style="background:#FAF9F5;box-shadow:inset 0 0 0 1px #dedee4"></i></span></label>
       <label><input type="radio" name="paleta" value="atual"><b>Atual</b><small>As cores de hoje, vindas dos decks, sobre o novo sistema.</small>
         <span class="sw"><i style="background:#00BBCE"></i><i style="background:#B2D235"></i><i style="background:#0786E3"></i><i style="background:#2C5168"></i><i style="background:#76B043"></i><i style="background:#FAA61A"></i><i style="background:#0094AD"></i><i style="background:#FEBE10"></i></span></label>
       <label><input type="radio" name="paleta" value="sobria"><b>Sóbria</b><small>Só as cores do próprio sistema, como na primeira rodada.</small>
-        <span class="sw"><i style="background:#1F2328"></i><i style="background:#59636E"></i><i style="background:#D1D9E0"></i><i style="background:#F6F8FA"></i><i style="background:#0969DA"></i></span></label>
+        <span class="sw"><i style="background:#292A2E"></i><i style="background:#6B6E76"></i><i style="background:#DDDEE1"></i><i style="background:#F8F8F8"></i><i style="background:#1868DB"></i></span></label>
     </div>
   </section>
 
@@ -67,20 +66,17 @@ footer{color:var(--muted);font-size:13px}
     <h2>Modo</h2>
     <div class="paletas modos" role="radiogroup" aria-label="Modo">
       <label><input type="radio" name="modo" value="claro" checked><b>Claro</b><small>Fundo claro, como o site de hoje.</small><span class="sw"><i style="background:#ffffff;box-shadow:inset 0 0 0 1px #dedee4"></i><i style="background:#f2f2f7"></i></span></label>
-      <label><input type="radio" name="modo" value="escuro"><b>Escuro</b><small>Tokens escuros de cada sistema; vale para as três paletas.</small><span class="sw"><i style="background:#0d1117"></i><i style="background:#1c1c1e"></i></span></label>
+      <label><input type="radio" name="modo" value="escuro"><b>Escuro</b><small>Tokens escuros de cada sistema; vale para as três paletas; a terra traz neutros escuros quentes.</small><span class="sw"><i style="background:#1F1F21"></i><i style="background:#161512"></i></span></label>
     </div>
   </section>
 
   <section>
     <h2>Sistema</h2>
     <div class="sistemas">
-      <a class="sis ev" data-d="evergreen" href="evergreen/index.html?paleta=nova&amp;modo=claro"><div class="amostra">Aa<span>SF UI</span></div><div class="corpo"><h3>Evergreen</h3><p>Segment</p>
+      <a class="sis ev" data-d="evergreen" href="evergreen/index.html?paleta=terra&amp;modo=claro"><div class="amostra">Aa<span>SF UI</span></div><div class="corpo"><h3>Evergreen</h3><p>Segment</p>
         <ul><li>Neutros azul-acinzentados</li><li>Cantos de 4 e 8px, sombras de elevação</li><li>Aba ativa com fundo azul-claro</li><li>Badges em caixa alta</li></ul><span class="abrir">Abrir</span></div></a>
-      <a class="sis at" data-d="atlassian" href="atlassian/index.html?paleta=nova"><div class="amostra">Aa<span>Inter</span></div><div class="corpo"><h3>Atlassian</h3><p>Atlassian Design System</p>
-        <ul><li>Texto grafite, cartões elevados sem borda</li><li>Cantos de 4 e 8px</li><li>Abas sublinhadas</li><li>Lozenges em caixa alta</li></ul><span class="abrir">Abrir</span></div></a>
-      <a class="sis pr" data-d="primer" href="primer/index.html?paleta=nova"><div class="amostra">Aa<span>Mona Sans</span></div><div class="corpo"><h3>Primer</h3><p>GitHub</p>
-        <ul><li>Bordas finas, cantos de 6px</li><li>Aba ativa sublinhada em laranja</li><li>Labels em pílula</li><li>Capa escura (na paleta sóbria)</li></ul><span class="abrir">Abrir</span></div></a>
-    </div>
+      <a class="sis at" data-d="atlassian" href="atlassian/index.html?paleta=terra"><div class="amostra">Aa<span>Inter</span></div><div class="corpo"><h3>Atlassian</h3><p>Atlassian Design System</p>
+        <ul><li>Texto grafite, cartões elevados sem borda</li><li>Cantos de 4 e 8px</li><li>Abas sublinhadas</li><li>Lozenges em caixa alta</li></ul><span class="abrir">Abrir</span></div></a>    </div>
   </section>
 
   <footer><a href="../index.html">Ver o site atual</a></footer>

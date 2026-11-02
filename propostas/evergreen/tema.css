@@ -2,7 +2,7 @@
    abas "secondary" com fundo azul-claro e badges em caixa alta. Fonte: a pilha SF UI do Evergreen (SF no Mac). */
 :root{
   --bg:#ffffff; --card:#ffffff; --ink:#474D66; --title:#101840; --muted:#696F8C; --line:#E6E8F0; --soft:#F4F6FA; --grey:#F9FAFC; --grey2:#EDEFF5;
-  --brand:#3366FF; --brand-hover:#2952CC; --blue:#2952CC; --navy:#101840; --cyan:#25B7CC; --teal:#0F8A99; --green:#52BD94; --lime:#A3E6CD; --yellow:#FFD040; --orange:#FFB020; --red:#D14343;
+  --acento:#3366FF; --brand:#3366FF; --brand-hover:#2952CC; --blue:#2952CC; --navy:#101840; --cyan:#25B7CC; --teal:#0F8A99; --green:#52BD94; --lime:#A3E6CD; --yellow:#FFD040; --orange:#FFB020; --red:#D14343;
   --l-epico:#6E62B6; --l-hitl:#3366FF; --l-afk:#25B7CC; --l-atd:#52BD94; --l-min:#317159; --l-sprint:#FFB020; --l-rapida:#DE7548;
   --r:8px; --r-sm:4px; --r-xs:4px;
   --display:"SF UI Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
@@ -23,7 +23,7 @@ code{background:var(--soft);color:var(--title)}
 nav.tabs{border-bottom:0;gap:4px;padding-block:10px}
 nav.tabs a{background:none;color:var(--ink);font:500 14px/1 var(--body);padding:9px 12px;border-radius:4px}
 nav.tabs a:hover{background:#F4F5F9;color:var(--title)}
-nav.tabs a[aria-current="page"]{background:#EBF0FF;color:#3366FF}
+nav.tabs a[aria-current="page"]{background:color-mix(in srgb,var(--acento) 10%,transparent);color:var(--acento)}
 
 .sign.hero{border:1px solid #D6E0FF}
 .sign.hero h1{font-size:clamp(32px,4.4vw,52px);font-weight:600;letter-spacing:-.015em;line-height:1.1}
@@ -38,10 +38,10 @@ nav.tabs a[aria-current="page"]{background:#EBF0FF;color:#3366FF}
 .razoes article{background:var(--grey);border:1px solid var(--line)}
 .razoes h3{font-size:18px}
 .porta{border:1px solid var(--line);box-shadow:var(--e1)}
-.porta:hover{border-color:#D6E0FF;box-shadow:var(--e2);transform:none}
+.porta:hover{border-color:color-mix(in srgb,var(--acento) 30%,transparent);box-shadow:var(--e2);transform:none}
 .porta .n{align-self:flex-start;font:600 11px/1 var(--display);text-transform:uppercase;letter-spacing:.04em;padding:4px 6px;border-radius:4px;background:color-mix(in srgb,var(--c) 16%,#fff);color:color-mix(in srgb,var(--c) 65%,#101840)}
 .porta h3{font-size:16px}
-.porta .ir{font:500 13px/1 var(--body);color:#3366FF}
+.porta .ir{font:500 13px/1 var(--body);color:var(--acento)}
 .passos li{box-shadow:var(--e1)}
 .passos li::before{font:600 28px/1 var(--display)}
 
@@ -55,7 +55,7 @@ footer{border-top:1px solid var(--line)}
 /* escuro: o Evergreen não tem modo escuro oficial; derivado dos cinzas azulados dele (gray900 #101840 como base) */
 :root[data-modo="escuro"]{
   --bg:#0B1029; --card:#121A3A; --ink:#C1C4D6; --title:#F4F5F9; --muted:#8F95B2; --line:#283163; --soft:#19224A; --grey:#121A3A; --grey2:#232C57;
-  --brand:#5C85FF; --brand-hover:#85A3FF; --blue:#5C85FF; --navy:#33407A;
+  --acento:#85A3FF; --brand:#5C85FF; --brand-hover:#85A3FF; --blue:#5C85FF; --navy:#33407A;
   --e1:0 0 0 1px #283163; --e2:0 0 0 1px #283163,0 8px 16px -6px rgba(0,0,0,.6);
   --hero-bg:#121A3A; --hero-fg:#F4F5F9; --panel-bg:#19224A;
 }
@@ -63,9 +63,9 @@ footer{border-top:1px solid var(--line)}
 [data-modo="escuro"] .top .gh:hover{background:var(--soft);color:var(--title)}
 [data-modo="escuro"] nav.tabs a{color:var(--ink)}
 [data-modo="escuro"] nav.tabs a:hover{background:var(--soft);color:var(--title)}
-[data-modo="escuro"] nav.tabs a[aria-current="page"]{background:rgba(92,133,255,.18);color:#85A3FF}
+[data-modo="escuro"] nav.tabs a[aria-current="page"]{background:color-mix(in srgb,var(--acento) 18%,transparent);color:var(--acento)}
 [data-modo="escuro"] .sign.hero,[data-modo="escuro"] .install .url,[data-modo="escuro"] .chip{border-color:var(--line)}
 [data-modo="escuro"] .install button{color:#0B1029}
-[data-modo="escuro"] .porta:hover{border-color:#5C85FF}
+[data-modo="escuro"] .porta:hover{border-color:var(--acento)}
 [data-modo="escuro"] .porta .n{background:color-mix(in srgb,var(--c) 22%,var(--card));color:color-mix(in srgb,var(--c) 55%,#fff)}
-[data-modo="escuro"] .porta .ir{color:#85A3FF}
+[data-modo="escuro"] .porta .ir{color:var(--acento)}

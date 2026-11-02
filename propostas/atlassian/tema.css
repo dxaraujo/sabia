@@ -2,7 +2,7 @@
    cantos de 4/8px, abas sublinhadas e lozenges em caixa alta. A Atlassian Sans é de uso restrito: Inter no lugar. */
 :root{
   --bg:#ffffff; --card:#ffffff; --ink:#292A2E; --title:#292A2E; --muted:#6B6E76; --line:#DDDEE1; --soft:#F0F1F2; --grey:#F8F8F8; --grey2:#E9EAEB;
-  --brand:#1868DB; --brand-hover:#1558BC; --blue:#1868DB; --navy:#292A2E; --cyan:#2898BD; --teal:#206A83; --green:#22A06B; --lime:#82B536; --yellow:#E2B203; --orange:#E06C00; --red:#C9372C;
+  --acento:#1868DB; --brand:#1868DB; --brand-hover:#1558BC; --blue:#1868DB; --navy:#292A2E; --cyan:#2898BD; --teal:#206A83; --green:#22A06B; --lime:#82B536; --yellow:#E2B203; --orange:#E06C00; --red:#C9372C;
   --l-epico:#964AC0; --l-hitl:#1868DB; --l-afk:#2898BD; --l-atd:#22A06B; --l-min:#AE4787; --l-sprint:#E2B203; --l-rapida:#E06C00;
   --r:8px; --r-sm:4px; --r-xs:3px;
   --display:"Inter",ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Ubuntu,system-ui,sans-serif;
@@ -24,7 +24,7 @@ nav.tabs{gap:0;padding-block:0;border-bottom:2px solid var(--line)}
 nav.tabs a{background:none;color:#505258;font:500 14px/20px var(--body);padding:12px 8px 10px;margin:0 6px -2px 0;border-radius:0;border-bottom:2px solid transparent}
 nav.tabs a:first-child{padding-left:0}
 nav.tabs a:hover{background:none;color:var(--ink);border-bottom-color:#B7B9BE}
-nav.tabs a[aria-current="page"]{background:none;color:#1868DB;border-bottom-color:#1868DB}
+nav.tabs a[aria-current="page"]{background:none;color:var(--acento);border-bottom-color:var(--acento)}
 
 .sign.hero h1{font-size:clamp(32px,4.2vw,48px);line-height:1.12;letter-spacing:-.015em}
 .sign.hero .lead{color:#505258;font-size:16px;line-height:24px}
@@ -42,7 +42,7 @@ nav.tabs a[aria-current="page"]{background:none;color:#1868DB;border-bottom-colo
 .porta:hover{box-shadow:var(--overlay);transform:none}
 .porta .n{align-self:flex-start;font:700 11px/16px var(--display);text-transform:uppercase;padding:0 4px;border-radius:3px;background:color-mix(in srgb,var(--c) 18%,#fff);color:color-mix(in srgb,var(--c) 70%,#292A2E)}
 .porta h3{font-size:16px}
-.porta .ir{font:500 14px/1 var(--body);color:#1868DB}
+.porta .ir{font:500 14px/1 var(--body);color:var(--acento)}
 .passos li{border:0;box-shadow:var(--raised)}
 .passos li::before{font:650 24px/1 var(--display)}
 
@@ -51,13 +51,13 @@ nav.tabs a[aria-current="page"]{background:none;color:#1868DB;border-bottom-colo
 .pdz .dz-vista,.panel{border:1px solid var(--line)}
 .pdz .dz-ficha{box-shadow:var(--overlay)}
 .pdz .dz-passos{border:0;box-shadow:var(--overlay)}
-.pdz .dz-passos .prox{background:#1868DB;box-shadow:none;padding-left:16px}
+.pdz .dz-passos .prox{background:var(--acento);box-shadow:none;padding-left:16px}
 footer{border-top:1px solid var(--line)}
 
 /* escuro: tokens do tema escuro do ADS */
 :root[data-modo="escuro"]{
   --bg:#1F1F21; --card:#242528; --ink:#CECFD2; --title:#DFE1E5; --muted:#96999E; --line:#3D3F43; --soft:#2B2C2F; --grey:#18191A; --grey2:#333438;
-  --brand:#669DF1; --brand-hover:#8FB8F6; --blue:#669DF1; --navy:#44464B;
+  --acento:#669DF1; --brand:#669DF1; --brand-hover:#8FB8F6; --blue:#669DF1; --navy:#44464B;
   --raised:0 0 0 1px #3D3F43; --overlay:0 8px 12px #01040475,0 0 1px #01040480;
   --hero-bg:#18191A; --hero-fg:#DFE1E5; --panel-bg:#2B2C2F;
 }
@@ -65,8 +65,8 @@ footer{border-top:1px solid var(--line)}
 [data-modo="escuro"] .top .gh:hover{background:var(--grey2);color:var(--title)}
 [data-modo="escuro"] nav.tabs a{color:var(--muted)}
 [data-modo="escuro"] nav.tabs a:hover{color:var(--ink);border-bottom-color:#5D5F65}
-[data-modo="escuro"] nav.tabs a[aria-current="page"]{color:#669DF1;border-bottom-color:#669DF1}
+[data-modo="escuro"] nav.tabs a[aria-current="page"]{color:var(--acento);border-bottom-color:var(--acento)}
 [data-modo="escuro"] :is(.sign.hero .lead,.lead-sec p,.install .how){color:var(--muted)}
 [data-modo="escuro"] .install button{color:#1F1F21}
 [data-modo="escuro"] .porta .n{background:color-mix(in srgb,var(--c) 24%,var(--card));color:color-mix(in srgb,var(--c) 55%,#fff)}
-[data-modo="escuro"] .porta .ir{color:#669DF1}
+[data-modo="escuro"] .porta .ir{color:var(--acento)}

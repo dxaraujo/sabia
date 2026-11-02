@@ -1,9 +1,9 @@
-// Paleta e modo sobre a proposta: ?paleta=sobria|atual|nova&modo=claro|escuro, lembrados entre as propostas.
+// Paleta e modo sobre a proposta: ?paleta=sobria|atual|terra&modo=claro|escuro, lembrados entre as propostas.
 // Roda no <head> para não piscar; a barra de troca ganha os botões quando a página carrega.
 (function(){
   var root=document.documentElement, q=new URLSearchParams(location.search);
-  var OP={paleta:[['sobria','Sóbria'],['atual','Atual'],['nova','Nova']],modo:[['claro','Claro'],['escuro','Escuro']]};
-  var PADRAO={paleta:'nova',modo:'claro'}, SEM={paleta:'sobria',modo:'claro'}, ROT={paleta:'Paleta',modo:'Modo'}, v={};
+  var OP={paleta:[['sobria','Sóbria'],['atual','Atual'],['terra','Terra']],modo:[['claro','Claro'],['escuro','Escuro']]};
+  var PADRAO={paleta:'terra',modo:'claro'}, SEM={paleta:'sobria',modo:'claro'}, ROT={paleta:'Paleta',modo:'Modo'}, v={};
   function valido(k,x){return OP[k].some(function(o){return o[0]===x})}
   function ler(k){
     var x=q.get(k);
