@@ -14,7 +14,7 @@ h1{margin:0;font-size:clamp(28px,3.4vw,40px);line-height:1.1;letter-spacing:-.02
 header p{margin:8px 0 0;color:var(--muted);max-width:72ch}
 h2{margin:0 0 12px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 a{color:inherit}
-.paletas{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.paletas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .modos{grid-template-columns:repeat(2,minmax(0,1fr));max-width:640px}
 .paletas label{display:flex;flex-direction:column;gap:10px;padding:14px 16px;background:var(--card);border:1.5px solid var(--line);border-radius:12px;cursor:pointer}
 .paletas label:has(input:checked){border-color:var(--sel);box-shadow:0 0 0 1px var(--sel)}
@@ -55,10 +55,6 @@ footer{color:var(--muted);font-size:13px}
     <div class="paletas" role="radiogroup" aria-label="Paleta">
       <label><input type="radio" name="paleta" value="sabia" checked><b>Sabiá</b><small>Semântica, com a atual de referência: ardósia = registro; céu → marinho = a demanda se define; teal = o agente executa; verde = evidência; amarelo = uma pessoa decide; laranja = atalho; coral = voltou.</small>
         <span class="sw"><i style="background:#BFE2FA"></i><i style="background:#7CC2EE"></i><i style="background:#0A6FC4"></i><i style="background:#1E4263"></i><i style="background:#0B7A7A"></i><i style="background:#8FD6AC"></i><i style="background:#475A6B"></i><i style="background:#FFD447"></i><i style="background:#D9640F"></i><i style="background:#D9483B"></i></span></label>
-      <label><input type="radio" name="paleta" value="terra"><b>Terra</b><small>Candidata a substituir a atual: neutros quentes de papel e carvão, cores cozidas e um laranja de sinal. Sem roxo.</small>
-        <span class="sw"><i style="background:#5FC2BA"></i><i style="background:#E3A93B"></i><i style="background:#B5471D"></i><i style="background:#2B2A26"></i><i style="background:#4D6B26"></i><i style="background:#8CB8E0"></i><i style="background:#19646E"></i><i style="background:#FF6B35"></i><i style="background:#FAF9F5;box-shadow:inset 0 0 0 1px #dedee4"></i></span></label>
-      <label><input type="radio" name="paleta" value="azul"><b>Azul</b><small>Só tokens do IBM Carbon: base azul, acento Yellow 30, auxiliares ciano, teal e verde da paleta de dados.</small>
-        <span class="sw"><i style="background:#82cfff"></i><i style="background:#3ddbd9"></i><i style="background:#0f62fe"></i><i style="background:#001d6c"></i><i style="background:#198038"></i><i style="background:#f1c21b"></i><i style="background:#005d5d"></i></span></label>
       <label><input type="radio" name="paleta" value="atual"><b>Atual</b><small>As cores de hoje, iguais às do site em cada lugar, com a forma do sistema.</small>
         <span class="sw"><i style="background:#00BBCE"></i><i style="background:#B2D235"></i><i style="background:#0786E3"></i><i style="background:#2C5168"></i><i style="background:#76B043"></i><i style="background:#FAA61A"></i><i style="background:#0094AD"></i><i style="background:#FEBE10"></i></span></label>
       <label><input type="radio" name="paleta" value="sobria"><b>Sóbria</b><small>Só as cores do próprio sistema, como na primeira rodada.</small>
@@ -70,7 +66,7 @@ footer{color:var(--muted);font-size:13px}
     <h2>Modo</h2>
     <div class="paletas modos" role="radiogroup" aria-label="Modo">
       <label><input type="radio" name="modo" value="claro" checked><b>Claro</b><small>Fundo claro, como o site de hoje.</small><span class="sw"><i style="background:#ffffff;box-shadow:inset 0 0 0 1px #dedee4"></i><i style="background:#f2f2f7"></i></span></label>
-      <label><input type="radio" name="modo" value="escuro"><b>Escuro</b><small>Tokens escuros de cada sistema; vale para todas as paletas; a terra traz neutros escuros quentes.</small><span class="sw"><i style="background:#1F1F21"></i><i style="background:#161512"></i></span></label>
+      <label><input type="radio" name="modo" value="escuro"><b>Escuro</b><small>Tokens escuros de cada sistema; vale para todas as paletas.</small><span class="sw"><i style="background:#1F1F21"></i><i style="background:#161512"></i></span></label>
     </div>
   </section>
 
