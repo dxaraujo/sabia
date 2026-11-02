@@ -4,12 +4,8 @@ import colorsys, html, json, re
 
 T = '#121821'
 SIMILARES = {
- 'i-horizon': ('AI Horizon', 'Paletas de IA', 'equilíbrio entre inovação e bem-estar', '#2563EB #0EA5E9 #1D4ED8 #14B8A6 #0F766E #65A30D #A3E635 #FBBF24 #F97316'),
  'i-quantum': ('Quantum Flow', 'Paletas de IA', 'inteligência, fluidez e performance', '#0B63CE #0066B3 #1E293B #00D1D1 #0EA5A4 #22C55E #A7F3D0 #F59E0B #FB923C'),
- 'i-infinity': ('Infinity Gradient', 'Paletas de IA', 'design arrojado com gradientes de impacto', '#6366F1 #8B5CF6 #312E81 #06B6D4 #0891B2 #84CC16 #D9F99D #F59E0B #F97316'),
- 'i-aurora': ('Tech Aurora', 'Paletas de IA', 'tecnologia, clareza e um futuro mais aberto', '#1E40AF #0EA5E9 #075985 #14B8A6 #0F766E #86EFAC #FDE68A #F59E0B #EA580C'),
  'k-green': ('Green Core', 'Paletas de IA · 3', 'equilíbrio entre inovação, conhecimento e impacto (sem cor escura: navy #0F766E de fora da paleta)', '#0EA5E9 #06B6D4 #0F766E #14B8A6 #10B981 #84CC16 #A3E635 #FACC15 #F97316'),
- 'k-pulse': ('Future Pulse', 'Paletas de IA · 3', 'inteligência, clareza e um amanhã mais aberto', '#3B82F6 #1E3A8A #0F172A #06B6D4 #2DD4BF #86EFAC #FDE047 #F59E0B #FB923C'),
 }
 PAPEIS = ['brand', 'blue', 'navy', 'cyan', 'teal', 'green', 'lime', 'yellow', 'orange']
 ETAPAS = ['cyan', 'lime', 'brand', 'navy', 'green', 'orange', 'teal']   # ordem das etapas no HTML

@@ -121,25 +121,11 @@
 
 
 
+
 /* ===== propostas similares à atual: 9 cores na ordem dos papéis da atual (marca, azul, navy, ciano, teal, verde, lima, amarelo,
    laranja), aplicadas puras, com as regras e os neutros da atual. Só o texto se adapta: branco ou quase preto
    (#121821), o que contrastar mais com cada cor (etapas e botões da barra lateral). Seletores com :root para ganhar das
    regras de texto da atual (.claro:first-child) ===== */
-/* AI Horizon — equilíbrio entre inovação e bem-estar */
-:root[data-paleta="i-horizon"]{
-  --brand:#2563EB; --blue:#0EA5E9; --navy:#1D4ED8; --cyan:#14B8A6; --teal:#0F766E; --green:#65A30D; --lime:#A3E635; --yellow:#FBBF24; --orange:#F97316;
-  --l-epico:#1D4ED8; --l-hitl:#0EA5E9; --l-afk:#14B8A6; --l-atd:#65A30D; --l-min:#0F766E; --l-sprint:#FBBF24; --l-rapida:#F97316;
-  --viva-capa:#2563EB; --viva-escuro:#1D4ED8; --viva-destaque:#FBBF24; --viva-tinta:#1D4ED8; --destaque-txt:#121821;
-}
-:root[data-paleta="i-horizon"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#1D4ED8; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#0EA5E9}
-:root[data-paleta="i-horizon"][data-modo="escuro"]{--acento:#0EA5E9}
-:root[data-paleta="i-horizon"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#5D82E9}
-:root[data-paleta="i-horizon"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
-:root[data-paleta="i-horizon"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="i-horizon"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
-:root[data-paleta="i-horizon"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="i-horizon"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
 /* Quantum Flow — inteligência, fluidez e performance */
 :root[data-paleta="i-quantum"]{
   --brand:#0B63CE; --blue:#0066B3; --navy:#1E293B; --cyan:#00D1D1; --teal:#0EA5A4; --green:#22C55E; --lime:#A7F3D0; --yellow:#F59E0B; --orange:#FB923C;
@@ -155,36 +141,6 @@
 :root[data-paleta="i-quantum"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
 :root[data-paleta="i-quantum"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
 
-/* Infinity Gradient — design arrojado com gradientes de impacto */
-:root[data-paleta="i-infinity"]{
-  --brand:#6366F1; --blue:#8B5CF6; --navy:#312E81; --cyan:#06B6D4; --teal:#0891B2; --green:#84CC16; --lime:#D9F99D; --yellow:#F59E0B; --orange:#F97316;
-  --l-epico:#312E81; --l-hitl:#8B5CF6; --l-afk:#06B6D4; --l-atd:#84CC16; --l-min:#0891B2; --l-sprint:#F59E0B; --l-rapida:#F97316;
-  --viva-capa:#6366F1; --viva-escuro:#312E81; --viva-destaque:#F59E0B; --viva-tinta:#312E81; --destaque-txt:#121821;
-}
-:root[data-paleta="i-infinity"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#312E81; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#8B5CF6}
-:root[data-paleta="i-infinity"][data-modo="escuro"]{--acento:#996FF7}
-:root[data-paleta="i-infinity"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#807DD1}
-:root[data-paleta="i-infinity"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
-:root[data-paleta="i-infinity"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="i-infinity"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
-:root[data-paleta="i-infinity"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="i-infinity"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Tech Aurora — tecnologia, clareza e um futuro mais aberto */
-:root[data-paleta="i-aurora"]{
-  --brand:#1E40AF; --blue:#0EA5E9; --navy:#075985; --cyan:#14B8A6; --teal:#0F766E; --green:#86EFAC; --lime:#FDE68A; --yellow:#F59E0B; --orange:#EA580C;
-  --l-epico:#075985; --l-hitl:#0EA5E9; --l-afk:#14B8A6; --l-atd:#86EFAC; --l-min:#0F766E; --l-sprint:#F59E0B; --l-rapida:#EA580C;
-  --viva-capa:#1E40AF; --viva-escuro:#075985; --viva-destaque:#F59E0B; --viva-tinta:#075985; --destaque-txt:#121821;
-}
-:root[data-paleta="i-aurora"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#075985; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#0EA5E9}
-:root[data-paleta="i-aurora"][data-modo="escuro"]{--acento:#0EA5E9}
-:root[data-paleta="i-aurora"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#0B8DD3}
-:root[data-paleta="i-aurora"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
-:root[data-paleta="i-aurora"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="i-aurora"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
-:root[data-paleta="i-aurora"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="i-aurora"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
 /* Green Core — equilíbrio entre inovação, conhecimento e impacto (sem cor escura: navy #0F766E de fora da paleta) */
 :root[data-paleta="k-green"]{
   --brand:#0EA5E9; --blue:#06B6D4; --navy:#0F766E; --cyan:#14B8A6; --teal:#10B981; --green:#84CC16; --lime:#A3E635; --yellow:#FACC15; --orange:#F97316;
@@ -199,21 +155,6 @@
 :root[data-paleta="k-green"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
 :root[data-paleta="k-green"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
 :root[data-paleta="k-green"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Future Pulse — inteligência, clareza e um amanhã mais aberto */
-:root[data-paleta="k-pulse"]{
-  --brand:#3B82F6; --blue:#1E3A8A; --navy:#0F172A; --cyan:#06B6D4; --teal:#2DD4BF; --green:#86EFAC; --lime:#FDE047; --yellow:#F59E0B; --orange:#FB923C;
-  --l-epico:#0F172A; --l-hitl:#1E3A8A; --l-afk:#06B6D4; --l-atd:#86EFAC; --l-min:#2DD4BF; --l-sprint:#F59E0B; --l-rapida:#FB923C;
-  --viva-capa:#3B82F6; --viva-escuro:#0F172A; --viva-destaque:#F59E0B; --viva-tinta:#0F172A; --destaque-txt:#121821;
-}
-:root[data-paleta="k-pulse"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#0F172A; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#1E3A8A}
-:root[data-paleta="k-pulse"][data-modo="escuro"]{--acento:#6483DD}
-:root[data-paleta="k-pulse"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#6986CA}
-:root[data-paleta="k-pulse"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
-:root[data-paleta="k-pulse"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="k-pulse"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
-:root[data-paleta="k-pulse"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="k-pulse"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
 
 /* ===== variantes da sóbria: a mesma estrutura (quase tudo branco, destaques no navy e num amarelo em poucos pontos),
    com outras cores. Ficam em <html data-sobria="…"> e não ligam as regras de paleta viva ===== */

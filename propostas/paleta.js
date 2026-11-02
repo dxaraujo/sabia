@@ -2,8 +2,8 @@
 // Roda no <head> para não piscar; a barra de troca ganha os botões quando a página carrega.
 (function(){
   var root=document.documentElement, q=new URLSearchParams(location.search);
-  var OP={paleta:[["sobria", "Sóbria"], ["sobria-sabia", "Sóbria - Sabiá"], ["atual", "Atual"], ["sabia", "Sabiá"], ["i-horizon", "AI Horizon"], ["i-quantum", "Quantum Flow"], ["i-infinity", "Infinity Gradient"], ["i-aurora", "Tech Aurora"], ["k-green", "Green Core"], ["k-pulse", "Future Pulse"]],modo:[['claro','Claro'],['escuro','Escuro']]};
-  var GRUPO={"sobria": "base", "sobria-sabia": "base", "atual": "base", "sabia": "base", "i-horizon": "Similares à atual · Paletas de IA", "i-quantum": "Similares à atual · Paletas de IA", "i-infinity": "Similares à atual · Paletas de IA", "i-aurora": "Similares à atual · Paletas de IA", "k-green": "Similares à atual · Paletas de IA · 3", "k-pulse": "Similares à atual · Paletas de IA · 3"};
+  var OP={paleta:[["sobria", "Sóbria"], ["sobria-sabia", "Sóbria - Sabiá"], ["atual", "Atual"], ["sabia", "Sabiá"], ["i-quantum", "Quantum Flow"], ["k-green", "Green Core"]],modo:[['claro','Claro'],['escuro','Escuro']]};
+  var GRUPO={"sobria": "base", "sobria-sabia": "base", "atual": "base", "sabia": "base", "i-quantum": "Similares à atual · Paletas de IA", "k-green": "Similares à atual · Paletas de IA · 3"};
   var PADRAO={paleta:'sobria',modo:'claro'}, SEM={paleta:'sobria',modo:'claro'}, ROT={paleta:'Paleta',modo:'Modo'}, v={};
   function valido(k,x){return OP[k].some(function(o){return o[0]===x})}
   function ler(k){
