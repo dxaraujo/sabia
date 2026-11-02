@@ -124,78 +124,6 @@
 
 
 
-/* ===== propostas similares à atual: 9 cores na ordem dos papéis da atual (marca, azul, navy, ciano, teal, verde, lima, amarelo,
-   laranja), aplicadas puras, com as regras e os neutros da atual. Só o texto se adapta: branco ou quase preto
-   (#121821), o que contrastar mais com cada cor (etapas e botões da barra lateral). Seletores com :root para ganhar das
-   regras de texto da atual (.claro:first-child) ===== */
-/* Quantum Flow — inteligência, fluidez e performance */
-:root[data-paleta="i-quantum"]{
-  --brand:#0B63CE; --blue:#0066B3; --navy:#1E293B; --cyan:#00D1D1; --teal:#0EA5A4; --green:#22C55E; --lime:#A7F3D0; --yellow:#F59E0B; --orange:#FB923C;
-  --l-epico:#1E293B; --l-hitl:#0066B3; --l-afk:#00D1D1; --l-atd:#22C55E; --l-min:#0EA5A4; --l-sprint:#F59E0B; --l-rapida:#FB923C;
-  --viva-capa:#0B63CE; --viva-escuro:#1E293B; --viva-destaque:#F59E0B; --viva-tinta:#1E293B; --destaque-txt:#121821;
-}
-:root[data-paleta="i-quantum"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#1E293B; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#0066B3}
-:root[data-paleta="i-quantum"][data-modo="escuro"]{--acento:#0089F0}
-:root[data-paleta="i-quantum"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#6C87B4}
-:root[data-paleta="i-quantum"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
-:root[data-paleta="i-quantum"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="i-quantum"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
-:root[data-paleta="i-quantum"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="i-quantum"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Green Core — equilíbrio entre inovação, conhecimento e impacto (sem cor escura: navy #0F766E de fora da paleta) */
-:root[data-paleta="k-green"]{
-  --brand:#0EA5E9; --blue:#06B6D4; --navy:#0F766E; --cyan:#14B8A6; --teal:#10B981; --green:#84CC16; --lime:#A3E635; --yellow:#FACC15; --orange:#F97316;
-  --l-epico:#0F766E; --l-hitl:#06B6D4; --l-afk:#14B8A6; --l-atd:#84CC16; --l-min:#10B981; --l-sprint:#FACC15; --l-rapida:#F97316;
-  --viva-capa:#0EA5E9; --viva-escuro:#0F766E; --viva-destaque:#FACC15; --viva-tinta:#0F766E; --destaque-txt:#121821;
-}
-:root[data-paleta="k-green"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#0F766E; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#06B6D4}
-:root[data-paleta="k-green"][data-modo="escuro"]{--acento:#06B6D4}
-:root[data-paleta="k-green"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#13968C}
-:root[data-paleta="k-green"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#121821}
-:root[data-paleta="k-green"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="k-green"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
-:root[data-paleta="k-green"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="k-green"] .tr:not([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-
-/* Quantum Flow · revisada — azul #0B63CE como principal, slate #1E293B, acento âmbar exclusivo; linhas do mapa com 3:1 e separadas por matiz e luz; neutros slate */
-:root[data-paleta="r-quantum"]{
-  --brand:#0B63CE; --blue:#0B5CAD; --navy:#1E293B; --cyan:#00D1D1; --teal:#0F766E; --green:#16A34A; --lime:#A7F3D0; --yellow:#F59E0B; --orange:#FB923C;
-  --l-epico:#1E293B; --l-hitl:#0B5CAD; --l-afk:#00D1D1; --l-atd:#16A34A; --l-min:#0F766E; --l-sprint:#F59E0B; --l-rapida:#FB923C;
-  --viva-capa:#0B63CE; --viva-escuro:#1E293B; --viva-destaque:#F59E0B; --viva-tinta:#1E293B; --destaque-txt:#121821;
-}
-:root[data-paleta="r-quantum"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#1E293B; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#0B5CAD}
-:root[data-paleta="r-quantum"][data-modo="escuro"]{--acento:#1E87F1}
-:root[data-paleta="r-quantum"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#6C87B4}
-:root[data-paleta="r-quantum"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
-:root[data-paleta="r-quantum"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="r-quantum"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
-:root[data-paleta="r-quantum"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="r-quantum"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-:root[data-paleta="r-quantum"]{--l-epico:#1E293B; --l-hitl:#0B63CE; --l-afk:#0891B2; --l-atd:#15803D; --l-min:#64748B; --l-sprint:#D97706; --l-rapida:#BE123C; --red:#DC2626}
-:root[data-paleta="r-quantum"]:not([data-modo="escuro"]){--ink:#334155; --muted:#64748B; --line:#CBD5E1; --soft:#F1F5F9; --grey:#F8FAFC; --grey2:#E2E8F0; --panel-bg:#F8FAFC}
-:root[data-paleta="r-quantum"] .tr{color:#FFFFFF}
-:root[data-paleta="r-quantum"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"]){color:#121821}
-
-/* Green Core · revisada — azul-oceano #0369A1 como principal e marinho #0C4A6E no lugar do teal emprestado; amarelo só como acento; menos verdes nas linhas; neutros slate */
-:root[data-paleta="r-green"]{
-  --brand:#0369A1; --blue:#0369A1; --navy:#0C4A6E; --cyan:#0EA5E9; --teal:#0F766E; --green:#65A30D; --lime:#A3E635; --yellow:#FACC15; --orange:#F97316;
-  --l-epico:#0C4A6E; --l-hitl:#0369A1; --l-afk:#0EA5E9; --l-atd:#65A30D; --l-min:#0F766E; --l-sprint:#FACC15; --l-rapida:#F97316;
-  --viva-capa:#0369A1; --viva-escuro:#0C4A6E; --viva-destaque:#FACC15; --viva-tinta:#0C4A6E; --destaque-txt:#121821;
-}
-:root[data-paleta="r-green"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#0C4A6E; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#0369A1}
-:root[data-paleta="r-green"][data-modo="escuro"]{--acento:#048DD8}
-:root[data-paleta="r-green"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#178ED3}
-:root[data-paleta="r-green"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
-:root[data-paleta="r-green"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
-:root[data-paleta="r-green"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
-:root[data-paleta="r-green"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-:root[data-paleta="r-green"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
-:root[data-paleta="r-green"]{--l-epico:#0C4A6E; --l-hitl:#0369A1; --l-afk:#0891B2; --l-atd:#15803D; --l-min:#64748B; --l-sprint:#A16207; --l-rapida:#BE123C; --red:#DC2626}
-:root[data-paleta="r-green"]:not([data-modo="escuro"]){--ink:#334155; --muted:#64748B; --line:#CBD5E1; --soft:#F1F5F9; --grey:#F8FAFC; --grey2:#E2E8F0; --panel-bg:#F8FAFC}
-:root[data-paleta="r-green"] .tr{color:#FFFFFF}
-:root[data-paleta="r-green"] .tr:is([style*="--l-afk)"]){color:#121821}
-
 /* ===== variantes da sóbria: a mesma estrutura (quase tudo branco, destaques no navy e num amarelo em poucos pontos),
    com outras cores. Ficam em <html data-sobria="…"> e não ligam as regras de paleta viva ===== */
 /* Sóbria - Sabiá: navy #023047 e azul-céu #219EBC da Refreshing Summer Fun; amarelo #FFB703 de destaque;
@@ -212,35 +140,5 @@
 [data-modo="escuro"][data-sobria="sobria-sabia"] :is(#map,.itin,.trilho,.chip){--l-epico:#6FA8C8}
 [data-sobria="sobria-sabia"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"]){color:#022338}
 [data-sobria="sobria-sabia"] :is(.itin li.cur .dot,.trilho li.agora::after){box-shadow:0 0 0 4px rgba(255,183,3,.35)}
-/* Sóbria - Quantum: estrutura da sóbria com as cores originais da Quantum Flow (sem revisão); navy #1E293B nos destaques,
-   acento #F59E0B em poucos pontos; filetes e linhas do mapa com as cores puras da paleta; neutros da atual */
-:root[data-sobria="sobria-quantum"]{
-  --navy:#1E293B; --cyan:#00D1D1; --lime:#A7F3D0; --green:#22C55E; --orange:#FB923C; --teal:#0EA5A4; --yellow:#F59E0B;
-  --l-epico:#1E293B; --l-hitl:#0066B3; --l-afk:#00D1D1; --l-atd:#22C55E; --l-min:#0EA5A4; --l-sprint:#F59E0B; --l-rapida:#FB923C;
-}
-:root[data-sobria="sobria-quantum"]:not([data-modo="escuro"]){
-  --bg:#FFFFFF; --card:#FFFFFF; --ink:#404040; --title:#1E293B; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF;
-  --acento:#0066B3; --brand:#0B63CE; --brand-hover:#1E293B; --blue:#0066B3; --hero-bg:#EEF6FD; --hero-fg:#1E293B;
-}
-:root[data-sobria="sobria-quantum"][data-modo="escuro"]{--acento:#60A5FA; --brand:#0B63CE; --brand-hover:#60A5FA; --blue:#60A5FA}
-[data-modo="escuro"][data-sobria="sobria-quantum"] :is(#map,.itin,.trilho,.chip){--l-epico:#94A3B8}
-[data-sobria="sobria-quantum"] .tr{color:#FFFFFF}
-[data-sobria="sobria-quantum"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-[data-sobria="sobria-quantum"] :is(.itin li.cur .dot,.trilho li.agora::after){box-shadow:0 0 0 4px rgba(245,158,11,.35)}
-/* Sóbria - Green Core: estrutura da sóbria com as cores originais da Green Core (sem revisão); navy #0F766E nos destaques,
-   acento #FACC15 em poucos pontos; filetes e linhas do mapa com as cores puras da paleta; neutros da atual */
-:root[data-sobria="sobria-green"]{
-  --navy:#0F766E; --cyan:#14B8A6; --lime:#A3E635; --green:#84CC16; --orange:#F97316; --teal:#10B981; --yellow:#FACC15;
-  --l-epico:#0F766E; --l-hitl:#06B6D4; --l-afk:#14B8A6; --l-atd:#84CC16; --l-min:#10B981; --l-sprint:#FACC15; --l-rapida:#F97316;
-}
-:root[data-sobria="sobria-green"]:not([data-modo="escuro"]){
-  --bg:#FFFFFF; --card:#FFFFFF; --ink:#404040; --title:#0F766E; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF;
-  --acento:#06B6D4; --brand:#0EA5E9; --brand-hover:#0F766E; --blue:#06B6D4; --hero-bg:#EEF6FD; --hero-fg:#0F766E;
-}
-:root[data-sobria="sobria-green"][data-modo="escuro"]{--acento:#38BDF8; --brand:#0EA5E9; --brand-hover:#38BDF8; --blue:#38BDF8}
-[data-modo="escuro"][data-sobria="sobria-green"] :is(#map,.itin,.trilho,.chip){--l-epico:#5EC4B6}
-[data-sobria="sobria-green"] .tr{color:#FFFFFF}
-[data-sobria="sobria-green"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
-[data-sobria="sobria-green"] :is(.itin li.cur .dot,.trilho li.agora::after){box-shadow:0 0 0 4px rgba(250,204,21,.35)}
 
 .proposta select{font:inherit;padding:6px 8px;border:1px solid #d0d4da;border-radius:6px;background:#fff;color:#222;max-width:220px}
