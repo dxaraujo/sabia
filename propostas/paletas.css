@@ -106,10 +106,9 @@
 :root[data-paleta="sabia"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38494D; --title:#023047; --muted:#63787D; --line:#D0DADD; --soft:#F0F8F9; --grey:#F6F8F9; --grey2:#E7EDEE; --panel-bg:#F6F8F9; --acento:#187F97}
 :root[data-paleta="sabia"][data-modo="escuro"]{--acento:#5AB4D6}
 [data-modo="escuro"][data-paleta="sabia"] :is(#map,.itin,.trilho,.chip){--l-epico:#6FA8C8}
-/* Fatiamento e Implementação (azul) pedem texto escuro, como as etapas claras */
-[data-paleta="sabia"] .etapas li:is(:nth-child(3),:nth-child(5)){color:var(--viva-tinta)}
-[data-paleta="sabia"] .etapas li:is(:nth-child(3),:nth-child(5)) code{background:rgba(0,0,0,.08)}
-[data-paleta="sabia"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"]){color:#022338}
+/* texto como na atual: branco nas etapas e nas linhas da barra lateral; escuro só nas cores muito claras
+   (Triagem, Alinhamento, Verificação, Copiar; na barra, AFK em céu e sprint em amarelo) */
+[data-paleta="sabia"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"]){color:#022338}
 
 
 
@@ -138,7 +137,7 @@
 }
 :root[data-sobria="sobria-sabia"][data-modo="escuro"]{--acento:#5AB4D6; --brand:#219EBC; --brand-hover:#5AB4D6; --blue:#219EBC}
 [data-modo="escuro"][data-sobria="sobria-sabia"] :is(#map,.itin,.trilho,.chip){--l-epico:#6FA8C8}
-[data-sobria="sobria-sabia"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"]){color:#022338}
+[data-sobria="sobria-sabia"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"]){color:#022338}
 [data-sobria="sobria-sabia"] :is(.itin li.cur .dot,.trilho li.agora::after){box-shadow:0 0 0 4px rgba(255,183,3,.35)}
 
 .proposta select{font:inherit;padding:6px 8px;border:1px solid #d0d4da;border-radius:6px;background:#fff;color:#222;max-width:220px}

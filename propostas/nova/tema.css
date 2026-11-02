@@ -98,3 +98,10 @@ footer{border-top:1px solid var(--line)}
 :root:not([data-paleta]) .senbox div.on b{color:var(--yellow)}
 :root:not([data-paleta]) .pdz .dz-passos .prox{background:var(--navy);color:#fff}
 :root[data-modo="escuro"]:not([data-paleta]) .install .ghost{color:var(--acento)}
+
+/* pesos: hierarquia contida (impeccable). Negrito pesado só no título da capa; títulos de seção, de etapa, números
+   e rótulos da barra lateral em 600 */
+.lead-sec h2{font-weight:600}
+.etapas b{font-weight:600}
+.tr b,.trilho b,.itin b,.svc b{font-weight:600}
+:root .portas .porta .n{font-weight:600}
