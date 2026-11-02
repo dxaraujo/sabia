@@ -131,3 +131,50 @@
 [data-paleta="atual"] .porta .n{color:var(--c)}
 [data-paleta="atual"] .porta .ir{color:var(--blue)}
 [data-paleta="atual"] footer{border-top-color:var(--soft)}
+
+/* "sabia": paleta semântica, com a atual como referência (azul de marca e marinho no mesmo matiz). Cada cor diz uma
+   coisa só, em todo o site:
+     ardósia (cinzas)        neutro e registro ............ textos, bordas, etapa Consolidação
+     céu → azul → marinho    a demanda ganhando definição . Triagem, Alinhamento, Fatiamento, Plano; linhas Épico e HITL
+     teal                    o agente de IA executa ....... etapa Implementação, linha AFK
+     verde                   funciona, com evidência ...... etapa Verificação, linhas de Sustentação
+     amarelo (acento)        uma pessoa decide ............ gates, ciclo da sprint, estação atual, botão Copiar
+     laranja                 atalho ....................... trilha rápida
+     coral                   voltou ....................... retrabalho
+   Contraste: etapas escuras com branco ≥ 5,1:1; claras com a tinta marinho ≥ 6,4:1; linhas ≥ 3:1 nos dois modos. */
+:root[data-paleta="sabia"]{
+  --cyan:#BFE2FA; --lime:#7CC2EE; --brand:#0A6FC4; --blue:#0A6FC4; --navy:#1E4263; --green:#0B7A7A; --orange:#8FD6AC; --teal:#475A6B; --yellow:#FFD447; --red:#D9483B;
+  --l-epico:#1E4263; --l-hitl:#0A6FC4; --l-afk:#0B8A8A; --l-atd:#2E9150; --l-min:#4E7A3A; --l-sprint:#B88A00; --l-rapida:#D9640F;
+  --volta:#D9483B; --decide:#B88A00;
+  --viva-capa:#0A6FC4; --viva-escuro:#1E4263; --viva-destaque:#FFD447; --viva-tinta:#1C3550;
+}
+:root[data-paleta="sabia"]:not([data-modo="escuro"]){
+  --bg:#FFFFFF; --card:#FFFFFF; --ink:#22313F; --title:#1C3550; --muted:#5E6E7D; --line:#D3DDE6; --soft:#EEF4F9; --grey:#F4F7FA; --grey2:#E3EAF0; --panel-bg:#F4F7FA;
+  --acento:#0A6FC4;
+}
+:root[data-paleta="sabia"][data-modo="escuro"]{
+  --bg:#121A22; --card:#1A2530; --ink:#DDE5EC; --title:#F0F4F8; --muted:#98A8B6; --line:#2C3A47; --soft:#22303C; --grey:#16202A; --grey2:#2A3846; --panel-bg:#22303C;
+  --acento:#6CB4F0; --viva-capa:#0B4F8F; --viva-escuro:#1E3A57;
+}
+[data-modo="escuro"][data-paleta="sabia"] :is(#map,.itin,.trilho){--l-epico:#7FA8D1}
+[data-paleta="sabia"] :is(.top .gh,.chip:not([aria-pressed="true"])){border-color:var(--line)}
+/* voltou = coral (no site de hoje, o retrabalho usa o laranja) */
+[data-paleta="sabia"] svg .x-loop .xpath{stroke:var(--volta)}
+[data-paleta="sabia"] svg .x-loop .xlab rect{stroke:var(--volta)}
+[data-paleta="sabia"] .tr.k-loop{--tc:var(--volta)}
+[data-paleta="sabia"] .lg-loop{border-top-color:var(--volta)}
+/* uma pessoa decide = amarelo: gates, estação atual */
+:root[data-paleta="sabia"] svg .st.g-gate .body{fill:var(--yellow);stroke:var(--viva-tinta)}
+:root[data-paleta="sabia"] svg .st.g-gate .gtxt{fill:var(--viva-tinta)}
+:root[data-paleta="sabia"] .itin li.gate .dot{background:var(--yellow);border-color:var(--viva-tinta)}
+:root[data-paleta="sabia"] .itin li.cur .dot{background:var(--yellow);border-color:var(--viva-tinta);box-shadow:0 0 0 4px rgba(255,212,71,.4)}
+:root[data-paleta="sabia"] .trilho li.agora::after{background:var(--yellow);border-color:var(--viva-tinta);box-shadow:0 0 0 5px rgba(255,212,71,.4)}
+[data-paleta="sabia"] .senbox div.on{background:var(--navy)}
+[data-paleta="sabia"] .senbox div.on b{color:var(--yellow)}
+/* portas com a cor do que cada página trata (o HTML fixa --c inline; por isso o !important) */
+[data-paleta="sabia"] .porta[href$="como-funciona.html"]{--c:var(--navy)!important}
+[data-paleta="sabia"] .porta[href$="papeis.html"]{--c:var(--blue)!important}
+[data-paleta="sabia"] .porta[href$="arquivos.html"],[data-paleta="sabia"] .porta[href$="elm.html"]{--c:var(--teal)!important}
+[data-paleta="sabia"] .porta[href$="ciclo.html"]{--c:var(--blue)!important}
+[data-paleta="sabia"] .porta[href$="toolkits.html"]{--c:var(--green)!important}
+[data-paleta="sabia"] .porta[href$="gates.html"]{--c:var(--decide)!important}
