@@ -520,5 +520,34 @@
     "rapida": "#A3A59F"
    }
   }
+ },
+ "c-sunny-beach": {
+  "nome": "Sunny Beach Day",
+  "site": "Coolors",
+  "origem": "sua seleção",
+  "ideia": "azul-carvão e verdigris com jasmim, areia e pêssego queimado de acento",
+  "fonte": "264653-2a9d8f-e9c46a-f4a261-e76f51",
+  "sementes": {
+   "tinta": "#1B323B",
+   "capa": "#264653",
+   "brand": "#2A9D8F",
+   "navy": "#264653",
+   "cyan": "#9ED8CF",
+   "lime": "#E9C46A",
+   "green": "#85651A",
+   "orange": "#F4A261",
+   "teal": "#3E5F6D",
+   "destaque": "#E76F51",
+   "cinza": "#264653",
+   "linhas": {
+    "epico": "#264653",
+    "hitl": "#2A9D8F",
+    "afk": "#6CC2B6",
+    "atd": "#1F756A",
+    "min": "#6B7F86",
+    "sprint": "#E9C46A",
+    "rapida": "#E76F51"
+   }
+  }
  }
 }

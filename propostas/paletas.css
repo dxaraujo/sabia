@@ -296,4 +296,14 @@
 :root[data-paleta="c-deep-sea"][data-modo="escuro"]{--acento:#6D8AAC}
 [data-modo="escuro"][data-paleta="c-deep-sea"] :is(#map,.itin,.trilho,.chip){--l-epico:#338DC6}
 
+/* Sunny Beach Day (Coolors, sua seleção) — azul-carvão e verdigris com jasmim, areia e pêssego queimado de acento */
+:root[data-paleta="c-sunny-beach"]{
+  --brand:#238173; --blue:#238173; --navy:#264653; --cyan:#9ED8CF; --lime:#E9C46A; --green:#85651A; --orange:#F4A261; --teal:#3E5F6D; --yellow:#E76F51;
+  --l-epico:#264653; --l-hitl:#2A9D8F; --l-afk:#43A395; --l-atd:#1F756A; --l-min:#6B7F86; --l-sprint:#B98E1F; --l-rapida:#E76F51;
+  --viva-capa:#264653; --viva-escuro:#264653; --viva-destaque:#E76F51; --viva-tinta:#1B323B; --destaque-txt:#1B323B;
+}
+:root[data-paleta="c-sunny-beach"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38474D; --title:#264653; --muted:#657880; --line:#D0D9DD; --soft:#F0F7F9; --grey:#F6F8F9; --grey2:#E7ECEE; --panel-bg:#F6F8F9; --acento:#238173}
+:root[data-paleta="c-sunny-beach"][data-modo="escuro"]{--acento:#29998B}
+[data-modo="escuro"][data-paleta="c-sunny-beach"] :is(#map,.itin,.trilho,.chip){--l-epico:#528FA7}
+
 .proposta select{font:inherit;padding:6px 8px;border:1px solid #d0d4da;border-radius:6px;background:#fff;color:#222;max-width:220px}
