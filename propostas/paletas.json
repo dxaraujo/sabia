@@ -491,5 +491,34 @@
     "rapida": "#C99700"
    }
   }
+ },
+ "c-deep-sea": {
+  "nome": "Deep Sea",
+  "site": "Coolors",
+  "origem": "sua seleção",
+  "ideia": "marinhos e azuis-acinzentados com alabastro; quase monocromática, sem acento colorido",
+  "fonte": "0d1b2a-1b263b-415a77-778da9-e0e1dd",
+  "sementes": {
+   "tinta": "#0D1B2A",
+   "capa": "#415A77",
+   "brand": "#415A77",
+   "navy": "#1B263B",
+   "cyan": "#B4C2D4",
+   "lime": "#D3D6CF",
+   "green": "#2E4057",
+   "orange": "#9AAAC0",
+   "teal": "#556270",
+   "destaque": "#E0E1DD",
+   "cinza": "#778DA9",
+   "linhas": {
+    "epico": "#0D1B2A",
+    "hitl": "#415A77",
+    "afk": "#778DA9",
+    "atd": "#2E4057",
+    "min": "#8A8C86",
+    "sprint": "#5E7590",
+    "rapida": "#A3A59F"
+   }
+  }
  }
 }

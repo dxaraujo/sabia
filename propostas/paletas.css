@@ -286,4 +286,14 @@
 :root[data-paleta="c-golden-twilight"][data-modo="escuro"]{--acento:#0A88F0}
 [data-modo="escuro"][data-paleta="c-golden-twilight"] :is(#map,.itin,.trilho,.chip){--l-epico:#2E85FF}
 
+/* Deep Sea (Coolors, sua seleção) — marinhos e azuis-acinzentados com alabastro; quase monocromática, sem acento colorido */
+:root[data-paleta="c-deep-sea"]{
+  --brand:#415A77; --blue:#415A77; --navy:#1B263B; --cyan:#B4C2D4; --lime:#D3D6CF; --green:#2E4057; --orange:#9AAAC0; --teal:#556270; --yellow:#E0E1DD;
+  --l-epico:#0D1B2A; --l-hitl:#415A77; --l-afk:#778DA9; --l-atd:#2E4057; --l-min:#8A8C86; --l-sprint:#5E7590; --l-rapida:#93968F;
+  --viva-capa:#415A77; --viva-escuro:#1B263B; --viva-destaque:#E0E1DD; --viva-tinta:#0D1B2A; --destaque-txt:#0D1B2A;
+}
+:root[data-paleta="c-deep-sea"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38414D; --title:#1B263B; --muted:#677483; --line:#D0D5DD; --soft:#F0F4F9; --grey:#F6F7F9; --grey2:#E7EAEE; --panel-bg:#F6F7F9; --acento:#415A77}
+:root[data-paleta="c-deep-sea"][data-modo="escuro"]{--acento:#6D8AAC}
+[data-modo="escuro"][data-paleta="c-deep-sea"] :is(#map,.itin,.trilho,.chip){--l-epico:#338DC6}
+
 .proposta select{font:inherit;padding:6px 8px;border:1px solid #d0d4da;border-radius:6px;background:#fff;color:#222;max-width:220px}
