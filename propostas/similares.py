@@ -60,7 +60,7 @@ open('paletas.css', 'w').write(s)
 
 j = open('paleta.js').read()
 base = re.search(r'var OP=\{paleta:(\[.*?\]),modo:', j, re.S)
-BASE = ('sobria', 'sobria-sabia', 'atual', 'sabia')
+BASE = ('sobria', 'sobria-sabia', 'sobria-quantum', 'sobria-green', 'atual', 'sabia')
 op = [o for o in json.loads(base.group(1)) if o[0] in BASE] + [[k, v[0]] for k, v in SIMILARES.items()]
 j = j.replace(base.group(1), json.dumps(op, ensure_ascii=False))
 g = re.search(r'var GRUPO=(\{.*?\});', j, re.S)

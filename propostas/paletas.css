@@ -123,6 +123,7 @@
 
 
 
+
 /* ===== propostas similares à atual: 9 cores na ordem dos papéis da atual (marca, azul, navy, ciano, teal, verde, lima, amarelo,
    laranja), aplicadas puras, com as regras e os neutros da atual. Só o texto se adapta: branco ou quase preto
    (#121821), o que contrastar mais com cada cor (etapas e botões da barra lateral). Seletores com :root para ganhar das
@@ -211,5 +212,35 @@
 [data-modo="escuro"][data-sobria="sobria-sabia"] :is(#map,.itin,.trilho,.chip){--l-epico:#6FA8C8}
 [data-sobria="sobria-sabia"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"]){color:#022338}
 [data-sobria="sobria-sabia"] :is(.itin li.cur .dot,.trilho li.agora::after){box-shadow:0 0 0 4px rgba(255,183,3,.35)}
+/* Sóbria - Quantum: estrutura da sóbria com as cores da revisada; navy #1E293B nos destaques, acento #F59E0B em poucos pontos,
+   filetes e linhas do mapa com as cores revisadas; neutros slate */
+:root[data-sobria="sobria-quantum"]{
+  --navy:#1E293B; --cyan:#00D1D1; --lime:#A7F3D0; --green:#16A34A; --orange:#FB923C; --teal:#0F766E; --yellow:#F59E0B; --red:#DC2626;
+  --l-epico:#1E293B; --l-hitl:#0B63CE; --l-afk:#0891B2; --l-atd:#15803D; --l-min:#64748B; --l-sprint:#D97706; --l-rapida:#BE123C;
+}
+:root[data-sobria="sobria-quantum"]:not([data-modo="escuro"]){
+  --bg:#FFFFFF; --card:#FFFFFF; --ink:#334155; --title:#1E293B; --muted:#64748B; --line:#CBD5E1; --soft:#F1F5F9; --grey:#F8FAFC; --grey2:#E2E8F0;
+  --acento:#0B5CAD; --brand:#0B63CE; --brand-hover:#1E293B; --blue:#0B5CAD; --hero-bg:#F1F5F9; --hero-fg:#1E293B;
+}
+:root[data-sobria="sobria-quantum"][data-modo="escuro"]{--acento:#60A5FA; --brand:#0B63CE; --brand-hover:#60A5FA; --blue:#60A5FA}
+[data-modo="escuro"][data-sobria="sobria-quantum"] :is(#map,.itin,.trilho,.chip){--l-epico:#94A3B8}
+[data-sobria="sobria-quantum"] .tr{color:#FFFFFF}
+[data-sobria="sobria-quantum"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"]){color:#121821}
+[data-sobria="sobria-quantum"] :is(.itin li.cur .dot,.trilho li.agora::after){box-shadow:0 0 0 4px rgba(245,158,11,.35)}
+/* Sóbria - Green Core: estrutura da sóbria com as cores da revisada; navy #0C4A6E nos destaques, acento #FACC15 em poucos pontos,
+   filetes e linhas do mapa com as cores revisadas; neutros slate */
+:root[data-sobria="sobria-green"]{
+  --navy:#0C4A6E; --cyan:#0EA5E9; --lime:#A3E635; --green:#65A30D; --orange:#F97316; --teal:#0F766E; --yellow:#FACC15; --red:#DC2626;
+  --l-epico:#0C4A6E; --l-hitl:#0369A1; --l-afk:#0891B2; --l-atd:#15803D; --l-min:#64748B; --l-sprint:#A16207; --l-rapida:#BE123C;
+}
+:root[data-sobria="sobria-green"]:not([data-modo="escuro"]){
+  --bg:#FFFFFF; --card:#FFFFFF; --ink:#334155; --title:#0C4A6E; --muted:#64748B; --line:#CBD5E1; --soft:#F1F5F9; --grey:#F8FAFC; --grey2:#E2E8F0;
+  --acento:#0369A1; --brand:#0369A1; --brand-hover:#0C4A6E; --blue:#0369A1; --hero-bg:#F1F5F9; --hero-fg:#0C4A6E;
+}
+:root[data-sobria="sobria-green"][data-modo="escuro"]{--acento:#38BDF8; --brand:#0369A1; --brand-hover:#38BDF8; --blue:#38BDF8}
+[data-modo="escuro"][data-sobria="sobria-green"] :is(#map,.itin,.trilho,.chip){--l-epico:#7DB4D8}
+[data-sobria="sobria-green"] .tr{color:#FFFFFF}
+[data-sobria="sobria-green"] .tr:is([style*="--l-afk)"]){color:#121821}
+[data-sobria="sobria-green"] :is(.itin li.cur .dot,.trilho li.agora::after){box-shadow:0 0 0 4px rgba(250,204,21,.35)}
 
 .proposta select{font:inherit;padding:6px 8px;border:1px solid #d0d4da;border-radius:6px;background:#fff;color:#222;max-width:220px}
