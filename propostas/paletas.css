@@ -98,26 +98,27 @@
    mesmo vermelho, que não estão na identidade visual de origem (manual 2025 e modelo de slides). Trocadas só as cores que
    estão lá ou derivam dela: azuis cerúleos (~200°) e o navy #2C5168; ciano e teal (~186°); verdes-amarelados, amarelos e
    laranjas (38–92°); e o texto #404040, a regra de "cinza sem preto" do manual. No lugar: cobalto e índigo (~222°),
-   pervinca, menta, verde (~152°), ardósia, coral e pêssego (~10°), framboesa (~340°). Sem roxo.
+   pervinca, menta, verde (~152°), ardósia, coral e pêssego (~10°), framboesa (~340°). Sem roxo. O navy #2C5168 fica (está nos slides,
+   não no manual): superfícies escuras, títulos e linha Épico; o texto sobre as cores claras usa um marinho mais profundo.
    Sabiá viva; Sóbria com os mesmos matizes, dessaturados. Texto das etapas ≥ 4,6:1 nas duas. */
 :root[data-paleta="sabia"]{
-  --brand:#2F5BEA; --blue:#2449C9; --navy:#1B2A5E; --cyan:#8FB0FF; --lime:#5FD4B0; --green:#16854E; --orange:#FFB4A2; --teal:#475569; --yellow:#FF6A4D;
-  --l-epico:#1B2A5E; --l-hitl:#2F5BEA; --l-afk:#12A594; --l-atd:#16854E; --l-min:#64748B; --l-sprint:#FF6A4D; --l-rapida:#E0457B;
-  --viva-capa:#2F5BEA; --viva-escuro:#1B2A5E; --viva-destaque:#FF6A4D; --viva-tinta:#1B2A5E;
+  --brand:#2F5BEA; --blue:#2449C9; --navy:#2C5168; --cyan:#8FB0FF; --lime:#5FD4B0; --green:#16854E; --orange:#FFB4A2; --teal:#475569; --yellow:#FF6A4D;
+  --l-epico:#2C5168; --l-hitl:#2F5BEA; --l-afk:#12A594; --l-atd:#16854E; --l-min:#64748B; --l-sprint:#FF6A4D; --l-rapida:#E0457B;
+  --viva-capa:#2F5BEA; --viva-escuro:#2C5168; --viva-destaque:#FF6A4D; --viva-tinta:#1B2A5E;
 }
 :root[data-paleta="sobria"]{
-  --brand:#3D5A99; --blue:#3A5A8C; --navy:#1F2A44; --cyan:#B9C6E4; --lime:#A9CFC1; --green:#3E7A5E; --orange:#E8B4A6; --teal:#56657A; --yellow:#E39A86;
-  --l-epico:#1F2A44; --l-hitl:#3D5A99; --l-afk:#4E9A8E; --l-atd:#3E7A5E; --l-min:#7A8699; --l-sprint:#C9806C; --l-rapida:#B8607A;
-  --viva-capa:#3D5A99; --viva-escuro:#1F2A44; --viva-destaque:#E39A86; --viva-tinta:#1F2A44;
+  --brand:#3D5A99; --blue:#3A5A8C; --navy:#2C5168; --cyan:#B9C6E4; --lime:#A9CFC1; --green:#3E7A5E; --orange:#E8B4A6; --teal:#56657A; --yellow:#E39A86;
+  --l-epico:#2C5168; --l-hitl:#3D5A99; --l-afk:#4E9A8E; --l-atd:#3E7A5E; --l-min:#7A8699; --l-sprint:#C9806C; --l-rapida:#B8607A;
+  --viva-capa:#3D5A99; --viva-escuro:#2C5168; --viva-destaque:#E39A86; --viva-tinta:#1F2A44;
 }
 :root:is([data-paleta="sabia"],[data-paleta="sobria"]):not([data-modo="escuro"]){
   --bg:#ffffff; --card:#ffffff; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7;
 }
-:root[data-paleta="sabia"]:not([data-modo="escuro"]){--ink:#36424F; --title:#1B2A5E; --acento:#2449C9}
-:root[data-paleta="sobria"]:not([data-modo="escuro"]){--ink:#3A4250; --title:#1F2A44; --acento:#3A5A8C}
+:root[data-paleta="sabia"]:not([data-modo="escuro"]){--ink:#36424F; --title:#2C5168; --acento:#2449C9}
+:root[data-paleta="sobria"]:not([data-modo="escuro"]){--ink:#3A4250; --title:#2C5168; --acento:#3A5A8C}
 /* escuro: épico (e hitl na sóbria) clareiam no mapa e nas amostras dos chips; rótulos e aba ativa usam o acento claro */
 :root[data-paleta="sabia"][data-modo="escuro"]{--acento:#8DA2E8}
 :root[data-paleta="sobria"][data-modo="escuro"]{--acento:#9AABD6}
-[data-modo="escuro"][data-paleta="sabia"] :is(#map,.itin,.trilho,.chip){--l-epico:#8DA2E8}
-[data-modo="escuro"][data-paleta="sobria"] :is(#map,.itin,.trilho,.chip){--l-epico:#8C9BC0;--l-hitl:#7C95CC}
+[data-modo="escuro"][data-paleta="sabia"] :is(#map,.itin,.trilho,.chip){--l-epico:#7FA6C4}
+[data-modo="escuro"][data-paleta="sobria"] :is(#map,.itin,.trilho,.chip){--l-epico:#7FA6C4;--l-hitl:#7C95CC}
 [data-modo="escuro"]:is([data-paleta="sabia"],[data-paleta="sobria"]) :is(.kv dt,.blk h4,.senbox b){color:var(--acento)}
