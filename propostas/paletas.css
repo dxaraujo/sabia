@@ -1,0 +1,64 @@
+/* Paletas vivas sobre qualquer proposta: <html data-paleta="atual|nova">. Sem o atributo, fica a sóbria do sistema.
+   O sistema dá fonte, forma e componentes; a paleta dá a identidade: capa cheia, etapas coloridas, trilho de 7 cores.
+   "atual" reaproveita as cores de hoje. "nova" é própria: ferrugem do peito do sabiá-laranjeira, jabuticaba, ipê-amarelo,
+   ipê-rosa, lavanda, água, mata e rio. Contraste (WCAG): escuras com branco ≥ 5:1; claras com jabuticaba ≥ 6,6:1. */
+:root[data-paleta="atual"]{
+  --brand:#0786E3; --blue:#0086C8; --navy:#2C5168; --cyan:#00BBCE; --teal:#0094AD; --green:#76B043; --lime:#B2D235; --yellow:#FEBE10; --orange:#FAA61A;
+  --l-epico:#2C5168; --l-hitl:#0086C8; --l-afk:#00BBCE; --l-atd:#76B043; --l-min:#0094AD; --l-sprint:#FEBE10; --l-rapida:#FAA61A;
+  --viva-capa:#0786E3; --viva-escuro:#2C5168; --viva-destaque:#FEBE10; --viva-tinta:#2C5168;
+}
+:root[data-paleta="nova"]{
+  --brand:#C2440F; --blue:#4F46C8; --navy:#3B1E40; --cyan:#3CC6D6; --teal:#0E6E85; --green:#1A7A4C; --lime:#B9A5F5; --yellow:#F6C33B; --orange:#F27DB2; --red:#D92D20;
+  --l-epico:#8A3FB0; --l-hitl:#4F46C8; --l-afk:#2BB5C8; --l-atd:#1E9E5A; --l-min:#C2440F; --l-sprint:#F0B000; --l-rapida:#E85A9B;
+  --viva-capa:#2A1530; --viva-escuro:#3B1E40; --viva-destaque:#F6C33B; --viva-tinta:#2A1530;
+}
+/* o trilho: as sete etapas em sequência, assinatura no lugar das faixas inclinadas do deck */
+:root[data-paleta]{--viva-trilho:linear-gradient(90deg,var(--cyan) 0 14.29%,var(--lime) 0 28.57%,var(--brand) 0 42.86%,var(--navy) 0 57.14%,var(--green) 0 71.43%,var(--orange) 0 85.71%,var(--teal) 0)}
+
+/* capa cheia */
+[data-paleta] .sign.hero{background:var(--viva-capa);color:#fff;border:0;padding-inline:clamp(20px,4vw,48px);padding-bottom:clamp(48px,5vw,72px);position:relative;overflow:hidden}
+[data-paleta] .sign.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:10px;background:var(--viva-trilho)}
+[data-paleta] .sign.hero h1{color:#fff}
+[data-paleta] .sign.hero .lead,[data-paleta] .install .how{color:rgba(255,255,255,.88)}
+[data-paleta] .install .url{background:#fff;border:0}
+[data-paleta] .install code{color:var(--viva-tinta)}
+[data-paleta] .install button,[data-paleta] .install button:hover{background:var(--viva-destaque);color:var(--viva-tinta)}
+[data-paleta] .install button:hover{filter:brightness(1.07)}
+[data-paleta] .install .ghost{color:#fff;text-decoration:underline;text-underline-offset:4px}
+[data-paleta] .ficha .fh::before{display:block;height:6px;background:var(--viva-trilho)}
+
+/* marca das seções: o trilho em miniatura */
+[data-paleta] .lead-sec h2::before{content:"";display:block;width:84px;height:6px;border-radius:3px;background:var(--viva-trilho);margin-bottom:14px}
+
+/* etapas cheias, texto claro ou escuro conforme a cor (classe .claro do HTML) */
+[data-paleta] .etapas li,[data-paleta] .etapas li:first-child{background:var(--c);color:#fff;border-color:transparent;box-shadow:none}
+[data-paleta] .etapas .claro{color:var(--viva-tinta)}
+[data-paleta] .etapas b{color:inherit}
+[data-paleta] .etapas code{background:rgba(255,255,255,.2);color:inherit}
+[data-paleta] .etapas .claro code{background:rgba(0,0,0,.08)}
+
+/* razões e portas com a cor de cada uma */
+[data-paleta] .razoes article{background:color-mix(in srgb,var(--c) 14%,var(--card));border-color:transparent}
+[data-paleta] .razoes article::before{display:block;width:72px;height:8px;background:var(--c)}
+[data-paleta] .porta{border-top:4px solid var(--c)}
+[data-paleta] .porta .n{font:800 32px/1 var(--display);letter-spacing:-.01em;text-transform:none;padding:0;border:0;background:none;color:color-mix(in oklab,var(--c) 75%,var(--viva-tinta))}
+
+/* primeiros passos e ficha do mapa em escuro */
+[data-paleta] .passos li{background:var(--viva-escuro);color:#fff;border-color:transparent}
+[data-paleta] .passos li::before{color:var(--viva-destaque)}
+[data-paleta] .passos h3{color:#fff}
+[data-paleta] .passos code{background:rgba(255,255,255,.16);color:#fff}
+[data-paleta] .ph{background:var(--viva-escuro);color:#fff;border-bottom:0}
+[data-paleta] .ph::before{height:6px}
+[data-paleta] .ph h3{color:#fff}
+[data-paleta] .ph .sk,[data-paleta] .ph .nav{color:rgba(255,255,255,.75)}
+[data-paleta] .ph .ltabs button,[data-paleta] .ph .nav button{background:rgba(255,255,255,.14);color:#fff;box-shadow:none}
+[data-paleta] .ph .ltabs button[aria-pressed="true"],[data-paleta] .ph .nav button:hover:not(:disabled){background:#fff;color:var(--viva-escuro)}
+[data-paleta] .ph .nav .play{background:var(--viva-destaque);color:var(--viva-tinta)}
+[data-paleta] .pdz .dz-passos .prox{background:var(--viva-escuro);color:#fff}
+
+/* seletor de paleta, dentro da troca de proposta */
+.proposta .paletas{display:flex;gap:4px;align-items:center;margin-left:4px;padding-left:4px;border-left:1px solid #d0d4da}
+.proposta button{border:0;background:none;font:inherit;padding:7px 10px;border-radius:6px;color:#222;cursor:pointer}
+.proposta button:hover{background:#eef0f3}
+.proposta button[aria-pressed="true"]{background:#222;color:#fff}
