@@ -1,8 +1,9 @@
 # Toolkits — como a `sa-setup` encontra as skills de cada tipo de projeto
 
 O Sabiá é o fluxo; os toolkits são extensões dos agentes dele. O fluxo não sabe programar em nenhuma stack: ele organiza **o quê** (produto), **o como** (plano) e **a
-verificação**. O conhecimento de stack — Java, Spring Batch, Angular, React, Python, mainframe — vem de
-**toolkits**: pacotes de skills mantidos **fora** do power, um por tipo de projeto ou stack. A `sa-setup` é a
+verificação**. O conhecimento de stack — Java, Spring Batch, Angular, React, Python, mainframe — e o padrão de
+especificação de uma casa (os tipos do catálogo no formato dela) vêm de **toolkits**: pacotes de skills mantidos
+**fora** do power, um por tipo de projeto, stack ou casa. A `sa-setup` é a
 única parte do fluxo que sabe procurá-los; depois de configurado, cada agente só enxerga as skills que a pessoa
 liberou para ele.
 
@@ -101,10 +102,10 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
 | `skills[].papeis` | **quem:** pré-seleciona a skill na proposta de cada agente (`produto`, `especificador`, `pesquisador`, `desenvolvedor`, `revisor`, `verificador`, `orquestrador`) — uma skill pode servir a vários |
 | `skills[].stack`, `skills[].deteccao` | **onde:** a stack da skill (ex.: `java 17`, `react`); com `deteccao`, a setup só a pré-marca se o repositório casar |
 | `skills[].passo` | **em que passo:** opcional — a skill assume o passo de um agente do Sabiá, pelo id (`passo`: `sa-codificar.codificar.tarefa`, o único com `"desvio": true` no mestre), com o `para` e, opcionais, os `arquivos` (globs) e o `agente` a quem delegar — ver [Passos](#passos) |
-| `tipos` | opcional — `{"HF": "<toolkit>.<fluxo>"}`: o fluxo do toolkit escreve um tipo desviável do catálogo no passo de desvio do tipo (coluna Desviável do catálogo) — ver [Fluxos, padrões e tipos](#fluxos-padrões-e-tipos) |
-| `fluxos`, `padroes` | opcionais — os fluxos (`<skill>.<fluxo>`) e os padrões (`<skill>/<nome>.md`) do toolkit, compilados na instalação |
-| `rubricas` | opcional — itens que o toolkit **acrescenta** à revisão (`id`, `verificacao`, `severidade`, `tipo`); vão no prompt do revisor |
-| `requer` | opcional — `{"sabia": "<versão mínima>"}`; abaixo dela, o CLI recusa o toolkit |
+| `tipos` | opcional — `{"HF": "<toolkit>.<fluxo>"}`: o fluxo do toolkit escreve um tipo desviável do catálogo (`HF`, `REG`, `EL` e `ET` no `sa-prd.prd.escrever`; `ATA` no `sa-especificar.reuniao.escrever`; `GL` e `CT` não desviam) — ver [Fluxos, padrões e tipos](#fluxos-padrões-e-tipos) |
+| `fluxos`, `padroes` | opcionais — os fluxos (`<skill>.<fluxo>`) e os padrões (`<skill>/<nome>.md`; com uma skill `sa-*`, a camada sobre o padrão do Sabiá de mesmo nome) do toolkit, compilados na instalação |
+| `rubricas` | opcional — itens que o toolkit **acrescenta** à revisão: `id` (maiúsculas e número, ex.: `EX1`), `verificacao`, `severidade` (`BLOQUEANTE`, `IMPORTANTE` ou `SUGESTÃO`) e, opcional, o `tipo`; vão no prompt do revisor |
+| `requer` | opcional — `{"sabia": "<versão mínima>"}`: os fluxos do toolkit citam ids do Sabiá; abaixo dela, o CLI recusa o toolkit |
 | `autor` | **obrigatório:** `nome` e `area` de quem fez e responde pelo toolkit (`email` opcional). Aparece no W5 e no `sabia toolkits listar`; toolkit sem autor é recusado |
 | `customiza` | opcional: o toolkit é uma **cópia modificada** de outro (`toolkit`, a `versao` de onde saiu e as `mudancas`) — ver [Customização](#customização) |
 | `agentes[]` | agentes neutros do toolkit (nome, descrição, prompt, skills, subagentes); sem campo de permissão |
@@ -141,10 +142,24 @@ estão em [passos.md](../../sabia/references/passos.md).
 Um toolkit pode trazer fluxos e padrões no formato dos do Sabiá, e o fluxo que escreve um tipo do catálogo:
 
 ```
-toolkit.json                       "fluxos": ["exemplo.hf"], "padroes": ["sa-prd/hf.md"], "tipos": {"HF": "exemplo.hf"}
+toolkit.json                       "fluxos", "padroes", "tipos", "rubricas", "requer" (abaixo)
 skills/exemplo/SKILL.md            front-matter e o H1 (o corpo é gerado)
 fluxo/exemplo/hf/hf.md             mestre (front-matter JSON) + passos/<id>.md
 padrao/sa-prd/hf.md                camada sobre o padrão do Sabiá de mesmo nome
+padrao/exemplo/campos.md           padrão da skill do toolkit
+```
+
+```json
+{
+  "nome": "exemplo", "versao": "1.0.0", "descricao": "Padrão de histórias de uma casa",
+  "autor": { "nome": "<quem fez>", "area": "<área>" }, "tipos-de-projeto": ["backend", "frontend"],
+  "skills": [{ "caminho": "skills/exemplo/SKILL.md", "papeis": ["especificador"] }],
+  "fluxos": ["exemplo.hf"],
+  "padroes": ["sa-prd/hf.md", "exemplo/campos.md"],
+  "tipos": { "HF": "exemplo.hf" },
+  "rubricas": [{ "id": "EX1", "tipo": "HF", "verificacao": "Toda HF cita o campo de origem", "severidade": "IMPORTANTE" }],
+  "requer": { "sabia": "2.0.0" }
+}
 ```
 
 - **Compilado na instalação:** `sabia toolkits instalar` (e `atualizar`, e o `sabia atualizar` do framework) compila os
@@ -159,6 +174,9 @@ padrao/sa-prd/hf.md                camada sobre o padrão do Sabiá de mesmo nom
 - **Camadas de padrão:** Sabiá < toolkit < projeto. O padrão do toolkit sobre um do Sabiá vai no prompt de todos os
   agentes ("no lugar do da skill"); o `.sabia/padrao/` do projeto vale sobre os dois. O override do projeto
   (`.sabia/fluxo/`) também vale sobre os passos dos fluxos do toolkit, com a `base` tirada da fonte do toolkit.
+- **Rubricas:** cada item se soma à rubrica do revisor (no prompt do `sa-revisor`; sem agente, na seção **Tipos com
+  fluxo de toolkit** do `sabia.md`), com a severidade dele; o toolkit não troca nem afrouxa item do Sabiá.
+- **Requer:** a versão mínima do Sabiá instalado; o `sabia toolkits instalar` confere antes de compilar.
 - **Colisão:** dois toolkits do projeto no mesmo tipo, no mesmo padrão, no mesmo id de fluxo ou de item de rubrica →
   o gerador recusa e não grava nada. Item de rubrica com o id de um do Sabiá também, e o padrão `sa-revisar/rubricas.md`
   no `padroes`: o toolkit só acrescenta itens (`rubricas`); P5, P8 e P11 valem igual no que o fluxo dele escreve.
@@ -190,12 +208,12 @@ código vizinho (pattern grounding) — funciona, mas com mais revisão. Sugira 
 
 ## Customização
 
-Um toolkit pode ser a **cópia modificada** de outro para uma casa ou projeto (ex.: `spring-batch-pab`, a partir do
+Um toolkit pode ser a **cópia modificada** de outro para uma casa ou projeto (ex.: `spring-batch-alfa`, a partir do
 `spring-batch`). A cópia é completa por si — skills, agentes e passos próprios — e **não herda nada** da base: a base
 só aparece no campo `customiza`, para mostrar de onde veio e o que mudou.
 
 - **Mesmos nomes:** a cópia mantém os nomes de skill, de agente e de reference da base (ex.: a skill
-  `spring-batch` e o agente `spring-batch-job` nos dois). O que é só dela tem prefixo próprio (ex.: `pab-*.md`).
+  `spring-batch` e o agente `spring-batch-job` nos dois). O que é só dela tem prefixo próprio (ex.: `alfa-*.md`).
 - **Um ou o outro:** a cópia substitui a base, e o CLI recusa instalar as duas. Encontrou os dois → proponha só a
   cópia e mostre a base como `↳ substituído por <cópia>`; nunca ligue os dois.
 - **Visual:** no W5 e no `sabia toolkits listar`, a cópia aparece logo abaixo da base, com `↳`, a versão da base e as

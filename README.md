@@ -13,8 +13,8 @@ Desenvolvido por Daniel Xavier Araújo.
 ENTRADA   triar ─► backlog: EP novo · FT sem épico (padrão ou rápida, cada uma com a sua ficha) · Sustentação (AT-/IM-… + IB) ─► "mais algum?"
 HUB       iniciar <item> ─► especificar · desenvolver · revisar ([REV], [APR]) · verificar · atender · planejamento (troca) · consolidar · executar (cada uma assume a sua tarefa)
             │
-PRODUTO   entrevistar ─► PRD ─► GATE PRD ─► ELM (HF/REG/GL) ─► fatiar ─► GATE backlog ─► sprint (EWM)
-                                                                                 │
+PRODUTO   especificar (ATA de cada reunião · protótipo aprovado, com tela) ─► entrevistar ─► PRD ─► GATE PRD ─► ELM (GL → REG → EL → HF → ET) ─► fatiar ─► GATE backlog ─► sprint (EWM)
+                                                                                                                                                                   │
 FATIA     desenvolver (iniciada na base) ─► pesquisar ─► plano (spec do Kiro) ─► GATE plano ─► implementar (TDD) ─► PR ─► revisar ─► verificar   (AFK: revisão e verificação antes do PR)
                                                                                                                                      │
 DEPOIS    merge (Dev; remove a worktree do loop) ─► pronta na base
@@ -122,8 +122,11 @@ parte do fluxo que sabe procurá-los (`.sabia/toolkits/`, `~/.sabia/toolkits/`, 
 ou skills com `metadata.toolkit`), detecta o tipo do projeto e **propõe, agente por agente**, as skills a ligar (uma confirmação por agente) —
 num projeto 100% Spring Batch, o desenvolvedor recebe as de batch e Java que a pessoa escolher, e não as de REST ou
 frontend. Uma skill de toolkit também pode assumir um passo do Sabiá pelo id (`sa-codificar.codificar.tarefa`): o
-desvio vai no prompt do agente dono. E um toolkit pode trazer o fluxo que escreve um tipo do catálogo (`"tipos":
-{"HF": "<toolkit>.<fluxo>"}`), compilado na instalação com o compilador do Sabiá. Contrato em [`skills/sa-setup/references/toolkits.md`](skills/sa-setup/references/toolkits.md) e
+desvio vai no prompt do agente dono. E um toolkit pode trazer o fluxo que escreve um tipo desviável do catálogo
+(`"tipos": {"HF": "<toolkit>.<fluxo>"}`; `HF`, `REG`, `EL`, `ET` e `ATA`), compilado na instalação com o compilador
+do Sabiá, os padrões em camada (Sabiá < toolkit < projeto), os itens que ele acrescenta à revisão (`rubricas`) e a
+versão mínima do Sabiá (`requer`); o catálogo, o envelope OKF, a revisão, o GATE e a publicação continuam do Sabiá.
+Contrato em [`skills/sa-setup/references/toolkits.md`](skills/sa-setup/references/toolkits.md) e
 schema em [`toolkit.schema.json`](skills/sa-setup/assets/toolkit.schema.json).
 
 ## IBM ELM
@@ -133,9 +136,16 @@ feita. Mapeamento padrão (ajustável na setup): história → artefato *Histór
 *Regra*; termo → *Termos de Glossário*; épico → *Épico* (EWM); fatia → *Item de Backlog* que **implementa** as
 histórias (sem épico, filho da `Manutenção`); item de Sustentação → *Item de Backlog* `[AT-nnn]`, filho do IB da
 categoria; tarefas filhas na sprint; cenário verificado → *Caso de Teste* (ETM) que **valida** a história.
-Cada história, regra e termo nasce como um conceito **OKF v0.2** na pasta da spec (o mesmo formato do bundle da
-`sa-sync`), com aprovação registrada em `verified`; sobe para o DOORS Next só depois do GATE, de baixo para cima,
-com HF → REG como embed, sem nada extra no texto publicado e sempre com prévia e confirmação. Atributos e links entre
+
+Todo artefato é de um tipo do catálogo fechado ([`fluxo/tipos.json`](fluxo/tipos.json); compilado em
+`skills/sabia/references/tipos.md`): `HF` história, `REG` regra, `GL` termo, `EL` leiaute (uma por tela, com a
+política Telas = `sim`, lido do protótipo que o cliente aprovou), `ET` especificação técnica (inicial no PRD e
+as-built por fatia, pela política ET), `CT` caso de teste (`CT.csv` ou ETM, pela política) e `ATA` (a ata de cada
+reunião com o cliente durante a `[ESP]`, escrita da transcrição, que fica só local). Cada um nasce como um conceito
+**OKF v0.2** na pasta da spec (o mesmo formato do bundle da `sa-sync`), com aprovação registrada em `verified`; os
+requisitos sobem para o DOORS Next só depois do GATE, de baixo para cima (`GL` → `REG` → `EL` → `HF` → `ET`), com
+HF → REG como embed, sem nada extra no texto publicado e sempre com prévia e confirmação; a ATA sobe na aprovação
+dela. Atributos e links entre
 requisitos ficam registrados nos conceitos, porque o MCP não os grava. Detalhes em [`skills/sabia/references/elm.md`](skills/sabia/references/elm.md)
 e [`skills/sa-consolidar/references/elm-publicar.md`](skills/sa-consolidar/references/elm-publicar.md).
 
@@ -209,6 +219,18 @@ Com o **Kiro CLI 2.32.0**, engine V3 (23/10/2026), os agentes gerados pelo `gera
 `kiro-cli agent validate`; numa conversa sem interação, comando liberado roda, comando fora da lista e exceção
 (`git log --output`) caem em aprovação, e `git commit -n` e push para a base são negados pela regra. Não foi
 possível abrir a IDE.
+
+**Prova do núcleo**, só com fixtures sintéticas (`node --test` em `cli/` e `python3 -m unittest test_gerar_agentes`
+em `skills/sa-setup/scripts/`): o framework deste repositório instalado e compilado no Kiro e no opencode, com o
+grafo de cada fluxo igual ao do mestre, o catálogo sem tipo pendente e a linha Telas = `sim` como condição do
+protótipo, da EL e da P12 nos passos compilados; um projeto front+back com um toolkit de especificação (HF ⇢ o fluxo
+dele, um padrão em camada, um item de rubrica), o passo do projeto por cima dele e as linhas ET, Casos de teste e
+Telas do `sabia.md` (ET inicial, `CT.csv`, HF ↔ EL, P12 e P13 nos passos compilados); e um projeto batch com o desvio
+da tarefa de job ao agente do toolkit. Nos dois, os agentes são gerados pelo
+`gerar_agentes.py` sobre a instalação, e a `sabia rota` mostra o desvio e a origem de cada passo.
+
+**Verificação pendente** (da pessoa, numa PA real, com `elm_setup_descobrir`): os tipos de artefato do DOORS Next para
+a `ATA` (Reunião) e a `EL` (Leiaute) — o nome, o `OT_` e os atributos obrigatórios de cada um.
 
 **O que a documentação não resolve** (comportamento a observar no primeiro uso): o formato do `.config.kiro` das
 specs; EARS em português no Analyze Requirements; se os subagentes somam ou intersectam os `allow` de quem os

@@ -460,6 +460,9 @@ class Gerar(unittest.TestCase):
         self.assertIn("no passo `sa-prd.prd.escrever`, REG → `exemplo.hf`", agentes["especificador"]["prompt"])
         self.assertNotIn("Tipos com fluxo de toolkit", agentes["produto"]["prompt"])
         self.assertFalse([r for r in agentes["produto"]["resources"] if "exemplo" in r])
+        # a ATA desvia em outro passo (sa-especificar.reuniao.escrever), também do especificador
+        agentes = self.gerar(toolkits=self.exemplo(tipos={"ATA": "exemplo.hf"}))
+        self.assertIn("no passo `sa-especificar.reuniao.escrever`, ATA → `exemplo.hf`", agentes["especificador"]["prompt"])
 
     def test_skill_de_toolkit_com_fonte_aponta_para_a_compilada(self):
         # papeis grava a skill da fonte no agentes.json; com fluxos, vale a compilada, uma vez só
@@ -480,6 +483,43 @@ class Gerar(unittest.TestCase):
         self.assertIn("- padrão `sa-prd/hf.md`: `.sabia/padrao/sa-prd/hf.md` (no lugar do da skill)", e)
         self.assertNotIn("compilado-toolkits/kiro/exemplo/padrao", e)  # o do projeto vale sobre o do toolkit
         self.assertEqual(g.gerar.avisos, [])  # a base é a da fonte do toolkit, não a do Sabiá
+
+    def test_prova_front_back_e_batch_nos_dois_alvos(self):
+        """Dois projetos sintéticos pelo main: front+back com o exemplo (HF ⇢ exemplo.hf) e o passo do projeto por cima;
+        batch com o desvio do batch-alfa. Cada um grava só o que é dele, no Kiro e no opencode."""
+        import contextlib, io
+        def gravar(cfg):
+            conf = self.projeto / ".sabia/config/agentes.json"
+            conf.parent.mkdir(parents=True, exist_ok=True)
+            conf.write_text(json.dumps({**self.cfg, **cfg}))
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                self.assertEqual(g.main(["--projeto", str(self.projeto), "--alvo", "kiro,opencode", "--gravar"]), 0)
+            self.assertNotIn("aviso:", out.getvalue())
+            kiro = {f.stem: json.loads(f.read_text()) for f in (self.projeto / ".kiro/agents").glob("*.json")}
+            oc = {f.stem: f.read_text() for f in (self.projeto / ".opencode/agents").glob("*.md")}
+            self.assertEqual(sorted(kiro), sorted(oc))
+            return kiro, oc, out.getvalue()
+        tk = self.exemplo()
+        fonte = g.sha12(self.home / ".sabia/toolkits/exemplo/fluxo/exemplo/hf/passos/escrever.md")
+        p = self.projeto / ".sabia/fluxo/exemplo/hf/passos/escrever.md"
+        p.parent.mkdir(parents=True)
+        p.write_text(f'---\n{{"base": "{fonte}"}}\n---\n## Entrada\n')
+        kiro, oc, out = gravar({"toolkits": tk})
+        self.assertEqual(sorted(kiro), sorted(f"sa-{n}" for n in PAPEIS))
+        for e in (kiro["sa-especificador"]["prompt"], oc["sa-especificador"]):
+            self.assertIn("no passo `sa-prd.prd.escrever`, HF → `exemplo.hf`", e)
+            self.assertIn("- passo `escrever`: leia `.sabia/fluxo/exemplo/hf/passos/escrever.md`", e)
+        self.assertNotIn("Desvios de toolkit", kiro["sa-desenvolvedor"]["prompt"])
+        self.assertIn("Tipos com fluxo de toolkit (seção do sabia.md)", out)
+        # o batch, no mesmo diretório depois de limpo: só o desvio do passo, com o agente do toolkit nos dois alvos
+        import shutil
+        for d in (".kiro", ".opencode", ".sabia/fluxo"):
+            shutil.rmtree(self.projeto / d)
+        kiro, oc, out = gravar(self.toolkit())
+        self.assertIn("batch-job", kiro)
+        self.assertIn("`tarefa de job` → delegue ao subagente `batch-job`", oc["sa-desenvolvedor"])
+        self.assertNotIn("Tipos com fluxo de toolkit", kiro["sa-especificador"]["prompt"] + out)
 
     def test_toolkits_em_colisao_ou_tipo_que_nao_desvia_sao_recusados(self):
         casos = [(lambda: {**self.exemplo(), **self.exemplo("outro", padroes=[], rubricas=[], tipos={"HF": "outro.hf"})}, "tipo HF já é de toolkit exemplo"),

@@ -32,7 +32,7 @@ chamada direto:
 
 | Papel | Tarefa | Skill |
 |---|---|---|
-| Especificador | `[ESP]` | `sa-especificar` (entrevista → PRD → fatias), no agente `sa-especificador` |
+| Especificador | `[ESP]` | `sa-especificar` (entrevista → PRD → fatias; a ATA de cada reunião com o cliente e, com tela, o protótipo aprovado antes do PRD), no agente `sa-especificador` |
 | Dev | `[DEV]` | `sa-desenvolver` (compromisso, `iniciada` na base, branch) → pesquisar → plano → implementar → PR → merge (`pronta` na base; a fatia é dele de ponta a ponta) |
 | Revisor (Dev Sênior) | `[REV]` | `sa-revisar` |
 | Aprovador (Dev Sênior) | `[APR]` — só nos gates sem tarefa de papel; nasce quando a fatia chega ao gate | `[APR] … Aprovar plano` → `sa-revisar.aprovar-plano` · `[APR] … Aprovar PR` (AFK) → `sa-revisar.aprovar-pr` |
@@ -64,8 +64,8 @@ ENTRADA       triar ─► backlog: EP novo · FT sem épico (padrão ou rápida
                 │
 HUB           iniciar <item> ─► especificar · desenvolver · revisar ([REV], [APR]) · verificar · atender · executar · planejamento (troca) · consolidar   (cada uma assume a sua tarefa)
                 │
-PRODUTO       especificar ─► entrevistar ─► PRD ─► GATE PRD ─► ELM (HF/REG/GL) ─► fatiar ─► GATE backlog ─► sprint (EWM)
-                                                                                    │
+PRODUTO       especificar (ATA de cada reunião · protótipo aprovado, com tela) ─► entrevistar ─► PRD ─► GATE PRD ─► ELM (GL → REG → EL → HF → ET) ─► fatiar ─► GATE backlog ─► sprint (EWM)
+                                                                                                                                                       │
 FATIA         desenvolver (iniciada na base) ─► pesquisar ─► plano ─► GATE plano ─► implementar (TDD) ─► PR ─► revisar ─► verificar   (AFK: revisão e verificação antes do PR)
                                                                                                                             │
 DEPOIS        merge (Dev, PR aprovado; remove a worktree do loop) ─► pronta na base
@@ -158,6 +158,7 @@ retoma pela skill da fase, que sincroniza o `status.md` pela base.
 | registrar qualquer demanda nova — pedido, defeito, ajuste, pedido de cliente, item ou lote do EWM (triagem) | `sa-triar` |
 | começar um item registrado, ou "minha próxima tarefa" (o hub diz a skill do papel) | `sa-iniciar` |
 | especificar um épico (`[ESP]`) e registrar cada sessão com o cliente na tarefa | `sa-especificar` |
+| a ata de uma reunião com o cliente (transcrição `.vtt` ou `.md`) · o protótipo de tela e a aprovação do cliente | `sa-especificar` (`sa-especificar.reuniao` · `sa-especificar.prototipo`) |
 | começar ou retomar o código de uma fatia (`[DEV]`), mergear o PR aprovado | `sa-desenvolver` |
 | alinhar decisões | `sa-entrevistar` |
 | escrever o PRD de um épico | `sa-prd` |
@@ -190,6 +191,20 @@ retoma pela skill da fase, que sincroniza o `status.md` pela base.
 | `.sabia/fluxo/` · `.sabia/padrao/` | override esparso: só o passo, as operações do mestre ou o padrão que o projeto customizou, pela `sa-setup` ("customizar …"); nenhum agente escreve |
 | `.sabia/http.sh` | da setup: chamada HTTP do verificador (opcional); o backpressure antes de cada commit é o passo `sa-codificar.codificar.validar`, com os Comandos do `sabia.md` |
 | `.sabia/local/` (fora do git) | worktrees do loop, log dos lotes, dados de cliente (extrações, evidências com dado real), especificação em andamento (`especificacao/<EP>/`, até o GATE do PRD) |
+
+## Tipos de artefato
+
+O catálogo é fechado ([references/tipos.md](references/tipos.md)): sigla, arquivo, passo que cria, padrão, tipo no
+ELM e ordem de publicação. Um toolkit não cria tipo; num tipo desviável (⇢), o fluxo dele escreve o artefato no
+padrão da casa ([references/passos.md](references/passos.md#tipos-com-fluxo-de-toolkit)).
+
+| Tipo | Nasce em | Quando |
+|---|---|---|
+| `GL` `REG` `HF` | `sa-prd.prd.escrever` (a `REG` também na ficha da fatia sem épico, `sa-consolidar.consolidar.elm`) | todo épico |
+| `EL` | `sa-prd.prd.escrever`, uma por tela, lida do protótipo que o cliente aprovou (`sa-especificar.prototipo`) | linha Telas = `sim` do `sabia.md` |
+| `ET` | inicial por épico no `sa-prd.prd.escrever`; as-built por fatia no `sa-codificar.codificar.pr`, ligada à inicial | linha ET do `sabia.md` |
+| `CT` | `sa-verificar.verificar.casos` (`CT.csv`); no ETM, na consolidação | linha Casos de teste do `sabia.md` |
+| `ATA` | `sa-especificar.reuniao`, da transcrição em `reunioes/` (que nunca sai da máquina), com a `[ESP]` aberta | cada reunião com o cliente |
 
 ## Fronteiras de fase
 

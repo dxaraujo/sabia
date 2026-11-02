@@ -239,16 +239,13 @@ test("Kiro: staging com plugin, mcp e README, recriado do zero (skill que saiu s
   assert.ok(!fs.existsSync(path.join(st, "skills/sabia")));
 });
 
-// shortcut: as passagens do repo para passo de outro agente saem com a reescrita dos fluxos (11.16); até lá, o repo
-// real não compila e o teste de compilação fica pulado (volta sozinho quando a validação zerar)
-const PASSO_ALHEIO = /passa ao passo .*, de outro agente/;
 const errosRepo = validar(carregar(REPO));
 
-test("o repo real valida (fora as passagens para passo de outro agente, pendentes da 11.16)", () => {
-  assert.deepEqual(errosRepo.filter((e) => !PASSO_ALHEIO.test(e)), []);
+test("o repo real valida", () => {
+  assert.deepEqual(errosRepo, []);
 });
 
-test("o repo real compila nos dois alvos e todo link da saída resolve", { skip: errosRepo.length ? `${errosRepo.length} passagem(ns) para passo de outro agente` : false }, () => {
+test("o repo real compila nos dois alvos e todo link da saída resolve", () => {
   for (const [alvo, base] of [["opencode", BASE], ["kiro", "~/.kiro/powers/installed/sabia/skills"]]) {
     const st = compilar(REPO, path.join(raiz, alvo), { base, raiz: alvo === "kiro", versao: "2.0.0" });
     const s = fs.readFileSync(path.join(st, "skills/sa-codificar/SKILL.md"), "utf8");

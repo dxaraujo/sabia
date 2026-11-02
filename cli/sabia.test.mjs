@@ -483,6 +483,10 @@ test("rota --fluxo: o desvio por tipo no passo que cria o tipo e a origem toolki
   assert.match(hf, /^1 +escrever +toolkit exemplo 1\.0\.0/m);
   // sem o toolkit no projeto: o ⇢ continua (o gancho), sem o tipo ligado
   assert.doesNotMatch(s.rotaFluxo("sa-prd.prd", { framework: REPO, projeto: path.join(raiz, "vazio") }), /^tipo ⇢/m);
+  // a ATA desvia em outro passo: no sa-especificar.reuniao.escrever
+  const tkAta = exemplo(path.join(raiz, "tk-rota-ata"), { tipos: { ATA: "exemplo.hf" } });
+  const pAta = escrever(path.join(raiz, "proj-ata"), { ".sabia/config/agentes.json": { toolkits: { exemplo: { pasta: tkAta, versao: "1.0.0" } } } });
+  assert.match(s.rotaFluxo("sa-especificar.reuniao", { framework: REPO, projeto: pAta }), /│ 2 escrever ⇢ +│──▶ ⇢ tipo ATA → exemplo\.hf \(toolkit exemplo 1\.0\.0\)/);
 });
 
 test("opção com valor sem o valor é recusada sem engolir a seguinte", async () => {
