@@ -8,7 +8,7 @@
    {"id": "similares"},
    {"id": "escrever", "chama": "sa-especificar.prototipo"},
    {"id": "revisao", "chama": "sa-revisar.revisar", "saidas": {"achado que é decisão de negócio": "entrevistar"}},
-   {"id": "gate", "saidas": {"decisão em aberto que muda comportamento": "entrevistar", "primeiro GATE aprovado": "→ sa-especificar.especificar", "mudança depois de aprovado, aprovada: volta a quem chamou, ou o P.O. retoma pela sa-consolidar": "fim"}}
+   {"id": "gate", "saidas": {"decisão em aberto que muda comportamento": "entrevistar", "primeiro GATE aprovado, ou mudança de: aprovado aprovada (a [ESP] segue)": "→ sa-especificar.especificar", "correção de: fatiado, aprovada: volta a quem chamou, ou o P.O. retoma pela sa-consolidar": "fim"}}
  ]}
 ---
 # PRD — O quê e por quê (épico)

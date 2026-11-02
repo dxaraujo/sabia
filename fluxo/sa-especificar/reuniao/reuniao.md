@@ -7,7 +7,7 @@
    {"id": "escrever"},
    {"id": "aprovar", "saidas": {"ajuste pedido pela pessoa": "escrever", "sem o \"sim\" (a ATA fica draft)": "fim"}},
    {"id": "publicar"},
-   {"id": "decisoes", "saidas": {"outra transcrição sem ATA aprovada": "transcricao", "aprovado: decisão que muda o PRD": "→ sa-prd.mudanca", "fatiado: escopo novo": "→ sa-triar.triar"}}
+   {"id": "decisoes", "saidas": {"outra transcrição sem ATA aprovada": "transcricao", "aprovado: decisão que muda o PRD, na mesma [ESP]": "→ sa-prd.mudanca", "fatiado: correção do que o PRD já diz (versão de correção)": "→ sa-prd.mudanca", "fatiado: escopo novo, o PRD não muda": "→ sa-triar.triar"}}
  ]}
 ---
 # Reunião — ata da reunião com o cliente

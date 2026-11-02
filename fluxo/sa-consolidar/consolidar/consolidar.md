@@ -3,7 +3,7 @@
  "travas_gerais": ["sim-da-pessoa"],
  "passos": [
    {"id": "entrada", "de": "entrada", "sprint": "nao"},
-   {"id": "drift", "saidas": {"drift sim, com épico: o PRD muda antes de publicar": "→ sa-prd.mudanca"}},
+   {"id": "drift", "saidas": {"drift sim, com épico: o PRD vai à versão de correção antes de publicar": "→ sa-prd.mudanca"}},
    {"id": "elm"},
    {"id": "conhecimento"},
    {"id": "fechar", "chama": "sa-aprender.registrar"},

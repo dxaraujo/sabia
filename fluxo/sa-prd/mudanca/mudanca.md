@@ -1,16 +1,21 @@
 ---
 {"fluxo": "mudanca", "dono": "sa-especificador",
- "quando": ["mudar um PRD já aprovado (Fase aprovado ou fatiado), por um pedido explícito da pessoa, da sa-consolidar (drift) ou do sa-fatiar.refinamento (cenário novo); volta à revisão e ao GATE de sa-prd.prd"],
+ "quando": ["mudar um PRD já aprovado na base (aprovado: na mesma [ESP]; fatiado: só a correção); volta à revisão e ao GATE de sa-prd.prd"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa"],
  "passos": [
-   {"id": "mudanca", "saidas": {"o que mudou, para a revisão e o GATE": "→ sa-prd.prd.revisao"}}
+   {"id": "mudanca", "saidas": {"o que mudou, para a revisão e o GATE": "→ sa-prd.prd.revisao", "PRD ainda na pasta de trabalho (sem o GATE, ou aprovado sem ir à base)": "→ sa-especificar.especificar", "fatiado: escopo novo": "→ sa-triar.triar"}}
  ]}
 ---
-# Mudança depois de aprovado — nova versão do PRD
+# Mudança depois de aprovado — o PRD aprovado muda
 
-Entrada: épico na Fase `aprovado` ou `fatiado`, com o PRD já na base (`<produto>/epicos/<EP>-<slug>/`), e um pedido
-explícito de mudança — da pessoa, da `sa-consolidar` (drift), da `sa-verificar` (cenário errado) ou do
-`sa-fatiar.refinamento` (fatia nova com cenário novo, que chama este fluxo e segue depois do GATE).
+Entrada: épico com o PRD aprovado na base (`<produto>/epicos/<EP>-<slug>/`) e um pedido explícito de mudança.
+Antes do fatiamento (Fase `aprovado`), a mudança segue na mesma `[ESP]`, ainda aberta: da pessoa ou da ATA de uma
+reunião (`sa-especificar.reuniao`). Depois do fatiamento (Fase `fatiado`), só a correção do que o PRD já tem
+(cenário errado ou que falta numa história existente, valor de regra), por pedido explícito: da pessoa, da ATA, do
+drift (`sa-consolidar`: o código entregue não é o que a HF aprovada diz), da `sa-verificar`, do `sa-plano`, de
+completar a fatia (`sa-especificar.fatia`) ou do `sa-fatiar.refinamento` (que chama este fluxo e segue depois do
+GATE). Escopo novo (história, regra ou ator que o PRD não tem) depois do fatiamento não muda o PRD: é épico ou fatia
+nova pela `sa-triar`.
 
 Leia antes: `.sabia/sabia.md` (ELM, caminhos, papéis) e o steering de produto que ele aponta.
 

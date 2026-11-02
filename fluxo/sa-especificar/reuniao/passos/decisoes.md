@@ -1,5 +1,5 @@
 ---
-{"resumo": "Passa a decidida, no decisoes.md, os D-nn que a ATA reservou e no rascunho.md o que ficou em aberto; com o PRD já aprovado, a decisão que o muda segue a mudança (antes do fatiamento) ou a triagem (depois)."}
+{"resumo": "Passa a decidida, no decisoes.md, os D-nn que a ATA reservou e no rascunho.md o que ficou em aberto; com o PRD já aprovado, a decisão que o muda segue a mudança (antes do fatiamento; depois, só a correção) ou a triagem (escopo novo depois)."}
 ---
 ## Entrada
 
@@ -15,8 +15,10 @@ A ATA aprovada (passo `publicar`) e o `decisoes.md` da pasta do épico.
    `decisoes.md` num commit `EP-<nn> registrar ATA-<nn>`, pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base).
    Senão, tudo fica na pasta de trabalho e vai à `[ESP]` no passo `sa-especificar.especificar.fechar-sessao`.
 3. **PRD já aprovado** (Fase `aprovado` ou `fatiado` no `status.md` do épico na base): decisão que muda o que o PRD diz →
-   antes do fatiamento (`aprovado`), `sa-prd.mudanca`, ainda nesta `[ESP]`; depois (`fatiado`), escopo novo, como
-   épico ou fatia, pela `sa-triar.triar` (`origem EP-<nn> ATA-<nn>`). Decisão que não muda o PRD → só o registro
+   antes do fatiamento (`aprovado`), `sa-prd.mudanca`, ainda nesta `[ESP]` (versão nova só se o PRD já subiu ao
+   ELM); depois (`fatiado`), mesmo com a `[ESP]` aberta: escopo novo → épico ou fatia pela `sa-triar.triar`
+   (`origem EP-<nn> ATA-<nn>`), o PRD não muda; correção do que o PRD já diz → `sa-prd.mudanca` (versão de
+   correção). Decisão que não muda o PRD → só o registro
    do item 1.
 
 ## Saída

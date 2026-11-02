@@ -10,7 +10,8 @@
 Peça ao agente **`sa-revisor`** a revisão do PRD (rubrica **P** do padrão `sa-revisar/rubricas.md`); sem o agente, aplique a rubrica
 você mesmo, sem usar o raciocínio de quem escreveu como evidência. Corrija os achados (até 2 rodadas); o que for
 decisão de negócio volta para a entrevista. Fase `em-revisao` no `status.md` do épico
-(modelo: o padrão `sa-especificar/status-epico.md`) enquanto isso.
+(modelo: o padrão `sa-especificar/status-epico.md`) enquanto isso; na mudança, a `em-revisao (de: …)` do passo
+`sa-prd.mudanca.mudanca` fica.
 
 ## Saída
 
