@@ -114,148 +114,164 @@
 :root[data-paleta="sabia"][data-modo="escuro"]{--acento:#8DA2E8}
 [data-modo="escuro"][data-paleta="sabia"] :is(#map,.itin,.trilho,.chip){--l-epico:#7FA6C4}
 [data-modo="escuro"][data-paleta="sabia"] :is(.kv dt,.blk h4,.senbox b){color:var(--acento)}
+[data-paleta="sabia"] .tr[style*="--l-sprint)"]{color:#1B2A5E}
 
 /* ===== paletas para teste (geradas por gerar_paletas.py a partir de Coolors e Adobe Color): cada uma com cores-base,
-   acento e escala própria de cinzas e branco; só a luminosidade foi ajustada para o contraste (etapas ≥ 4,5:1, linhas ≥ 3:1) ===== */
+   acento e escala própria de cinzas e branco; só a luminosidade das etapas foi ajustada para o contraste (≥ 4,5:1); as
+   linhas do mapa ficam com a cor original da paleta ===== */
 /* Fiery Ocean (Coolors, sua seleção) — marinho e azul-aço com vermelho de acento e creme */
 :root[data-paleta="c-fiery-ocean"]{
   --brand:#437B9C; --blue:#437B9C; --navy:#003049; --cyan:#A9C8DD; --lime:#F5DDB0; --green:#780000; --orange:#F2A3A8; --teal:#34607A; --yellow:#C1121F;
-  --l-epico:#003049; --l-hitl:#669BBC; --l-afk:#549CC7; --l-atd:#780000; --l-min:#8C7A6B; --l-sprint:#C1121F; --l-rapida:#C98727;
+  --l-epico:#003049; --l-hitl:#669BBC; --l-afk:#9CC3DA; --l-atd:#780000; --l-min:#8C7A6B; --l-sprint:#C1121F; --l-rapida:#E0A458;
   --viva-capa:#437B9C; --viva-escuro:#003049; --viva-destaque:#C1121F; --viva-tinta:#001F33; --destaque-txt:#FFFFFF;
 }
 :root[data-paleta="c-fiery-ocean"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38454D; --title:#003049; --muted:#677983; --line:#D0D8DD; --soft:#F0F6F9; --grey:#F6F8F9; --grey2:#E7EBEE; --panel-bg:#F6F8F9; --acento:#437B9C}
 :root[data-paleta="c-fiery-ocean"][data-modo="escuro"]{--acento:#4F8EB4}
 [data-modo="escuro"][data-paleta="c-fiery-ocean"] :is(#map,.itin,.trilho,.chip){--l-epico:#008BE2}
+[data-paleta="c-fiery-ocean"] .tr:is([style*="--l-afk)"],[style*="--l-rapida)"]){color:#001F33}
 
 /* Fresh Greens (Coolors, sua seleção) — verdes com creme e vermelho de acento (sem azul) */
 :root[data-paleta="c-fresh-greens"]{
   --brand:#597F3F; --blue:#597F3F; --navy:#386641; --cyan:#A7C957; --lime:#EADCB4; --green:#4E7A36; --orange:#E5A3A4; --teal:#5C6B4E; --yellow:#BC4749;
-  --l-epico:#386641; --l-hitl:#6A994E; --l-afk:#80A034; --l-atd:#4E7A36; --l-min:#8A8F70; --l-sprint:#BC4749; --l-rapida:#B68C3B;
+  --l-epico:#386641; --l-hitl:#6A994E; --l-afk:#A7C957; --l-atd:#4E7A36; --l-min:#8A8F70; --l-sprint:#BC4749; --l-rapida:#C9A35B;
   --viva-capa:#386641; --viva-escuro:#386641; --viva-destaque:#BC4749; --viva-tinta:#1E3523; --destaque-txt:#FFFFFF;
 }
 :root[data-paleta="c-fresh-greens"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#404D38; --title:#386641; --muted:#6A7A61; --line:#D5DDD0; --soft:#F4F9F0; --grey:#F7F9F6; --grey2:#EAEEE7; --panel-bg:#F7F9F6; --acento:#597F3F}
 :root[data-paleta="c-fresh-greens"][data-modo="escuro"]{--acento:#66934A}
 [data-modo="escuro"][data-paleta="c-fresh-greens"] :is(#map,.itin,.trilho,.chip){--l-epico:#56945F}
+[data-paleta="c-fresh-greens"] .tr:is([style*="--l-afk)"],[style*="--l-rapida)"]){color:#1E3523}
 
 /* Pastel Dreamland Adventure (Coolors, sua seleção) — pastéis: azul-bebê, rosa e lavanda (os escuros derivados dos pastéis) */
 :root[data-paleta="c-pastel"]{
   --brand:#0077DA; --blue:#0077DA; --navy:#2B4A6F; --cyan:#BDE0FE; --lime:#FFC8DD; --green:#7A5C99; --orange:#FFAFCC; --teal:#4F6B8A; --yellow:#FFAFCC;
-  --l-epico:#2B4A6F; --l-hitl:#5698D7; --l-afk:#459BDA; --l-atd:#9B7BB8; --l-min:#8C8FA8; --l-sprint:#E46E9A; --l-rapida:#E8669A;
+  --l-epico:#2B4A6F; --l-hitl:#5A9BD8; --l-afk:#7FB8E8; --l-atd:#9B7BB8; --l-min:#8C8FA8; --l-sprint:#E87FA6; --l-rapida:#F08CB4;
   --viva-capa:#0077DA; --viva-escuro:#2B4A6F; --viva-destaque:#FFAFCC; --viva-tinta:#22314F; --destaque-txt:#22314F;
 }
 :root[data-paleta="c-pastel"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38434D; --title:#2B4A6F; --muted:#677683; --line:#D0D6DD; --soft:#F0F5F9; --grey:#F6F7F9; --grey2:#E7EBEE; --panel-bg:#F6F7F9; --acento:#0077DA}
 :root[data-paleta="c-pastel"][data-modo="escuro"]{--acento:#0089F9}
 [data-modo="escuro"][data-paleta="c-pastel"] :is(#map,.itin,.trilho,.chip){--l-epico:#538BC1}
+[data-paleta="c-pastel"] .tr:is([style*="--l-hitl)"],[style*="--l-afk)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#22314F}
 
 /* Summer Ocean Breeze (Coolors, sua seleção) — marinho e azul-aço com um coral vermelho de acento */
 :root[data-paleta="c-marinho-coral"]{
   --brand:#457B9D; --blue:#457B9D; --navy:#1D3557; --cyan:#A8DADC; --lime:#C9DDEB; --green:#2A7F86; --orange:#F4A6AC; --teal:#3D5A80; --yellow:#E63946;
-  --l-epico:#1D3557; --l-hitl:#457B9D; --l-afk:#42A1A7; --l-atd:#2A7F86; --l-min:#6C8EAD; --l-sprint:#E63946; --l-rapida:#B5303C;
+  --l-epico:#1D3557; --l-hitl:#457B9D; --l-afk:#4FB3B8; --l-atd:#2A7F86; --l-min:#6C8EAD; --l-sprint:#E63946; --l-rapida:#B5303C;
   --viva-capa:#457B9D; --viva-escuro:#1D3557; --viva-destaque:#E63946; --viva-tinta:#12233D; --destaque-txt:#FFFFFF;
 }
 :root[data-paleta="c-marinho-coral"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38454D; --title:#1D3557; --muted:#677883; --line:#D0D8DD; --soft:#F0F6F9; --grey:#F6F8F9; --grey2:#E7EBEE; --panel-bg:#F6F8F9; --acento:#457B9D}
 :root[data-paleta="c-marinho-coral"][data-modo="escuro"]{--acento:#528CB3}
 [data-modo="escuro"][data-paleta="c-marinho-coral"] :is(#map,.itin,.trilho,.chip){--l-epico:#508ACC}
+[data-paleta="c-marinho-coral"] .tr:is([style*="--l-afk)"]){color:#12233D}
 
 /* Autumn Harvest (Coolors, sua seleção) — marrons, caramelo e creme (sem azul) */
 :root[data-paleta="c-autumn"]{
   --brand:#99582A; --blue:#99582A; --navy:#432818; --cyan:#FFE6A7; --lime:#DCC08F; --green:#6F1D1B; --orange:#E8B98A; --teal:#6B5444; --yellow:#BB9457;
-  --l-epico:#432818; --l-hitl:#99582A; --l-afk:#B78E4B; --l-atd:#6F1D1B; --l-min:#8A7563; --l-sprint:#B88D38; --l-rapida:#B5651D;
+  --l-epico:#432818; --l-hitl:#99582A; --l-afk:#BB9457; --l-atd:#6F1D1B; --l-min:#8A7563; --l-sprint:#C9A050; --l-rapida:#B5651D;
   --viva-capa:#99582A; --viva-escuro:#432818; --viva-destaque:#BB9457; --viva-tinta:#2B1A10; --destaque-txt:#2B1A10;
 }
 :root[data-paleta="c-autumn"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#4D4038; --title:#432818; --muted:#837367; --line:#DDD5D0; --soft:#F9F4F0; --grey:#F9F7F6; --grey2:#EEEAE7; --panel-bg:#F9F7F6; --acento:#99582A}
 :root[data-paleta="c-autumn"][data-modo="escuro"]{--acento:#C67035}
 [data-modo="escuro"][data-paleta="c-autumn"] :is(#map,.itin,.trilho,.chip){--l-epico:#C86E3C}
+[data-paleta="c-autumn"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"]){color:#2B1A10}
 
 /* Olive Garden Feast (Coolors, sua seleção) — oliva e musgo com creme e caramelo (sem azul) */
 :root[data-paleta="c-olive"]{
   --brand:#606C38; --blue:#606C38; --navy:#283618; --cyan:#F2E9B8; --lime:#EBC28F; --green:#4A5A2A; --orange:#DDA15E; --teal:#5A5F4A; --yellow:#BC6C25;
-  --l-epico:#283618; --l-hitl:#606C38; --l-afk:#8A9A5B; --l-atd:#4A5A2A; --l-min:#7D7A63; --l-sprint:#CC822D; --l-rapida:#BC6C25;
+  --l-epico:#283618; --l-hitl:#606C38; --l-afk:#8A9A5B; --l-atd:#4A5A2A; --l-min:#7D7A63; --l-sprint:#DDA15E; --l-rapida:#BC6C25;
   --viva-capa:#606C38; --viva-escuro:#283618; --viva-destaque:#BC6C25; --viva-tinta:#1C2610; --destaque-txt:#1C2610;
 }
 :root[data-paleta="c-olive"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#484D38; --title:#283618; --muted:#71775F; --line:#DADDD0; --soft:#F7F9F0; --grey:#F8F9F6; --grey2:#ECEEE7; --panel-bg:#F8F9F6; --acento:#606C38}
 :root[data-paleta="c-olive"][data-modo="escuro"]{--acento:#818E4E}
 [data-modo="escuro"][data-paleta="c-olive"] :is(#map,.itin,.trilho,.chip){--l-epico:#6B9141}
+[data-paleta="c-olive"] .tr:is([style*="--l-sprint)"]){color:#1C2610}
 
 /* Refreshing Summer Fun (Coolors, sua seleção) — azul-céu e marinho com amarelo e laranja de acento */
 :root[data-paleta="c-ceu-sol"]{
   --brand:#187F97; --blue:#187F97; --navy:#023047; --cyan:#8ECAE6; --lime:#FFD670; --green:#0F6E7A; --orange:#FFB703; --teal:#3A5A78; --yellow:#FB8500;
-  --l-epico:#023047; --l-hitl:#219EBC; --l-afk:#319DC7; --l-atd:#0F6E7A; --l-min:#5C7A94; --l-sprint:#C08800; --l-rapida:#E17600;
+  --l-epico:#023047; --l-hitl:#219EBC; --l-afk:#5AB4D6; --l-atd:#0F6E7A; --l-min:#5C7A94; --l-sprint:#FFB703; --l-rapida:#FB8500;
   --viva-capa:#187F97; --viva-escuro:#023047; --viva-destaque:#FB8500; --viva-tinta:#022338; --destaque-txt:#022338;
 }
 :root[data-paleta="c-ceu-sol"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38494D; --title:#023047; --muted:#63787D; --line:#D0DADD; --soft:#F0F8F9; --grey:#F6F8F9; --grey2:#E7EDEE; --panel-bg:#F6F8F9; --acento:#187F97}
 :root[data-paleta="c-ceu-sol"][data-modo="escuro"]{--acento:#1E94B0}
 [data-modo="escuro"][data-paleta="c-ceu-sol"] :is(#map,.itin,.trilho,.chip){--l-epico:#028EDB}
+[data-paleta="c-ceu-sol"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#022338}
 
 /* Dark Sunset (Coolors, sua seleção) — azul-petróleo com amarelo-claro, âmbar e vinho */
 :root[data-paleta="c-dark-sunset"]{
   --brand:#335C67; --blue:#335C67; --navy:#2A4A53; --cyan:#9DC3CC; --lime:#FFF3B0; --green:#9E2A2B; --orange:#F0C27F; --teal:#540B0E; --yellow:#E09F3E;
-  --l-epico:#2A4A53; --l-hitl:#335C67; --l-afk:#6E99A3; --l-atd:#9E2A2B; --l-min:#7A6A5F; --l-sprint:#CA8721; --l-rapida:#540B0E;
+  --l-epico:#2A4A53; --l-hitl:#335C67; --l-afk:#6E99A3; --l-atd:#9E2A2B; --l-min:#7A6A5F; --l-sprint:#E09F3E; --l-rapida:#540B0E;
   --viva-capa:#335C67; --viva-escuro:#2A4A53; --viva-destaque:#E09F3E; --viva-tinta:#1C2F35; --destaque-txt:#1C2F35;
 }
 :root[data-paleta="c-dark-sunset"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38484D; --title:#2A4A53; --muted:#657A80; --line:#D0DADD; --soft:#F0F7F9; --grey:#F6F8F9; --grey2:#E7ECEE; --panel-bg:#F6F8F9; --acento:#335C67}
 :root[data-paleta="c-dark-sunset"][data-modo="escuro"]{--acento:#548F9D}
 [data-modo="escuro"][data-paleta="c-dark-sunset"] :is(#map,.itin,.trilho,.chip){--l-epico:#588F9A}
+[data-paleta="c-dark-sunset"] .tr:is([style*="--l-sprint)"]){color:#1C2F35}
 
 /* Cobalto e âmbar (Coolors, nova) — cobalto como base, âmbar de acento, teal e céu de apoio, cinzas ardósia */
 :root[data-paleta="c-cobalto-ambar"]{
   --brand:#2563EB; --blue:#2563EB; --navy:#0F1E45; --cyan:#93C5FD; --lime:#FCD9A0; --green:#0F766E; --orange:#FBBF5A; --teal:#475569; --yellow:#F59E0B;
-  --l-epico:#0F1E45; --l-hitl:#2563EB; --l-afk:#0E9BDA; --l-atd:#0F766E; --l-min:#64748B; --l-sprint:#CD840A; --l-rapida:#EA580C;
+  --l-epico:#0F1E45; --l-hitl:#2563EB; --l-afk:#0EA5E9; --l-atd:#0F766E; --l-min:#64748B; --l-sprint:#F59E0B; --l-rapida:#EA580C;
   --viva-capa:#2563EB; --viva-escuro:#0F1E45; --viva-destaque:#F59E0B; --viva-tinta:#0F1E45; --destaque-txt:#0F1E45;
 }
 :root[data-paleta="c-cobalto-ambar"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38404D; --title:#0F1E45; --muted:#677383; --line:#D0D5DD; --soft:#F0F4F9; --grey:#F6F7F9; --grey2:#E7EAEE; --panel-bg:#F6F7F9; --acento:#2563EB}
 :root[data-paleta="c-cobalto-ambar"][data-modo="escuro"]{--acento:#5082EE}
 [data-modo="escuro"][data-paleta="c-cobalto-ambar"] :is(#map,.itin,.trilho,.chip){--l-epico:#5F84DA}
+[data-paleta="c-cobalto-ambar"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"]){color:#0F1E45}
 
 /* Azul elétrico e coral (Coolors, nova) — azul elétrico como base, coral de acento, esmeralda e menta de apoio */
 :root[data-paleta="c-eletrico-coral"]{
   --brand:#1E66F5; --blue:#1E66F5; --navy:#0B1B3A; --cyan:#7DD3FC; --lime:#A7F3D0; --green:#047857; --orange:#FFB4A2; --teal:#334155; --yellow:#FF7A59;
-  --l-epico:#0B1B3A; --l-hitl:#1E66F5; --l-afk:#06A0BB; --l-atd:#059669; --l-min:#475569; --l-sprint:#FF5E35; --l-rapida:#E11D48;
+  --l-epico:#0B1B3A; --l-hitl:#1E66F5; --l-afk:#06B6D4; --l-atd:#059669; --l-min:#475569; --l-sprint:#FF7A59; --l-rapida:#E11D48;
   --viva-capa:#1E66F5; --viva-escuro:#0B1B3A; --viva-destaque:#FF7A59; --viva-tinta:#0B1B3A; --destaque-txt:#0B1B3A;
 }
 :root[data-paleta="c-eletrico-coral"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38404D; --title:#0B1B3A; --muted:#677383; --line:#D0D5DD; --soft:#F0F4F9; --grey:#F6F7F9; --grey2:#E7EAEE; --panel-bg:#F6F7F9; --acento:#1E66F5}
 :root[data-paleta="c-eletrico-coral"][data-modo="escuro"]{--acento:#4783F5}
 [data-modo="escuro"][data-paleta="c-eletrico-coral"] :is(#map,.itin,.trilho,.chip){--l-epico:#5F86DB}
+[data-paleta="c-eletrico-coral"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"]){color:#0B1B3A}
 
 /* Azul-petróleo e mostarda (Coolors, nova) — azul-petróleo e marinho como base, mostarda e laranja de acento, verde-folha de apoio */
 :root[data-paleta="c-petroleo-mostarda"]{
   --brand:#2B7D9F; --blue:#2B7D9F; --navy:#1B3B6F; --cyan:#A3D5FF; --lime:#B8E0D2; --green:#3F7D58; --orange:#F2C14E; --teal:#5D737E; --yellow:#F78154;
-  --l-epico:#1B3B6F; --l-hitl:#2E86AB; --l-afk:#3B9DB7; --l-atd:#3F7D58; --l-min:#5D737E; --l-sprint:#BF8B19; --l-rapida:#F76531;
+  --l-epico:#1B3B6F; --l-hitl:#2E86AB; --l-afk:#4FB0C6; --l-atd:#3F7D58; --l-min:#5D737E; --l-sprint:#E0A526; --l-rapida:#F78154;
   --viva-capa:#2B7D9F; --viva-escuro:#1B3B6F; --viva-destaque:#F78154; --viva-tinta:#12263F; --destaque-txt:#12263F;
 }
 :root[data-paleta="c-petroleo-mostarda"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38464D; --title:#1B3B6F; --muted:#657780; --line:#D0D8DD; --soft:#F0F6F9; --grey:#F6F8F9; --grey2:#E7ECEE; --panel-bg:#F6F8F9; --acento:#2B7D9F}
 :root[data-paleta="c-petroleo-mostarda"][data-modo="escuro"]{--acento:#318FB7}
 [data-modo="escuro"][data-paleta="c-petroleo-mostarda"] :is(#map,.itin,.trilho,.chip){--l-epico:#5B87D7}
+[data-paleta="c-petroleo-mostarda"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#12263F}
 
 /* Complementar (Adobe Color, nova) — regra complementar a partir do azul #1F5FBF: azuis e laranjas */
 :root[data-paleta="a-complementar"]{
   --brand:#1F5FBF; --blue:#1F5FBF; --navy:#12306B; --cyan:#9CC0F0; --lime:#F7C9A1; --green:#B3541E; --orange:#FFB27A; --teal:#3B4F6E; --yellow:#F28C28;
-  --l-epico:#12306B; --l-hitl:#1F5FBF; --l-afk:#5B8FD6; --l-atd:#B3541E; --l-min:#6B7F99; --l-sprint:#E5750D; --l-rapida:#D9480F;
+  --l-epico:#12306B; --l-hitl:#1F5FBF; --l-afk:#5B8FD6; --l-atd:#B3541E; --l-min:#6B7F99; --l-sprint:#F28C28; --l-rapida:#D9480F;
   --viva-capa:#1F5FBF; --viva-escuro:#12306B; --viva-destaque:#F28C28; --viva-tinta:#0E2148; --destaque-txt:#0E2148;
 }
 :root[data-paleta="a-complementar"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38404D; --title:#12306B; --muted:#677283; --line:#D0D5DD; --soft:#F0F4F9; --grey:#F6F7F9; --grey2:#E7EAEE; --panel-bg:#F6F7F9; --acento:#1F5FBF}
 :root[data-paleta="a-complementar"][data-modo="escuro"]{--acento:#4D88E3}
 [data-modo="escuro"][data-paleta="a-complementar"] :is(#map,.itin,.trilho,.chip){--l-epico:#5B85DF}
+[data-paleta="a-complementar"] .tr:is([style*="--l-sprint)"]){color:#0E2148}
 
 /* Complementar dividida (Adobe Color, nova) — regra dividida a partir do azul #2B59C3: amarelo-laranja e vermelho-laranja */
 :root[data-paleta="a-dividida"]{
   --brand:#2B59C3; --blue:#2B59C3; --navy:#172F6B; --cyan:#A9C0F2; --lime:#F8D98C; --green:#B8431F; --orange:#F5A88F; --teal:#4A5878; --yellow:#F2B134;
-  --l-epico:#172F6B; --l-hitl:#2B59C3; --l-afk:#6A8FE0; --l-atd:#B8431F; --l-min:#6B7891; --l-sprint:#BF8A0F; --l-rapida:#E4572E;
+  --l-epico:#172F6B; --l-hitl:#2B59C3; --l-afk:#6A8FE0; --l-atd:#B8431F; --l-min:#6B7891; --l-sprint:#C9900F; --l-rapida:#E4572E;
   --viva-capa:#2B59C3; --viva-escuro:#172F6B; --viva-destaque:#F2B134; --viva-tinta:#13265A; --destaque-txt:#13265A;
 }
 :root[data-paleta="a-dividida"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#383E4D; --title:#172F6B; --muted:#677083; --line:#D0D4DD; --soft:#F0F3F9; --grey:#F6F7F9; --grey2:#E7E9EE; --panel-bg:#F6F7F9; --acento:#2B59C3}
 :root[data-paleta="a-dividida"][data-modo="escuro"]{--acento:#5F83DC}
 [data-modo="escuro"][data-paleta="a-dividida"] :is(#map,.itin,.trilho,.chip){--l-epico:#5F84DB}
+[data-paleta="a-dividida"] .tr:is([style*="--l-sprint)"]){color:#13265A}
 
 /* Tríade (Adobe Color, nova) — regra tríade (roda RYB) a partir do azul #1E4FA3: vermelho e amarelo */
 :root[data-paleta="a-triade"]{
   --brand:#1E4FA3; --blue:#1E4FA3; --navy:#13305F; --cyan:#A4BDE6; --lime:#F6DE95; --green:#8C6D0E; --orange:#F2A7A7; --teal:#4A5A73; --yellow:#F2C94C;
-  --l-epico:#13305F; --l-hitl:#1E4FA3; --l-afk:#5C86D1; --l-atd:#8C6D0E; --l-min:#6A7A92; --l-sprint:#B48E23; --l-rapida:#D64545;
+  --l-epico:#13305F; --l-hitl:#1E4FA3; --l-afk:#5C86D1; --l-atd:#8C6D0E; --l-min:#6A7A92; --l-sprint:#D4A72C; --l-rapida:#D64545;
   --viva-capa:#1E4FA3; --viva-escuro:#13305F; --viva-destaque:#F2C94C; --viva-tinta:#0F2654; --destaque-txt:#0F2654;
 }
 :root[data-paleta="a-triade"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38404D; --title:#13305F; --muted:#677283; --line:#D0D4DD; --soft:#F0F4F9; --grey:#F6F7F9; --grey2:#E7EAEE; --panel-bg:#F6F7F9; --acento:#1E4FA3}
 :root[data-paleta="a-triade"][data-modo="escuro"]{--acento:#5285DF}
 [data-modo="escuro"][data-paleta="a-triade"] :is(#map,.itin,.trilho,.chip){--l-epico:#5986DB}
+[data-paleta="a-triade"] .tr:is([style*="--l-sprint)"]){color:#0F2654}
 
 /* Composta aço (Adobe Color, variação) — regra composta a partir do azul-aço #3A6EA5: teal, âmbar e terracota */
 :root[data-paleta="a-composta-aco"]{
@@ -270,50 +286,56 @@
 /* Composta marinho (Adobe Color, variação) — regra composta a partir do marinho #22406B: verde-água, areia e terracota */
 :root[data-paleta="a-composta-marinho"]{
   --brand:#2C5D8F; --blue:#2C5D8F; --navy:#22406B; --cyan:#A7DDD6; --lime:#F2DCA0; --green:#237A70; --orange:#F4B19F; --teal:#52606D; --yellow:#E9C46A;
-  --l-epico:#22406B; --l-hitl:#2C5D8F; --l-afk:#2A9D8F; --l-atd:#237A70; --l-min:#6B7A88; --l-sprint:#B49022; --l-rapida:#E76F51;
+  --l-epico:#22406B; --l-hitl:#2C5D8F; --l-afk:#2A9D8F; --l-atd:#237A70; --l-min:#6B7A88; --l-sprint:#C9A227; --l-rapida:#E76F51;
   --viva-capa:#2C5D8F; --viva-escuro:#22406B; --viva-destaque:#E9C46A; --viva-tinta:#14263F; --destaque-txt:#14263F;
 }
 :root[data-paleta="a-composta-marinho"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38404D; --title:#22406B; --muted:#677383; --line:#D0D5DD; --soft:#F0F4F9; --grey:#F6F7F9; --grey2:#E7EAEE; --panel-bg:#F6F7F9; --acento:#2C5D8F}
 :root[data-paleta="a-composta-marinho"][data-modo="escuro"]{--acento:#448DC8}
 [data-modo="escuro"][data-paleta="a-composta-marinho"] :is(#map,.itin,.trilho,.chip){--l-epico:#5488CD}
+[data-paleta="a-composta-marinho"] .tr:is([style*="--l-sprint)"]){color:#14263F}
+
 /* Golden Twilight (Coolors, sua seleção) — marinho e azul-Oxford com amarelos dourados de acento */
 :root[data-paleta="c-golden-twilight"]{
   --brand:#0A4F8F; --blue:#0A4F8F; --navy:#001D3D; --cyan:#9DB9D9; --lime:#FFE680; --green:#8A6A00; --orange:#FFC300; --teal:#3A4A5E; --yellow:#FFD60A;
-  --l-epico:#001D3D; --l-hitl:#0A4F8F; --l-afk:#5A8FC4; --l-atd:#3B6E8F; --l-min:#5C6B7D; --l-sprint:#B88B00; --l-rapida:#BA8B00;
+  --l-epico:#001D3D; --l-hitl:#0A4F8F; --l-afk:#5A8FC4; --l-atd:#3B6E8F; --l-min:#5C6B7D; --l-sprint:#FFC300; --l-rapida:#C99700;
   --viva-capa:#003566; --viva-escuro:#001D3D; --viva-destaque:#FFD60A; --viva-tinta:#001D3D; --destaque-txt:#001D3D;
 }
 :root[data-paleta="c-golden-twilight"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38434D; --title:#001D3D; --muted:#677683; --line:#D0D6DD; --soft:#F0F5F9; --grey:#F6F7F9; --grey2:#E7EBEE; --panel-bg:#F6F7F9; --acento:#0A4F8F}
 :root[data-paleta="c-golden-twilight"][data-modo="escuro"]{--acento:#0A88F0}
 [data-modo="escuro"][data-paleta="c-golden-twilight"] :is(#map,.itin,.trilho,.chip){--l-epico:#2E85FF}
+[data-paleta="c-golden-twilight"] .tr:is([style*="--l-sprint)"],[style*="--l-rapida)"]){color:#001D3D}
 
 /* Deep Sea (Coolors, sua seleção) — marinhos e azuis-acinzentados com alabastro; quase monocromática, sem acento colorido */
 :root[data-paleta="c-deep-sea"]{
   --brand:#415A77; --blue:#415A77; --navy:#1B263B; --cyan:#B4C2D4; --lime:#D3D6CF; --green:#2E4057; --orange:#9AAAC0; --teal:#556270; --yellow:#E0E1DD;
-  --l-epico:#0D1B2A; --l-hitl:#415A77; --l-afk:#778DA9; --l-atd:#2E4057; --l-min:#8A8C86; --l-sprint:#5E7590; --l-rapida:#93968F;
+  --l-epico:#0D1B2A; --l-hitl:#415A77; --l-afk:#778DA9; --l-atd:#2E4057; --l-min:#8A8C86; --l-sprint:#5E7590; --l-rapida:#A3A59F;
   --viva-capa:#415A77; --viva-escuro:#1B263B; --viva-destaque:#E0E1DD; --viva-tinta:#0D1B2A; --destaque-txt:#0D1B2A;
 }
 :root[data-paleta="c-deep-sea"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38414D; --title:#1B263B; --muted:#677483; --line:#D0D5DD; --soft:#F0F4F9; --grey:#F6F7F9; --grey2:#E7EAEE; --panel-bg:#F6F7F9; --acento:#415A77}
 :root[data-paleta="c-deep-sea"][data-modo="escuro"]{--acento:#6D8AAC}
 [data-modo="escuro"][data-paleta="c-deep-sea"] :is(#map,.itin,.trilho,.chip){--l-epico:#338DC6}
+[data-paleta="c-deep-sea"] .tr:is([style*="--l-rapida)"]){color:#0D1B2A}
 
 /* Sunny Beach Day (Coolors, sua seleção) — azul-carvão e verdigris com jasmim, areia e pêssego queimado de acento */
 :root[data-paleta="c-sunny-beach"]{
   --brand:#238173; --blue:#238173; --navy:#264653; --cyan:#9ED8CF; --lime:#E9C46A; --green:#85651A; --orange:#F4A261; --teal:#3E5F6D; --yellow:#E76F51;
-  --l-epico:#264653; --l-hitl:#2A9D8F; --l-afk:#43A395; --l-atd:#1F756A; --l-min:#6B7F86; --l-sprint:#B98E1F; --l-rapida:#E76F51;
+  --l-epico:#264653; --l-hitl:#2A9D8F; --l-afk:#6CC2B6; --l-atd:#1F756A; --l-min:#6B7F86; --l-sprint:#E9C46A; --l-rapida:#E76F51;
   --viva-capa:#264653; --viva-escuro:#264653; --viva-destaque:#E76F51; --viva-tinta:#1B323B; --destaque-txt:#1B323B;
 }
 :root[data-paleta="c-sunny-beach"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38474D; --title:#264653; --muted:#657880; --line:#D0D9DD; --soft:#F0F7F9; --grey:#F6F8F9; --grey2:#E7ECEE; --panel-bg:#F6F8F9; --acento:#238173}
 :root[data-paleta="c-sunny-beach"][data-modo="escuro"]{--acento:#29998B}
 [data-modo="escuro"][data-paleta="c-sunny-beach"] :is(#map,.itin,.trilho,.chip){--l-epico:#528FA7}
+[data-paleta="c-sunny-beach"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"]){color:#1B323B}
 
 /* Warm Summer Palette (Coolors, sua seleção) — azul-báltico e azul-Yale com teal, mel e amaranto de acento */
 :root[data-paleta="c-warm-summer"]{
   --brand:#30638E; --blue:#30638E; --navy:#003D5B; --cyan:#A9C6DE; --lime:#F3CE8A; --green:#00798C; --orange:#EDAE49; --teal:#A93848; --yellow:#D1495B;
-  --l-epico:#003D5B; --l-hitl:#30638E; --l-afk:#00798C; --l-atd:#B87A1E; --l-min:#5D7487; --l-sprint:#C98312; --l-rapida:#D1495B;
+  --l-epico:#003D5B; --l-hitl:#30638E; --l-afk:#00798C; --l-atd:#B87A1E; --l-min:#5D7487; --l-sprint:#EDAE49; --l-rapida:#D1495B;
   --viva-capa:#30638E; --viva-escuro:#003D5B; --viva-destaque:#D1495B; --viva-tinta:#002A40; --destaque-txt:#FFFFFF;
 }
 :root[data-paleta="c-warm-summer"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38434D; --title:#003D5B; --muted:#677683; --line:#D0D7DD; --soft:#F0F5F9; --grey:#F6F7F9; --grey2:#E7EBEE; --panel-bg:#F6F7F9; --acento:#30638E}
 :root[data-paleta="c-warm-summer"][data-modo="escuro"]{--acento:#428CC3}
 [data-modo="escuro"][data-paleta="c-warm-summer"] :is(#map,.itin,.trilho,.chip){--l-epico:#008FDB}
+[data-paleta="c-warm-summer"] .tr:is([style*="--l-sprint)"]){color:#002A40}
 
 .proposta select{font:inherit;padding:6px 8px;border:1px solid #d0d4da;border-radius:6px;background:#fff;color:#222;max-width:220px}
