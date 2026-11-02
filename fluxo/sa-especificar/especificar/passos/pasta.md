@@ -28,12 +28,16 @@ situação fica no `backlog.md`), o início e os créditos de cada sessão. A tr
 `[ESP]`, Responsável e Início `—`, que você preenche aqui; a fonte não o trouxe → crie-o pelo padrão
 `sa-especificar/status-epico.md`.
 
+**`reunioes/`** — onde a pessoa põe a transcrição de cada reunião com o cliente (`.vtt` ou `.md`); a ATA dela sai pelo
+`sa-especificar.reuniao`. Só nesta máquina: nenhuma das três fontes a traz, e ela não vai para anexo nem base (as
+atas, sim, pelo `elm/`). Crie a pasta vazia se não existir.
+
 O `rascunho.md` é o **caderno do levantamento**: o que o cliente contou, exemplos reais, dúvidas para a próxima
 reunião, com a data de cada sessão. Decisões vão para o `decisoes.md` (`D-nn`), nunca só para o rascunho.
 
 ## Saída
 
-A pasta de trabalho com `rascunho.md`, `decisoes.md` e o `status.md` do épico → passo `encaminhar`.
+A pasta de trabalho com `rascunho.md`, `decisoes.md`, o `status.md` do épico e `reunioes/` → passo `encaminhar`.
 
 ## Pare se
 

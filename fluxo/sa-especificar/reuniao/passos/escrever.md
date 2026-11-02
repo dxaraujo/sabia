@@ -1,0 +1,33 @@
+---
+{"resumo": "Escreve em elm/ a ATA da reunião (padrão sa-especificar/ata.md, envelope OKF, status draft), com o D-nn de cada decisão reservado no decisoes.md, mais a entrada no index.md e no log.md; com fluxo de toolkit para a ATA no prompt, sai por esse fluxo."}
+---
+## Entrada
+
+O `.transcricao.md` da reunião (passo `transcricao`), o `decisoes.md` e o `rascunho.md` da pasta do épico.
+
+## Faça
+
+Tipo `ATA` com fluxo de toolkit no seu prompt (**Tipos com fluxo de toolkit**) → a ATA sai pelo fluxo do toolkit: rode-o
+em linha e volte a este passo ("Toolkit na especificação", no passo `sa-especificar.especificar.encaminhar`). Na
+volta, confira o artefato pelo contrato: arquivo pela coluna Arquivo do catálogo, envelope do `okf-elm.md`,
+`status: draft`, entrada no `index.md` e no `log.md`.
+
+Sem ele, crie `elm/ATA-nn-<slug>.md` na pasta do épico (a da base se a linha do épico no `backlog.md` já tem o link `prd`; senão, a de trabalho), com o corpo do padrão
+`sa-especificar/ata.md` e o envelope de [references/okf-elm.md](~/.sabia/framework/skills/sa-prd/references/okf-elm.md):
+`status: draft`, `sources` (a transcrição, só pelo nome e o sha256 no `title`, e o `decisoes.md`), `generated`. Mais
+a linha na seção `# Atas` do `index.md` e um `**Creation**` no `log.md`.
+
+- Participantes por nome e papel, com os papéis do passo `transcricao`.
+- Cada decisão com o próximo `D-nn` livre do `decisoes.md`, na ordem da reunião, **reservado** ali na hora: a linha
+  do `D-nn` com a pergunta e a Situação `em aberto — ATA-<nn> draft`, para a entrevista não dar o mesmo número. O
+  que muda uma decisão já registrada diz qual (`revisa D-nn`). No ajuste, a decisão que sai libera o `D-nn` (apague
+  a linha reservada); a ATA descartada libera todos os dela.
+- Termos do glossário no texto; termo novo vai para as dúvidas da próxima reunião, não para o glossário.
+
+## Saída
+
+A ATA `draft` em `elm/`, com o `index.md`, o `log.md` e os `D-nn` reservados no `decisoes.md` → passo `aprovar`.
+
+## Pare se
+
+Nenhum caso próprio deste passo.

@@ -14,9 +14,10 @@ Fechamentos da `[ESP]` (depois de cada GATE). A `sa-prd` e a `sa-fatiar` conduze
 **Depois do GATE do PRD** (Fase `aprovado` no `status.md` da pasta de trabalho, gravada pela `sa-prd`):
 1. Feche a sessão (passo `fechar-sessao`), para a `[ESP]` ter a versão aprovada.
 2. Leve a pasta para a **base**, pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base):
-   copie-a para `<produto>/epicos/<EP>-<slug>/` (substitui o `rascunho.md`, o `decisoes.md` e o `status.md` da
-   triagem), com o `revisao-prd-<N>.md`; no `backlog.md`, só o link `prd` na linha do épico e, se estava `—`, o da
-   `pasta` (ele segue `iniciado`; a sprint não muda). **Um** commit (padrão do `sabia.md`), direto na base; nunca numa
+   copie-a, fora de `reunioes/` (a transcrição fica só nesta máquina), para `<produto>/epicos/<EP>-<slug>/`
+   (substitui o `rascunho.md`, o `decisoes.md` e o `status.md` da triagem), com o `revisao-prd-<N>.md`; no
+   `backlog.md`, só o link `prd` na linha do épico e, se estava `—`, o da `pasta` (ele segue `iniciado`; a sprint
+   não muda). **Um** commit (padrão do `sabia.md`), direto na base; nunca numa
    branch de fatia. A partir daí a base é a fonte; a pasta local pode ser apagada pela pessoa (o fluxo não apaga).
 3. Próximo, e pare: a [publicação dos requisitos](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md) (se o projeto usa ELM e
    a publicação é `na-aprovacao`) e **`sa-fatiar`**.

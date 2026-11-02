@@ -24,7 +24,7 @@ referem, com a severidade registrada nelas.
 | P8 | Nenhuma decisão `em aberto` que mude comportamento | BLOQUEANTE |
 | P9 | Sem caminho de arquivo, classe, SQL ou código | SUGESTÃO |
 | P10 | Fora de escopo explícito | SUGESTÃO |
-| P11 | Conceitos OKF v0.2 em `elm/` conformes (checklist "Conformidade" de `okf-elm.md` da `sa-prd`): frontmatter que faz parse, `type` e `tags` do mapeamento do projeto, só chaves do OKF v0.2 (+ `id`), `status: draft` antes do GATE, HF ligando as suas REGs, links que resolvem, `index.md` completo | BLOQUEANTE |
+| P11 | Conceitos OKF v0.2 em `elm/` conformes (checklist "Conformidade" de `okf-elm.md` da `sa-prd`): frontmatter que faz parse, `type` e `tags` do mapeamento do projeto, só chaves do OKF v0.2 (+ `id`), `status: draft` antes do GATE (fora a ATA aprovada), HF ligando as suas REGs, links que resolvem, `index.md` completo | BLOQUEANTE |
 
 Fecho: `RESULTADO: PRONTO` ou `RESULTADO: AJUSTAR`.
 

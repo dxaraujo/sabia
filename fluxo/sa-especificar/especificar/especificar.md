@@ -1,12 +1,12 @@
 ---
 {"fluxo": "especificar", "dono": "sa-especificador",
- "quando": ["especificação de épico: EP-nn ou [ESP] EP-nn, da tarefa [ESP] à conclusão dela depois do GATE do backlog", "especificar o EP-03", "pegar a [ESP] do EP-03", "retomar a especificação", "fechar a sessão de especificação"],
+ "quando": ["especificação de épico: EP-nn ou [ESP] EP-nn, da tarefa [ESP] à conclusão dela depois do GATE do backlog", "especificar o EP-03", "pegar a [ESP] do EP-03", "retomar a especificação", "fechar a sessão de especificação", "tenho a transcrição da reunião", "registrar a ata da reunião"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa"],
  "passos": [
    {"id": "entrada", "de": "entrada", "sprint": "exige", "saidas": {"concluido com a Especificação ainda iniciada (só os itens 2–3 de Depois do GATE do backlog)": "fechamentos"}},
    {"id": "assumir"},
    {"id": "pasta"},
-   {"id": "encaminhar", "chama": ["sa-prd.prd", "sa-fatiar.fatiar"], "saidas": {"aprovado na pasta de trabalho, ou fatiado com a Especificação iniciada": "fechamentos"}},
+   {"id": "encaminhar", "chama": ["sa-especificar.reuniao", "sa-prd.prd", "sa-fatiar.fatiar"], "saidas": {"aprovado na pasta de trabalho, ou fatiado com a Especificação iniciada": "fechamentos"}},
    {"id": "fechar-sessao", "saidas": {"sessão sem GATE novo": "fim"}},
    {"id": "fechamentos", "saidas": {"GATE do PRD: PRD aprovado na base": "→ sa-fatiar.fatiar"}}
  ]}
@@ -34,5 +34,7 @@ Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configura
   (comentários e anexos), atualizado ao fechar cada sessão.
 - Nunca invente regra, valor ou ator: sem fonte e sem decisão de uma pessoa, é `em aberto`.
 - Dado de cliente identificável não vai para os anexos: no rascunho, só o resumo anônimo.
+- A transcrição de reunião (`reunioes/` da pasta de trabalho) fica só nesta máquina: nunca vai para anexo, base nem
+  ELM; o que sobe é a ATA (`sa-especificar.reuniao`).
 - Toda escrita no EWM só com "sim"; sem o MCP `elm`, `ELM pendente` ([pendências](~/.sabia/framework/skills/sabia/references/elm.md#pendências)), e o fluxo segue.
 - Não invoque outra skill por conta própria: diga a próxima e pare.

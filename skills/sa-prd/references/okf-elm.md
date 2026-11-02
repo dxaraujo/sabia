@@ -108,7 +108,7 @@ O corpo é o do padrão do tipo, na coluna Padrão do [catálogo](../../sabia/re
 | Momento | O que acontece |
 |---|---|
 | Rascunho | `sa-prd` (ou a fatia) cria o conceito com `status: draft`, `sources`, `generated` |
-| GATE do PRD | a pessoa aprova → cada conceito recebe `verified` humano e `status: stable` |
+| GATE do PRD | a pessoa aprova → cada conceito recebe `verified` humano e `status: stable` (a ATA já os recebe na aprovação dela, no passo `sa-especificar.reuniao.aprovar`) |
 | Publicação | [elm-publicar.md](../../sa-consolidar/references/elm-publicar.md#requisitos-conceitos-okf-de-elm--doors-next) (grava `resource`, `id` e a entrada do ELM em `sources`) |
 | Depois | a `sa-sync` baixa a versão oficial para o bundle, que passa a ser a versão viva; o rascunho fica como registro histórico, com `resource` preenchido |
 | Alteração de artefato existente | traga o arquivo do bundle pelo `elm_ler_req_local` (sem bundle: `elm_ler_req`) e grave-o em `elm/`, mantendo `resource`, `id` e o `sources` do ELM; `status: draft`, `generated` novo; edite. O `last_modified` desse `sources` detecta conflito na publicação |
@@ -137,7 +137,7 @@ okf_version: "0.2"
 
 1. Todo `.md` de `elm/` (fora `index.md` e `log.md`) tem frontmatter YAML que faz parse, com `type` não vazio.
 2. Só chaves do OKF v0.2, mais `id` (e as que vieram do bundle numa cópia).
-3. `status` presente; `draft` antes do GATE.
+3. `status` presente; `draft` antes do GATE, fora a ATA aprovada (`stable` desde a aprovação dela).
 4. `type` e `tags` existem em `rm.artefatos` do `pa_<nome>.json`.
 5. Toda HF tem cenários; todo conceito liga os que cita dos tipos da sua coluna Embute (a HF, as suas REGs); todo
    link relativo aponta para um arquivo que existe.

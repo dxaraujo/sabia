@@ -22,8 +22,8 @@ Em Artefatos, uma contagem por tipo do [catálogo](~/.sabia/framework/skills/sab
 
 - Decisão **em aberto que muda comportamento** → não há aprovação; volte à entrevista.
 - Aprovado → Fase `aprovado` no `status.md` do épico; no `prd.md`, versão `1.0`, data e quem aprovou no rodapé. Em
-  **cada** conceito de `elm/`: `status: stable` e um `verified` com `{ by: human:<login de quem aprovou>, at:
-  <agora> }` — sem esse `verified` humano nada é publicado. Entrada `**Update**` no `log.md`. Grave só onde o PRD
+  **cada** conceito de `elm/` (fora a ATA, já aprovada no passo `sa-especificar.reuniao.aprovar`): `status: stable`
+  e um `verified` com `{ by: human:<login de quem aprovou>, at: <agora> }` — sem esse `verified` humano nada é publicado. Entrada `**Update**` no `log.md`. Grave só onde o PRD
   está:
   - **primeiro GATE** (PRD na pasta de trabalho) → só ali; levar a pasta para a base e gravar no `backlog.md` só o
     link `prd` e, se estava `—`, o da `pasta` (o épico segue `iniciado`) são da `sa-especificar`.

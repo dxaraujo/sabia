@@ -9,8 +9,8 @@ O que está sendo alinhado e onde registrar (entrada do fluxo).
 
 Montar a árvore de decisões (sem perguntar nada ainda):
 
-1. Leia o que já existe: a demanda, o `decisoes.md` (se houver), o glossário, os ADRs que tratam do assunto, o
-   steering de produto e o PRD/fatia em questão.
+1. Leia o que já existe: a demanda, o `decisoes.md` (se houver), as atas de reunião (`elm/ATA-*.md` da pasta do
+   épico), o glossário, os ADRs que tratam do assunto, o steering de produto e o PRD/fatia em questão.
 2. Liste as decisões necessárias como uma **árvore**: escopo → atores → comportamento principal → exceções →
    dados → integrações → não funcionais (volume, prazo, segurança, auditoria) → fora de escopo. Uma decisão pode
    depender de outra: ordene para que a resposta de cima mude as de baixo.
@@ -18,6 +18,7 @@ Montar a árvore de decisões (sem perguntar nada ainda):
    - comportamento atual → o código (`arquivo:linha`);
    - regra documentada → bundle do ELM, pelo `elm_buscar_req_local` e `elm_ler_req_local` (nunca lendo os
      arquivos; [sem bundle → ELM remoto](~/.sabia/framework/skills/sabia/references/elm.md#bundle-local));
+   - o que o cliente disse numa reunião → a ATA aprovada (`ATA-nn [mm:ss]`);
    - termo do domínio → glossário;
    - dado → banco pelo MCP de consulta (somente leitura), se o `sabia.md` declarar um.
    Fato encontrado vira decisão `confirmada — fonte: <…>`; não ocupa a pessoa.

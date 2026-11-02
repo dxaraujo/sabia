@@ -1,4 +1,4 @@
-# Publicar no ELM (requisitos, ET, casos de teste, conclusão)
+# Publicar no ELM (requisitos, ATA, ET, casos de teste, conclusão)
 
 Regras comuns (prévia, um "sim", idempotência, pendências): [../../sabia/references/elm.md](../../sabia/references/elm.md).
 Formato dos conceitos: [../../sa-prd/references/okf-elm.md](../../sa-prd/references/okf-elm.md).
@@ -6,7 +6,8 @@ Formato dos conceitos: [../../sa-prd/references/okf-elm.md](../../sa-prd/referen
 ## Requisitos (conceitos OKF de `elm/` → DOORS Next)
 
 Entrada: a pasta `elm/` do épico ou, numa fatia padrão sem épico, a da fatia. Publica só conceito `status: stable`
-com um `verified` humano posterior ao `generated.at`; o resto aparece na prévia como "aguardando aprovação".
+com um `verified` humano posterior ao `generated.at`; o resto aparece na prévia como "aguardando aprovação". Os tipos
+com Requisito `não` no catálogo ficam fora (a ATA tem a seção dela, abaixo).
 Ordem: a **de publicação** do [catálogo de tipos](../../sabia/references/tipos.md), de baixo para cima, para cada um
 nascer com os ids que cita (a ET segue a seção ET as-built abaixo).
 
@@ -23,6 +24,17 @@ nascer com os ids que cita (a ET segue a seção ET as-built abaixo).
    no `log.md`; termos, o id também na coluna ELM do glossário.
 
 Depois: sugira a `sa-sync` (baixar) para o bundle receber a versão oficial.
+
+## ATA (reunião da `[ESP]`)
+
+Fora da ordem de publicação e da política Publicar requisitos: cada ATA sobe na aprovação dela, pelo passo
+`sa-especificar.reuniao.publicar`. Entrada: a `elm/ATA-nn-<slug>.md` `stable`, com um `verified` humano posterior ao
+`generated.at`; a transcrição nunca sobe.
+
+1. **Texto:** o corpo da ATA; o `D-nn` fica como texto (o `decisoes.md` não sobe sozinho).
+2. `elm_publicar_req(sigla = "ATA", titulo, texto_md, id?, modificado_em?)` — o tipo de reunião da PA, pela sigla
+   `ATA` em `rm.artefatos` — e `elm_ligar(wi = id da [ESP], req = id da ATA)`, numa confirmação.
+3. **Grave de volta** na ATA, como no item 4 dos requisitos; `**Publication**` no `log.md`.
 
 ## ET as-built (só se a seção ELM do `sabia.md` disser `as-built no merge`)
 

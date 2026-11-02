@@ -7,6 +7,6 @@
     "EL": {"nome": "Leiaute", "arquivo": "EL-nn-<slug>.md", "cria": ["sa-prd.prd.escrever"], "padrao": "sa-prd/el.md", "elm": "DOORS", "requisito": true, "desviavel": ["sa-prd.prd.escrever"], "depois": ["REG"], "embute": [], "rubrica": ["P12"], "pendente": true},
     "ET": {"nome": "Especificação técnica", "arquivo": "ET-<slug>.md", "cria": ["sa-codificar.codificar.pr"], "padrao": null, "elm": "DOORS", "requisito": true, "desviavel": [], "depois": ["HF"], "embute": [], "rubrica": ["C15"]},
     "CT": {"nome": "Caso de teste", "arquivo": "CT.csv", "cria": ["sa-verificar.verificar.casos"], "padrao": "sa-verificar/ct-csv.md", "elm": "ETM", "requisito": false, "desviavel": [], "depois": ["HF"], "embute": [], "rubrica": []},
-    "ATA": {"nome": "Ata de reunião", "arquivo": "ATA-nn-<slug>.md", "cria": ["sa-especificar.reuniao.escrever"], "padrao": "sa-especificar/ata.md", "elm": "DOORS", "requisito": false, "desviavel": ["sa-especificar.reuniao.escrever"], "depois": [], "embute": [], "rubrica": [], "pendente": true}
+    "ATA": {"nome": "Ata de reunião", "arquivo": "ATA-nn-<slug>.md", "cria": ["sa-especificar.reuniao.escrever"], "padrao": "sa-especificar/ata.md", "elm": "DOORS", "requisito": false, "desviavel": ["sa-especificar.reuniao.escrever"], "depois": [], "embute": [], "rubrica": []}
   }
 }

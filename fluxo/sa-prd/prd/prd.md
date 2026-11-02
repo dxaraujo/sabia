@@ -4,7 +4,7 @@
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa"],
  "passos": [
    {"id": "entender", "chama": "sa-pesquisar.pesquisar", "saidas": {"sem registro na triagem": "→ sa-triar.triar", "sem a pasta de trabalho": "→ sa-especificar.especificar"}},
-   {"id": "entrevistar", "chama": "sa-entrevistar.entrevistar"},
+   {"id": "entrevistar", "chama": ["sa-entrevistar.entrevistar", "sa-especificar.reuniao"]},
    {"id": "similares"},
    {"id": "escrever"},
    {"id": "revisao", "chama": "sa-revisar.revisar", "saidas": {"achado que é decisão de negócio": "entrevistar"}},
