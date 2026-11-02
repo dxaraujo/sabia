@@ -4,7 +4,7 @@
   /* cores (paleta sóbria): neutros azul-acinzentados e azul #3366FF nos cartões e na marca; as auxiliares
      (etapas, linhas do mapa, destaques) vêm da paleta atual. As paletas atual e sabiá trocam estas. */
   --bg:#ffffff; --card:#ffffff; --ink:#474D66; --title:#101840; --muted:#696F8C; --line:#E6E8F0; --soft:#F4F6FA; --grey:#F9FAFC; --grey2:#EDEFF5;
-  --acento:#3366FF; --brand:#3366FF; --brand-hover:#2952CC; --blue:#2952CC; --navy:#101840; --cyan:#00BBCE; --teal:#0094AD; --green:#76B043; --lime:#B2D235; --yellow:#FEBE10; --orange:#FAA61A; --red:#D9534F;
+  --acento:#3366FF; --brand:#3366FF; --brand-hover:#2952CC; --blue:#0086C8; --navy:#101840; --cyan:#00BBCE; --teal:#0094AD; --green:#76B043; --lime:#B2D235; --yellow:#FEBE10; --orange:#FAA61A; --red:#D9534F;
   --l-epico:#2C5168; --l-hitl:#0086C8; --l-afk:#00BBCE; --l-atd:#76B043; --l-min:#0094AD; --l-sprint:#FEBE10; --l-rapida:#FAA61A;
   --hero-bg:#F3F6FF; --hero-fg:#101840;
   /* forma e profundidade: do ADS */
