@@ -93,17 +93,18 @@
 :is([data-paleta="atual"],[data-paleta="sabia"]) .porta .ir{color:var(--blue)}
 :is([data-paleta="atual"],[data-paleta="sabia"]) footer{border-top-color:var(--soft)}
 
-/* "sabia": a atual como base, só com as cores trocadas. Mesmos papéis de cada variável, valores mais vivos e com
-   contraste: azul de marca e marinho mais profundos, menta no lugar do lima, laranja mais quente, amarelo mais limpo
-   como acento, neutros frios no lugar do cinza puro. Texto das etapas: claras com marinho ≥ 4,6:1, escuras com branco ≥ 4,5:1
-   (na atual, Fatiamento, Implementação e Consolidação ficam entre 2,6 e 3,8:1). */
+/* "sabia": a atual como base, só com as cores trocadas. Trocadas só as que lembram a identidade visual de origem
+   dos decks (manual 2025 e modelo de slides): azuis cerúleos (~200°) → cobalto (~226°); navy ardósia #2C5168 → índigo;
+   ciano/teal (~186°) → pervinca na Triagem e ardósia na Consolidação; amarelos e laranjas (38–92°, inclusive o acento)
+   → coral (~10°). Ficam como estavam o verde #16854E, a menta #5FD4B0, os neutros frios e o vermelho, que não estão lá.
+   Texto das etapas: claras com marinho ≥ 6,3:1, escuras com branco ≥ 4,6:1. */
 :root[data-paleta="sabia"]{
-  --brand:#0A74E0; --blue:#0069C2; --navy:#173F6B; --cyan:#22C3E6; --teal:#0E7FA6; --green:#16854E; --lime:#5FD4B0; --yellow:#FFD21F; --orange:#FF8C1A; --red:#E5484D;
-  --l-epico:#173F6B; --l-hitl:#0A74E0; --l-afk:#22C3E6; --l-atd:#16854E; --l-min:#0E7FA6; --l-sprint:#FFD21F; --l-rapida:#FF8C1A;
-  --viva-capa:#0A74E0; --viva-escuro:#173F6B; --viva-destaque:#FFD21F; --viva-tinta:#173F6B;
+  --brand:#2F5BEA; --blue:#2449C9; --navy:#1B2A5E; --cyan:#8FB0FF; --teal:#475569; --green:#16854E; --lime:#5FD4B0; --yellow:#FF6A4D; --orange:#FFB4A2; --red:#E5484D;
+  --l-epico:#1B2A5E; --l-hitl:#2F5BEA; --l-afk:#12A594; --l-atd:#16854E; --l-min:#64748B; --l-sprint:#FF6A4D; --l-rapida:#E0457B;
+  --viva-capa:#2F5BEA; --viva-escuro:#1B2A5E; --viva-destaque:#FF6A4D; --viva-tinta:#1B2A5E;
 }
 :root[data-paleta="sabia"]:not([data-modo="escuro"]){
-  --bg:#ffffff; --card:#ffffff; --ink:#36424F; --title:#173F6B; --muted:#64748B; --line:#CBD5E1; --soft:#EDF5FC; --grey:#F4F7FA; --grey2:#E3E9EF; --panel-bg:#F4F7FA;
-  --acento:#0069C2;
+  --bg:#ffffff; --card:#ffffff; --ink:#36424F; --title:#1B2A5E; --muted:#64748B; --line:#CBD5E1; --soft:#EDF5FC; --grey:#F4F7FA; --grey2:#E3E9EF; --panel-bg:#F4F7FA;
+  --acento:#2449C9;
 }
-[data-modo="escuro"][data-paleta="sabia"] :is(#map,.itin,.trilho){--l-epico:#6E9FD6}
+[data-modo="escuro"][data-paleta="sabia"] :is(#map,.itin,.trilho){--l-epico:#8DA2E8}
