@@ -116,62 +116,67 @@
 [data-modo="escuro"][data-paleta="sabia"] :is(.kv dt,.blk h4,.senbox b){color:var(--acento)}
 [data-paleta="sabia"] .tr[style*="--l-sprint)"]{color:#1B2A5E}
 
-/* ===== paletas para teste (geradas por gerar_paletas.py a partir de Coolors e Adobe Color): cada uma com cores-base,
-   acento e escala própria de cinzas e branco; só a luminosidade das etapas foi ajustada para o contraste (≥ 4,5:1); as
-   linhas do mapa ficam com a cor original da paleta ===== */
+/* ===== paletas para teste (geradas por gerar_paletas.py a partir do Coolors): cada uma com cores-base, acento e escala
+   própria de cinzas e branco; só a luminosidade foi ajustada para o contraste (etapas ≥ 4,5:1; linhas do mapa ≥ 3:1).
+   Na barra lateral, as linhas usam a cor original da paleta ===== */
 /* Refreshing Summer Fun (Coolors, sua seleção) — azul-céu e marinho com amarelo e laranja de acento */
 :root[data-paleta="c-ceu-sol"]{
   --brand:#187F97; --blue:#187F97; --navy:#023047; --cyan:#8ECAE6; --lime:#FFD670; --green:#0F6E7A; --orange:#FFB703; --teal:#3A5A78; --yellow:#FB8500;
-  --l-epico:#023047; --l-hitl:#219EBC; --l-afk:#5AB4D6; --l-atd:#0F6E7A; --l-min:#5C7A94; --l-sprint:#FFB703; --l-rapida:#FB8500;
+  --l-epico:#023047; --l-hitl:#219EBC; --l-afk:#319DC7; --l-atd:#0F6E7A; --l-min:#5C7A94; --l-sprint:#C08800; --l-rapida:#E17600;
   --viva-capa:#187F97; --viva-escuro:#023047; --viva-destaque:#FB8500; --viva-tinta:#022338; --destaque-txt:#022338;
 }
 :root[data-paleta="c-ceu-sol"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38494D; --title:#023047; --muted:#63787D; --line:#D0DADD; --soft:#F0F8F9; --grey:#F6F8F9; --grey2:#E7EDEE; --panel-bg:#F6F8F9; --acento:#187F97}
 :root[data-paleta="c-ceu-sol"][data-modo="escuro"]{--acento:#1E94B0}
 [data-modo="escuro"][data-paleta="c-ceu-sol"] :is(#map,.itin,.trilho,.chip){--l-epico:#028EDB}
+[data-paleta="c-ceu-sol"] .panel{--l-epico:#023047; --l-hitl:#219EBC; --l-afk:#5AB4D6; --l-atd:#0F6E7A; --l-min:#5C7A94; --l-sprint:#FFB703; --l-rapida:#FB8500}
 [data-paleta="c-ceu-sol"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#022338}
 
 /* Dark Sunset (Coolors, sua seleção) — azul-petróleo com amarelo-claro, âmbar e vinho */
 :root[data-paleta="c-dark-sunset"]{
   --brand:#335C67; --blue:#335C67; --navy:#2A4A53; --cyan:#9DC3CC; --lime:#FFF3B0; --green:#9E2A2B; --orange:#F0C27F; --teal:#540B0E; --yellow:#E09F3E;
-  --l-epico:#2A4A53; --l-hitl:#335C67; --l-afk:#6E99A3; --l-atd:#9E2A2B; --l-min:#7A6A5F; --l-sprint:#E09F3E; --l-rapida:#540B0E;
+  --l-epico:#2A4A53; --l-hitl:#335C67; --l-afk:#6E99A3; --l-atd:#9E2A2B; --l-min:#7A6A5F; --l-sprint:#CA8721; --l-rapida:#540B0E;
   --viva-capa:#335C67; --viva-escuro:#2A4A53; --viva-destaque:#E09F3E; --viva-tinta:#1C2F35; --destaque-txt:#1C2F35;
 }
 :root[data-paleta="c-dark-sunset"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38484D; --title:#2A4A53; --muted:#657A80; --line:#D0DADD; --soft:#F0F7F9; --grey:#F6F8F9; --grey2:#E7ECEE; --panel-bg:#F6F8F9; --acento:#335C67}
 :root[data-paleta="c-dark-sunset"][data-modo="escuro"]{--acento:#548F9D}
 [data-modo="escuro"][data-paleta="c-dark-sunset"] :is(#map,.itin,.trilho,.chip){--l-epico:#588F9A}
+[data-paleta="c-dark-sunset"] .panel{--l-epico:#2A4A53; --l-hitl:#335C67; --l-afk:#6E99A3; --l-atd:#9E2A2B; --l-min:#7A6A5F; --l-sprint:#E09F3E; --l-rapida:#540B0E}
 [data-paleta="c-dark-sunset"] .tr:is([style*="--l-sprint)"]){color:#1C2F35}
 
 /* Sunny Beach Day (Coolors, sua seleção) — azul-carvão e verdigris com jasmim, areia e pêssego queimado de acento */
 :root[data-paleta="c-sunny-beach"]{
   --brand:#238173; --blue:#238173; --navy:#264653; --cyan:#9ED8CF; --lime:#E9C46A; --green:#85651A; --orange:#F4A261; --teal:#3E5F6D; --yellow:#E76F51;
-  --l-epico:#264653; --l-hitl:#2A9D8F; --l-afk:#6CC2B6; --l-atd:#1F756A; --l-min:#6B7F86; --l-sprint:#E9C46A; --l-rapida:#E76F51;
+  --l-epico:#264653; --l-hitl:#2A9D8F; --l-afk:#43A395; --l-atd:#1F756A; --l-min:#6B7F86; --l-sprint:#B98E1F; --l-rapida:#E76F51;
   --viva-capa:#264653; --viva-escuro:#264653; --viva-destaque:#E76F51; --viva-tinta:#1B323B; --destaque-txt:#1B323B;
 }
 :root[data-paleta="c-sunny-beach"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38474D; --title:#264653; --muted:#657880; --line:#D0D9DD; --soft:#F0F7F9; --grey:#F6F8F9; --grey2:#E7ECEE; --panel-bg:#F6F8F9; --acento:#238173}
 :root[data-paleta="c-sunny-beach"][data-modo="escuro"]{--acento:#29998B}
 [data-modo="escuro"][data-paleta="c-sunny-beach"] :is(#map,.itin,.trilho,.chip){--l-epico:#528FA7}
+[data-paleta="c-sunny-beach"] .panel{--l-epico:#264653; --l-hitl:#2A9D8F; --l-afk:#6CC2B6; --l-atd:#1F756A; --l-min:#6B7F86; --l-sprint:#E9C46A; --l-rapida:#E76F51}
 [data-paleta="c-sunny-beach"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"]){color:#1B323B}
 
 /* Warm Summer Palette (Coolors, sua seleção) — azul-báltico e azul-Yale com teal, mel e amaranto de acento */
 :root[data-paleta="c-warm-summer"]{
   --brand:#30638E; --blue:#30638E; --navy:#003D5B; --cyan:#A9C6DE; --lime:#F3CE8A; --green:#00798C; --orange:#EDAE49; --teal:#A93848; --yellow:#D1495B;
-  --l-epico:#003D5B; --l-hitl:#30638E; --l-afk:#00798C; --l-atd:#B87A1E; --l-min:#5D7487; --l-sprint:#EDAE49; --l-rapida:#D1495B;
+  --l-epico:#003D5B; --l-hitl:#30638E; --l-afk:#00798C; --l-atd:#B87A1E; --l-min:#5D7487; --l-sprint:#C98312; --l-rapida:#D1495B;
   --viva-capa:#30638E; --viva-escuro:#003D5B; --viva-destaque:#D1495B; --viva-tinta:#002A40; --destaque-txt:#FFFFFF;
 }
 :root[data-paleta="c-warm-summer"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38434D; --title:#003D5B; --muted:#677683; --line:#D0D7DD; --soft:#F0F5F9; --grey:#F6F7F9; --grey2:#E7EBEE; --panel-bg:#F6F7F9; --acento:#30638E}
 :root[data-paleta="c-warm-summer"][data-modo="escuro"]{--acento:#428CC3}
 [data-modo="escuro"][data-paleta="c-warm-summer"] :is(#map,.itin,.trilho,.chip){--l-epico:#008FDB}
+[data-paleta="c-warm-summer"] .panel{--l-epico:#003D5B; --l-hitl:#30638E; --l-afk:#00798C; --l-atd:#B87A1E; --l-min:#5D7487; --l-sprint:#EDAE49; --l-rapida:#D1495B}
 [data-paleta="c-warm-summer"] .tr:is([style*="--l-sprint)"]){color:#002A40}
 
 /* Azul-petróleo e mostarda (Coolors, nova) — azul-petróleo e marinho como base, mostarda e laranja de acento, verde-folha de apoio */
 :root[data-paleta="c-petroleo-mostarda"]{
   --brand:#2B7D9F; --blue:#2B7D9F; --navy:#1B3B6F; --cyan:#A3D5FF; --lime:#B8E0D2; --green:#3F7D58; --orange:#F2C14E; --teal:#5D737E; --yellow:#F78154;
-  --l-epico:#1B3B6F; --l-hitl:#2E86AB; --l-afk:#4FB0C6; --l-atd:#3F7D58; --l-min:#5D737E; --l-sprint:#E0A526; --l-rapida:#F78154;
+  --l-epico:#1B3B6F; --l-hitl:#2E86AB; --l-afk:#3B9DB7; --l-atd:#3F7D58; --l-min:#5D737E; --l-sprint:#BF8B19; --l-rapida:#F76531;
   --viva-capa:#2B7D9F; --viva-escuro:#1B3B6F; --viva-destaque:#F78154; --viva-tinta:#12263F; --destaque-txt:#12263F;
 }
 :root[data-paleta="c-petroleo-mostarda"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38464D; --title:#1B3B6F; --muted:#657780; --line:#D0D8DD; --soft:#F0F6F9; --grey:#F6F8F9; --grey2:#E7ECEE; --panel-bg:#F6F8F9; --acento:#2B7D9F}
 :root[data-paleta="c-petroleo-mostarda"][data-modo="escuro"]{--acento:#318FB7}
 [data-modo="escuro"][data-paleta="c-petroleo-mostarda"] :is(#map,.itin,.trilho,.chip){--l-epico:#5B87D7}
+[data-paleta="c-petroleo-mostarda"] .panel{--l-epico:#1B3B6F; --l-hitl:#2E86AB; --l-afk:#4FB0C6; --l-atd:#3F7D58; --l-min:#5D737E; --l-sprint:#E0A526; --l-rapida:#F78154}
 [data-paleta="c-petroleo-mostarda"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#12263F}
 
 .proposta select{font:inherit;padding:6px 8px;border:1px solid #d0d4da;border-radius:6px;background:#fff;color:#222;max-width:220px}

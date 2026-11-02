@@ -1,8 +1,8 @@
 """Gera as 10 paletas (5 Coolors, 5 Adobe Color) nos papéis de cor do Sabiá.
 Cada paleta dá as sementes por papel; o gerador só mexe na luminosidade (HSL) para o contraste passar:
 etapas escuras com branco >= 4,5; claras com a tinta >= 4,5; acento claro no escuro >= 4,5.
-As linhas do mapa ficam com a cor original da paleta (como na atual); no painel lateral, os botões de linha clara
-(branco < 3:1) recebem o texto escuro da paleta."""
+No mapa, as linhas ficam com contraste >= 3 no branco; na barra lateral (painel), com a cor original da paleta, e os
+botões de linha clara (branco < 3:1) recebem o texto escuro da paleta."""
 import colorsys, json, sys
 
 def rgb(h): return [int(h[i:i+2], 16) / 255 for i in (1, 3, 5)]
@@ -43,9 +43,10 @@ def montar(p):
     r['destaque_txt'] = tinta if cr(s['destaque'], tinta) >= cr(s['destaque'], WHITE) else WHITE
     r['capa'] = escurecer(s.get('capa', s['brand']), WHITE, 4.5)
     r['tinta'] = tinta
-    # linhas do mapa: a cor original da paleta; as claras pedem texto escuro nos botões do painel
-    linhas = dict(s['linhas'])
-    r['tr_texto_escuro'] = [k for k, v in linhas.items() if cr(v, WHITE) < 3.0]
+    # linhas: no mapa, contraste >= 3 no branco; na barra lateral, a cor original (as claras pedem texto escuro)
+    linhas = {k: escurecer(v, WHITE, 3.0) for k, v in s['linhas'].items()}
+    r['linhas_painel'] = dict(s['linhas'])
+    r['tr_texto_escuro'] = [k for k, v in s['linhas'].items() if cr(v, WHITE) < 3.0]
     # escuro: acento e épico claros sobre o fundo escuro
     # cinzas e branco: escala no matiz da paleta, pouco saturada
     H, _, _ = colorsys.rgb_to_hls(*rgb(s['cinza']))
@@ -66,6 +67,7 @@ def css(pid, p, r, ln):
             f':root[data-paleta="{pid}"]:not([data-modo="escuro"]){{--bg:#FFFFFF; --card:#FFFFFF; --ink:{r["cinzas"]["ink"]}; --title:{r["navy"]}; --muted:{r["cinzas"]["muted"]}; --line:{r["cinzas"]["line"]}; --soft:{r["cinzas"]["soft"]}; --grey:{r["cinzas"]["grey"]}; --grey2:{r["cinzas"]["grey2"]}; --panel-bg:{r["cinzas"]["grey"]}; --acento:{r["blue"]}}}\n'
             f':root[data-paleta="{pid}"][data-modo="escuro"]{{--acento:{r["acento_escuro"]}}}\n'
             f'[data-modo="escuro"][data-paleta="{pid}"] :is(#map,.itin,.trilho,.chip){{--l-epico:{r["epico_escuro"]}}}\n'
+            + f'[data-paleta="{pid}"] .panel{{{"; ".join(f"--l-{k}:{v}" for k, v in r["linhas_painel"].items())}}}\n'
             + (f'[data-paleta="{pid}"] .tr:is({",".join(f"[style*=\"--l-{k})\"]" for k in r["tr_texto_escuro"])}){{color:{r["tinta"]}}}\n' if r['tr_texto_escuro'] else ''))
 
 if __name__ == '__main__':
