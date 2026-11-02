@@ -22,8 +22,8 @@ as-built da fatia segue a seção ET as-built abaixo.
 3. `elm_publicar_req(sigla = o prefixo do conceito, titulo, texto_md, id?, modificado_em = last_modified da entrada
    do ELM em sources, embutir = ids dos conceitos embutidos)`. Erro `conflito` → mostre os dois lados e pergunte
    (regra 5).
-4. **Grave de volta** no conceito: `resource`, `id` e `{id: elm, resource, last_modified}` em `sources`; `**Publication**`
-   no `log.md`; termos, o id também na coluna ELM do glossário.
+4. **Grave de volta** no conceito: `resource`, `id` e `{id: elm, resource, last_modified}` em `sources`;
+   termos, o id também na coluna ELM do glossário.
 5. **2ª passada HF ↔ EL** (só com EL no lote): a EL sobe antes da HF e nasce com as HFs só pelo título. Publicadas
    as HFs, republique cada EL que cita uma HF sem id no texto publicado, com o `id` dela e `modificado_em` = o
    `last_modified` gravado no item 4: as HFs passam a `[<id>](<id>)`, como no item 2 (o sentido HF → EL já sai no
@@ -51,7 +51,7 @@ Fora da ordem de publicação e da política Publicar requisitos: cada ATA sobe 
 1. **Texto:** o corpo da ATA; o `D-nn` fica como texto (o `decisoes.md` não sobe sozinho).
 2. `elm_publicar_req(sigla = "ATA", titulo, texto_md, id?, modificado_em?)` — o tipo de reunião da PA, pela sigla
    `ATA` em `rm.artefatos` — e `elm_ligar(wi = id da [ESP], req = id da ATA)`, numa confirmação.
-3. **Grave de volta** na ATA, como no item 4 dos requisitos; `**Publication**` no `log.md`.
+3. **Grave de volta** na ATA, como no item 4 dos requisitos.
 
 ## ET as-built (só se a linha ET da seção ELM do `sabia.md` disser `só as-built` ou `inicial no PRD + as-built`)
 

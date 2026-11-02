@@ -17,8 +17,8 @@ Participantes: <n> · Decisões: D-<nn>…D-<nn> · Em aberto: <n>
 Aprovar? (sim | ajuste: <o quê>)
 ```
 
-Com "sim": na ATA, `status: stable` e um `verified` com `{ by: human:<login de quem disse o sim>, at: <agora> }`;
-`**Update**` no `log.md`. Ajuste → passo `escrever`, com o que a pessoa pediu.
+Com "sim": na ATA, `status: stable` e um `verified` com `{ by: human:<login de quem disse o sim>, at: <agora> }`.
+Ajuste → passo `escrever`, com o que a pessoa pediu.
 
 ## Saída
 

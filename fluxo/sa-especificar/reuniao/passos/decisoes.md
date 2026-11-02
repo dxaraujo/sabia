@@ -11,8 +11,8 @@ A ATA aprovada (passo `publicar`) e o `decisoes.md` da pasta do épico.
    `em aberto — ATA-<nn> draft`) passa a: Decisão, Fonte / quem decidiu = `<nome> (<papel>) · ATA-<nn> [mm:ss]`,
    Situação `decidida` (a que revisa outra, `decidida — substitui D-nn`). O que ficou em aberto → `D-nn` novo
    `em aberto` e as dúvidas da próxima reunião no `rascunho.md`, com a data.
-2. **Pasta na base** (a linha do épico no `backlog.md` já tem o link `prd`) → a ATA, o `index.md`, o `log.md` e o
-   `decisoes.md` num commit `EP-<nn> registrar ATA-<nn>`, pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base).
+2. **Pasta na base** (a linha do épico no `backlog.md` já tem o link `prd`) → a ATA e o `decisoes.md` num
+   commit `EP-<nn> registrar ATA-<nn>`, pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base).
    Senão, tudo fica na pasta de trabalho e vai à `[ESP]` no passo `sa-especificar.especificar.fechar-sessao`.
 3. **PRD já aprovado** (Fase `aprovado` ou `fatiado` no `status.md` do épico na base): decisão que muda o que o PRD diz →
    antes do fatiamento (`aprovado`), `sa-prd.mudanca`, ainda nesta `[ESP]` (versão nova só se o PRD já subiu ao

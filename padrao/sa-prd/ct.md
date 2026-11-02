@@ -35,5 +35,5 @@ requisitos, ligado à história; `CSV` → fica no repositório. A execução é
 - **Só dado fictício** nos exemplos e na massa descrita.
 - **Envelope:** `type` = o tipo de artefato de teste do ETM (coluna Tipo da linha `CT.csv` da seção ELM do
   `sabia.md`; padrão `Caso de Teste`); `title: CT<nn> - <título do cenário>`; `sources` com o PRD e a HF; sem `tags`
-  (não vai ao DOORS Next). No `index.md`, a seção `# Casos de teste`.
+  (não vai ao DOORS Next).
 - Seção sem conteúdo → `não se aplica` (não apague a seção).

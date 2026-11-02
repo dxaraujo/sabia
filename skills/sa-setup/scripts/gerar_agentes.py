@@ -275,8 +275,8 @@ def fonte_toolkits(projeto, cfg, fw, fluxos):
         p["linhas"] = [
             "Tipos com skill de toolkit (⇢ no passo de desvio do tipo): " + "; ".join(f"no passo `{c}`, {'; '.join(ls)}" for c, ls in p["linhas"].items())
             + ". O artefato desse tipo sai pela skill do toolkit (ligada a você), que lê o fluxo e o padrão da linha pelo caminho (sem eles, as references dela),"
-              " escrevendo no padrão OKF do Sabiá: o arquivo pela coluna Arquivo do catálogo, o envelope do `okf-elm.md`,"
-              " `status: draft`, a entrada no `index.md` e no `log.md`; depois volte ao passo. Os demais tipos seguem o passo."
+              " escrevendo no padrão OKF do Sabiá: o arquivo pela coluna Arquivo do catálogo, o envelope do `okf-elm.md`"
+              " e `status: draft`; depois volte ao passo. Os demais tipos seguem o passo."
               " O catálogo, a revisão e o GATE continuam do Sabiá."]
     if rubricas:  # quem revisa é o dono da sa-revisar
         por_papel.setdefault("revisor", {"linhas": [], "skills": []})["linhas"].append(

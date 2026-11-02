@@ -1,5 +1,5 @@
 ---
-{"resumo": "Preenche o prd.md (padrão sa-prd/prd.md) e cria em elm/ um conceito OKF por artefato, mais index.md e log.md, pelas regras de escrita e pelas políticas do sabia.md (ET inicial, REG com dados técnicos, Telas: a EL do protótipo aprovado, Casos de teste: o CT planejado de cada cenário) e o limite do acordos.md; o tipo com skill de toolkit no prompt sai por ela."}
+{"resumo": "Preenche o prd.md (padrão sa-prd/prd.md) e cria em elm/ um conceito OKF por artefato, pelas regras de escrita e pelas políticas do sabia.md (ET inicial, REG com dados técnicos, Telas: a EL do protótipo aprovado, Casos de teste: o CT planejado de cada cenário) e o limite do acordos.md; o tipo com skill de toolkit no prompt sai por ela."}
 ---
 ## Entrada
 
@@ -14,14 +14,13 @@ Tipo com skill de toolkit no seu prompt (**Tipos com skill de toolkit**) → o a
 carregue-a, siga o fluxo e o padrão do tipo pelos caminhos da linha, se a linha os trouxer (senão, a skill), e volte a este passo ("Toolkit na
 especificação", no passo `sa-especificar.especificar.encaminhar`).
 Na volta, confira o artefato pelo contrato: arquivo pela coluna Arquivo do catálogo, envelope do `okf-elm.md`,
-`status: draft`, entrada no `index.md` e no `log.md`. Fora dele, complete aqui mesmo e registre no `status.md`.
-Os demais tipos seguem as regras abaixo; o `prd.md`, o `index.md`, o `log.md` e o contrato continuam deste passo.
+`status: draft`. Fora dele, complete aqui mesmo e registre no `status.md`.
+Os demais tipos seguem as regras abaixo; o `prd.md` e o contrato continuam deste passo.
 
 Preencha o padrão `sa-prd/prd.md` (o `prd.md`) e crie, em `elm/`, um arquivo por artefato, de um tipo do
 [catálogo](~/.sabia/framework/skills/sabia/references/tipos.md) que este passo cria, fora os pendentes (nome pela coluna Arquivo), com
 `status: draft`, `sources` (PRD, decisões), `generated` e o corpo do padrão do tipo (envelope em
-[references/okf-elm.md](~/.sabia/framework/skills/sa-prd/references/okf-elm.md)), mais o `index.md` e uma entrada no `log.md`. O `prd.md`
-só aponta para eles. Regras de escrita:
+[references/okf-elm.md](~/.sabia/framework/skills/sa-prd/references/okf-elm.md)). O `prd.md` só aponta para eles. Regras de escrita:
 
 - **Histórias** pequenas o bastante para caber em poucas fatias; cada uma com cenários que cubram: caminho feliz,
   o que **não** deve ser aceito, repetição/reexecução, erro em um item (a operação continua? o que fica
@@ -59,7 +58,7 @@ só aponta para eles. Regras de escrita:
 
 ## Saída
 
-`prd.md`, os conceitos em `elm/`, o `index.md` e o `log.md` na pasta de trabalho → passo `revisao`.
+`prd.md` e os conceitos em `elm/` na pasta de trabalho → passo `revisao`.
 
 ## Pare se
 

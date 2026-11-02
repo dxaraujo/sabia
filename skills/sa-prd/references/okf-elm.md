@@ -4,11 +4,12 @@ Cada artefato que vai ao ELM — um tipo do [catálogo](../../sabia/references/t
 como **um conceito OKF v0.2** (Open Knowledge Format,
 [SPEC.md](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md), versão 0.2) **na pasta da
 spec**, até ser aprovado e publicado. É o mesmo formato do bundle que a `sa-sync` mantém
-no repositório, então o rascunho e a versão oficial se leem do mesmo jeito.
+no repositório, então o rascunho e a versão oficial se leem do mesmo jeito. Cada conceito vale por si, pelo
+frontmatter: a pasta não tem `index.md` nem `log.md` (OKF §8 e §9), que são do bundle da `sa-sync`.
 
 ## Onde fica
 
-| Origem | Pasta (um bundle OKF pequeno) |
+| Origem | Pasta |
 |---|---|
 | épico (PRD) | até o GATE do PRD, na pasta de trabalho local `.sabia/local/especificacao/<EP>-<slug>/elm/` (fora do git, anexada na `[ESP]`); aprovado, `<produto>/epicos/<EP>-<slug>/elm/` na base |
 | ET as-built de uma fatia (o Dev, no PR; publicada na consolidação; a ET inicial do épico, quando há, fica na pasta do épico) | `.kiro/specs/<ft>-<slug>/elm/` |
@@ -16,8 +17,6 @@ no repositório, então o rascunho e a versão oficial se leem do mesmo jeito.
 
 ```
 elm/
-  index.md                       # catálogo (OKF §8), com okf_version: "0.2"
-  log.md                         # histórico (OKF §9), entradas mais novas primeiro
   GL-tentativa-de-login.md
   REG-01-bloqueio-apos-3-tentativas.md
   HF-01-bloquear-conta.md
@@ -55,7 +54,7 @@ generated: { by: sabia/2.0.0, at: 2026-10-14T13:00:00Z }   # §5.2: quem escreve
 |---|---|
 | `type` (obrigatório) | nome do tipo no DOORS Next — o `tipo` da sigla em `rm.artefatos` do `pa_<nome>.json` (ex.: `História de Usuário`, `Regra`, `Termos de Glossário`); o CT planejado, o do ETM (padrão `sa-prd/ct.md`) |
 | `title` | título no ELM: `HF - <nome>`, `REG - <nome>`, o termo |
-| `description` | uma frase; vai para o `index.md` |
+| `description` | uma frase |
 | `tags` | `[<pasta do RM>]` — a `pasta` da sigla em `rm.artefatos`; o CT planejado não tem |
 | `resource` | **ausente até publicar**; depois, a URI do artefato no ELM. Decide criar × atualizar |
 | `sources` | o PRD, as decisões e, numa alteração, o próprio artefato do ELM (`resource` = URI, `last_modified` = última modificação no ELM vista por nós) |
@@ -117,41 +116,12 @@ O corpo é o do padrão do tipo, na coluna Padrão do [catálogo](../../sabia/re
 | Alteração de artefato existente | traga o arquivo do bundle pelo `elm_ler_req_local` (sem bundle: `elm_ler_req`) e grave-o em `elm/`, mantendo `resource`, `id` e o `sources` do ELM; `status: draft`, `generated` novo; edite. O `last_modified` desse `sources` detecta conflito na publicação |
 | Obsoleto | `status: deprecated`; no ELM, roteiro manual na UI |
 
-## `index.md` e `log.md`
-
-```markdown
----
-okf_version: "0.2"
----
-# Histórias
-* [HF - Bloquear a conta após 3 tentativas](HF-01-bloquear-conta.md) - <description>
-
-# Regras
-* [REG - Bloqueio após 3 tentativas](REG-01-bloqueio-apos-3-tentativas.md) - <description>
-
-# Termos
-* [Tentativa de login](GL-tentativa-de-login.md) - <description>
-
-# Leiautes
-* [EL - Desbloqueio da conta](EL-01-desbloqueio-da-conta.md) - <description>
-
-# Especificação técnica
-* [ET - EP-03 Bloqueio por tentativas](ET-bloqueio-por-tentativas.md) - <description>
-
-# Casos de teste
-* [CT01 - Bloquear após a terceira falha](CT-01-bloquear-apos-terceira-falha.md) - <description>
-```
-
-`log.md`: `# Directory Update Log`, seções `## AAAA-MM-DD` (mais nova primeiro), itens `* **Creation**: …`,
-`* **Update**: …`, `* **Publication**: … (ELM <id>)`, `* **Deprecation**: …`.
-
 ## Conformidade (conferida pela rubrica P, item P11)
 
-1. Todo `.md` de `elm/` (fora `index.md` e `log.md`) tem frontmatter YAML que faz parse, com `type` não vazio.
+1. Todo `.md` de `elm/` tem frontmatter YAML que faz parse, com `type` não vazio.
 2. Só chaves do OKF v0.2, mais `id` (e as que vieram do bundle numa cópia).
 3. `status` presente; `draft` antes do GATE, fora a ATA aprovada (`stable` desde a aprovação dela).
 4. `type` e `tags` existem em `rm.artefatos` do `pa_<nome>.json` — fora o tipo com ELM `ETM` (o CT planejado): `type` =
    a coluna Tipo da linha `CT.csv` da seção ELM do `sabia.md`, sem `tags`.
 5. Toda HF tem cenários; todo conceito liga os que cita dos tipos da sua coluna Embute (a HF, as suas REGs); HF e
    EL ligadas nos dois sentidos; todo link relativo aponta para um arquivo que existe.
-6. `index.md` lista todos os conceitos; `log.md` com datas `AAAA-MM-DD`.

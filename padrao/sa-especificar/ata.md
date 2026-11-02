@@ -43,6 +43,6 @@ Uma ata por reunião, em `elm/ATA-nn-<slug>.md` da pasta do épico (`nn` em sequ
 - **Envelope:** `type` e `tags` pela sigla `ATA` em `rm.artefatos`; `title: ATA - <AAAA-MM-DD> <assunto>`; `sources`
   com o `decisoes.md` e a transcrição só pelo nome, sem `resource` (a `reunioes/` não sai desta máquina):
   `- id: transcricao` e `title: "reunioes/<arquivo.ext> · sha256 <do cabeçalho do .transcricao.md> (só local)"`. Nasce `status: draft`; o "sim" da aprovação grava `status: stable` e o
-  `verified` humano, sem esperar o GATE do PRD. No `index.md`, a seção `# Atas`.
+  `verified` humano, sem esperar o GATE do PRD.
 - Aprovada, a ata não muda: correção é conceito em `draft` de novo e outra aprovação
   ([Ciclo de vida](~/.sabia/framework/skills/sa-prd/references/okf-elm.md#ciclo-de-vida)).

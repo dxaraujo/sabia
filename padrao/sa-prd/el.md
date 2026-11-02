@@ -46,6 +46,5 @@ aprovada do protótipo (o `D-nn` `Protótipo v<N> aprovado` da última versão r
 - **HF ↔ EL nos dois sentidos:** a EL lista em `## Histórias` as HFs que usam a tela; a HF cita a EL na linha
   `**Telas:**`. A P9 vale: rótulo é texto do usuário, nome técnico de campo não entra.
 - **Envelope:** `type` e `tags` pela sigla `EL` em `rm.artefatos`; `title: EL - <nome da tela>`; `sources` com o
-  PRD, o `decisoes.md` (o `D-nn` da aprovação) e o protótipo só pelo nome do anexo. No `index.md`, a seção
-  `# Leiautes`.
+  PRD, o `decisoes.md` (o `D-nn` da aprovação) e o protótipo só pelo nome do anexo.
 - Seção sem conteúdo → `não se aplica` (não apague a seção).
