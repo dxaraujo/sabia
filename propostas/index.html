@@ -37,7 +37,7 @@ a{color:inherit}
 .abrir{margin-top:auto;padding-top:10px;font-weight:600;font-size:14px}
 .abrir::after{content:" →"}
 .ev .amostra{background:#F3F6FF;color:#101840;font-family:"SF UI Display",-apple-system,sans-serif;font-weight:600}
-.at .amostra{background:#F8F8F8;color:#292A2E;font-family:"SF UI Display",-apple-system,sans-serif;font-weight:600}
+.at .amostra{background:#F3F6FF;color:#101840;font-family:"SF UI Display",-apple-system,sans-serif;font-weight:600}
 footer{color:var(--muted);font-size:13px}
 @media (max-width:980px){.sistemas{grid-template-columns:minmax(0,1fr)}.paletas{grid-template-columns:repeat(2,minmax(0,1fr))}.modos{max-width:none}}
 @media (max-width:620px){.sistemas,.paletas{grid-template-columns:minmax(0,1fr)}.modos{max-width:none}}
@@ -55,8 +55,8 @@ footer{color:var(--muted);font-size:13px}
     <div class="paletas" role="radiogroup" aria-label="Paleta">
       <label><input type="radio" name="paleta" value="terra" checked><b>Terra</b><small>Candidata a substituir a atual: neutros quentes de papel e carvão, cores cozidas e um laranja de sinal. Sem roxo.</small>
         <span class="sw"><i style="background:#5FC2BA"></i><i style="background:#E3A93B"></i><i style="background:#B5471D"></i><i style="background:#2B2A26"></i><i style="background:#4D6B26"></i><i style="background:#8CB8E0"></i><i style="background:#19646E"></i><i style="background:#FF6B35"></i><i style="background:#FAF9F5;box-shadow:inset 0 0 0 1px #dedee4"></i></span></label>
-      <label><input type="radio" name="paleta" value="azul"><b>Azul</b><small>Variação da atual: a mesma estrutura em céu, gelo, marca, marinho, petróleo e aço, com o âmbar como único quente.</small>
-        <span class="sw"><i style="background:#5BC0EB"></i><i style="background:#B8D8F8"></i><i style="background:#0B6BCB"></i><i style="background:#10335C"></i><i style="background:#0A7383"></i><i style="background:#FFC233"></i><i style="background:#3B5D7D"></i><i style="background:#0B4FA8"></i></span></label>
+      <label><input type="radio" name="paleta" value="azul"><b>Azul</b><small>Só tokens do IBM Carbon: base azul, acento Yellow 30, auxiliares ciano, teal e verde da paleta de dados.</small>
+        <span class="sw"><i style="background:#82cfff"></i><i style="background:#3ddbd9"></i><i style="background:#0f62fe"></i><i style="background:#001d6c"></i><i style="background:#198038"></i><i style="background:#f1c21b"></i><i style="background:#005d5d"></i></span></label>
       <label><input type="radio" name="paleta" value="atual"><b>Atual</b><small>As cores de hoje, vindas dos decks, sobre o novo sistema.</small>
         <span class="sw"><i style="background:#00BBCE"></i><i style="background:#B2D235"></i><i style="background:#0786E3"></i><i style="background:#2C5168"></i><i style="background:#76B043"></i><i style="background:#FAA61A"></i><i style="background:#0094AD"></i><i style="background:#FEBE10"></i></span></label>
       <label><input type="radio" name="paleta" value="sobria"><b>Sóbria</b><small>Só as cores do próprio sistema, como na primeira rodada.</small>
@@ -78,7 +78,7 @@ footer{color:var(--muted);font-size:13px}
       <a class="sis ev" data-d="evergreen" href="evergreen/index.html?paleta=terra&amp;modo=claro"><div class="amostra">Aa<span>SF UI</span></div><div class="corpo"><h3>Evergreen</h3><p>Segment</p>
         <ul><li>Neutros azul-acinzentados</li><li>Cantos de 4 e 8px, sombras de elevação</li><li>Aba ativa com fundo azul-claro</li><li>Badges em caixa alta</li></ul><span class="abrir">Abrir</span></div></a>
       <a class="sis at" data-d="atlassian" href="atlassian/index.html?paleta=terra"><div class="amostra">Aa<span>SF UI</span></div><div class="corpo"><h3>Atlassian</h3><p>Atlassian Design System</p>
-        <ul><li>Texto grafite, cartões elevados sem borda</li><li>Cantos de 4 e 8px</li><li>Barra de menus e fonte do Evergreen</li><li>Lozenges em caixa alta</li></ul><span class="abrir">Abrir</span></div></a>    </div>
+        <ul><li>Cores do Evergreen; cartões elevados sem borda</li><li>Cantos de 4 e 8px</li><li>Barra de menus e fonte do Evergreen</li><li>Lozenges em caixa alta</li></ul><span class="abrir">Abrir</span></div></a>    </div>
   </section>
 
   <footer><a href="../index.html">Ver o site atual</a></footer>

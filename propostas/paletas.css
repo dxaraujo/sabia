@@ -25,20 +25,21 @@
 }
 [data-paleta="terra"] :is(.top .gh,.chip:not([aria-pressed="true"])){border-color:var(--line)}
 
-/* "azul": variação da atual. Mesma estrutura (capa cheia, etapas coloridas, amarelo de destaque), com o verde, o lima e
-   o laranja trocados por céu, gelo, petróleo e aço; o âmbar fica como único quente. Neutros levemente azulados.
-   Contraste: escuras com branco ≥ 5,2:1; claras com a tinta marinho ≥ 7:1; linhas ≥ 3:1 no fundo claro. */
+/* "azul": só tokens do IBM Carbon (@carbon/colors), sem hex inventado. Base azul (Blue 60/80/90), acento Yellow 30
+   (o amarelo de alerta do Carbon), auxiliares da paleta categórica de visualização (Cyan, Teal, Green; Red 50 só na
+   linha rápida), neutros Gray dos temas White e Gray 100. Sem Purple/Magenta da categórica.
+   Contraste: etapas escuras com branco ≥ 5:1; claras com Gray 100 ≥ 10,6:1; linhas ≥ 3,3:1 nos dois modos. */
 :root[data-paleta="azul"]{
-  --brand:#0B6BCB; --blue:#0B6BCB; --navy:#10335C; --cyan:#5BC0EB; --teal:#3B5D7D; --green:#0A7383; --lime:#B8D8F8; --yellow:#FFC233; --orange:#FFC233;
-  --l-epico:#10335C; --l-hitl:#0B6BCB; --l-afk:#1A9BD0; --l-atd:#0A7383; --l-min:#4A7397; --l-sprint:#B07D00; --l-rapida:#CC6A00;
-  --viva-capa:#0B4FA8; --viva-escuro:#10335C; --viva-destaque:#FFC233; --viva-tinta:#0E2A47;
+  --brand:#0f62fe; --blue:#0f62fe; --navy:#001d6c; --cyan:#82cfff; --lime:#3ddbd9; --green:#198038; --yellow:#f1c21b; --orange:#f1c21b; --teal:#005d5d; --red:#da1e28;
+  --l-epico:#002d9c; --l-hitl:#1192e8; --l-afk:#009d9a; --l-atd:#198038; --l-min:#005d5d; --l-sprint:#b28600; --l-rapida:#fa4d56;
+  --viva-capa:#0f62fe; --viva-escuro:#001d6c; --viva-destaque:#f1c21b; --viva-tinta:#161616;
 }
 :root[data-paleta="azul"]:not([data-modo="escuro"]){
-  --acento:#0B6BCB; --bg:#F7F9FC; --card:#FFFFFF; --ink:#1B2B3A; --title:#0E2A47; --muted:#5B6B7C; --line:#DCE3EB; --soft:#EEF3F9; --grey:#F3F6FA; --grey2:#E3E9F0; --panel-bg:#F3F6FA;
+  --acento:#0f62fe; --bg:#ffffff; --card:#ffffff; --ink:#161616; --title:#161616; --muted:#525252; --line:#e0e0e0; --soft:#f4f4f4; --grey:#f4f4f4; --grey2:#e0e0e0; --panel-bg:#f4f4f4;
 }
 :root[data-paleta="azul"][data-modo="escuro"]{
-  --acento:#5AA9F5; --bg:#0D1520; --card:#131E2B; --ink:#D5DEE8; --title:#EEF3F8; --muted:#8DA0B3; --line:#26364A; --soft:#1A2737; --grey:#101A26; --grey2:#223246; --panel-bg:#1A2737;
-  --viva-capa:#0E3B78; --viva-escuro:#17365A;
+  --acento:#78a9ff; --bg:#161616; --card:#262626; --ink:#f4f4f4; --title:#f4f4f4; --muted:#c6c6c6; --line:#393939; --soft:#393939; --grey:#262626; --grey2:#393939; --panel-bg:#393939;
+  --viva-capa:#002d9c; --viva-escuro:#001d6c;
 }
 [data-paleta="azul"] :is(.top .gh,.chip:not([aria-pressed="true"])){border-color:var(--line)}
 /* o trilho: as sete etapas em sequência, assinatura no lugar das faixas inclinadas do deck */
@@ -95,7 +96,8 @@
 /* paletas no escuro: o épico (navy na atual, petróleo na terra) clareia no mapa; blocos ganham borda sutil */
 [data-modo="escuro"][data-paleta="atual"] :is(#map,.itin,.trilho){--l-epico:#7FA6C4}
 [data-modo="escuro"][data-paleta="terra"] :is(#map,.itin,.trilho){--l-epico:#4FA3AE}
-[data-modo="escuro"][data-paleta="azul"] :is(#map,.itin,.trilho){--l-epico:#6F9CCB}
+/* no escuro, as linhas usam a categórica escura do Carbon */
+[data-modo="escuro"][data-paleta="azul"] :is(#map,.itin,.trilho){--l-epico:#4589ff;--l-hitl:#33b1ff;--l-afk:#08bdba;--l-atd:#6fdc8c;--l-min:#007d79;--l-sprint:#d2a106;--l-rapida:#fa4d56}
 [data-modo="escuro"][data-paleta="terra"] .sign.hero{box-shadow:inset 0 0 0 1px var(--line)}
 [data-modo="escuro"][data-paleta] .etapas li,[data-modo="escuro"][data-paleta] .passos li{box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
 [data-modo="escuro"][data-paleta] .porta .n{color:color-mix(in oklab,var(--c) 80%,#fff)}

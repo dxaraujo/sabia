@@ -1,72 +1,74 @@
-/* Atlassian Design System (paleta renovada): texto #292A2E, azul #1868DB, roxo de épico, superfície afundada #F8F8F8,
-   cantos de 4/8px, barra de menus e fonte (pilha SF UI) iguais às do Evergreen, lozenges em caixa alta. */
+/* Atlassian Design System com as cores, a fonte e a barra de menus do Evergreen. O que diverge do Evergreen é só
+   o que é do ADS: tamanhos (texto 14/20, títulos 48/28/20), espaçamentos, cantos (4/8px, lozenge 3px) e sombras
+   (raised e overlay no lugar de borda + elevação), além dos lozenges em caixa alta. */
 :root{
-  --bg:#ffffff; --card:#ffffff; --ink:#292A2E; --title:#292A2E; --muted:#6B6E76; --line:#DDDEE1; --soft:#F0F1F2; --grey:#F8F8F8; --grey2:#E9EAEB;
-  --acento:#1868DB; --brand:#1868DB; --brand-hover:#1558BC; --blue:#1868DB; --navy:#292A2E; --cyan:#2898BD; --teal:#206A83; --green:#22A06B; --lime:#82B536; --yellow:#E2B203; --orange:#E06C00; --red:#C9372C;
-  --l-epico:#964AC0; --l-hitl:#1868DB; --l-afk:#2898BD; --l-atd:#22A06B; --l-min:#AE4787; --l-sprint:#E2B203; --l-rapida:#E06C00;
+  /* cores: as mesmas do evergreen/tema.css */
+  --bg:#ffffff; --card:#ffffff; --ink:#474D66; --title:#101840; --muted:#696F8C; --line:#E6E8F0; --soft:#F4F6FA; --grey:#F9FAFC; --grey2:#EDEFF5;
+  --acento:#3366FF; --brand:#3366FF; --brand-hover:#2952CC; --blue:#2952CC; --navy:#101840; --cyan:#25B7CC; --teal:#0F8A99; --green:#52BD94; --lime:#A3E6CD; --yellow:#FFD040; --orange:#FFB020; --red:#D14343;
+  --l-epico:#6E62B6; --l-hitl:#3366FF; --l-afk:#25B7CC; --l-atd:#52BD94; --l-min:#317159; --l-sprint:#FFB020; --l-rapida:#DE7548;
+  --hero-bg:#F3F6FF; --hero-fg:#101840;
+  /* forma e profundidade: do ADS */
   --r:8px; --r-sm:4px; --r-xs:3px;
   --display:"SF UI Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   --body:"SF UI Text",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   --mono:"SF Mono",Monaco,Inconsolata,"Fira Mono","Droid Sans Mono","Source Code Pro",monospace;
   --raised:0 1px 1px #1E1F2140,0 0 1px #1E1F214F;
   --overlay:0 8px 12px #1E1F2126,0 0 1px #1E1F214F;
-  --hero-bg:#F8F8F8; --hero-fg:#292A2E; --panel-bg:#F8F8F8;
 }
 body{font:400 14px/20px var(--body)}
 h1,h2,h3,h4{font-weight:600;letter-spacing:0}
-code{background:var(--soft);color:var(--ink)}
+code{background:var(--soft);color:var(--title)}
 
 .top{border-bottom:1px solid var(--line);padding-block:14px}
 .brand{font:600 20px/1 var(--display)}
-.top .gh{font:500 14px/1 var(--body);color:var(--ink);padding:9px 12px;border:0;background:#0515240F}
-.top .gh:hover{background:#0B120E24;color:var(--ink)}
-/* barra de menus igual à do Evergreen */
+.top .gh{font:500 14px/1 var(--body);color:var(--ink);padding:9px 12px;border:1px solid #C1C4D6;background:#fff}
+.top .gh:hover{background:#FAFBFF;border-color:#8F95B2;color:var(--title)}
 nav.tabs{border-bottom:0;gap:4px;padding-block:10px}
 nav.tabs a{background:none;color:var(--ink);font:500 14px/1 var(--body);padding:9px 12px;border-radius:4px}
 nav.tabs a:hover{background:var(--soft);color:var(--title)}
 nav.tabs a[aria-current="page"]{background:color-mix(in srgb,var(--acento) 10%,transparent);color:var(--acento)}
 
 .sign.hero h1{font-size:clamp(32px,4.2vw,48px);line-height:1.12;letter-spacing:-.015em}
-.sign.hero .lead{color:#505258;font-size:16px;line-height:24px}
-.install .how{color:#505258;font:500 14px/20px var(--body)}
+.sign.hero .lead{color:var(--ink);font-size:16px;line-height:24px}
+.install .how{color:var(--ink);font:500 14px/20px var(--body)}
+.install .url{border-color:#C1C4D6}
 .install button{font:500 14px/1 var(--body)}
 .install .ghost{text-decoration:none;font:500 14px/1 var(--body)}
 .install .ghost:hover{text-decoration:underline}
 .ficha{box-shadow:var(--raised)}
 
 .lead-sec h2{font-size:clamp(22px,2.4vw,28px);line-height:1.15}
-.lead-sec p{font-size:16px;line-height:24px;color:#505258}
+.lead-sec p{font-size:16px;line-height:24px}
 .razoes article{background:var(--grey)}
 .razoes h3{font-size:20px}
 .porta{border:0;box-shadow:var(--raised)}
 .porta:hover{box-shadow:var(--overlay);transform:none}
-.porta .n{align-self:flex-start;font:700 11px/16px var(--display);text-transform:uppercase;padding:0 4px;border-radius:3px;background:color-mix(in srgb,var(--c) 18%,#fff);color:color-mix(in srgb,var(--c) 70%,#292A2E)}
+.porta .n{align-self:flex-start;font:700 11px/16px var(--display);text-transform:uppercase;padding:0 4px;border-radius:3px;background:color-mix(in srgb,var(--c) 16%,#fff);color:color-mix(in srgb,var(--c) 65%,#101840)}
 .porta h3{font-size:16px}
 .porta .ir{font:500 14px/1 var(--body);color:var(--acento)}
 .passos li{border:0;box-shadow:var(--raised)}
 .passos li::before{font:600 24px/1 var(--display)}
 
-.chip{border:1px solid var(--line);font:500 13px/1 var(--body);color:var(--ink)}
+.chip{border:1px solid #C1C4D6;font:500 13px/1 var(--body)}
 .controls .lbl,.kv dt,.blk h4,.senbox b{color:var(--muted);font:600 12px/16px var(--display);text-transform:none;letter-spacing:0}
 .pdz .dz-vista,.panel{border:1px solid var(--line)}
 .pdz .dz-ficha{box-shadow:var(--overlay)}
 .pdz .dz-passos{border:0;box-shadow:var(--overlay)}
-.pdz .dz-passos .prox{background:var(--acento);box-shadow:none;padding-left:16px}
 footer{border-top:1px solid var(--line)}
 
-/* escuro: tokens do tema escuro do ADS */
+/* escuro: as cores escuras do Evergreen; as sombras do ADS no escuro */
 :root[data-modo="escuro"]{
   --bg:#1F1F21; --card:#242528; --ink:#CECFD2; --title:#DFE1E5; --muted:#96999E; --line:#3D3F43; --soft:#2B2C2F; --grey:#18191A; --grey2:#333438;
-  --acento:#669DF1; --brand:#669DF1; --brand-hover:#8FB8F6; --blue:#669DF1; --navy:#44464B;
-  --raised:0 0 0 1px #3D3F43; --overlay:0 8px 12px #01040475,0 0 1px #01040480;
+  --acento:#85A3FF; --brand:#5C85FF; --brand-hover:#85A3FF; --blue:#5C85FF; --navy:#44464B;
   --hero-bg:#18191A; --hero-fg:#DFE1E5; --panel-bg:#2B2C2F;
+  --raised:0 0 0 1px #3D3F43; --overlay:0 8px 12px #01040475,0 0 1px #01040480;
 }
-[data-modo="escuro"] .top .gh{background:var(--soft);color:var(--ink)}
-[data-modo="escuro"] .top .gh:hover{background:var(--grey2);color:var(--title)}
+[data-modo="escuro"] .top .gh{background:var(--card);border-color:var(--line);color:var(--ink)}
+[data-modo="escuro"] .top .gh:hover{background:var(--soft);color:var(--title)}
 [data-modo="escuro"] nav.tabs a{color:var(--ink)}
 [data-modo="escuro"] nav.tabs a:hover{background:var(--soft);color:var(--title)}
 [data-modo="escuro"] nav.tabs a[aria-current="page"]{background:color-mix(in srgb,var(--acento) 18%,transparent);color:var(--acento)}
-[data-modo="escuro"] :is(.sign.hero .lead,.lead-sec p,.install .how){color:var(--muted)}
+[data-modo="escuro"] .install .url,[data-modo="escuro"] .chip{border-color:var(--line)}
 [data-modo="escuro"] .install button{color:#1F1F21}
-[data-modo="escuro"] .porta .n{background:color-mix(in srgb,var(--c) 24%,var(--card));color:color-mix(in srgb,var(--c) 55%,#fff)}
+[data-modo="escuro"] .porta .n{background:color-mix(in srgb,var(--c) 22%,var(--card));color:color-mix(in srgb,var(--c) 55%,#fff)}
 [data-modo="escuro"] .porta .ir{color:var(--acento)}
