@@ -115,6 +115,9 @@
 
 
 
+
+
+
 /* ===== propostas similares à atual: 9 cores na ordem dos papéis da atual (marca, azul, navy, ciano, teal, verde, lima, amarelo,
    laranja), aplicadas puras, com as regras e os neutros da atual. Só o texto se adapta: branco ou quase preto
    (#121821), o que contrastar mais com cada cor (etapas e botões da barra lateral). Seletores com :root para ganhar das
@@ -493,6 +496,23 @@
 :root[data-paleta="k-pulse"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(3),:nth-child(5),:nth-child(6),:nth-child(7)){color:#FFFFFF}
 :root[data-paleta="k-pulse"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
 :root[data-paleta="k-pulse"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-min)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+
+/* Midnight Violet — feita para interface escura: midnight, violeta elétrico, menta neural e lima ácida de CTA */
+:root[data-paleta="m-midnight"]{
+  --brand:#6D5BFF; --blue:#6D5BFF; --navy:#171326; --cyan:#A78BFA; --teal:#777287; --green:#22D3B4; --lime:#FFB86B; --yellow:#B7F34A; --orange:#FF6B70;
+  --l-epico:#171326; --l-hitl:#6D5BFF; --l-afk:#A78BFA; --l-atd:#22D3B4; --l-min:#777287; --l-sprint:#B7F34A; --l-rapida:#FF6B70;
+  --viva-capa:#6D5BFF; --viva-escuro:#171326; --viva-destaque:#B7F34A; --viva-tinta:#171326; --destaque-txt:#121821;
+}
+:root[data-paleta="m-midnight"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#171326; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#6D5BFF}
+:root[data-paleta="m-midnight"][data-modo="escuro"]{--acento:#8475FF}
+:root[data-paleta="m-midnight"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#8C7EBF}
+:root[data-paleta="m-midnight"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#121821}
+:root[data-paleta="m-midnight"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="m-midnight"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(5),:nth-child(6)){color:#FFFFFF}
+:root[data-paleta="m-midnight"] .tr:is([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#121821}
+:root[data-paleta="m-midnight"] .tr:not([style*="--l-afk)"],[style*="--l-atd)"],[style*="--l-sprint)"],[style*="--l-rapida)"]){color:#FFFFFF}
+:root[data-paleta="m-midnight"]:not([data-modo="escuro"]){--soft:#F4F0FF; --muted:#777287; --line:#DDD8EC; --grey:#F7F5FF; --grey2:#E8E4F5; --panel-bg:#F7F5FF; --ink:#2A2540}
+:root[data-paleta="m-midnight"][data-modo="escuro"]{--bg:#171326; --card:#201B35; --soft:#2A2442; --grey:#201B35; --grey2:#2A2442; --line:#3A3352; --panel-bg:#201B35; --ink:#F4F0FF; --title:#F4F0FF; --muted:#A7A2B8; --hero-bg:#201B35; --navy:#352D5C; --viva-escuro:#352D5C}
 
 /* ===== variantes da sóbria: a mesma estrutura (quase tudo branco, destaques no navy e num amarelo em poucos pontos),
    com outras cores. Ficam em <html data-sobria="…"> e não ligam as regras de paleta viva ===== */

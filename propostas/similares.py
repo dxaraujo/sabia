@@ -29,6 +29,9 @@ SIMILARES = {
  'k-deep': ('Deep Tech', 'Paletas de IA · 3', 'performance, escala e alta performance', '#0B63CE #2563EB #1E40AF #06B6D4 #0891B2 #059669 #16A34A #FBBF24 #F97316'),
  'k-neon': ('Neon Flow', 'Paletas de IA · 3', 'inovação com energia e possibilidades infinitas (sem cor escura: o rosa faz o navy)', '#8B5CF6 #A855F7 #EC4899 #06B6D4 #14B8A6 #22C55E #A3E635 #F59E0B #FB7185'),
  'k-pulse': ('Future Pulse', 'Paletas de IA · 3', 'inteligência, clareza e um amanhã mais aberto', '#3B82F6 #1E3A8A #0F172A #06B6D4 #2DD4BF #86EFAC #FDE047 #F59E0B #FB923C'),
+ 'm-midnight': ('Midnight Violet', 'Paletas de IA · 4', 'feita para interface escura: midnight, violeta elétrico, menta neural e lima ácida de CTA', '#6D5BFF #6D5BFF #171326 #A78BFA #777287 #22D3B4 #FFB86B #B7F34A #FF6B70',
+  'P:not([data-modo="escuro"]){--soft:#F4F0FF; --muted:#777287; --line:#DDD8EC; --grey:#F7F5FF; --grey2:#E8E4F5; --panel-bg:#F7F5FF; --ink:#2A2540}\n'
+  'P[data-modo="escuro"]{--bg:#171326; --card:#201B35; --soft:#2A2442; --grey:#201B35; --grey2:#2A2442; --line:#3A3352; --panel-bg:#201B35; --ink:#F4F0FF; --title:#F4F0FF; --muted:#A7A2B8; --hero-bg:#201B35; --navy:#352D5C; --viva-escuro:#352D5C}\n'),
 }
 PAPEIS = ['brand', 'blue', 'navy', 'cyan', 'teal', 'green', 'lime', 'yellow', 'orange']
 ETAPAS = ['cyan', 'lime', 'brand', 'navy', 'green', 'orange', 'teal']   # ordem das etapas no HTML
@@ -53,7 +56,8 @@ css = [INI + ': 9 cores na ordem dos papéis da atual (marca, azul, navy, ciano,
        f'   ({T}), o que contrastar mais com cada cor (etapas e botões da barra lateral). Seletores com :root para ganhar das\n'
        '   regras de texto da atual (.claro:first-child) ===== */']
 rel = []
-for pid, (nome, grupo, ideia, cores) in SIMILARES.items():
+for pid, v in SIMILARES.items():
+    nome, grupo, ideia, cores = v[:4]; extra = v[4] if len(v) > 4 else ''  # extra: CSS próprio (neutros, escuro)
     c = dict(zip(PAPEIS, cores.split())); nv = c['navy']; P = f':root[data-paleta="{pid}"]'
     nth = ','.join(f':nth-child({i + 1})' for i, k in enumerate(ETAPAS) if escuro(c[k]))
     tr = ','.join(f'[style*="--l-{l})"]' for l, k in LINHAS.items() if escuro(c[k]))
@@ -65,7 +69,8 @@ for pid, (nome, grupo, ideia, cores) in SIMILARES.items():
                + f'{P}[data-modo="escuro"] :is(#map,.itin,.trilho,.chip){{--l-epico:{clarear(nv)}}}\n'
                + (f'{P} .etapas li:is({nth}){{color:{T}}}\n{P} .etapas li:is({nth}) code{{background:rgba(0,0,0,.08)}}\n'
                   f'{P} .etapas li:not({nth}){{color:#FFFFFF}}\n' if nth else f'{P} .etapas li{{color:#FFFFFF}}\n')
-               + (f'{P} .tr:is({tr}){{color:{T}}}\n{P} .tr:not({tr}){{color:#FFFFFF}}\n' if tr else ''))
+               + (f'{P} .tr:is({tr}){{color:{T}}}\n{P} .tr:not({tr}){{color:#FFFFFF}}\n' if tr else '')
+               + re.sub(r'^P', P, extra, flags=re.M))
     pior = min(max(cr(c[k], '#FFFFFF'), cr(c[k], T)) for k in ETAPAS)
     rel.append(f'{pid:14} pior contraste nas etapas {pior:.2f}')
 
