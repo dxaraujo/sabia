@@ -123,6 +123,25 @@
 
 
 
+/* ===== Quantum Flow (paleta de IA, 9 cores puras nos papéis da atual) ===== */
+/* Quantum Flow — inteligência, fluidez e performance */
+:root[data-paleta="i-quantum"]{
+  --brand:#0B63CE; --blue:#0066B3; --navy:#1E293B; --cyan:#00D1D1; --teal:#0EA5A4; --green:#22C55E; --lime:#A7F3D0; --yellow:#F59E0B; --orange:#FB923C;
+  --l-epico:#1E293B; --l-hitl:#0066B3; --l-afk:#00D1D1; --l-atd:#22C55E; --l-min:#0EA5A4; --l-sprint:#F59E0B; --l-rapida:#FB923C;
+  --viva-capa:#0B63CE; --viva-escuro:#1E293B; --viva-destaque:#F59E0B; --viva-tinta:#1E293B; --destaque-txt:#121821;
+}
+:root[data-paleta="i-quantum"]:not([data-modo="escuro"]){--bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#1E293B; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7; --acento:#0066B3}
+:root[data-paleta="i-quantum"][data-modo="escuro"]{--acento:#0089F0}
+:root[data-paleta="i-quantum"][data-modo="escuro"] :is(#map,.itin,.trilho,.chip){--l-epico:#6C87B4}
+
+/* texto como na atual: escuro só nas etapas claras (Triagem, Alinhamento, Verificação) e, na barra lateral, em AFK
+   (ciano muito claro) e sprint; branco no resto */
+:root[data-paleta="i-quantum"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(6)){color:#121821}
+:root[data-paleta="i-quantum"] .etapas li:is(:nth-child(1),:nth-child(2),:nth-child(6)) code{background:rgba(0,0,0,.08)}
+:root[data-paleta="i-quantum"] .etapas li:not(:nth-child(1),:nth-child(2),:nth-child(6)){color:#FFFFFF}
+:root[data-paleta="i-quantum"] .tr{color:#FFFFFF}
+:root[data-paleta="i-quantum"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"]){color:#121821}
+
 /* ===== variantes da sóbria: a mesma estrutura (quase tudo branco, destaques no navy e num amarelo em poucos pontos),
    com outras cores. Ficam em <html data-sobria="…"> e não ligam as regras de paleta viva ===== */
 /* Sóbria - Sabiá: navy #023047 e azul-céu #219EBC da Refreshing Summer Fun; amarelo #FFB703 de destaque;
