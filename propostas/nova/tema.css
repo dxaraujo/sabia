@@ -1,11 +1,12 @@
 /* Nova versão: forma do Atlassian Design System (ADS) — tamanhos (texto 14/20, títulos 48/28/20), espaçamentos, cantos (4/8px, lozenge 3px) e sombras
    (raised e overlay no lugar de borda + elevação), além dos lozenges em caixa alta. */
 :root{
-  /* cores-base do sistema, sem paleta; as paletas (atual, sabiá, sóbria) trocam todas */
-  --bg:#ffffff; --card:#ffffff; --ink:#474D66; --title:#101840; --muted:#696F8C; --line:#E6E8F0; --soft:#F4F6FA; --grey:#F9FAFC; --grey2:#EDEFF5;
-  --acento:#3366FF; --brand:#3366FF; --brand-hover:#2952CC; --blue:#0086C8; --navy:#101840; --cyan:#00BBCE; --teal:#0094AD; --green:#76B043; --lime:#B2D235; --yellow:#FEBE10; --orange:#FAA61A; --red:#D9534F;
+  /* cores da sóbria (o sistema sem paleta; atual e sabiá trocam estas): quase tudo branco e cinza azulado, com
+     destaques no azul acinzentado #2C5168 e no amarelo; auxiliares (filetes das etapas, linhas do mapa) da atual */
+  --bg:#ffffff; --card:#ffffff; --ink:#474D66; --title:#2C5168; --muted:#696F8C; --line:#E6E8F0; --soft:#F4F6FA; --grey:#F9FAFC; --grey2:#EDEFF5;
+  --acento:#2C5168; --brand:#2C5168; --brand-hover:#24445A; --blue:#0086C8; --navy:#2C5168; --cyan:#00BBCE; --teal:#0094AD; --green:#76B043; --lime:#B2D235; --yellow:#FEBE10; --orange:#FAA61A; --red:#D9534F;
   --l-epico:#2C5168; --l-hitl:#0086C8; --l-afk:#00BBCE; --l-atd:#76B043; --l-min:#0094AD; --l-sprint:#FEBE10; --l-rapida:#FAA61A;
-  --hero-bg:#F3F6FF; --hero-fg:#101840;
+  --hero-bg:#F4F6FA; --hero-fg:#2C5168;
   /* forma e profundidade: do ADS */
   --r:8px; --r-sm:4px; --r-xs:3px;
   --display:"SF UI Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
@@ -58,7 +59,7 @@ footer{border-top:1px solid var(--line)}
 /* escuro: neutros grafite e azul claro; as sombras do ADS no escuro */
 :root[data-modo="escuro"]{
   --bg:#1F1F21; --card:#242528; --ink:#CECFD2; --title:#DFE1E5; --muted:#96999E; --line:#3D3F43; --soft:#2B2C2F; --grey:#18191A; --grey2:#333438;
-  --acento:#85A3FF; --brand:#5C85FF; --brand-hover:#85A3FF; --blue:#5C85FF; --navy:#44464B;
+  --acento:#9DB7CC; --brand:#6E93B3; --brand-hover:#9DB7CC; --blue:#5C85FF; --navy:#2C5168;
   --hero-bg:#18191A; --hero-fg:#DFE1E5; --panel-bg:#2B2C2F;
   --raised:0 0 0 1px #3D3F43; --overlay:0 8px 12px #01040475,0 0 1px #01040480;
 }
@@ -72,3 +73,28 @@ footer{border-top:1px solid var(--line)}
 [data-modo="escuro"] .install button{color:#1F1F21}
 [data-modo="escuro"] .porta .n{background:color-mix(in srgb,var(--c) 22%,var(--card));color:color-mix(in srgb,var(--c) 55%,#fff)}
 [data-modo="escuro"] .porta .ir{color:var(--acento)}
+
+/* sóbria (sem paleta): fundo quase todo branco; o destaque fica com o azul acinzentado (aba ativa, cabeçalhos das
+   fichas, Primeiros passos) e com o amarelo em poucos pontos (Copiar, números dos passos, estação atual) */
+:root:not([data-paleta]) .install button{background:var(--yellow);color:var(--navy)}
+:root:not([data-paleta]) .install button:hover{background:var(--yellow);filter:brightness(1.05)}
+:root:not([data-paleta]) .install .ghost{color:var(--navy)}
+:root:not([data-paleta]) nav.tabs a[aria-current="page"]{background:var(--navy);color:#fff}
+:root:not([data-paleta]) :is(.ficha .fh,.ph){background:var(--navy);color:#fff;border-bottom:0}
+:root:not([data-paleta]) .ficha .fh::before{display:block;height:4px;background:var(--yellow)}
+:root:not([data-paleta]) .ph::before{height:4px}
+:root:not([data-paleta]) :is(.ficha .fh b,.ph h3){color:#fff}
+:root:not([data-paleta]) :is(.ficha .fh span,.ph .sk,.ph .nav){color:#cfe3f1}
+:root:not([data-paleta]) :is(.ph .ltabs button,.ph .nav button){background:rgba(255,255,255,.14);color:#fff;box-shadow:none}
+:root:not([data-paleta]) :is(.ph .ltabs button[aria-pressed="true"],.ph .nav button:hover:not(:disabled)){background:#fff;color:var(--navy)}
+:root:not([data-paleta]) .ph .nav .play{background:var(--yellow);color:var(--navy)}
+:root:not([data-paleta]) .passos li{background:var(--navy);color:#fff;box-shadow:none}
+:root:not([data-paleta]) .passos li::before{color:var(--yellow)}
+:root:not([data-paleta]) .passos h3{color:#fff}
+:root:not([data-paleta]) .passos code{background:rgba(255,255,255,.16);color:#fff}
+:root:not([data-paleta]) .itin li.cur .dot{background:var(--yellow);border-color:var(--navy);box-shadow:0 0 0 4px rgba(254,190,16,.35)}
+:root:not([data-paleta]) .trilho li.agora::after{background:var(--yellow);border-color:var(--navy);box-shadow:0 0 0 5px rgba(254,190,16,.35)}
+:root:not([data-paleta]) .senbox div.on{background:var(--navy);color:#fff}
+:root:not([data-paleta]) .senbox div.on b{color:var(--yellow)}
+:root:not([data-paleta]) .pdz .dz-passos .prox{background:var(--navy);color:#fff}
+:root[data-modo="escuro"]:not([data-paleta]) .install .ghost{color:var(--acento)}

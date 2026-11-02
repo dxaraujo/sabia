@@ -1,6 +1,6 @@
 /* Paletas vivas sobre qualquer proposta: <html data-paleta="atual|sabia">. Sem o atributo, fica a sóbria do sistema.
    O sistema dá fonte, forma e componentes; a paleta dá a identidade: capa cheia, etapas coloridas, trilho de 7 cores.
-   "atual" reaproveita as cores de hoje, iguais às do site em cada lugar; "sabia" (viva) e "sobria" (contida) partem dela. */
+   "atual" reaproveita as cores de hoje, iguais às do site em cada lugar; "sabia" parte dela; a sóbria é o sistema sem paleta (nova/tema.css). */
 :root[data-paleta="atual"]{
   --brand:#0786E3; --blue:#0086C8; --navy:#2C5168; --cyan:#00BBCE; --teal:#0094AD; --green:#76B043; --lime:#B2D235; --yellow:#FEBE10; --orange:#FAA61A;
   --l-epico:#2C5168; --l-hitl:#0086C8; --l-afk:#00BBCE; --l-atd:#76B043; --l-min:#0094AD; --l-sprint:#FEBE10; --l-rapida:#FAA61A;
@@ -63,62 +63,54 @@
 [data-modo="escuro"][data-paleta] .porta .n{color:color-mix(in oklab,var(--c) 80%,#fff)}
 
 /* "atual" fiel ao site de hoje (sabia.css): as mesmas cores em cada lugar; forma, tamanho e sombra seguem o sistema.
-   "sabia" e "sobria" usam estas mesmas regras e os mesmos neutros; só trocam as cores que remetem à identidade
+   "sabia" usa estas mesmas regras e os mesmos neutros; só trocam as cores que remetem à identidade
    visual de origem dos decks (blocos no fim do arquivo). */
 :root[data-paleta="atual"]:not([data-modo="escuro"]){
   --bg:#ffffff; --card:#ffffff; --ink:#404040; --title:#2C5168; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7;
   --acento:#0086C8;
 }
-:root:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]){--red:#D9534F}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) :focus-visible{outline-color:var(--yellow)}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) :is(.top .gh,.chip:not([aria-pressed="true"])){border-color:var(--line);color:var(--title)}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) .top .gh:hover{border-color:var(--blue);color:var(--blue);background:#fff}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) nav.tabs a{color:var(--title)}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) nav.tabs a:hover{background:var(--blue);color:#fff}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) nav.tabs a[aria-current="page"]{background:var(--navy);color:#fff}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) .lead-sec h2::before{display:none}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) .ficha .fh{background:var(--navy);color:#fff;border-bottom:0}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) .ficha .fh::before{background:var(--green)}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) .ficha .fh b{color:#fff}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) .ficha .fh span,:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) .ph .sk,:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) .ph .nav{color:#cfe3f1}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) .etapas .claro code{background:color-mix(in srgb,var(--navy) 12%,transparent)}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) .controls .lbl{color:var(--title)}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) :is(.kv dt,.blk h4,.senbox b){color:var(--blue)}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) .senbox div.on{background:var(--navy)}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) .senbox div.on b{color:var(--yellow)}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) .itin li.cur .dot{background:var(--yellow);border-color:var(--navy);box-shadow:0 0 0 4px color-mix(in srgb,var(--yellow) 35%,transparent)}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) .razoes article{background:var(--soft)}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) .porta{border:1.5px solid var(--line)}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) .porta:hover{border-color:var(--blue)}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) .porta .n{color:var(--c)}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) .porta .ir{color:var(--blue)}
-:is([data-paleta="atual"],[data-paleta="sabia"],[data-paleta="sobria"]) footer{border-top-color:var(--soft)}
+:root:is([data-paleta="atual"],[data-paleta="sabia"]){--red:#D9534F}
+:is([data-paleta="atual"],[data-paleta="sabia"]) :focus-visible{outline-color:var(--yellow)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) :is(.top .gh,.chip:not([aria-pressed="true"])){border-color:var(--line);color:var(--title)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .top .gh:hover{border-color:var(--blue);color:var(--blue);background:#fff}
+:is([data-paleta="atual"],[data-paleta="sabia"]) nav.tabs a{color:var(--title)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) nav.tabs a:hover{background:var(--blue);color:#fff}
+:is([data-paleta="atual"],[data-paleta="sabia"]) nav.tabs a[aria-current="page"]{background:var(--navy);color:#fff}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .lead-sec h2::before{display:none}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .ficha .fh{background:var(--navy);color:#fff;border-bottom:0}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .ficha .fh::before{background:var(--green)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .ficha .fh b{color:#fff}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .ficha .fh span,:is([data-paleta="atual"],[data-paleta="sabia"]) .ph .sk,:is([data-paleta="atual"],[data-paleta="sabia"]) .ph .nav{color:#cfe3f1}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .etapas .claro code{background:color-mix(in srgb,var(--navy) 12%,transparent)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .controls .lbl{color:var(--title)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) :is(.kv dt,.blk h4,.senbox b){color:var(--blue)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .senbox div.on{background:var(--navy)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .senbox div.on b{color:var(--yellow)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .itin li.cur .dot{background:var(--yellow);border-color:var(--navy);box-shadow:0 0 0 4px color-mix(in srgb,var(--yellow) 35%,transparent)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .razoes article{background:var(--soft)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .porta{border:1.5px solid var(--line)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .porta:hover{border-color:var(--blue)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .porta .n{color:var(--c)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) .porta .ir{color:var(--blue)}
+:is([data-paleta="atual"],[data-paleta="sabia"]) footer{border-top-color:var(--soft)}
 
-/* "sabia" e "sobria": a atual, com as mesmas regras e os mesmos neutros (#C9D3DC, #EEF6FD, #F3F5F7, #E6EBEF, #6b7a88) e o
+/* "sabia": a atual, com as mesmas regras e os mesmos neutros (#C9D3DC, #EEF6FD, #F3F5F7, #E6EBEF, #6b7a88) e o
    mesmo vermelho, que não estão na identidade visual de origem (manual 2025 e modelo de slides). Trocadas só as cores que
    estão lá ou derivam dela: azuis cerúleos (~200°) e o navy #2C5168; ciano e teal (~186°); verdes-amarelados, amarelos e
    laranjas (38–92°); e o texto #404040, a regra de "cinza sem preto" do manual. No lugar: cobalto e índigo (~222°),
    pervinca, menta, verde (~152°), ardósia, coral e pêssego (~10°), framboesa (~340°). Sem roxo. O navy #2C5168 fica (está nos slides,
    não no manual): superfícies escuras, títulos e linha Épico; o texto sobre as cores claras usa um marinho mais profundo.
-   Sabiá viva; Sóbria com os mesmos matizes, dessaturados. Texto das etapas ≥ 4,6:1 nas duas. */
+   Texto das etapas ≥ 4,6:1. */
 :root[data-paleta="sabia"]{
   --brand:#2F5BEA; --blue:#2449C9; --navy:#2C5168; --cyan:#8FB0FF; --lime:#5FD4B0; --green:#16854E; --orange:#FFB4A2; --teal:#475569; --yellow:#FF6A4D;
   --l-epico:#2C5168; --l-hitl:#2F5BEA; --l-afk:#12A594; --l-atd:#16854E; --l-min:#64748B; --l-sprint:#FF6A4D; --l-rapida:#E0457B;
   --viva-capa:#2F5BEA; --viva-escuro:#2C5168; --viva-destaque:#FF6A4D; --viva-tinta:#1B2A5E;
 }
-:root[data-paleta="sobria"]{
-  --brand:#3D5A99; --blue:#3A5A8C; --navy:#2C5168; --cyan:#B9C6E4; --lime:#A9CFC1; --green:#3E7A5E; --orange:#E8B4A6; --teal:#56657A; --yellow:#E39A86;
-  --l-epico:#2C5168; --l-hitl:#3D5A99; --l-afk:#4E9A8E; --l-atd:#3E7A5E; --l-min:#7A8699; --l-sprint:#C9806C; --l-rapida:#B8607A;
-  --viva-capa:#3D5A99; --viva-escuro:#2C5168; --viva-destaque:#E39A86; --viva-tinta:#1F2A44;
-}
-:root:is([data-paleta="sabia"],[data-paleta="sobria"]):not([data-modo="escuro"]){
+:root[data-paleta="sabia"]:not([data-modo="escuro"]){
   --bg:#ffffff; --card:#ffffff; --muted:#6b7a88; --line:#C9D3DC; --soft:#EEF6FD; --grey:#F3F5F7; --grey2:#E6EBEF; --panel-bg:#F3F5F7;
 }
 :root[data-paleta="sabia"]:not([data-modo="escuro"]){--ink:#36424F; --title:#2C5168; --acento:#2449C9}
-:root[data-paleta="sobria"]:not([data-modo="escuro"]){--ink:#3A4250; --title:#2C5168; --acento:#3A5A8C}
-/* escuro: épico (e hitl na sóbria) clareiam no mapa e nas amostras dos chips; rótulos e aba ativa usam o acento claro */
+/* escuro: o épico clareia no mapa e nas amostras dos chips; rótulos e aba ativa usam o acento claro */
 :root[data-paleta="sabia"][data-modo="escuro"]{--acento:#8DA2E8}
-:root[data-paleta="sobria"][data-modo="escuro"]{--acento:#9AABD6}
 [data-modo="escuro"][data-paleta="sabia"] :is(#map,.itin,.trilho,.chip){--l-epico:#7FA6C4}
-[data-modo="escuro"][data-paleta="sobria"] :is(#map,.itin,.trilho,.chip){--l-epico:#7FA6C4;--l-hitl:#7C95CC}
-[data-modo="escuro"]:is([data-paleta="sabia"],[data-paleta="sobria"]) :is(.kv dt,.blk h4,.senbox b){color:var(--acento)}
+[data-modo="escuro"][data-paleta="sabia"] :is(.kv dt,.blk h4,.senbox b){color:var(--acento)}
