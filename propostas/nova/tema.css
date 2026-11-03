@@ -111,3 +111,21 @@ footer{border-top:1px solid var(--line)}
 .ph .sk,.ficha .fh span{font-family:var(--body);font-weight:400}
 ::selection{background:color-mix(in srgb,var(--brand) 28%,transparent);color:inherit}
 .install .ghost{text-decoration:underline;text-underline-offset:4px}
+
+/* sóbria em todas as páginas: capa interna clara e componentes coloridos viram cartões brancos com filete na cor */
+:root:not([data-paleta]) .sign.page{background:var(--hero-bg);color:var(--hero-fg)}
+:root:not([data-paleta]) .sign.page h1{color:var(--hero-fg)}
+:root:not([data-paleta]) .sign.page .lead{color:var(--ink);opacity:1}
+:root:not([data-paleta]) .role{background:var(--card);box-shadow:var(--raised)}
+:root:not([data-paleta]) .role .top{background:var(--card);color:var(--title);box-shadow:inset 0 3px 0 var(--rc,var(--blue));border-bottom:1px solid var(--line)}
+:root:not([data-paleta]) .role .top h3{color:var(--title)}
+:root:not([data-paleta]) .role .who{color:var(--muted);opacity:1}
+:root:not([data-paleta]) .role .top .tag{background:var(--soft);color:var(--title)}
+:root:not([data-paleta]) .sen>div{background:var(--card)!important;color:var(--ink);box-shadow:var(--raised),inset 0 3px 0 var(--blue)}
+:root:not([data-paleta]) .sen>div:nth-child(2){box-shadow:var(--raised),inset 0 3px 0 var(--teal)}
+:root:not([data-paleta]) .sen>div:nth-child(3){box-shadow:var(--raised),inset 0 3px 0 var(--green)}
+:root:not([data-paleta]) .sen b{color:var(--title)}
+:root:not([data-paleta]) :is(.sen .pill,.sen code){background:var(--soft);color:var(--title)}
+:root:not([data-paleta]) .sys h3{background:var(--card);color:var(--title);box-shadow:inset 0 3px 0 var(--c)}
+:root:not([data-paleta]) .ph-step:not(.skip){background:var(--card);color:var(--title);box-shadow:var(--raised),inset 0 3px 0 var(--c,var(--blue))}
+:root:not([data-paleta]) .proxima a{background:var(--navy)}
