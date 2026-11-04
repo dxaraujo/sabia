@@ -5,7 +5,7 @@
  "passos": [
    {"id": "entrada", "de": "entrada", "sprint": "nao", "saidas": {"aguardando-aprovacao-plano sem a [APR], ou bloqueada \"aguardando troca de modo\"": "gate"}},
    {"id": "pesquisa", "chama": "sa-pesquisar.pesquisar"},
-   {"id": "decisoes", "saidas": {"lacuna de negócio: é do P.O.": "fim"}},
+   {"id": "decisoes", "saidas": {"lacuna de negócio na ficha sem épico: é do P.O.": "fim", "artefato do ELM ou do PRD que precisa mudar: bloqueada, a [ESP] FT é do especificador": "→ sa-especificar.fatia"}},
    {"id": "escrever", "saidas": {"plano grande demais: bloqueada (de: planejando), o P.O. decide (de épico: seguir ou cancelar e registrar as partes pela sa-triar; sem épico: dividir pela sa-triar)": "fim"}},
    {"id": "analise", "chama": "sa-revisar.revisar", "travas": ["revisao-independente"], "saidas": {"AJUSTAR, falta do plano": "escrever", "AJUSTAR, falta do PRD": "decisoes", "sem subagente: plano pronto para análise": "fim"}},
    {"id": "gate", "saidas": {"com GATE: aprovador avisado": "→ sa-revisar.aprovar-plano", "sem GATE: fase implementando": "→ sa-codificar.codificar", "AFK com risco: bloqueada, a troca é do P.O. ou do SM": "fim"}}
@@ -19,25 +19,31 @@ ADRs. Templates: o padrão `sa-plano/plano.md`.
 
 Deste fluxo: a pasta `.kiro/specs/<ft>-<slug>/` criada pela `sa-desenvolver`, na branch da fatia, em `pesquisando`,
 `planejando`, `bloqueada (de: pesquisando | planejando)` ou `aguardando-aprovacao-plano` sem a `[APR]` (passo `gate`).
-Bloqueada por outro motivo → mostre o motivo e a pergunta; resolvido, `Bloqueio: —`, a fase de origem e siga.
+Bloqueada `aguardando especificação [ESP] FT-<nnn>` com a linha da Especificação `concluida` na base → traga a base para
+a branch (`git merge origin/<base>`, com "sim": os conceitos aprovados chegam em `elm/`), `Bloqueio: —`, a fase de
+origem e siga. A ficha com linha de Especificado `—` e a `[ESP] FT` aberta (pedido de fora da fatia, [Volta à
+especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação)) → `bloqueada (de: <fase>)` com o
+Bloqueio `aguardando especificação [ESP] FT-<nnn>: …`, commit, e pare. Bloqueada por outro motivo → mostre o motivo e a pergunta; resolvido, `Bloqueio: —`, a fase de origem e siga.
 Quem retoma é o `responsavel` da linha viva da fatia na sprint (base): outra pessoa → "é de <login>; trocar é do P.O.
 ou do SM" e pare. A `[DEV]`, na retomada, pela seção Assumir do passo `sa-plano.plano.entrada` (já é dele → nada;
 fechada → reabrir com "sim"). No loop (`AUTONOMO`), o lote já assumiu.
 
 Leia: `status.md`, a fatia no `backlog.md`, o PRD do épico (histórias e regras cobertas), a ficha da fatia sem
-épico (`<produto>/fatias/`) ou o defeito,
+épico (`<produto>/fatias/`, com a seção Artefatos afetados) ou o defeito, os conceitos aprovados em `elm/` da pasta da fatia,
 `.sabia/sabia.md` (com as regras aprendidas) e o steering de tecnologia/estrutura.
 
 ## Entrada: vizinhos
 
 - sem `status.md` em nenhuma branch (fatia não iniciada) → `sa-desenvolver.desenvolver`
+- `bloqueada (de: pesquisando | planejando)` com Bloqueio `aguardando especificação [ESP] FT-<nnn>` e a `[ESP] FT` aberta → `sa-especificar.fatia` (agente `sa-especificador`)
 - `aguardando-aprovacao-plano` com a `[APR] Aprovar plano` criada → `sa-revisar.aprovar-plano`
 - `implementando`, `revisando`, `verificando`, `verificada` ou `retrabalho (de: …)` → `sa-codificar.codificar`
 
 ## Modo autônomo
 
 `AUTONOMO=true`: sem perguntas; decisão técnica com alternativas → escolha a recomendada e registre; lacuna de
-negócio → `fase: bloqueada (de: planejando)` com a pergunta para o P.O. Passo `gate` sem pessoa: fatia AFK com risco →
+negócio na ficha → `fase: bloqueada (de: planejando)` com a pergunta para o P.O.; artefato que precisa mudar → o bloco
+Volta à especificação (passo `decisoes`), sem reabrir a `[ESP]` (`ELM pendente [ESP FT-<nnn> reabrir]`). Passo `gate` sem pessoa: fatia AFK com risco →
 `fase: bloqueada (de: planejando)`, `aguardando troca de modo` com o risco (a troca é do P.O. ou do SM); GATE → Sênior
 segue para `implementando`; Pleno → a escolha do lote que quem chamou passou (sem ela: `aguardando-aprovacao-plano`,
 e a pergunta fica para a sessão dele); nada de ELM (`ELM pendente [<chave>]`).
@@ -45,5 +51,5 @@ e a pergunta fica para a sessão dele); nada de ELM (`ELM pendente [<chave>]`).
 ## Regras
 
 - Não invoque nem simule outra skill do fluxo: termine dizendo a próxima (`sa-codificar`, o Dev Sênior da `[APR]`,
-  o P.O. ou o SM na troca de modo, o P.O. no plano grande demais) e pare. A `sa-pesquisar` e o subagente revisor, que os passos mandam
+  o P.O. ou o SM na troca de modo, o P.O. no plano grande demais, o especificador na volta à especificação) e pare. A `sa-pesquisar` e o subagente revisor, que os passos mandam
   chamar, fazem parte deste fluxo.

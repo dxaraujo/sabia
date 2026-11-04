@@ -10,7 +10,8 @@ Na branch do PR, com a rodada `<N>` (passo `pr`).
 1. Rubrica **C** (fluxo `revisar`: passos `sa-revisar.revisar.escopo`, `sa-revisar.revisar.evidencia`,
    `sa-revisar.revisar.calibrar` e `sa-revisar.revisar.relatorio`) sobre `git diff origin/<base>...HEAD`, gravando `revisao-codigo-<N>.md`.
 2. Grave o campo **Drift de negócio** do `status.md` com a penúltima linha do relatório (só sobe de `não` para
-   `sim`; outro `sim` acrescenta o motivo) — a consolidação só lê esse campo.
+   `sim`; outro `sim` acrescenta o motivo e os artefatos; sobre um campo já decidido, com `especificação:`, o decidido
+   vai ao Histórico e o campo recomeça com o `sim` novo, padrão `sa-desenvolver/status.md`) — é a indicação do agente; a decisão é do passo `veredito`.
 
 ## Saída
 

@@ -7,14 +7,15 @@
    {"id": "tarefa", "desvio": true, "travas": ["toolkit-sem-commit"], "saidas": {"ainda há tarefa não marcada": "tarefa", "divergência com o plano que muda o desenho": "→ sa-plano.replanejar"}},
    {"id": "validar"},
    {"id": "revisar", "chama": "sa-revisar.revisar", "travas": ["revisao-independente"], "saidas": {"HITL, APROVADO ou a pessoa decide seguir": "pr", "REVISAR": "tarefa", "AFK, 2ª reprovação: bloqueada": "fim"}},
-   {"id": "verificar", "chama": "sa-verificar.verificar", "travas": ["aceite-independente"], "saidas": {"REJEITADO": "tarefa", "2ª rejeição seguida: bloqueada": "fim"}},
+   {"id": "verificar", "chama": "sa-verificar.verificar", "travas": ["aceite-independente"], "saidas": {"REJEITADO": "tarefa", "2ª rejeição seguida: bloqueada": "fim", "cenário indicado como do artefato: bloqueada, a decisão é de um Dev Sênior": "fim"}},
    {"id": "pr", "saidas": {"HITL, PR aberto": "→ sa-revisar.hitl", "AFK, PR aberto": "→ sa-revisar.aprovar-pr", "pedido de merge nesta sessão": "→ sa-desenvolver.encerrar"}}
  ]}
 ---
 # Codificar — ciclo curto, verificação sempre
 
 Deste fluxo: `.kiro/specs/<ft>-<slug>/` com o plano aprovado (`status.md` com fase `implementando`, `revisando`,
-`verificando`, `verificada` ou `retrabalho (de: …)`, ou `bloqueada` de uma delas; ou `aguardando-aprovacao-pr` com
+`verificando`, `verificada` ou `retrabalho (de: …)`, ou `bloqueada` de uma delas; `bloqueada (de: em-revisao |
+em-verificacao | aguardando-aprovacao-pr)` com Bloqueio `aguardando especificação` e a `[ESP] FT` concluída; ou `aguardando-aprovacao-pr` com
 Modo HITL na base: a troca de modo do P.O. ou do SM cancelou a `[APR] Aprovar PR`), na branch da fatia. O **modo** do `status.md` decide o caminho até o PR (passo `pr`): **HITL** vai direto, depois
 da revisão automática; **AFK** passa antes pela revisão e pela verificação por subagente (passos `revisar` e
 `verificar`). Nos dois, o fluxo termina no PR: a `[DEV]` fica em andamento, e o merge do PR aprovado e a conclusão
@@ -30,6 +31,7 @@ regras aprendidas).
 - `aguardando-aprovacao-plano` com a `[APR] Aprovar plano` criada → `sa-revisar.aprovar-plano`
 - `aguardando-aprovacao-pr` (Modo AFK na base) com a `[APR] Aprovar PR` aberta → `sa-revisar.aprovar-pr`
 - `aceita`, ou `aguardando-aprovacao-pr` com a `[APR] Aprovar PR` concluída: o merge → `sa-desenvolver.encerrar`
+- `bloqueada (de: …)` com Bloqueio `aguardando especificação [ESP] FT-<nnn>` e a `[ESP] FT` aberta → `sa-especificar.fatia` (agente `sa-especificador`)
 
 ## Modo autônomo
 

@@ -45,8 +45,12 @@ assim; o item de origem em outro estado volta a ele com `elm_transicao(<id>, "re
     e não há dado sensível, senão `HITL` (a fatia ainda não tem responsável: o modo final é gravado pela
     `sa-planejamento` quando ela ganha um, pela senioridade de quem implementa — Júnior → `HITL` · Pleno → estes
     critérios · Sênior → `AFK` por padrão); prioridade, `sprint` e `responsavel` `—`;
+  - `bloqueada-por`: a `FT-<mmm>` que já tem o artefato na ficha (passo `triagem`), somada às dependências que a
+    pessoa disser; sem nenhuma, `—`;
   - `status` `elegivel` se passa na Definition of Ready da trilha (formato do backlog — a ficha da trilha completa),
-    senão `nova` com `obs` `falta: <o quê>`;
+    senão `nova` com `obs` `falta: <o quê>` — linha em Artefatos afetados com Especificado `—` →
+    `falta: especificação` (a `[ESP] FT` nasce quando ela entrar na sprint, no planejamento ou no encaixe); lista sem
+    a confirmação → `falta: artefatos afetados`;
   - de onde veio: o item do EWM (DF, IB) vai na `elm` como o item da fatia (`DF [4567](…)`; sem o MCP `elm`,
     `DF 4567` — o id já é conhecido, nunca `pendente`); o pedido (texto, chamado) fica no `**Origem:**` da ficha;
     desdobramento de um item de Sustentação (origem `AT-012`, `IM-003`…) → `obs`

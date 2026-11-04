@@ -61,7 +61,8 @@ criado fora do fluxo recusado numa transição → mostre o campo e peça o valo
    ([elm-sprint.md](../../sa-planejamento/references/elm-sprint.md), topo).
 3. **Grave de volta** cada id assim que nasce (falha no meio: o próximo passo 2 retoma). Commit no fim.
 4. **Nunca apague** nada no ELM: IB ou tarefa que deixou de valer é cancelado (`elm_transicao(<id>, "cancelar")`);
-   o resto (requisito) vira roteiro manual (obsoleto/remoção na UI).
+   o requisito excluído (`exclui`) vai para a lixeira do DOORS Next pela UI, num roteiro manual da consolidação
+   (`ELM pendente [<sigla> <id> lixeira]`).
 5. **Conflito no DOORS Next:** `elm_publicar_req` com `modificado_em` devolve `conflito` se o ELM mudou depois →
    mostre os dois lados e pergunte qual fica.
 6. **Sprint não publicada** (`**Publicação no EWM:** pendente` no cabeçalho do `sprint-<nn>.md`): nenhuma tool, de
@@ -78,7 +79,8 @@ criado fora do fluxo recusado numa transição → mostre o campo e peça o valo
 Sem o MCP `elm` nesta sessão (outra máquina), sem as tools de escrita (pesquisador) ou com falha: não grave; registre
 `ELM pendente [<chave>]: <o que falta>` no lugar único do artefato e siga — o ELM nunca trava o fluxo. A chave
 identifica ação e alvo (`[DEV 669412 concluir]`, `[IB FT-031 concluir]`, `[IB AT-012 concluir]`,
-`[REG-01 publicar]`, `[CT FT-031 criar]`, `[DEV FT-031 horas]`); uma pendência por chave. Cancelar IB ou tarefa é
+`[REG-01 publicar]`, `[REG 2207 lixeira]`, `[ESP FT-031 reabrir]`, `[CT FT-031 criar]`, `[DEV FT-031 horas]`); uma
+pendência por chave. Cancelar IB ou tarefa é
 `elm_transicao(<id>, "cancelar")`, com "sim" (já descartado → `ja_estava`; concluído → `precondicao` `já concluída:
 reabra antes`; workflow sem descarte → `precondicao` `o workflow não tem cancelamento`). Só na falha (sem o MCP,
 `precondicao`, erro): `ELM pendente [<tipo> <id> cancelar]` (`[DEV 669412 cancelar]`) ou a do item
@@ -110,8 +112,8 @@ Resolver ("resolve as pendências do ELM"): a `sa-status` lista; para cada uma, 
 
 | Tarefa | Pai | Responsável | Nasce | Conclui |
 |---|---|---|---|---|
-| `[ESP] EP-<nn> Especificação` | épico | quem especifica | planejamento | GATE do backlog |
-| `[ESP] FT-<nnn> Especificação` | IB da fatia `nova` | quem especifica | planejamento (fatia que entra sem passar na DoR) | fatia `elegivel` |
+| `[ESP] EP-<nn> Especificação` | épico | quem especifica | planejamento | GATE do PRD (o PRD na base); reaberta só pela mudança do PRD `aprovado` |
+| `[ESP] FT-<nnn> Especificação` | IB da fatia | quem especifica | planejamento ou encaixe: a fatia `nova` que entra sem passar na DoR (inclusive `falta: especificação`) e a que voltou à especificação (plano, revisão, verificação, consolidação) | especificação concluída (a fatia `nova` fica `elegivel`; a que voltou retoma a fase); fechada, reabre na volta (`elm_transicao(<id>, "reabrir")`) |
 | `[DEV] FT-<nnn> Implementar` | IB da fatia | Dev | planejamento ou encaixe | merge |
 | `[REV] FT-<nnn> Revisar` · `[VER] FT-<nnn> Verificar` | IB | revisor · verificador (só HITL) | planejamento, encaixe, primeira atribuição ou troca AFK→HITL | aprovar · aceitar (depois do push); canceladas na troca HITL→AFK |
 | `[APR] FT-<nnn> Aprovar plano` · `Aprovar PR` | IB | Dev Sênior | no gate | na aprovação |
@@ -135,8 +137,8 @@ da sprint, ou `backlog` para épico e IB fora de sprint — tarefa nasce só na 
 `elm_transicao(id, "cancelar")`.
 
 **Horas e créditos de gestão:** só o SM lança horas na `[GB]` (`elm_lancar_horas`); o P.O. nunca lança, nem quando
-também é o SM. Toda sessão do P.O. ou do SM no agente de produto (triagem, consolidação, planejamento, ritos,
-sincronização) fecha com os créditos num comentário na `[GB]`: `elm_comentar(<id da [GB]>, "Créditos <atividade>
+também é o SM. Toda sessão do P.O. ou do SM no agente de produto (triagem, fatiamento, consolidação, planejamento,
+ritos, sincronização) fecha com os créditos num comentário na `[GB]`: `elm_comentar(<id da [GB]>, "Créditos <atividade>
 <ids>: <créditos> (sessão <sessão>, <login>, <AAAA-MM-DD>)")` — ex.: `Créditos triagem FT-040, AT-013: 2.40 (sessão
 9ec1dcaa, ana.souza, 2026-10-29)` —, além da linha em Créditos de gestão do `sprint-<nn>.md` aberto
 ([`sa-status`](../../sa-status/SKILL.md#fechar-a-sessão), Créditos da sessão). `[GB]` sem horas é normal.

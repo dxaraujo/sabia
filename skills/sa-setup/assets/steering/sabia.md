@@ -53,15 +53,15 @@ Começar um item registrado: hub `sa-iniciar` (diz a skill do papel: `sa-especif
   sessão do P.O. ou do SM no `sa-produto` comenta nela os créditos gastos). Lançar horas é
   registro de empenho, a qualquer momento na tarefa assumida; concluir é da skill do papel, com o saldo: `[DEV]` no
   merge, `[REV]` ao aprovar (depois do push), `[VER]` ao aceitar (depois do push), `[APR]` na aprovação, `[ESP]` no
-  GATE do backlog, a da Sustentação ao concluir o item (junto com o IB dele). A sincronização com o EWM
+  GATE do PRD (a `[ESP] FT`, ao concluir a especificação da fatia), a da Sustentação ao concluir o item (junto com o IB dele). A sincronização com o EWM
   (`sa-planejamento`, "sincroniza a sprint") leva o Sabiá até onde o trabalho chegou por fora: traz a tarefa criada
   direto no EWM, compara os itens conhecidos (estado, iteração, dono, estimativa, a fase do `status.md`, o IB do
   backlog fora do estado inicial) e lê o git (branch, PR, merge → `iniciada` ou `pronta`), numa tabela com a solução
   proposta.
 - **Consolidação é processo de produto:** fatia `pronta` → o P.O. ou o SM, no agente `sa-produto`
-  (`sa-consolidar`, créditos na `[GB]`): lê o Drift de negócio que a REV e a VER marcaram no `status.md`, publica no
-  ELM o *as-built* (requisitos, ET, casos de teste), leva os ADRs do PR à pasta de ADRs e fecha a fatia na base
-  (`concluida`).
+  (`sa-consolidar`, créditos na `[GB]`): o drift decidido na REV ou na VER volta à `[ESP] FT`; publica no ELM, depois
+  do merge, os requisitos aprovados na `[ESP]` (com o IB que implementa a HF e a lixeira por roteiro), a ET *as-built*
+  e os casos de teste, leva os ADRs do PR à pasta de ADRs e fecha a fatia na base (`concluida`).
 - Estado em disco: a situação de cada item no `backlog.md` e na sprint, gravada na base por quem a causa (seção
   Situações do `references/backlog.md` da `sa-fatiar`); o detalhe da fatia em `.kiro/specs/<ft>-<slug>/` (comece
   pelo `status.md`; em `pronta` e `concluida` vale o da base — regra A base prevalece do padrão
@@ -110,7 +110,7 @@ Na worktree do `sa-orquestrar`: `cd .sabia/local/wt/<ft> && <comando>`. Falha de
 | Item | Valor |
 |---|---|
 | Branch base · prefixo · commit | `<develop>` · `<feature/>` · `<FT-<nnn> <verbo> <descrição> | Task <id> - …>` |
-| Mensagens do fluxo (dentro do padrão acima) | início: `<id> iniciar` (fatia, épico ou item de Sustentação; lote do loop: `FT-031, FT-032 iniciar`) · fatia: `<FT> registrar plano` · `registrar análise do plano <N>` · `registrar aprovação do plano` · `registrar revisão <N>` · `registrar verificação` · `<FT> registrar merge` · tarefa: `<id> <o que a tarefa fez>` · triagem: `backlog: triagem <ids>` · Sustentação: `<ID> concluir` · sprint: `<pai>/Sprint <nn>: <planejar | encaixe | virada | sincronizar com o EWM>` (ex.: `2026/Sprint 03: planejar`) · PRD: `EP-<nn> aprovar PRD` · ELM: `<id> publicar no ELM` · consolidação: `<id> consolidar` |
+| Mensagens do fluxo (dentro do padrão acima) | início: `<id> iniciar` (fatia, épico ou item de Sustentação; lote do loop: `FT-031, FT-032 iniciar`) · fatia: `<FT> registrar plano` · `registrar análise do plano <N>` · `registrar aprovação do plano` · `registrar revisão <N>` · `registrar verificação` · `<FT> registrar merge` · tarefa: `<id> <o que a tarefa fez>` · triagem: `backlog: triagem <ids>` · Sustentação: `<ID> concluir` · sprint: `<pai>/Sprint <nn>: <planejar | encaixe | virada | sincronizar com o EWM>` (ex.: `2026/Sprint 03: planejar`) · especificação: `<id> iniciar especificação` · `<id> registrar sessão` · `EP-<nn> reabrir especificação` · `<id> concluir especificação` · PRD: `EP-<nn> aprovar PRD` · `[ESP] FT`: `<FT> aprovar especificação` · consolidação (com a publicação no ELM): `<id> consolidar` |
 | PR (merge request) | `<MCP gitlabpr — gitlab_listar_mrs · gitlab_obter_mr · gitlab_criar_mr (origem e destino sempre explícitos) · gitlab_mesclar_mr (merge pelo Dev responsável, com o `sha` aprovado) | entregar título e descrição>` — nunca `gh` nem `glab` |
 | Artefatos de produto (pasta do produto, glossário, ADRs, consolidação) | direto na branch base — nunca em branch de fatia; push com o "sim" da pessoa (o agente `sa-produto` não faz push: entrega o comando; o agente do Dev publica ali só os registros de situação da fatia) |
 | MCP de banco | `<@servidor/tool | não há>` — **somente leitura** (`SELECT`/`WITH`), exceto os scripts de massa; DDL fora do fluxo |
@@ -121,10 +121,9 @@ Na worktree do `sa-orquestrar`: `cd .sabia/local/wt/<ft> && <comando>`. Falha de
 
 | Item | Valor |
 |---|---|
-| Usa ELM | `<sim — .kiro/config/elm/pa_<nome>.json (padrão; outros: …) | não>` — o MCP `elm` lê o `pa`; regras em `references/elm.md` da skill `sabia`; sem o MCP, a escrita vira `ELM pendente` |
-| Publicar requisitos | `<na-aprovacao | no-merge>` (itens do EWM: nascem no backlog do produto do `pa` — `ccm.backlog` — e mudam de iteração ao entrar na sprint) |
+| Usa ELM | `<sim — .kiro/config/elm/pa_<nome>.json (padrão; outros: …) | não>` — o MCP `elm` lê o `pa`; regras em `references/elm.md` da skill `sabia`; sem o MCP, a escrita vira `ELM pendente` (itens do EWM: nascem no backlog do produto do `pa` — `ccm.backlog` — e mudam de iteração ao entrar na sprint) |
 | ET | `<não publica | só as-built | inicial no PRD + as-built>` — só as-built: uma ET por fatia, escrita pelo Dev no PR; inicial no PRD + as-built: também uma ET inicial por épico, no lote do PRD (rubrica P13), e a as-built de cada fatia do épico ligada a ela (padrão `sa-prd/et.md`) |
-| Casos de teste | `<CSV | ETM>` — o CT planejado nasce da HF no lote do PRD e é aprovado no GATE; a verificação grava no `CT.csv` da fatia a evidência de cada um. CSV: o CT planejado fica no repositório e o `CT.csv` é a entrega, sem ELM pendente; ETM: o CT planejado sobe na publicação dos requisitos e a consolidação o liga ao IB, criando só o CT novo (`elm_criar_ct`; precisa do `qm` no `pa`) |
+| Casos de teste | `<CSV | ETM>` — o CT planejado nasce da HF no PRD ou na `[ESP] FT` e é aprovado no GATE da `[ESP]`; a verificação grava no `CT.csv` da fatia a evidência de cada um. CSV: o CT planejado fica no repositório e o `CT.csv` é a entrega, sem ELM pendente; ETM: o CT planejado sobe na consolidação, com os requisitos, e é ligado ao IB, criando só o CT novo (`elm_criar_ct`; precisa do `qm` no `pa`) |
 | REG com dados técnicos | `<não | sim>` — sim: a regra pode ter `## Dados` (tabela e campo na forma original), onde a P9 não vale |
 | Telas | `<não | sim>` — sim: antes do PRD, o protótipo aprovado pelo cliente (`sa-especificar.prototipo`, a aprovação num `D-nn`); no lote do PRD, uma EL por tela, lida dele (padrão `sa-prd/el.md`, rubrica P12) |
 | Manual no DOORS Next | `<change set, módulo, links restringe, baseline | nada>` |
@@ -132,7 +131,7 @@ Na worktree do `sa-orquestrar`: `cd .sabia/local/wt/<ft> && <comando>`. Falha de
 | Pontos P/M/G no EWM | `<não | 2 · 3 · 5>` (opcional; o planejamento prevê pela vazão) |
 | Critérios de aceite no IB | `<nome do campo em ccm.tipos.ib.campos do pa | descrição>` |
 | IB de defeito | `<campo = valor de correção (ex.: Categoria = Correção) | —>` (os demais padrões estão no `pa`) |
-| Tarefas (títulos padrão; editáveis à mão) | `[ESP] EP-<nn> Especificação` · `[DEV] FT-<nnn> Implementar` · `[REV] FT-<nnn> Revisar` · `[VER] FT-<nnn> Verificar` · `[APR] FT-<nnn> Aprovar plano` · `[APR] FT-<nnn> Aprovar PR` · `<prefixo da categoria> <ID> <pedido>`, filha do IB do item `[<ID>] <pedido>` (ex.: `[ATD] AT-012 <pedido>` sob `[AT-012] <pedido>`) · `[GB] Gerenciamento do backlog` |
+| Tarefas (títulos padrão; editáveis à mão) | `[ESP] EP-<nn> Especificação` · `[ESP] FT-<nnn> Especificação` · `[DEV] FT-<nnn> Implementar` · `[REV] FT-<nnn> Revisar` · `[VER] FT-<nnn> Verificar` · `[APR] FT-<nnn> Aprovar plano` · `[APR] FT-<nnn> Aprovar PR` · `<prefixo da categoria> <ID> <pedido>`, filha do IB do item `[<ID>] <pedido>` (ex.: `[ATD] AT-012 <pedido>` sob `[AT-012] <pedido>`) · `[GB] Gerenciamento do backlog` |
 | `CT.csv` (colunas na ordem do template do ETM) | `<Tipo=Caso de Teste · Resumo · Responsável · Status=<inicial> · Categoria · Planejado para · Descrição>` |
 
 ## Sustentação

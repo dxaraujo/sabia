@@ -3,7 +3,7 @@
 Cada artefato que vai ao ELM — um tipo do [catálogo](../../sabia/references/tipos.md) com ELM `DOORS` ou, o CT planejado, `ETM` — nasce
 como **um conceito OKF v0.2** (Open Knowledge Format,
 [SPEC.md](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md), versão 0.2) **na pasta da
-spec**, até ser aprovado e publicado. É o mesmo formato do bundle que a `sa-sync` mantém
+spec**, até ser aprovado (no GATE do PRD ou da `[ESP] FT`) e publicado, depois do merge, na consolidação. É o mesmo formato do bundle que a `sa-sync` mantém
 no repositório, então o rascunho e a versão oficial se leem do mesmo jeito. Cada conceito vale por si, pelo
 frontmatter: a pasta não tem `index.md` nem `log.md` (OKF §8 e §9), que são do bundle da `sa-sync`.
 
@@ -12,8 +12,8 @@ frontmatter: a pasta não tem `index.md` nem `log.md` (OKF §8 e §9), que são 
 | Origem | Pasta |
 |---|---|
 | épico (PRD) | até o GATE do PRD, na pasta de trabalho local `.sabia/local/especificacao/<EP>-<slug>/elm/` (fora do git, anexada na `[ESP]`); aprovado, `<produto>/epicos/<EP>-<slug>/elm/` na base |
-| ET as-built de uma fatia (o Dev, no PR; publicada na consolidação; a ET inicial do épico, quando há, fica na pasta do épico) | `.kiro/specs/<ft>-<slug>/elm/` |
-| regra da ficha de uma fatia padrão sem épico (`sa-consolidar`, as-built) | `.kiro/specs/<ft>-<slug>/elm/` |
+| artefatos afetados de uma fatia (`[ESP] FT`, `sa-especificar.fatia`) | até a aprovação, `.sabia/local/especificacao/FT-<nnn>-<slug>/elm/` (fora do git, anexada na `[ESP]`); aprovado, `.kiro/specs/ft-<nnn>-<slug>/elm/` na base (o `<slug>` da ficha) |
+| ET as-built de uma fatia (o Dev, no PR; publicada na consolidação; a ET inicial do épico, quando há, fica na pasta do épico) | `.kiro/specs/ft-<nnn>-<slug>/elm/`, a mesma pasta |
 
 ```
 elm/
@@ -38,7 +38,7 @@ type: Regra                                   # REQUIRED (§4.1): o tipo do arte
 title: REG - Bloqueio após 3 tentativas       # título no ELM
 description: Após 3 tentativas inválidas em 15 minutos, a conta fica Bloqueada por 30 minutos.
 tags: ["03-Regras"]                           # pasta de destino no RM — o mesmo uso que o bundle faz
-status: draft                                 # §5.4: draft → stable (aprovado) → deprecated (obsoleto)
+status: draft                                 # §5.4: draft → stable (aprovado) → deprecated (excluído)
 sources:                                      # §5.1: de onde o conteúdo veio
   - id: prd
     resource: ../prd.md
@@ -59,8 +59,8 @@ generated: { by: sabia/2.0.0, at: 2026-10-14T13:00:00Z }   # §5.2: quem escreve
 | `resource` | **ausente até publicar**; depois, a URI do artefato no ELM. Decide criar × atualizar |
 | `sources` | o PRD, as decisões e, numa alteração, o próprio artefato do ELM (`resource` = URI, `last_modified` = última modificação no ELM vista por nós) |
 | `generated` | `by: sabia/<versão do power>` (ator `<producer>/<version>`, §7); `at` = última mudança de conteúdo |
-| `verified` | **aprovação no GATE**: `{ by: human:<login de quem aprovou — o P.O. ou quem ele delegou>, at: <instante> }` (§5.2), um registro por aprovação. Sem `verified` humano o conceito é *unverified* (§5.3) e **não é publicado** |
-| `status` | `draft` enquanto não aprovado (obrigatório escrever: no OKF, ausência = `stable`), `stable` depois do GATE, `deprecated` quando deixa de valer |
+| `verified` | **aprovação** (GATE do PRD ou da `[ESP] FT`): `{ by: human:<login de quem especifica>, at: <instante> }` (§5.2), um registro por aprovação. Sem `verified` humano o conceito é *unverified* (§5.3) e **não é publicado** |
+| `status` | `draft` enquanto não aprovado (obrigatório escrever: no OKF, ausência = `stable`), `stable` depois da aprovação, `deprecated` no artefato que a fatia ou o épico exclui (marcador local; não é publicado) |
 
 **Uma extensão só** (OKF §4.1 permite chaves do produtor): `id` — o id numérico do DOORS Next, gravado na
 publicação. É a mesma chave que o MCP `elm` grava no bundle e que o `elm_publicar_req` usa para atualizar. Copiado do bundle,
@@ -109,18 +109,19 @@ O corpo é o do padrão do tipo, na coluna Padrão do [catálogo](../../sabia/re
 
 | Momento | O que acontece |
 |---|---|
-| Rascunho | `sa-prd` (ou a fatia) cria o conceito com `status: draft`, `sources`, `generated` |
-| GATE do PRD | a pessoa aprova → cada conceito recebe `verified` humano e `status: stable` (a ATA já os recebe na aprovação dela, no passo `sa-especificar.reuniao.aprovar`) |
-| Publicação | [elm-publicar.md](../../sa-consolidar/references/elm-publicar.md#requisitos-conceitos-okf-de-elm--doors-next) (grava `resource`, `id` e a entrada do ELM em `sources`) |
+| Rascunho | `sa-prd` (ou a `[ESP] FT`, `sa-especificar.fatia.escrever`) cria o conceito com `status: draft`, `sources`, `generated` |
+| GATE do PRD · aprovação da `[ESP] FT` | quem especifica aprova → cada conceito recebe `verified` humano e `status: stable` (o excluído segue `deprecated`); vai à base (a ATA já os recebe na aprovação dela, no passo `sa-especificar.reuniao.aprovar`, e é publicada ali) |
+| Publicação | depois do merge da fatia, na consolidação: [elm-publicar.md](../../sa-consolidar/references/elm-publicar.md#requisitos-conceitos-okf-de-elm--doors-next) (grava `resource`, `id` e a entrada do ELM em `sources`) |
 | Depois | a `sa-sync` baixa a versão oficial para o bundle, que passa a ser a versão viva; o rascunho fica como registro histórico, com `resource` preenchido |
 | Alteração de artefato existente | traga o arquivo do bundle pelo `elm_ler_req_local` (sem bundle: `elm_ler_req`) e grave-o em `elm/`, mantendo `resource`, `id` e o `sources` do ELM; `status: draft`, `generated` novo; edite. O `last_modified` desse `sources` detecta conflito na publicação |
-| Obsoleto | `status: deprecated`; no ELM, roteiro manual na UI |
+| Exclusão | a cópia, como na alteração, com `status: deprecated`; aprovada, não é publicada: o ELM não apaga, move para a lixeira, e o MCP `elm` não tem essa operação → na consolidação, roteiro manual "mover para a lixeira no DOORS Next" e `ELM pendente` |
 
 ## Conformidade (conferida pela rubrica P, item P11)
 
 1. Todo `.md` de `elm/` tem frontmatter YAML que faz parse, com `type` não vazio.
 2. Só chaves do OKF v0.2, mais `id` (e as que vieram do bundle numa cópia).
-3. `status` presente; `draft` antes do GATE, fora a ATA aprovada (`stable` desde a aprovação dela).
+3. `status` presente; `draft` antes da aprovação (GATE do PRD ou da `[ESP] FT`), fora a ATA aprovada (`stable` desde a
+   aprovação dela) e o excluído (`deprecated`).
 4. `type` e `tags` existem em `rm.artefatos` do `pa_<nome>.json` — fora o tipo com ELM `ETM` (o CT planejado): `type` =
    a coluna Tipo da linha `CT.csv` da seção ELM do `sabia.md`, sem `tags`.
 5. Toda HF tem cenários; todo conceito liga os que cita dos tipos da sua coluna Embute (a HF, as suas REGs); HF e

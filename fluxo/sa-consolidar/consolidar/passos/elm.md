@@ -1,5 +1,5 @@
 ---
-{"resumo": "Numa confirmação, publica no ELM requisitos, regra da ficha, ET as-built (ajustada pela skill de toolkit do tipo ET, quando há), casos de teste e a conclusão do IB, lança as horas do SM e prepara os créditos; sem o MCP, pendências."}
+{"resumo": "Numa confirmação, publica no ELM os artefatos aprovados na [ESP] que a fatia cobre (com o vínculo do IB às histórias e o roteiro da lixeira para o excluído), a ET as-built (ajustada pela skill de toolkit do tipo ET, quando há), casos de teste e a conclusão do IB, lança as horas do SM e prepara os créditos; sem o MCP, pendências."}
 ---
 ## Entrada
 
@@ -10,11 +10,10 @@ O drift resolvido (passo `drift`).
 Com o MCP `elm`; senão registre pendências.
 
 Numa confirmação só, nesta ordem, como diz [elm-publicar.md](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md) (os casos de teste precisam dos ids dos requisitos):
-- *requisitos* — publicar/atualizar o que ainda não foi (publicação `no-merge` no `sabia.md`, ou a nova versão do
-  passo `drift`);
-- *regra da ficha* (fatia padrão sem épico com regra nova ou alterada) — gerar o conceito OKF da regra as-built
-  em `.kiro/specs/<ft>-<slug>/elm/` (formato do `okf-elm.md` da `sa-prd`; alteração → a partir do artefato do
-  bundle), mostrar e, com o `verified` humano, publicar como os requisitos;
+- *requisitos* — os artefatos aprovados na `[ESP]` que a fatia cobre e ainda não estão no ELM na versão aprovada
+  (escopo e filtro da seção Requisitos do `elm-publicar.md`: os do épico no Cobre, os da seção Artefatos afetados e
+  os do `depois` do catálogo que eles citam); depois, o IB da fatia ligado às histórias (`implementa`). Você não os
+  escreve nem os reescreve. Conceito `exclui` não sobe: o roteiro manual da lixeira, com `ELM pendente`;
 - *especificação técnica* — se a linha ET do `sabia.md` diz `só as-built` ou `inicial no PRD + as-built`: a ET
   **as-built** chegou escrita pelo Dev no PR (`elm/ET-<slug>.md`) e foi julgada com o código (rubrica C15); você
   não a escreve nem a reescreve, salvo pelo toolkit: tipo `ET` com skill de toolkit no seu prompt (**Tipos com skill

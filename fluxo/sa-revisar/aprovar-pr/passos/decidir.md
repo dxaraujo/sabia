@@ -1,11 +1,15 @@
 ---
-{"resumo": "Aprovado → comentário com o sha e os créditos, horas e conclusão da [APR], sem commit na branch; mudanças pedidas → Achados abertos, retrabalho, commit, push e aviso ao Dev."}
+{"resumo": "Aprovado → comentário com o sha e os créditos, horas e conclusão da [APR], sem commit na branch; mudanças pedidas (inclusive o drift de código errado) → Achados abertos, retrabalho, commit, push e aviso ao Dev; volta à especificação → bloqueada, commit, push e aviso ao especificador."}
 ---
 ## Entrada
 
 A decisão da pessoa (passo `ler`) e o `sha` do PR (passo `assumir`).
 
 ## Faça
+
+Drift indicado (passo `ler`) → antes, a pessoa decide: **código errado** → é uma mudança pedida (item 2), o Drift
+fica `não` e o Histórico ganha `drift descartado: código errado (<login>)`; **volta** → item 3. Aprovado só com o
+Drift `não` ou já com ` · especificação:` de uma `[ESP] FT` concluída.
 
 1. **Aprovado** → **não commite na branch nem grave fase** (o `sha` que o Dev vai mergear não pode mudar; a fatia
    segue em `aguardando-aprovacao-pr` até o merge): numa
@@ -23,12 +27,18 @@ A decisão da pessoa (passo `ler`) e o `sha` do PR (passo `assumir`).
    (`FT-<nnn> aprovação do PR: mudanças pedidas`) → push → conferir no remoto (como no passo `sa-revisar.hitl.entrega`) → horas
    da sessão na `[APR]` (lança, não conclui) → avise o Dev responsável. A `[APR]` fica em andamento e é a mesma na
    nova aprovação.
+3. **Volta à especificação** → ` · especificação: [ESP] FT-<nnn>` no Drift e o bloco
+   [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação)
+   (`de: aguardando-aprovacao-pr`), os créditos da sessão; commit (`FT-<nnn> aprovação do PR: volta à especificação`) → push → conferir no remoto →
+   horas da sessão na `[APR]` (lança, não conclui) → avise o especificador (`sa-especificar FT-<nnn>`, agente
+   `sa-especificador`) e o Dev responsável. A `[APR]` fica em andamento e é a mesma na nova aprovação.
 
 ## Saída
 
 Aprovado: a `[APR]` concluída e o Dev avisado do merge. Mudanças pedidas: o `status.md` no remoto, a `[APR]` em
-andamento e o Dev avisado. Aqui o fluxo termina.
+andamento e o Dev avisado. Volta à especificação: o `status.md` no remoto, a fatia `bloqueada`, a `[APR]` em
+andamento e o especificador e o Dev avisados. Aqui o fluxo termina.
 
 ## Pare se
 
-- Mudanças pedidas, com o remoto diferente do local → não siga: diga o que falta.
+- Mudanças pedidas ou volta à especificação, com o remoto diferente do local → não siga: diga o que falta.

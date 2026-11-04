@@ -260,15 +260,21 @@ test("desvio por tipo no repo: o passo que cria um tipo desviável tem ⇢ e os 
   assert.deepEqual(x.tipos, ["HF", "REG", "EL", "ET", "CT"]);
   assert.match(grafoAscii(m.fluxos["sa-prd.prd"]), /│ 4 escrever ⇢ +│──▶ ⇢ por tipo: HF, REG, EL, ET, CT\n/);
   assert.ok(!m.fluxos["sa-prd.prd"].passos.some((p) => p.id === "similares" && p.tipos));
-  // só os passos de "desviavel" do catálogo: a ET as-built do PR, o CT.csv da verificação e a REG da ficha da fatia sem
-  // épico ficam do Sabiá; a ET inicial e o CT planejado desviam no PRD, e a ET as-built também na consolidação
+  // a [ESP] FT desvia os mesmos tipos do PRD fora a ET (o GL segue do Sabiá)
+  const f = m.fluxos["sa-especificar.fatia"].passos.find((p) => p.id === "escrever");
+  assert.deepEqual(f.tipos, ["HF", "REG", "EL", "CT"]);
+  assert.match(grafoAscii(m.fluxos["sa-especificar.fatia"]), /│ 5 escrever ⇢ +│──▶ ⇢ por tipo: HF, REG, EL, CT\n/);
+  // só os passos de "desviavel" do catálogo: a ET as-built do PR e o CT.csv da verificação ficam do Sabiá; a ET inicial
+  // e o CT planejado desviam no PRD, e a ET as-built também na consolidação
   for (const [q, id] of [["sa-codificar.codificar", "pr"], ["sa-verificar.verificar", "casos"]]) {
     assert.ok(!m.fluxos[q].passos.find((p) => p.id === id).tipos, `${q}.${id}`);
     assert.doesNotMatch(grafoAscii(m.fluxos[q]), new RegExp(`\\d ${id} ⇢|por tipo`), `${q}.${id}`);
   }
   assert.deepEqual(m.fluxos["sa-consolidar.consolidar"].passos.find((p) => p.id === "elm").tipos, ["ET"]);
   assert.match(grafoAscii(m.fluxos["sa-consolidar.consolidar"]), /│ 3 elm ⇢ +│──▶ ⇢ por tipo: ET\n/);
-  assert.deepEqual(m.tipos.CT.cria, ["sa-prd.prd.escrever", "sa-verificar.verificar.casos"]);
+  assert.deepEqual(m.tipos.CT.cria, ["sa-prd.prd.escrever", "sa-verificar.verificar.casos", "sa-especificar.fatia.escrever"]);
+  // a consolidação publica a regra aprovada na [ESP]: não escreve REG
+  assert.deepEqual(m.tipos.REG.cria, ["sa-prd.prd.escrever", "sa-especificar.fatia.escrever"]);
 });
 
 test("catálogo: desviavel fora de cria é recusado", () => {

@@ -13,7 +13,7 @@ Os fatos (passo `fatos`).
 |---|---|---|
 | `contexto-ausente` | a informação não existia em steering, PRD, glossário ou skill | escrever onde ela deve morar |
 | `contexto-ignorado` | existia e o agente não seguiu | se é mecânico: checagem determinística; senão regra em Regras aprendidas |
-| `prd-incompleto` | faltava regra/cenário no PRD | PRD nova versão (`sa-prd`) + publicar no ELM |
+| `prd-incompleto` | faltava regra/cenário no PRD | a regra ou o cenário que falta pela `[ESP] FT` da fatia (`sa-especificar.fatia`; PRD aprovado e não fatiado: `sa-prd.mudanca`) |
 | `plano-errado` | estava no PRD e não foi para o plano | regra R-nn em Regras aprendidas (aplica a: plano) |
 | `revisao-branda` | a revisão viu e não reprovou (ou não viu) | regra R-nn em Regras aprendidas (aplica a: revisor) com a severidade certa — as rubricas ficam no power e não são editadas no projeto |
 | `skill-desatualizada` | a skill do toolkit ensinou o jeito errado | corrigir a skill do toolkit (avisar quem mantém) |

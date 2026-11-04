@@ -11,8 +11,9 @@
 ---
 # Revisar — Verificação independente
 
-Entrada: o pedido de revisão — PRD de um épico (rubrica **P**), plano de uma fatia (rubrica **L**) ou código de uma
-fatia (rubrica **C**) —, como subagente de outro fluxo (a rodada de revisão do plano, do PRD ou do código) ou com a
+Entrada: o pedido de revisão — PRD de um épico ou artefatos de uma fatia (`[ESP] FT`) (rubrica **P**), plano de uma
+fatia (rubrica **L**) ou código de uma fatia (rubrica **C**) —, como subagente de outro fluxo (a rodada de revisão do
+plano, do PRD, dos artefatos ou do código) ou com a
 tarefa `[REV] FT-nnn` (fluxo `hitl`).
 
 Quem gera não verifica o próprio trabalho: o revisor começa **sem** o contexto de quem escreveu. Prefira o agente

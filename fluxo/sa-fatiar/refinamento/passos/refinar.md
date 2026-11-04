@@ -1,5 +1,5 @@
 ---
-{"resumo": "Cancela fatias ou o épico (decisão do P.O.) e reaplica a Definition of Ready, no backlog.md e na sprint, num commit, com o EWM acompanhando; as fatias do backlog não se alteram, e cenário novo vai à sa-triar."}
+{"resumo": "Cancela fatias ou o épico (decisão do P.O.) e reaplica a Definition of Ready, no backlog.md e na sprint, num commit, com o EWM acompanhando; as fatias do backlog não se alteram, cenário novo vai à sa-triar e alteração de artefato à [ESP] FT da fatia."}
 ---
 ## Entrada
 
@@ -15,8 +15,13 @@ commit, pelas [Situações](~/.sabia/framework/skills/sa-fatiar/references/backl
 - **As fatias do backlog não se alteram:** dividir, juntar ou mudar escopo, cobertura ou tamanho de uma fatia é só
   antes do GATE do backlog (passo `sa-fatiar.fatiar.perguntar`). Pedido disso aqui → "depois do GATE do backlog, a
   fatia não muda: cancele-a e registre o novo pela `sa-triar`, ou siga com ela" e pare.
-- **Cenário novo** (inclusive o que falta numa história, vindo de uma correção do PRD) → épico ou fatia nova pela
-  `sa-triar` (`origem EP-<nn>`, agente `sa-produto`): diga isso e pare.
+- **Cenário novo** (inclusive o que falta numa história) → épico ou fatia nova pela `sa-triar` (`origem EP-<nn>`,
+  agente `sa-produto`): diga isso e pare.
+- **Alteração de artefato** (regra, termo, leiaute, história) que uma fatia não terminal cobre → é da `[ESP] FT`
+  da fatia (o ELM é a fonte; o PRD fica como registro do épico): a linha `altera`/`exclui` na seção Artefatos
+  afetados da ficha (Especificado `—`, com a autorização do P.O. ou do SM); a fatia não iniciada volta a `nova` com
+  `falta: especificação` (Definition of Ready, abaixo) e entra pelo planejamento ou pelo encaixe; a iniciada vai pela
+  [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação), item Pedido de fora da fatia. Fatia terminal → `sa-triar`.
 - **Cancelar** uma fatia não iniciada: `cancelada`, com o motivo na `obs`. Era a última não terminal de um épico com
   fatia `concluida` → no mesmo commit, o épico `concluido` no backlog, Fase `concluido` no `status.md` do épico e o
   IB do épico concluído (como no passo `sa-consolidar.consolidar.fechar`).
@@ -41,7 +46,7 @@ commit, pelas [Situações](~/.sabia/framework/skills/sa-fatiar/references/backl
 ## Saída
 
 O refinamento gravado na base, num commit → os próximos passos do passo `sa-fatiar.fatiar.proximos`. Fatia de
-Manutenção, ou cenário novo → `sa-triar`.
+Manutenção, ou cenário novo → `sa-triar`. Alteração de artefato de fatia não terminal → `sa-especificar.fatia`.
 
 ## Pare se
 

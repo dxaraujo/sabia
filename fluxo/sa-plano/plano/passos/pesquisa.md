@@ -18,4 +18,4 @@ arquivo, não da memória da leitura.
 ## Pare se
 
 Divergência entre o ELM e o código apontada na pesquisa → pergunte antes de
-seguir (pode ser defeito, pode ser documentação velha).
+seguir: defeito (o código muda) ou artefato velho (passo `decisoes`, Pare se: volta à especificação).

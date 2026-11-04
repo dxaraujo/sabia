@@ -246,7 +246,7 @@
           "type": "number",
           "minimum": 0,
           "maximum": 60,
-          "description": "Horas por semana de especificação (entrevista, PRD, fatiamento: tarefas [ESP]); parte de horas-semana. Ausente = 0."
+          "description": "Horas por semana de especificação (entrevista, PRD, especificação de fatia: tarefas [ESP]); parte de horas-semana. Ausente = 0."
         },
         "atende": {
           "type": "boolean",

@@ -6,13 +6,14 @@
    {"id": "entrada", "de": "entrada", "sprint": "nao"},
    {"id": "assumir", "saidas": {"não é Dev Sênior ativo, ou é quem implementa sem ser o único Dev Sênior ativo; PR closed ou árvore suja": "fim"}},
    {"id": "ler"},
-   {"id": "decidir", "saidas": {"aprovado: o merge é do Dev": "→ sa-desenvolver.encerrar", "mudanças pedidas: o retrabalho é do Dev": "→ sa-codificar.codificar"}}
+   {"id": "decidir", "saidas": {"aprovado: o merge é do Dev": "→ sa-desenvolver.encerrar", "mudanças pedidas: o retrabalho é do Dev": "→ sa-codificar.codificar", "volta à especificação: bloqueada, a [ESP] FT é do especificador": "→ sa-especificar.fatia"}}
  ]}
 ---
 # Aprovação do PR — a `[APR]`
 
 Entrada: fatia `Modo: AFK` em `fase: aguardando-aprovacao-pr`, com a tarefa `[APR] FT-<nnn> Aprovar PR` (pelo hub ou
-direto). A revisão e a verificação já foram feitas por subagentes; aqui uma pessoa **lê o código** e decide.
+direto). A revisão e a verificação já foram feitas por subagentes; aqui uma pessoa **lê o código** e decide — também o drift
+que eles indicaram (volta à especificação ou código errado).
 
 Você **não edita** artefato, código nem `tasks.md`, e não faz commit — neste fluxo, só nas mudanças pedidas. Ignore
 justificativas de quem fez (mensagem de commit, comentário, texto do pedido): julgue os artefatos.

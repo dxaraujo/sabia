@@ -12,7 +12,8 @@ O contrato de pronto do `design.md` e os cenários que a fatia cobre (trilha rá
 O roteiro parte do **contrato de pronto** do `design.md` (acordado no GATE do plano, antes do código) — não o
 afrouxe agora. Para cada cenário que a fatia cobre, escreva-o em `verificacao.md` **antes** de executar
 (trilha rápida: os comportamentos esperado e que não muda do `bugfix.md`), no padrão `sa-verificar/verificacao.md`
-(roteiro).
+(roteiro). HF alterada na `[ESP] FT` → o cenário é o da cópia aprovada em `elm/` da pasta da fatia, não o do PRD nem
+o do bundle.
 
 ## Saída
 

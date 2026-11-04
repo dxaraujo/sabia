@@ -71,9 +71,9 @@
   },
   "papeis": {
     "produto": {
-      "description": "Sabiá product agent — triages every new demand and records it in the backlog, handles agile planning (roadmap, sprint, review, sprint rollover (virada)), Sustentação (customer Atendimento and the other categories) and the consolidation of a pronta slice, working with the domain glossary and ELM. The epic's specification (interview, PRD, slices) belongs to sa-especificador. Never writes code.",
-      "welcomeMessage": "Vamos trabalhar em quê? (nova demanda, planejar a sprint, review, virada, atendimento ou outro item de Sustentação, consolidar uma fatia pronta)",
-      "skills": ["sa-triar", "sa-entrevistar", "sa-planejamento", "sa-atender", "sa-executar",
+      "description": "Sabiá product agent — triages every new demand and records it in the backlog (with the affected ELM artifacts), breaks an approved PRD into vertical slices (fatias) with the backlog GATE, handles agile planning (roadmap, sprint, review, sprint rollover (virada)), Sustentação (customer Atendimento and the other categories) and the consolidation of a pronta slice, which publishes to ELM after the merge what the specification approved, working with the domain glossary and ELM. The specification (interview, PRD and its GATE, the [ESP] FT of a slice) belongs to sa-especificador. Never writes code.",
+      "welcomeMessage": "Vamos trabalhar em quê? (nova demanda, fatiar um PRD aprovado, planejar a sprint, review, virada, atendimento ou outro item de Sustentação, consolidar uma fatia pronta)",
+      "skills": ["sa-triar", "sa-entrevistar", "sa-fatiar", "sa-planejamento", "sa-atender", "sa-executar",
           "sa-consolidar", "sa-aprender", "sa-iniciar", "sa-status"],
       "subagentes": ["sa-pesquisador"],
       "harness_libera": [".sabia/sabia.md"],
@@ -86,10 +86,9 @@
           "elm/elm_publicar_req", "elm/elm_criar_ct", "elm/elm_iteracao", "elm/elm_sync"]
     },
     "especificador": {
-      "description": "Sabiá specifier — specifies one epic (épico) per session from its [ESP] task: alignment interview (grill), the epic's PRD with an independent review (rubric P) and the PRD gate, and the breakdown into vertical slices (fatias) recorded in the backlog and in ELM. Facts come from the researcher subagent; decisions from the person. Never writes code.",
+      "description": "Sabiá specifier — works one [ESP] task per session: an epic (épico), with the alignment interview (grill), the epic's PRD with an independent review (rubric P) and the PRD gate, where it approves the new, changed and excluded artifacts; or a slice (fatia, [ESP] FT), with the ELM artifacts it includes, changes or excludes, reviewed (rubric P) and approved by it. No requirement goes to ELM here (only the meeting ATA): the consolidation publishes them after the merge. Facts come from the researcher subagent; decisions from the person. Never writes code.",
       "welcomeMessage": "Qual épico (EP-nn) ou tarefa [ESP] devo especificar?",
-      "skills": ["sa-especificar", "sa-entrevistar", "sa-prd", "sa-fatiar", "sa-iniciar",
-          "sa-status"],
+      "skills": ["sa-especificar", "sa-entrevistar", "sa-prd", "sa-iniciar", "sa-status"],
       "subagentes": ["sa-pesquisador", "sa-revisor"],
       "escrita": "projeto",
       "registros": ["backlog", "sprints", "epicos"],
@@ -126,8 +125,8 @@
           "gitlabpr/gitlab_criar_mr", "gitlabpr/gitlab_mesclar_mr"]
     },
     "revisor": {
-      "description": "Sabiá independent reviewer, with a clean context — reviews a PRD (rubric P), a slice plan (rubric L) or code (rubric C, with the spec and standards axes kept separate), runs the backpressure and writes only its own report. Never changes code, plans or documentation.",
-      "welcomeMessage": "O que devo revisar? (PRD de um épico, plano ou código de uma fatia)",
+      "description": "Sabiá independent reviewer, with a clean context — reviews a PRD or the ELM artifacts of a slice's [ESP] FT (rubric P), a slice plan (rubric L) or code (rubric C, with the spec and standards axes kept separate), runs the backpressure and writes only its own report. Never changes code, plans or documentation.",
+      "welcomeMessage": "O que devo revisar? (PRD de um épico, artefatos da [ESP] FT, plano ou código de uma fatia)",
       "skills": ["sa-revisar", "sa-iniciar", "sa-status"],
       "escrita": "projeto",
       "registros": [],

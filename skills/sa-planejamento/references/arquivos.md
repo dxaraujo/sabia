@@ -59,7 +59,7 @@ URL abaixo, nunca um caminho local:
   existe nos demais. Decide o modo das fatias que a pessoa implementa (Júnior: sempre HITL · Pleno: pelos critérios da
   fatia · Sênior: AFK por padrão) e quem revisa PR: a `[REV]` é sempre de um Dev Sênior.
 - `horas-revisao-semana` soma revisar (planos, PRs) e verificar (aceite) e é parte de `horas-semana`.
-- `horas-especificacao-semana` (entrevista, PRD, fatiamento: tarefas `[ESP]`) também é parte de `horas-semana`;
+- `horas-especificacao-semana` (entrevista, PRD, especificação de fatia: tarefas `[ESP]`) também é parte de `horas-semana`;
   ausente = 0. Revisão + especificação nunca passam de `horas-semana`.
 - `atende: true` marca quem faz Sustentação (toda categoria: responsável sugerido na triagem); a reserva é das horas
   do time inteiro, não só dessas pessoas.

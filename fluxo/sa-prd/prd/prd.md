@@ -8,7 +8,7 @@
    {"id": "similares"},
    {"id": "escrever", "chama": "sa-especificar.prototipo"},
    {"id": "revisao", "chama": "sa-revisar.revisar", "saidas": {"achado que é decisão de negócio": "entrevistar"}},
-   {"id": "gate", "saidas": {"decisão em aberto que muda comportamento": "entrevistar", "primeiro GATE aprovado, ou mudança de: aprovado aprovada (a [ESP] segue)": "→ sa-especificar.especificar", "correção de: fatiado, aprovada: volta a quem chamou, ou o P.O. retoma pela sa-consolidar": "fim"}}
+   {"id": "gate", "saidas": {"decisão em aberto que muda comportamento": "entrevistar", "primeiro GATE aprovado, ou mudança antes do fatiamento aprovada": "→ sa-especificar.especificar"}}
  ]}
 ---
 # PRD — O quê e por quê (épico)
@@ -16,12 +16,14 @@
 Saída, na **pasta de trabalho** da especificação — `.sabia/local/especificacao/<EP>-<slug>/`, fora do git, montada
 pela **`sa-especificar`** — até o GATE; depois dele, a `sa-especificar` a leva para `<produto>/epicos/<EP>-<slug>/`: o `prd.md` no formato do
 padrão `sa-prd/prd.md`, o `decisoes.md` e a pasta `elm/` com **um conceito OKF
-v0.2 por artefato novo**, de um tipo do [catálogo](~/.sabia/framework/skills/sabia/references/tipos.md) — o formato de [references/okf-elm.md](~/.sabia/framework/skills/sa-prd/references/okf-elm.md), o mesmo do
-bundle que a `sa-sync` mantém. São esses arquivos que sobem para o DOORS Next depois do GATE; até lá, ficam aqui.
+v0.2 por artefato novo, alterado ou excluído**, de um tipo do [catálogo](~/.sabia/framework/skills/sabia/references/tipos.md) — o formato de [references/okf-elm.md](~/.sabia/framework/skills/sa-prd/references/okf-elm.md), o mesmo do
+bundle que a `sa-sync` mantém. Aprovados no GATE, vão à base com o PRD e sobem ao DOORS Next depois do merge da
+fatia que os cobre, na consolidação.
 
 O PRD é um **registro de decisões** e a **proposta de mudança** da documentação oficial — não um documento vivo.
-Depois de aprovado, os artefatos vão para o DOORS Next ([publicação](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md)), que é a fonte
-oficial; o que vale a longo prazo é o ELM, o glossário e os ADRs. Se o PRD afirma algo que ninguém decidiu, é um
+Os artefatos aprovados vão para o DOORS Next ([publicação](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md)), que é a fonte
+da verdade; o que vale a longo prazo é o ELM, o glossário e os ADRs. Depois do fatiamento o PRD não muda: a mudança
+de artefato é da `[ESP] FT` da fatia (`sa-especificar.fatia`). Se o PRD afirma algo que ninguém decidiu, é um
 defeito do PRD. Toda demanda entra pela `sa-triar`; só o que ela classifica como **épico** chega aqui. Uma fatia
 com regra clara é trilha padrão sem épico, com uma ficha no lugar do PRD.
 

@@ -1,9 +1,9 @@
 ---
-{"resumo": "GATE do PRD pelo P.O.: aprovado → status stable e verified humano em cada conceito, gravado só onde o PRD está; o primeiro GATE e a mudança antes do fatiamento seguem na [ESP], a correção depois dele volta a quem chamou; diz a próxima e para."}
+{"resumo": "GATE do PRD pelo especificador: aprovado → status stable (o excluído segue deprecated) e verified humano em cada conceito, gravado só onde o PRD está; o primeiro GATE e a mudança antes do fatiamento seguem na [ESP]; diz a próxima e para."}
 ---
 ## Entrada
 
-O PRD revisto (passo `revisao`), na pasta de trabalho (primeiro GATE) ou na base (mudança depois de aprovado:
+O PRD revisto (passo `revisao`), na pasta de trabalho (primeiro GATE) ou na base (mudança antes do fatiamento:
 `sa-prd.mudanca`).
 
 ## Faça
@@ -12,43 +12,33 @@ Mostre à pessoa:
 
 ```
 📄 PRD EP-<nn> — <título>
-Artefatos: HF <n> (<c> cenários) · REG <n> · GL <n> novos · … · No ELM: reusa <ids | —> · altera <ids | —> · novos verificados <n>
+Artefatos: HF <n> (<c> cenários) · REG <n> · GL <n> novos · … · No ELM: reusa <ids | —> · altera <ids | —> · exclui <ids | —> · novos verificados <n>
+Impacto: <id como cita · … | —>
 Decisões: <d> decididas · <a> em aberto (<bloqueantes>)
 Revisão: <OK na rodada N | achados aceitos: …>
-Aprovar? (o P.O. ou quem ele delegou)
+Aprovar? (o especificador)
 ```
 
 Em Artefatos, uma contagem por tipo do [catálogo](~/.sabia/framework/skills/sabia/references/tipos.md) que o passo `escrever` cria, fora os pendentes.
+Quem especifica aprova o PRD e, com ele, todos os conceitos de `elm/`: os novos, os alterados e os excluídos.
 
 - Decisão **em aberto que muda comportamento** → não há aprovação; volte à entrevista.
-- Aprovado → Fase `aprovado` no `status.md` do épico (na mudança, a do `de:`: `aprovado` ou `fatiado`); no `prd.md`, a versão (`1.0`; na mudança, a do passo
-  `sa-prd.mudanca.mudanca`), data e quem aprovou no rodapé. Em
+- Aprovado → Fase `aprovado` no `status.md` do épico; no `prd.md`, a versão (`1.0`; na mudança, a mesma), data e quem aprovou no rodapé. Em
   **cada** conceito de `elm/` (fora a ATA, já aprovada no passo `sa-especificar.reuniao.aprovar`): `status: stable`
-  e um `verified` com `{ by: human:<login de quem aprovou>, at: <agora> }` — sem esse `verified` humano nada é publicado. Grave só onde o PRD
-  está:
+  (o excluído segue `deprecated`) e um `verified` com `{ by: human:<login de quem especifica>, at: <agora> }` — sem
+  esse `verified` humano nada é publicado. Grave só onde o PRD está:
   - **primeiro GATE** (PRD na pasta de trabalho) → só ali; levar a pasta para a base e gravar no `backlog.md` só o
     link `prd` e, se estava `—`, o da `pasta` (o épico segue `iniciado`) são da `sa-especificar`.
-  - **mudança depois de aprovado** (PRD já na base) → na base, pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base),
-    um commit.
+  - **mudança antes do fatiamento** (PRD já na base) → na base, pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base),
+    um commit `EP-<nn> aprovar PRD`.
 
 ## Saída
 
 - Decisão em aberto que muda comportamento → passo `entrevistar`.
-- Primeiro GATE aprovado → próximo: "use
-  `sa-especificar EP-<nn>`" — ela fecha a sessão, leva o PRD aprovado para a base e diz o que vem depois
-  (publicação no ELM e `sa-fatiar`).
-- Mudança depois de aprovado → próximo: a [publicação dos requisitos](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md#requisitos-conceitos-okf-de-elm--doors-next) alterados (se o PRD já
-  subiu ao ELM e a publicação é `na-aprovacao`). Depois, pelo `de:` da Fase (`em-revisao (de: …)`, do passo
-  `sa-prd.mudanca.mudanca`):
-  - `de: aprovado` (antes do fatiamento) → "use `sa-especificar EP-<nn>`": a sessão segue na mesma `[ESP]`, que a fecha e diz o que
-    vem depois (`sa-fatiar`);
-  - `de: fatiado` (correção depois do fatiamento): vinda do drift da consolidação → "avise o P.O.: retome pela
-    `sa-consolidar FT-<nnn>`"; da verificação, do plano, de completar a fatia, da ATA ou pedido direto → as fatias
-    do backlog não mudam; cenário que falta em fatia nenhuma → "épico ou fatia nova pela `sa-triar` (`origem
-    EP-<nn>`)".
+- Primeiro GATE aprovado, ou mudança aprovada → próximo: "use `sa-especificar EP-<nn>`" — ela fecha a sessão, leva o
+  PRD aprovado para a base (no primeiro GATE), conclui a `[ESP]` e diz o que vem depois (o fatiamento, do P.O. ou do
+  SM). A publicação no ELM é da consolidação, depois do merge de cada fatia.
 
 ## Pare se
 
-- Primeiro GATE aprovado, ou mudança antes do fatiamento aprovada: diga o próximo e pare.
-- Correção depois do fatiamento: diga o próximo e pare — vinda do drift, a consolidação é do
-  P.O., no agente `sa-produto`.
+- GATE aprovado: diga o próximo e pare.

@@ -100,11 +100,14 @@ class Gerar(unittest.TestCase):
     def test_especificador_separado_do_produto(self):
         agentes = self.gerar()
         e, p = agentes["especificador"], agentes["produto"]
-        for s in ("sa-especificar", "sa-prd", "sa-fatiar", "sa-entrevistar"):
+        for s in ("sa-especificar", "sa-prd", "sa-entrevistar"):
             self.assertTrue(any(r.endswith(f"/{s}/SKILL.md") for r in e["resources"]), s)
-        for s in ("sa-especificar", "sa-prd", "sa-fatiar"):
+        for s in ("sa-especificar", "sa-prd"):
             self.assertFalse(any(r.endswith(f"/{s}/SKILL.md") for r in p["resources"]), s)
-        self.assertTrue(any(r.endswith("/sa-entrevistar/SKILL.md") for r in p["resources"]))
+        # o fatiamento é do P.O. ou do SM: a sa-fatiar só no produto
+        for s in ("sa-entrevistar", "sa-fatiar"):
+            self.assertTrue(any(r.endswith(f"/{s}/SKILL.md") for r in p["resources"]), s)
+        self.assertFalse(any(r.endswith("/sa-fatiar/SKILL.md") for r in e["resources"]))
         self.assertEqual(e["toolsSettings"]["subagent"]["availableAgents"], ["sa-pesquisador", "sa-revisor"])
         self.assertEqual(efeito(e, "shell", "git push origin feature/x"), "deny")
         self.assertIn("sabia/elm/elm_publicar_req", regras(e, "power", "ask"))
@@ -436,7 +439,8 @@ class Gerar(unittest.TestCase):
         pasta = "~/.sabia/toolkits/casa"
         self.assertIn("Tipos com skill de toolkit (⇢ no passo de desvio do tipo): no passo `sa-prd.prd.escrever`, HF → carregue a skill"
                       f" `casa` e siga `{pasta}/fluxo/fluxo-hf.md` com o padrão `{pasta}/padrao/padrao-hf.md`; no passo"
-                      f" `sa-especificar.reuniao.escrever`, ATA → carregue a skill `casa` e siga `{pasta}/fluxo/fluxo-reuniao.md`.", e["prompt"])
+                      f" `sa-especificar.fatia.escrever`, HF → carregue a skill `casa` e siga `{pasta}/fluxo/fluxo-hf.md` com o padrão"
+                      f" `{pasta}/padrao/padrao-hf.md`; no passo `sa-especificar.reuniao.escrever`, ATA → carregue a skill `casa` e siga `{pasta}/fluxo/fluxo-reuniao.md`.", e["prompt"])
         self.assertIn("escrevendo no padrão OKF do Sabiá", e["prompt"])
         self.assertEqual([r for r in e["resources"] if "casa" in r], [f"skill://{pasta}/skills/casa/SKILL.md"])
         self.assertIn("~/.sabia/toolkits/**", regras(e, "fs_read", "allow"))
@@ -447,7 +451,7 @@ class Gerar(unittest.TestCase):
         # a seção do sabia.md: tipos (a skill da pasta, nada compilado) e itens de rubrica
         self.assertEqual(g.gerar.tabela_tipos, [
             "| Tipo | Skill | Fluxo e padrão | Toolkit | Passo de desvio |", "|---|---|---|---|---|",
-            f"| `HF` | `{pasta}/skills/casa/SKILL.md` | `{pasta}/fluxo/fluxo-hf.md` com o padrão `{pasta}/padrao/padrao-hf.md` | `casa` 1.0.0 | `sa-prd.prd.escrever` |",
+            f"| `HF` | `{pasta}/skills/casa/SKILL.md` | `{pasta}/fluxo/fluxo-hf.md` com o padrão `{pasta}/padrao/padrao-hf.md` | `casa` 1.0.0 | `sa-prd.prd.escrever`, `sa-especificar.fatia.escrever` |",
             f"| `ATA` | `{pasta}/skills/casa/SKILL.md` | `{pasta}/fluxo/fluxo-reuniao.md` | `casa` 1.0.0 | `sa-especificar.reuniao.escrever` |", "",
             "| Item de rubrica | Tipo | Severidade | Verificação | Toolkit |", "|---|---|---|---|---|",
             "| `EX1` | HF | IMPORTANTE | Toda HF cita o campo de origem | `casa` 1.0.0 |"])
@@ -463,14 +467,16 @@ class Gerar(unittest.TestCase):
         self.assertIn("CT → carregue a skill `casa`", agentes["especificador"]["prompt"])
         self.assertNotIn("CT →", agentes["produto"]["prompt"] + agentes["verificador"]["prompt"])
         self.assertEqual([r for r in agentes["produto"]["resources"] if "casa" in r], [f"skill://{pasta}/skills/casa/SKILL.md"])
-        # o REG só desvia no prd.escrever: o consolidar.elm (sa-produto) não recebe a linha nem a skill
+        # o REG desvia no prd.escrever e na [ESP] FT (sa-especificador); a consolidação (sa-produto) não recebe a linha nem a skill
         agentes = self.gerar(toolkits=self.casa(REG={"skill": "skills/casa/SKILL.md", "fluxo": "fluxo/fluxo-hf.md"}))
         self.assertIn("no passo `sa-prd.prd.escrever`, REG → carregue a skill `casa`", agentes["especificador"]["prompt"])
+        self.assertIn("no passo `sa-especificar.fatia.escrever`, REG → carregue a skill `casa`", agentes["especificador"]["prompt"])
         self.assertFalse([r for r in agentes["produto"]["resources"] if "casa" in r])
         # só a skill, com as references dentro: sem fluxo nem padrão na linha e na tabela
         agentes = self.gerar(toolkits=self.casa(HF={"skill": "skills/casa/SKILL.md"}))
-        self.assertIn("no passo `sa-prd.prd.escrever`, HF → carregue a skill `casa` e siga as references dela.", agentes["especificador"]["prompt"])
-        self.assertIn(f"| `HF` | `{pasta}/skills/casa/SKILL.md` | — | `casa` 1.0.0 | `sa-prd.prd.escrever` |", g.gerar.tabela_tipos)
+        self.assertIn("no passo `sa-prd.prd.escrever`, HF → carregue a skill `casa` e siga as references dela; no passo"
+                      " `sa-especificar.fatia.escrever`, HF → carregue a skill `casa` e siga as references dela.", agentes["especificador"]["prompt"])
+        self.assertIn(f"| `HF` | `{pasta}/skills/casa/SKILL.md` | — | `casa` 1.0.0 | `sa-prd.prd.escrever`, `sa-especificar.fatia.escrever` |", g.gerar.tabela_tipos)
         # a skill do tipo também no agentes.json (papeis): uma vez só
         fonte = "skill://~/.sabia/toolkits/casa/skills/casa/SKILL.md"
         agentes = self.gerar(toolkits=self.casa(), agentes={"sa-especificador": {"skills": [fonte]}})
@@ -649,11 +655,11 @@ class SabiaMd(unittest.TestCase):
             f = p / ".sabia" / "sabia.md"
             f.write_text(modelo, encoding="utf-8")
             self.assertEqual(g.conferir_sabia_md(p), [])
-            antigo = re.sub(r"^\| Casos de teste \|.*\n", "| Publicar requisitos · ET | x |\n", modelo, flags=re.M)
+            antigo = re.sub(r"^\| Casos de teste \|.*\n", "| Testes · ET | x |\n", modelo, flags=re.M)
             f.write_text(antigo, encoding="utf-8")
             falta, sobra = g.conferir_sabia_md(p)
             self.assertIn("sem estas linhas do modelo (assets/steering/sabia.md): ELM › Casos de teste;", falta)
-            self.assertIn("com linhas que não estão no modelo (assets/steering/sabia.md): ELM › Publicar requisitos · ET;", sobra)
+            self.assertIn("com linhas que não estão no modelo (assets/steering/sabia.md): ELM › Testes · ET;", sobra)
             f.write_text("# notas da pessoa\n\n## Projeto\n", encoding="utf-8")
             self.assertEqual(g.conferir_sabia_md(p), [])
 

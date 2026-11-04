@@ -1,9 +1,9 @@
 ---
-{"resumo": "Lacuna de negócio para e vai ao P.O.; escolha técnica com alternativas reais vai à pessoa (HITL) ou é decidida e registrada (AFK)."}
+{"resumo": "Artefato do ELM ou do PRD que precisa mudar volta à especificação ([ESP] FT, fatia bloqueada); lacuna da ficha sem épico vai ao P.O.; escolha técnica com alternativas reais vai à pessoa (HITL) ou é decidida e registrada (AFK)."}
 ---
 ## Entrada
 
-O `research.md` e as fontes da fatia (PRD, ficha ou defeito).
+O `research.md` e as fontes da fatia (PRD, ficha ou defeito, e os conceitos aprovados em `elm/` da pasta da fatia).
 
 ## Faça
 
@@ -16,5 +16,11 @@ Decisões técnicas resolvidas ou registradas → passo `escrever`.
 
 ## Pare se
 
-Lacuna de **negócio** (regra sem valor, exceção sem comportamento) → **pare**: é do P.O. (agente `sa-produto`) — `sa-entrevistar` e,
-se mudar o PRD aprovado, `sa-prd` (mudança depois de aprovado: `sa-prd.mudanca`) — ou a ficha aprovada, `sa-triar`. Nunca decida regra no plano.
+Nunca decida regra no plano.
+
+- **Artefato que precisa mudar** — regra sem valor, exceção sem comportamento, cenário que contradiz o código ou outro
+  artefato, artefato do ELM ou do PRD que a fatia altera e não está na seção Artefatos afetados da ficha → o bloco
+  [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação) (`de: planejando`)
+  e **pare**: a `[ESP] FT-<nnn>` é do especificador (`sa-especificar FT-<nnn>`, agente `sa-especificador`).
+- **Lacuna da ficha sem épico** fora dos artefatos (`C<n>`, decisão) → `fase: bloqueada (de: planejando)` com a
+  pergunta e **pare**: é do P.O. (agente `sa-produto`), pela `sa-triar` (decisão em aberto → `sa-entrevistar`).

@@ -13,7 +13,8 @@ de aceite executados de ponta a ponta, com evidência) — nunca a execute você
 `onde`). Teto de 2 rodadas, como na revisão. Corrigida uma rejeição, volte aos passos `validar` e `revisar` (a nova
 revisão conta no teto de rodadas) antes de verificar de novo.
 
-Com `ACEITO` ou `REJEITADO`: grave o **Drift de negócio** do relatório no `status.md` (como no passo `revisar`); com
+Com `ACEITO` ou `REJEITADO`: grave o **Drift de negócio** do relatório no `status.md` (como no passo `revisar`: a indicação do agente, decidida
+pelo Dev Sênior na `[APR] Aprovar PR`); com
 `REJEITADO`, some 1 em Retrabalho e acrescente a linha na tabela `## Retrabalho` (Papel `verificação (AFK)`); e
 **commite imediatamente** `verificacao.md`, `CT.csv`, `evidencias/`, `massa/` e o
 `status.md` antes de prosseguir — mensagem no padrão do `sabia.md`, `registrar verificação`. O PR cita esses arquivos e eles precisam estar na branch antes da abertura.
@@ -21,6 +22,9 @@ Com `ACEITO` ou `REJEITADO`: grave o **Drift de negócio** do relatório no `sta
 ## Saída
 
 `ACEITO` → `fase: verificada` e passo `pr`. `REJEITADO` → cenários reprovados como tarefas e passo `tarefa`.
+Cenário que o agente indica como do artefato → a fatia volta `bloqueada (de: verificando)` com a pergunta
+`Volta à especificação, ou o código está errado? (Dev Sênior)`: a decisão é de um Dev Sênior (passo `onde`), e o
+fluxo termina.
 
 ## Pare se
 

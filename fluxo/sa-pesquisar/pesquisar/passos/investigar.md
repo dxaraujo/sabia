@@ -15,7 +15,8 @@ As perguntas do passo `perguntas`.
 - **Reaproveitamento:** serviços, utilitários, componentes, queries e clientes de integração existentes.
 - **Dados:** schema real pelo MCP de banco (somente leitura) ou pelos modelos/migrações; volumetria se importar.
   No `research.md` vão só a consulta e a contagem — nunca linhas com dado real (o arquivo vai para o git).
-- **Documentação:** histórias e regras do bundle do ELM que tratam do mesmo comportamento, pelo
+- **Documentação:** os conceitos aprovados em `elm/` da pasta da fatia (valem sobre o bundle); histórias e regras do
+  bundle do ELM que tratam do mesmo comportamento, pelo
   `elm_buscar_req_local`/`elm_ler_req_local` (nunca lendo os arquivos; sem bundle baixado — erro `nao_encontrado`
   campo `bundle` — registre isso e indique a `sa-sync`: o pesquisador não tem o ELM remoto) —
   divergência entre código e documentação é um achado importante.

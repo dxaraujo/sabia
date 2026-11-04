@@ -23,16 +23,18 @@
    📥 Lote EWM — <time> · <tipos> · estado <…> · <n> itens novos (<m> já no backlog)
    | Item | Tipo | Título | Trilha | Status | Motivo |
    |---|---|---|---|---|---|
-   | DF 4567 | Defeito | Juros calculados em dobro no atraso | rápida | elegivel | comportamento certo na REG 2101 |
+   | DF 4567 | Defeito | Juros calculados em dobro no atraso | rápida | nova | comportamento certo na REG 2101; falta: artefatos afetados |
    | IB 611 | Item de Backlog | Portal de renegociação de dívidas | épico | novo | várias histórias, decisões de produto; falta: quem pede |
-   | IB 613 | Item de Backlog | Limitar o desconto de pontualidade a 10% | padrão | nova | regra nova clara; falta: ficha |
-   | DF 4570 | Defeito | Erro ao consultar CPF sem máscara | rápida | nova | falta: como reproduzir |
+   | IB 613 | Item de Backlog | Limitar o desconto de pontualidade a 10% | padrão | nova | regra nova clara; falta: regras, cenários, artefatos afetados e aprovação do P.O. |
+   | DF 4570 | Defeito | Erro ao consultar CPF sem máscara | rápida | nova | falta: como reproduzir, artefatos afetados |
    | IB 615 | Item de Backlog | Relação de contas bloqueadas para a auditoria | sustentação · Atendimento | aberto · 2026/Sprint 03 | extração, sem mudança |
    "sim" registra tudo · ou ajuste por linha (ex.: "DF 4570: não fazer")
    ```
 4. Com "sim": o passo `sa-triar.triar.registrar` para cada linha (o item fora do estado inicial volta a ele), com um commit para o lote e o
-   EWM numa confirmação só. Padrão no lote → ficha em `rascunho` só com o Pedido e `falta: regras, cenários e aprovação do P.O.`; rápida
-   sem o que a ficha da trilha pede → `nova` com `falta: <o quê>` (a entrevista é uma a uma, depois). Sustentação no
+   EWM numa confirmação só. Padrão no lote → ficha em `rascunho` só com o Pedido e `falta: regras, cenários, artefatos afetados e aprovação
+   do P.O.`; rápida → `nova` com `falta: artefatos afetados` e o mais que a ficha da trilha pedir (a entrevista e a
+   lista confirmada são uma a uma, depois, pelo fluxo `sa-triar.triar`). A seção Artefatos afetados das duas fica
+   `Lista a confirmar na triagem.` (padrão `sa-triar/ficha.md`). Sustentação no
    lote → registrado como no passo `sa-triar.triar.registrar`, sem a entrevista curta (o item do EWM é o pedido e o IB do item; prazo e
    critério de pronto ficam `—`), com a categoria, a sprint e o responsável da tabela e, se entra na sprint, a tarefa
    na mesma confirmação.

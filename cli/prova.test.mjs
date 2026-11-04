@@ -132,7 +132,7 @@ test("prova front+back: o toolkit casa (HF ⇢ skill casa) com o override do pro
   assert.ok(!fs.existsSync(path.join(home, ".sabia/compilado-toolkits")));
   assert.equal(fs.readFileSync(path.join(home, ".config/opencode/skills/casa/SKILL.md"), "utf8"), fs.readFileSync(path.join(raiz, "fontes/casa/skills/casa/SKILL.md"), "utf8"));
   assert.ok(agenteKiro(proj, "sa-revisor").prompt.includes("`EX1` (HF) IMPORTANTE — Toda HF cita a tela de origem (toolkit `casa`)"));
-  assert.match(saida, /\| `HF` \| `~\/\.sabia\/toolkits\/casa\/skills\/casa\/SKILL\.md` \| `~\/\.sabia\/toolkits\/casa\/fluxo\/fluxo-hf\.md` com o padrão `~\/\.sabia\/toolkits\/casa\/padrao\/padrao-hf\.md` \| `casa` 1\.0\.0 \| `sa-prd\.prd\.escrever` \|/);
+  assert.match(saida, /\| `HF` \| `~\/\.sabia\/toolkits\/casa\/skills\/casa\/SKILL\.md` \| `~\/\.sabia\/toolkits\/casa\/fluxo\/fluxo-hf\.md` com o padrão `~\/\.sabia\/toolkits\/casa\/padrao\/padrao-hf\.md` \| `casa` 1\.0\.0 \| `sa-prd\.prd\.escrever`, `sa-especificar\.fatia\.escrever` \|/);
   // a rota: o passo do projeto (com a base do Sabiá) e o desvio por tipo no sa-prd.prd
   const o = { projeto: proj };
   const prd = s.rotaFluxo("sa-prd.prd", o);
@@ -146,12 +146,14 @@ test("prova front+back: o toolkit casa (HF ⇢ skill casa) com o override do pro
   assert.deepEqual(ordem(reuniao), ["1 transcricao", "2 escrever", "3 aprovar", "4 publicar", "5 decisoes"]);
   assert.match(reuniao, /│ 2 escrever ⇢ +│──▶ ⇢ por tipo: ATA\n/);
   assert.match(reuniao, /^  decisoes --> x_sa_triar_triar: fatiado.*escopo novo.*\(passagem\)$/m);
+  assert.match(reuniao, /^  decisoes --> x_sa_especificar_fatia: fatiado.*fatia não terminal.*\(passagem\)$/m);
   const prot = s.rotaFluxo("sa-especificar.prototipo", o);
   assert.deepEqual(ordem(prot), ["1 registrar", "2 aprovacao"]);
   assert.match(prot, /│ 2 aprovacao +│──▶ 🔒 aprovacao-do-cliente\n/);
   assert.match(prot, /↑ volta a registrar {2}\(ajuste pedido pelo cliente \(versão nova\)\)/);
   const esp = s.rotaFluxo("sa-especificar.especificar", o);
-  assert.match(esp, /│ 4 encaminhar +│──▶ ⇄ chama sa-especificar\.reuniao, sa-especificar\.prototipo, sa-prd\.prd, sa-fatiar\.fatiar\n/);
+  assert.match(esp, /│ 4 encaminhar +│──▶ ⇄ chama sa-especificar\.reuniao, sa-especificar\.prototipo, sa-prd\.prd\n/);
+  assert.match(esp, /│ 6 fechamentos +│──▶ ⇒ passa a sa-fatiar\.fatiar {2}\(GATE do PRD: PRD na base, \[ESP\] concluída\)\n/);
   // o que o lote e a verificação fazem com as linhas do sabia.md do projeto, nos passos compilados (opencode)
   const ler = (f) => fs.readFileSync(path.join(home, ".config/opencode/skills", f), "utf8");
   const escr = ler("sa-prd/references/prd/escrever.md");

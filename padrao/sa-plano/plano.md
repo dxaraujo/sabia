@@ -65,7 +65,8 @@ FT-<nnn> — <título>. <O comportamento que esta fatia entrega, em 2–3 frases
   sem gatilho: `O <Sistema> DEVE …`. O `<Sistema>` é um termo do Glossary.
 - Um requisito por grupo de cenários da fatia; critérios numerados `N.M`, citados pelo `tasks.md`.
 - Só o que a fatia cobre (`cobre` no backlog, ou os `C<n>` da ficha). Nada de regra que não esteja no
-  PRD/ELM/`decisoes.md`/ficha.
+  PRD/ELM/`decisoes.md`/ficha ou nos conceitos aprovados em `elm/` da pasta da fatia (a `[ESP] FT`: valem sobre o
+  PRD e o bundle).
 
 ## `bugfix.md` (trilha rápida — defeito)
 

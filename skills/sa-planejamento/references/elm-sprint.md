@@ -152,7 +152,8 @@ sai da linha; a Sustentação, a Manutenção e os IBs de categoria não mudam.
 - **Épico** (na triagem, com "sim"; `iteracao = backlog`): `elm_criar_wi(tipo ib, "[EP-<nn>] <título>", dono = po da linha,
   descricao_md = problema, quem pede, resultado; depois do GATE, a solução e o link do PRD)`. Item de origem do EWM
   (`origem: <id>` na `obs`): já é do tipo épico → é o épico; senão `elm_atualizar_wi(origem, pai = épico novo, iteracao = backlog)`.
-  Histórias publicadas → `elm_ligar(wi = épico, req, tipo rastreia)`. Épico `novo` ou `elegivel` fica só ele no
+  Histórias publicadas (na consolidação: [elm-publicar.md](../../sa-consolidar/references/elm-publicar.md)) →
+  `elm_ligar(wi = épico, req, tipo rastreia)`. Épico `novo` ou `elegivel` fica só ele no
   backlog (com a `[ESP]`, se ela saiu de uma sprint sem começar); quando entra numa sprint (`planejado`, com a
   `[ESP]`, ou com a primeira fatia), move para a iteração dela e a `[ESP]` nasce lá (§4) — ou move, se já existe
   (topo).
@@ -160,9 +161,10 @@ sai da linha; a Sustentação, a Manutenção e os IBs de categoria não mudam.
   sprint em que já entra): `elm_criar_wi(tipo ib, "[FT-<nnn>] <título>", pai = épico — sem épico, a Manutenção —,
   dono = P.O., descricao_md = modo, bloqueada por, pasta prevista, campos =
   {<campo de critérios do sabia.md>: os cenários Dado/Quando/Então copiados do PRD ou da ficha, com "gerado do PRD — não
-  edite aqui"})`. Defeito: `campos` com a categoria de correção da seção ELM do `sabia.md`. Depois `elm_ligar(wi, req)`
-  (implementa) para cada história coberta e `elm_ligar(wi, wi_destino, tipo depende)` para cada `bloqueada-por`
-  (sem `links.depende` no `pa` → fica na descrição).
+  edite aqui"})`. Defeito: `campos` com a categoria de correção da seção ELM do `sabia.md`. Depois
+  `elm_ligar(wi, wi_destino, tipo depende)` para cada `bloqueada-por` (sem `links.depende` no `pa` → fica na
+  descrição). O vínculo com as histórias (`implementa`) nasce na consolidação, depois de publicá-las
+  ([elm-publicar.md](../../sa-consolidar/references/elm-publicar.md)).
 - **Fatia sem épico** (origem `Manutenção`): o pai é o IB `Manutenção`, filho da Sustentação, que nasce com a
   primeira delas, na mesma confirmação (`elm_criar_wi(tipo ib, "Manutenção", pai = Sustentação, iteracao =
   backlog)`; idempotência: `elm_listar_wi(pai = <id da Sustentação>, titulo_prefixo "Manutenção")`, com o título
@@ -385,7 +387,7 @@ comparação: o resultado é sempre a tabela do passo 4 ou a linha do passo 6.
    🔄 2026/Sprint 03 × EWM — 14 divergências em 9 itens · 52 conferidos
    | # | Item | No EWM | Campo | Arquivo | EWM | Solução proposta |
    | 1 | AT-012 | ATD 670301 | estado | em-andamento | Concluído | arquivo: concluido, concluida-em 2026-10-28 (concluído no EWM) · EWM: concluir o IB 669379 |
-   | 2 | EP-05 | ESP 669377 | estado | iniciada | Concluído | EWM: reabrir a [ESP] (fecha no GATE do backlog) |
+   | 2 | EP-05 | ESP 669377 | estado | iniciada | Concluído | EWM: reabrir a [ESP] (fecha no GATE do PRD) |
    | 3 | FT-031 | DEV 669401 | iteração | 2026/Sprint 03 | Sprint 04 | EWM: volta para 2026/Sprint 03 (fatia iniciada) |
    | 4 | FT-031 | VER 669403 | estado | implementando | Concluído | EWM: reabrir a [VER] (ela fecha no aceite) |
    | 5 | FT-033 | — | git | iniciada · implementando | PR !48 merged · 4f2c9e1 | arquivo: pronta (merge 4f2c9e1 por fora do Sabiá) |
@@ -523,12 +525,12 @@ aberto, branch com commits) fica na branch da fatia (passo 5), com `<AAAA-MM-DD 
 (sincronização)` no Histórico. O da `pronta` do merge por fora fica na base, com `merge do PR <link> por fora do Sabiá
 (sha <sha>)`.
 
-**Especificação** (a `[ESP]` e o IB do épico; vale igual para a fatia `nova` em especificação — a `[ESP] FT-<nnn>` e o
-IB dela —, que fecha quando a fatia fica `elegivel`, não no GATE do backlog, e não espera `[DEV]` enquanto está ali):
+**Especificação** (a `[ESP]` e o IB do épico; vale igual para a fatia em especificação — a `[ESP] FT-<nnn>` e o
+IB dela —, que fecha ao concluir a especificação da fatia, não no GATE do PRD, e não espera `[DEV]` enquanto está ali):
 
 | Arquivo | EWM | Solução proposta | Outras |
 |---|---|---|---|
-| `planejada` · `iniciada` | `[ESP]` concluída | EWM: reabrir a `[ESP]` (ela fecha no GATE do backlog, passo `sa-especificar.especificar.fechamentos`) | — |
+| `planejada` · `iniciada` | `[ESP]` concluída | EWM: reabrir a `[ESP]` (ela fecha no GATE do PRD, passo `sa-especificar.especificar.fechamentos`) | — |
 | `planejada` | `[ESP]` em andamento | manter: a especificação começa pela `sa-especificar` (o passo `sa-especificar.especificar.assumir` grava `iniciada`) | — |
 | não terminal | `[ESP]` descartada | manter: cancelar o épico é da `sa-fatiar` | EWM: reabrir |
 | épico `planejado` · `iniciado` | IB do épico concluído | EWM: reabrir o IB | — |

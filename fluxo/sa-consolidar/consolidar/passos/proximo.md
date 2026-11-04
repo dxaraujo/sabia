@@ -9,7 +9,7 @@ A fatia `concluida` na base (passo `fechar`).
 
 ```
 ✅ FT-<nnn> concluída — <título>
-ELM: <publicado (requisitos · ET · CT <ids | CSV>) | pendente: …> · Drift de negócio: <não | PRD v1.1 | ficha v2>
+ELM: <publicado (requisitos · ET · CT <ids | CSV>) | pendente: …> · lixeira: <ids | —> · Drift de negócio: <não | [ESP] FT-<nnn> concluída>
 Créditos: <x.xx> (<n> sessões · power sabia <versões>)
 Épico EP-<nn>: <c>/<t> fatias · próxima: FT-<…> (<planejada | elegivel> · <AFK|HITL>, desbloqueada agora)
 Lições: <n> registradas

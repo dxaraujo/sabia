@@ -18,7 +18,10 @@ rubrica **C** passando só: id da fatia, pasta, branch/worktree e rodada — **n
 `revisao-codigo-<N>.md`.
 
 Assim que o `revisao-codigo-<N>.md` estiver gravado, grave no campo **Drift de negócio** do `status.md` a
-penúltima linha do relatório (só sobe de `não` para `sim`) e **commite-o imediatamente com o `status.md`** (fase,
+penúltima linha do relatório (só sobe de `não` para `sim`; sobre um campo já decidido, com `especificação:`, o
+decidido vai ao Histórico e o campo recomeça com o `sim` novo, padrão `sa-desenvolver/status.md`; `sim — <motivo> · artefatos: <id|rótulo> (<tipo>)` é a
+indicação do agente: quem decide se volta à especificação é a pessoa revisora no HITL, `sa-revisar.hitl`, ou o Dev
+Sênior na `[APR] Aprovar PR`, no AFK) e **commite-o imediatamente com o `status.md`** (fase,
 Rodadas, drift) antes de prosseguir — mensagem no padrão do `sabia.md`, `registrar revisão <N>`; não espere a próxima
 sessão nem o passo `onde`. O PR cita esse arquivo e
 ele precisa estar na branch antes da abertura.

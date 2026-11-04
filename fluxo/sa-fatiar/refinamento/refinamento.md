@@ -1,9 +1,9 @@
 ---
-{"fluxo": "refinamento", "dono": "sa-especificador",
+{"fluxo": "refinamento", "dono": "sa-produto",
  "quando": ["o backlog do épico já existe (depois do GATE do backlog): cancelar fatias ou o épico, decisão do P.O.; as fatias não se alteram mais, e cenário novo vai à sa-triar", "refinar o backlog", "cancelar a FT-033", "cancelar o EP-05"],
  "travas_gerais": ["sim-da-pessoa"],
  "passos": [
-   {"id": "refinar", "saidas": {"refinamento gravado": "→ sa-fatiar.fatiar.proximos", "fatia de Manutenção ou cenário novo: é da sa-triar": "→ sa-triar.triar", "dividir, juntar ou mudar uma fatia do backlog: não se faz": "fim"}}
+   {"id": "refinar", "saidas": {"refinamento gravado": "→ sa-fatiar.fatiar.proximos", "fatia de Manutenção ou cenário novo: é da sa-triar": "→ sa-triar.triar", "alteração de artefato que uma fatia não terminal cobre": "→ sa-especificar.fatia", "dividir, juntar ou mudar uma fatia do backlog: não se faz": "fim"}}
  ]}
 ---
 # Refinamento — o backlog já existe

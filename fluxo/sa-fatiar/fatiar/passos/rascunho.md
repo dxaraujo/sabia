@@ -1,5 +1,5 @@
 ---
-{"resumo": "Lê o PRD e o decisoes.md, relê o código e monta a tabela de fatias pelos critérios de boa fatia, com cobertura completa e uma fatia ponta a ponta."}
+{"resumo": "Lê o PRD e o decisoes.md, relê o código e monta a tabela de fatias pelos critérios de boa fatia, com cobertura completa, uma fatia ponta a ponta e os artefatos afetados de cada uma, do PRD."}
 ---
 ## Entrada
 
@@ -54,11 +54,18 @@ O PRD aprovado e o `decisoes.md` do épico, na base.
    tela, arquivo de entrada) até a saída que o ator observa (arquivo, resposta, tela, registro). Cobertura completa
    com fatias que só entregam peças internas (classificador, DAO, regra isolada) **não** passa: falta a fatia que
    liga as peças ao gatilho — acrescente-a (ou engrosse a primeira) antes de mostrar.
+5. Monte os **artefatos afetados** de cada fatia, do PRD: cada conceito com No ELM `novo`, `altera` ou `exclui`
+   (ação `inclui`, `altera`, `exclui`) vai na fatia que o entrega — a das HF e REG do Cobre, com os EL, GL e CT que
+   elas citam; o `exclui`, na fatia que o substitui (nenhuma o substitui → a primeira). Todo conceito desses em ao
+   menos uma fatia; faltando → corrija antes de mostrar. Cada `altera` ou `exclui <id>` já na seção Artefatos
+   afetados de outra fatia não terminal (`git grep -n '<id>' -- '<produto>/fatias/'` + o `status` no `backlog.md`,
+   como no passo `sa-triar.triar.triagem`) → a coluna Bloqueada por recebe a `FT-<mmm>`.
 
 ## Saída
 
-A tabela de fatias com cobertura completa e a fatia ponta a ponta → passo `perguntar`.
+A tabela de fatias com cobertura completa, a fatia ponta a ponta e os artefatos afetados → passo `perguntar`.
 
 ## Pare se
 
-Nenhuma condição própria deste passo: cobertura ou ponta a ponta faltando se corrigem antes de mostrar (itens 3 e 4).
+Nenhuma condição própria deste passo: cobertura, ponta a ponta ou artefato sem fatia se corrigem antes de mostrar
+(itens 3 a 5).

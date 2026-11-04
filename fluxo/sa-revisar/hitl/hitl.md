@@ -8,7 +8,7 @@
    {"id": "pr", "saidas": {"PR closed ou árvore suja": "fim", "PR atualizado com a [REV] já concluída": "assumir"}},
    {"id": "rubrica", "chama": "sa-revisar.revisar"},
    {"id": "veredito"},
-   {"id": "entrega", "saidas": {"APROVADO: a [VER] está disponível": "→ sa-verificar.verificar", "REVISAR: o retrabalho é do Dev, no mesmo PR": "→ sa-codificar.codificar"}}
+   {"id": "entrega", "saidas": {"APROVADO: a [VER] está disponível": "→ sa-verificar.verificar", "REVISAR: o retrabalho é do Dev, no mesmo PR": "→ sa-codificar.codificar", "volta à especificação: bloqueada, a [ESP] FT é do especificador": "→ sa-especificar.fatia"}}
  ]}
 ---
 # Revisão HITL — a `[REV]` sobre o PR
@@ -21,7 +21,8 @@ Quem gera não verifica o próprio trabalho: o revisor começa **sem** o context
 raciocínio anterior da conversa e trabalhe só com os arquivos.
 
 Você **não edita** artefato, código nem `tasks.md` — escreve só o relatório da rodada e, neste modo, commita o
-relatório e a fase na branch do PR e faz o push dela. Ignore justificativas de quem fez (mensagem de commit,
+relatório e a fase na branch do PR e faz o push dela. O drift o agente indica; quem decide se volta à especificação é
+você (passo `veredito`). Ignore justificativas de quem fez (mensagem de commit,
 comentário, texto do pedido): julgue os artefatos.
 
 ## Entrada: vizinhos

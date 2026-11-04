@@ -8,7 +8,7 @@
    {"id": "ambiente", "saidas": {"campo Banco pendente: a DDL em dev é do Dev, ou do item BD pela sa-executar": "fim"}},
    {"id": "executar", "saidas": {"algum cenário rejeitado ou ⚠️": "decisao"}},
    {"id": "casos"},
-   {"id": "decisao", "saidas": {"HITL, ACEITO: a fatia aceita espera o merge do Dev": "→ sa-desenvolver.encerrar", "HITL, REJEITADO: o retrabalho é do Dev": "→ sa-codificar.codificar", "cenário errado no PRD, com épico: bloqueada, é do P.O.": "→ sa-prd.mudanca", "cenário errado na ficha, sem épico: bloqueada, é da triagem": "→ sa-triar.triar"}}
+   {"id": "decisao", "saidas": {"HITL, ACEITO: a fatia aceita espera o merge do Dev": "→ sa-desenvolver.encerrar", "HITL, REJEITADO: o retrabalho é do Dev": "→ sa-codificar.codificar", "volta à especificação (a pessoa decide): bloqueada, a [ESP] FT é do especificador": "→ sa-especificar.fatia", "cenário errado na ficha sem épico, fora dos artefatos: bloqueada, é da triagem": "→ sa-triar.triar"}}
  ]}
 ---
 # Verificar — O comportamento existe de verdade?

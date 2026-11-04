@@ -18,16 +18,17 @@ Créditos desta sessão: <x.xx> (sessão <id>) · power sabia <versão>   (scrip
 Registrar? (sim)
 ```
 
-Com "sim": primeiro a linha de créditos no `status.md` do épico ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4) — depois do GATE do PRD, no da
-base, no commit que o fatiamento já faz —; então `elm_comentar` (o resumo), `elm_anexo(id, "enviar", caminho)` para cada `.md` da pasta de trabalho fora de `reunioes/` e de `prototipo/` (a transcrição não
+Com "sim": primeiro a linha de créditos no `status.md` do épico ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4) — o da pasta de
+trabalho até o PRD ir à base; depois, o da base, no commit do passo `fechamentos` ou, na sessão sem GATE, pelo bloco
+[Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), commit `EP-<nn> registrar sessão` —; então `elm_comentar` (o resumo), `elm_anexo(id, "enviar", caminho)` para cada `.md` da pasta de trabalho fora de `reunioes/` e de `prototipo/` (a transcrição não
 sobe; o protótipo já subiu no registro da versão; os de `elm/`, com as atas, com o prefixo `elm-`, para não colidir com o nome de outro arquivo) e `elm_lancar_horas(id, horas)` (lança;
 não conclui). Sem o MCP `elm` ou com falha → `ELM pendente [<chave>]: registrar sessão [ESP] EP-<nn> (<data>)` no `rascunho.md`, e o
 próximo fechamento registra.
 
 ## Saída
 
-A sessão registrada na `[ESP]` (ou `ELM pendente`). Depois de um GATE (Fase `aprovado` ou `fatiado`) → passo
-`fechamentos`; senão, aqui a sessão termina.
+A sessão registrada na `[ESP]` (ou `ELM pendente`). Depois do GATE do PRD (Fase `aprovado`) → passo `fechamentos`;
+senão, aqui a sessão termina.
 
 ## Pare se
 

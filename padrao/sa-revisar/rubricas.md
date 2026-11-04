@@ -14,6 +14,9 @@ valem igual no artefato que a skill de um toolkit escreve.
 
 ## P — PRD (`prd.md` + `decisoes.md`)
 
+Também nos artefatos de uma fatia (`[ESP] FT`: os conceitos da pasta de trabalho e a seção Artefatos afetados da
+ficha): P1, P10 e P13 não se aplicam, e P6 lê a seção Artefatos afetados no lugar da coluna "No ELM".
+
 | # | Verificação | Severidade |
 |---|---|---|
 | P1 | Problema e solução descritos do ponto de vista do usuário, sem tecnologia | IMPORTANTE |
@@ -21,12 +24,12 @@ valem igual no artefato que a skill de um toolkit escreve.
 | P3 | Cada história cobre: caminho feliz, o que não deve ser aceito, repetição/reexecução e erro em um item — ou diz por que não se aplica | BLOQUEANTE |
 | P4 | Toda regra é testável, tem valores e cita a origem (`D-nn`, artefato do ELM ou fonte) | BLOQUEANTE |
 | P5 | Nada inventado: regra, ator, valor ou integração sem fonte e sem decisão de uma pessoa | BLOQUEANTE |
-| P6 | Comportamento já documentado no ELM é **alterado** ou **reutilizado**, não duplicado: todo artefato tem a coluna "No ELM" preenchida (`reusa`, `altera` ou `novo (verificado <data>)`) com a decisão no `decisoes.md`; conceito novo sem verificação, ou com acerto `igual`/`sobrepõe` sem motivo registrado — conferir também no bundle (pelo `elm_buscar_req_local`) | BLOQUEANTE |
+| P6 | Comportamento já documentado no ELM é **alterado**, **reutilizado** ou **excluído**, não duplicado: todo artefato tem a coluna "No ELM" preenchida (`reusa`, `altera`, `exclui` ou `novo (verificado <data>)`) com a decisão no `decisoes.md`; conceito novo sem verificação, ou com acerto `igual`/`sobrepõe` sem motivo registrado — conferir também no bundle (pelo `elm_buscar_req_local`). Impacto: quem cita o artefato alterado ou excluído (a HF que embute a REG, o CT da HF; `links.entrada`) foi revisto — muda → artefato próprio; não muda → na coluna `Impacto` (na ficha, no Motivo) | BLOQUEANTE |
 | P7 | Termos canônicos do glossário em todo o texto; nenhum sinônimo listado em "Evitar" | IMPORTANTE |
 | P8 | Nenhuma decisão `em aberto` que mude comportamento | BLOQUEANTE |
 | P9 | Sem caminho de arquivo, classe, SQL ou código — fora da ET (P13) e, com a linha REG com dados técnicos = `sim` do `sabia.md`, da seção `## Dados` da REG | SUGESTÃO |
 | P10 | Fora de escopo explícito | SUGESTÃO |
-| P11 | Conceitos OKF v0.2 em `elm/` conformes (checklist "Conformidade" de `okf-elm.md` da `sa-prd`): frontmatter que faz parse, `type` e `tags` do mapeamento do projeto (o CT planejado, tipo com ELM `ETM`: `type` da coluna Tipo da linha `CT.csv` do `sabia.md`, sem `tags`), só chaves do OKF v0.2 (+ `id`), `status: draft` antes do GATE (fora a ATA aprovada), HF ligando as suas REGs, links que resolvem | BLOQUEANTE |
+| P11 | Conceitos OKF v0.2 em `elm/` conformes (checklist "Conformidade" de `okf-elm.md` da `sa-prd`): frontmatter que faz parse, `type` e `tags` do mapeamento do projeto (o CT planejado, tipo com ELM `ETM`: `type` da coluna Tipo da linha `CT.csv` do `sabia.md`, sem `tags`), só chaves do OKF v0.2 (+ `id`), `status: draft` antes do GATE (fora a ATA aprovada e o `exclui`, `deprecated`), HF ligando as suas REGs, links que resolvem | BLOQUEANTE |
 | P12 | Com a linha Telas do `sabia.md` = `sim`: uma EL em `elm/` (padrão `sa-prd/el.md`) por tela que as histórias usam, escrita da versão aprovada do protótipo (anexo `v<N>` e o `D-nn` da aprovação do cliente no `decisoes.md`); rótulos, ações e mensagens com o texto visível igual ao do protótipo e sustentados por história, regra ou `D-nn`; HF e EL ligadas nos dois sentidos (`**Telas:**` na HF, `## Histórias` na EL); só dado fictício e nenhuma imagem no corpo. Com `não` (ou sem a linha) ou com o `D-nn` `Épico sem tela`, nenhuma EL | BLOQUEANTE |
 | P13 | Com a linha ET do `sabia.md` = `inicial no PRD + as-built`: uma ET inicial do épico em `elm/` (padrão `sa-prd/et.md`), que cobre as Decisões de implementação do `prd.md` (módulos, contratos, dados, integrações), liga as histórias que atende e cita a origem de cada item (`D-nn`, PRD, artefato do ELM ou fonte); nada que o PRD e as decisões não sustentem. Com outro valor, nenhuma ET no PRD | BLOQUEANTE |
 
@@ -38,7 +41,7 @@ Fecho: `RESULTADO: PRONTO` ou `RESULTADO: AJUSTAR`.
 |---|---|---|
 | L1 | Todo cenário que a fatia cobre (backlog `cobre`, ou os `C<n>` da ficha da fatia sem épico) tem critério de aceite em `requirements.md`, e nenhum critério sai do que a fatia cobre. Trilha rápida: o `bugfix.md` tem o comportamento atual com evidência, o esperado com fonte e o que não muda, como na ficha. **Todo valor visível ao usuário no "Então" do cenário** (texto, rótulo, mensagem, nome de arquivo, formato) aparece **igual, palavra por palavra**, no critério e no Esperado do contrato de pronto do `design.md` — nome de enum, código interno ou tradução não servem | BLOQUEANTE |
 | L2 | Todo critério (ou item 2.x/3.x do `bugfix.md`) tem ao menos uma tarefa no `tasks.md` (`_Requirements: N.M_`); bugfix começa pelo teste da condição do defeito e pelos testes de preservação | BLOQUEANTE |
-| L3 | Nenhuma regra de negócio que não esteja no PRD/ELM, no `decisoes.md` ou na ficha da fatia sem épico (Regras e Decisões). O plano muda a expectativa de um **teste existente** → está na seção "Testes existentes que mudam", com a fonte da decisão (pessoa, `D-nn`); o GATE segue a senioridade (passo `sa-plano.plano.gate`) | BLOQUEANTE |
+| L3 | Nenhuma regra de negócio que não esteja no PRD/ELM, no `decisoes.md`, na ficha da fatia sem épico (Regras e Decisões) ou nos conceitos aprovados em `elm/` da pasta da fatia. O plano muda a expectativa de um **teste existente** → está na seção "Testes existentes que mudam", com a fonte da decisão (pessoa, `D-nn`); o GATE segue a senioridade (passo `sa-plano.plano.gate`) | BLOQUEANTE |
 | L4 | Os caminhos, classes e análogos citados existem (conferir com `glob`/`read`) — ou estão marcados "a criar" | BLOQUEANTE |
 | L5 | O design segue o steering de tecnologia/estrutura, as regras críticas do `sabia.md` e as lições promovidas | BLOQUEANTE |
 | L6 | Tarefas em ciclo de teste: cada comportamento começa por um teste que falha; corretiva começa pelo teste que reproduz o defeito | IMPORTANTE |
@@ -48,8 +51,8 @@ Fecho: `RESULTADO: PRONTO` ou `RESULTADO: AJUSTAR`.
 | L10 | Nada fora do escopo da fatia (arquivos, refatorações oportunistas) | IMPORTANTE |
 
 Fecho: `ANALISE: OK` ou `ANALISE: AJUSTAR`. Em cada achado diga se a falta é **do plano** (o desenvolvedor corrige)
-ou **do PRD ou da ficha** (cenário ausente, regra contraditória → volta para o P.O. pela `sa-prd`; na fatia sem
-épico, pela `sa-triar`).
+ou **do PRD ou da ficha** (cenário ausente, regra contraditória: o passo `sa-plano.plano.decisoes` decide — artefato
+que precisa mudar → volta à especificação, a `[ESP] FT`; lacuna da ficha sem épico → o P.O., pela `sa-triar`).
 
 ## C — Código da fatia (diff contra a branch base)
 
@@ -88,9 +91,11 @@ achado leva a excesso de engenharia.
 C3 falhando por ambiente (banco, rede, dependência fora do ar) → `AMBIENTE`, não conta como achado; diga o que
 falhou.
 
-**Drift de negócio** (não reprova; vai para a consolidação): na penúltima linha, `Drift de negócio: sim — <motivo>`
-quando um achado aceito ou uma decisão técnica do `design.md` muda o comportamento visível ao usuário em relação
-ao cenário ou à regra do PRD (ou da ficha); senão `Drift de negócio: não`. Fecho: `VEREDITO: APROVADO` ou
+**Drift de negócio** (não reprova; o revisor **indica**, a pessoa decide: volta à especificação ou código errado —
+passos `sa-revisar.hitl.veredito` e `sa-revisar.aprovar-pr.decidir`): na penúltima linha,
+`Drift de negócio: sim — <motivo> · artefatos: <id|rótulo> (<tipo>)` quando um achado aceito ou uma decisão técnica
+do `design.md` muda o comportamento visível ao usuário em relação ao cenário ou à regra do PRD, da ficha ou do
+artefato aprovado (`elm/` da pasta da fatia); senão `Drift de negócio: não`. Fecho: `VEREDITO: APROVADO` ou
 `VEREDITO: REVISAR`.
 
 ## Formato do relatório
@@ -110,7 +115,7 @@ ao cenário ou à regra do PRD (ou da ficha); senão `Drift de negócio: não`. 
 | # | Resultado (✅ ❌ N/A AMBIENTE) | Observação |
 |---|---|---|
 
-<rubrica C, penúltima linha: Drift de negócio: não | sim — <motivo>>
+<rubrica C, penúltima linha: Drift de negócio: não | sim — <motivo> · artefatos: <id|rótulo> (<tipo>)>
 <última linha: RESULTADO: … | ANALISE: … | VEREDITO: …>
 ```
 

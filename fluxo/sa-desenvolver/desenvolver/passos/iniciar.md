@@ -29,9 +29,10 @@ começou.
    Confirma, ou informe outro nome:
    ```
    Confirmado → `git fetch` e `git switch -c <branch> origin/<base>` (já com a `iniciada`).
-4. **Pasta** `.kiro/specs/<ft>-<slug>/` com `status.md` do padrão `sa-desenvolver/status.md`
-   e o `.config.kiro` da spec do Kiro (`specType` `feature` na trilha padrão, `bugfix` na rápida — formato no
-   padrão `sa-plano/plano.md`).
+4. **Pasta** `.kiro/specs/<ft>-<slug>/` (`<slug>` = o da ficha, `fatias/FT-<nnn>-<slug>.md`) com `status.md` do
+   padrão `sa-desenvolver/status.md` e o `.config.kiro` da spec do Kiro (`specType` `feature` na trilha padrão,
+   `bugfix` na rápida — formato no padrão `sa-plano/plano.md`). A pasta já existe com `elm/` (os conceitos aprovados
+   na `[ESP] FT`) → só acrescente o `status.md` e o `.config.kiro`.
 5. **Assumir a `[DEV]`** (com o MCP `elm`; nunca sem "sim") — `elm_transicao(<id da [DEV]>, "assumir",
    iniciar_pai: true)`, com `estimativa_h` se faltar (regras: [elm.md](~/.sabia/framework/skills/sabia/references/elm.md)), pela
    seção Assumir do passo `sa-desenvolver.desenvolver.entrada`. O item de backlog continua do P.O. **Já fechada** (`precondicao` "já concluída:

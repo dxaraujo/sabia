@@ -10,6 +10,11 @@ O pedido em texto, o número do EWM ou o pedido de lote, e o `backlog.md` da bas
 **Antes de tudo** — a triagem lê e escreve na base: itens 1 e 5 do bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base) (troca
 com "sim", `pull --ff-only`, árvore suja → pare; no fim, oferecer voltar).
 
+**Bundle do ELM** (com ELM; uma vez por sessão, já na base): a data do último sync é a do último commit da `sa-sync`
+(`git log -1 --format=%cs --grep='^ELM - Sincronizar bundle'`; sem esse commit, "sem data"). Mais de 7 dias ou sem
+data → `⚠️ Bundle do ELM de <data | sem data> (<n> dias): rode a sa-sync (baixar) antes de triar — a triagem segue se
+você quiser.` Não bloqueia; a data vai no `bundle de` da seção Artefatos afetados (passo `triagem`).
+
 **Backlog sem IB** (com ELM e o MCP `elm` nesta sessão): o backlog do EWM é a fonte dos relatórios das demandas, e
 nenhum item espera a sprint para nascer nele. Linha do `backlog.md` não terminal com `elm` `—`, `pendente` ou id sem
 link → `🏛️ <n> itens do backlog sem IB no EWM: <ids> → criar agora? (sim)`, com a prévia e o "sim" do
@@ -27,12 +32,14 @@ link → `🏛️ <n> itens do backlog sem IB no EWM: <ids> → criar agora? (si
 e `obs` — épicos, fatias e as `### <Categoria>` da `## Sustentação`), no `**Origem:**` das fichas e dos
 `<produto>/sustentacao/**/*.md` e nos `status.md` das branches
 (`git grep -l '<id>' <ref> -- '.kiro/specs/*/status.md'`). Achou → mostre a linha e:
-- **fatia sem épico que volta para cá** — `nova` com `falta:`, ficha em `rascunho` ou a aprovar, mudança na
-  ficha (pedida pela pessoa ou devolvida pela `sa-plano` ou pela `sa-consolidar`) ou trilha que não serve
+- **fatia sem épico que volta para cá** — `nova` com `falta:` (fora o `falta: especificação` sozinho, abaixo), ficha
+  em `rascunho` ou a aprovar, mudança na ficha (pedida pela pessoa ou devolvida pela `sa-plano` ou pela
+  `sa-verificar`) ou trilha que não serve
   (devolvida pela `sa-desenvolver`) → **retome a triagem dela**: passo `triagem` com o mesmo `FT` e
   a ficha que existe; no passo `registrar`, só atualize a linha (sem id novo), com a situação pela Volta das
   [Situações](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#situações) — de `iniciada` em diante ela não muda: avise quem a
-  conduz;
+  conduz (artefato novo na seção Artefatos afetados → a
+  [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação), por quem a conduz);
 - **fatia sem épico que vira épico, se divide ou é cancelada** (decisão do P.O.) → `EP-nn` novo ou as fatias novas
   (passo `registrar`, situação `nova`, com `obs` `desmembrada de FT-…`; no EWM, o §3 "Fatia dividida" do
   [elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md)) e a original, no `backlog.md` e na linha da sprint,
@@ -42,8 +49,11 @@ e `obs` — épicos, fatias e as `### <Categoria>` da `## Sustentação`), no `*
   "cancelar")`, um por id, com "sim"; na falha (sem o MCP, `precondicao`, erro), `ELM pendente [FT-<nnn> cancelar]`.
   As pendências da original moram no rodapé da ficha
   (o padrão `sa-triar/ficha.md`);
+- **fatia `nova` no backlog com só `falta: especificação`** → não é da triagem: ela entra na sprint como
+  especificação, com a `[ESP] FT`, no planejamento (`sa-planejamento.sprint.previsao`) ou pelo encaixe
+  (`sa-planejamento.durante.encaixe`) — P.O. ou SM, no agente `sa-produto`;
 - **fatia `nova` no backlog** (`sprint` `—`, `obs` `falta: …`), de épico ou de Manutenção → **deixe-a pronta**, sem
-  tarefa: [Completar uma fatia `nova`](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#completar-uma-fatia-nova) (créditos no
+  tarefa (o `falta: especificação` fica para a `[ESP] FT`): [Completar uma fatia `nova`](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#completar-uma-fatia-nova) (créditos no
   comentário da `[GB]`);
 - **épico `novo`** que voltou (falta de informação para o PRD, P.O. ou EWM pendentes —
   devolvido pela `sa-prd`, pela `sa-especificar` ou pela Definition of Ready) → **complete o registro**: o que
@@ -69,6 +79,7 @@ Item novo → passo `triagem`; item que já existe → a ação da lista acima.
 ## Pare se
 
 - Árvore suja ao trocar para a base (bloco Gravar na base).
-- Fatia `nova` na sprint, com a `[ESP] FT` → não é aqui: "use `sa-especificar FT-<nnn>`".
+- Fatia com a `[ESP] FT` aberta na sprint (`nova` em especificação, ou a que voltou à especificação) → não é aqui:
+  "use `sa-especificar FT-<nnn>`".
 - Item que já existe, fora dos casos acima → pare: começar ou retomar é pelo hub **`sa-iniciar`**; cancelar uma fatia de épico é
   refinamento na **`sa-fatiar`** (depois do GATE do backlog, a fatia não se divide nem se junta).

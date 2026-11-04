@@ -93,6 +93,7 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
 - FT-032 aguardando-aprovacao-pr → [APR] Aprovar PR de <Dev Sênior> (sa-revisar); aprovada, o merge pelo Dev (sa-desenvolver, fluxo encerrar) <link>
 - FT-030 verificada → abrir o PR (sa-codificar)
 - FT-026 bloqueada: aguardando troca de modo → P.O. ou SM (agente sa-produto, sa-planejamento, fluxo troca-modo)
+- FT-033 bloqueada: aguardando especificação [ESP] FT-033 → especificador (sa-especificar, agente sa-especificador)
 🔁 Retrabalho: FT-026 (de: em-revisao) → o desenvolvedor retoma no mesmo PR (sa-codificar)
 📦 Prontas esperando consolidação: FT-025 (merge há 1 dia) → P.O. ou SM (sa-consolidar, agente sa-produto, [GB])
 
@@ -100,7 +101,7 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
 | FT | Título | Situação | Prioridade | Tam. | Modo | Depende de |
 
 📄 Produto (épicos pela Fase do status.md)
-- EP-04 em-revisao → GATE do PRD (<po>, sa-prd) · EP-06 aprovado → fatiar (sa-fatiar) · EP-05 rascunho (a descobrir)
+- EP-04 em-revisao → GATE do PRD (<especificador>, sa-prd) · EP-06 aprovado → fatiar (sa-fatiar, P.O./SM) · EP-05 rascunho (a descobrir)
 - Especificação na sprint: EP-05 (rita.melo) iniciada · 8/16 h · FT-040 (—) planejada · falta: decisão do limite
 
 🎧 Reserva (Sustentação + retrabalho): <h>h · consumido <h>h (retrabalho <x>h · Sustentação <y>h)
@@ -143,7 +144,8 @@ trabalho de produto (PRD/fatiar) para manter o backlog com fatias elegíveis.
 - fatia em andamento sem commit há mais de 3 dias úteis;
 - `concluida` com Banco = `pendente` ou `aplicada em dev` (implantação bloqueada);
 - Histórico fora de ordem cronológica ou fase que não bate com a última linha (conflito mal resolvido);
-- conceito de `elm/` com `verified` humano e sem `resource` há mais de 1 dia (projeto que publica na aprovação);
+- conceito aprovado (`stable` com `verified` humano) sem `resource` numa fatia `concluida` (no `elm/` dela, ou o do
+  `elm/` do épico no `cobre` dela): a consolidação não o publicou;
 - conceito de `elm/` alterado (`generated.at`) depois do último `verified` e ainda `stable` (falta reaprovar);
 - `backlog.md` alterado numa branch de fatia (deve mudar só na base);
 - reserva (Sustentação + retrabalho) estourada (consumido > reserva; o consumido não conta as linhas com

@@ -187,7 +187,7 @@ bloco por mensagem); antes do bloco 0, avise que é a parte mais longa (10 bloco
      linha 8 mostra `<decide o bloco 9>` e o bloco 9 do `elm-pa.md` decide); **REG com dados técnicos** `não` |
      `sim` (padrão `não`); **Telas** `sim` | `não` (padrão `sim` quando os Tipos do projeto, do W1, incluem
      `frontend`; senão `não`). Vão nas linhas de mesmo nome da seção ELM do `sabia.md`.
-   - Seção ELM do `sabia.md`, sem perguntas (linha 6 do W4): publicar requisitos `na-aprovacao`, manual `nada`,
+   - Seção ELM do `sabia.md`, sem perguntas (linha 6 do W4): manual `nada`,
      pontos `não`, fatia dividida "filhos do item original", títulos das tarefas e colunas do `CT.csv` do template;
      a categoria do IB de defeito é a do bloco 5 do `elm-pa.md`. A Sustentação não é perguntada: o IB `Sustentação`
      nasce no backlog do EWM, um por produto, com a `[GB]`, no fluxo
@@ -239,8 +239,8 @@ pré-marcadas pelos `papeis` do toolkit e pelo tipo de projeto (formato em `tool
 
 | Agente | Já tem (do fluxo) | `elm` | `gitlabpr` | Subagentes do fluxo | Push | Sugestão de extras |
 |---|---|---|---|---|---|---|
-| `sa-produto` | triar, entrevistar, planejamento, atender, executar, consolidar, aprender (registrar), iniciar, status | 🟢 consulta · 🟡 escrita | 🟢 consulta | `sa-pesquisador` | 🔴 negado | skills de domínio/negócio |
-| `sa-especificador` | especificar, entrevistar, prd, fatiar, iniciar, status | 🟢 consulta · 🟡 escrita | ➖ | `sa-pesquisador`, `sa-revisor` | 🔴 negado | skills de domínio/negócio e de especificação |
+| `sa-produto` | triar, entrevistar, fatiar, planejamento, atender, executar, consolidar, aprender (registrar), iniciar, status | 🟢 consulta · 🟡 escrita | 🟢 consulta | `sa-pesquisador` | 🔴 negado | skills de domínio/negócio |
+| `sa-especificador` | especificar, entrevistar, prd, iniciar, status | 🟢 consulta · 🟡 escrita | ➖ | `sa-pesquisador`, `sa-revisor` | 🔴 negado | skills de domínio/negócio e de especificação |
 | `sa-pesquisador` | pesquisar | 🟢 só o bundle local | ➖ | — | 🔴 negado | skills de stack para ler o código |
 | `sa-desenvolvedor` | desenvolver, plano, codificar, iniciar, status | 🟢 consulta · 🟡 escrita | 🟢 consulta · 🟡 abrir e mesclar PR | `sa-pesquisador`, `sa-revisor`, `sa-verificador` | 🟡 pergunta | skills de stack e de teste do toolkit |
 | `sa-revisor` | revisar, iniciar, status | 🟢 consulta · 🟡 escrita | 🟢 consulta | — | 🟡 pergunta | skills de padrões e de revisão da stack |

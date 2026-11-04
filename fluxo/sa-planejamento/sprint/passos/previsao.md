@@ -12,8 +12,10 @@ das fatias `nova` e `elegivel` do topo e grave `elegivel` nas que passam (ou `no
 nas que deixaram de passar). Entram as `elegivel` — de épico e de Manutenção — pela `prioridade` (crítica →
 baixa, `—` no fim; no empate, a ordem da linha no `backlog.md`), respeitando `bloqueada-por` — a fatia só entra
 se as dependências entram antes ou já estão `pronta` ou `concluida`. Pare ao atingir a menor das capacidades.
-Fatia `nova` que a pessoa quer na sprint → **não barre**: avise que ela entra **como especificação**, com a
-`[ESP] FT-<nnn>` (`falta: <o quê>` — decisão, PRD, fatiar, ficha), na seção Especificação, dentro da capacidade
+As fatias `nova` com só `falta: especificação` são **recomendadas** pela `prioridade`, antes das `elegivel` que
+dependem delas: entram como especificação (abaixo), dentro da capacidade de especificação, com o "sim" da pessoa.
+Outra fatia `nova` que a pessoa quer na sprint → **não barre**: avise que ela entra **como especificação**, com a
+`[ESP] FT-<nnn>` (`falta: <o quê>` — decisão, PRD, fatiar, ficha, especificação), na seção Especificação, dentro da capacidade
 de especificação; ela não conta na vazão nem ganha `[DEV]` agora (ganha quando, `elegivel`, entrar numa sprint ou
 for puxada). Cada fatia **HITL** prevê
 **revisor** — um **Dev Sênior**, pela regra do revisor (passo `modo`) — e **verificador** (não quem

@@ -1,5 +1,5 @@
 ---
-{"resumo": "Preenche o prd.md (padrão sa-prd/prd.md) e cria em elm/ um conceito OKF por artefato, pelas regras de escrita e pelas políticas do sabia.md (ET inicial, REG com dados técnicos, Telas: a EL do protótipo aprovado, Casos de teste: o CT planejado de cada cenário) e o limite do acordos.md; o tipo com skill de toolkit no prompt sai por ela."}
+{"resumo": "Preenche o prd.md (padrão sa-prd/prd.md) e cria em elm/ um conceito OKF por artefato novo, alterado ou excluído (com o impacto revisto), pelas regras de escrita e pelas políticas do sabia.md (ET inicial, REG com dados técnicos, Telas: a EL do protótipo aprovado, Casos de teste: o CT planejado de cada cenário) e o limite do acordos.md; o tipo com skill de toolkit no prompt sai por ela."}
 ---
 ## Entrada
 
@@ -32,6 +32,12 @@ Preencha o padrão `sa-prd/prd.md` (o `prd.md`) e crie, em `elm/`, um arquivo po
   `status: draft` e um `generated` novo; reescreva no estado **depois** da mudança. Sem bundle, leia o artefato
   pelo `elm_ler_req(id)` e grave a mesma estrutura. A publicação atualiza o artefato existente em vez
   de criar outro. Na tabela do PRD, coluna "No ELM" = `altera <id>`.
+- **Exclusão** (decisão do passo `similares`) → a cópia, como na Alteração, com `status: deprecated`, `generated` novo
+  e o motivo em `## Relações` (o substituto, quando há); não é publicada: na consolidação, vai à lixeira do DOORS
+  Next por roteiro manual ([okf-elm.md](~/.sabia/framework/skills/sa-prd/references/okf-elm.md#ciclo-de-vida)). Na tabela do PRD,
+  coluna "No ELM" = `exclui <id>`.
+- **Impacto** (passo `similares`) → o artefato que cita o alterado ou o excluído e muda é alterado no mesmo lote (a HF
+  que embute a REG alterada; o CT do cenário da HF alterada); o que não muda fica na coluna Impacto do PRD.
 - **Reutilizar** (decisão do passo `similares`) → não crie conceito: a HF embute a REG existente (`[<id>](<id>)`), linka o termo
   existente e cita a HF existente; a linha na tabela do PRD fica com `reusa <id>` e sem arquivo em `elm/`.
 - **HF → REG** sempre por link para o arquivo da regra: na publicação ele vira **embed**. Relações entre requisitos
@@ -50,7 +56,7 @@ Preencha o padrão `sa-prd/prd.md` (o `prd.md`) e crie, em `elm/`, um arquivo po
   comportamento — e confirme com a pessoa: é por eles que as fatias vão provar que funcionam.
 - **Casos de teste planejados (CT)** — da HF, no mesmo lote: um `CT-nn-<slug>.md` por cenário, no padrão
   `sa-prd/ct.md`, com o resultado esperado igual ao "Então" do cenário; entram na tabela do PRD e são aprovados no
-  GATE com os demais. Pela linha Casos de teste: `ETM` → sobem ao ETM na publicação dos requisitos; `CSV` → ficam
+  GATE com os demais. Pela linha Casos de teste: `ETM` → sobem ao ETM na publicação, depois do merge; `CSV` → ficam
   no repositório. A execução e a evidência são da verificação da fatia (`CT.csv`, passo `sa-verificar.verificar.casos`).
 - Termos do glossário em todo o texto; termo novo já registrado pela entrevista.
 - **Limite do épico:** o da linha Especificação do `acordos.md` (toda história conta, inclusive as desdobradas de
