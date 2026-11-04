@@ -203,8 +203,21 @@ export function baixar(url, { ref = null, sha = null, subpasta = null } = {}) {
   const repo = path.join(tmp, "repo");
   let atual = null;
   if (fs.existsSync(url) && fs.statSync(url).isDirectory()) {
-    fs.cpSync(url, repo, { recursive: true, filter: (f) => path.basename(f) !== ".git" });
-    if (fs.existsSync(path.join(url, ".git"))) atual = git(["rev-parse", ref || "HEAD"], url);
+    const topo = ctx.exec("git", ["rev-parse", "--show-toplevel"], { cwd: url });
+    if (ref) {
+      // com @ref, a pasta vem do commit (git archive), não da árvore de trabalho; ref inexistente é recusada
+      if (topo.status !== 0) throw new Error(`${url}: @${ref} pede uma pasta dentro de um repositório git`);
+      atual = git(["rev-parse", "--verify", `${ref}^{commit}`], url);
+      const rel = path.relative(fs.realpathSync(topo.stdout.trim()), fs.realpathSync(url)).split(path.sep).join("/");
+      const tar = path.join(tmp, "a.tar");
+      git(["archive", "--format=tar", "-o", tar, rel ? `${atual}:${rel}` : atual], url);
+      fs.mkdirSync(repo);
+      const r = ctx.exec("tar", ["-xf", tar, "-C", repo]);
+      if (r.status !== 0) throw new Error(`tar: ${(r.stderr || "").trim()}`);
+    } else {
+      fs.cpSync(url, repo, { recursive: true, filter: (f) => path.basename(f) !== ".git" });
+      if (topo.status === 0) atual = git(["rev-parse", "HEAD"], url);
+    }
   } else {
     git(["clone", "--quiet", "--depth", "1", "--no-recurse-submodules", ...(ref ? ["--branch", ref] : []), url, repo]);
     atual = git(["rev-parse", "HEAD"], repo);
@@ -507,14 +520,17 @@ function acharNoIndice(nome, versao, opcoes) {
 
 export async function baixarToolkit(alvo, opcoes = {}) {
   const ehUrl = /[:/]/.test(alvo) && !/^[a-z0-9-]+(@[\w.-]+)?$/.test(alvo);
-  const [nomeOuUrl, versaoOuRef] = separarRef(alvo);
-  const e = ehUrl ? { nome: null, url: nomeOuUrl, ref: versaoOuRef } : acharNoIndice(nomeOuUrl, versaoOuRef, opcoes);
+  // `<url>[@ref]#<subpasta>`: o toolkit numa subpasta de um repositório (monorepo de toolkits)
+  const [semSub, subpasta = null] = ehUrl ? alvo.split("#") : [alvo];
+  const [nomeOuUrl, versaoOuRef] = separarRef(semSub);
+  const e = ehUrl ? { nome: null, url: nomeOuUrl, ref: versaoOuRef, subpasta } : acharNoIndice(nomeOuUrl, versaoOuRef, opcoes);
   const { pasta, sha } = baixar(e.url, e);
   const erros = validarToolkit(pasta, e.nome, sabia("framework"));
   if (erros.length) throw new Error(`toolkit recusado:\n- ${erros.join("\n- ")}`);
   const m = JSON.parse(fs.readFileSync(path.join(pasta, "toolkit.json"), "utf8"));
   const destino = sabia("toolkits", m.nome);
   const dif = diferencas(destino, pasta);
+  dif.removidos = dif.removidos.filter((f) => f !== ".origem.json");  // é nossa, regravada abaixo
   if (fs.existsSync(destino)) {
     ctx.log(`toolkit ${m.nome}: ${JSON.parse(fs.readFileSync(path.join(destino, "toolkit.json"), "utf8")).versao} → ${m.versao}`);
     if (!mostrarDiferencas(dif)) { ctx.log("nada mudou"); return m.nome; }
@@ -523,7 +539,7 @@ export async function baixarToolkit(alvo, opcoes = {}) {
   }
   fs.mkdirSync(path.dirname(destino), { recursive: true });
   fs.cpSync(pasta, destino, { recursive: true });
-  const origem = { indice: e.indice || null, url: e.url, ref: e.ref || null, sha, versao: m.versao };
+  const origem = { indice: e.indice || null, url: e.url, ref: e.ref || null, subpasta: e.indice ? null : e.subpasta || null, sha, versao: m.versao };
   fs.writeFileSync(path.join(destino, ".origem.json"), JSON.stringify(origem, null, 2) + "\n");
   const inv = lerInventario();
   inv.toolkits[m.nome] = { ...(inv.toolkits[m.nome] || { alvos: {} }), versao: m.versao, sha, fonte: e.url };
@@ -585,13 +601,16 @@ export async function removerToolkit(nome, opcoes = {}) {
     gravarInventario(inv);
   }
   ctx.log(`toolkit ${nome} removido`);
+  const f = path.join(process.cwd(), ".sabia", "config", "agentes.json");
+  if (fs.existsSync(f) && JSON.parse(fs.readFileSync(f, "utf8")).toolkits?.[nome])
+    ctx.log(`aviso: este projeto ainda usa o ${nome}; peça "atualizar os agentes do Sabiá" para desligá-lo`);
 }
 
 export async function atualizarToolkits(nome, opcoes = {}) {
   const inv = lerInventario();
   for (const n of nome ? [nome] : Object.keys(inv.toolkits)) {
     const origem = JSON.parse(fs.readFileSync(sabia("toolkits", n, ".origem.json"), "utf8"));
-    const alvo = origem.indice ? n : `${origem.url}${origem.ref ? "@" + origem.ref : ""}`;
+    const alvo = origem.indice ? n : `${origem.url}${origem.ref ? "@" + origem.ref : ""}${origem.subpasta ? "#" + origem.subpasta : ""}`;
     await instalarToolkit(alvo, { ...opcoes, atualizar: true, indice: origem.indice || opcoes.indice,
       alvo: Object.keys(inv.toolkits[n]?.alvos || {}).join(",") || "kiro" });
   }
@@ -864,8 +883,8 @@ sabia ${VERSAO} — instala o Sabiá e os toolkits no Kiro e no opencode
   sabia atualizar  [--versao X]
   sabia desinstalar [--alvo …]
   sabia toolkits listar   [--indice <url-git|pasta>]
-  sabia toolkits baixar   <nome>[@versao] | <url-git>[@ref]
-  sabia toolkits instalar <nome>[@versao] | <url-git>[@ref]  [--alvo …]   (sem argumento, no projeto: as versões dele)
+  sabia toolkits baixar   <nome>[@versao] | <url-git|pasta>[@ref][#subpasta]
+  sabia toolkits instalar <nome>[@versao] | <url-git|pasta>[@ref][#subpasta]  [--alvo …]   (sem argumento, no projeto: as versões dele)
   sabia toolkits atualizar [<nome>]
   sabia toolkits remover  <nome>
   sabia rota <arquivo>               o passo com desvio de toolkit, o dono, o toolkit, o motivo e as travas

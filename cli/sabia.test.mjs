@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
 import { afterEach, beforeEach, test } from "node:test";
 import * as s from "./sabia.mjs";
 
@@ -231,6 +232,26 @@ test("o passo do toolkit pelo id: só em passo do Sabiá com gancho de desvio", 
   // passo sem o id (passo.papel) é recusado, com ou sem o framework
   const semId = { skills: [{ caminho: "skills/batch/SKILL.md", papeis: ["desenvolvedor"], passo: { papel: "desenvolvedor", para: "job de batch" } }] };
   for (const fw of [repo, null]) assert.match(s.validarToolkit(toolkit(path.join(raiz, `p-${!!fw}`), semId), null, fw).join(), /passo de skills\/batch\/SKILL\.md: use o id do passo \(passo\.passo\)/);
+});
+
+test("toolkit numa subpasta de um repositório git: #subpasta, @ref lida do commit e ref inexistente recusada", async () => {
+  s.ctx.exec = (cmd, args, o = {}) => spawnSync(cmd, args, { encoding: "utf8", ...o });
+  const mono = path.join(raiz, "mono");
+  toolkit(path.join(mono, "batch-alfa"));
+  const g = (...a) => assert.equal(spawnSync("git", ["-c", "user.name=t", "-c", "user.email=t@t", ...a], { cwd: mono }).status, 0);
+  g("init", "-q"); g("add", "."); g("commit", "-qm", "v1"); g("tag", "v1");
+  fs.writeFileSync(path.join(mono, "batch-alfa/skills/batch/SKILL.md"), "árvore suja");  // fora do commit
+  const origem = () => JSON.parse(fs.readFileSync(path.join(home, ".sabia/toolkits/batch-alfa/.origem.json"), "utf8"));
+  const lido = () => fs.readFileSync(path.join(home, ".sabia/toolkits/batch-alfa/skills/batch/SKILL.md"), "utf8");
+  await s.baixarToolkit(`${mono}@v1#batch-alfa`, {});
+  assert.equal(lido(), "batch");
+  assert.equal(origem().subpasta, "batch-alfa");
+  assert.match(origem().sha, /^[0-9a-f]{40}$/);
+  respostas = ["s"];
+  await s.baixarToolkit(path.join(mono, "batch-alfa"), {});  // sem @ref: a árvore de trabalho, com o sha do HEAD
+  assert.equal(lido(), "árvore suja");
+  assert.match(origem().sha, /^[0-9a-f]{40}$/);
+  await assert.rejects(s.baixarToolkit(`${path.join(mono, "batch-alfa")}@nao-existe`, {}), /nao-existe/);
 });
 
 test("toolkit inválido é recusado e nada é gravado", async () => {
