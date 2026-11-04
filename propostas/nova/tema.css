@@ -129,3 +129,16 @@ footer{border-top:1px solid var(--line)}
 :root:not([data-paleta]) .sys h3{background:var(--card);color:var(--title);box-shadow:inset 0 3px 0 var(--c)}
 :root:not([data-paleta]) .ph-step:not(.skip){background:var(--card);color:var(--title);box-shadow:var(--raised),inset 0 3px 0 var(--c,var(--blue))}
 :root:not([data-paleta]) .proxima a{background:var(--navy)}
+
+/* seletor de tema (tema.js): botão com ícone de paleta na barra do topo e menu em popover */
+.top .tema-btn{display:grid;place-items:center;width:38px;height:38px;padding:0;border:1px solid #C1C4D6;border-radius:var(--r-sm);background:#fff;color:var(--ink);cursor:pointer}
+.top .tema-btn:hover{background:#FAFBFF;border-color:#8F95B2;color:var(--title)}
+.top .tema-btn:focus-visible,#temas button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+#temas{position:absolute;inset:auto;margin:0;padding:4px;min-width:150px;border:0;border-radius:var(--r);background:var(--card);color:var(--ink);box-shadow:var(--overlay)}
+#temas button{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border:0;border-radius:var(--r-sm);background:none;color:inherit;font:400 14px/20px var(--body);text-align:left;cursor:pointer}
+#temas button:hover{background:var(--soft)}
+#temas button[aria-checked="true"]{font-weight:600;color:var(--title)}
+#temas button[aria-checked="true"]::after{content:"✓";margin-left:auto}
+#temas i{width:16px;height:16px;border-radius:50%;flex:none}
+#temas i.sobria-sabia{background:linear-gradient(135deg,#F0F8F9 50%,#023047 50%);box-shadow:inset 0 0 0 1px #D0DADD}
+#temas i.sabia{background:linear-gradient(135deg,#187F97 50%,#FFB703 50%)}
