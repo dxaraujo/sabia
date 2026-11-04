@@ -1,0 +1,377 @@
+/* Tema do site, carregado depois do sabia.css, extra.css e mapa-d.css (que ficam como base do layout antigo em antigo/).
+   tema.js aplica no <html>: data-sobria="sobria-sabia" (padrão) ou data-paleta="sabia", e data-modo="escuro". */
+
+/* ================= forma: tira as formas herdadas dos decks ================= */
+/* Propostas de design system: carregado depois do sabia.css e do mapa-d.css. Tira as formas herdadas dos decks
+   (cantos assimétricos, chevrons, faixas e marcadores inclinados, blocos navy) e deixa cada tema só com tokens e assinatura. */
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.bands,.sec-head h2::before{display:none}
+nav.tabs a,nav.tabs a:first-child,.tr,.tr.back,.ph-step,.ph-step:first-child,.etapas li,.etapas li:first-child,.fileinfo .go,.proxima a{clip-path:none}
+.sign{border-radius:var(--r)}
+code,.sign .ver,.tag,.pill,.badge,.tree summary,.tree .f,.flowr span{border-radius:var(--r-xs)}
+.chip,.maptools button,.ph .ltabs button,.ph .nav button,.senbox div,.itin button,.top .gh,.install .url,.pdz .dz-passos,.pdz .dz-passos button,.tr,.ph-step,.fileinfo .go,.proxima a{border-radius:var(--r-sm)}
+.pdz .dz-ficha{border-radius:0 var(--r) var(--r) 0}
+.aviso{border-radius:0 var(--r-sm) var(--r-sm) 0}
+.pdz #dz-grade circle{fill:var(--grey2)}
+
+/* capa: fundo e texto vêm do tema */
+.sign.hero{background:var(--hero-bg);color:var(--hero-fg);padding-bottom:clamp(32px,4vw,56px)}
+.sign.hero h1{color:var(--hero-fg)}
+.install .url{border:1px solid var(--line)}
+.install .ghost{color:var(--hero-link,var(--brand))}
+.install button{background:var(--brand);color:#fff}
+.install button:hover{background:var(--brand-hover,var(--blue))}
+
+/* cabeçalhos de ficha claros, no lugar do navy com filete */
+.ph,.ficha .fh{background:var(--panel-bg,var(--grey));color:var(--title);border-bottom:1px solid var(--line)}
+.ph::before,.ficha .fh::before{height:3px}
+.ficha .fh::before{display:none}
+.ph h3,.ficha .fh b{color:var(--title)}
+.ph .sk,.ph .nav,.ficha .fh span{color:var(--muted)}
+.ph .ltabs button,.ph .nav button{background:var(--card);color:var(--title);box-shadow:inset 0 0 0 1px var(--line)}
+.ph .ltabs button[aria-pressed="true"]{background:var(--title);color:var(--card);box-shadow:none}
+.ph .nav button:hover:not(:disabled){background:var(--soft);color:var(--title)}
+.ph .nav .play{background:var(--brand);color:#fff;box-shadow:none}
+.senbox div.on{background:var(--brand);color:#fff}.senbox div.on b{color:#fff}
+.itin li.cur .dot{background:var(--brand);border-color:var(--brand);box-shadow:0 0 0 4px color-mix(in srgb,var(--brand) 25%,transparent)}
+.trilho li.agora::after{border-color:var(--brand);box-shadow:0 0 0 5px color-mix(in srgb,var(--brand) 22%,transparent)}
+
+/* etapas: cartões com a cor da etapa num filete, no lugar dos chevrons coloridos */
+.etapas li,.etapas li:first-child{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:var(--r);padding:16px 16px 14px;box-shadow:inset 0 3px 0 var(--c)}
+.etapas .claro{--t:var(--ink)}
+.etapas b{color:var(--title)}
+.etapas code,.etapas .claro code{background:var(--soft);color:var(--title)}
+
+/* primeiros passos */
+.passos li{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.passos li::before{color:var(--brand)}
+.passos h3{color:var(--title)}
+.passos code{background:var(--soft);color:var(--title)}
+
+/* o pássaro na paleta do tema: os sete polígonos usam as mesmas cores do deck, na ordem abaixo */
+.ave polygon:nth-of-type(1){fill:var(--cyan);stroke:var(--cyan)}
+.ave polygon:nth-of-type(2){fill:var(--lime);stroke:var(--lime)}
+.ave polygon:nth-of-type(3){fill:var(--brand);stroke:var(--brand)}
+.ave polygon:nth-of-type(4){fill:var(--navy);stroke:var(--navy)}
+.ave polygon:nth-of-type(5){fill:var(--green);stroke:var(--green)}
+.ave polygon:nth-of-type(6){fill:var(--orange);stroke:var(--orange)}
+.ave polygon:nth-of-type(7){fill:var(--teal);stroke:var(--teal)}
+
+/* troca de proposta, para comparar */
+
+/* ================= sistema: forma ADS, fonte SF UI e cores da Sóbria ================= */
+/* Nova versão: forma do Atlassian Design System (ADS) — tamanhos (texto 14/20, títulos 48/28/20), espaçamentos, cantos (4/8px, lozenge 3px) e sombras
+   (raised e overlay no lugar de borda + elevação), além dos lozenges em caixa alta. */
+:root{
+  /* cores da sóbria (o sistema sem paleta; atual e sabiá trocam estas): quase tudo branco e cinza azulado, com
+     destaques no azul acinzentado #2C5168 e no amarelo; auxiliares (filetes das etapas, linhas do mapa) da atual */
+  --bg:#ffffff; --card:#ffffff; --ink:#474D66; --title:#2C5168; --muted:#696F8C; --line:#E6E8F0; --soft:#F4F6FA; --grey:#F9FAFC; --grey2:#EDEFF5;
+  --acento:#2C5168; --brand:#2C5168; --brand-hover:#24445A; --blue:#0086C8; --navy:#2C5168; --cyan:#00BBCE; --teal:#0094AD; --green:#76B043; --lime:#B2D235; --yellow:#FEBE10; --orange:#FAA61A; --red:#D9534F;
+  --l-epico:#2C5168; --l-hitl:#0086C8; --l-afk:#00BBCE; --l-atd:#76B043; --l-min:#0094AD; --l-sprint:#FEBE10; --l-rapida:#FAA61A;
+  --hero-bg:#F4F6FA; --hero-fg:#2C5168;
+  /* forma e profundidade: do ADS */
+  --r:8px; --r-sm:4px; --r-xs:3px;
+  --display:"SF UI Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --body:"SF UI Text",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",Monaco,Inconsolata,"Fira Mono","Droid Sans Mono","Source Code Pro",monospace;
+  --raised:0 1px 1px #1E1F2140,0 0 1px #1E1F214F;
+  --overlay:0 8px 12px #1E1F2126,0 0 1px #1E1F214F;
+}
+body{font:400 14px/20px var(--body)}
+h1,h2,h3,h4{font-weight:600;letter-spacing:0}
+code{background:var(--soft);color:var(--title)}
+
+.top{border-bottom:1px solid var(--line);padding-block:14px}
+.brand{font:600 20px/1 var(--display)}
+.top .gh{font:500 14px/1 var(--body);color:var(--ink);padding:9px 12px;border:1px solid #C1C4D6;background:#fff}
+.top .gh:hover{background:#FAFBFF;border-color:#8F95B2;color:var(--title)}
+nav.tabs{border-bottom:0;gap:4px;padding-block:10px}
+nav.tabs a{background:none;color:var(--ink);font:500 14px/1 var(--body);padding:9px 12px;border-radius:4px}
+nav.tabs a:hover{background:var(--soft);color:var(--title)}
+nav.tabs a[aria-current="page"]{background:color-mix(in srgb,var(--acento) 10%,transparent);color:var(--acento)}
+
+.sign.hero h1{font-size:clamp(32px,4.2vw,48px);line-height:1.12;letter-spacing:-.015em}
+.sign.hero .lead{color:var(--ink);font-size:16px;line-height:24px}
+.install .how{color:var(--ink);font:500 14px/20px var(--body)}
+.install .url{border-color:#C1C4D6}
+.install button{font:500 14px/1 var(--body)}
+.install .ghost{text-decoration:none;font:500 14px/1 var(--body)}
+.install .ghost:hover{text-decoration:underline}
+.ficha{box-shadow:var(--raised)}
+
+.lead-sec h2{font-size:clamp(22px,2.4vw,28px);line-height:1.15}
+.lead-sec p{font-size:16px;line-height:24px}
+.razoes article{background:var(--grey)}
+.razoes h3{font-size:20px}
+.porta{border:0;box-shadow:var(--raised)}
+.porta:hover{box-shadow:var(--overlay);transform:none}
+.porta .n{align-self:flex-start;font:700 11px/16px var(--display);text-transform:uppercase;padding:0 4px;border-radius:3px;background:color-mix(in srgb,var(--c) 16%,#fff);color:color-mix(in srgb,var(--c) 65%,#101840)}
+.porta h3{font-size:16px}
+.porta .ir{font:500 14px/1 var(--body);color:var(--acento)}
+.passos li{border:0;box-shadow:var(--raised)}
+.passos li::before{font:600 24px/1 var(--display)}
+
+.chip{border:1px solid #C1C4D6;font:500 13px/1 var(--body)}
+.controls .lbl,.kv dt,.blk h4,.senbox b{color:var(--muted);font:600 12px/16px var(--display);text-transform:none;letter-spacing:0}
+.pdz .dz-vista,.panel{border:1px solid var(--line)}
+.pdz .dz-ficha{box-shadow:var(--overlay)}
+.pdz .dz-passos{border:0;box-shadow:var(--overlay)}
+footer{border-top:1px solid var(--line)}
+
+/* escuro: neutros grafite e azul claro; as sombras do ADS no escuro */
+:root[data-modo="escuro"]{
+  --bg:#1F1F21; --card:#242528; --ink:#CECFD2; --title:#DFE1E5; --muted:#96999E; --line:#3D3F43; --soft:#2B2C2F; --grey:#18191A; --grey2:#333438;
+  --acento:#9DB7CC; --brand:#6E93B3; --brand-hover:#9DB7CC; --blue:#5C85FF; --navy:#2C5168;
+  --hero-bg:#18191A; --hero-fg:#DFE1E5; --panel-bg:#2B2C2F;
+  --raised:0 0 0 1px #3D3F43; --overlay:0 8px 12px #01040475,0 0 1px #01040480;
+}
+[data-modo="escuro"] :is(#map,.itin,.trilho){--l-epico:#7FA6C4}
+[data-modo="escuro"] .top .gh{background:var(--card);border-color:var(--line);color:var(--ink)}
+[data-modo="escuro"] .top .gh:hover{background:var(--soft);color:var(--title)}
+[data-modo="escuro"] nav.tabs a{color:var(--ink)}
+[data-modo="escuro"] nav.tabs a:hover{background:var(--soft);color:var(--title)}
+[data-modo="escuro"] nav.tabs a[aria-current="page"]{background:color-mix(in srgb,var(--acento) 18%,transparent);color:var(--acento)}
+[data-modo="escuro"] .install .url,[data-modo="escuro"] .chip{border-color:var(--line)}
+[data-modo="escuro"] .install button{color:#1F1F21}
+[data-modo="escuro"] .porta .n{background:color-mix(in srgb,var(--c) 22%,var(--card));color:color-mix(in srgb,var(--c) 55%,#fff)}
+[data-modo="escuro"] .porta .ir{color:var(--acento)}
+
+/* sóbria (sem paleta): fundo quase todo branco; o destaque fica com o azul acinzentado (aba ativa, cabeçalhos das
+   fichas, Primeiros passos) e com o amarelo em poucos pontos (Copiar, números dos passos, estação atual) */
+:root:not([data-paleta]) .install button{background:var(--yellow);color:var(--navy)}
+:root:not([data-paleta]) .install button:hover{background:var(--yellow);filter:brightness(1.05)}
+:root:not([data-paleta]) .install .ghost{color:var(--navy)}
+:root:not([data-paleta]) nav.tabs a[aria-current="page"]{background:var(--navy);color:#fff}
+:root:not([data-paleta]) :is(.ficha .fh,.ph){background:var(--navy);color:#fff;border-bottom:0}
+:root:not([data-paleta]) .ficha .fh::before{display:block;height:4px;background:var(--yellow)}
+:root:not([data-paleta]) .ph::before{height:4px}
+:root:not([data-paleta]) :is(.ficha .fh b,.ph h3){color:#fff}
+:root:not([data-paleta]) :is(.ficha .fh span,.ph .sk,.ph .nav){color:#cfe3f1}
+:root:not([data-paleta]) :is(.ph .ltabs button,.ph .nav button){background:rgba(255,255,255,.14);color:#fff;box-shadow:none}
+:root:not([data-paleta]) :is(.ph .ltabs button[aria-pressed="true"],.ph .nav button:hover:not(:disabled)){background:#fff;color:var(--navy)}
+:root:not([data-paleta]) .ph .nav .play{background:var(--yellow);color:var(--navy)}
+:root:not([data-paleta]) .passos li{background:var(--navy);color:#fff;box-shadow:none}
+:root:not([data-paleta]) .passos li::before{color:var(--yellow)}
+:root:not([data-paleta]) .passos h3{color:#fff}
+:root:not([data-paleta]) .passos code{background:rgba(255,255,255,.16);color:#fff}
+:root:not([data-paleta]) .itin li.cur .dot{background:var(--yellow);border-color:var(--navy);box-shadow:0 0 0 4px rgba(254,190,16,.35)}
+:root:not([data-paleta]) .trilho li.agora::after{background:var(--yellow);border-color:var(--navy);box-shadow:0 0 0 5px rgba(254,190,16,.35)}
+:root:not([data-paleta]) .senbox div.on{background:var(--navy);color:#fff}
+:root:not([data-paleta]) .senbox div.on b{color:var(--yellow)}
+:root:not([data-paleta]) .pdz .dz-passos .prox{background:var(--navy);color:#fff}
+:root[data-modo="escuro"]:not([data-paleta]) .install .ghost{color:var(--acento)}
+
+/* pesos: hierarquia contida (impeccable). Negrito pesado só no título da capa; títulos de seção, de etapa, números
+   e rótulos da barra lateral em 600 */
+.lead-sec h2{font-weight:600}
+.etapas b{font-weight:600}
+.tr b,.trilho b,.itin b,.svc b{font-weight:600}
+:root .portas .porta .n{font-weight:600}
+
+/* revisão (impeccable craft floor + ui-ux-pro-max): monoespaçada só para código; seleção de texto na paleta;
+   links da capa sempre sublinhados */
+.ph .sk,.ficha .fh span{font-family:var(--body);font-weight:400}
+::selection{background:color-mix(in srgb,var(--brand) 28%,transparent);color:inherit}
+.install .ghost{text-decoration:underline;text-underline-offset:4px}
+
+/* sóbria em todas as páginas: capa interna clara e componentes coloridos viram cartões brancos com filete na cor */
+:root:not([data-paleta]) .sign.page{background:var(--hero-bg);color:var(--hero-fg)}
+:root:not([data-paleta]) .sign.page h1{color:var(--hero-fg)}
+:root:not([data-paleta]) .sign.page .lead{color:var(--ink);opacity:1}
+:root:not([data-paleta]) .role{background:var(--card);box-shadow:var(--raised)}
+:root:not([data-paleta]) .role .top{background:var(--card);color:var(--title);box-shadow:inset 0 3px 0 var(--rc,var(--blue));border-bottom:1px solid var(--line)}
+:root:not([data-paleta]) .role .top h3{color:var(--title)}
+:root:not([data-paleta]) .role .who{color:var(--muted);opacity:1}
+:root:not([data-paleta]) .role .top .tag{background:var(--soft);color:var(--title)}
+:root:not([data-paleta]) .sen>div{background:var(--card)!important;color:var(--ink);box-shadow:var(--raised),inset 0 3px 0 var(--blue)}
+:root:not([data-paleta]) .sen>div:nth-child(2){box-shadow:var(--raised),inset 0 3px 0 var(--teal)}
+:root:not([data-paleta]) .sen>div:nth-child(3){box-shadow:var(--raised),inset 0 3px 0 var(--green)}
+:root:not([data-paleta]) .sen b{color:var(--title)}
+:root:not([data-paleta]) :is(.sen .pill,.sen code){background:var(--soft);color:var(--title)}
+:root:not([data-paleta]) .sys h3{background:var(--card);color:var(--title);box-shadow:inset 0 3px 0 var(--c)}
+:root:not([data-paleta]) .ph-step:not(.skip){background:var(--card);color:var(--title);box-shadow:var(--raised),inset 0 3px 0 var(--c,var(--blue))}
+:root:not([data-paleta]) .proxima a{background:var(--navy)}
+
+
+/* ================= paletas: Sabiá (data-paleta="sabia") e Sóbria - Sabiá (data-sobria="sobria-sabia") ================= */
+/* Paletas vivas sobre qualquer proposta: <html data-paleta="atual|…">. Sem o atributo, fica a sóbria do sistema.
+   O sistema dá fonte, forma e componentes; a paleta dá a identidade: capa cheia, etapas coloridas, trilho de 7 cores.
+   "atual" reaproveita as cores de hoje, iguais às do site em cada lugar; a sóbria é o sistema sem paleta (nova/tema.css). */
+/* o trilho: as sete etapas em sequência, assinatura no lugar das faixas inclinadas do deck */
+:root[data-paleta]{--viva-trilho:linear-gradient(90deg,var(--cyan) 0 14.29%,var(--lime) 0 28.57%,var(--brand) 0 42.86%,var(--navy) 0 57.14%,var(--green) 0 71.43%,var(--orange) 0 85.71%,var(--teal) 0)}
+
+/* capa cheia */
+[data-paleta] .sign.hero{background:var(--viva-capa);color:#fff;border:0;padding-inline:clamp(20px,4vw,48px);padding-bottom:clamp(48px,5vw,72px);position:relative;overflow:hidden}
+[data-paleta] .sign.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:10px;background:var(--viva-trilho)}
+[data-paleta] .sign.hero h1{color:#fff}
+[data-paleta] .sign.hero .lead,[data-paleta] .install .how{color:rgba(255,255,255,.88)}
+[data-paleta] .install .url{background:#fff;border:0}
+[data-paleta] .install code{color:var(--viva-tinta)}
+[data-paleta] .install button,[data-paleta] .install button:hover{background:var(--viva-destaque);color:var(--destaque-txt,var(--viva-tinta))}
+[data-paleta] .install button:hover{filter:brightness(1.07)}
+[data-paleta] .install .ghost{color:#fff;text-decoration:underline;text-underline-offset:4px}
+[data-paleta] .ficha .fh::before{display:block;height:6px;background:var(--viva-trilho)}
+
+/* marca das seções: o trilho em miniatura */
+[data-paleta] .lead-sec h2::before{content:"";display:block;width:84px;height:6px;border-radius:3px;background:var(--viva-trilho);margin-bottom:14px}
+
+/* etapas cheias, texto claro ou escuro conforme a cor (classe .claro do HTML) */
+[data-paleta] .etapas li,[data-paleta] .etapas li:first-child{background:var(--c);color:#fff;border-color:transparent;box-shadow:none}
+[data-paleta] .etapas li.claro,[data-paleta] .etapas li.claro:first-child{color:var(--viva-tinta)}
+[data-paleta] .etapas b{color:inherit}
+[data-paleta] .etapas code{background:rgba(255,255,255,.2);color:inherit}
+[data-paleta] .etapas .claro code{background:rgba(0,0,0,.08)}
+
+/* razões e portas com a cor de cada uma */
+[data-paleta] .razoes article{background:color-mix(in srgb,var(--c) 14%,var(--card));border-color:transparent}
+[data-paleta] .razoes article::before{display:block;width:72px;height:8px;background:var(--c)}
+[data-paleta] .porta{border-top:4px solid var(--c)}
+[data-paleta] .porta .n{font:800 32px/1 var(--display);letter-spacing:-.01em;text-transform:none;padding:0;border:0;background:none;color:color-mix(in oklab,var(--c) 75%,var(--viva-tinta))}
+
+/* primeiros passos e ficha do mapa em escuro */
+[data-paleta] .passos li{background:var(--viva-escuro);color:#fff;border-color:transparent}
+[data-paleta] .passos li::before{color:var(--viva-destaque)}
+[data-paleta] .passos h3{color:#fff}
+[data-paleta] .passos code{background:rgba(255,255,255,.16);color:#fff}
+[data-paleta] .ph{background:var(--viva-escuro);color:#fff;border-bottom:0}
+[data-paleta] .ph::before{height:6px}
+[data-paleta] .ph h3{color:#fff}
+[data-paleta] .ph .sk,[data-paleta] .ph .nav{color:rgba(255,255,255,.75)}
+[data-paleta] .ph .ltabs button,[data-paleta] .ph .nav button{background:rgba(255,255,255,.14);color:#fff;box-shadow:none}
+[data-paleta] .ph .ltabs button[aria-pressed="true"],[data-paleta] .ph .nav button:hover:not(:disabled){background:#fff;color:var(--viva-escuro)}
+[data-paleta] .ph .nav .play{background:var(--viva-destaque);color:var(--destaque-txt,var(--viva-tinta))}
+[data-paleta] .pdz .dz-passos .prox{background:var(--viva-escuro);color:#fff}
+
+/* seletor de paleta, dentro da troca de proposta */
+
+/* paletas no escuro: o épico (navy) clareia no mapa; blocos ganham borda sutil */
+[data-modo="escuro"][data-paleta] .etapas li,[data-modo="escuro"][data-paleta] .passos li{box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+[data-modo="escuro"][data-paleta] .porta .n{color:color-mix(in oklab,var(--c) 80%,#fff)}
+
+/* "atual" fiel ao site de hoje (sabia.css): as mesmas cores em cada lugar; forma, tamanho e sombra seguem o sistema.
+   Toda paleta viva usa estas mesmas regras; cada uma troca só os valores das cores. */
+:root[data-paleta]{--red:#D9534F}
+[data-paleta] :focus-visible{outline-color:var(--yellow)}
+[data-paleta] :is(.top .gh,.chip:not([aria-pressed="true"])){border-color:var(--line);color:var(--title)}
+[data-paleta] .top .gh:hover{border-color:var(--blue);color:var(--blue);background:#fff}
+[data-paleta] nav.tabs a{color:var(--title)}
+[data-paleta] nav.tabs a:hover{background:var(--blue);color:#fff}
+[data-paleta] nav.tabs a[aria-current="page"]{background:var(--navy);color:#fff}
+[data-paleta] .lead-sec h2::before{display:none}
+[data-paleta] .ficha .fh{background:var(--navy);color:#fff;border-bottom:0}
+[data-paleta] .ficha .fh::before{background:var(--green)}
+[data-paleta] .ficha .fh b{color:#fff}
+[data-paleta] .ficha .fh span,[data-paleta] .ph .sk,[data-paleta] .ph .nav{color:#cfe3f1}
+[data-paleta] .etapas .claro code{background:color-mix(in srgb,var(--navy) 12%,transparent)}
+[data-paleta] .controls .lbl{color:var(--title)}
+[data-paleta] :is(.kv dt,.blk h4,.senbox b){color:var(--blue)}
+[data-paleta] .senbox div.on{background:var(--navy)}
+[data-paleta] .senbox div.on b{color:var(--yellow)}
+[data-paleta] .itin li.cur .dot{background:var(--yellow);border-color:var(--navy);box-shadow:0 0 0 4px color-mix(in srgb,var(--yellow) 35%,transparent)}
+[data-paleta] .razoes article{background:var(--soft)}
+[data-paleta] .porta{border:1.5px solid var(--line)}
+[data-paleta] .porta:hover{border-color:var(--blue)}
+[data-paleta] .porta .n{color:var(--c)}
+[data-paleta] .porta .ir{color:var(--blue)}
+[data-paleta] footer{border-top-color:var(--soft)}
+
+
+/* ===== Sabiá: cores da Refreshing Summer Fun (Coolors) com o tratamento da atual: blocos das etapas, botões da barra
+   lateral e linhas do mapa preenchidos só com as cores puras da paleta (céu #8ECAE6, azul #219EBC, navy #023047,
+   amarelo #FFB703, laranja #FB8500) e um cinza da escala dela (#63787D); sem tons derivados. O texto é que se adapta:
+   escuro sobre céu, amarelo, laranja e azul; branco sobre navy e cinza ===== */
+:root[data-paleta="sabia"]{
+  --brand:#219EBC; --blue:#187F97; --navy:#023047; --cyan:#8ECAE6; --lime:#FFB703; --green:#219EBC; --orange:#FB8500; --teal:#63787D; --yellow:#FFB703;
+  --l-epico:#023047; --l-hitl:#219EBC; --l-afk:#8ECAE6; --l-atd:#FB8500; --l-min:#63787D; --l-sprint:#FFB703; --l-rapida:#FB8500;
+  --viva-capa:#187F97; --viva-escuro:#023047; --viva-destaque:#FFB703; --viva-tinta:#022338; --destaque-txt:#022338;
+}
+:root[data-paleta="sabia"]:not([data-modo="escuro"]){--bg:#FFFFFF; --card:#FFFFFF; --ink:#38494D; --title:#023047; --muted:#63787D; --line:#D0DADD; --soft:#F0F8F9; --grey:#F6F8F9; --grey2:#E7EDEE; --panel-bg:#F6F8F9; --acento:#187F97}
+:root[data-paleta="sabia"][data-modo="escuro"]{--acento:#5AB4D6}
+[data-modo="escuro"][data-paleta="sabia"] :is(#map,.itin,.trilho,.chip){--l-epico:#6FA8C8}
+/* capa em #187F97 (o azul da própria paleta): texto branco a 4,6:1, para o parágrafo da capa passar no AA */
+/* texto como na atual: branco nas etapas e nas linhas da barra lateral; escuro só nas cores muito claras
+   (Triagem, Alinhamento, Verificação, Copiar; na barra, AFK em céu e sprint em amarelo) */
+[data-paleta="sabia"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"]){color:#022338}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===== variantes da sóbria: a mesma estrutura (quase tudo branco, destaques no navy e num amarelo em poucos pontos),
+   com outras cores. Ficam em <html data-sobria="…"> e não ligam as regras de paleta viva ===== */
+/* Sóbria - Sabiá: navy #023047 e azul-céu #219EBC da Refreshing Summer Fun; amarelo #FFB703 de destaque;
+   filetes das etapas, linhas do mapa e botões da barra lateral só com as cores puras da Sabiá; cinzas puxados para o azul da paleta */
+:root[data-sobria="sobria-sabia"]{
+  --navy:#023047; --cyan:#8ECAE6; --lime:#FFB703; --green:#219EBC; --orange:#FB8500; --teal:#63787D; --yellow:#FFB703;
+  --l-epico:#023047; --l-hitl:#219EBC; --l-afk:#8ECAE6; --l-atd:#FB8500; --l-min:#63787D; --l-sprint:#FFB703; --l-rapida:#FB8500;
+}
+:root[data-sobria="sobria-sabia"]:not([data-modo="escuro"]){
+  --bg:#FFFFFF; --card:#FFFFFF; --ink:#38494D; --title:#023047; --muted:#63787D; --line:#D0DADD; --soft:#F0F8F9; --grey:#F6F8F9; --grey2:#E7EDEE;
+  --acento:#187F97; --brand:#219EBC; --brand-hover:#023047; --blue:#187F97; --hero-bg:#F0F8F9; --hero-fg:#023047;
+}
+:root[data-sobria="sobria-sabia"][data-modo="escuro"]{--acento:#5AB4D6; --brand:#219EBC; --brand-hover:#5AB4D6; --blue:#219EBC}
+[data-modo="escuro"][data-sobria="sobria-sabia"] :is(#map,.itin,.trilho,.chip){--l-epico:#6FA8C8}
+[data-sobria="sobria-sabia"] .tr:is([style*="--l-afk)"],[style*="--l-sprint)"]){color:#022338}
+[data-sobria="sobria-sabia"] :is(.itin li.cur .dot,.trilho li.agora::after){box-shadow:0 0 0 4px rgba(255,183,3,.35)}
+
+/* ================= modo escuro (data-modo="escuro") ================= */
+/* Modo escuro: <html data-modo="escuro">. Cada tema define os tokens escuros no tema.css; aqui, as superfícies que o
+   site fixou em branco passam a usar os tokens. No mapa, nas trilhas e nas portas, o --navy vira a cor do texto: ali ele
+   desenha linhas e estações, que precisam aparecer no fundo escuro. Fora deles, o navy segue escuro (fundo de texto branco). */
+:root[data-modo="escuro"]{color-scheme:dark}
+[data-modo="escuro"] :is(.mapbox,.panel,.chip:not([aria-pressed="true"]),.maptools button,.ficha,.porta,.tree,.ewmtree,.pdz .dz-vista,.install .url,.scroll){background:var(--card)}
+[data-modo="escuro"] :is(.tag,.svc code,.flowr span,.mapnote,.svc:not(:hover):not(.sel)){background:var(--soft)}
+[data-modo="escuro"] .pdz .dz-passos{background:color-mix(in srgb,var(--card) 94%,transparent)}
+[data-modo="escuro"] .pdz .dz-passos .ant{background:var(--soft);color:var(--ink)}
+[data-modo="escuro"] .note,[data-modo="escuro"] .aviso{background:color-mix(in srgb,var(--yellow) 14%,var(--card))}
+[data-modo="escuro"] .note.warn{background:color-mix(in srgb,var(--red) 16%,var(--card))}
+[data-modo="escuro"] .svc:hover b,[data-modo="escuro"] .svc.sel b,[data-modo="escuro"] .svc:hover span,[data-modo="escuro"] .svc.sel span{color:#fff}
+[data-modo="escuro"] .install code{color:var(--ink)}
+
+/* mapa, trilhas e portas */
+[data-modo="escuro"] :is(#map,.itin,.trilho,.portas,.mapnote){--navy:var(--ink)}
+[data-modo="escuro"] svg .st:not(.g-gate):not(:hover):not(.sel) .body,[data-modo="escuro"] svg .xlab rect,[data-modo="escuro"] .pdz .dz-via rect,[data-modo="escuro"] svg .train .tb{fill:var(--card)}
+[data-modo="escuro"] svg .st .gtxt{fill:var(--card)}
+[data-modo="escuro"] svg .halo-t{stroke:var(--card)}
+[data-modo="escuro"] .pdz .dz-casing path{stroke:var(--card)}
+[data-modo="escuro"] .itin .dot,[data-modo="escuro"] .trilho li::after{background:var(--card)}
+[data-modo="escuro"] .itin li.gate .dot,[data-modo="escuro"] .trilho li.ok::after{background:var(--navy)}
+
+/* ================= controles de tema (tema.js): switch claro/escuro e paleta, na barra do topo ================= */
+.top .tema{display:flex;align-items:center;gap:8px}
+.top .tema svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.top .tema-btn{display:grid;place-items:center;width:38px;height:38px;padding:0;border:1px solid #C1C4D6;border-radius:var(--r-sm);background:var(--card);color:var(--ink);cursor:pointer}
+.top .tema-btn:hover{background:var(--soft);border-color:#8F95B2;color:var(--title)}
+.modo-sw{position:relative;width:64px;height:34px;padding:0;border:1px solid #C1C4D6;border-radius:999px;background:var(--soft);color:var(--muted);cursor:pointer}
+.modo-sw:hover{border-color:#8F95B2}
+.modo-sw .trilha{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 8px}
+.modo-sw .botao{position:absolute;top:3px;left:3px;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--card);color:var(--yellow);box-shadow:var(--raised);transition:transform .2s ease}
+.modo-sw .botao svg{grid-area:1/1;width:16px;height:16px}
+.modo-sw .botao .lua,.modo-sw[aria-checked="true"] .botao .sol{display:none}
+.modo-sw[aria-checked="true"] .botao .lua{display:block}
+.modo-sw[aria-checked="true"] .botao{transform:translateX(30px);color:var(--acento)}
+@media (prefers-reduced-motion:reduce){.modo-sw .botao{transition:none}}
+:is(.modo-sw,.top .tema-btn):focus-visible,#temas button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+#temas{position:absolute;inset:auto;margin:0;padding:4px;min-width:150px;border:0;border-radius:var(--r);background:var(--card);color:var(--ink);box-shadow:var(--overlay)}
+#temas button{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border:0;border-radius:var(--r-sm);background:none;color:inherit;font:400 14px/20px var(--body);text-align:left;cursor:pointer}
+#temas button:hover{background:var(--soft)}
+#temas button[aria-checked="true"]{font-weight:600;color:var(--title)}
+#temas button[aria-checked="true"]::after{content:"✓";margin-left:auto}
+#temas i{width:16px;height:16px;border-radius:50%;flex:none}
+#temas i.sobria-sabia{background:linear-gradient(135deg,#F0F8F9 50%,#023047 50%);box-shadow:inset 0 0 0 1px #D0DADD}
+#temas i.sabia{background:linear-gradient(135deg,#187F97 50%,#FFB703 50%)}
+[data-modo="escuro"] :is(.modo-sw,.top .tema-btn){border-color:var(--line)}
+[data-modo="escuro"] #temas{box-shadow:var(--overlay),0 0 0 1px var(--line)}
+
+/* diagramas (Como funciona, Toolkits): caixas nas cores do tema; texto branco no navy e no cinza, escuro nas cores claras
+   (mesma regra das etapas). --nota é o fundo das caixas de destaque amarelas */
+.diag{--on-navy:#fff;--on-teal:#fff;--on-brand:#022338;--on-green:#022338;--on-cyan:#022338;--on-orange:#022338;--nota:color-mix(in srgb,var(--yellow) 14%,var(--card))}
