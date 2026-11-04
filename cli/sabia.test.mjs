@@ -252,6 +252,11 @@ test("toolkit numa subpasta de um repositório git: #subpasta, @ref lida do comm
   assert.equal(lido(), "árvore suja");
   assert.match(origem().sha, /^[0-9a-f]{40}$/);
   await assert.rejects(s.baixarToolkit(`${path.join(mono, "batch-alfa")}@nao-existe`, {}), /nao-existe/);
+  // o mesmo conteúdo de outra fonte: nada é copiado, mas a origem passa a ser a nova
+  const indice = escrever(path.join(raiz, "indice"), { ".claude-plugin/marketplace.json": { name: "idx", plugins: [{ name: "batch-alfa", version: "1.0.0", source: "./batch-alfa" }] } });
+  fs.cpSync(path.join(home, ".sabia/toolkits/batch-alfa"), path.join(indice, "batch-alfa"), { recursive: true, filter: (f) => !f.endsWith(".origem.json") });
+  await s.baixarToolkit("batch-alfa", { indice });
+  assert.equal(origem().indice, indice);
 });
 
 test("toolkit inválido é recusado e nada é gravado", async () => {

@@ -531,20 +531,25 @@ export async function baixarToolkit(alvo, opcoes = {}) {
   const destino = sabia("toolkits", m.nome);
   const dif = diferencas(destino, pasta);
   dif.removidos = dif.removidos.filter((f) => f !== ".origem.json");  // é nossa, regravada abaixo
+  let mudou = true;
   if (fs.existsSync(destino)) {
     ctx.log(`toolkit ${m.nome}: ${JSON.parse(fs.readFileSync(path.join(destino, "toolkit.json"), "utf8")).versao} → ${m.versao}`);
-    if (!mostrarDiferencas(dif)) { ctx.log("nada mudou"); return m.nome; }
-    if (!/^s/i.test(await ctx.perguntar("Substituir? [s/N]", "n"))) { ctx.log("nada foi alterado"); return null; }
-    fs.rmSync(destino, { recursive: true, force: true });
+    mudou = mostrarDiferencas(dif);
+    if (!mudou) ctx.log("nada mudou");
+    else if (!/^s/i.test(await ctx.perguntar("Substituir? [s/N]", "n"))) { ctx.log("nada foi alterado"); return null; }
+    else fs.rmSync(destino, { recursive: true, force: true });
   }
-  fs.mkdirSync(path.dirname(destino), { recursive: true });
-  fs.cpSync(pasta, destino, { recursive: true });
+  if (mudou) {
+    fs.mkdirSync(path.dirname(destino), { recursive: true });
+    fs.cpSync(pasta, destino, { recursive: true });
+  }
+  // mesmo sem mudar o conteúdo, a origem pode ter mudado (da pasta local para o índice, por exemplo)
   const origem = { indice: e.indice || null, url: e.url, ref: e.ref || null, subpasta: e.indice ? null : e.subpasta || null, sha, versao: m.versao };
   fs.writeFileSync(path.join(destino, ".origem.json"), JSON.stringify(origem, null, 2) + "\n");
   const inv = lerInventario();
   inv.toolkits[m.nome] = { ...(inv.toolkits[m.nome] || { alvos: {} }), versao: m.versao, sha, fonte: e.url };
   gravarInventario(inv);
-  ctx.log(`toolkit ${m.nome} ${m.versao} em ~/.sabia/toolkits/${m.nome}`);
+  if (mudou) ctx.log(`toolkit ${m.nome} ${m.versao} em ~/.sabia/toolkits/${m.nome}`);
   return m.nome;
 }
 
