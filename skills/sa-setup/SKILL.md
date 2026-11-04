@@ -341,7 +341,9 @@ Na ordem:
 
 Itens:
 1. `.sabia/sabia.md` ← [assets/steering/sabia.md](assets/steering/sabia.md) com as respostas (nada de `<…>`
-   sobrando; o que não se aplica fica "não há"/"nenhum"). É o **único** steering do fluxo. Ao regravá-lo (no modo
+   sobrando; o que não se aplica fica "não há"/"nenhum"). É o **único** steering do fluxo. Monte-o sempre do modelo,
+   nunca do `sabia.md` antigo (no modo atualização, o antigo só dá as respostas): o gerador avisa a linha do modelo
+   que falta e a que sobra — aviso desses → corrija antes do W8. Ao regravá-lo (no modo
    atualização), a seção Regras aprendidas fica como está no disco, do título `## Regras aprendidas` até a próxima
    `## ` ou o fim do arquivo: ela é do fluxo `sa-aprender.promover` (agente `sa-produto`), que grava só ela — nunca
    apague regras promovidas nem as reescreva, e o diff do W8 não a mostra mudando. Para cada ferramenta carregá-lo, um

@@ -567,6 +567,28 @@ def resumo(agentes, cfg):
     return "\n".join(linhas) + "\n"
 
 
+def conferir_sabia_md(projeto: Path) -> list[str]:
+    """Seções e linhas de tabela do modelo que faltam (ou sobram) no .sabia/sabia.md do projeto: a setup o monta do
+    modelo, nunca do arquivo antigo. As seções preenchidas por projeto ou pelo fluxo ficam de fora."""
+    f = projeto / ".sabia" / "sabia.md"
+    if not f.is_file() or not f.read_text(encoding="utf-8").startswith("---\ninclusion: always"):
+        return []  # sem o front-matter do modelo: não foi montado pela setup
+    livres = {"Agentes", "Desvios de toolkit", "Tipos com skill de toolkit", "Regras aprendidas"}
+
+    def rotulos(texto):
+        sec, out = None, set()
+        for linha in texto.splitlines():
+            if linha.startswith("## "):
+                sec = linha[3:].strip()
+                out.add(f"## {sec}")
+            elif sec not in livres and (m := re.match(r"\|\s*([^|]+?)\s*\|", linha)) and not set(m[1]) <= set("-: ") and "<" not in m[1]:
+                out.add(f"{sec} › {m[1]}")
+        return out
+    modelo, atual = rotulos((ASSETS.parent / "steering" / "sabia.md").read_text(encoding="utf-8")), rotulos(f.read_text(encoding="utf-8"))
+    return [f".sabia/sabia.md {o} modelo (assets/steering/sabia.md): {', '.join(sorted(x))}; monte o arquivo pelo modelo"
+            for o, x in (("sem estas linhas do", modelo - atual), ("com linhas que não estão no", atual - modelo)) if x]
+
+
 def gerar(projeto: Path, cfg: dict) -> dict:
     base = json.loads((ASSETS / "papeis.json").read_text(encoding="utf-8"))
     # a chave é o nome do agente (sa-<papel>); desconhecida nunca é ignorada em silêncio
@@ -581,6 +603,7 @@ def gerar(projeto: Path, cfg: dict) -> dict:
     tk, gerar.tabela_tipos = fonte_toolkits(projeto, cfg, fw, fluxos)
     delta, padroes, avisos = override(projeto, fw, fluxos)
     gerar.avisos = avisos
+    avisos.extend(conferir_sabia_md(projeto))
     if cfg.get("sabia") and (fw / "plugin.json").exists():
         instalado = json.loads((fw / "plugin.json").read_text(encoding="utf-8")).get("version")
         if instalado != cfg["sabia"]:

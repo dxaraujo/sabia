@@ -640,5 +640,23 @@ class Gerar(unittest.TestCase):
         self.assertEqual(len(list((self.projeto / ".kiro/agents").glob("sa-*.json"))), 7)
 
 
+class SabiaMd(unittest.TestCase):
+    def test_sabia_md_montado_do_arquivo_antigo_e_apontado(self):
+        modelo = (g.ASSETS.parent / "steering" / "sabia.md").read_text(encoding="utf-8")
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d)
+            (p / ".sabia").mkdir()
+            f = p / ".sabia" / "sabia.md"
+            f.write_text(modelo, encoding="utf-8")
+            self.assertEqual(g.conferir_sabia_md(p), [])
+            antigo = re.sub(r"^\| Casos de teste \|.*\n", "| Publicar requisitos · ET | x |\n", modelo, flags=re.M)
+            f.write_text(antigo, encoding="utf-8")
+            falta, sobra = g.conferir_sabia_md(p)
+            self.assertIn("sem estas linhas do modelo (assets/steering/sabia.md): ELM › Casos de teste;", falta)
+            self.assertIn("com linhas que não estão no modelo (assets/steering/sabia.md): ELM › Publicar requisitos · ET;", sobra)
+            f.write_text("# notas da pessoa\n\n## Projeto\n", encoding="utf-8")
+            self.assertEqual(g.conferir_sabia_md(p), [])
+
+
 if __name__ == "__main__":
     unittest.main()
