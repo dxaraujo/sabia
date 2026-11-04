@@ -1,5 +1,6 @@
 // Tema do site: paleta Sóbria - Sabiá (padrão) ou Sabiá, e modo claro ou escuro (padrão: o do sistema).
-// Roda no <head> para não piscar; as escolhas ficam no localStorage (sabia-paleta, sabia-modo).
+// Roda no <head> para não piscar; as escolhas ficam no localStorage (sabia-paleta, sabia-modo);
+// sabia-modo só existe quando difere do sistema.
 (function(){
   var root=document.documentElement, OP=[['sobria-sabia','Sóbria'],['sabia','Sabiá']];
   var SOL='<svg class="sol" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>';
@@ -8,7 +9,9 @@
   function ler(k){try{return localStorage.getItem('sabia-'+k)}catch(e){}}
   function gravar(k,x){try{localStorage.setItem('sabia-'+k,x)}catch(e){}}
   var paleta=OP.some(function(o){return o[0]===ler('paleta')})?ler('paleta'):'sobria-sabia';
-  var modo=ler('modo'); if(modo!=='claro'&&modo!=='escuro') modo=matchMedia('(prefers-color-scheme: dark)').matches?'escuro':'claro';
+  var SO=matchMedia('(prefers-color-scheme: dark)');
+  function doSistema(){return SO.matches?'escuro':'claro'}
+  var modo=ler('modo'); if(modo!=='claro'&&modo!=='escuro') modo=doSistema();
 
   function aplicarPaleta(x){
     paleta=x;
@@ -22,6 +25,8 @@
     var s=document.querySelector('.modo-sw'); if(s) s.setAttribute('aria-checked',String(x==='escuro'));
   }
   aplicarPaleta(paleta); aplicarModo(modo);
+  // sem escolha gravada, acompanha o sistema ao vivo
+  SO.addEventListener('change',function(){if(!ler('modo')) aplicarModo(doSistema())});
 
   document.addEventListener('DOMContentLoaded',function(){
     var top=document.querySelector('.wrap>.top'); if(!top) return;
@@ -36,7 +41,9 @@
     m.addEventListener('beforetoggle',function(e){if(e.newState!=='open') return; var r=btn.getBoundingClientRect();
       m.style.top=(r.bottom+window.scrollY+6)+'px'; m.style.right=(document.documentElement.clientWidth-r.right)+'px'});
     m.addEventListener('click',function(e){var b=e.target.closest('[data-v]'); if(b){aplicarPaleta(b.dataset.v); gravar('paleta',paleta); m.hidePopover()}});
-    d.querySelector('.modo-sw').addEventListener('click',function(){aplicarModo(modo==='escuro'?'claro':'escuro'); gravar('modo',modo)});
+    d.querySelector('.modo-sw').addEventListener('click',function(){aplicarModo(modo==='escuro'?'claro':'escuro');
+      // voltar ao modo do sistema apaga a escolha: o site torna a segui-lo
+      if(modo===doSistema()){try{localStorage.removeItem('sabia-modo')}catch(e){}} else gravar('modo',modo)});
     aplicarPaleta(paleta); aplicarModo(modo);
   });
 })();
