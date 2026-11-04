@@ -414,7 +414,7 @@ escrita de memória.
   e os workflows do projeto e pergunta antes de cada comando de shell.
 
 Sugira o commit — o comando pronto no shell da pessoa, no padrão de commit do projeto — (`.sabia/` sem `local/`, os agentes e ponteiros de cada ferramenta, `<produto>/` e `.gitignore`) — só com confirmação — e termine
-com o próximo passo — sem `<produto>/equipe.json`, primeiro "monte o planejamento" (fluxo
+com o próximo passo — sem `<produto>/equipe.json` (confira no disco; existindo, não sugira o planejamento), primeiro "monte o planejamento" (fluxo
 `sa-planejamento.inicial`: equipe com a senioridade, acordos e roadmap; sem ela não há modo da fatia, GATE do plano nem revisor); depois
 "nova demanda: …" (`sa-triar`: faz a triagem e registra no backlog; épico → `sa-prd`), "iniciar <id>" ou "minha próxima tarefa"
 (`sa-iniciar`: o hub diz a skill do papel) ou "onde parei?" (`sa-status`).
