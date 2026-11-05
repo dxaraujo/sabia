@@ -4,7 +4,7 @@ description: "Start hub of the Sabiá flow — receives an already registered wo
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.0.0-alpha.1"
+  version: "2.0.0-beta.1"
 ---
 
 # sa-iniciar — Hub: qual skill faz este item

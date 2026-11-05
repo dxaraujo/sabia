@@ -4,7 +4,7 @@ description: "Plans a slice (fatia) of the Sabiá flow in Kiro's spec format —
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.0.0-alpha.1"
+  version: "2.0.0-beta.1"
 ---
 
 # sa-plano — Decidir o como antes de codar
