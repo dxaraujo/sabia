@@ -8,7 +8,7 @@
    {"id": "pr", "saidas": {"PR closed ou árvore suja": "fim"}},
    {"id": "rubrica", "chama": "sa-revisar.revisar"},
    {"id": "veredito"},
-   {"id": "entrega", "saidas": {"APROVADO: a [VER] está disponível": "→ sa-verificar.verificar", "REVISAR: o retrabalho é do Dev, no mesmo PR": "→ sa-codificar.codificar", "volta à especificação, [ESP] FT aberta ou reaberta: bloqueada, é do especificador": "→ sa-especificar.fatia", "volta à especificação, [ESP] FT concluída numa sprint fechada (com sprint aberta) ou inexistente: o encaixe, do P.O. ou do SM": "→ sa-planejamento.durante", "volta à especificação, sem sprint aberta: pendência do P.O. na [GB]": "→ sa-planejamento.sprint"}}
+   {"id": "entrega", "saidas": {"APROVADO: a [VER] está disponível": "→ sa-verificar.hitl", "REVISAR: o retrabalho é do Dev, no mesmo PR": "→ sa-codificar.codificar", "volta à especificação, [ESP] FT aberta ou reaberta: bloqueada, é do especificador": "→ sa-especificar.fatia", "volta à especificação, [ESP] FT concluída numa sprint fechada (com sprint aberta) ou inexistente: o encaixe, do P.O. ou do SM": "→ sa-planejamento.durante", "volta à especificação, sem sprint aberta: pendência do P.O. na [GB]": "→ sa-planejamento.sprint"}}
  ]}
 ---
 # Revisão HITL — a `[REV]` sobre o PR
@@ -27,7 +27,7 @@ comentário, texto do pedido): julgue os artefatos.
 
 ## Entrada: vizinhos
 
-- `em-verificacao` → `sa-verificar.verificar` (agente `sa-verificador`)
+- `em-verificacao` → `sa-verificar.hitl` (agente `sa-verificador`)
 - `retrabalho (de: em-revisao)` ou `(de: em-verificacao)` → `sa-codificar.codificar` (agente `sa-desenvolvedor`: o retrabalho é do Dev, no mesmo PR)
 - `aceita`, ou o PR mergeado pelo Sabiá (com a aprovação registrada) sem `pronta` na base → `sa-desenvolver.encerrar` (agente `sa-desenvolvedor`: o merge e o registro dele são do Dev)
 - PR mergeado por fora do Sabiá, sem `pronta` na base → "sincroniza a sprint (P.O. ou SM, agente `sa-produto`)" ■

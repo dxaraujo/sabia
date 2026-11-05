@@ -91,8 +91,8 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
 
 👀 Esperando pessoa (WIP de revisão: <n>/<limite> — aguardando-aprovacao-plano + pr-aberto + em-revisao + em-verificacao + aceita + verificada + aguardando-aprovacao-pr)
 - FT-031 aguardando-aprovacao-plano há 1 dia → aprovar o plano: [APR] de <Dev Sênior> (sa-revisar, fluxo aprovar-plano)
-- FT-029 pr-aberto há 2 dias → esperando revisão: [REV] de <revisor> (sa-revisar) <link>
-- FT-028 em-verificacao → esperando verificação: [VER] de <verificador> (sa-verificar)
+- FT-029 pr-aberto há 2 dias → esperando revisão: [REV] de <revisor> (sa-revisar, fluxo hitl) <link>
+- FT-028 em-verificacao → esperando verificação: [VER] de <verificador> (sa-verificar, fluxo hitl)
 - FT-027 aceita → merge pelo Dev responsável (<login>, sa-desenvolver, fluxo encerrar) <link>
 - FT-032 aguardando-aprovacao-pr → [APR] Aprovar PR de <Dev Sênior> (sa-revisar); aprovada, o merge pelo Dev (sa-desenvolver, fluxo encerrar) <link>
 - FT-030 verificada → abrir o PR (sa-codificar)

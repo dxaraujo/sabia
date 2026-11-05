@@ -616,7 +616,7 @@ tarefa não existe:
 
 A tarefa de uma fase por onde a fatia já passou (o Histórico mostra: retrabalho, conflito no merge) fica como o papel
 a deixou — em andamento, ou concluída à espera do passo de assumir que a reabre — e não diverge. Fora do esperado: **atrás**
-(nova onde se espera em andamento) → `manter: <papel> assume` (`sa-revisar.hitl.assumir` ou `sa-verificar.verificar.assumir`; a
+(nova onde se espera em andamento) → `manter: <papel> assume` (`sa-revisar.hitl.assumir` ou `sa-verificar.hitl.assumir`; a
 `[APR]`, a `sa-revisar`); em andamento **antes** da fase → `manter: <papel> segue` (a skill dele grava a fase);
 concluída **antes** da fase → `EWM: reabrir a <tarefa>` (ela conclui na fase dela), Outras: `manter`. A `[DEV]`
 concluída é a linha da Fatia (acima), com o git. `pronta` e `concluida` → a linha `pronta · concluida` da Fatia.

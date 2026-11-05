@@ -278,6 +278,16 @@ test("desvio por tipo no repo: o passo que cria um tipo desviável tem ⇢ e os 
   assert.deepEqual(m.tipos.REG.cria, ["sa-prd.prd.escrever", "sa-especificar.fatia.escrever"]);
 });
 
+test("motor × tarefa no repo: o hitl entra, assume e chama o motor; o motor não tem entrada nem tarefa", () => {
+  const m = carregar(REPO);
+  for (const s of ["sa-revisar", "sa-verificar"]) {
+    const motor = m.fluxos[`${s}.${s.slice(3)}`], hitl = m.fluxos[`${s}.hitl`];
+    assert.ok(!motor.passos.some((p) => p.de || p.id === "assumir"), s);
+    assert.deepEqual(hitl.passos.slice(0, 2).map((p) => p.id), ["entrada", "assumir"], s);
+    assert.ok(hitl.passos.some((p) => p.chama === `${s}.${s.slice(3)}`), s);
+  }
+});
+
 test("catálogo: desviavel fora de cria é recusado", () => {
   const m = carregar(REPO);
   m.tipos = { ...m.tipos, HF: { ...m.tipos.HF, desviavel: ["sa-codificar.codificar.pr"] } };

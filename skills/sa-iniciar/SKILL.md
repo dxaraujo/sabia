@@ -49,7 +49,7 @@ diga o que ele é e peça o item.
 | tarefa `[REV]` | **`sa-revisar.hitl`** (rubrica C sobre o PR) | Revisor / `sa-revisor` |
 | tarefa `[APR] FT-nnn Aprovar plano` | **`sa-revisar.aprovar-plano`** | Aprovador (Dev Sênior) / `sa-revisor` |
 | tarefa `[APR] FT-nnn Aprovar PR` | **`sa-revisar.aprovar-pr`** | Aprovador (Dev Sênior) / `sa-revisor` |
-| tarefa `[VER]` | **`sa-verificar`** | Verificador (QA) / `sa-verificador` |
+| tarefa `[VER]` | **`sa-verificar.hitl`** (os cenários sobre o PR) | Verificador (QA) / `sa-verificador` |
 | `AT-nnn`, tarefa `[ATD]` | **`sa-atender`** | quem atende / `sa-produto` |
 | `IM-`, `BD-`, `IN-`, `OP-`, `EX-nnn` (as demais categorias da tabela **Sustentação** do `sabia.md`), tarefa `[IMPL]` `[BD]` `[INF]` `[OPE]` `[EXT]` | **`sa-executar`** | quem faz / `sa-produto` |
 | `EP-nn` com o PRD na base e a linha da Especificação ainda `iniciada` | **`sa-especificar`** (retoma a publicação) | Especificador / `sa-especificador` |
@@ -61,7 +61,7 @@ diga o que ele é e peça o item.
 | fatia em `aguardando-aprovacao-plano` com a `[APR] Aprovar plano` aberta | **`sa-revisar.aprovar-plano`** | Aprovador (Dev Sênior) / `sa-revisor` |
 | fatia em `implementando`, `revisando`, `verificando` ou `retrabalho`, ou `bloqueada (de: implementando \| revisando \| verificando)`, ou `aguardando-aprovacao-pr` com Modo HITL na base (a troca de modo cancelou a `[APR] Aprovar PR`) | **`sa-codificar`** | Dev / `sa-desenvolvedor` |
 | fatia em `pr-aberto` ou `em-revisao` (a `[VER]` dela espera a revisão: diga e pare) | **`sa-revisar.hitl`** | Revisor / `sa-revisor` |
-| fatia em `em-verificacao` | **`sa-verificar`** | Verificador (QA) / `sa-verificador` |
+| fatia em `em-verificacao` | **`sa-verificar.hitl`** | Verificador (QA) / `sa-verificador` |
 | fatia em `verificada` (AFK) | **`sa-codificar.codificar.pr`** (abrir o PR) | Dev / `sa-desenvolvedor` |
 | fatia em `aceita` (HITL), ou em `aguardando-aprovacao-pr` (AFK) com a `[APR] Aprovar PR` concluída — qualquer item dela, menos a `[APR]` | **`sa-desenvolver.encerrar`** (merge do PR aprovado) | Dev responsável / `sa-desenvolvedor` |
 | fatia em `aguardando-aprovacao-pr` (Modo AFK na base) sem a `[APR] Aprovar PR` concluída | **`sa-revisar.aprovar-pr`** | Aprovador (Dev Sênior) / `sa-revisor` |

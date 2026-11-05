@@ -4,8 +4,8 @@
 ## Entrada
 
 Os cenários verificados no `verificacao.md` (passo `executar`), **todos aceitos** — o `VERIFICACAO: ACEITO` do
-passo `decisao`; no AFK, também com cenários `🔁 possível alteração`, que não entram no `CT.csv`. Algum rejeitado ou
-⚠️ → pule este passo: siga para o passo `decisao`. Os CTs planejados: primeiro os
+passo `resultado`; no AFK, também com cenários `🔁 possível alteração`, que não entram no `CT.csv`. Algum rejeitado ou
+⚠️ → pule este passo: siga para o passo `resultado`. Os CTs planejados: primeiro os
 `CT-nn-<slug>.md` de `.kiro/specs/<ft>-<slug>/elm/` (aprovados na `[ESP] FT`; valem sobre os do épico), depois os do
 `elm/` da pasta do épico na base, quando a fatia é de épico (padrão `sa-prd/ct.md`).
 
@@ -29,12 +29,13 @@ o CT planejado (publicado no ETM na conclusão da `[ESP]`) e cria só o CT novo,
 [elm-publicar.md](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md)), e o CSV é a
 alternativa para importar à mão quando a criação falha; `CSV` → o próprio `CT.csv` é a entrega, com as evidências.
 
-Rodadas: quem pediu a verificação incrementa "verificação" (a `sa-codificar` ou o orquestrador); só no
-pedido direto de uma pessoa, incremente você.
+Rodadas: quem pediu a verificação incrementa "verificação" (a `sa-codificar` ou o orquestrador; no pedido direto de
+uma pessoa, a `[VER]`, o passo `sa-verificar.hitl.cenarios`).
 
 ## Saída
 
-`CT.csv` na pasta da fatia → passo `decisao`, que o commita na entrega.
+`CT.csv` na pasta da fatia → passo `resultado`; o commit é de quem chamou (a entrega do `sa-verificar.hitl`; no AFK, o
+passo `sa-codificar.codificar.verificar`).
 
 ## Pare se
 

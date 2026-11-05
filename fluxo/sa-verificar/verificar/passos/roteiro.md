@@ -7,7 +7,8 @@ O contrato de pronto do `design.md` e os cenários que a fatia cobre (trilha rá
 
 ## Faça
 
-`status.md`: AFK → `fase: verificando`; HITL → a fase continua `em-verificacao`; linha no Histórico.
+`status.md`: AFK → `fase: verificando`; HITL (chamada pelo `sa-verificar.hitl`) → a fase continua `em-verificacao`;
+linha no Histórico.
 
 O roteiro parte do **contrato de pronto** do `design.md` (acordado no GATE do plano, antes do código) — não o
 afrouxe agora. Para cada cenário que a fatia cobre, escreva-o em `verificacao.md` **antes** de executar

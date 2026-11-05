@@ -21,7 +21,7 @@ Execute cenário por cenário e registre logo abaixo do roteiro, no padrão `sa-
 
 ## Saída
 
-O resultado de cada cenário no `verificacao.md` → passo `decisao`.
+O resultado de cada cenário no `verificacao.md` → passo `casos` (algum rejeitado ou ⚠️: passo `resultado`).
 
 ## Pare se
 

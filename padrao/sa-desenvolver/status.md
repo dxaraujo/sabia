@@ -39,8 +39,8 @@
            (passo gate): Modo e ids pela base, fase planejando → GATE pela senioridade → segue no modo novo
      Conflito no merge (sa-desenvolver, fluxo encerrar) → retrabalho (de: aceita | aguardando-aprovacao-pr), com a linha
            `conflito no merge` no Histórico: a sa-codificar atualiza a branch e segue — HITL volta a pr-aberto, e
-           o revisor e o verificador reabrem a [REV] e a [VER] concluídas (passo assumir da sa-revisar e da
-           sa-verificar); AFK volta a revisando (subagentes), e quem aprova reabre a [APR] Aprovar PR (sa-revisar,
+           o revisor e o verificador reabrem a [REV] e a [VER] concluídas (passo assumir do fluxo hitl da
+           sa-revisar e da sa-verificar); AFK volta a revisando (subagentes), e quem aprova reabre a [APR] Aprovar PR (sa-revisar,
            fluxo aprovar-pr).
      Merge (sa-desenvolver, fluxo encerrar): HITL em aceita; AFK em aguardando-aprovacao-pr com a [APR] Aprovar PR
      concluída (a aprovação não grava fase: o sha não muda). Merge feito por fora do Sabiá → a sincronização da sprint
@@ -63,7 +63,7 @@
      + verificada + aguardando-aprovacao-pr.
      Quem grava a fase: quem conduz a sessão (a skill da fase) ou, no loop, o orquestrador; o pesquisador nunca
      grava o status.md; o revisor só no HITL (a rodada é dele); o verificador grava a fase do resultado também como
-     subagente do AFK (`verificada` ou `implementando`, sa-verificar), e o resto, só no HITL; o Dev Sênior da [APR]
+     subagente do AFK (`verificada` ou `implementando`, sa-verificar.verificar), e o resto, só no HITL; o Dev Sênior da [APR]
      na aprovação do plano e nas mudanças pedidas no PR (o PR aprovado não ganha commit: o sha não muda); pronta, o
      Dev, na base (sa-desenvolver, fluxo encerrar), ou a sincronização da sprint, pela evidência do merge por fora
      (elm-sprint.md §9), que também grava a fase do PR (ou implementando) no status.md da iniciada por fora, na
@@ -104,7 +104,7 @@
      entregar o PR atualizado (a [DEV] segue aberta até o merge). AFK: uma linha por verificação REJEITADA (Papel `verificação (AFK)`), gravada pelo
      orquestrador ou, sem o loop, pelo desenvolvedor (passo `sa-codificar.codificar.verificar`); e uma por mudanças pedidas na [APR] Aprovar PR
      (Papel `APR`), gravada por quem aprova; a [DEV] só é concluída no merge, Horas `—`.
-     Papel: `REV` (HITL, sa-revisar.hitl) · `VER` (HITL, sa-verificar) · `verificação (AFK)` (orquestrador ou Dev) ·
+     Papel: `REV` (HITL, sa-revisar.hitl) · `VER` (HITL, sa-verificar.hitl) · `verificação (AFK)` (orquestrador ou Dev) ·
      `APR` (mudanças pedidas no PR). Data: `AAAA-MM-DD`. Motivo: o nome do relatório (`revisao-codigo-<N>.md`,
      `verificacao.md`) ou `Achados #<n>` da [APR]. -->
 

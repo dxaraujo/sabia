@@ -1,5 +1,5 @@
 ---
-{"resumo": "Formato de cada cenário no verificacao.md: o roteiro (passo roteiro da sa-verificar) e, logo abaixo, o resultado (passo executar); no fim do arquivo, a decisão de cada rodada (passo decisao)."}
+{"resumo": "Formato de cada cenário no verificacao.md: o roteiro (passo roteiro da sa-verificar) e, logo abaixo, o resultado (passo executar); no fim do arquivo, a decisão de cada rodada (passo resultado)."}
 ---
 ## Roteiro (escrito antes de executar)
 
