@@ -362,7 +362,6 @@ function mostrarDiferencas(dif) {
 }
 
 export async function instalar(opcoes = {}) {
-  ctx.log(BANNER + "\n");
   const inv = lerInventario();
   const novo = baixarFramework(opcoes);
   fs.rmSync(sabia("framework"), { recursive: true, force: true });
@@ -883,9 +882,7 @@ export function rotaMapa(opcoes = {}) {
 
 // ---------- linha de comando ----------
 
-const AJUDA = `${BANNER}
-
-sabia ${VERSAO} — instala o Sabiá e os toolkits no Kiro e no opencode
+const AJUDA = `sabia ${VERSAO} — instala o Sabiá e os toolkits no Kiro e no opencode
 
   sabia instalar   [--alvo kiro,opencode] [--versao X] [--fonte <pasta|url-git>[@ref]]
   sabia atualizar  [--versao X] [--fonte <pasta|url-git>[@ref]]
@@ -929,6 +926,8 @@ export async function main(argv = process.argv.slice(2)) {
     const antes = ctx.perguntar;
     ctx.perguntar = async (texto, padrao) => (/alterado à mão/.test(texto) ? antes(texto, padrao) : /\[s\/N\]/.test(texto) ? "s" : padrao);
   }
+  // o banner em todo comando, só no terminal: em pipe ou arquivo (o Mermaid do rota) a saída fica limpa
+  if (process.stdout.isTTY) ctx.log(BANNER + "\n");
   try {
     if (cmd === "instalar") await instalar(opcoes);
     else if (cmd === "atualizar") await atualizar(opcoes);
