@@ -17,7 +17,7 @@
 <div class="wrap">
   <div class="top">
     <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá</span></a>
-    <span class="ver">2.0.0-beta.1 · Kiro e opencode</span>
+    <span class="ver">2.0.0 · Kiro e opencode</span>
     <span class="autor">Desenvolvido por <b>Daniel Xavier Araújo</b></span>
     <a class="gh" href="https://github.com/dxaraujo/sabia">GitHub</a>
   </div>
@@ -32,7 +32,7 @@
 <p class="legenda-grafo">↓ segue · ↑ volta · ↺ repete · ⇄ chama · ⇒ passa a (o fluxo termina) · ↪ vizinhos da entrada (diga a dona, ou a frase da linha ■, e pare) · ■ fim · 🔒 trava · ⇢ passo com desvio de toolkit (pelo para e arquivos, ou pelo tipo que o passo cria)</p></section>
 
 <section id="sa-aprender"><div class="lead-sec"><h2>sa-aprender</h2><p>3 fluxos · dono <code>sa-produto</code></p></div>
-  <details class="fluxo" id="sa-aprender.promover"><summary><code>sa-aprender.promover</code> <span>3 passos</span><small>2ª ocorrência da mesma causa e do mesmo tipo de erro, pedido da pessoa ou proposta aceita na retrospectiva: a regra vai para a seção Regras aprendidas do .sabia/sabia.md; o agente sempre erra X</small></summary>
+  <details class="fluxo" id="sa-aprender.promover"><summary><code>sa-aprender.promover</code> <span>3 passos</span><small>2ª ocorrência da mesma causa e da mesma Correção na fonte, pedido da pessoa ou proposta aceita na retrospectiva: a regra vai para a seção Regras aprendidas do .sabia/sabia.md; o agente sempre erra X</small></summary>
   <pre class="cod grafo">sa-aprender.promover   dono sa-produto   travas sim-da-pessoa
 
   ┌────────────────────────┐
@@ -103,8 +103,7 @@
               ▼
   ┌────────────────────────┐
   │ 5 desdobramentos       │──▶ ⇒ passa a sa-triar.triar  (alteração (defeito ou mudança) ou regra que ninguém decidiu)
-  └────────────────────────┘    ⇒ passa a sa-aprender.registrar  (consulta reaproveitável: lição)
-                                ■ fim  (nada)</pre></details>
+  └────────────────────────┘    ■ fim  (nada)</pre></details>
 </section>
 
 <section id="sa-codificar"><div class="lead-sec"><h2>sa-codificar</h2><p>1 fluxo · dono <code>sa-desenvolvedor</code></p></div>
@@ -112,12 +111,14 @@
   <pre class="cod grafo">sa-codificar.codificar   dono sa-desenvolvedor   travas sim-da-pessoa, backpressure, sem-force
 
   ┌────────────────────────┐
-  │ 1 entrada [nao]        │──▶ ↪ vizinhos (diga e pare): sa-desenvolver.desenvolver · sa-plano.plano · sa-revisar.aprovar-plano · sa-revisar.aprovar-pr · sa-desenvolver.encerrar · sa-especificar.fatia · sa-verificar.hitl
+  │ 1 entrada [nao]        │──▶ ↪ vizinhos (diga e pare): sa-desenvolver.desenvolver · sa-plano.plano · sa-revisar.aprovar-plano · sa-revisar.aprovar-pr · sa-desenvolver.encerrar · sa-especificar.fatia · sa-verificar.hitl · sa-revisar.hitl
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
   │ 2 onde                 │──▶ ↓ pr  (fatia `verificada` (AFK))
-  └───────────┬────────────┘    ■ fim  (sem a linha do GATE do plano)
+  └───────────┬────────────┘    ↓ verificar  (fase `verificando` (AFK): nova rodada, sem nova revisão)
+                                ■ fim  (vermelho antes de mexer: bloqueada, ⚠️ ambiente)
+                                ■ fim  (sem a linha do GATE do plano)
                                 ⇒ passa a sa-revisar.hitl  (aguardando-aprovacao-pr que virou HITL: pr-aberto, reviso…)
               ▼
   ┌────────────────────────┐
@@ -126,21 +127,23 @@
                                 ⇒ passa a sa-plano.replanejar  (divergência com o plano que muda o desenho)
               ▼
   ┌────────────────────────┐
-  │ 4 validar              │
-  └───────────┬────────────┘
+  │ 4 validar              │──▶ ↑ volta a tarefa  (vermelho na validação completa: tarefa nova)
+  └───────────┬────────────┘    ■ fim  (falha de ambiente: bloqueada, ⚠️ ambiente)
               ▼
   ┌────────────────────────┐
   │ 5 revisar              │──▶ ⇄ chama sa-revisar.revisar
   └───────────┬────────────┘    🔒 revisao-independente
                                 ↓ pr  (HITL, APROVADO ou a pessoa decide seguir)
                                 ↑ volta a tarefa  (REVISAR)
-                                ■ fim  (AFK, 2ª reprovação: bloqueada)
+                                ■ fim  (AFK, 2ª reprovação desde o último desbloqueio: bloqueada)
+                                ■ fim  (AFK, VEREDITO: AMBIENTE: bloqueada)
               ▼
   ┌────────────────────────┐
   │ 6 verificar            │──▶ ⇄ chama sa-verificar.verificar
   └───────────┬────────────┘    🔒 aceite-independente
                                 ↑ volta a tarefa  (REJEITADO)
                                 ■ fim  (2ª rejeição seguida: bloqueada)
+                                ■ fim  (VERIFICACAO: AMBIENTE, ou a DDL não aplicada: bloqueada)
               ▼
   ┌────────────────────────┐
   │ 7 pr                   │──▶ ⇒ passa a sa-revisar.hitl  (HITL, PR aberto)
@@ -191,7 +194,7 @@
               ▼
   ┌────────────────────────┐
   │ 3 iniciar              │──▶ ⇒ passa a sa-plano.plano  (fatia iniciada: Próximo sa-plano)
-  └────────────────────────┘    ⇒ passa a sa-desenvolver.encerrar  ([DEV] já fechada e PR mergeado)
+  └────────────────────────┘    ⇒ passa a sa-planejamento.durante  ([DEV] já fechada e PR mergeado: merge por fora, sincroniz…)
                                 ■ fim  (push da iniciada recusado)</pre></details>
   <details class="fluxo" id="sa-desenvolver.encerrar"><summary><code>sa-desenvolver.encerrar</code> <span>2 passos</span><small>PR aprovado (`aceita` no HITL; `[APR]` concluída no AFK): merge, `pronta` na base e conclusão da `[DEV]`; mergeia a FT-031; o PR da FT-031 foi aprovado</small></summary>
   <pre class="cod grafo">sa-desenvolver.encerrar   dono sa-desenvolvedor   travas sim-da-pessoa, sem-force
@@ -465,7 +468,7 @@
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 2 acordos              │
+  │ 2 acordos              │──▶ ■ fim  (rever a equipe e os acordos)
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
@@ -501,7 +504,7 @@
               ▼
   ┌────────────────────────┐
   │ 5 recalcular           │──▶ ⇄ chama sa-planejamento.sprint
-  └───────────┬────────────┘
+  └───────────┬────────────┘    ■ fim  (projeto sem ELM)
               ▼
   ┌────────────────────────┐
   │ 6 virada               │
@@ -606,7 +609,7 @@
   └───────────┬────────────┘    🔒 revisao-independente
                                 ↑ volta a escrever  (ANALISE: AJUSTAR, falta do plano)
                                 ↑ volta a decisoes  (ANALISE: AJUSTAR, falta do PRD ou da ficha)
-                                ■ fim  (sem subagente: plano pronto para análise)
+                                ↓ gate  (2ª rodada em ANALISE: AJUSTAR: uma pessoa decide (HITL: a…)
               ▼
   ┌────────────────────────┐
   │ 6 gate                 │──▶ ⇒ passa a sa-revisar.aprovar-plano  (com GATE: aprovador avisado)
@@ -630,6 +633,7 @@
                                 ⇒ passa a sa-planejamento.durante  ([ESP] concluída numa sprint fechada, com sprint aberta: a…)
                                 ⇒ passa a sa-planejamento.sprint  ([ESP] concluída numa sprint fechada, sem sprint aberta: p…)
                                 ⇒ passa a sa-especificar.especificar  (PRD ainda na pasta de trabalho (sem o GATE, ou aprovado s…)
+                                ⇒ passa a sa-especificar.especificar  (mudança desistida antes do GATE: a [ESP] conclui sem vers…)
                                 ⇒ passa a sa-especificar.fatia  (fatiado: alteração de artefato que uma fatia não terminal…)
                                 ⇒ passa a sa-planejamento.durante  (fatiado: a fatia sem [ESP] FT, ou com ela concluída numa …)
                                 ⇒ passa a sa-planejamento.sprint  (fatiado: [ESP] FT concluída numa sprint fechada, sem spri…)
@@ -735,7 +739,8 @@
   └────────────────────────┘    ⇒ passa a sa-codificar.codificar  (REVISAR: o retrabalho é do Dev, no mesmo PR)
                                 ⇒ passa a sa-especificar.fatia  (volta à especificação, [ESP] FT aberta ou reaberta: bloqu…)
                                 ⇒ passa a sa-planejamento.durante  (volta à especificação, [ESP] FT concluída numa sprint fec…)
-                                ⇒ passa a sa-planejamento.sprint  (volta à especificação, sem sprint aberta: pendência do P.…)</pre></details>
+                                ⇒ passa a sa-planejamento.sprint  (volta à especificação, sem sprint aberta: pendência do P.…)
+                                ■ fim  (AMBIENTE: bloqueada, você retoma quando o Bloqueio se res…)</pre></details>
   <details class="fluxo" id="sa-revisar.revisar"><summary><code>sa-revisar.revisar</code> <span>4 passos</span><small>revisão de PRD (rubrica P), plano (L) ou código (C) sem a tarefa [REV]: como subagente de outro fluxo ou a pedido direto; revisa; revisa o PRD; analisa o plano; judge; code review; no fim da sa-prd, da sa-plano e da sa-codificar</small></summary>
   <pre class="cod grafo">sa-revisar.revisar   dono sa-revisor   travas sim-da-pessoa
 
@@ -763,12 +768,13 @@
   ┌────────────────────────┐
   │ 1 lote                 │──▶ ⇒ passa a sa-triar.triar.encaminhar  (lote registrado: &quot;Mais algum item para triar?&quot;)
   └────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-triar.triar"><summary><code>sa-triar.triar</code> <span>4 passos</span><small>toda demanda nova, item a item: pedido em texto, número do EWM (DF, IB), Sustentação, ficha a aprovar, item que voltou; nova demanda; o cliente pediu; registra o defeito 4567; coloca no backlog; aprova a ficha da FT-040</small></summary>
+  <details class="fluxo" id="sa-triar.triar"><summary><code>sa-triar.triar</code> <span>4 passos</span><small>toda demanda nova, item a item: pedido em texto, número do EWM (DF, IB), Sustentação, ficha a aprovar, item que voltou; nova demanda; o cliente pediu; registra o defeito 4567; coloca no backlog; aprova a ficha da FT-040; conflito de id no push da triagem</small></summary>
   <pre class="cod grafo">sa-triar.triar   dono sa-produto   travas sim-da-pessoa
 
   ┌────────────────────────┐
   │ 1 chegou               │──▶ ⇒ passa a sa-triar.lote-ewm  (lote do EWM)
-  └───────────┬────────────┘    ↓ encaminhar  (épico novo que voltou, registro completo)
+  └───────────┬────────────┘    ↓ registrar  (conflito de id no push de uma triagem já encerrada)
+                                ↓ encaminhar  (épico novo que voltou, registro completo)
                                 ↓ registrar  (fatia sem épico que vira épico, se divide ou é cancelada;…)
                                 ↓ triagem  (item de Sustentação devolvido por categoria errada)
                                 ⇒ passa a sa-planejamento.durante.encaixe  (fatia nova no backlog com só falta: especificação (entra …)
@@ -804,7 +810,7 @@
               ▼
   ┌────────────────────────┐
   │ 3 cenarios             │──▶ ⇄ chama sa-verificar.verificar
-  └───────────┬────────────┘    ↓ entrega  (bloqueada no verificar (só ⚠️ ambiente, ou cenário errado…)
+  └───────────┬────────────┘    ↓ entrega  (bloqueada no verificar (AMBIENTE, DDL não aplicada, ou ce…)
               ▼
   ┌────────────────────────┐
   │ 4 decisao              │
@@ -826,11 +832,11 @@
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 2 ambiente             │──▶ ■ fim  (campo Banco pendente: a DDL em dev é do Dev, ou do item B…)
+  │ 2 ambiente             │──▶ ■ fim  (DDL do campo Banco ainda não aplicada: bloqueada, a aplic…)
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 3 executar             │──▶ ↓ resultado  (algum cenário rejeitado ou ⚠️)
+  │ 3 executar             │──▶ ↓ resultado  (algum cenário rejeitado ou ⚠️, ou 🔁 no HITL)
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐

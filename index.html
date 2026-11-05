@@ -17,7 +17,7 @@
 <div class="wrap">
   <div class="top">
     <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá</span></a>
-    <span class="ver">2.0.0-beta.1 · Kiro e opencode</span>
+    <span class="ver">2.0.0 · Kiro e opencode</span>
     <span class="autor">Desenvolvido por <b>Daniel Xavier Araújo</b></span>
     <a class="gh" href="https://github.com/dxaraujo/sabia">GitHub</a>
   </div>
@@ -30,7 +30,7 @@
     <p class="lead">O Sabiá organiza o trabalho com IA em sete etapas, da triagem à consolidação no IBM ELM, no Kiro (motor v3) e no opencode. O agente escreve rápido; as pessoas decidem o quê, aprovam o como e leem o código.</p>
     <div class="install">
       <span class="how">No terminal, com o Node 18 ou mais novo:</span>
-      <span class="url"><code id="url">npx sabia@next instalar</code><button type="button" id="copiar">Copiar</button></span>
+      <span class="url"><code id="url">npx sabia instalar</code><button type="button" id="copiar">Copiar</button></span>
       <a class="ghost" href="#passos">Primeiros passos</a>
     </div>
     </div>
@@ -107,7 +107,7 @@
   <section id="passos">
     <div class="lead-sec"><h2>Primeiros passos</h2><p>O CLI instala as skills na sua pasta de usuário; no projeto, tudo o que a setup grava passa por você, uma confirmação por bloco.</p></div>
     <ol class="passos">
-      <li><h3>Instale</h3><p><code>npx sabia@next instalar</code> baixa o Sabiá, pergunta as ferramentas do time (Kiro, opencode), compila as skills e as instala na pasta do usuário. Depois: <code>sabia atualizar</code>, <code>sabia toolkits instalar &lt;nome&gt;</code> e <code>sabia rota</code>. Instale pelo CLI, não pelo painel Powers a partir do repositório: o repositório é a fonte, e o que roda é a compilação.</p></li>
+      <li><h3>Instale</h3><p><code>npx sabia instalar</code> baixa o Sabiá, pergunta as ferramentas do time (Kiro, opencode), compila as skills e as instala na pasta do usuário. Depois: <code>sabia atualizar</code>, <code>sabia toolkits instalar &lt;nome&gt;</code> e <code>sabia rota</code>. Instale pelo CLI, não pelo painel Powers a partir do repositório: o repositório é a fonte, e o que roda é a compilação.</p></li>
       <li><h3>Configure o projeto</h3><p>Peça <b>“configurar o Sabiá”</b>. A setup entende o repositório, propõe os agentes e as skills de cada um e grava a configuração.</p></li>
       <li><h3>Traga a primeira demanda</h3><p>Diga <b>“nova demanda: …”</b>, <b>“minha próxima tarefa”</b> ou <b>“onde parei?”</b>. A triagem registra no backlog e o hub diz a skill do seu papel.</p></li>
     </ol>
