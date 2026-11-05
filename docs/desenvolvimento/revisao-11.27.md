@@ -608,7 +608,7 @@ Para as 105 restantes, entram também: o achado de origem `ambiente` que nenhum 
 | D10 | push recusado na confirmação = o "não": o fluxo para em "aguardando o PR" (também na entrega da sa-verificar) |
 | D11 | **mantém o de hoje:** sem o gitlabpr e sem o link, a fase avança com `PR: texto entregue`. Exigir o link seria uma trava a mais, já que o Dev pode ter aberto o PR por fora do Sabiá |
 | D12 | coluna Papel dos Créditos = a sigla da tarefa: `DEV` `REV` `VER` `APR` `ESP` `ATD`… (na Revisão do épico, `ESP`) |
-| D13 | **com id** (desfaz o que a integração tinha aplicado): a Atividade dos Créditos de gestão leva o id do item. Motivo da pessoa: alguns repositórios têm o hook do ELM ativo, que exige o id do work item no commit. O hook é decisão de cada projeto, então o framework deve sempre produzir mensagens com o `<id>` |
+| D13 | **(a) sem id** (decisão final, depois da explicação): a Atividade dos Créditos de gestão é de uma lista fechada, sem o id; o id vai no comentário da [GB]. A tabela é registro interno de consumo, não commit (o id do commit é a D8, que atende ao hook do ELM). É o que a integração já tinha aplicado |
 | D14 | o `creditos.py` vale só para o Kiro; no opencode não se registra crédito de sessão |
 | D15 | confirmadas as três regras: a retrospectiva de sprint não grava créditos próprios (vale a linha da sa-planejamento); a retrospectiva de fatia grava como gestão; a Sustentação feita pelo P.O./SM grava só no registro, sem a [GB] |
 | D16 | **conclui sem o saldo:** a [GB] antiga é concluída sem lançar o saldo do SM, e o SM lança depois. Princípio da pessoa: **lançar horas é uma ajuda, não uma obrigação do Sabiá; nunca bloquear o processo por causa disso.** A orientação é perguntar e registrar, porque a pessoa pode não ter como abrir o ELM e lançar as horas |
@@ -743,3 +743,7 @@ perguntar) · **I** importante (perguntar).
 
 **Situação (05/11):** das 131, todas estão decididas, menos **D13, D51 e D76**, que a pessoa pediu para voltar com uma
 explicação melhor.
+| D51 | refinamento: os casos 1 (fatia `pronta` com artefato a mudar), 4 ([ESP] FT da cancelada) e 5 (conceitos não publicados) **não existem na prática** e saem. Ficam os casos 2 (tirar o id do `bloqueada-por` das dependentes e mostrar), 3 (todas canceladas sem concluída → o épico é cancelado no mesmo commit) e 7 (`planejada` que perdeu a DoR → o P.O. escolhe tirar da sprint ou virar especificação), consequências diretas de cancelar. O caso 6 (DoR só no épico refinado) fica como mecânico |
+| D76 | **confirmado:** na 2ª reprovação seguida, o agente para e passa a uma pessoa. No PRD e na [ESP] FT, a pessoa decide achado a achado (o aceito vai ao GATE; o de negócio volta à entrevista). No plano, no HITL a pessoa decide e no AFK o GATE do Dev Sênior vira obrigatório. No código AFK, 2 reprovações desde o último desbloqueio deixam a fatia `bloqueada` |
+
+**Todas as 131 decisões estão respondidas (05/11).**
