@@ -4,7 +4,7 @@ description: "Entry point for all new work in Sabiá — takes a text request or
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.0.1"
+  version: "2.0.2"
 ---
 
 # sa-triar — Triagem e registro
