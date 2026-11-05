@@ -188,7 +188,8 @@ bloco por mensagem); antes do bloco 0, avise que é a parte mais longa (10 bloco
      `sim` (padrão `não`); **Telas** `sim` | `não` (padrão `sim` quando os Tipos do projeto, do W1, incluem
      `frontend`; senão `não`). Vão nas linhas de mesmo nome da seção ELM do `sabia.md`.
    - Seção ELM do `sabia.md`, sem perguntas (linha 6 do W4): manual `nada`,
-     pontos `não`, fatia dividida "filhos do item original", títulos das tarefas e colunas do `CT.csv` do template;
+     pontos `não`, fatia dividida "filhos do item original", títulos das tarefas e colunas do `CT.csv` do template (Status `Aprovado`; com `qm`, o estado de aprovado do caso de teste
+     no ETM do projeto, lido do `pa` ou perguntado);
      a categoria do IB de defeito é a do bloco 5 do `elm-pa.md`. A Sustentação não é perguntada: o IB `Sustentação`
      nasce no backlog do EWM, um por produto, com a `[GB]`, no fluxo
      `sa-planejamento.inicial` ou no espelhamento do backlog ([elm-sprint.md](../sa-planejamento/references/elm-sprint.md)

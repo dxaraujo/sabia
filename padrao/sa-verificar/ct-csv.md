@@ -3,7 +3,8 @@
 ---
 # `CT.csv` — evidências dos casos de teste da fatia
 
-Uma linha por cenário **verificado** (aceito com evidência) da fatia: a execução do CT planejado que o prova (padrão
+Uma linha por cenário **aprovado** na verificação (aceito com evidência) da fatia — só os aprovados: cenário
+rejeitado ou com possível alteração (`🔁`) não entra: a execução do CT planejado que o prova (padrão
 `sa-prd/ct.md`, aprovado na `[ESP]`) ou, sem ele, um CT novo. Na consolidação, o CT planejado (publicado no ETM na
 conclusão da `[ESP]`) é ligado ao IB, e `elm_criar_ct` cria cada CT novo, com o Resumo como título e a Descrição como cenário, já
 ligado ([elm-publicar.md](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md)). Sem permissão de criar no ETM ou sem
@@ -17,19 +18,29 @@ o MCP `elm`, o arquivo é importado à mão (Importar → CSV) e os links são f
 
 ## Colunas (nesta ordem)
 
-Valores do ELM vêm do `.kiro/config/elm/pa_<nome>.json` e do `sabia.md`; sem ELM, deixe
-vazios os que não souber. A ordem, os nomes e os valores fixos (tipo, status inicial, categoria) vêm da tabela
-linha `CT.csv` da seção ELM do `sabia.md` — o template de importação do ETM do projeto manda.
+Valores do ELM vêm do `.kiro/config/elm/pa_<nome>.json` e do `sabia.md`; sem ELM, deixe vazio só o Planejado para.
+Toda linha tem Tipo, Resumo, Responsável, Status e Descrição preenchidos. A ordem, os nomes e os valores fixos (Tipo,
+Status) vêm da linha `CT.csv` da seção ELM do `sabia.md`.
 
 | # | Coluna | Valor |
 |---|---|---|
 | 1 | Tipo | tipo de artefato de teste da importação (padrão: Caso de Teste) |
 | 2 | Resumo | `<FT-nnn> <título curto> : CT<nn> - <título do cenário>` (o `CT<nn>` do CT planejado; CT novo, `CT<FT-nnn>-<nn>`, com a fatia e a sequência dela, para não colidir com outra fatia do épico) |
 | 3 | Responsável | login do ELM de quem verificou (AFK, verificado por subagente: quem disparou o loop, ou o Dev da fatia — o responsável da `[DEV]`) |
-| 4 | Status | estado inicial (padrão do projeto) |
-| 5 | Categoria | do projeto, se houver |
-| 6 | Planejado para | a iteração no EWM da sprint da fatia, se houver: o `**Iteração no EWM:**` do `sprint-<nn>.md` (o nome no EWM é livre e pode diferir da chave da sprint) |
-| 7 | Descrição | bloco abaixo, entre aspas duplas, com quebras de linha reais |
+| 4 | Status | o estado do caso de teste, **sempre preenchido** (tabela abaixo) |
+| 5 | Planejado para | a iteração no EWM da sprint da fatia, se houver: o `**Iteração no EWM:**` do `sprint-<nn>.md` (o nome no EWM é livre e pode diferir da chave da sprint) |
+| 6 | Descrição | bloco abaixo, entre aspas duplas, com quebras de linha reais |
+
+### Status
+
+É o estado do caso de teste, não o resultado da execução (o resultado está na Descrição e no `verificacao.md`).
+
+| Linha Casos de teste do `sabia.md` | Valor | Significa |
+|---|---|---|
+| `CSV` (sem o Quality Manager — o caso comum) | `Aprovado` | o cenário passou e a `[VER]` da fatia foi concluída com ele aceito |
+| `ETM` (o `pa` tem `qm`) | o estado de aprovado do caso de teste no QM do projeto, como está no `Status=` da linha `CT.csv` do `sabia.md` | o mesmo, no nome que o template de importação do ETM do projeto aceita |
+
+Sem o `Status=` na linha do `sabia.md` → `Aprovado`. Nunca deixe o Status vazio nem invente outro valor.
 
 ## Descrição
 

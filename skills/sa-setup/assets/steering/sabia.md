@@ -133,7 +133,7 @@ Na worktree do `sa-orquestrar`: `cd .sabia/local/wt/<ft> && <comando>`. Falha de
 | Critérios de aceite no IB | `<nome do campo em ccm.tipos.ib.campos do pa | descrição>` |
 | IB de defeito | `<campo = valor de correção (ex.: Categoria = Correção) | —>` (os demais padrões estão no `pa`) |
 | Tarefas (títulos padrão; editáveis à mão) | `[ESP] EP-<nn> Especificação` · `[ESP] FT-<nnn> Especificação` · `[ESP] <EP-nn ou FT-nnn> Revisão <n>` · `[DEV] FT-<nnn> Implementar` · `[REV] FT-<nnn> Revisar` · `[VER] FT-<nnn> Verificar` · `[APR] FT-<nnn> Aprovar plano` · `[APR] FT-<nnn> Aprovar PR` · `<prefixo da categoria> <ID> <pedido>`, filha do IB do item `[<ID>] <pedido>` (ex.: `[ATD] AT-012 <pedido>` sob `[AT-012] <pedido>`) · `[GB] Gerenciamento do backlog` |
-| `CT.csv` (colunas na ordem do template do ETM) | `<Tipo=Caso de Teste · Resumo · Responsável · Status=<inicial> · Categoria · Planejado para · Descrição>` |
+| `CT.csv` (colunas na ordem do template do ETM) | `<Tipo=Caso de Teste · Resumo · Responsável · Status=Aprovado (ETM: o estado de aprovado do caso de teste no QM) · Planejado para · Descrição>` — só os cenários aprovados |
 
 ## Sustentação
 
