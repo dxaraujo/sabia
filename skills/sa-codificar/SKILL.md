@@ -4,7 +4,7 @@ description: "Implements a slice (fatia) of the Sabiá flow from the approved pl
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.0.0"
+  version: "2.0.1"
 ---
 
 # sa-codificar — Ciclo curto, verificação sempre

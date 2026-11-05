@@ -4,7 +4,7 @@ description: "Code research for a slice (fatia) of the Sabiá flow, before plann
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.0.0"
+  version: "2.0.1"
 ---
 
 # sa-pesquisar — Entender antes de planejar
