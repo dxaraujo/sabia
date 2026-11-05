@@ -12,17 +12,18 @@ Pasta de trabalho (fora do git): `.sabia/local/especificacao/<EP>-<slug>/` (`<sl
 o GATE. Monte-a pela primeira fonte que existir:
 
 1. **Já existe nesta máquina** → use-a, mas compare antes com a `[ESP]` (`elm_ler_wi(id, comentarios = -1)`): o
-   último comentário que começa com `Sessão de especificação`, mais novo que a última sessão registrada no
-   `rascunho.md` local (outra máquina trabalhou depois) — compare as duas em UTC (o
-   EWM devolve UTC; o rascunho, hora local) e nunca pelo mtime dos arquivos, que muda a cada download → mostre as duas datas e pergunte se baixa os anexos (item 2)
-   por cima da pasta local.
+   último comentário que começa com `Sessão de especificação`, mais novo que a sessão local mais recente — a Data
+   da última linha da seção Créditos do `status.md` do épico da pasta local — (outra máquina trabalhou depois) —
+   compare as duas em UTC (o EWM devolve UTC; a Data dos Créditos, hora local) e nunca pelo mtime dos arquivos, que
+   muda a cada download → mostre as duas datas e pergunte se baixa os anexos (item 2) por cima da pasta local.
 2. **A `[ESP]` tem anexos** (`elm_anexo(id, "listar")`) → outra pessoa ou máquina já trabalhou: baixe cada `.md`
    (`elm_anexo(id, "baixar", caminho)`; o caminho termina no nome do anexo) para a pasta — o anexo `elm-<arquivo>.md`
    com caminho = `<pasta de trabalho>/elm/elm-<arquivo>.md`, renomeado depois para `elm/<arquivo>.md` — e cada
    `prototipo-v<N>-*` para `prototipo/`. Mostre a data do último comentário de sessão.
 3. **Só a base** → copie `rascunho.md`, `decisoes.md` e `status.md` de `<produto>/epicos/<EP>-<slug>/` em
    `origin/<base>` (`git show origin/<base>:<caminho>`, depois de `git fetch`; criados pela triagem).
-   Sem essa pasta na base → crie-os: `rascunho.md` com o título e a descrição do IB do épico (`elm_ler_wi(<IB>, comentarios = 0)`, o IB da coluna `elm`;
+   Sem essa pasta na base → crie-os: `rascunho.md` pelo padrão `sa-especificar/rascunho.md`, com o Pedido = o título
+   e a descrição do IB do épico (`elm_ler_wi(<IB>, comentarios = 0)`, o IB da coluna `elm`;
    sem o MCP `elm` ou IB `pendente` → o título do `backlog.md` e a descrição `—`; sem dado inventado),
    `decisoes.md` no formato do padrão [`sa-entrevistar/decisoes.md`](~/.sabia/framework/padrao/sa-entrevistar/decisoes.md) (título `# Decisões — <EP-nn> <título>` e a tabela vazia)
    e o `status.md` pelo padrão `sa-especificar/status-epico.md`.
@@ -40,8 +41,8 @@ atas, sim, pelo `elm/`). Crie a pasta vazia se não existir.
 protótipo de tela; o registro e a aprovação do cliente saem pelo `sa-especificar.prototipo`, e cada versão vai à
 `[ESP]` como anexo; com o PRD aprovado, as registradas vão com a pasta para a base. Crie a pasta vazia se não existir.
 
-O `rascunho.md` é o **caderno do levantamento**: o que o cliente contou, exemplos reais, dúvidas para a próxima
-reunião, com a data de cada sessão. Decisões vão para o `decisoes.md` (`D-nn`), nunca só para o rascunho.
+O `rascunho.md` é o **caderno do levantamento**, no padrão `sa-especificar/rascunho.md`: o pedido, o levantamento de
+cada sessão, as dúvidas para a próxima reunião, as versões do protótipo e as pendências do ELM até o PRD ir à base.
 
 ## Saída
 

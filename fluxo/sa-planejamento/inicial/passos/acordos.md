@@ -1,5 +1,5 @@
 ---
-{"resumo": "Acordos do time (acordos.md): cadência Scrumban, WIP, DoR e DoD, tamanho, limites da especificação, reserva e cadência de horas; depois deles, grava a equipe."}
+{"resumo": "Acordos do time (acordos.md): cadência Scrumban, WIP, DoR e DoD, tamanho, horas por tamanho, limites da especificação, reserva e cadência de horas; depois deles, grava a equipe."}
 ---
 ## Entrada
 
@@ -17,6 +17,10 @@ A equipe confirmada (passo `equipe`), ainda não gravada.
 - **Definition of Ready** e **Definition of Done** (padrão no `arquivos.md`);
 - tamanho: `P`/`M`/`G` — só para a Definition of Ready e para saber quando dividir (maior que G → dividir);
   pontos por tamanho, só se o time os quiser no EWM;
+- **horas por tamanho** (linha `Horas por tamanho`): as horas de cada papel — `[DEV]`, `[REV]`, `[VER]` — em `P`, `M`
+  e `G`, perguntadas ao time (sem padrão: o número é dele); são a estimativa das tarefas de papel da fatia na
+  publicação ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §4), ajustável
+  por fatia na proposta (passo `sa-planejamento.sprint.proposta`);
 - **especificação** (linha `Especificação`, lida no passo `sa-prd.prd.escrever`): o limite do épico (padrão até
   **8 histórias**, toda história conta, inclusive as desdobradas de outra, e um objetivo de negócio; passou →
   propor dividir em dois épicos);
@@ -28,7 +32,7 @@ A equipe confirmada (passo `equipe`), ainda não gravada.
 
 ## Saída
 
-`acordos.md` com "ok" → grave a equipe, como no passo `equipe` (agora com `duracao-sprint-semanas`), e siga para o
+`acordos.md` com "ok" → commit `planejamento: acordos`; grave a equipe, como no passo `equipe` (agora com `duracao-sprint-semanas`), e siga para o
 passo `roadmap`.
 
 ## Pare se

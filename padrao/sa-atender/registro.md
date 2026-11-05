@@ -1,8 +1,8 @@
 ---
 {"resumo": "Registro do item de Sustentação (AT-nnn e as demais categorias), em <produto>/sustentacao/<pasta>/<ID>-<slug>.md."}
 ---
-`<produto>/sustentacao/<pasta>/<ID>-<slug>.md` (pasta da categoria na tabela **Sustentação** do `sabia.md`) — o mesmo formato para toda categoria; fora do Atendimento, `## Consultas`
-e `## Resposta enviada` dão lugar a `## O que foi feito` (passos e evidência, sem dado de cliente).
+`<produto>/sustentacao/<pasta>/<ID>-<slug>.md` (pasta da categoria na tabela **Sustentação** do `sabia.md`) — o mesmo formato para toda categoria; fora do Atendimento, `## Consultas`,
+`## Pesquisa de código` e `## Resposta enviada` dão lugar a `## O que foi feito` (passos e evidência, sem dado de cliente).
 
 ```markdown
 # AT-012 · Extração de contas bloqueadas em setembro
@@ -20,6 +20,9 @@ e `## Resposta enviada` dão lugar a `## O que foi feito` (passos e evidência, 
 | 1 | `select count(*) from conta where situacao = 'B' and dt_bloqueio between …` | 1.284 contas |
 
 Arquivo: `.sabia/local/sustentacao/atendimento/AT-012/contas-bloqueadas-2026-09.csv` (fora do git)
+
+## Pesquisa de código
+- `BloqueioService.java:88` — bloqueia na 3ª tentativa e grava `dt_bloqueio`
 
 ## Resposta enviada
 <texto, sem dado que identifique pessoas>
@@ -57,6 +60,7 @@ acrescente `ELM feito [<mesma chave>]: <o que foi feito> (<AAAA-MM-DD>)` sem apa
 | Estimativa | `<n> h` (decimal com ponto) | sim | `sa-triar` |
 | Responsável | login ou `—` | sim | `sa-triar`, ou o passo `assumir` |
 | Situação | `aberto` · `em-andamento` · `concluido` · `cancelado`, com o significado em [backlog.md](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#situações), Situações (Item de Sustentação) | sim | quem causa |
+| Pesquisa de código | só com o `sa-pesquisar` (passo `sa-atender.atender.executar`): um resumo dos fatos, `arquivo:linha` — o fato, sem dado de cliente; sem pesquisa, a seção não entra | não | `sa-atender` |
 | Horas | uma linha por `elm_lancar_horas`: Data `AAAA-MM-DD`, Horas decimais | — | `sa-atender` · `sa-executar` |
 | Créditos | uma linha por sessão (item 4 do [Fechar a sessão](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão) da `sa-status`) | — | quem fecha a sessão |
 | O que foi feito (outras categorias) | lista numerada `<n>. <o que foi executado> · <onde> · <resultado> · <link do chamado ou da mudança>` | — | `sa-executar` |

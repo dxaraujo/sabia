@@ -22,7 +22,7 @@ Push e PR são do Dev: o agente `sa-desenvolvedor` (o Kiro confirma cada um) ou 
    épico com ET inicial (`<produto>/epicos/<EP>-<slug>/elm/ET-*.md`) → ligada a ela: o **Elabora** aponta para a
    inicial (o id publicado, se houver, vira `[<id>](<id>)` na publicação) e ela entra em `sources` como as entradas
    `prd` e `d-nn` — `id: et-inicial`, `resource:` o caminho relativo da ET inicial e o título; nunca a URI do ELM
-   nem `id: elm`, que é a do próprio artefato. Fatia sem épico, ou épico sem ET inicial → sem ligação. Retrabalho que muda o que ela descreve a atualiza no mesmo PR. Vai no PR e é julgada
+   nem `id: elm`, que é a do próprio artefato. Fatia sem épico, ou épico sem ET inicial → sem ligação e `sources` vazio (`sources: []`). Retrabalho que muda o que ela descreve a atualiza no mesmo PR. Vai no PR e é julgada
    com os ADRs (rubrica C15); quem a publica no ELM é a consolidação.
 1. Branch atualizada com a base? `git fetch` e `git diff --name-only HEAD...origin/<base>`: vazio, ou só
    `<produto>/backlog.md`, `<produto>/sprints/**` e `.kiro/specs/` de outras fatias (os registros de situação que o
@@ -33,7 +33,7 @@ Push e PR são do Dev: o agente `sa-desenvolvedor` (o Kiro confirma cada um) ou 
    pelo botão Rebase do GitLab): o rebase reescreve os commits, o `sha` aprovado some e a mudança volta à revisão.
 2. Texto do PR: o padrão `sa-codificar/pr.md`.
 3. **Entrega**, nesta ordem — quem vem depois só acha no remoto o que você publicou:
-   1. **Commit** do que faltar (árvore limpa).
+   1. **Commit** do que faltar (árvore limpa), `<FT> abrir PR`.
    2. **Push** da branch da fatia: `git push -u origin <branch>` (nunca a base; o Kiro pergunta). Push recusado
       (pela pessoa ou pela regra) → entregue o comando pronto e espere a pessoa dizer que publicou. Push "não" →
       a branch não foi publicada e não há PR (nem PR atualizado): a fase não muda (AFK: `verificada`; HITL:
@@ -53,7 +53,7 @@ Push e PR são do Dev: o agente `sa-desenvolvedor` (o Kiro confirma cada um) ou 
    7. `status.md`: HITL → `fase: pr-aberto`; AFK → `fase: aguardando-aprovacao-pr`; link do PR (sem o MCP `gitlabpr`,
       item 4: o que a pessoa passou ou `PR: texto entregue` — o push foi feito, e a fase é a mesma; push "não" já parou
       no item 3.2); linha no Histórico e os **créditos da sessão** na seção Créditos
-      ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4). Commit, push e conferência como nos itens 3.1–3.3
+      ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4). Commit `<FT> abrir PR`, push e conferência como nos itens 3.1–3.3
       (o `status.md` vai junto no PR).
    8. **Horas da sessão** na `[DEV]`, como no item 3 de Fechar a sessão da
       [`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão): pergunte o tempo desta sessão →

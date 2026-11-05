@@ -17,9 +17,10 @@ A `[VER]` assumida (passo `assumir`), na branch do PR, com `fase: em-verificacao
 
 ## Saída
 
-O bloco `🔎 Verificação` no `verificacao.md` e o Drift de negócio no `status.md` → passo `decisao`.
+O bloco `🔎 Verificação` no `verificacao.md` e o Drift de negócio no `status.md` → passo `decisao`. O verificar parou
+com a fatia `bloqueada (de: em-verificacao)` (só `⚠️ ambiente`, ou cenário errado na ficha sem épico) → passo
+`entrega`, sem a decisão.
 
 ## Pare se
 
-- O verificar parou com a fatia `bloqueada` (só `⚠️ ambiente`, ou cenário errado na ficha sem épico) → a frase dele
-  e pare: sem entrega.
+—

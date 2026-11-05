@@ -14,10 +14,12 @@ Escreva o `research.md` pelo padrão `sa-pesquisar/research.md`.
 - `status.md`: fase `planejando`, linha no Histórico — **só** quando você não é o agente `sa-pesquisador`
   (sessão da pessoa). O agente pesquisador nunca grava o `status.md`: quem o chamou registra (`sa-plano`,
   `sa-orquestrar`).
+- Fora de uma fatia → nada gravado: os fatos vão na resposta, e quem chamou os guarda (Entrada do fluxo).
 
 ## Saída
 
-O `research.md`: gravado na pasta da fatia (sessão da pessoa) ou inteiro na resposta (agente `sa-pesquisador`).
+O `research.md`: gravado na pasta da fatia (sessão da pessoa) ou inteiro na resposta (agente `sa-pesquisador`); fora
+de uma fatia, os fatos na resposta.
 Aqui o fluxo termina.
 
 ## Pare se

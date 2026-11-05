@@ -14,8 +14,11 @@ Na **base**, pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/ref
    por vírgula; a faixa do rascunho se expande: `HF-02 · 2.1–2.3` → `HF-02#2.1, HF-02#2.2, HF-02#2.3`), a
    `prioridade` do épico, `elm` (item 4) e `status` `elegivel` se passa na **Definition of Ready**
    ([references/backlog.md](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#definition-of-ready-o-que-faz-uma-fatia-elegivel)) ou
-   `nova` com `obs` `falta: <o quê>`. Ids `FT-<nnn>` sequenciais no projeto, **nunca reaproveitados**. O `status` do
-   épico não muda (segue `iniciado`, com as fatias).
+   `nova` com `obs` `falta: <o quê>`. Ids reais só aqui, depois do `git pull --ff-only` (item 1 do bloco): saem da
+   linha "Próximos ids" (`FT-<nnn>`), na ordem do rascunho, no lugar dos provisórios (`FT-?<n>`, também no
+   `bloqueada-por`, nas fichas e nos títulos dos IBs), e a linha avança no mesmo commit; **nunca reaproveitados**.
+   Conflito de id no push → a regra das [Regras](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#regras) do
+   backlog. O `status` do épico não muda (segue `iniciado`, com as fatias).
 2. **Fichas** das fatias (`<produto>/fatias/FT-<nnn>-<slug>.md`, formato "padrão de épico"): Objetivo, Cobre (links
    para os cenários do PRD, sem copiar), **Artefatos afetados** (os do rascunho, item 5, com o id do ELM do
    `altera <id>` e do `exclui <id>` do PRD na coluna Artefato, no formato da ficha de épico do padrão

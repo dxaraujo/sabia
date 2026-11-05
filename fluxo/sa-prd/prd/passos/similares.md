@@ -36,7 +36,7 @@ impacto, `—`).
 Verificação ao vivo pendente (sem o MCP `elm`) → `novo (só bundle <AAAA-MM-DD | sem data>)`: a publicação refaz a
 busca.
 Artefato que surgir depois (na escrita, na revisão ou numa mudança antes do fatiamento) passa por aqui antes de
-virar arquivo. Projeto sem ELM → pule.
+virar arquivo. Projeto sem ELM → pule (No ELM `—`, Impacto `—`).
 
 ## Saída
 

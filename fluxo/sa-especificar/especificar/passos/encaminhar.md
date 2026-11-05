@@ -35,8 +35,8 @@ pela setup. É transparente para quem está no fluxo: nada é perguntado nem mar
 1. **Escrita (passo `sa-prd.prd.escrever`; na `[ESP] FT`, o passo `sa-especificar.fatia.escrever`; a ATA, no passo `sa-especificar.reuniao.escrever`).** Cada tipo da linha sai pela skill do toolkit, que segue o
    fluxo e o padrão do tipo pelos caminhos da linha, se a linha os trouxer, senão as references dela (a skill está ligada a você), e volta ao passo; os demais tipos e o `prd.md` são do Sabiá. Sem a linha → tudo é do Sabiá. O
    passo `sa-prd.prd.similares` vem antes e é seu.
-2. **Contrato, antes da revisão P.** `prd.md` com todas as H2 do template (o padrão `sa-prd/prd.md`), `elm/` com os conceitos OKF quando há
-   ELM, um arquivo por artefato, com a sigla e o nome do catálogo. A revisão P e o GATE continuam os do Sabiá; os itens
+2. **Contrato, antes da revisão P.** `prd.md` com todas as H2 do template (o padrão `sa-prd/prd.md`), `elm/` com os conceitos OKF (também
+   sem ELM, pelo `okf-elm.md`), um arquivo por artefato, com a sigla e o nome do catálogo. A revisão P e o GATE continuam os do Sabiá; os itens
    de rubrica do toolkit se somam à P (no prompt do `sa-revisor`; sem agente, na seção **Tipos com skill de toolkit**
    do `.sabia/sabia.md`).
 
@@ -46,8 +46,8 @@ A ATA de cada transcrição pendente, quando há; com Telas = `sim` e versão no
 aguardando o cliente ou a versão nova, o passo `fechar-sessao`); depois, a próxima skill dita (e a sessão segue nela, até o passo
 `fechar-sessao`; parou dentro da `sa-prd` ou da `sa-entrevistar`, num Pare se, sem GATE → rode o passo
 `sa-especificar.especificar.fechar-sessao` antes de parar), ou, em `aprovado` na pasta de trabalho, o passo
-`fechamentos`. O `aprovado` na base não chega aqui: com a Especificação `iniciada`, vai do passo `entrada` ao
-`fechamentos` (com o PRD na base, nada a gravar) e dele ao `publicar`; `concluida` ou `fatiado`, é vizinho.
+`fechamentos`. O `aprovado` na base não chega aqui: com a Especificação `iniciada` (sem transcrição sem ATA aprovada nem mudança aberta e ainda não registrada), vai do
+passo `entrada` ao `fechamentos` (com o PRD na base, nada a gravar) e dele ao `publicar`; `concluida` ou `fatiado`, é vizinho.
 
 ## Pare se
 

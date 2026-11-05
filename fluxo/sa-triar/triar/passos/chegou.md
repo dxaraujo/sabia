@@ -80,6 +80,10 @@ e `obs` — épicos, fatias e as `### <Categoria>` da `## Sustentação`), no `*
 
 Item novo → passo `triagem`; item que já existe → a ação da lista acima.
 
+**Sessão com gravação pendente** (os ids do espelhamento acima, ou um item registrado antes, no "sim: mais um
+item"): antes de sair para outro fluxo, para o fim (o resto) ou por uma parada do Pare se, feche a sessão como o passo
+`encaminhar` na resposta "não" — o resumo, os créditos e o commit único — e só então diga o próximo.
+
 ## Pare se
 
 - Árvore suja ao trocar para a base (bloco Gravar na base).

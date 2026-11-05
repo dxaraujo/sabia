@@ -23,7 +23,7 @@ penúltima linha do relatório (só sobe de `não` para `possível alteração`;
 `sa-desenvolver/status.md`; `possível alteração — <motivo> · artefatos: <id|rótulo> (<tipo>)` é a indicação do
 agente: quem decide se volta à especificação é a pessoa revisora no HITL, `sa-revisar.hitl`, ou o Dev
 Sênior na `[APR] Aprovar PR`, no AFK) e **commite-o imediatamente com o `status.md`** (fase,
-Rodadas, drift) antes de prosseguir — mensagem no padrão do `sabia.md`, `registrar revisão <N>`; não espere a próxima
+Rodadas, drift) antes de prosseguir — mensagem no padrão do `sabia.md`, `<FT> registrar revisão <N>`; não espere a próxima
 sessão nem o passo `onde`. O PR cita esse arquivo e
 ele precisa estar na branch antes da abertura.
 

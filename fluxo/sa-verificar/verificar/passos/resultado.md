@@ -28,17 +28,17 @@ quem decide é o Dev Sênior na `[APR] Aprovar PR`.
 
 - **ACEITO** — todos aceitos; no AFK, só `✅` e `🔁`, com o Drift `possível alteração — …`. O `CT.csv` já está gerado
   (passo `casos`).
-- **REJEITADO** — algum `❌`: para cada cenário, esperado × obtido + evidência, registrados no `status.md` como
-  achados. Se o problema é o artefato ou a ficha, não o código, diga isso (Drift, acima; ficha sem épico: Pare se).
+- **REJEITADO** — algum `❌`: para cada cenário, esperado × obtido + evidência, registrados em Achados abertos do
+  `status.md` (origem `verificacao.md`). Se o problema é o artefato ou a ficha, não o código, diga isso (Drift, acima; ficha sem épico: Pare se).
 - Rodada com ❌ e ⚠️ em cenários diferentes → REJEITADO; os ⚠️ ficam no `verificacao.md` como `⚠️ ambiente` e vão
-  também para Achados como "ambiente".
+  também para Achados abertos (origem `ambiente`).
 
 | Resultado · Modo | fase | aviso |
 |---|---|---|
 | ACEITO · AFK (subagente do loop ou da `sa-codificar`) | `verificada` | devolva para abrir o PR (passo `sa-codificar.codificar.pr`); a possível alteração segue com o PR para a `[APR]` |
 | REJEITADO · AFK | `implementando` | devolva: a `sa-codificar` corrige e a verificação roda de novo (só os rejeitados + os de repetição); o `🔁` fica no Drift, não vira tarefa |
 | ACEITO ou REJEITADO · HITL | continua `em-verificacao` | devolva ao `sa-verificar.hitl`: a decisão da pessoa, a fase, a entrega e a `[VER]` são dele |
-| só `⚠️ ambiente` | `bloqueada (de: verificando)` (HITL: `de: em-verificacao`), com o que falta | ninguém corrige código: diga o que falta |
+| só `⚠️ ambiente` | `bloqueada (de: verificando)` (HITL: `de: em-verificacao`), com o que falta | ninguém corrige código: diga o que falta (HITL: devolva ao `sa-verificar.hitl`, que faz a entrega) |
 
 Aqui não há commit, push nem ELM: no AFK não há `[VER]` no EWM, e o commit é de quem chamou.
 
@@ -51,4 +51,5 @@ O bloco no `verificacao.md`, devolvido a quem chamou: AFK, ACEITO → `fase: ver
 
 - Só `⚠️ ambiente` → a linha dela na tabela; ninguém corrige código.
 - Cenário errado na ficha sem épico, fora dos artefatos (`C<n>`, decisão) → `fase: bloqueada (de: verificando)`
-  (HITL: `de: em-verificacao`) com a pergunta ao P.O.: a ficha, pela `sa-triar` (agente `sa-produto`).
+  (HITL: `de: em-verificacao`, devolvida ao `sa-verificar.hitl`, que faz a entrega) com a pergunta ao P.O.: a ficha,
+  pela `sa-triar` (agente `sa-produto`).

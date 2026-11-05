@@ -1,5 +1,5 @@
 ---
-{"resumo": "Depois do GATE do PRD (o primeiro, ou a mudança antes do fatiamento): fecha a sessão e, no primeiro GATE, leva o PRD aprovado, com o protótipo registrado, para a base (um commit); a publicação e a conclusão da [ESP] vêm nos passos seguintes."}
+{"resumo": "Depois do GATE do PRD (o primeiro, ou a mudança antes do fatiamento): no primeiro GATE, fecha a sessão e leva o PRD aprovado, com o protótipo registrado, para a base (um commit); com o PRD já na base, nada aqui; a publicação e a conclusão da [ESP] vêm nos passos seguintes."}
 ---
 ## Entrada
 
@@ -12,7 +12,9 @@ ou a retomada da publicação).
 Fechamentos do GATE do PRD. A `sa-prd` conduz o GATE e grava só o próprio artefato; o que é da `[ESP]` é daqui e
 dos passos `publicar` e `concluir`. O fatiamento e o backlog são do P.O. ou do SM.
 
-1. Feche a sessão (passo `fechar-sessao`), para a `[ESP]` ter a versão aprovada.
+1. **Primeiro GATE** → feche a sessão (passo `fechar-sessao`), para a `[ESP]` ter a versão aprovada. **PRD já na
+   base** (a mudança ou a retomada da publicação) → não fecha aqui: a sessão fecha no Pare se do passo `publicar` ou
+   no passo `concluir`, antes do commit da conclusão.
 2. **Base**, pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), **um** commit
    (padrão do `sabia.md`), direto na base; nunca numa branch de fatia:
    - **primeiro GATE** → leve a pasta: copie-a, fora de `reunioes/` (a transcrição fica só nesta máquina), para

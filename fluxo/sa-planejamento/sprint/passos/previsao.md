@@ -19,7 +19,8 @@ Outra fatia `nova` que a pessoa quer na sprint → **não barre**: avise que ela
 de especificação; ela não conta na vazão nem ganha `[DEV]` agora (ganha quando, `elegivel`, entrar numa sprint ou
 for puxada). Cada fatia **HITL** prevê
 **revisor** — um **Dev Sênior**, pela regra do revisor (passo `modo`) — e **verificador** (não quem
-implementa), e a soma das revisões e verificações cabe nas horas de revisão do time; fatia **AFK** não tem
+implementa), e a soma das revisões e verificações (as horas de `[REV]` e `[VER]` da linha `Horas por tamanho`
+do `acordos.md`, pelo `Tam.`) cabe nas horas de revisão do time; fatia **AFK** não tem
 (revisão e verificação por subagente, sem `[REV]`/`[VER]`) — a revisão humana dela é a leitura do PR. As
 **aprovações previstas** também consomem as horas de revisão dos Dev Sêniores: o plano de cada fatia de Júnior
 (e de Pleno que costuma pedir o GATE) e o PR de cada fatia AFK. A `[APR]` não nasce aqui — nasce no gate.

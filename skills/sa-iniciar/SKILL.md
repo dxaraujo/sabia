@@ -43,7 +43,7 @@ diga o que ele é e peça o item.
 | `FT-nnn` `nova` com `falta: especificação` | na sprint, com a `[ESP] FT` → **`sa-especificar`** · sem sprint → entra pelo planejamento ou pelo encaixe (**`sa-planejamento`**) | Especificador / `sa-especificador` · P.O. ou SM / `sa-produto` |
 | tarefa `[ESP] FT-nnn` aberta de fatia `iniciada` (voltou à especificação) | **`sa-especificar`** | Especificador / `sa-especificador` |
 | tarefa `[ESP] <id> Revisão <n>` (de épico ou de fatia) | **`sa-especificar`** | Especificador / `sa-especificador` |
-| fatia em `bloqueada (de: <fase>)` com Bloqueio `aguardando especificação [ESP] FT-nnn` | a linha da `[ESP] FT` na seção Especificação da sprint aberta `planejada` ou `iniciada` (a reaberta volta `iniciada`) → **`sa-especificar`** · `concluida` → o Dev traz a base para a branch: `de: pesquisando \| planejando` → **`sa-plano`** · as demais → **`sa-codificar`** | Especificador / `sa-especificador` · Dev / `sa-desenvolvedor` |
+| fatia em `bloqueada (de: <fase>)` com Bloqueio `aguardando especificação [ESP] FT-nnn` | pela linha da `[ESP] FT` na seção Especificação da sprint aberta ([De quem é a Volta](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação)): `planejada`, `iniciada`, ou `concluida` sem o motivo do Bloqueio na Observação → **`sa-especificar`** · `concluida` com ele → o Dev traz a base para a branch: `de: pesquisando \| planejando` → **`sa-plano`** · as demais → **`sa-codificar`** | Especificador / `sa-especificador` · Dev / `sa-desenvolvedor` |
 | `FT-nnn` `nova` (não passa na DoR) | sem sprint → **`sa-triar`** (deixar a fatia pronta) · na sprint, com a `[ESP] FT` → **`sa-especificar`** | P.O. / `sa-produto` · Especificador / `sa-especificador` |
 | `FT-nnn` (de épico ou de Manutenção), tarefa `[DEV]`, "próxima fatia" | **`sa-desenvolver`** | Dev / `sa-desenvolvedor` |
 | tarefa `[REV]` | **`sa-revisar.hitl`** (rubrica C sobre o PR) | Revisor / `sa-revisor` |
@@ -62,6 +62,7 @@ diga o que ele é e peça o item.
 | fatia em `implementando`, `revisando`, `verificando` ou `retrabalho`, ou `bloqueada (de: implementando \| revisando \| verificando)`, ou `aguardando-aprovacao-pr` com Modo HITL na base (a troca de modo cancelou a `[APR] Aprovar PR`) | **`sa-codificar`** | Dev / `sa-desenvolvedor` |
 | fatia em `pr-aberto` ou `em-revisao` (a `[VER]` dela espera a revisão: diga e pare) | **`sa-revisar.hitl`** | Revisor / `sa-revisor` |
 | fatia em `em-verificacao` | **`sa-verificar.hitl`** | Verificador (QA) / `sa-verificador` |
+| fatia em `bloqueada (de: em-verificacao)` com o Bloqueio do ambiente ou da pergunta da ficha (sem `aguardando especificação`) | **`sa-verificar`** (fluxo hitl: o verificador retoma quando o Bloqueio se resolve) | Verificador / `sa-verificador` |
 | fatia em `verificada` (AFK) | **`sa-codificar.codificar.pr`** (abrir o PR) | Dev / `sa-desenvolvedor` |
 | fatia em `aceita` (HITL), ou em `aguardando-aprovacao-pr` (AFK) com a `[APR] Aprovar PR` concluída — qualquer item dela, menos a `[APR]` | **`sa-desenvolver.encerrar`** (merge do PR aprovado) | Dev responsável / `sa-desenvolvedor` |
 | fatia em `aguardando-aprovacao-pr` (Modo AFK na base) sem a `[APR] Aprovar PR` concluída | **`sa-revisar.aprovar-pr`** | Aprovador (Dev Sênior) / `sa-revisor` |
@@ -91,7 +92,7 @@ Responda com a instrução e **pare**: nunca invoque nem simule a skill do papel
 1. Com o MCP `elm` e a sprint publicada: `elm_listar_wi(dono: "eu", iteracao: <a da sprint aberta>, tipo: "tarefa")`;
    sem ele, ou com `**Publicação no EWM:** pendente` no cabeçalho (nenhuma tool recebe a iteração dela antes da
    publicação — [elm.md](../sabia/references/elm.md), Regras de toda escrita, Sprint não publicada): as linhas do `sprint-<nn>.md`
-   aberto em que a pessoa (login do `sabia.md` ou `git config user.email`) está em Responsável (Fatias: `[DEV]`;
+   aberto em que a pessoa (o login pelo item 8 da [Coleta](../sa-status/SKILL.md#coleta) da `sa-status`) está em Responsável (Fatias: `[DEV]`;
    Especificação: `[ESP]`; Sustentação: a tarefa da categoria), em Revisor (`[REV]`) ou em Verificador (`[VER]`) —
    com o marcador, diga também "sprint não publicada no EWM → sincroniza a sprint (`sa-planejamento`)".
 2. Mostre as tarefas abertas (não concluídas) de **qualquer tipo**, na ordem de prioridade do `backlog.md` (`crítica`

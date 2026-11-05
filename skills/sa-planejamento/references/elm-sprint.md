@@ -15,7 +15,7 @@ do fluxo `sa-planejamento.inicial`, até a primeira sprint (§2).
 
 **Tarefa que já existe** (o item volta a uma sprint — publicação, encaixe (`sa-planejamento.durante.encaixe`, a puxada) — com tarefas
 que ficaram no backlog do EWM): **move, nunca recria**. Cada uma numa chamada própria, com o dono e a estimativa do
-papel dela no novo planejamento — `elm_atualizar_wi([id], iteracao, dono, estimativa_h)`: a `[DEV]` com o
+papel dela no novo planejamento (§4) — `elm_atualizar_wi([id], iteracao, dono, estimativa_h)`: a `[DEV]` com o
 responsável, a `[REV]` com o revisor, a `[VER]` com o verificador, a da Sustentação com quem faz (`—` → sem `dono`:
 a tarefa mantém o que tinha) —; o IB e o épico
 movem só com `iteracao`, na chamada única do §3 (o dono do IB segue o P.O.). **Só nasce o papel que falta**,
@@ -99,7 +99,7 @@ nome que ela der (`2026`, `Entrega 3`…); primeira sprint do projeto → pergun
 nunca crie outra.
 
 **Sprint não publicada:** o `sprint-<nn>.md` gravado antes deste § — planejamento sem o MCP ou com falha, sessão
-parada antes da publicação, ou o da próxima, que nasce no passo `sa-planejamento.retrospectiva.recalcular` da virada (§5) — leva no cabeçalho
+parada antes da publicação, ou o da próxima, que nasce no passo `sa-planejamento.retrospectiva.fechar` da virada (§5) — leva no cabeçalho
 `**Publicação no EWM:** pendente`, e este § (com pai novo, junto com o §2), ao rodar, o tira no commit da publicação
 (sprint com linha `migrada de` ou linha sem ids: o movimento e a publicação delas ficam para a sincronização — indique
 "sincroniza a sprint").
@@ -154,8 +154,10 @@ interrompida); senão, crie. Grave o id novo no lugar do `GB` da linha da `## Su
 ## 3. Épico e IB (nascem no registro; movem na sprint)
 
 - **Épico** (na triagem, com "sim"; `iteracao = backlog`): `elm_criar_wi(tipo ib, "[EP-<nn>] <título>", dono = po da linha,
-  descricao_md = problema, quem pede, resultado; depois do GATE, a solução e o link do PRD)`. Item de origem do EWM
-  (`origem: <id>` na `obs`): já é do tipo épico → é o épico; senão `elm_atualizar_wi(origem, pai = épico novo, iteracao = backlog)`.
+  descricao_md = problema, quem pede, resultado)` — o épico no EWM é sempre um IB (o `pa` não cria o tipo Épico).
+  Item de origem do EWM: IB sem pai `[EP-…]` que a pessoa confirmou como o épico, caso a caso (passo
+  `sa-triar.triar.registrar`) → é o épico; senão (`origem: <id>` na `obs`: DF, IB com pai `[EP-…]`, ou a pessoa disse
+  não) `elm_atualizar_wi(origem, pai = épico novo, iteracao = backlog)`.
   Épico `novo` ou `elegivel` fica só ele no
   backlog (com a `[ESP]`, se ela saiu de uma sprint sem começar); quando entra numa sprint (`planejado`, com a
   `[ESP]`, ou com a primeira fatia), move para a iteração dela e a `[ESP]` nasce lá (§4) — ou move, se já existe
@@ -197,8 +199,11 @@ que a triagem não fez no EWM e a `elm` ganha o link, como no espelhamento (§0,
 
 Para cada linha do `sprint-<nn>.md` (menos as com `saiu da sprint`, que são histórico), com a tabela "Tarefas no EWM"
 de `elm.md`: `elm_criar_wi(tipo tarefa, título, pai, dono, estimativa_h, iteracao)` — só para o papel que o item não
-tem; a que já existe move (topo). **Responsável `—` não adia nada:** a tarefa nasce agora, sem `dono`, e quem a
-assumir vira o dono (`elm_transicao(id, "assumir")`). Fatia pelo `modo` da linha (sem responsável, o do backlog):
+tem; a que já existe move (topo). **`estimativa_h`:** nas tarefas de papel da fatia (`[DEV]`, `[REV]`, `[VER]`), a da
+Observação `horas: …` da linha (ajustada na proposta, `sa-planejamento.sprint.proposta`) ou, sem ela, a da linha
+`Horas por tamanho` do `acordos.md` pelo `Tam.`; na `[ESP]`, as Horas previstas; na Sustentação, as Horas (§6).
+**Responsável `—` não adia nada:** a tarefa nasce agora, sem `dono`, e quem a assumir vira o dono
+(`elm_transicao(id, "assumir")`). Fatia pelo `modo` da linha (sem responsável, o do backlog):
 **HITL** → `[DEV]`, `[REV]` e `[VER]`; **AFK** → só a `[DEV]`. Fatia `nova` que entrou como especificação → só a
 `[ESP] FT-<nnn> Especificação`, sob o IB dela. Linha da Especificação com a Observação `revisão <n>: <motivo>` → a
 `[ESP] <id> Revisão <n>`, sob o IB do item (no épico, o do épico); a concluída fica como está
@@ -214,8 +219,8 @@ diante move na virada (§5); pai novo → a `[GB]` do pai novo (§2).
 ## 5. Virada
 
 **Ordem**, em toda virada: o §9 da sprint que fecha é o da pré-condição dos ritos (`sa-planejamento.retrospectiva.precondicao`; antes da migração nos arquivos;
-este § não roda outro, que veria os itens já migrados) → a migração nos arquivos (passo `sa-planejamento.retrospectiva.fechar` da virada) → o
-replanejamento da próxima (passo `sa-planejamento.retrospectiva.recalcular`: o arquivo dela nasce com `**Publicação no EWM:** pendente`, §1) → o §1 da
+este § não roda outro, que veria os itens já migrados) → a migração nos arquivos (passo `sa-planejamento.retrospectiva.fechar` da virada: o arquivo da próxima nasce com a
+chave e `**Publicação no EWM:** pendente`, §1) → o replanejamento da próxima (passo `sa-planejamento.retrospectiva.recalcular`) → o §1 da
 próxima, também com o mesmo pai (próxima em outro pai, `2026/Sprint 04` → `2027/Sprint 01`: também o §2, com a
 `[GB]` do pai novo) → o **movimento** → o §3–4 e o §6 das linhas novas → o §9 da próxima. Antes do movimento, os itens
 migrados ainda estão na iteração que fecha, e o §9 da próxima os veria sair.
@@ -288,7 +293,8 @@ A `[APR] Aprovar PR` é só do AFK: na troca para HITL com o PR aberto, ela é c
 
 `elm_listar_wi(pai = IB, titulo_prefixo "[APR] FT-<nnn> Aprovar <plano|PR>")` → já existe: é ela (volta a ser
 aprovada depois de ajustes). Senão `elm_criar_wi(tipo tarefa, "[APR] FT-<nnn> Aprovar <plano|PR>", pai = IB, dono = o
-Dev Sênior escolhido, estimativa_h perguntada, iteracao da fatia)`. Fica no estado inicial; o id vai para o campo ELM
+Dev Sênior escolhido, estimativa_h perguntada — no loop, a do lote, perguntada uma vez na confirmação
+(`sa-orquestrar.orquestrar.lote`) e gravada no log —, iteracao da fatia)`. Fica no estado inicial; o id vai para o campo ELM
 do `status.md`.
 
 ## 9. Sincronizar a sprint com o EWM ("sincroniza a sprint")
@@ -380,7 +386,8 @@ comparação: o resultado é sempre a tabela do passo 4 ou a linha do passo 6.
      iteração: em andamento → iniciado (`EWM: volta`, nunca "sai da sprint"); concluída ou descartada → só a linha de
      estado, sem a de iteração;
    - tarefa aberta da Especificação e da Sustentação → `elm_ler_wi(id, comentarios 0)` para a estimativa (a que já foi
-     lida não é lida de novo); as fatias não guardam horas no arquivo;
+     lida não é lida de novo); as fatias não guardam horas no arquivo (a Observação `horas: …` só leva o ajuste da
+     proposta à publicação, §4);
    - IB de épico citado no `backlog.md` e numa das listagens → o estado, qualquer que seja a situação do épico;
    - do backlog ou terminal de fora, na listagem da sprint → **entrou**: uma linha por item, com o IB e as tarefas dele que
      estão na listagem (as citadas e as por fora cujo pai é ele);
@@ -504,25 +511,28 @@ linha), nunca `arquivo:`.
 | `cancelada` | IB ou tarefa aberta (reaberta) | EWM: cancelar (`elm_transicao(<id>, "cancelar")`) | manter |
 | `pronta` · `concluida` (o PR mergeado) | tarefa aberta | EWM: cancelar a aberta (a `[DEV]`: concluir, com as horas já lançadas) | manter: a tarefa é de `<dono>`, que a conclui na sessão dele |
 | `iniciada` | `[REV]`, `[VER]` ou `[APR]` fora do esperado pela fase | pela [fase do `status.md`](#estado-esperado-pela-fase) | — |
-| `planejada` | `[DEV]` com outro dono | arquivo: responsável = o novo, quando a regra do dono (abaixo) deixa; senão, EWM: o dono volta | EWM: o dono volta |
-| `iniciada` em diante | `[DEV]` com outro dono | arquivo: `responsavel` e Responsável = o dono, quando a regra do dono deixa (quem retomou a fatia); senão, EWM: a `[DEV]` volta para o Responsável da linha viva (e o backlog acompanha) | EWM: a `[DEV]` volta para o Responsável da linha viva |
+| `planejada` | `[DEV]` com outro dono | arquivo: responsável = o dono (o EWM vence; regra do dono, abaixo) | EWM: o dono volta |
+| `iniciada` em diante | `[DEV]` com outro dono | arquivo: `responsavel` e Responsável = o dono (o EWM vence: quem retomou a fatia; regra do dono, abaixo) | EWM: a `[DEV]` volta para o Responsável da linha viva |
 | `iniciada` em diante | dono da `[DEV]` = Responsável da linha viva ≠ `responsavel` do backlog | arquivo: `responsavel` = o dono, só no backlog | — |
 | HITL | `[REV]` com outro dono | arquivo: Revisor = o novo, se é Dev Sênior ativo e não implementa (ou é o `revisor único`); senão, EWM: o dono volta | EWM: o dono volta |
 | HITL | `[VER]` com outro dono | arquivo: Verificador = o novo, se não implementa; senão, EWM: o dono volta | EWM: o dono volta |
 
-**Regra do dono da `[DEV]`.** Fatia `planejada`: o arquivo recebe o novo responsável só se ele é Dev ativo, não é o
-Verificador da linha nem o Revisor (salvo `revisor único`) e o modo não muda pela
-senioridade (`sa-planejamento.sprint.modo`) dele — Júnior só em fatia HITL; Sênior em fatia AFK, ou HITL com o
-motivo já na `obs`; Pleno quando os critérios do passo `sa-fatiar.fatiar.rascunho` (item Modo) dão o modo atual, com a confirmação do P.O. na linha;
-fora disso, o dono volta (trocar o responsável com troca de modo é do P.O. ou do SM). Fatia `iniciada` em diante: o dono da
-`[DEV]` é **quem implementa** — só o dono lança horas, e outro Dev pode retomar a fatia (trocar o responsável é do
-planejamento, e esta sincronização é dele). A referência é o Responsável da **linha viva** da sprint (a sem `saiu da
-sprint`): o arquivo recebe o dono (esse Responsável e o `responsavel` do backlog, que depois da primeira atribuição podem
-diferir) se ele é Dev ativo, não é o Verificador nem o Revisor da linha (salvo `revisor único`) e não é Júnior numa
-fatia AFK (aí é o fluxo `sa-planejamento.troca-modo`, com o P.O. ou o SM); senão, a `[DEV]` volta para o
-Responsável da linha viva, e o `responsavel` do backlog passa a ser o mesmo. Dono igual ao Responsável da linha viva e
-diferente do `responsavel` do backlog (a primeira atribuição de quem não era o responsável) → `arquivo: responsavel = <dono>`, só
-no backlog: o valor velho bloquearia a pessoa como verificadora ou revisora. O Responsável do `status.md` não serve de
+**Regra do dono da `[DEV]`** — na divergência entre a coluna e o EWM, **o EWM vence**: o arquivo recebe o dono da
+`[DEV]` (o Responsável da **linha viva** da sprint — a sem `saiu da sprint` — e o `responsavel` do backlog, que depois
+da primeira atribuição podem diferir). Fatia `iniciada` em diante: o dono da `[DEV]` é **quem implementa** — só o
+dono lança horas, e outro Dev pode retomar a fatia (trocar o responsável é do planejamento, e esta sincronização é
+dele). Na mesma linha, o que o dono novo muda:
+- **modo** pela senioridade dele (`sa-planejamento.sprint.modo`; Pleno: os critérios do passo `sa-fatiar.fatiar.rascunho`,
+  item Modo, com a confirmação do P.O. na linha): fatia `planejada` → o modo novo na linha (backlog e sprint) e, no
+  EWM, a `[REV]` e a `[VER]` que nascem (com o revisor e o verificador que a pessoa der na linha) ou são canceladas
+  (topo e §7), como na primeira atribuição; `iniciada` em diante, Júnior numa fatia AFK → a linha diz que o modo
+  muda pelo fluxo `sa-planejamento.troca-modo` (P.O. ou SM), em seguida;
+- dono que não é Dev ativo do `equipe.json`, ou que é o Verificador ou o Revisor da linha (salvo `revisor único`) →
+  `manter: <login> <não é Dev ativo | é também o Verificador | é também o Revisor> — o P.O. ou o SM acerta`; a
+  coluna se corrige na sincronização seguinte.
+
+Dono igual ao Responsável da linha viva e diferente do `responsavel` do backlog (a primeira atribuição de quem não era
+o responsável) → `arquivo: responsavel = <dono>`, só no backlog: o valor velho bloquearia a pessoa como verificadora ou revisora. O Responsável do `status.md` não serve de
 referência: no GATE do plano ele é o aprovador.
 
 **Git e arquivos** (a evidência do passo 1) — a exceção ao "não há `arquivo`" da fatia (passo 4): o `arquivo:`

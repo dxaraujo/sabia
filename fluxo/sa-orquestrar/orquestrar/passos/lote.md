@@ -39,6 +39,7 @@ As fatias pedidas, ou a sprint aberta.
    um Dev Sênior nos planos deste lote? (sim: [APR] para <login> | não) — a escolha vale para o lote
    Aprovação dos PRs: [APR] Aprovar PR para <Dev Sênior> (sugestão: outro que não quem dispara; ele mesmo só se
    for o único Dev Sênior ativo)
+   Estimativa de cada [APR] do lote (plano e PR): <h>h?
    Plano com risco (regra sensível, muitos cenários, integração externa, mudança de dado) → a fatia para em
    bloqueada, "aguardando troca de modo" (a troca é do P.O. ou do SM), e o loop segue com as outras
    Ao fim de cada fatia aprovada e verificada: push + PR? (sim/não)   — nunca merge; só se o sabia.md diz
@@ -70,7 +71,7 @@ As fatias pedidas, ou a sprint aberta.
    no `status.md`. Depois `elm_transicao(<id>, "assumir", iniciar_pai: true)`
    em cada `[DEV]`; sem o MCP `elm` ou com falha → `ELM pendente [DEV FT-<nnn> assumir]: assumir [DEV] <id>` no `status.md`
    de cada fatia. Essas pendências entram no Histórico do `status.md` de cada fatia quando ele nasce (passo `worktree`).
-5. Log `.sabia/local/loop-<AAAA-MM-DD-HHMM>.md` (o padrão `sa-orquestrar/log.md`).
+5. Log `.sabia/local/loop-<AAAA-MM-DD-HHMM>.md` (o padrão `sa-orquestrar/log.md`), com a estimativa das `[APR]`.
 
 ## Saída
 

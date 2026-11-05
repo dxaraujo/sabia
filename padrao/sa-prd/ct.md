@@ -29,7 +29,10 @@ conclusão da `[ESP]` (a do épico ou a da fatia), ligado à história; `CSV` �
 ```
 
 - **Um cenário, um CT:** o cenário da HF que ele prova, pelo número; a HF não muda por causa do CT. Cenário que
-  muda (mudança do PRD ou `[ESP] FT`) → o CT dele volta a `draft` no mesmo lote.
+  muda (mudança do PRD ou `[ESP] FT`) → o CT dele volta a `draft` no mesmo lote. CT já publicado no ETM (com
+  `resource`) que muda: o MCP `elm` não atualiza CT → na publicação, roteiro manual e
+  `ELM pendente [CT-<nn> <EP-nn|FT-nnn> atualizar]: atualizar o CT <id> no ETM`
+  ([publicação](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md#ct-planejado-ct-nn-slugmd-de-elm--etm)).
 - **Resultado esperado igual ao "Então"** do cenário, com os mesmos valores; nada que o cenário não diga.
 - **Sem caminho de arquivo, classe nem SQL:** como chegar ao estado e onde ver o resultado vêm do plano da fatia; aqui,
   o comportamento.

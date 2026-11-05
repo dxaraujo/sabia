@@ -89,11 +89,13 @@
 
 ## Achados abertos
 
-<!-- Os achados que não têm relatório próprio (os da revisão e da verificação ficam no `revisao-codigo-<N>.md` e no
-     `verificacao.md`). Origem: `PR` (mudança pedida no PR ou na [APR] Aprovar PR) · `GATE do plano` (ajuste pedido na
-     [APR] Aprovar plano) · `[ESP] FT-<nnn>` (ajuste ao artefato aprovado na [ESP] FT, sa-codificar.codificar.onde).
-     Achado = uma frase com o que corrigir. Situação: `aberto` (valor inicial) · `resolvido — tarefa <n>` (a
-     sa-codificar os transforma em tarefas [R<n>] e marca quando a tarefa fica verde). -->
+<!-- Fonte única dos achados da fatia (os relatórios da revisão e da verificação guardam a evidência). Origem:
+     `revisao-codigo-<N>.md` (achado da revisão com `VEREDITO: REVISAR`) · `verificacao.md` (cenário rejeitado) · `PR`
+     (mudança pedida no PR ou na [APR] Aprovar PR) · `GATE do plano` (ajuste pedido na [APR] Aprovar plano: é do plano,
+     sa-plano.plano.escrever) · `[ESP] FT-<nnn>` (ajuste ao artefato aprovado na [ESP] FT, sa-codificar.codificar.onde) ·
+     `ambiente` (⚠️ da verificação: não é código). Achado = uma frase com o que corrigir. Situação: `aberto` (valor
+     inicial) · `resolvido — tarefa <n>` (a sa-codificar transforma os de código em tarefas [R<n>] e marca quando a
+     tarefa fica verde) · `resolvido — plano` (o ajuste entrou no plano). -->
 
 | # | Origem | Achado | Situação |
 |---|---|---|---|

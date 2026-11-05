@@ -68,7 +68,7 @@ Preencha o padrão `sa-prd/prd.md` (o `prd.md`) e crie, em `elm/`, um arquivo po
 
 ## Saída
 
-`prd.md` e os conceitos em `elm/` na pasta de trabalho → passo `revisao`.
+`prd.md` e os conceitos em `elm/` na pasta do PRD (a de trabalho; na mudança, a do épico na base) → passo `revisao`.
 
 ## Pare se
 

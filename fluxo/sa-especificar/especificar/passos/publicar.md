@@ -18,7 +18,10 @@ Com ELM, pela [publicação](~/.sabia/framework/skills/sa-consolidar/references/
    ([vínculos](~/.sabia/framework/skills/sabia/references/elm.md#vínculos-cada-um-liga-o-que-gera)).
 3. `exclui` → na prévia, `🗑️ mover para a lixeira no DOORS Next: <id> · <título>`, e no rodapé do PRD
    `ELM pendente [<sigla> <id> lixeira]: mover para a lixeira no DOORS Next`, até a pessoa confirmar.
-4. Grave de volta `resource`, `id` e a entrada `elm` de `sources` nos conceitos (e o id no glossário): vão no commit
+4. CT planejado com `resource` alterado depois de publicado (filtro de atualização da seção CT planejado do
+   `elm-publicar.md`) → na prévia, `✏️ atualizar no ETM: <id> · <título>`, e no rodapé do PRD
+   `ELM pendente [CT-<nn> EP-<nn> atualizar]: atualizar o CT <id> no ETM`, até a pessoa confirmar.
+5. Grave de volta `resource`, `id` e a entrada `elm` de `sources` nos conceitos (e o id no glossário): vão no commit
    do passo `concluir`.
 
 Sem o MCP `elm` ou com falha → `ELM pendente [EP-<nn> publicar]: publicar <rótulos> e ligar à [ESP]` no rodapé do PRD

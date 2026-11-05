@@ -108,9 +108,9 @@ grava o lado do arquivo.
 
 | Artefato | Onde mora |
 |---|---|
-| fatia `iniciada`, `pronta` ou `concluida` | Histórico do `status.md` |
+| fatia `iniciada`, `pronta` ou `concluida` | Histórico do `status.md` (as da `[ESP] FT`: rodapé da ficha, na base) |
 | fatia não iniciada, `dividida` ou `cancelada` | rodapé da ficha `<produto>/fatias/FT-<nnn>-<slug>.md` |
-| épico | rodapé do `prd.md` (antes do GATE, o `rascunho.md`) |
+| épico | rodapé do `prd.md` (antes do GATE, a seção ELM pendente do `rascunho.md`) |
 | item de Sustentação (toda categoria) | campo `**ELM:**` do registro `<produto>/sustentacao/<pasta>/<ID>-<slug>.md` |
 | `[GB]` e IBs de estrutura (`Sustentação`, `Manutenção`, `<Categoria>`) | na `## Sustentação` do `backlog.md` (ou na `### <Categoria>`), logo abaixo da linha dos ids |
 | sprint | coluna "Tarefa ELM" do `sprint-<nn>.md` (`pendente`) |

@@ -3,7 +3,8 @@
 ---
 ## Entrada
 
-`research.md` e as decisões do passo `decisoes`. Formato: o padrão `sa-plano/plano.md`.
+`research.md` e as decisões do passo `decisoes`; na volta do ajuste pedido no GATE (passo `entrada`), o plano atual e os
+Achados abertos de origem `GATE do plano` com Situação `aberto` no `status.md`. Formato: o padrão `sa-plano/plano.md`.
 
 ## Faça
 
@@ -28,7 +29,10 @@
    troca de modo (passo `gate`). Ela já está `iniciada`, e quem decide é o P.O., pelas
    [Situações](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#situações): fatia de épico → seguir com ela (plano acima do
    limite) ou cancelá-la pela `sa-fatiar.refinamento` e registrar as partes como fatia nova pela `sa-triar`
-   (`origem EP-<nn>`); fatia sem épico → a divisão pela `sa-triar`.
+   (`origem EP-<nn>`); fatia sem épico → a divisão pela `sa-triar`. A `obs` `plano acima do limite: seguir (<P.O.>,
+   <data>)` na linha da fatia no `backlog.md` da base → escreva o plano sem o limite.
+6. Ajuste pedido no GATE → corrija no plano só o que cada achado de origem `GATE do plano` pede e grave a Situação dele
+   `resolvido — plano`.
 
 `status.md`: fase `planejando` (vale também durante a análise do passo `analise`).
 

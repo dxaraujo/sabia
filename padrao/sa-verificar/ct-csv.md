@@ -13,13 +13,15 @@ o MCP `elm`, o arquivo é importado à mão (Importar → CSV) e os links são f
 ## Arquivo
 
 - `.kiro/specs/<ft>-<slug>/CT.csv` · UTF-8 **com BOM** · quebras de linha **LF** · separador `;`.
+- Linha 1 = o cabeçalho: os nomes das colunas da linha `CT.csv` do `sabia.md`, na ordem dela; da linha 2 em diante,
+  uma por cenário.
 - Grave o arquivo já assim: o conteúdo começa pelo caractere BOM (U+FEFF) e usa só `\n` nas quebras de linha —
   inclusive dentro da Descrição. Não dependa de `sed` depois (no Windows ele nem existe).
 
 ## Colunas (nesta ordem)
 
 Valores do ELM vêm do `.kiro/config/elm/pa_<nome>.json` e do `sabia.md`; sem ELM, deixe vazio só o Planejado para.
-Toda linha tem Tipo, Resumo, Responsável, Status e Descrição preenchidos. A ordem, os nomes e os valores fixos (Tipo,
+Toda linha de cenário tem Tipo, Resumo, Responsável, Status e Descrição preenchidos. A ordem, os nomes e os valores fixos (Tipo,
 Status) vêm da linha `CT.csv` da seção ELM do `sabia.md`.
 
 | # | Coluna | Valor |
@@ -35,10 +37,10 @@ Status) vêm da linha `CT.csv` da seção ELM do `sabia.md`.
 
 É o estado do caso de teste, não o resultado da execução (o resultado está na Descrição e no `verificacao.md`).
 
-| Linha Casos de teste do `sabia.md` | Valor | Significa |
+| O `pa` | Valor | Significa |
 |---|---|---|
-| `CSV` (sem o Quality Manager — o caso comum) | `Aprovado` | o cenário passou e a `[VER]` da fatia foi concluída com ele aceito |
-| `ETM` (o `pa` tem `qm`) | o estado de aprovado do caso de teste no QM do projeto, como está no `Status=` da linha `CT.csv` do `sabia.md` | o mesmo, no nome que o template de importação do ETM do projeto aceita |
+| sem `qm` (sem o Quality Manager — o caso comum) | `Aprovado` | o cenário passou e a `[VER]` da fatia foi concluída com ele aceito |
+| com `qm` (a linha Casos de teste `ETM` ou `CSV`) | o estado de aprovado do caso de teste no QM do projeto, como está no `Status=` da linha `CT.csv` do `sabia.md` (a setup o pergunta no bloco 9 do `elm-pa.md`) | o mesmo, no nome que o template de importação do ETM do projeto aceita |
 
 Sem o `Status=` na linha do `sabia.md` → `Aprovado`. Nunca deixe o Status vazio nem invente outro valor.
 
@@ -49,7 +51,7 @@ Sem o `Status=` na linha do `sabia.md` → `Aprovado`. Nunca deixe o Status vazi
 <o que o caso comprova> (HF-01 · cenário 1.2; REG-01)
 
 CT PLANEJADO:
-- <CT-nn-<slug>.md (ETM <id> | só no repositório) | novo: descoberto na verificação>  (informativo: a consolidação lê o id do conceito)
+- <CT-nn-<slug>.md (ETM <id> | só no repositório) | novo: bugfix <2.x | 3.x> | novo: descoberto na verificação>  (informativo: a consolidação lê o id do conceito)
 
 PRÉ-CONDIÇÕES:
 - <massa: script/fixture e o estado criado>

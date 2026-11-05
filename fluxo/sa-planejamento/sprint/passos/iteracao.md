@@ -9,7 +9,9 @@ A sprint anterior (o pai dela) e a meta (passo `meta`).
 
 **Iteração e número:** o **pai** é o da sprint anterior (a nova herda); pai novo só quando a pessoa diz, com o
 nome que ela der (`2026`, `Entrega 3`…); primeira sprint do projeto → pergunte o nome. A `<nn>` é a próxima
-dentro do pai (pai novo → `01`). Proponha o nome da iteração no EWM (padrão `Sprint <nn>`; é livre: a chave da
+dentro do pai (pai novo → `01`). Na virada (chamado pelo passo `sa-planejamento.retrospectiva.recalcular`), a
+chave é a do `sprint-<nn>.md` que o passo `sa-planejamento.retrospectiva.fechar` criou: não pergunte o pai.
+Proponha o nome da iteração no EWM (padrão `Sprint <nn>`; é livre: a chave da
 sprint vem do número do arquivo) e o do plano
 (`<nome> - <nome curto da meta>`: `Sprint 01 - Exportar o relatório de contas`); nada é criado no EWM antes do
 "ok" — a iteração, o pai que faltar e o plano nascem na publicação (passo `gravar`;

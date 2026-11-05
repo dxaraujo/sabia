@@ -13,8 +13,8 @@ Na mesma resposta, diga, exata, pela origem:
   ela, o planejamento (sa-planejamento.sprint), aqui no agente sa-produto. Com ELM, os IBs já estão no backlog do
   EWM.` (a última frase, só com ELM; entrar na sprint só muda o "Planejado para" do IB:
   [elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §3).
-- Refinamento: `Refinamento gravado: <ids> cancelada(s)<; épico EP-nn concluido | cancelado>. Nada mais a fazer
-  aqui.`
+- Refinamento: `Refinamento gravado: <ids> cancelada(s)<; épico EP-nn concluido | cancelado><; FT-<nnn> segue com
+  o plano acima do limite: o Dev retoma pela sa-plano>. Nada mais a fazer aqui.` (cada parte, só se houve)
 
 ## Saída
 

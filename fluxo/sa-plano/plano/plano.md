@@ -3,7 +3,7 @@
  "quando": ["planejar a fatia: pesquisa, decisões, spec do Kiro, análise independente e GATE do plano", "planeja a FT-031", "gera a spec", "cria as tasks"],
  "travas_gerais": ["sim-da-pessoa"],
  "passos": [
-   {"id": "entrada", "de": "entrada", "sprint": "nao", "saidas": {"aguardando-aprovacao-plano sem a [APR], ou bloqueada \"aguardando troca de modo\"": "gate"}},
+   {"id": "entrada", "de": "entrada", "sprint": "nao", "saidas": {"aguardando-aprovacao-plano sem a [APR], ou bloqueada \"aguardando troca de modo\"": "gate", "planejando com o ajuste pedido no GATE do plano, ou bloqueada \"plano acima do limite\" com a obs de seguir do P.O.": "escrever"}},
    {"id": "pesquisa", "chama": "sa-pesquisar.pesquisar"},
    {"id": "decisoes", "saidas": {"lacuna de negócio na ficha sem épico: é do P.O.": "fim", "artefato que precisa mudar, [ESP] FT aberta ou reaberta: bloqueada, a [ESP] é do especificador": "→ sa-especificar.fatia", "artefato que precisa mudar, [ESP] concluída numa sprint fechada ou sem [ESP]: bloqueada, o encaixe é do P.O. ou do SM": "→ sa-planejamento.durante", "artefato que precisa mudar, sem sprint aberta: bloqueada, pendência do P.O. na [GB]": "→ sa-planejamento.sprint"}},
    {"id": "escrever", "saidas": {"plano grande demais: bloqueada (de: planejando), o P.O. decide (de épico: seguir ou cancelar e registrar as partes pela sa-triar; sem épico: dividir pela sa-triar)": "fim"}},
@@ -19,11 +19,17 @@ ADRs. Templates: o padrão `sa-plano/plano.md`.
 
 Deste fluxo: a pasta `.kiro/specs/<ft>-<slug>/` (`<ft>` = `ft-<nnn>` em minúsculas) criada pela `sa-desenvolver`, na branch da fatia, em `pesquisando`,
 `planejando`, `bloqueada (de: pesquisando | planejando)` ou `aguardando-aprovacao-plano` sem a `[APR]` (passo `gate`).
-Bloqueada `aguardando especificação [ESP] FT-<nnn>` com a linha da Especificação `concluida` na base → traga a base para
+Bloqueada `aguardando especificação [ESP] FT-<nnn>` com a linha da Especificação `concluida` na base e o motivo do
+Bloqueio na Observação ([De quem é a Volta](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação);
+sem ele, é do especificador) → traga a base para
 a branch (`git merge origin/<base>`, com "sim": os conceitos aprovados chegam em `elm/`), `Bloqueio: —`, a fase de
 origem e siga. A ficha com linha de Especificado `—` e a `[ESP] FT` aberta (pedido de fora da fatia, [Volta à
 especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação)) → `bloqueada (de: <fase>)` com o
-Bloqueio `aguardando especificação [ESP] FT-<nnn>: …`, commit, e pare. Bloqueada por outro motivo → mostre o motivo e a pergunta; resolvido, `Bloqueio: —`, a fase de origem e siga.
+Bloqueio `aguardando especificação [ESP] FT-<nnn>: …`, commit `<FT> registrar bloqueio`, e pare. Bloqueada `plano acima do limite` → a `obs` da linha
+da fatia no `backlog.md` de `origin/<base>` (`git show`): com `plano acima do limite: seguir (<P.O.>, <data>)` →
+`Bloqueio: —`, `fase: planejando` e o passo `escrever`, sem o limite; sem ela → "a decisão do plano grande é do P.O.
+(agente `sa-produto`)" e pare. `planejando` com Achado aberto de origem `GATE do plano` (o ajuste pedido na `[APR]
+Aprovar plano`) → o passo `escrever`. Bloqueada por outro motivo → mostre o motivo e a pergunta; resolvido, `Bloqueio: —`, a fase de origem e siga.
 Quem retoma é o `responsavel` da linha viva da fatia na sprint (base): outra pessoa → "é de <login>; trocar é do P.O.
 ou do SM" e pare. A `[DEV]`, na retomada, pela seção Assumir do passo `sa-plano.plano.entrada` (já é dele → nada;
 fechada → reabrir com "sim"). No loop (`AUTONOMO`), o lote já assumiu.
@@ -36,7 +42,7 @@ aprendidas) e o steering de tecnologia/estrutura.
 ## Entrada: vizinhos
 
 - sem `status.md` em nenhuma branch (fatia não iniciada) → `sa-desenvolver.desenvolver`
-- `bloqueada (de: pesquisando | planejando)` com Bloqueio `aguardando especificação [ESP] FT-<nnn>` e a `[ESP] FT` aberta → `sa-especificar.fatia` (agente `sa-especificador`)
+- `bloqueada (de: pesquisando | planejando)` com Bloqueio `aguardando especificação [ESP] FT-<nnn>` que é de quem especifica ([De quem é a Volta](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação)) → `sa-especificar.fatia` (agente `sa-especificador`)
 - `aguardando-aprovacao-plano` com a `[APR] Aprovar plano` criada → `sa-revisar.aprovar-plano` (agente `sa-revisor`)
 - `implementando`, `revisando`, `verificando`, `verificada` ou `retrabalho (de: …)` → `sa-codificar.codificar`
 
@@ -44,7 +50,7 @@ aprendidas) e o steering de tecnologia/estrutura.
 
 `AUTONOMO=true`: sem perguntas; decisão técnica com alternativas → escolha a recomendada e registre; lacuna de
 negócio na ficha → `fase: bloqueada (de: planejando)` com a pergunta para o P.O.; artefato que precisa mudar → o bloco
-Volta à especificação (passo `decisoes`): a `[ESP]` concluída na sprint aberta tem a linha gravada `iniciada` (`reaberta: <motivo>`), e quem especifica a reabre no EWM ao assumir. Passo `gate` sem pessoa: fatia AFK com risco →
+Volta à especificação (passo `decisoes`). Passo `gate` sem pessoa: fatia AFK com risco →
 `fase: bloqueada (de: planejando)`, Bloqueio `aguardando troca de modo · motivo: <risco>` (a troca é do P.O. ou do SM); GATE → Sênior
 segue para `implementando`; Pleno → a escolha do lote que quem chamou passou (sem ela: `aguardando-aprovacao-plano`,
 e a pergunta fica para a sessão dele); nada de ELM (as pendências com a chave do passo: `[DEV FT-<nnn> horas]`, `[APR FT-<nnn> criar]`).

@@ -12,7 +12,7 @@ agrupados em releases com um objetivo cada; épico sem PRD aparece como "a desco
 
 ## Saída
 
-`roadmap.md` com "ok" → passo `base-ewm`.
+`roadmap.md` com "ok" → commit `planejamento: roadmap` → passo `base-ewm`.
 
 ## Pare se
 

@@ -10,12 +10,13 @@ A demanda: a descrição que veio da `sa-triar` ou a que a pessoa dá; work item
 1. Peça (ou leia, se veio da `sa-triar`) a descrição **longa** da demanda: quem pediu, o problema, exemplos
    reais, prazos. Work item do EWM → `elm_ler_wi(id, comentarios)`.
 2. **Explore antes de perguntar** (subagente `sa-pesquisador`, se houver; senão você mesmo, só leitura):
-   - documentação atual no bundle do ELM, pelo `elm_buscar_req_local`/`elm_ler_req_local` ([sem bundle → ELM remoto](~/.sabia/framework/skills/sabia/references/elm.md#bundle-local)): histórias e regras
-     que já tratam do assunto —
+   - documentação atual no bundle do ELM, pelo `elm_buscar_req_local`/`elm_ler_req_local` ([sem bundle → ELM remoto](~/.sabia/framework/skills/sabia/references/elm.md#bundle-local); projeto sem ELM →
+     pule): histórias e regras que já tratam do assunto —
      o PRD **altera** o que existe, não duplica;
    - código: onde o comportamento mora hoje, funcionalidades análogas;
    - glossário e ADRs (caminhos na seção Projeto do `sabia.md`): termos e decisões que já valem.
-   Registre o que achou como fontes (id ELM, `arquivo:linha`).
+   O pesquisador devolve os fatos na resposta e não grava nada; guarde-os como Fonte das linhas do `decisoes.md` (id
+   ELM, `arquivo:linha`).
 3. Defina o id: o `EP-<nn>` da linha do `backlog.md` com `status` `iniciado` e `prd` `—` (a `sa-especificar` já
    assumiu a `[ESP]`). Outra situação → "use `sa-especificar EP-<nn>`" e pare.
    Pasta de trabalho: a da `sa-especificar` (`.sabia/local/especificacao/<EP>-<slug>/`, `slug` em kebab-case, sem
@@ -26,7 +27,7 @@ A demanda: a descrição que veio da `sa-triar` ou a que a pessoa dá; work item
 
 ## Saída
 
-A demanda entendida, as fontes registradas, o `EP-<nn>` e a pasta de trabalho → passo `entrevistar`.
+A demanda entendida, as fontes no `decisoes.md`, o `EP-<nn>` e a pasta de trabalho → passo `entrevistar`.
 
 ## Pare se
 

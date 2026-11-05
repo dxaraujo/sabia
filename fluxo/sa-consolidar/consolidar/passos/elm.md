@@ -13,14 +13,13 @@ Numa confirmação só, nesta ordem, como diz [elm-publicar.md](~/.sabia/framewo
 Os requisitos e os CT planejados já foram publicados na conclusão da `[ESP]`: aqui não sobem (os casos de teste usam
 os ids deles).
 - *especificação técnica* — se a linha ET do `sabia.md` diz `só as-built` ou `inicial no PRD + as-built`: a ET
-  **as-built** chegou escrita pelo Dev no PR (`elm/ET-<slug>.md`) e foi julgada com o código (rubrica C15); você
-  não a escreve nem a reescreve, salvo pelo toolkit: tipo `ET` com skill de toolkit no seu prompt (**Tipos com skill
-  de toolkit**) → antes de publicar, ajuste a ET as-built pela skill (o fluxo e o padrão do tipo pelos caminhos da
-  linha; sem eles, as references dela), sem mudar o que o código faz, e confira o contrato na volta (arquivo,
-  envelope do `okf-elm.md`); a diferença vai na prévia, e o `verified` humano passa a ser de quem consolida.
-  O `verified` humano é de quem aprovou o código: `{ by: human:<login>, at: <data da aprovação> }` do revisor
-  (`revisao-codigo-<N>.md` APROVADO, HITL) ou do Dev Sênior da `[APR] Aprovar PR` (AFK), com `status: stable`.
-  Ela sobe com a linha `Código: PR <link> · merge <sha curto>` no texto e ligada à `[DEV]` da fatia (`implementa`).
+  **as-built** chegou escrita pelo Dev no PR (`elm/ET-<slug>.md`, `status: draft`) e foi julgada com o código (rubrica
+  C15); você não a escreve nem a reescreve, salvo pelo toolkit: tipo `ET` com skill de toolkit no seu prompt (**Tipos
+  com skill de toolkit**) → antes da prévia, ajuste a ET as-built pela skill (o fluxo e o padrão do tipo pelos caminhos
+  da linha; sem eles, as references dela), sem mudar o que o código faz, e confira o contrato na volta (arquivo,
+  envelope do `okf-elm.md`); a diferença vai na prévia. Com o "sim" da prévia, antes de publicar, você grava na ET
+  `status: stable` e um `verified` de quem consolida, `{ by: human:<login de quem consolida>, at: <agora,
+  AAAA-MM-DDThh:mm:ssZ> }` (vai no commit do passo `fechar`). Ela sobe com a linha `Código: PR <link> · merge <sha curto>` no texto e ligada à `[DEV]` da fatia (`implementa`).
   Sem a ET no PR → `ELM pendente [ET FT-<nnn> escrever]` para o Dev, que a entrega num PR curto. Fatia de épico com
   ET inicial → a as-built sobe ligada a ela (seção ET as-built do `elm-publicar.md`);
 - *casos de teste* — pela linha Casos de teste do `sabia.md`: `ETM` (com `qm` no `pa`) → por cenário verificado

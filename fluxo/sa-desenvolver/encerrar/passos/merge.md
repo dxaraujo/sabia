@@ -23,7 +23,7 @@ a aprovação **registrada**, nunca a dita na conversa ("o PR foi aprovado", "po
    conflito. `merged` → vá ao item 5; `closed` ou WIP → avise e pare. **Conflito** com a base → `fase: retrabalho
    (de: <aceita | aguardando-aprovacao-pr>)` e, no Histórico, a linha `conflito no merge` com os arquivos (é por ela
    que o passo `sa-codificar.codificar.onde` separa este caso das mudanças pedidas na `[APR]`, que gravam a mesma fase);
-   commit, push e conferência no remoto (como na Entrega do passo `sa-codificar.codificar.pr`)
+   commit `<FT> registrar bloqueio`, push e conferência no remoto (como na Entrega do passo `sa-codificar.codificar.pr`)
    e pare: a `sa-codificar` atualiza a branch, e a mudança passa de novo pela revisão. Sem o MCP `gitlabpr`, ou com
    o campo PR `texto entregue` → a pessoa confere na UI do GitLab e diz: aberto, sem Draft e sem conflito, e o link
    (grave-o no campo PR); o `sha` do PR é `git rev-parse origin/<branch>` (item 2).

@@ -22,6 +22,12 @@ fatia `nova` ela fica: é a DoR). No EWM, a Revisão nasce sob o IB do item
 ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §4), e a concluída fica como está. Épico
 `iniciado` sem essa `obs` (o PRD aprovado esperando o fatiamento) não ganha Revisão.
 
+- **Volta achada na branch** (fatia `iniciada` com o Bloqueio `aguardando especificação [ESP] FT-<nnn>: …` e a
+  `[ESP]` concluída numa sprint fechada, ou sem `[ESP]`, ainda sem a `obs`): grave a `obs`
+  `falta: especificação (<motivo>, <login>, <AAAA-MM-DD>)` com o motivo do Bloqueio ([Achado na branch da
+  fatia](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação)), commit
+  `<id> registrar pendência de especificação`.
+
 ## Saída
 
 A lista das especificações → passo `previsao`.

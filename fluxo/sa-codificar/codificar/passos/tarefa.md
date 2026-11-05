@@ -22,7 +22,8 @@ Para cada tarefa do `tasks.md`, nesta ordem:
    Refatorar código existente não é desta tarefa: vira sugestão para a revisão ou fatia própria.
 5. **Backpressure:** o passo `validar` (compilar, testes, lint e cobertura do `sabia.md`). Falhou → corrija antes de
    seguir; não acumule vermelho.
-6. Marque `- [x]` e acrescente a linha no Histórico do `status.md`: `<AAAA-MM-DD HH:MM> — tarefa N ok · <testes>`.
+6. Marque `- [x]` e acrescente a linha no Histórico do `status.md`: `<AAAA-MM-DD HH:MM> — tarefa N ok · <testes>`;
+   tarefa `[R<n>]` → a Situação do achado dela em Achados abertos passa a `resolvido — tarefa <n>` (`<n>` = o número da tarefa).
 7. **Commit** pequeno, só com o passo `validar` verde (padrão do `sabia.md`, com o id da fatia) com o código, os testes, o `tasks.md` e o
    `status.md` — a árvore fica limpa a cada tarefa.
 
@@ -45,7 +46,7 @@ Regras do ciclo:
   `fase: bloqueada (de: implementando)`, com motivo e pergunta.
 - Banco: somente leitura pelo MCP; DDL é do time de banco (registre no `status.md`, campo Banco).
 - Contexto cheio ou sessão longa → atualize o `status.md` (o que foi feito, próximo passo, decisões), **commite-o**
-  e continue numa sessão nova a partir dele. O estado vive nos arquivos, não na conversa.
+  (`<FT> registrar progresso`) e continue numa sessão nova a partir dele. O estado vive nos arquivos, não na conversa.
 
 **Toolkit na tarefa.** A linha `sa-codificar.codificar.tarefa` da tabela Os passos de
 [passos.md](~/.sabia/framework/skills/sabia/references/passos.md#os-passos). Quem

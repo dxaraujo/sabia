@@ -19,10 +19,10 @@ com a evidência da execução:
   `resource`/`id` do conceito); objetivo, pré-condições, passos e resultado
   esperado vêm do CT, e a evidência, da verificação. O CT planejado não muda aqui: resultado obtido diferente do
   esperado é rejeição (passo `executar`), não CT novo.
-- **CT novo**, só para o cenário sem CT planejado em nenhuma das duas pastas — o `C<n>` da ficha sem épico e o caso
-  que a verificação descobre fora dos cenários (na fatia de épico, todo cenário da HF tem o seu CT planejado) → CT novo
-  na linha, escrito do cenário ou do
-  caso, com o rótulo `CT<FT-nnn>-<nn>`.
+- **CT novo**, só para o cenário sem CT planejado em nenhuma das duas pastas — o `C<n>` da ficha sem épico, na trilha
+  rápida um por comportamento do `bugfix.md` (os itens `2.x` e `3.x`), e o caso que a verificação descobre fora dos
+  cenários (na fatia de épico, todo cenário da HF tem o seu CT planejado) → CT novo na linha, escrito do cenário, do
+  comportamento ou do caso, com o rótulo `CT<FT-nnn>-<nn>`.
 
 Na consolidação, depois do merge, pela linha Casos de teste do `sabia.md`: `ETM` → a `sa-consolidar` liga ao IB
 o CT planejado (publicado no ETM na conclusão da `[ESP]`) e cria só o CT novo, já ligado à história (`elm_criar_ct`,

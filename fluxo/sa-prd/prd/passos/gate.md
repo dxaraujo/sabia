@@ -34,7 +34,8 @@ Quem especifica aprova o PRD e, com ele, todos os conceitos de `elm/`: os novos,
   - **primeiro GATE** (PRD na pasta de trabalho) → só ali; levar a pasta para a base e gravar no `backlog.md` só o
     link `prd` e, se estava `—`, o da `pasta` (o épico segue `iniciado`) são da `sa-especificar`.
   - **mudança antes do fatiamento** (PRD já na base) → na base, pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base),
-    um commit `EP-<nn> aprovar PRD`.
+    um commit `EP-<nn> aprovar PRD` com a pasta do épico (o que a mudança editou ali sem commit: passo
+    `sa-prd.mudanca.mudanca`, item 3).
 
 ## Saída
 

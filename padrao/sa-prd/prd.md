@@ -35,7 +35,7 @@ atualizado: <AAAA-MM-DD>
      (o CT, ao ETM, só com a linha Casos de teste = ETM) na conclusão da [ESP] (sa-especificar). Aqui fica só o
      índice. Cenários são os critérios de aceite: cada um é verificável e tem o seu CT. No ELM: novo (verificado
      <AAAA-MM-DD>) · novo (só bundle <AAAA-MM-DD | sem data>) (sem a busca ao vivo; a publicação refaz) · altera <id> ·
-     reusa <id> · exclui <id>. Impacto: quem cita o alterado ou o excluído e não muda — <id> (<sigla>) <rel>, com rel =
+     reusa <id> · exclui <id> · — (projeto sem ELM). Impacto: quem cita o alterado ou o excluído e não muda — <id> (<sigla>) <rel>, com rel =
      o campo rel de links.entrada do elm_ler_req_local, como veio; vários separados por " · " —, ou —. -->
 
 | Artefato | Arquivo | Resumo | No ELM | Impacto |

@@ -26,9 +26,10 @@ aguardando
   O `D-nn` (padrão `sa-entrevistar/decisoes.md`): Pergunta `Protótipo aprovado pelo cliente?`, Decisão
   `Protótipo v<N> aprovado (prototipo-v<N>-<slug>.<ext>)`, Fonte / quem decidiu
   `<nome> (<papel>) · <ATA-<nn> [mm:ss] | e-mail <AAAA-MM-DD> "<assunto>">`, a data da aprovação, Situação
-  `decidida` (a de uma versão aprovada antes: `decidida — substitui D-nn`). No `rascunho.md`, a linha da versão
-  passa a `aprovado — D-<nn>`.
-- **Ajuste** — no `rascunho.md`, o que o cliente pediu, com a data e a fonte; a linha da versão passa a `ajuste`.
+  `decidida` (a de uma versão aprovada antes: `decidida — substitui D-nn`). Na seção Protótipo do `rascunho.md`, a linha
+  da versão passa a `aprovado — D-<nn>`.
+- **Ajuste** — na seção Levantamento do `rascunho.md`, o que o cliente pediu, com a data e a fonte; a linha da
+  versão passa a `ajuste`.
   A versão nova já está em `prototipo/` → passo `registrar`; senão, a linha passa a `ajuste — aguardando a v<N+1>`
   e a sessão fecha (o encaminhar seguinte, com o arquivo novo, traz o `registrar`).
 - **Aguardando** — a linha da versão segue `aguardando o cliente`; o próximo encaminhar traz de volta a este passo.

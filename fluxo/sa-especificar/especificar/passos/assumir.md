@@ -21,7 +21,7 @@ ELM da linha dele na seção Especificação do `sprint-<nn>.md` (a Revisão, qu
 3. **EWM** — `[ESP]` ainda fora da iteração da sprint (a publicação ou o encaixe falhou) → antes, mova-a com o IB do
    épico ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) topo e §3), com "sim".
    Depois, a `[ESP]` pela seção Assumir do passo `sa-especificar.especificar.entrada`, com "sim". Pendência sem o
-   MCP `elm`: no `rascunho.md` da pasta de trabalho.
+   MCP `elm`: na seção ELM pendente do `rascunho.md` da pasta de trabalho.
 
 ## Saída
 

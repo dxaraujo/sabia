@@ -12,9 +12,8 @@ novo que o Bloqueio (retomada: o filtro dá `sem mudança` no que já subiu).
 Como o passo `sa-especificar.especificar.publicar`, com o escopo `[ESP] FT`: os conceitos de
 `.kiro/specs/ft-<nnn>-<slug>/elm/` e os CT planejados das HF deles, numa confirmação;
 `elm_ligar(wi = <id da [ESP] FT>, req = <id>, tipo rastreia)` por requisito criado ou atualizado; as pendências
-(`[FT-<nnn> publicar]`, `[<sigla> <id> lixeira]`) no lugar das pendências da fatia
-([pendências](~/.sabia/framework/skills/sabia/references/elm.md#pendências): rodapé da ficha na fatia `nova`; Histórico do
-`status.md` na `iniciada`). O que volta (`resource`, `id`, `sources`) vai no
+(`[FT-<nnn> publicar]`, `[<sigla> <id> lixeira]`, `[CT-<nn> FT-<nnn> atualizar]`) no rodapé da ficha, na base, também na fatia `iniciada` (Regras do
+fluxo). O que volta (`resource`, `id`, `sources`) vai no
 commit do passo `concluir`, gravado também no conceito de mesmo nome em `<produto>/epicos/<EP>-<slug>/elm/`, quando a
 cópia veio dele. Projeto sem ELM → pule.
 

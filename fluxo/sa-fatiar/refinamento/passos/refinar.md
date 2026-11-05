@@ -1,9 +1,9 @@
 ---
-{"resumo": "Cancela fatias ou o épico (decisão do P.O.) e reaplica a Definition of Ready, no backlog.md e na sprint, num commit, com o EWM acompanhando; as fatias do backlog não se alteram, cenário novo vai à sa-triar e alteração de artefato pela Volta à especificação."}
+{"resumo": "Cancela fatias ou o épico, ou segue com o plano acima do limite (decisão do P.O.), e reaplica a Definition of Ready, no backlog.md e na sprint, num commit, com o EWM acompanhando; as fatias do backlog não se alteram, cenário novo vai à sa-triar e alteração de artefato pela Volta à especificação."}
 ---
 ## Entrada
 
-"Refinar o backlog", "cancelar a FT-033", "cancelar o EP-05" — decisão do P.O. Fatia de Manutenção, ou cenário novo,
+"Refinar o backlog", "cancelar a FT-033", "cancelar o EP-05", "seguir com o plano da FT-033" — decisão do P.O. Fatia de Manutenção, ou cenário novo,
 é da `sa-triar`.
 
 ## Faça
@@ -29,12 +29,17 @@ commit, `backlog: refinamento <ids>`, pelas [Situações](~/.sabia/framework/ski
 - **Cancelar depois de `iniciada`:** conclua as tarefas abertas da fatia com as horas já lançadas
   (`elm_transicao(<id>, "concluir")`, com "sim"; sem o MCP, `ELM pendente` no rodapé da ficha) e avise o Dev para
   fechar o PR.
+- **Plano acima do limite** (fatia de épico `iniciada`, `bloqueada (de: planejando)` com o Bloqueio `plano acima
+  do limite: …` no `status.md` da branch — passo `sa-plano.plano.escrever`): o P.O. decide. Seguir → a `obs`
+  `plano acima do limite: seguir (<P.O.>, <data>)` na linha da fatia no `backlog.md` (formato do backlog), no commit do
+  refinamento, e avise o Dev responsável: ele retoma pela `sa-plano`; cancelar → o item Cancelar depois de `iniciada`, e as partes como fatia nova pela
+  `sa-triar` (`origem EP-<nn>`).
 - **Cancelar o épico** (decisão do P.O.), numa gravação: a linha `| Fase | cancelado |` no `status.md` do épico (se
   já está na base); no backlog, o épico `cancelado` (motivo na `obs`) e as fatias não iniciadas `cancelada`; na sprint, a linha
   da Especificação não concluída `cancelada`; a `[ESP]` aberta conclui com as horas já lançadas, e o IB do épico
   cancela como o das fatias (na falha, `ELM pendente [EP-<nn> cancelar]`, onde moram as do épico —
   [pendências](~/.sabia/framework/skills/sabia/references/elm.md#pendências)). As fatias `iniciada` em diante não mudam aqui: mostre-as ao
-  P.O. (cancelar uma iniciada é o item acima).
+  P.O. (cancelar uma iniciada é o item Cancelar depois de `iniciada`).
 - **Definition of Ready** ([critérios](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#definition-of-ready-o-que-faz-uma-fatia-elegivel)): a
   cada refinamento, grave `elegivel` nas `nova` que passam; a `elegivel` ou `planejada` que deixou de passar volta a
   `nova` com `falta:` — a `planejada` sai da sprint pela [Volta](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#situações) (no EWM, o IB e as

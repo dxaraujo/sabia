@@ -13,7 +13,7 @@ decisão é sua, não do agente:
 
 - **código errado** → o cenário é rejeitado (`VERIFICACAO: REJEITADO`), o Drift fica `não` e o Histórico ganha
   `drift descartado: código errado (<login>)`;
-- **volta** → ` · especificação: [ESP] FT-<nnn>` no Drift e o bloco [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação) (`de: em-verificacao`); a `[VER]` fica em andamento e o resultado abaixo
+- **volta** → ` · especificação: [ESP] FT-<nnn>` no Drift e o bloco [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação) (`de: em-verificacao`), só na branch do PR (nada na base); a `[VER]` fica em andamento e o resultado abaixo
   não se aplica.
 
 - **`ACEITO`** → `fase: aceita`.

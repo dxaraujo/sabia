@@ -42,7 +42,7 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
    um (o de `epicos/<EP>-<slug>/`; antes do GATE do PRD, o da pasta de trabalho
    `.sabia/local/especificacao/<EP>-<slug>/`, se houver nesta máquina);
    sprint atual (em `<produto>/sprints/<pai>/`, a de início mais recente com `**Situação:** aberta`) e a meta.
-   PRDs (`epicos/*/prd.md`; antes do GATE, o `rascunho.md`): pendências `ELM pendente [<chave>]:` do rodapé e a
+   PRDs (`epicos/*/prd.md`; antes do GATE, a seção ELM pendente do `rascunho.md`): pendências `ELM pendente [<chave>]:` do rodapé e a
    data da linha `Versão <x.y> · <AAAA-MM-DD>`. A `obs` `falta: especificação (<motivo>, …)` do épico `iniciado` e da fatia que
    não está `nova` (pendência do P.O. na `[GB]`: a `[ESP] <id> Revisão <n>` pelo encaixe ou no próximo planejamento).
 5. `<produto>/acordos.md`: limites de WIP (sem o arquivo: 2 fatias esperando pessoa, e sugira a
@@ -77,8 +77,9 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
      e 4, inclusive as das fatias `concluida` e a `[<tipo> <id> sumiu]`, até o `ELM feito`), o id com pendência de cancelamento (aberta ou já com `ELM feito`) e a
      linha com a publicação pendente.
 7. Lotes autônomos em andamento: `.sabia/local/loop-*.md`.
-8. "Minhas" = responsável igual ao login da pessoa: `git config user.name` cruzado com `nome`/`login` do
-   `equipe.json`; sem correspondência, pergunte o login uma vez.
+8. **Login da pessoa** (a regra única, que as skills e os fluxos citam): o `login` do membro ativo do `equipe.json`
+   cujo `login` é a parte antes do @ do `git config user.email` ou cujo `nome` é o `git config user.name`; sem
+   correspondência, pergunte o login uma vez. "Minhas" = responsável igual a esse login.
 
 ## Painel
 
@@ -176,7 +177,7 @@ Tarefa concluída **sem horas lançadas** não é apontada aqui: só no fechamen
 
 Ao encerrar uma sessão numa fatia, para que a próxima — sua, de outra pessoa ou de um agente — retome sem perder o
 fio (sessão num item de Sustentação — `AT-`, `IM-`…, sem `status.md` → horas e registro pela skill dele:
-`sa-atender` no Atendimento, `sa-executar` nas demais; aqui, só os créditos do item 4). Fatia com o PR mergeado:
+`sa-atender` no Atendimento, `sa-executar` nas demais; aqui, só os créditos do item 4; o commit `<ID> registrar sessão` é da skill dele). Fatia com o PR mergeado:
 o `status.md` que vale é o da base — os itens 1 e 4 gravam nele pelo bloco
 [Gravar na base](../sa-fatiar/references/backlog.md#gravar-na-base), nunca na branch.
 

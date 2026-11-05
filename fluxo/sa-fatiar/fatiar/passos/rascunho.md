@@ -43,14 +43,14 @@ O `prd.md`, a `elm/` aprovada e o `decisoes.md` do épico, na base.
    código compartilhado precisa mudar antes. Ele devolve os fatos na resposta e nada é gravado (sem `research.md` nem
    `status.md`). Sem o subagente na sessão, leia você mesmo, com as mesmas perguntas: a fatia tem de ser possível no
    código real.
-2. Monte a lista:
+2. Monte a lista, com ids provisórios (`FT-?1`, `FT-?2`…, na ordem da lista): os reais saem no passo `gravar`:
 
 ```
 | FT | Título (comportamento, linguagem do negócio) | Cobre | Bloqueada por | Tam. | Modo |
 |---|---|---|---|---|---|
-| FT-031 | Bloquear a conta após 3 tentativas inválidas | HF-01 · 1.1, 1.2 · REG-01 | — | M | AFK |
-| FT-032 | Desbloquear automaticamente após 30 min | HF-01 · 1.3 · REG-02 | FT-031 | P | AFK |
-| FT-033 | Avisar o usuário do bloqueio por e-mail | HF-02 · 2.1–2.3 | FT-031 | M | HITL (texto do e-mail) |
+| FT-?1 | Bloquear a conta após 3 tentativas inválidas | HF-01 · 1.1, 1.2 · REG-01 | — | M | AFK |
+| FT-?2 | Desbloquear automaticamente após 30 min | HF-01 · 1.3 · REG-02 | FT-?1 | P | AFK |
+| FT-?3 | Avisar o usuário do bloqueio por e-mail | HF-02 · 2.1–2.3 | FT-?1 | M | HITL (texto do e-mail) |
 ```
 
    O motivo do `HITL` aparece só no rascunho e no GATE; no `backlog.md` e na ficha, o modo é só `AFK` ou `HITL`.

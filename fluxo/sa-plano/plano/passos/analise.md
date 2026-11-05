@@ -11,7 +11,7 @@ Incremente "revisão do plano" em Rodadas. Peça ao agente **`sa-revisor`** (sub
 (o padrão `sa-revisar/rubricas.md`) — passe só a pasta da fatia e a
 rodada; ele grava o `analise-plano-<N>.md`.
 Assim que o relatório chegar (última linha `ANALISE: OK` ou `ANALISE: AJUSTAR`), commite-o **com o `status.md`** (Rodadas, Histórico) —
-mensagem no padrão do `sabia.md`, com o texto `registrar análise do plano <N>`. O GATE e a implementação citam esse
+mensagem no padrão do `sabia.md`, `<FT> registrar análise do plano <N>`. O GATE e a implementação citam esse
 arquivo; ele precisa estar na branch.
 - `ANALISE: OK` → passo `gate`.
 - `ANALISE: AJUSTAR`: falta **do plano** → corrija e peça nova análise (até 2 rodadas); falta **do PRD ou da ficha** →

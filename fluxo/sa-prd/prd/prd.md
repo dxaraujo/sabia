@@ -23,7 +23,7 @@ do épico, logo depois do GATE (`sa-especificar`).
 O PRD é um **registro de decisões** e a **proposta de mudança** da documentação oficial — não um documento vivo.
 Os artefatos aprovados vão para o DOORS Next ([publicação](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md)), que é a fonte
 da verdade; o que vale a longo prazo é o ELM, o glossário e os ADRs. Entre o GATE e o fatiamento, a mudança é da
-`sa-prd.mudanca`, numa versão nova do PRD. Depois do fatiamento o PRD não muda: a mudança de artefato é da `[ESP] FT`
+`sa-prd.mudanca`, numa versão nova do PRD, editada direto na pasta do épico na base. Depois do fatiamento o PRD não muda: a mudança de artefato é da `[ESP] FT`
 da fatia (`sa-especificar.fatia`). Se o PRD afirma algo que ninguém decidiu, é um
 defeito do PRD. Toda demanda entra pela `sa-triar`; só o que ela classifica como **épico** chega aqui. Uma fatia
 com regra clara é trilha padrão sem épico, com uma ficha no lugar do PRD.

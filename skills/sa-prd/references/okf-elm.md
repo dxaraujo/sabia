@@ -62,8 +62,12 @@ verified:                                     # depois da aprovação: lista, um
 | `resource` | **ausente até publicar**; depois, a URI do artefato no ELM. Decide criar × atualizar |
 | `sources` | o PRD, as decisões e, numa alteração, o próprio artefato do ELM (`resource` = URI, `last_modified` = última modificação no ELM vista por nós) |
 | `generated` | `by: sabia/<metadata.version do SKILL.md da sa-prd>` (ator `<producer>/<version>`, §7); `at` = última mudança de conteúdo, `AAAA-MM-DDThh:mm:ssZ` |
-| `verified` | **aprovação** (GATE do PRD ou da `[ESP] FT`): `{ by: human:<login de quem especifica>, at: <instante> }` (§5.2), um registro por aprovação. Sem `verified` humano o conceito é *unverified* (§5.3) e **não é publicado** |
+| `verified` | **aprovação** (GATE do PRD ou da `[ESP] FT`): `{ by: human:<login de quem especifica>, at: <instante> }` (§5.2); na ET as-built, a consolidação: `{ by: human:<login de quem consolida>, at: <instante> }`, um registro por aprovação. Sem `verified` humano o conceito é *unverified* (§5.3) e **não é publicado** |
 | `status` | `draft` enquanto não aprovado (obrigatório escrever: no OKF, ausência = `stable`), `stable` depois da aprovação, `deprecated` no artefato que a fatia ou o épico exclui (marcador local; não é publicado) |
+
+**Projeto sem ELM** (seção ELM do `.sabia/sabia.md`): os conceitos ficam em `elm/` do mesmo jeito, com `type` = o
+Nome do [catálogo](../../sabia/references/tipos.md) (`História`, `Regra`…) e sem `tags`, e nunca são publicados (sem
+`resource` nem `id`); na tabela do PRD, a coluna No ELM é `—`.
 
 **Uma extensão só** (OKF §4.1 permite chaves do produtor): `id` — o id numérico do DOORS Next, gravado na
 publicação. É a mesma chave que o MCP `elm` grava no bundle e que o `elm_publicar_req` usa para atualizar. Copiado do bundle,
@@ -115,6 +119,7 @@ O corpo é o do padrão do tipo, na coluna Padrão do [catálogo](../../sabia/re
 | Rascunho | `sa-prd` (ou a `[ESP] FT`, `sa-especificar.fatia.escrever`) cria o conceito com `status: draft`, `sources`, `generated` |
 | GATE do PRD · aprovação da `[ESP] FT` | quem especifica aprova → cada conceito recebe `verified` humano e `status: stable` (o excluído segue `deprecated`); vai à base (a ATA já os recebe na aprovação dela, no passo `sa-especificar.reuniao.aprovar`, e é publicada logo depois, no passo `sa-especificar.reuniao.publicar`) |
 | Publicação | na conclusão da `[ESP]` (passo `sa-especificar.especificar.publicar` ou `sa-especificar.fatia.publicar`), ligado a ela: [elm-publicar.md](../../sa-consolidar/references/elm-publicar.md#requisitos-conceitos-okf-de-elm--doors-next) (grava `resource`, `id` e a entrada do ELM em `sources`) |
+| ET as-built | o Dev a escreve `draft` no PR (`sa-codificar.codificar.pr`; `sources` com a `et-inicial`, ou vazio sem ET inicial) e o revisor a julga (C15); na consolidação, quem consolida a ajusta pelo toolkit do tipo ET, se houver, grava `status: stable` e o `verified` dele no momento da consolidação e a publica ligada à `[DEV]` (passo `sa-consolidar.consolidar.elm`) |
 | Depois | a `sa-sync` baixa a versão oficial para o bundle, que passa a ser a versão viva; o rascunho fica como registro histórico, com `resource` preenchido |
 | Alteração de artefato existente | traga o arquivo do bundle pelo `elm_ler_req_local` e grave-o em `elm/`, mantendo `resource`, `id` e o `sources` do ELM (sem bundle, monte o envelope do `elm_ler_req(id)`: `type` = `tipo`, `title` = `titulo`, `tags` = `[pasta]`, `resource` = `url`, `id` = `id`, `sources` = os do PRD e das decisões + `{id: elm, resource: <url>, last_modified: <modificado>}`; o corpo é o Markdown devolvido; `links` não entra); `status: draft`, `generated` novo; edite. O `last_modified` desse `sources` detecta conflito na publicação |
 | Exclusão | a cópia, como na alteração, com `status: deprecated`; aprovada, não é publicada: o ELM não apaga, move para a lixeira, e o MCP `elm` não tem essa operação → na publicação da `[ESP]`, roteiro manual "mover para a lixeira no DOORS Next" e `ELM pendente` |
@@ -126,6 +131,7 @@ O corpo é o do padrão do tipo, na coluna Padrão do [catálogo](../../sabia/re
 3. `status` presente; `draft` antes da aprovação (GATE do PRD ou da `[ESP] FT`), fora a ATA aprovada (`stable` desde a
    aprovação dela) e o excluído (`deprecated`).
 4. `type` e `tags` existem em `rm.artefatos` do `pa_<nome>.json` — fora o tipo com ELM `ETM` (o CT planejado): `type` =
-   a coluna Tipo da linha `CT.csv` da seção ELM do `sabia.md`, sem `tags`.
+   a coluna Tipo da linha `CT.csv` da seção ELM do `sabia.md`, sem `tags`; projeto sem ELM: `type` = o Nome do
+   catálogo, sem `tags` (acima).
 5. Toda HF tem cenários; todo conceito liga os que cita dos tipos da sua coluna Embute (a HF, as suas REGs); HF e
    EL ligadas nos dois sentidos; todo link relativo aponta para um arquivo que existe.

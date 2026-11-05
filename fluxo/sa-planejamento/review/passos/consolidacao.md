@@ -12,7 +12,8 @@ Depois, as fatias da sprint aberta que esperam a consolidação: Status `pronta`
 ficou `manter`). Nenhuma → siga o rito.
 
 Segue só com o "sim" do **P.O.** (outra pessoa → peça a decisão a ele), gravado no cabeçalho do `sprint-<nn>.md`:
-`**Fechamento sem consolidar:** FT-… (<P.O.>, <data>)`. A decisão vale para essas fatias nos ritos seguintes da
+`**Fechamento sem consolidar:** FT-… (<P.O.>, <data>)` (bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base),
+commit `<pai>/Sprint <nn>: fechamento sem consolidar`). A decisão vale para essas fatias nos ritos seguintes da
 mesma sprint (não pergunte de novo); elas migram como as não concluídas, com a Observação `não consolidada`. Fatia
 sem merge (`pr-aberto`, `em-revisao`…) não entra aqui: migra, como sempre.
 

@@ -7,7 +7,8 @@
 
 ## Faça
 
-Com o "ok", pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base):
+Com o "ok", pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base),
+commit `<FT> trocar modo`:
 `modo` novo na linha da fatia no `backlog.md`; no `sprint-<nn>.md`, Modo, Revisor e Verificador (`—` no AFK) e a
 Observação `modo: <de> → <para> (<quem>, <data>, <motivo>)` (no Pleno, a do passo `mostrar`). No mesmo "sim", no EWM
 ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §7):

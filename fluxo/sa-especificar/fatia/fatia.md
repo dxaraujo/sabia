@@ -28,7 +28,9 @@ encaixe na sprint aberta: a `[DEV]` nasce ali; a `[REV]` e a `[VER]`, quando o D
 Entrada: a `[ESP] FT-nnn` na sprint aberta — a linha viva da fatia na seção Especificação do `sprint-<nn>.md`
 aberto, criada pelo planejamento ou pelo encaixe (a linha da fatia na seção Fatias não conta; sem a da
 Especificação → "fale com o P.O. ou o SM (agente `sa-produto`)"): da fatia `nova`, ou da fatia `iniciada` (Fase `bloqueada`, Bloqueio
-`aguardando especificação [ESP] FT-nnn`) com a `[ESP]` aberta (a reaberta, a Revisão ou a do encaixe).
+`aguardando especificação [ESP] FT-nnn`) com a `[ESP]` aberta (a reaberta, a Revisão ou a do encaixe) — inclusive com a linha `concluida` nesta sprint
+sem o motivo do Bloqueio na Observação, quando a volta foi achada na branch e ainda não foi assumida ([De quem é a Volta](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação): a linha
+`iniciada` é gravada no passo `assumir`).
 
 Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configurar o Sabiá") e pare.
 
@@ -37,7 +39,7 @@ Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configura
 - `EP-nn` ou `[ESP] EP-nn` → `sa-especificar.especificar`
 - fatia `nova` no backlog, sem a `[ESP]`, só com `falta: especificação` → "entra na sprint pelo planejamento ou pelo encaixe (P.O. ou SM, agente `sa-produto`)" ■
 - fatia `nova` no backlog, sem a `[ESP]`, com outra falta → "completar é do P.O., pela `sa-triar` (agente `sa-produto`)" ■
-- fatia `elegivel` até `iniciada` sem linha viva `planejada` ou `iniciada` na seção Especificação da sprint aberta (a reaberta já volta `iniciada`) → "é do Dev: `sa-desenvolver FT-nnn` (agente `sa-desenvolvedor`)" ■
+- fatia `elegivel` até `iniciada` sem linha viva `planejada` ou `iniciada` na seção Especificação da sprint aberta (a reaberta fora da branch já volta `iniciada`; a achada na branch, com a linha `concluida` nesta sprint sem o motivo do Bloqueio `aguardando especificação [ESP] FT-nnn` na Observação, é deste fluxo: [De quem é a Volta](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação)) → "é do Dev: `sa-desenvolver FT-nnn` (agente `sa-desenvolvedor`)" ■
 - fatia `pronta` → "é da consolidação: `sa-consolidar FT-nnn` (agente `sa-produto`)" ■
 
 ## Regras
@@ -52,5 +54,5 @@ aprovação, nada dos artefatos vai à base — só a linha da Especificação (
   da pasta de trabalho, horas na `[ESP]`). Na `[ESP] FT`: a linha de créditos na seção `## Créditos` da ficha, na
   base, pelo [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), commit
   `FT-<nnn> registrar sessão`; o comentário começa com `Sessão de especificação — FT-<nnn> · <AAAA-MM-DDTHH:MMZ>`;
-  anexos só os de `elm/`, como `elm-<arquivo>.md`; a pendência `[ESP FT-<nnn> sessão <AAAA-MM-DD>]` no rodapé da
-  ficha.
+  anexos só os de `elm/`, como `elm-<arquivo>.md`; a pendência `[ESP FT-<nnn> sessão <AAAA-MM-DD>]` como as demais.
+- As pendências do ELM da `[ESP] FT` ficam sempre no rodapé da ficha, na base, também na fatia `iniciada`.

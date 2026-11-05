@@ -25,14 +25,16 @@ assim; o item de origem em outro estado volta a ele com `elm_transicao(<id>, "re
   o épico nasce agora no backlog do EWM ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §3, `iteracao = backlog`, com "sim"; `pa` sem
   backlog (erro `precondicao` ao criar no backlog) → peça "atualizar a configuração do Sabiá" (a `sa-setup`, na
   sessão padrão, roda o §0 do elm-sprint.md); o item fica `pendente` na coluna `elm` e a triagem segue) e o id vai para a coluna `elm`; sem o MCP `elm` → `pendente`. Veio
-  de um item do EWM: se ele já é do tipo de épico do `sabia.md`, ele é o épico (grave o id na coluna `elm` e leve-o
-  para o backlog: `elm_atualizar_wi(id, iteracao = backlog)`) — quando
-  esse tipo é o mesmo do item (Item de Backlog pai), pergunte se ele vira o épico ou o filho; filho (ou outro tipo)
-  → `obs` `origem: <id>`, cria o épico e põe o item sob ele, no backlog (§3).
+  de um item do EWM: no EWM o épico é um IB (o ELM não permite criar o tipo Épico). IB sem pai `[EP-…]` → a pessoa
+  decide caso a caso: `O IB <id> vira o épico EP-<nn>? (sim: ele é o épico · não: fica filho do épico novo)`; "sim" →
+  ele é o épico (grave o id na coluna `elm` e leve-o para o backlog: `elm_atualizar_wi(id, iteracao = backlog)`);
+  "não", ou outro item
+  (DF, IB com pai `[EP-…]`) → `obs` `origem: <id>`, cria o épico e põe o item sob ele, no backlog (§3).
 
   **Pasta antecipada:** se o título tem mais de 3 palavras (slug formável), crie
   `<produto>/epicos/<EP>-<slug>/` com:
-  - `rascunho.md`: o pedido original (nas palavras de quem pediu, sem dado inventado) + origem (EWM id,
+  - `rascunho.md`: o padrão [`sa-especificar/rascunho.md`](~/.sabia/framework/padrao/sa-especificar/rascunho.md), com
+    a seção Pedido preenchida (as demais só com o título): o pedido original (nas palavras de quem pediu, sem dado inventado) e a Origem (EWM id,
     chamado, texto livre);
   - `decisoes.md`: o formato do padrão [`sa-entrevistar/decisoes.md`](~/.sabia/framework/padrao/sa-entrevistar/decisoes.md) (título `# Decisões — <EP-nn> <título>` e a tabela vazia);
   - `status.md`: o modelo do padrão [`sa-especificar/status-epico.md`](~/.sabia/framework/padrao/sa-especificar/status-epico.md),
@@ -102,7 +104,8 @@ assim; o item de origem em outro estado volta a ele com `elm_transicao(<id>, "re
     abre a `### <Categoria>` (§6; §2 antes, se faltar a Sustentação). Sem o MCP `elm` → `pendente` (veio do EWM: o
     id sem link); a `sa-atender` ou a `sa-executar` criam o que faltar antes de assumir.
 
-Atualize "Próximos ids". O commit é **um só, no fim da sessão de triagem** (passo `encaminhar`, resposta "não"), com o
+Atualize "Próximos ids". O commit é **um só, no fim da sessão de triagem** (passo `encaminhar`, resposta "não"; ou
+o fechamento do passo `chegou`, quando a sessão sai por outro caminho), com o
 `backlog.md` (também os ids do espelhamento do passo `chegou`), as fichas, as pastas dos épicos, os registros de Sustentação, o glossário (termos do passo `sa-entrevistar.entrevistar.linguagem`) e, no `sprint-<nn>.md` aberto, as linhas
 da Sustentação, a coluna Tarefa do Débito de especificação e a de créditos da sessão na seção **Créditos de gestão** (Atividade `triagem`;
 ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4); sem sprint aberta, não há onde gravar) (padrão de
@@ -116,13 +119,9 @@ com "sim" — `elm_comentar(<id da [GB]>, "Créditos triagem <ids>: <créditos> 
 triagem, só o SM lança, na `[GB]` (`elm_lancar_horas`, com "sim"); o P.O. nunca lança — nem quando também é o SM:
 o registro dele é o comentário. Sem tarefa, não commite: deixe os arquivos e o comando pronto; push direto na base
 com o "sim" da pessoa (no agente `sa-produto`, que não faz push, entregue o comando pronto — a pessoa executa). **Conflito de id**
-no push (outra pessoa registrou o mesmo número antes): o agente não faz merge nem rebase — peça à pessoa `git pull --rebase`; no
-conflito do `backlog.md`, mantenha o remoto e, **antes de renumerar**, confira de novo de onde o item veio (DF, IB,
-AT, chamado, pedido — colunas `origem`, `elm` e `obs`, `**Origem:**` da ficha ou do registro):
-já está numa linha do remoto → pare (abaixo). Senão, pegue o próximo id livre para a sua linha (e para o nome
-da ficha, do registro ou da pasta do épico) e, se o item já foi criado no EWM, troque o `[FT-nnn]`/`[EP-nn]`/`[<ID>]`
-do título do IB, e da tarefa do item se ela já existe (`elm_atualizar_wi`, com "sim"). Id que ainda não chegou à
-base pode mudar; o que já chegou, nunca.
+no push: a regra das [Regras](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#regras) do backlog; **antes de renumerar**,
+confira de novo de onde o item veio (DF, IB, AT, chamado, pedido — colunas `origem`, `elm` e `obs`, `**Origem:**` da
+ficha ou do registro): já está numa linha do remoto → pare (abaixo).
 
 ## Saída
 

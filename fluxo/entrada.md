@@ -64,18 +64,22 @@ saída do passo `entrada` no mestre indica; ele assume pela seção Assumir abai
 ## Assumir
 
 Não roda aqui: o fluxo assume no próprio passo, e as travas do papel (quem pode pegar a tarefa) vêm antes de
-tocar no EWM. Passadas as travas, pelo `responsavel` da linha e pela tarefa do item (`elm_transicao(<id>,
-"assumir")`):
+tocar no EWM. Quem executa = o login de quem está na sessão (item 8 da
+[Coleta](~/.sabia/framework/skills/sa-status/SKILL.md#coleta) da `sa-status`). Passadas as travas, pela tarefa do item
+(`elm_transicao(<id>, "assumir")`): o retorno do EWM decide, e o `responsavel` da linha que diverge dele se corrige
+na sincronização da sprint.
 
-- `responsavel` `—` → quem executa assume e vira o responsável. Na fatia `—` e não iniciada é a primeira
-  atribuição: o modo sai agora pela senioridade de quem assume (não é troca). Grava na base só o fluxo que tem os
-  registros do `backlog.md` e dos `sprints/`; os demais deixam a coluna para a sincronização da sprint.
+- Assumida (sem `ja_estava`) → quem executa vira o responsável. Na `[ESP]` (épico ou fatia), o responsável é o
+  Responsável da linha dela na seção Especificação da sprint: o `backlog.md` não muda (o `responsavel` da fatia é
+  de quem implementa). Fora da `[ESP]`, na fatia com `responsavel` `—` e não iniciada é a primeira atribuição: o
+  modo sai agora pela senioridade de quem assume (não é troca). Grava na base só o fluxo que
+  tem os registros do `backlog.md` e dos `sprints/`; os demais deixam a coluna para a sincronização da sprint.
 - Já é de quem executa (`ja_estava`) → nada a fazer.
 - De outra pessoa (`conflito`): item de Sustentação → pergunte e, com "sim", repita com `forcar: true`; nos demais
   → "é de <login>; trocar é do P.O. ou do SM" e pare.
 - Tarefa fechada (`precondicao`) → mostre o estado e, com "sim", `elm_transicao(<id>, "reabrir")` e de novo o
   `assumir`; sem o "sim" → "sincroniza a sprint (P.O. ou SM, agente `sa-produto`)" e pare.
-- Sem o MCP `elm` → `ELM pendente [<tipo> <id do item> assumir]: assumir a <tarefa>` (ex.: `[DEV FT-031 assumir]`,
+- Sem o MCP `elm` → com `responsavel` `—`, como na assumida; e `ELM pendente [<tipo> <id do item> assumir]: assumir a <tarefa>` (ex.: `[DEV FT-031 assumir]`,
   `[ESP EP-05 assumir]`, `[ATD AT-012 assumir]`) no lugar das pendências do item
   ([Pendências](~/.sabia/framework/skills/sabia/references/elm.md#pendências)), e siga.
 - Fluxo sem tarefa própria no EWM → pule esta seção.

@@ -36,8 +36,8 @@ alteração pendente: o Drift `—`, `não` ou já com ` · especificação:` de
    nova aprovação.
 3. **Volta à especificação** → ` · especificação: [ESP] FT-<nnn>` no Drift e o bloco
    [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação)
-   (`de: aguardando-aprovacao-pr`), os créditos da sessão; commit (mensagem no padrão do `sabia.md`, `FT-<nnn> aprovação do PR: volta à especificação`) → push → conferir no remoto →
-   horas da sessão na `[APR]` (lança, não conclui) → avise quem o `Próximo:` do bloco diz (o especificador, ou o
+   (`de: aguardando-aprovacao-pr`), só na branch do PR (nada na base), os créditos da sessão; commit (mensagem no padrão do `sabia.md`, `FT-<nnn> aprovação do PR: volta à especificação`) → push → conferir no remoto →
+   horas da sessão na `[APR]` (lança, não conclui) e a `[ESP]` reaberta no EWM como o bloco manda → avise quem o `Próximo:` do bloco diz (o especificador, ou o
    P.O. ou o SM, agente `sa-produto`) e o Dev responsável. A `[APR]` fica em andamento e é a mesma na nova aprovação.
 
 ## Saída

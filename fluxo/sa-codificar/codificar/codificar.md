@@ -15,7 +15,7 @@
 
 Deste fluxo: `.kiro/specs/<ft>-<slug>/` com o plano aprovado (`status.md` com fase `implementando`, `revisando`,
 `verificando`, `verificada` ou `retrabalho (de: …)`, ou `bloqueada` de uma delas; `bloqueada (de: em-revisao |
-em-verificacao | aguardando-aprovacao-pr)` com Bloqueio `aguardando especificação` e a `[ESP] FT` concluída; ou `aguardando-aprovacao-pr` com
+em-verificacao | aguardando-aprovacao-pr)` com Bloqueio `aguardando especificação` que é do Dev ([De quem é a Volta](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação): a linha `concluida` com o motivo do Bloqueio na Observação); ou `aguardando-aprovacao-pr` com
 Modo HITL na base: a troca de modo do P.O. ou do SM cancelou a `[APR] Aprovar PR`), na branch da fatia. O **modo** do `status.md` decide o caminho até o PR (passo `pr`): **HITL** vai direto, depois
 da revisão automática; **AFK** passa antes pela revisão e pela verificação por subagente (passos `revisar` e
 `verificar`). Nos dois, o fluxo termina no PR: a `[DEV]` fica em andamento, e o merge do PR aprovado e a conclusão
@@ -31,7 +31,8 @@ regras aprendidas).
 - `aguardando-aprovacao-plano` com a `[APR] Aprovar plano` criada → `sa-revisar.aprovar-plano` (agente `sa-revisor`)
 - `aguardando-aprovacao-pr` (Modo AFK na base) com a `[APR] Aprovar PR` aberta → `sa-revisar.aprovar-pr` (agente `sa-revisor`)
 - `aceita`, ou `aguardando-aprovacao-pr` com a `[APR] Aprovar PR` concluída: o merge → `sa-desenvolver.encerrar`
-- `bloqueada (de: …)` com Bloqueio `aguardando especificação [ESP] FT-<nnn>` e a `[ESP] FT` aberta → `sa-especificar.fatia` (agente `sa-especificador`)
+- `bloqueada (de: …)` com Bloqueio `aguardando especificação [ESP] FT-<nnn>` que é de quem especifica ([De quem é a Volta](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação)) → `sa-especificar.fatia` (agente `sa-especificador`)
+- `bloqueada (de: em-verificacao)` com o Bloqueio do ambiente ou da pergunta da ficha → `sa-verificar.hitl` (agente `sa-verificador`: a retomada é do verificador)
 
 ## Modo autônomo
 

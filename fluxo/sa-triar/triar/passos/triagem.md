@@ -41,8 +41,9 @@ O item lido no passo `chegou` (novo, ou a fatia sem épico que voltou, com o mes
      `🔗 <id> (<tipo>) já está na ficha de FT-<mmm> (<status>) → FT-<nnn> bloqueada-por FT-<mmm>` (a coluna
      `bloqueada-por`, no passo `registrar`).
   4. **Compromisso:** mostre a seção e pergunte, exata: `A lista de artefatos afetados está completa? (sim: você
-     autoriza a alteração e se compromete com a lista)`. "sim" → o fecho com o login e a data de quem tria; "não" →
-     complete com a pessoa e pergunte de novo; sem o "sim", `falta: artefatos afetados`.
+     autoriza a alteração e se compromete com a lista)`. "sim" → o fecho com o login (item 8 da Coleta da
+     `sa-status`) e a data de quem tria; "não" → complete com a pessoa e pergunte de novo; sem o "sim",
+     `falta: artefatos afetados`.
 
   Linha `inclui`, `altera` ou `exclui` → a fatia espera a `[ESP] FT` (`falta: especificação`, passo `registrar`).
   Projeto sem ELM → sem aviso, pesquisa nem pergunta: só a linha `Projeto sem ELM.` do padrão.

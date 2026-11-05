@@ -38,12 +38,13 @@ as-built da fatia segue a seção ET as-built abaixo.
 3. `elm_publicar_req(sigla = o prefixo do conceito, titulo, texto_md, id?, modificado_em = last_modified da entrada
    do ELM em sources, embutir = ids dos conceitos embutidos)`. Erro `conflito` → mostre os dois lados e pergunte
    (regra 5).
-4. **Grave de volta** no conceito: `resource`, `id` e `{id: elm, resource, last_modified}` em `sources`;
-   termos, o id também na coluna ELM do glossário.
+4. **Grave de volta** no conceito: `resource` (a `url` devolvida), `id` e `{id: elm, resource, last_modified}` em
+   `sources`, com o `last_modified` = o `modificado` do `elm_ler_req(<id>)`, chamado logo depois de publicar (o
+   `elm_publicar_req` não o devolve); termos, o id também na coluna ELM do glossário.
 5. **2ª passada HF ↔ EL** (só com EL no lote): a EL sobe antes da HF e nasce com as HFs só pelo título. Publicadas
    as HFs, republique cada EL que cita uma HF sem id no texto publicado, com o `id` dela e `modificado_em` = o
-   `last_modified` gravado no item 4: as HFs passam a `[<id>](<id>)`, como no item 2 (o sentido HF → EL já sai no
-   item 2). Na mesma confirmação do lote; sem o "sim" para ela ou com falha → `ELM pendente [EL-<nn> <EP-nn|FT-nnn>
+   `last_modified` gravado no item 4, e grave de volta como no item 4: as HFs passam a `[<id>](<id>)`, como no item 2
+   (o sentido HF → EL já sai no item 2). Na mesma confirmação do lote; sem o "sim" para ela ou com falha → `ELM pendente [EL-<nn> <EP-nn|FT-nnn>
    ligar HF]: republicar a EL com os ids das HFs`. O link tipado HF ↔ EL não existe: a relação é a citação nos dois corpos.
 
 **Exclusão** (`status: deprecated`, ação `exclui`): não publica — o ELM não apaga, move para a lixeira, e o MCP não
@@ -60,8 +61,15 @@ Na mesma publicação e no mesmo "sim" dos requisitos (a conclusão da `[ESP]`),
 elas), pela linha **Casos de teste** da seção ELM do `sabia.md`:
 - **`ETM`**, com `qm` no `pa`: cada CT `stable`, com um `verified` humano posterior ao `generated.at` e sem
   `resource` → `elm_criar_ct(titulo = title, cenario_md = o corpo sem a seção `## Relações`, reqs = ids das HFs que
-  ele prova)`, sem `wi`; grave de volta como no item 4 dos requisitos. Erro `permissao` → `ELM pendente [CT-<nn>
-  <EP-nn|FT-nnn> criar]: criar o CT no ETM (permissão)`.
+  ele prova)`, sem `wi`; grave de volta `resource` (a `url` devolvida), `id` e `{id: elm, resource, last_modified: <o
+  instante da criação, AAAA-MM-DDThh:mm:ssZ>}` em `sources` (o MCP não lê CT: esse `last_modified` só serve ao filtro
+  da atualização, abaixo). Erro `permissao` → `ELM pendente [CT-<nn> <EP-nn|FT-nnn> criar]: criar o CT no ETM
+  (permissão)`.
+  CT `stable` com `resource` e um `verified` humano posterior ao `last_modified` da entrada `elm` em `sources` (o CT
+  planejado alterado depois de publicado) → não publica: o MCP não atualiza CT. Na prévia, `✏️ atualizar no ETM: <id> ·
+  <título>`, com o texto novo, e no lugar das pendências do item
+  ([pendências](../../sabia/references/elm.md#pendências)), `ELM pendente [CT-<nn> <EP-nn|FT-nnn> atualizar]: atualizar
+  o CT <id> no ETM`, até a pessoa confirmar.
 - **`CSV`**, ou o `pa` sem `qm`: o CT planejado fica no repositório — nada sobe e nenhuma `ELM pendente`.
 
 ## ATA (reunião da `[ESP]`)
@@ -77,7 +85,8 @@ Fora da ordem de publicação dos requisitos: cada ATA sobe na aprovação dela,
 
 ## ET as-built (só se a linha ET da seção ELM do `sabia.md` disser `só as-built` ou `inicial no PRD + as-built`)
 
-A ET chega no PR (`.kiro/specs/ft-<nnn>-<slug>/elm/ET-<slug>.md`); publique como um requisito (sigla `ET`), com a
+A ET chega no PR (`.kiro/specs/ft-<nnn>-<slug>/elm/ET-<slug>.md`, `draft`; o `stable` e o `verified` são de quem consolida,
+no passo `sa-consolidar.consolidar.elm`); publique como um requisito (sigla `ET`), com a
 linha `Código: PR <link> · merge <sha curto>` no fim do texto publicado (`<sha curto>` = os 8 primeiros caracteres do
 commit de merge: o do `gitlab_obter_mr(<iid do link do PR>)`; sem o MCP, o `(sha <sha>)` da linha `merge do PR … por
 fora do Sabiá` do Histórico ou, sem ela, pergunte à pessoa), e `elm_ligar(wi = <id da [DEV]>, req = <id da ET>,
@@ -88,9 +97,13 @@ tipo implementa)`. O MCP não tem vínculo tipado com o código: a relação é 
   um requisito já publicado (item 2 dos requisitos). Inicial ainda sem id (a `[ESP] EP` com `ELM pendente`) → a
   as-built sobe com o título da inicial e `ELM pendente [ET FT-<nnn> ligar]: republicar a ET as-built com o Elabora
   [<id da inicial>](<id>)`.
-- **Fatia sem épico** (ou épico sem ET inicial): sem ligação.
+- **Fatia sem épico** (ou épico sem ET inicial): sem ligação; o `sources` chega vazio, e só a entrada `id: elm` do
+  item 4 entra nele.
 
 ## Casos de teste da fatia (o `CT.csv`, com as evidências dos cenários `✅ aceito` do `verificacao.md`)
+
+A linha 1 do `CT.csv` é o cabeçalho (os nomes das colunas da linha `CT.csv` do `sabia.md`; padrão
+[`sa-verificar/ct-csv.md`](~/.sabia/framework/padrao/sa-verificar/ct-csv.md)); as linhas de CT começam na 2.
 
 Pela linha **Casos de teste** da seção ELM do `sabia.md`:
 - **`CSV`**, ou o `pa` sem `qm`: o `CT.csv` da fatia é a entrega — nenhum `elm_criar_ct` e nenhuma `ELM pendente`.

@@ -1,5 +1,5 @@
 ---
-{"resumo": "Grava no registro o que foi feito, sem dado de cliente (comentário ou anexo na tarefa, se a pessoa quiser), e lança as horas; em várias sessões."}
+{"resumo": "Grava no registro o que foi feito, sem dado de cliente (comentário ou anexo na tarefa, se a pessoa quiser), e lança as horas; em várias sessões, cada uma fechada com o commit <ID> registrar sessão."}
 ---
 ## Entrada
 
@@ -17,8 +17,10 @@ Os dois itens valem em qualquer ordem e em várias sessões.
 
 ## Saída
 
-O trabalho e as horas no registro → passo `encerrar` quando a pessoa disser "concluir o <ID>"; antes disso, a sessão
-termina aqui (o registro fica para o commit do `encerrar`).
+O trabalho e as horas no registro → passo `encerrar` quando a pessoa disser "concluir o <ID>". A sessão que termina
+antes disso fecha aqui: os créditos dela no registro ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão),
+item 4) e o commit `<ID> registrar sessão` (o registro), pelos itens 3 e 4 do bloco
+[Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base).
 
 ## Pare se
 

@@ -9,8 +9,9 @@ A ficha com a seção **Artefatos afetados** com linha `inclui`, `altera` ou `ex
 ## Faça
 
 1. **Pasta de trabalho** (fora do git): `.sabia/local/especificacao/FT-<nnn>-<slug>/elm/`, com o `<slug>` da ficha
-   (`fatias/FT-<nnn>-<slug>.md`). Fonte, a primeira que existir: a pasta local (compare com a `[ESP]` como no passo
-   `sa-especificar.especificar.pasta`) · os anexos `elm-*` da `[ESP]` (`elm_anexo(id, "listar")` e
+   (`fatias/FT-<nnn>-<slug>.md`). Fonte, a primeira que existir: a pasta local (compare antes, em UTC, o último comentário
+   `Sessão de especificação — FT-<nnn>` da `[ESP]` com a Data da última linha da seção Créditos da ficha, na base —
+   nunca pelo mtime —: o comentário mais novo → mostre as duas datas e pergunte se baixa os anexos por cima) · os anexos `elm-*` da `[ESP]` (`elm_anexo(id, "listar")` e
    `elm_anexo(id, "baixar", caminho)`: cada `elm-<arquivo>.md` com caminho = `<pasta de trabalho>/elm/elm-<arquivo>.md`
    — o caminho termina no nome do anexo —, renomeado depois para `elm/<arquivo>.md`) · `.kiro/specs/ft-<nnn>-<slug>/elm/` da base (a
    especificação já aprovada, na fatia `iniciada`).

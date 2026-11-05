@@ -3,7 +3,7 @@
  "quando": ["planejar a próxima sprint: capacidade, previsão, responsáveis, meta e publicação no EWM; também o replanejamento da próxima na virada", "planejar a sprint"],
  "travas_gerais": ["sim-da-pessoa"],
  "passos": [
-   {"id": "senioridade"},
+   {"id": "senioridade", "saidas": {"pedido direto com sprint aberta: a próxima é na virada": "fim"}},
    {"id": "capacidade"},
    {"id": "especificacao"},
    {"id": "previsao"},

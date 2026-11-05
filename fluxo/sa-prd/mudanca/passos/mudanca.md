@@ -23,7 +23,9 @@ O PRD aprovado só muda por um pedido explícito, e só antes do fatiamento:
   1. **`[ESP]`** aberta → segue nela; a `[ESP] EP-<nn> Revisão <n>` ainda `planejada` → `assumir`, com "sim" (seção
      Assumir do passo `sa-especificar.especificar.entrada`). Concluída na sprint aberta → `reabrir` e `assumir`, com
      "sim". Nos dois, a linha dela na seção Especificação do `sprint-<nn>.md` aberto fica `iniciada` (na reabertura,
-     com a Observação `reaberta: <motivo>`), no commit do item 2. Concluída numa sprint fechada → não reabre: o pedido fica na `obs` `falta: especificação (<motivo>,
+     com a Observação `reaberta: <motivo>`) na hora, num commit próprio pelo bloco Gravar na base, antes da reunião
+     (que exige a linha `iniciada`): `EP-<nn> reabrir especificação` na reabertura, `EP-<nn> iniciar especificação`
+     na Revisão assumida. Concluída numa sprint fechada → não reabre: o pedido fica na `obs` `falta: especificação (<motivo>,
      <login>, <AAAA-MM-DD>)` da linha do épico no `backlog.md` (bloco
      [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), commit
      `EP-<nn> registrar pendência de especificação`) e diga: com sprint aberta, "o EP-<nn> entra na sprint aberta pelo
@@ -37,10 +39,12 @@ O PRD aprovado só muda por um pedido explícito, e só antes do fatiamento:
      `em-revisao (de: aprovado)` enquanto o que mudou é revisto, e o GATE de novo. Conceito alterado:
      `status: draft`, `generated.at` novo; no GATE, um `verified` novo é acrescentado à lista, e o passo
      `sa-especificar.especificar.publicar` republica (o filtro pega o `verified` mais novo). Antes de escrever, grave
-     na base, pelo bloco Gravar na base, **um** commit com a linha da seção Mudanças, a Fase `em-revisao (de:
-     aprovado)` no `status.md` do épico e a linha `iniciada` do item 1: `EP-<nn> reabrir especificação` na
-     reabertura, `EP-<nn> iniciar especificação` na Revisão assumida, `EP-<nn> registrar mudança do PRD` com a `[ESP]`
-     aberta. Assim a retomada volta à revisão do PRD, e não à publicação.
+     na base, pelo bloco Gravar na base, **um** commit `EP-<nn> registrar mudança do PRD` com a linha da seção
+     Mudanças e a Fase `em-revisao (de: aprovado)` no `status.md` do épico. Assim a retomada volta à revisão do PRD, e
+     não à publicação.
+  3. **Onde se edita** — direto na pasta do épico na base (`<produto>/epicos/<EP>-<slug>/`; a de trabalho guarda só
+     `reunioes/`): o que a mudança edita ali fica sem commit até o GATE, e o commit `EP-<nn> aprovar PRD` do passo
+     `sa-prd.prd.gate` leva a pasta (a exceção do bloco Gravar na base).
 
 Artefato novo, alterado ou excluído que a mudança trouxer passa antes pelo passo `sa-prd.prd.similares`; a escrita
 segue as regras do passo `sa-prd.prd.escrever`.

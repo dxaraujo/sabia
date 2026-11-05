@@ -7,14 +7,17 @@ A proposta com "ok" (passo `proposta`).
 
 ## Faça
 
-**Chamado pelo `sa-planejamento.retrospectiva.recalcular` (virada):** grave o `sprint-<nn>.md` com
-`**Publicação no EWM:** pendente` e o `backlog.md` (itens 1 e 2); não publique nem sincronize (é o passo
-`sa-planejamento.retrospectiva.virada`, na ordem do §5) e volte a quem chamou.
+**Chamado pelo `sa-planejamento.retrospectiva.recalcular` (virada):** o `sprint-<nn>.md` já existe (passo
+`sa-planejamento.retrospectiva.fechar`): complete o cabeçalho do modelo e acrescente as linhas novas — as com
+`migrada de` ficam como estão, e o `**Publicação no EWM:** pendente` também — e grave o `backlog.md` (itens 1 e 2),
+sem commit próprio (o da virada, no passo `sa-planejamento.retrospectiva.recalcular`); não publique nem sincronize
+(é o passo `sa-planejamento.retrospectiva.virada`, na ordem do §5) e volte a quem chamou.
 
 "ok" →
 
 1. **Arquivo:** grave `sprints/<pai>/sprint-<nn>.md`, com `**Power sabia:**` = o `metadata.version` da
-   `sa-planejamento`, em `~/.sabia/framework/skills/sa-planejamento/SKILL.md`.
+   `sa-planejamento`, em `~/.sabia/framework/skills/sa-planejamento/SKILL.md`; a fatia com as horas ajustadas na
+   proposta leva a Observação `horas: DEV <h> · REV <h> · VER <h>` (AFK: `horas: DEV <h>`).
 2. **`backlog.md`**, pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base):
    em todas as linhas novas, `sprint` = a chave, `responsavel` (o definido, ou `—`) e, na fatia, o `modo` final (sem
    responsável, o do backlog); o `status`, pela tabela:

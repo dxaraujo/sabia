@@ -19,7 +19,7 @@ indicação do agente, com os cenários `🔁 possível alteração`, decidida p
 não vira tarefa de código); com
 `REJEITADO`, some 1 em Retrabalho e acrescente a linha na tabela `## Retrabalho` (Papel `verificação (AFK)`); e
 **commite imediatamente** `verificacao.md`, `CT.csv`, `evidencias/`, `massa/` e o
-`status.md` antes de prosseguir — mensagem no padrão do `sabia.md`, `registrar verificação`. O PR cita esses arquivos e eles precisam estar na branch antes da abertura.
+`status.md` antes de prosseguir — mensagem no padrão do `sabia.md`, `<FT> registrar verificação`. O PR cita esses arquivos e eles precisam estar na branch antes da abertura.
 
 ## Saída
 
