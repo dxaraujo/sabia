@@ -7,3 +7,10 @@
 - ✅ <exemplo certo> · ❌ <exemplo errado>
 - Origem: L-<nnn>, L-<nnn>
 ```
+
+- `R-<nn>` = o maior R da seção Regras aprendidas + 1, com 2 dígitos (R-01 na primeira).
+- aplica a: `desenvolvedor` (quem implementa, `sa-codificar`; item extra da rubrica C) · `revisor` (item extra de
+  qualquer rubrica, passo `sa-revisar.revisar.calibrar`) · `plano` (`sa-plano`; rubrica L) · `PRD` (`sa-prd` e
+  `sa-especificar`; rubrica P) · `todos`.
+- severidade: a das rubricas ([rubricas.md](~/.sabia/framework/padrao/sa-revisar/rubricas.md)): `BLOQUEANTE` reprova;
+  `IMPORTANTE` também reprova (barato de corrigir agora, caro depois).

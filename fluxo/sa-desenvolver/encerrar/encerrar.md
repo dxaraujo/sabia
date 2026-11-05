@@ -15,8 +15,8 @@ Deste fluxo: a fatia em `aceita` (HITL), em `aguardando-aprovacao-pr` com a `[AP
 ## Entrada: vizinhos
 
 - `implementando`, `revisando`, `verificando`, `verificada` ou `retrabalho (de: …)` → `sa-codificar.codificar`
-- `aguardando-aprovacao-pr` com a `[APR] Aprovar PR` aberta → `sa-revisar.aprovar-pr`
-- PR mergeado por fora do Sabiá (sem a aprovação registrada), sem `pronta` na base → "sincroniza a sprint: P.O. ou SM (agente `sa-produto`)" ■
+- `aguardando-aprovacao-pr` com a `[APR] Aprovar PR` aberta → `sa-revisar.aprovar-pr` (agente `sa-revisor`)
+- PR mergeado por fora do Sabiá (sem a aprovação registrada), sem `pronta` na base → "sincroniza a sprint (P.O. ou SM, agente `sa-produto`)" ■
 - `pronta` com a `[DEV]` já concluída → "nada para o Dev: a consolidação é do P.O. ou do SM (agente `sa-produto`)" ■
 
 ## Regras

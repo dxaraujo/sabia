@@ -375,7 +375,7 @@ export async function instalar(opcoes = {}) {
   } finally {
     gravarInventario(inv);
   }
-  ctx.log('Pronto: skills e MCPs instalados. Os agentes são de cada projeto: abra a ferramenta na raiz dele, na sessão\n' +
+  ctx.log((opcoes.semMcp ? 'Pronto: skills instaladas (MCPs não registrados: --sem-mcp).' : 'Pronto: skills e MCPs instalados.') + ' Os agentes são de cada projeto: abra a ferramenta na raiz dele, na sessão\n' +
     'padrão, e peça "configurar o Sabiá" (ou, num projeto já configurado, "atualizar os agentes do Sabiá").');
 }
 
@@ -417,8 +417,10 @@ export async function desinstalar(opcoes = {}) {
       const reg = inv.alvos[alvo];
       if (!reg) { ctx.log(`${alvo}: nada instalado pelo Sabiá`); continue; }
       for (const tk of Object.values(inv.toolkits)) if (tk.alvos?.[alvo]) { await apagar(tk.alvos[alvo].copias, opcoes); delete tk.alvos[alvo]; }
-      if (alvo === "kiro") ctx.exec("kiro-cli", ["powers", "uninstall", reg.power]);
-      else await apagar(reg.copias, opcoes);
+      if (alvo === "kiro") {
+        const r = ctx.exec("kiro-cli", ["powers", "uninstall", reg.power]);
+        if (r.status !== 0) { ctx.log(`kiro: kiro-cli powers uninstall falhou: ${(r.stderr || r.error?.message || "").trim()}`); continue; }
+      } else await apagar(reg.copias, opcoes);
       if (alvo === "opencode") for (const nome of reg.mcp || []) tirarMcpDoOpencode(nome);
       if (alvo !== "kiro" && Object.keys(reg.copias).length) continue;  // ficou cópia alterada à mão
       delete inv.alvos[alvo];
@@ -614,7 +616,9 @@ export async function removerToolkit(nome, opcoes = {}) {
 export async function atualizarToolkits(nome, opcoes = {}) {
   const inv = lerInventario();
   for (const n of nome ? [nome] : Object.keys(inv.toolkits)) {
-    const origem = JSON.parse(fs.readFileSync(sabia("toolkits", n, ".origem.json"), "utf8"));
+    const fo = sabia("toolkits", n, ".origem.json");
+    if (!fs.existsSync(fo)) throw new Error(`toolkit ${n}: sem ~/.sabia/toolkits/${n}/.origem.json; baixe de novo: sabia toolkits baixar <nome|url>`);
+    const origem = JSON.parse(fs.readFileSync(fo, "utf8"));
     const alvo = origem.indice ? n : `${origem.url}${origem.ref ? "@" + origem.ref : ""}${origem.subpasta ? "#" + origem.subpasta : ""}`;
     await instalarToolkit(alvo, { ...opcoes, atualizar: true, indice: origem.indice || opcoes.indice,
       alvo: Object.keys(inv.toolkits[n]?.alvos || {}).join(",") || "kiro" });
@@ -885,12 +889,12 @@ const AJUDA = `${BANNER}
 sabia ${VERSAO} — instala o Sabiá e os toolkits no Kiro e no opencode
 
   sabia instalar   [--alvo kiro,opencode] [--versao X] [--fonte <pasta|url-git>[@ref]]
-  sabia atualizar  [--versao X]
+  sabia atualizar  [--versao X] [--fonte <pasta|url-git>[@ref]]
   sabia desinstalar [--alvo …]
   sabia toolkits listar   [--indice <url-git|pasta>]
-  sabia toolkits baixar   <nome>[@versao] | <url-git|pasta>[@ref][#subpasta]
-  sabia toolkits instalar <nome>[@versao] | <url-git|pasta>[@ref][#subpasta]  [--alvo …]   (sem argumento, no projeto: as versões dele)
-  sabia toolkits atualizar [<nome>]
+  sabia toolkits baixar   <nome>[@versao] | <url-git|pasta>[@ref][#subpasta]  [--indice <url-git|pasta>]
+  sabia toolkits instalar <nome>[@versao] | <url-git|pasta>[@ref][#subpasta]  [--alvo …] [--indice <url-git|pasta>]   (sem argumento, no projeto: as versões dele)
+  sabia toolkits atualizar [<nome>]  [--indice <url-git|pasta>]
   sabia toolkits remover  <nome>
   sabia rota <arquivo>               o passo com desvio de toolkit, o dono, o toolkit, o motivo e as travas
   sabia rota <tasks.md>#<tarefa>     o mesmo pelos arquivos que a tarefa (#2, #2.1) cita; sem casar, o texto dela
@@ -902,7 +906,7 @@ sabia ${VERSAO} — instala o Sabiá e os toolkits no Kiro e no opencode
   --forcar    sobrescreve o que não foi instalado pelo Sabiá ou foi alterado à mão
   --sem-mcp   não registra os MCPs
 
-Tudo fica em ~/.sabia/ (framework/, toolkits/, inventario.json).`;
+Tudo fica em ~/.sabia/ (framework/, compilado/, toolkits/, inventario.json e indices.json).`;
 
 export function lerArgs(argv) {
   const posicionais = [];

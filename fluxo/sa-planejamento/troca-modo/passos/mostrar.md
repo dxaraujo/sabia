@@ -36,3 +36,7 @@ termina.
 
 - Pedido do Dev, fora do agente `sa-produto` → "a troca de modo é do P.O. ou do SM (agente `sa-produto`)" e pare.
 - Fatia sem responsável e não iniciada → não é troca: o modo sai de quem a assumir (`sa-planejamento.sprint.modo`).
+- Fatia fora do `backlog.md` → "use `sa-triar`" e pare.
+- Fatia terminal ou `pronta` → mostre a situação: "sem troca de modo depois do merge" e pare.
+- Fatia sem linha viva na sprint aberta → "o modo é o do backlog até a fatia entrar na sprint (planejamento ou
+  encaixe)" e pare.

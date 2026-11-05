@@ -15,13 +15,14 @@ sincronize como ela manda, num commit, antes do GATE.
 
 `bloqueada (de: planejando)` com `aguardando troca de modo`: leia a base sem trocar de branch — `git fetch` e
 `git show origin/<base>:<produto>/backlog.md` e `…/sprints/<pai>/sprint-<nn>.md`. A troca vale registrada lá pelo P.O.
-ou pelo SM (`sa-planejamento.troca-modo`), na Observação `modo: …` da linha da fatia:
-- **trocou** → mostre o modo novo, com o revisor e o verificador das colunas Revisor e Verificador da linha da sprint
-  (o Histórico não é a fonte), e, com "sim", sincronize o `status.md` pela regra A base prevalece (`Modo`, os ids da
+ou pelo SM (`sa-planejamento.troca-modo`). Leia a linha viva da fatia no `sprint-<nn>.md` aberto em `origin/<base>`:
+- **trocou** (Modo diferente do `Modo` do `status.md`) → mostre o modo novo, com o revisor e o verificador das colunas
+  Revisor e Verificador da linha da sprint (o Histórico não é a fonte), e, com "sim", sincronize o `status.md` pela regra A base prevalece (`Modo`, os ids da
   `[REV]` e da `[VER]` da coluna "Tarefa ELM", `Bloqueio: —`, fase `planejando`); commit e push. A `[DEV]`, pela
   seção Assumir do passo `sa-plano.plano.entrada`. Siga para o GATE abaixo, no modo novo;
-- **manteve** (`modo: AFK mantido`) → `Bloqueio: —`, fase `planejando`, commit, e o GATE abaixo no AFK;
-- **nada registrado** → "a troca de modo espera o P.O. ou o SM (agente `sa-produto`)" e pare.
+- **manteve** (mesmo Modo e Observação `modo: AFK mantido (<quem>, <data>)` com data igual ou posterior à da linha do
+  bloqueio no Histórico) → `Bloqueio: —`, fase `planejando`, commit, e o GATE abaixo no AFK;
+- **nada registrado** (senão) → "a troca de modo espera o P.O. ou o SM (agente `sa-produto`)" e pare.
 
 Na troca, o Dev não grava na base nem cria ou cancela tarefa.
 
@@ -32,11 +33,11 @@ dado (diga qual) → mostre o risco e **pergunte** se o Dev pede a troca para HI
 SM, na base; aqui só se para.
 
 - Não pede → o GATE abaixo, no AFK.
-- Pede → `fase: bloqueada (de: planejando)`, Bloqueio `aguardando troca de modo` · motivo: `<risco>`, linha
+- Pede → `fase: bloqueada (de: planejando)`, Bloqueio `aguardando troca de modo · motivo: <risco>`, linha
   no Histórico e os créditos da sessão ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4); commit com os artefatos do plano e o `status.md` (`registrar plano`) → push → conferir no remoto
   (como na Entrega do passo `sa-codificar.codificar.pr`) → horas da sessão na
   `[DEV]` (`elm_horas(<id>)` → desconte → `elm_lancar_horas(<id>, <h>)`, com "sim"; sem o MCP `elm` →
-  `ELM pendente [DEV FT-<nnn> horas]`) — ela fica **interrompida**, sem conclusão → "A troca de modo é do P.O. ou do
+  `ELM pendente [DEV FT-<nnn> horas]: lançar <h>h (<AAAA-MM-DD>)` no Histórico) — ela fica **interrompida**, sem conclusão → "A troca de modo é do P.O. ou do
   SM: fale com eles (agente `sa-produto`, `sa-planejamento.troca-modo`)" e pare. Não troque de branch nem grave na
   base. Feita a troca, o Dev retoma pela `sa-plano FT-<nnn>` (Volta da troca de modo, acima).
 
@@ -54,8 +55,9 @@ Análise: OK na rodada <N>
 Leia de preferência: forma do programa e contrato de pronto.
 ```
 
-A `senioridade` de quem implementa (o `Responsável` do `status.md`; no loop, quem disparou) no `equipe.json` da
-base decide — trilha e modo não entram:
+A `senioridade` de quem implementa — o `responsavel` da linha da fatia no `backlog.md` da base (no loop, quem
+disparou); nunca o `Responsável` do `status.md`, que em `aguardando-aprovacao-plano` é quem aprova — no `equipe.json`
+da base decide; trilha e modo não entram:
 
 | Senioridade | GATE |
 |---|---|
@@ -68,7 +70,7 @@ Revisor da fatia no `sprint-<nn>.md`, que a puxada também tem); AFK, sem reviso
 implementa. Então `fase: aguardando-aprovacao-plano` (conta no WIP de revisão humana), `Responsável` = quem aprova,
 e a tarefa **`[APR] FT-<nnn> Aprovar plano`** para ele
 ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §8, com "sim"; sem o MCP `elm` →
-`ELM pendente [APR FT-<nnn> criar]`). Commit com `research.md`, `.config.kiro`,
+`ELM pendente [APR FT-<nnn> criar]: criar a [APR] FT-<nnn> Aprovar plano para <login>` no Histórico). Commit com `research.md`, `.config.kiro`,
 `requirements.md`/`bugfix.md`, `design.md`, `tasks.md` e `status.md`, já com os créditos da sessão ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4) (`registrar plano`) → push → conferir no remoto
 (como na Entrega do passo `sa-codificar.codificar.pr`) — quem aprova lê o plano no remoto → horas da sessão na
 `[DEV]` (lança, não conclui) → avise o aprovador (`sa-revisar.aprovar-plano`).
@@ -77,8 +79,9 @@ e a tarefa **`[APR] FT-<nnn> Aprovar plano`** para ele
 mesmos arquivos (`registrar plano`). Próximo: **`sa-codificar`** — numa sessão nova, de preferência (o plano está
 no disco; o contexto da pesquisa não é mais necessário).
 
-Retomando em `aguardando-aprovacao-plano` sem `[APR]` (pendência `[APR FT-<nnn> criar]`) → faça
-agora a pergunta ao Pleno, ou crie a `[APR]` (Júnior, Pleno que pediu).
+Retomando em `aguardando-aprovacao-plano` sem `APR <id>` no campo ELM: com `ELM pendente [APR FT-<nnn> criar]` sem o
+`ELM feito` correspondente no Histórico → crie a `[APR]` para o `Responsável`; sem essa pendência (loop sem a escolha
+do Pleno) → faça a pergunta ao Pleno da tabela.
 
 ### Quem aprova
 

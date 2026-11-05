@@ -1,6 +1,6 @@
 """Gera os agentes do Sabiá a partir de assets/agents/papeis.json, dos prompts assets/agents/sa-<papel>.md e da
 configuração do projeto em .sabia/config/agentes.json, para cada alvo: kiro (.kiro/agents/*.json, motor V3: IDE e
-`kiro-cli --agent-engine v3`) e opencode (.opencode/agents/*.md). Lê os mestres dos fluxos no framework instalado
+`kiro-cli chat --agent-engine v3`) e opencode (.opencode/agents/*.md). Lê os mestres dos fluxos no framework instalado
 (~/.sabia/framework/fluxo/, ou --framework) e o override do projeto (.sabia/fluxo/): o agente dono de cada fluxo
 recebe no prompt só o que o projeto mudou (o delta), e todo agente a regra de chamada entre fluxos.
 
@@ -27,8 +27,9 @@ POWER_OPENCODE = "~/.config/opencode"
 PH = re.compile(r"\{\{([A-Z_]+)\}\}")
 FM = re.compile(r"\A---\n(.*?)\n---\n", re.S)
 CHAMADA = ("Entre fluxos (colunas Chama e Saídas da tabela de cada fluxo no SKILL.md): chama **em linha** → rode você mesmo o"
-           " fluxo chamado e volte ao passo; chama **subagente** → chame esse agente e continue com a resposta (sem ele,"
-           " carregue a skill do fluxo); **passa a** → este fluxo termina: diga a próxima (o agente dono do outro fluxo) e pare.")
+           " fluxo chamado e volte ao passo; chama **subagente** → chame esse agente e continue com a resposta; sem a"
+           " ferramenta de subagente, faça o que o passo manda para esse caso (Pare se ou Saída do passo): revisão e"
+           " verificação do que você fez nunca são suas; **passa a** → este fluxo termina: diga a próxima (o agente dono do outro fluxo) e pare.")
 
 
 def expandir(itens, grupos):
@@ -232,6 +233,9 @@ def fonte_toolkits(projeto, cfg, fw, fluxos):
     for nome, t in cfg.get("toolkits", {}).items():
         pasta = t.get("pasta", f"~/.sabia/toolkits/{nome}").rstrip("/")
         real = Path.home() / pasta[2:] if pasta.startswith("~/") else projeto / pasta
+        if not (real / "toolkit.json").is_file():
+            erros.append(f"toolkit {nome}: {pasta}/toolkit.json não encontrado (instale o toolkit ou tire-o do agentes.json)")
+            continue
         man = ler(real / "toolkit.json")
         versao = f"`{nome}` {man.get('versao', '')}".rstrip()
         for sg, q in man.get("tipos", {}).items():
@@ -275,8 +279,9 @@ def fonte_toolkits(projeto, cfg, fw, fluxos):
         p["linhas"] = [
             "Tipos com skill de toolkit (⇢ no passo de desvio do tipo): " + "; ".join(f"no passo `{c}`, {'; '.join(ls)}" for c, ls in p["linhas"].items())
             + ". O artefato desse tipo sai pela skill do toolkit (ligada a você), que lê o fluxo e o padrão da linha pelo caminho (sem eles, as references dela),"
-              " escrevendo no padrão OKF do Sabiá: o arquivo pela coluna Arquivo do catálogo, o envelope do `okf-elm.md`"
-              " e `status: draft`; depois volte ao passo. Os demais tipos seguem o passo."
+              " escrevendo no padrão OKF do Sabiá: o arquivo pela coluna Arquivo do catálogo (`references/tipos.md` da skill `sabia`),"
+              " o envelope do `references/okf-elm.md` da skill `sa-prd` e o `status` que o passo manda (`draft` na escrita);"
+              " depois volte ao passo. Os demais tipos seguem o passo."
               " O catálogo, a revisão e o GATE continuam do Sabiá."]
     if rubricas:  # quem revisa é o dono da sa-revisar
         por_papel.setdefault("revisor", {"linhas": [], "skills": []})["linhas"].append(
@@ -307,8 +312,10 @@ def passos(projeto, cfg, fluxos=None):
     for e in cfg.get("passos", []):
         if e["toolkit"] not in cfg.get("toolkits", {}):
             raise ValueError(f"agentes.json: passo de toolkit sem entrada em `toolkits`: {e['toolkit']}")
-        pasta = cfg["toolkits"][e["toolkit"]]["pasta"].rstrip("/")
+        pasta = cfg["toolkits"][e["toolkit"]].get("pasta", f"~/.sabia/toolkits/{e['toolkit']}").rstrip("/")
         real = Path.home() / pasta[2:] if pasta.startswith("~/") else projeto / pasta
+        if not (real / "toolkit.json").is_file():
+            raise ValueError(f"toolkit {e['toolkit']}: {pasta}/toolkit.json não encontrado (instale o toolkit ou tire-o do agentes.json)")
         man = json.loads((real / "toolkit.json").read_text(encoding="utf-8"))
         ext = next((x["passo"] for x in man.get("skills", []) if x["caminho"] == e["skill"] and x.get("passo")), None)
         if ext is None:
@@ -347,7 +354,7 @@ def texto_passos(papel, passos):
         regras = []
         for x in (y for y in passos if y["passo"] == pid):
             quando = f"`{x['para']}`" + (f" (arquivos {', '.join(f'`{a}`' for a in x['arquivos'])})" if x["arquivos"] else "")
-            regras.append(f"{quando} → delegue ao subagente `{x['agente']}`, com o briefing e o contrato do `passos.md`" if x["agente"]
+            regras.append(f"{quando} → delegue ao subagente `{x['agente']}`, com o briefing e o contrato do `references/passos.md` da skill `sabia`" if x["agente"]
                           else f"{quando} → carregue a skill `{x['skill']}` e faça o passo por ela")
         onde = f"no passo `{pid}`" if pid else "no passo"
         out.append(f"Desvios de toolkit {onde} (⇢ na tabela do fluxo): o que casa vai ao toolkit, sem perguntar à pessoa e sem"
@@ -486,8 +493,9 @@ def opencode(a, cfg, subagente=False):
     for r in _regras(a, "fs_read", "deny"):
         perm["read"].update({x: "deny" for m in r["match"] for x in _oc(m)})
     escrita = _regras(a, "fs_write")
-    perm["edit"] = "deny" if not escrita else {"*": "allow", **{x: "deny" for r in _regras(a, "fs_write", "deny")
-                                                                 for m in r["match"] for x in _oc(m)}}
+    # a raiz de cada **/x do harness já vem como regra própria do agente() (e sai no harness_libera)
+    perm["edit"] = "deny" if not escrita else {"*": "allow", **{x: "deny" for r in _regras(a, "fs_write", "deny") for m in r["match"]
+                                                                 for x in (_oc(m)[1:] if m.startswith("**/") else _oc(m))}}
     if "shell" not in a["tools"]:
         perm["bash"] = "deny"
     else:  # a negação vem por último: no Kiro ela sempre vence
@@ -520,7 +528,7 @@ LACUNAS = {
     "kiro": ["com o shell liberado, a negação do shell é por trecho do comando: `grep -r` no projeto, glob ou variável chegam a um"
              " `.env` ou a um arquivo do harness sem citá-lo (a leitura pela ferramenta continua negada; o prompt manda buscar"
              " com as ferramentas do agente)"],
-    "opencode": ["as exceções de cada grupo de comandos (`git log --output`, `git add -f`…) perguntam para qualquer comando, não só para o grupo",
+    "opencode": ["as exceções de cada grupo de comandos (`git log --output`, `git diff --no-index`…) perguntam para qualquer comando, não só para o grupo",
                  "com o shell liberado, a negação do shell é por trecho do comando: `grep -r` no projeto, glob ou variável chegam a"
                  " um `.env` ou a um arquivo do harness sem citá-lo (a leitura pela ferramenta continua negada)"],
 }
@@ -655,7 +663,11 @@ def main(argv=None):
         print(sha12(f))
         return 0
     projeto = args.projeto.resolve()
-    cfg = json.loads((args.config or projeto / ".sabia/config/agentes.json").read_text(encoding="utf-8"))
+    try:
+        cfg = json.loads((args.config or projeto / ".sabia/config/agentes.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError) as e:
+        print(f"agentes.json: {e}", file=sys.stderr)
+        return 1
     if args.framework:
         cfg["framework"] = str(args.framework)
     alvos = args.alvo.split(",") if args.alvo else cfg.get("alvos", ["kiro"])

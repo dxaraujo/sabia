@@ -12,9 +12,9 @@
 ---
 # Fatiar — PRD → fatias verticais
 
-Entrada: o PRD aprovado — `Fase: aprovado` no `status.md` do épico, na base (`<produto>/epicos/<EP>-<slug>/`, com o
-`prd.md` e a `elm/` aprovada; no refinamento, `fatiado`); a `[ESP]` concluiu depois do GATE do PRD, com a publicação no
-ELM (`sa-especificar.especificar.concluir`). Saída: fatias no
+Entrada: o PRD aprovado — a linha `| Fase | aprovado |` no `status.md` do épico, na base
+(`<produto>/epicos/<EP>-<slug>/`, com o `prd.md` e a `elm/` aprovada; no refinamento, `fatiado`); a `[ESP]` concluiu
+depois do GATE do PRD, com a publicação no ELM (`sa-especificar.especificar.concluir`). Saída: fatias no
 `<produto>/backlog.md` (formato em [references/backlog.md](~/.sabia/framework/skills/sa-fatiar/references/backlog.md)) e a ficha de cada uma (`<produto>/fatias/FT-<nnn>-<slug>.md`, formato
 "padrão de épico" do padrão `sa-triar/ficha.md`, com a seção Artefatos afetados vinda do PRD).
 
@@ -26,8 +26,9 @@ do backlog`** (horas só do SM; os créditos num comentário nela). O GATE do ba
 - `fatiado` (cancelar fatias ou o épico) → `sa-fatiar.refinamento`
 - `rascunho` ou `em-revisao` (o PRD ainda não aprovado, ou em mudança; agente `sa-especificador`) → `sa-especificar.especificar`
 - `aprovado` com a Especificação ainda `iniciada` (a publicação e a conclusão da `[ESP]` depois do GATE do PRD; agente `sa-especificador`) → `sa-especificar.especificar`
-- `aprovado` com a linha viva `planejada` de uma `[ESP] EP-nn Revisão <n>` (a mudança antes do fatiamento; agente `sa-especificador`) → `sa-especificar.especificar`
-- `aprovado` com a `obs` `falta: especificação` na linha do épico (a mudança pendente na `[GB]`: a `[ESP] EP-nn Revisão <n>` pelo encaixe ou no próximo planejamento) → `sa-planejamento.sprint`
+- `aprovado` com a linha viva `planejada` de uma `[ESP] EP-nn Revisão <n>` (a mudança antes do fatiamento; agente `sa-especificador`) → `sa-prd.mudanca`
+- `aprovado` com a `obs` `falta: especificação` na linha do épico, com sprint aberta (a `[ESP] EP-nn Revisão <n>` pelo encaixe) → `sa-planejamento.durante`
+- `aprovado` com a `obs` `falta: especificação` na linha do épico, sem sprint aberta (pendência do P.O. na `[GB]`, para o próximo planejamento) → `sa-planejamento.sprint`
 
 ## Modo autônomo
 

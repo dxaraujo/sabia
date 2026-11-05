@@ -145,8 +145,7 @@ test("prova front+back: o toolkit casa (HF ⇢ skill casa) com o override do pro
   const reuniao = s.rotaFluxo("sa-especificar.reuniao", o);
   assert.deepEqual(ordem(reuniao), ["1 transcricao", "2 escrever", "3 aprovar", "4 publicar", "5 decisoes"]);
   assert.match(reuniao, /│ 2 escrever ⇢ +│──▶ ⇢ por tipo: ATA\n/);
-  assert.match(reuniao, /^  decisoes --> x_sa_triar_triar: fatiado.*escopo novo.*\(passagem\)$/m);
-  assert.match(reuniao, /^  decisoes --> x_sa_especificar_fatia: fatiado.*fatia não terminal.*\(passagem\)$/m);
+  assert.match(reuniao, /^  decisoes --> x_sa_prd_mudanca: aprovado.*muda o PRD.*\(passagem\)$/m);
   const prot = s.rotaFluxo("sa-especificar.prototipo", o);
   assert.deepEqual(ordem(prot), ["1 registrar", "2 aprovacao"]);
   assert.match(prot, /│ 2 aprovacao +│──▶ 🔒 aprovacao-do-cliente\n/);

@@ -19,14 +19,15 @@ da tela e as palavras-chave, os rótulos dos campos e das ações do protótipo 
    → descarte.
 4. **Impacto** — por acerto `sobrepõe` e por existente que quem chamou já marcou `altera` ou `exclui`, quem o cita
    (`elm_ler_req_local(id).links.entrada`): a HF que embute a REG, o CT da HF, a EL da tela. Cada um vai à saída como
-   `impacto`, para quem chamou rever se muda.
+   `impacto` — `<id> (<sigla>) <rel>`, com `rel` = o campo `rel` da entrada, como veio; vários separados por ` · `; sem
+   impacto, `—` —, para quem chamou rever se muda.
 5. **Saída**, um bloco por artefato:
 
    ```
    🔎 Similares no ELM — <EP-nn | FT-nnn> · bundle de <data | sem data> · ao vivo: <sim | pendente>
    | Proposto | No ELM (id · título · tipo · pasta) | Relação | Recomendação | Impacto |
    |---|---|---|---|---|
-   | REG-01 Limite de tentativas | 2101 · REG - Tentativas de login · Regra · 04-Regras | sobrepõe | alterar 2101 | 1890 (HF) embute |
+   | REG-01 Limite de tentativas | 2101 · REG - Tentativas de login · Regra · 04-Regras | sobrepõe | alterar 2101 | 1890 (HF) cita |
    ```
 
    **igual → reutilizar** (HF embute a REG existente, cita a HF e a EL da mesma tela, linka o termo pelo id) · **sobrepõe → alterar** o

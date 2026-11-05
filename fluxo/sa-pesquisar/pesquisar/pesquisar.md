@@ -21,6 +21,9 @@ Entrada: pasta da fatia `.kiro/specs/<ft>-<slug>/` com `status.md`; a fatia no `
 defeito/pedido; a seção Artefatos afetados da ficha e os conceitos aprovados na `[ESP] FT`, em `elm/` da pasta da
 fatia, que valem sobre o PRD e o bundle.
 
+Chamado pelo passo `sa-fatiar.fatiar.rascunho`: o PRD do épico e a lista provisória das fatias, sem pasta de fatia;
+devolva só os fatos, sem gravar nada.
+
 ## Regras
 
 - Somente leitura: nenhum arquivo além de `research.md` (e, fora do agente pesquisador, a linha do `status.md`). O

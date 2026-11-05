@@ -17,8 +17,9 @@ git worktree add .sabia/local/wt/<ft> <branch>                      # já existe
 ```
 
 Dentro da worktree, faça só a Pasta e o commit do passo **`sa-desenvolver.desenvolver.iniciar`** (pasta, `status.md` com
-`Responsável: agente:sa-orquestrador` e, no Histórico, as `ELM pendente` que o passo `lote` deixou para esta fatia —
-`[<tipo> <id> cancelar]`, `assumir a tarefa` —, `.config.kiro`), sem perguntas — o lote já foi confirmado. A
+`Responsável: agente:sa-orquestrador`, o campo ELM com os ids que o passo `lote` tratou (`IB <id>` ou `DF <id>`, se o
+item nasceu ou foi completado; `DEV <id>`) e, no Histórico, as `ELM pendente` que o passo `lote` deixou para esta
+fatia — `[<tipo> <id> cancelar]`, `[DEV FT-<nnn> assumir]` —, `.config.kiro`), sem perguntas — o lote já foi confirmado. A
 `iniciada` e o EWM já foram tratados na confirmação do lote (passo `lote`), e não há push nesta hora.
 
 **Comandos dentro da worktree** — diga isto a cada subagente: git, build e testes com

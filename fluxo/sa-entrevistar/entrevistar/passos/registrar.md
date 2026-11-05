@@ -7,15 +7,17 @@ As decisões das rodadas (decididas, confirmadas e em aberto) e onde registrar (
 
 ## Faça
 
-`decisoes.md` — o formato único do fluxo (triagem, especificação e PRD criam por este): o padrão
-`sa-entrevistar/decisoes.md` — (cria na primeira; só acréscimo — decisão revista ganha nova linha que **substitui** a antiga).
+No destino da entrada do fluxo, no formato do padrão `sa-entrevistar/decisoes.md` (o formato único: triagem,
+especificação e PRD criam por este): o `decisoes.md` do épico ou a seção `## Decisões` da ficha (fatia sem épico;
+nunca um `decisoes.md` ao lado dela). Cria na primeira; só acréscimo — decisão revista ganha nova linha que
+**substitui** a antiga.
 
 Situações: `decidida` (uma pessoa respondeu) · `confirmada` (fonte encontrada) · `em aberto` (sem resposta) ·
-`substituída`.
+`em aberto — ATA-<nn> draft` · `decidida — substitui D-nn` (a linha antiga não muda).
 
 ## Saída
 
-`decisoes.md` atualizado → passo `linguagem`.
+`decisoes.md` (ou a seção Decisões da ficha) atualizado → passo `linguagem`.
 
 ## Pare se
 

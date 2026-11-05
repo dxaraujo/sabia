@@ -32,16 +32,18 @@ atualizado: <AAAA-MM-DD>
 
 <!-- Cada história (HF), regra (REG), termo novo (GL), leiaute (EL), ET e caso de teste planejado (CT) é um conceito OKF
      v0.2 próprio em elm/ (formato em okf-elm.md da skill sa-prd): aprovado no GATE, vai à base com o PRD e sobe ao ELM
-     (o CT, ao ETM) na conclusão da [ESP] (sa-especificar). Aqui fica só o índice. Cenários são os
-     critérios de aceite: cada um é verificável e tem o seu CT. No ELM: novo (verificado <data>) · altera <id> ·
-     reusa <id> · exclui <id>. Impacto: quem cita o alterado ou o excluído e não muda (<id> <como cita>), ou —. -->
+     (o CT, ao ETM, só com a linha Casos de teste = ETM) na conclusão da [ESP] (sa-especificar). Aqui fica só o
+     índice. Cenários são os critérios de aceite: cada um é verificável e tem o seu CT. No ELM: novo (verificado
+     <AAAA-MM-DD>) · novo (só bundle <AAAA-MM-DD | sem data>) (sem a busca ao vivo; a publicação refaz) · altera <id> ·
+     reusa <id> · exclui <id>. Impacto: quem cita o alterado ou o excluído e não muda — <id> (<sigla>) <rel>, com rel =
+     o campo rel de links.entrada do elm_ler_req_local, como veio; vários separados por " · " —, ou —. -->
 
 | Artefato | Arquivo | Resumo | No ELM | Impacto |
 |---|---|---|---|---|
 | HF-01 | [HF - <nome>](elm/HF-01-<slug>.md) | <description> | novo (verificado <AAAA-MM-DD>) \| altera <id> | — |
 | HF-02 | [HF - <nome>](elm/HF-02-<slug>.md) | <description> | novo (verificado <AAAA-MM-DD>) | — |
 | REG-01 | — (existente no ELM) | <description> | reusa <id> | — |
-| REG-02 | [REG - <nome>](elm/REG-02-<slug>.md) | <description> | altera <id> | <id> embute (HF), sem mudança |
+| REG-02 | [REG - <nome>](elm/REG-02-<slug>.md) | <description> | altera <id> | 1890 (HF) cita |
 | REG-03 | [REG - <nome>](elm/REG-03-<slug>.md) | <motivo da exclusão · substituída por REG-02> | exclui <id> | — |
 | GL | [<termo>](elm/GL-<termo>.md) | <definição curta> | novo (verificado <AAAA-MM-DD>) | — |
 | EL-01 | [EL - <tela>](elm/EL-01-<slug>.md) | <description> — só com a linha Telas = `sim` | novo (verificado <AAAA-MM-DD>) | — |
@@ -81,14 +83,17 @@ atualizado: <AAAA-MM-DD>
 ## Mudanças
 
 <!-- Uma linha por versão nova do PRD aprovado antes do fatiamento (sa-prd.mudanca): 1.1, 1.2… Aprovado por: quem
-     especifica, no GATE da mudança. Sem mudança, só o cabeçalho. -->
+     especifica, no GATE da mudança. Origem: o pedido de `<login>` · `ATA-<nn>` · `D-<nn>` (passo
+     `sa-prd.mudanca.mudanca`). Sem mudança, só o cabeçalho. -->
 
 | Versão | Data | O que mudou | Origem | Aprovado por |
 |---|---|---|---|---|
 
 ## Em aberto
 
-<!-- Decisões "em aberto" do decisoes.md. Uma que muda comportamento impede a aprovação (GATE PRD). -->
+<!-- Uma linha por D-nn com Situação "em aberto" no decisoes.md · D = o D-nn · Tema = a Pergunta, curta ·
+     Bloqueia? = sim (muda comportamento: impede a aprovação no GATE do PRD, P8) · não (não muda comportamento;
+     segue em aberto depois do GATE). -->
 
 | D | Tema | Bloqueia? |
 |---|---|---|

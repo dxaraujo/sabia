@@ -21,7 +21,7 @@ Montar a árvore de decisões (sem perguntar nada ainda):
    - o que o cliente disse numa reunião → a ATA aprovada (`ATA-nn [mm:ss]`);
    - termo do domínio → glossário;
    - dado → banco pelo MCP de consulta (somente leitura), se o `sabia.md` declarar um.
-   Fato encontrado vira decisão `confirmada — fonte: <…>`; não ocupa a pessoa.
+   Fato encontrado vira decisão `confirmada`, com a fonte na coluna Fonte / quem decidiu; não ocupa a pessoa.
 
 ## Saída
 

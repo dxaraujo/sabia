@@ -10,7 +10,7 @@ A tabela de fatias do passo `rascunho`.
 Pergunte à pessoa (uma vez, com a tabela):
 
 ```
-🍰 EP-<nn> — <n> fatias · <a> AFK · <h> HITL · tamanhos <P/M/G>
+🍰 EP-<nn> — <n> fatias · <a> AFK · <h> HITL · tamanhos <p>P · <m>M · <g>G
 <tabela>
 Cobertura: <c>/<c> cenários · Ponta a ponta (tracer bullet): FT-<…> — <gatilho> → <saída observável>
 Artefatos afetados: <a>/<a> do PRD (<i> inclui · <l> altera · <x> exclui) · FT-<…>: <ids ou rótulos>
@@ -20,9 +20,10 @@ Artefatos afetados: <a>/<a> do PRD (<i> inclui · <l> altera · <x> exclui) · F
 - Alguma fatia deveria ser HITL/AFK ao contrário?
 ```
 
-Ajuste (dividir, juntar ou mudar uma fatia) e repita até "ok". Esse "ok" é o **GATE do backlog** (o P.O. ou o SM)
-— e não vale sem a fatia ponta a ponta. Depois dele, as fatias não se alteram mais: só o cancelamento pelo P.O.
-(`sa-fatiar.refinamento`).
+Ajuste (dividir, juntar ou mudar uma fatia); depois de cada ajuste, refaça na tabela ajustada os itens 3 a 5 do passo
+`rascunho` (cobertura, ponta a ponta, artefatos afetados e `bloqueada-por`) e mostre-a de novo, até "ok". Esse "ok"
+é o **GATE do backlog** (o P.O. ou o SM) — e não vale sem a fatia ponta a ponta. Depois dele, as fatias não se
+alteram mais: só o cancelamento pelo P.O. (`sa-fatiar.refinamento`).
 
 Conceito do PRD que precisa mudar (a pessoa pede, ou o rascunho mostra) → não se muda aqui: `sa-prd.mudanca`
 (agente `sa-especificador`), antes de fatiar.
@@ -34,4 +35,4 @@ mudar → `sa-prd.mudanca`.
 
 ## Pare se
 
-Sem a fatia ponta a ponta, o "ok" não vale: não grave.
+Sem a fatia ponta a ponta, o "ok" não vale: não grave; diga o que falta e repita este passo.

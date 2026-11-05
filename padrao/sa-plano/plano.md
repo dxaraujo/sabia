@@ -199,6 +199,7 @@ da condição do defeito, verificação da correção e da preservação. Seçã
   - Pronto quando: `<comando>` verde
   - _Requirements: 1.1, 1.2_
 - [ ]* 3. Teste de propriedade da Property 1
+  - Pronto quando: `<comando de teste> <teste de propriedade>` verde
   - _Requirements: 1.1, 1.3_
 - [ ] 4. Checkpoint — validação completa (compilar, suíte inteira, lint, cobertura)
   - A revisão não é tarefa daqui: é da `sa-revisar`, em outro contexto (quem implementou não se revisa)
@@ -222,7 +223,8 @@ da condição do defeito, verificação da correção e da preservação. Seçã
 ````
 
 - Uma tarefa = um comportamento, começando pelo teste que falha (corretiva: o teste que reproduz o defeito).
-- Toda tarefa diz o comando que prova que terminou.
+- Toda tarefa, inclusive a opcional, diz o comando que prova que terminou; o do checkpoint é a validação do passo
+  `sa-codificar.codificar.validar`.
 - Ordem de dependência. O **Run all tasks** do Kiro roda as tarefas pelas *waves* do `## Task Dependency Graph`:
   as de uma wave rodam ao mesmo tempo, e a wave N só começa quando 0..N-1 terminaram. O bloco ```` ```json ```` com
   `waves` não vazio é obrigatório (sem ele o Kiro acusa `tasks/missing-dag-json`) — nunca `Não se aplica.` nem

@@ -594,6 +594,27 @@ class Gerar(unittest.TestCase):
         for alvo in (".sabia/local/wt/ft-1/.sabia/sabia.md", "mod/.sabia/sabia.md"):
             self.assertNotEqual(efeito(agentes["produto"], "fs_write", alvo), "allow", alvo)
 
+    def test_sabia_md_so_do_produto_e_so_na_raiz_no_opencode(self):
+        agentes = g.gerar(self.projeto, self.cfg)
+        o = g.opencode(agentes["sa-produto.json"], self.cfg)
+        self.assertNotIn('    ".sabia/sabia.md": "deny"', o)
+        self.assertIn('    "*/.sabia/sabia.md": "deny"', o)
+        self.assertIn('    ".sabia/sabia.md": "deny"', g.opencode(agentes["sa-desenvolvedor.json"], self.cfg))
+
+    def test_toolkit_nao_instalado_e_recusado(self):
+        cfg = {**self.cfg, "toolkits": {"fantasma": {"pasta": "~/.sabia/toolkits/fantasma", "versao": "1.0.0", "sha": "abc"}}}
+        with self.assertRaisesRegex(ValueError, "toolkit fantasma: ~/.sabia/toolkits/fantasma/toolkit.json não encontrado"):
+            g.gerar(self.projeto, cfg)
+        cfg["passos"] = [{"toolkit": "fantasma", "skill": "skills/x/SKILL.md"}]
+        with self.assertRaisesRegex(ValueError, "não encontrado"):
+            g.passos(self.projeto, {"toolkits": {"fantasma": {}}, **{"passos": cfg["passos"]}})
+
+    def test_agentes_json_invalido_sai_sem_traceback(self):
+        conf = self.projeto / ".sabia/config/agentes.json"
+        conf.parent.mkdir(parents=True)
+        conf.write_text("{ruim")
+        self.assertEqual(g.main(["--projeto", str(self.projeto)]), 1)
+
     def test_shell_liberado_ainda_segura_push_credenciais_e_harness(self):
         d = self.gerar()["desenvolvedor"]
         for cmd in ("cd .sabia/local/wt/ft-1 && git push -u origin ft-1", "sh -c 'git push origin ft-1'"):

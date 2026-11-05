@@ -10,11 +10,11 @@ transição ou o lançamento de horas. Por isso aqui **não vale "padrão sem pe
   recomendada, e espere a escolha. Valor de enumeração só da lista da PA.
 - **Formato:** leia o [schema publicado](https://dxaraujo.github.io/mcps/elm/pa.schema.json) antes do bloco 0 e monte o `pa` nele — chaves,
   aninhamento e obrigatórios vêm do schema, não da memória.
-- **Cartão de cada bloco** (ícones e peças em [wizard.md](wizard.md)):
+- **Cartão de cada bloco** (ícones e peças em [wizard.md](wizard.md)). A trilha tem 11 posições (blocos 0 a 10).
 
   ```
   ### 🧩 ELM · Bloco <n>/10 · <nome do bloco>
-  `<●●◉○○○○○○○○>` (11 posições: blocos 0 a 10) <o que este bloco decide, em uma frase>
+  `<●●◉○○○○○○○○>` <o que este bloco decide, em uma frase>
 
   | # | Opção | Detalhe | Fonte |
   |---|---|---|---|
@@ -187,7 +187,7 @@ para o git) e confira com `elm_status(projeto)`: `valido` e `faltando` vazio. A 
 muda e peça "ok" de novo; nunca regrave em silêncio o que a pessoa aprovou.
 
 **Validação** (recomendada; a PA recusa o que o `pa` não cobre): com "sim", `elm_criar_wi` de uma tarefa `[TESTE]
-sa-setup` (pai = um IB que a pessoa indicar), de um IB e de um defeito, `elm_transicao` de cada um até concluir e um
+sa-setup` (pai = um IB que a pessoa indicar), de um IB e, se o `pa` tem `defeito`, de um defeito, `elm_transicao` de cada um até concluir e um
 `elm_lancar_horas` na tarefa → cada recusa `precondicao` traz o `campo`: pergunte o valor (bloco 4), ponha-o em
 `obrigatorios` e `padroes` e tente de novo. Os itens criados a pessoa cancela na UI; as horas de teste, remova com
 `elm_remover_horas`.

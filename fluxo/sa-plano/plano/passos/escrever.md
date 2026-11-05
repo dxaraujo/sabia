@@ -17,11 +17,14 @@
    pontos de teste (o mais alto possível), erros/transação/reexecução, **contrato de pronto** (como cada cenário
    será verificado de ponta a ponta) e decisões técnicas.
 3. **`tasks.md`**: uma tarefa por comportamento, teste primeiro, comando de pronto, `_Requirements: N.M_`; a
-   última é o checkpoint de validação completa + revisão. Não marque toolkit na tarefa: quem o usa é o
+   última é o checkpoint de validação completa (compilar, suíte inteira, lint, cobertura); a revisão não é tarefa do
+   `tasks.md`: é da `sa-revisar`. Não marque toolkit na tarefa: quem o usa é o
    desenvolvedor, pela configuração dele (os desvios do prompt).
 4. Skills do toolkit ligadas ao agente: consulte a da stack para a forma do programa (camadas, nomes, testes).
-5. Limite: plano que passa de ~200 linhas no total ou de ~8 tarefas → a fatia está grande: em vez de escrever um
-   plano maior, `fase: bloqueada (de: planejando)` com a proposta no Bloqueio, e a sessão fecha como no pedido de
+5. Limite: mais de 200 linhas somando `requirements.md` (ou `bugfix.md`), `design.md` e `tasks.md`, ou mais de 8
+   tarefas de primeiro nível (`- [ ] N.` e `- [ ]* N.`) no `tasks.md`, sem contar o checkpoint → a fatia está grande:
+   em vez de escrever um plano maior, `fase: bloqueada (de: planejando)` com o Bloqueio `plano acima do limite: <n>
+   linhas, <m> tarefas · proposta: <seguir | dividir em …>`, e a sessão fecha como no pedido de
    troca de modo (passo `gate`). Ela já está `iniciada`, e quem decide é o P.O., pelas
    [Situações](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#situações): fatia de épico → seguir com ela (plano acima do
    limite) ou cancelá-la pela `sa-fatiar.refinamento` e registrar as partes como fatia nova pela `sa-triar`

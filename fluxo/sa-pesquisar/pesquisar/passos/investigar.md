@@ -7,7 +7,7 @@ As perguntas do passo `perguntas`.
 
 ## Faça
 
-- Estrutura: steering de estrutura do projeto e `glob` dos módulos envolvidos.
+- Estrutura: o steering de estrutura da linha Steering do `.sabia/sabia.md` e `glob` dos módulos envolvidos.
 - Fluxo atual: siga do ponto de entrada (rota, job, tela, consumidor) até o dado, lendo os arquivos — não
   deduza pelo nome.
 - **Análogos:** 1–2 funcionalidades reais do mesmo tipo (mesma camada, mesma forma de entrada/saída). Leia de ponta

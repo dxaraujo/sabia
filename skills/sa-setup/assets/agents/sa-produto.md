@@ -9,7 +9,8 @@ Você trabalha no **o quê** e no **porquê**, na linguagem do negócio. Não es
   inclusive da Sustentação — `AT-nnn`, `IM-nnn`…; não começa nada). Fatia `nova` no backlog, sem sprint → você a
   deixa pronta, pela `sa-triar` (completar a fatia); só com `falta: especificação` → entra na sprint como
   especificação (`sa-planejamento`: planejamento ou encaixe), com a `[ESP] FT` do `sa-especificador`.
-- PRD aprovado e publicado (`EP-nn` `aprovado` na base, a Especificação `concluida`) → `sa-fatiar`, logo em seguida:
+- PRD aprovado e publicado (Fase `aprovado` no `status.md` do épico, na base — no `backlog.md` o épico segue
+  `iniciado` — e a linha da Especificação `concluida` na sprint) → `sa-fatiar`, logo em seguida:
   o fatiamento e o GATE do backlog são do P.O. ou do SM, com os artefatos do PRD na ficha de cada fatia; cancelar fatias ou o épico →
   `sa-fatiar.refinamento`.
 - Começar um item registrado → hub `sa-iniciar`; especificar um épico (`[ESP]`) → agente `sa-especificador`
@@ -18,7 +19,7 @@ Você trabalha no **o quê** e no **porquê**, na linguagem do negócio. Não es
   `sa-planejamento`.
 - Fatia `pronta` → `sa-consolidar`: a consolidação é processo de produto, do P.O. ou do SM, com os créditos num
   comentário na `[GB] Gerenciamento do backlog` (horas nela, só do SM; o P.O. nunca lança). Você lê o campo Drift de negócio do `status.md` (não relê design nem verificação; divergência depois do merge → débito técnico de especificação na sprint, sem reabrir especificação nem alterar artefato),
-  publica no ELM a ET *as-built* (escrita pelo Dev no PR — você não a escreve), ligada à `[DEV]`, e os casos de teste (os requisitos foram publicados na conclusão da `[ESP]`), leva os ADRs do PR para a pasta de ADRs e fecha `status.md`, `backlog.md` e sprint na base.
+  publica no ELM a ET *as-built* (se a linha ET não é `não publica`; escrita pelo Dev no PR — você não a escreve; com o tipo ET ligado a uma skill de toolkit (seção do `sabia.md` e linha do prompt), só a ajusta pela skill, como o passo `sa-consolidar.consolidar.elm` diz), ligada à `[DEV]`, e os casos de teste (`ETM`: liga o planejado ao IB e cria o novo; `CSV`: o `CT.csv` é a entrega; os requisitos foram publicados na conclusão da `[ESP]`), leva os ADRs do PR para a pasta de ADRs e fecha `status.md`, `backlog.md` e sprint na base.
 - Termo do domínio → glossário (`{{GLOSSARIO}}`); decisão que deve durar → ADR (`{{ADR}}`; os técnicos chegam
   escritos no PR e a consolidação os leva para lá).
 - Nada inventado: regra, valor ou ator sem fonte e sem decisão de uma pessoa fica `em aberto`.

@@ -11,8 +11,9 @@ frontmatter: a pasta não tem `index.md` nem `log.md` (OKF §8 e §9), que são 
 
 | Origem | Pasta |
 |---|---|
+| ATA da `[ESP]` do épico | `elm/` da pasta do épico (de trabalho até o GATE; na base depois) |
 | épico (PRD) | até o GATE do PRD, na pasta de trabalho local `.sabia/local/especificacao/<EP>-<slug>/elm/` (fora do git, anexada na `[ESP]`); aprovado, `<produto>/epicos/<EP>-<slug>/elm/` na base |
-| artefatos afetados de uma fatia (`[ESP] FT`, `sa-especificar.fatia`) | até a aprovação, `.sabia/local/especificacao/FT-<nnn>-<slug>/elm/` (fora do git, anexada na `[ESP]`); aprovado, `.kiro/specs/ft-<nnn>-<slug>/elm/` na base (o `<slug>` da ficha) |
+| artefatos afetados de uma fatia (`[ESP] FT`, `sa-especificar.fatia`) | até a aprovação, `.sabia/local/especificacao/FT-<nnn>-<slug>/elm/` (fora do git, anexada na `[ESP]`; maiúsculas, como a do épico; a da base é `.kiro/specs/ft-<nnn>-<slug>/`); aprovado, `.kiro/specs/ft-<nnn>-<slug>/elm/` na base (o `<slug>` da ficha) |
 | ET as-built de uma fatia (o Dev, no PR; publicada na consolidação; a ET inicial do épico, quando há, fica na pasta do épico) | `.kiro/specs/ft-<nnn>-<slug>/elm/`, a mesma pasta |
 
 ```
@@ -47,6 +48,8 @@ sources:                                      # §5.1: de onde o conteúdo veio
     resource: ../decisoes.md
     title: Decisão D-02
 generated: { by: sabia/2.0.0, at: 2026-10-14T13:00:00Z }   # §5.2: quem escreveu e quando mudou por último
+verified:                                     # depois da aprovação: lista, uma entrada por aprovação
+  - { by: human:ana.souza, at: 2026-10-20T14:00:00Z }   # ISO 8601 em UTC (Z), como o generated.at
 ---
 ```
 
@@ -58,7 +61,7 @@ generated: { by: sabia/2.0.0, at: 2026-10-14T13:00:00Z }   # §5.2: quem escreve
 | `tags` | `[<pasta do RM>]` — a `pasta` da sigla em `rm.artefatos`; o CT planejado não tem |
 | `resource` | **ausente até publicar**; depois, a URI do artefato no ELM. Decide criar × atualizar |
 | `sources` | o PRD, as decisões e, numa alteração, o próprio artefato do ELM (`resource` = URI, `last_modified` = última modificação no ELM vista por nós) |
-| `generated` | `by: sabia/<versão do power>` (ator `<producer>/<version>`, §7); `at` = última mudança de conteúdo |
+| `generated` | `by: sabia/<metadata.version do SKILL.md da sa-prd>` (ator `<producer>/<version>`, §7); `at` = última mudança de conteúdo, `AAAA-MM-DDThh:mm:ssZ` |
 | `verified` | **aprovação** (GATE do PRD ou da `[ESP] FT`): `{ by: human:<login de quem especifica>, at: <instante> }` (§5.2), um registro por aprovação. Sem `verified` humano o conceito é *unverified* (§5.3) e **não é publicado** |
 | `status` | `draft` enquanto não aprovado (obrigatório escrever: no OKF, ausência = `stable`), `stable` depois da aprovação, `deprecated` no artefato que a fatia ou o épico exclui (marcador local; não é publicado) |
 
@@ -110,10 +113,10 @@ O corpo é o do padrão do tipo, na coluna Padrão do [catálogo](../../sabia/re
 | Momento | O que acontece |
 |---|---|
 | Rascunho | `sa-prd` (ou a `[ESP] FT`, `sa-especificar.fatia.escrever`) cria o conceito com `status: draft`, `sources`, `generated` |
-| GATE do PRD · aprovação da `[ESP] FT` | quem especifica aprova → cada conceito recebe `verified` humano e `status: stable` (o excluído segue `deprecated`); vai à base (a ATA já os recebe na aprovação dela, no passo `sa-especificar.reuniao.aprovar`, e é publicada ali) |
+| GATE do PRD · aprovação da `[ESP] FT` | quem especifica aprova → cada conceito recebe `verified` humano e `status: stable` (o excluído segue `deprecated`); vai à base (a ATA já os recebe na aprovação dela, no passo `sa-especificar.reuniao.aprovar`, e é publicada logo depois, no passo `sa-especificar.reuniao.publicar`) |
 | Publicação | na conclusão da `[ESP]` (passo `sa-especificar.especificar.publicar` ou `sa-especificar.fatia.publicar`), ligado a ela: [elm-publicar.md](../../sa-consolidar/references/elm-publicar.md#requisitos-conceitos-okf-de-elm--doors-next) (grava `resource`, `id` e a entrada do ELM em `sources`) |
 | Depois | a `sa-sync` baixa a versão oficial para o bundle, que passa a ser a versão viva; o rascunho fica como registro histórico, com `resource` preenchido |
-| Alteração de artefato existente | traga o arquivo do bundle pelo `elm_ler_req_local` (sem bundle: `elm_ler_req`) e grave-o em `elm/`, mantendo `resource`, `id` e o `sources` do ELM; `status: draft`, `generated` novo; edite. O `last_modified` desse `sources` detecta conflito na publicação |
+| Alteração de artefato existente | traga o arquivo do bundle pelo `elm_ler_req_local` e grave-o em `elm/`, mantendo `resource`, `id` e o `sources` do ELM (sem bundle, monte o envelope do `elm_ler_req(id)`: `type` = `tipo`, `title` = `titulo`, `tags` = `[pasta]`, `resource` = `url`, `id` = `id`, `sources` = os do PRD e das decisões + `{id: elm, resource: <url>, last_modified: <modificado>}`; o corpo é o Markdown devolvido; `links` não entra); `status: draft`, `generated` novo; edite. O `last_modified` desse `sources` detecta conflito na publicação |
 | Exclusão | a cópia, como na alteração, com `status: deprecated`; aprovada, não é publicada: o ELM não apaga, move para a lixeira, e o MCP `elm` não tem essa operação → na publicação da `[ESP]`, roteiro manual "mover para a lixeira no DOORS Next" e `ELM pendente` |
 
 ## Conformidade (conferida pela rubrica P, item P11)

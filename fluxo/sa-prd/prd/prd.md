@@ -34,7 +34,7 @@ Leia antes: `.sabia/sabia.md` (ELM, caminhos, papéis) e o steering de produto q
 
 PRD é decisão de uma pessoa (o GATE do PRD): chamada em modo autônomo (`AUTONOMO=true`, pelo loop ou por um agente
 sem pessoa na conversa) → "PRD, backlog e itens de Sustentação (`AT-`, `IM-`…) nunca são AFK — especifique numa
-sessão com o P.O." e pare.
+sessão com quem especifica (agente `sa-especificador`)." e pare.
 
 ## Regras
 
@@ -42,4 +42,6 @@ sessão com o P.O." e pare.
 - O PRD não tem caminho de arquivo, nome de classe nem SQL — isso é do plano da fatia. Nomes técnicos só na ET
   inicial e na seção de dados da REG, pelas políticas da seção ELM do `sabia.md`.
 - Escreva no idioma do projeto; nomes de sistemas, tabelas e campos na forma original.
-- Não invoque nem simule outra skill além das que os passos mandam chamar (`sa-entrevistar`, o subagente revisor): depois do GATE, diga a próxima e pare.
+- Não invoque nem simule outra skill além das que os passos mandam chamar (`sa-pesquisar.pesquisar`,
+  `sa-entrevistar.entrevistar`, `sa-especificar.reuniao`, `sa-especificar.prototipo`, `sa-revisar.revisar` e a skill de
+  toolkit de um tipo da linha **Tipos com skill de toolkit**): depois do GATE, diga a próxima e pare.

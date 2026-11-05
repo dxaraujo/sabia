@@ -14,9 +14,11 @@ Diga ao Dev por onde ele retoma, pela fase gravada no `status.md`:
   modo gravado);
 - `aguardando-aprovacao-plano` → "o aprovador segue pela `sa-revisar` (`[APR] Aprovar plano`)";
 - `implementando`, `revisando`, `verificando`, `verificada`, `aguardando-aprovacao-pr`, `retrabalho` → "o Dev retoma
-  pela `sa-codificar FT-<nnn>`".
+  pela `sa-codificar FT-<nnn>`";
+- `bloqueada (de: <fase>)` → pela fase de origem, nesta lista.
 
-No HITL novo, avise também o revisor e o verificador: a `[REV]` e a `[VER]` são deles quando o PR abrir.
+No HITL novo, avise também o revisor e o verificador: a `[REV]` e a `[VER]` são deles quando o PR abrir — com o PR
+já aberto (`aguardando-aprovacao-pr`), já: o revisor entra pela `sa-revisar FT-<nnn>`.
 
 ## Saída
 

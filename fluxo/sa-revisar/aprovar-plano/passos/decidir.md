@@ -10,7 +10,7 @@ A decisão da pessoa (passo `ler`).
 - **Aprovado** → `fase: implementando`, Histórico `plano aprovado por <login>`, `Responsável` volta a quem
   implementa.
 - **Ajuste pedido** → o pedido no Histórico e em Achados abertos (origem: GATE do plano),
-  `fase: planejando`; a `[APR]` fica em andamento e é a mesma na nova aprovação.
+  `fase: planejando`, `Responsável` volta a quem implementa; a `[APR]` fica em andamento e é a mesma na nova aprovação.
 
 ## Saída
 

@@ -44,8 +44,10 @@ pela setup. É transparente para quem está no fluxo: nada é perguntado nem mar
 
 A ATA de cada transcrição pendente, quando há; com Telas = `sim` e versão nova ou aguardando, o protótipo aprovado (ou,
 aguardando o cliente ou a versão nova, o passo `fechar-sessao`); depois, a próxima skill dita (e a sessão segue nela, até o passo
-`fechar-sessao`), ou, em `aprovado` na pasta de trabalho, o passo `fechamentos`. O `aprovado` na base não chega
-aqui: com a Especificação `iniciada`, vai do passo `entrada` ao `publicar`; `concluida` ou `fatiado`, é vizinho.
+`fechar-sessao`; parou dentro da `sa-prd` ou da `sa-entrevistar`, num Pare se, sem GATE → rode o passo
+`sa-especificar.especificar.fechar-sessao` antes de parar), ou, em `aprovado` na pasta de trabalho, o passo
+`fechamentos`. O `aprovado` na base não chega aqui: com a Especificação `iniciada`, vai do passo `entrada` ao
+`fechamentos` (com o PRD na base, nada a gravar) e dele ao `publicar`; `concluida` ou `fatiado`, é vizinho.
 
 ## Pare se
 

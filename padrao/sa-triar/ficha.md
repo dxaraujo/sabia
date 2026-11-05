@@ -80,7 +80,7 @@ Então o desconto aplicado é de R$ 50,00
 |---|---|---|---|---|
 | REG-01 · Limite de tentativas | REG | inclui | HF-01 · 1.1 | [REG-01](../epicos/EP-03-<slug>/elm/REG-01-<slug>.md) |
 
-Aprovados no GATE do PRD v1 (carla.dias, 2026-10-08).
+Aprovados no GATE do PRD v1.0 (carla.dias, 2026-10-08).
 
 ## Como verificar
 <o ponto de observação: chamada, job, tela, consulta — o detalhe fica no contrato de pronto do `design.md`>
@@ -111,12 +111,15 @@ Em **toda** ficha, sempre presente: o que a fatia inclui, altera ou exclui no EL
 `sa-triar.triar.triagem`) ou a `sa-fatiar` (do PRD); a coluna Especificado, a `[ESP] FT` (`sa-especificar.fatia`).
 
 - **Artefato:** `<id do ELM> · <título>`; novo: `novo · <título provisório>` (a `[ESP] FT` troca pelo rótulo local,
-  `REG-01`); na ficha de épico, o rótulo do PRD.
+  `REG-01`); na ficha de épico, `<rótulo do PRD> · <título>` e, nas linhas `altera` e `exclui`, `<rótulo do PRD> (<id do
+  ELM>) · <título>` (ex.: `REG-02 (2101) · Desconto de pontualidade`).
 - **Tipo:** sigla do catálogo (`HF` `REG` `GL` `EL` `CT`). `ET` e `ATA` não entram: a ET as-built é do Dev, e a ATA,
   da reunião.
 - **Ação:** `inclui` · `altera` · `exclui`, exatamente.
 - **Motivo:** uma frase com a origem (`R<n>`, `C<n>`, `D-nn`) e o impacto revisto sem mudança (`impacto: <id> <como
-  cita>, sem mudança`); o impacto que muda tem linha própria.
+  cita>, sem mudança`); o impacto que muda tem linha própria. Linha acrescentada depois do fecho (Volta à
+  especificação, ou outro artefato na `[ESP] FT`): ao fim do Motivo, `· autorizado por <login> (<P.O. | SM>) em
+  <AAAA-MM-DD>`.
 - **Especificado:** `—` até a `[ESP] FT`; depois, o link relativo ao conceito aprovado
   (`.kiro/specs/ft-<nnn>-<slug>/elm/REG-01-<slug>.md`), que sobe ao ELM na conclusão da `[ESP] FT`. Na ficha de
   épico, o link para `../epicos/<EP>-<slug>/elm/…`, publicado na conclusão da `[ESP] EP`.
@@ -129,7 +132,8 @@ Em **toda** ficha, sempre presente: o que a fatia inclui, altera ou exclui no EL
   - projeto sem ELM, no lugar da tabela, só: `Projeto sem ELM.`;
   - lista não confirmada (o lote do EWM, que não entrevista): `Lista a confirmar na triagem.`, e a fatia `nova` com
     `falta: artefatos afetados`;
-  - de épico: `Aprovados no GATE do PRD v<x> (<login do especificador>, <AAAA-MM-DD>).` Cada `exclui` do PRD vai na
+  - de épico: `Aprovados no GATE do PRD v<x.y> (<login do especificador>, <AAAA-MM-DD>).` — a Versão do rodapé do
+    `prd.md`. Cada `exclui` do PRD vai na
     ficha da fatia que o substitui; se nenhuma o substitui, na primeira.
 - Linha `inclui`, `altera` ou `exclui` com Especificado `—` → a fatia fica `nova` com `falta: especificação` até a
   `[ESP] FT` concluir: ela escreve e aprova os conceitos (na base, em `.kiro/specs/ft-<nnn>-<slug>/elm/`), preenche
@@ -151,7 +155,7 @@ Em **toda** ficha, sempre presente: o que a fatia inclui, altera ou exclui no EL
 - **Decisões** no formato do `decisoes.md` da `sa-entrevistar`, aqui dentro (a ficha não tem pasta).
 - **Créditos da `[ESP] FT`** (`sa-especificar.fatia`: a fatia `nova` em especificação na sprint, ou a que voltou à
   especificação): uma seção `## Créditos` no
-  fim da ficha, com a tabela do `status.md` (`| Data | Papel | Login | Sessão | Power sabia | Créditos |`), criada na
+  fim da ficha, com a tabela do `status.md` (`| Data | Papel | Login | Sessão Kiro | Power sabia | Créditos |`), criada na
   primeira sessão; a `sa-desenvolver` não a leva para o `status.md` da fatia.
 - **Pendências do ELM** da fatia não iniciada, `dividida` ou `cancelada` (sem `status.md` que valha): no rodapé da
   ficha, `ELM pendente [<chave>]: <o que falta>` — ex.: `[FT-040 cancelar]`, quando o `elm_transicao(<id>,

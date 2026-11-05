@@ -3,18 +3,18 @@
 ---
 ## Entrada
 
-O item registrado no passo `registrar` (ou o épico `novo` completado no passo `chegou`; ou o não fazer do passo
+O item registrado no passo `registrar` (ou o épico `novo` ou a fatia `nova` de épico completados no passo `chegou`; ou o não fazer do passo
 `triagem`).
 
 ## Faça
 
 ```
-📥 <FT-nnn | EP-nn | AT-nnn | IM-nnn…> — <título> · trilha <…> (sustentação: · <categoria>) · <elegivel | nova: falta … | novo: falta … | aberto | aberto na sprint <pai>/Sprint <nn>> · modo <AFK | HITL>
+📥 <FT-nnn | EP-nn | AT-nnn | IM-nnn…> — <título> · trilha <…> (sustentação: · <categoria>) · <elegivel | nova: falta … | novo: falta … | aberto | aberto na sprint <pai>/Sprint <nn>> · modo <AFK | HITL> (só fatia)
 Origem: <DF 4567 | IB 611 | AT-012 | chamado | pedido> · Ficha: <caminho | —> · EWM: <DF 4567 | criado IB <id> (· ATD <id>) | pendente | sem ELM>
-Artefatos afetados: <n> (<inclui · altera · exclui>) | nenhum | a confirmar · bloqueada-por: <FT-mmm | —>
-Registrado. Para começar: use `sa-iniciar <id>` (o hub encaminha para a skill do papel; a fatia e o épico fora
-da sprint entram nela ao começar — `sa-desenvolver.desenvolver.compromisso`; `sa-especificar.especificar.assumir`). Item de Sustentação fora
-da sprint → use `sa-planejamento.durante.encaixe`, antes. Fatia `nova` com só `falta: especificação` → entra na
+Artefatos afetados: <n> (<inclui · altera · exclui>) | nenhum | a confirmar | sem ELM · bloqueada-por: <FT-mmm | —> (só fatia)
+Registrado. Para começar: use `sa-iniciar <id>` (o hub encaminha para a skill do papel). Item fora da sprint
+(fatia, épico ou Sustentação) → entra antes pelo encaixe (`sa-planejamento.durante.encaixe`, P.O. ou SM) ou pelo
+próximo planejamento (`sa-planejamento.sprint.previsao`). Fatia `nova` com só `falta: especificação` → entra na
 sprint como especificação, com a `[ESP] FT` (`sa-planejamento.sprint.previsao` ou `sa-planejamento.durante.encaixe`),
 e o especificador começa pela `sa-iniciar FT-<nnn>`.
 Mais algum item para triar?

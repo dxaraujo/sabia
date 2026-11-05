@@ -131,7 +131,7 @@ test("validação: recusa a fonte com erro, com arquivo:linha", () => {
 
 test("tipos: catálogo validado (sigla, cria, padrão, depois sem ciclo, rubrica) e tipos.md com a ordem de publicação", () => {
   const rub = { "padrao/sa-revisar/rubricas.md": "---\n{\"resumo\": \"r\"}\n---\n| # | V | S |\n|---|---|---|\n| P1 | x | B |\n" };
-  const tipos = (t) => ({ "fluxo/tipos.json": { tipos: t }, ...rub });
+  const tipos = (t) => ({ "fluxo/tipos.json": { tipos: t }, "skills/sa-prd/SKILL.md": skill("sa-prd"), "skills/sa-prd/references/okf-elm.md": "# OKF\n", ...rub });
   const ok = { GL: { nome: "Termo", cria: ["sa-a.a.ini"], padrao: "sa-a/modelo.md", elm: "DOORS", requisito: true, depois: [] },
     HF: { nome: "História", cria: ["sa-a.a.rev"], elm: "DOORS", requisito: true, depois: ["GL", "XX"], embute: ["GL"], rubrica: ["P1"] },
     XX: { nome: "Novo", cria: ["sa-a.z.q"], padrao: "sa-a/nao.md", elm: "DOORS", requisito: true, rubrica: ["P9"], pendente: true } };
@@ -166,7 +166,7 @@ test("chama: em linha (mesmo dono ou skill do agente), subagente, e recusa quand
 });
 
 const ENTRADA = { id: "entrada", de: "entrada", sprint: "exige" };
-const VIZ = "# Título\n\nIntro.\n\n## Entrada: vizinhos\n\n- `pronta` com a tarefa aberta → `sa-b.x`\n- `bloqueada` aguardando troca → \"fale com o P.O.\" ■\n\n## Regras\n\n- Uma.\n";
+const VIZ = "# Título\n\nIntro.\n\n## Entrada: vizinhos\n\n- `pronta` com a tarefa aberta → `sa-b.x` (agente `sa-dois`)\n- `bloqueada` aguardando troca → \"fale com o P.O.\" ■\n\n## Regras\n\n- Uma.\n";
 const comEntrada = (passos = [ENTRADA, { id: "ini" }, { id: "rev" }], corpo = VIZ, extra = {}) => fixture({
   "fluxo/entrada.md": passo("Entrada comum.", "Pule se chamado."),
   "fluxo/sa-a/a/a.md": mestre({ fluxo: "a", dono: "sa-um", passos }, corpo), ...extra });
@@ -208,6 +208,7 @@ test("vizinhos: formato, id que resolve, dono que é agente e passo só do mesmo
     ["- `pronta` → `sa-c.z`", /a\.md:8: vizinho → sa-c\.z: o dono sa-tres não é agente do papeis\.json/],
     ["- `pronta` → `sa-b.y.fim`", /a\.md:8: vizinho → sa-b\.y\.fim: passo de outro agente \(sa-dois\) → use o fluxo \(sa-b\.y\)/],
     ["- `pronta` → `sa-a.a.rev`", /a\.md:8: vizinho → sa-a\.a\.rev: é deste fluxo → declare como saída do passo entrada/],
+    ["- `pronta` → `sa-b.x`", /a\.md:8: vizinho → sa-b\.x: dono sa-dois é outro agente → acrescente "\(agente `sa-dois`\)" na linha/],
   ];
   const sac = { "fluxo/sa-c/z/z.md": mestre({ fluxo: "z", dono: "sa-tres", passos: [{ id: "p" }] }), "fluxo/sa-c/z/passos/p.md": passo("P."), "skills/sa-c/SKILL.md": skill("sa-c") };
   for (const [linha, erro] of casos) {

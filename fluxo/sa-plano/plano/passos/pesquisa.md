@@ -8,8 +8,9 @@ A pasta `.kiro/specs/<ft>-<slug>/` da fatia, com ou sem `research.md`.
 ## Faça
 
 Sem `research.md` → **`sa-pesquisar`** (de preferência pelo agente `sa-pesquisador`, que devolve o conteúdo: grave-o
-como veio na pasta da fatia). Trabalhe a partir do
-arquivo, não da memória da leitura.
+como veio na pasta da fatia). Pelo agente `sa-pesquisador`: `status.md` com `fase: planejando` e, no Histórico,
+`pesquisa registrada (research.md)`; commit do `research.md` com o `status.md` (`FT-<nnn> registrar pesquisa`).
+Trabalhe a partir do arquivo, não da memória da leitura.
 
 ## Saída
 

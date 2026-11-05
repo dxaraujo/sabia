@@ -20,3 +20,5 @@ Transcrição nova em `reunioes/` sem ATA aprovada (a pessoa trouxe a de uma reu
 ## Pare se
 
 Nenhuma condição própria deste passo: valem as da `sa-entrevistar`.
+
+Ao parar aqui (na sessão da `[ESP]`, feche-a: `sa-especificar.especificar.fechar-sessao`).

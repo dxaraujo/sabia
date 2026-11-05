@@ -14,7 +14,8 @@ A tarefa `[APR] FT-<nnn> Aprovar PR` e a fatia `Modo: AFK` em `fase: aguardando-
    aprova; ele mesmo só quando é o **único** Dev Sênior ativo. Sem o MCP `elm`, é também o aprovador registrado: o
    login da pendência `ELM pendente [APR FT-<nnn> criar]: <login>` no Histórico do `status.md`.
 2. Leia o PR pelo `gitlab_obter_mr` (iid do link no `status.md`) e, na branch dele, `git pull --ff-only`. Anote o
-   `sha` = `git rev-parse origin/<branch>` (o do PR).
+   `sha` = `git rev-parse origin/<branch>` (o do PR). Sem o MCP `gitlabpr` → pergunte à pessoa o estado do PR
+   (aberto, mergeado ou closed) e se há conflito, e siga com a resposta.
 3. **Assuma a `[APR]`** pela seção Assumir do passo `sa-revisar.aprovar-pr.entrada`. Já concluída (o PR mudou
    depois da aprovação: conflito no merge) → reabrir, na mesma confirmação.
 

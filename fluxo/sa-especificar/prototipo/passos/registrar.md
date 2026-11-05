@@ -33,7 +33,7 @@ A pasta de trabalho `.sabia/local/especificacao/<EP>-<slug>/` (passo `sa-especif
 
    Com "sim": renomeie o arquivo, `elm_anexo(id da [ESP], "enviar", caminho)` (o nome do anexo é o do arquivo) e,
    no `rascunho.md`, a linha `Protótipo v<N> — <arquivo> · <data> · <o que muda> · aguardando o cliente`. Sem o MCP
-   `elm` ou com falha → `ELM pendente [<chave>]: anexar prototipo-v<N> na [ESP] EP-<nn>` no `rascunho.md`, e o
+   `elm` ou com falha → `ELM pendente [ESP EP-<nn> anexar prototipo-v<N>]: anexar prototipo-v<N> na [ESP] EP-<nn>` no `rascunho.md`, e o
    fluxo segue.
 
 Até o GATE do PRD, o registro é o anexo da `[ESP]`; com o PRD aprovado, as versões registradas vão com a pasta do

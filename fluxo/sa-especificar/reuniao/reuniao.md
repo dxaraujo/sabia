@@ -1,13 +1,13 @@
 ---
 {"fluxo": "reuniao", "dono": "sa-especificador",
- "quando": ["ata de reunião com o cliente durante a [ESP] aberta: transcrição (.vtt ou .md) em reunioes/ da pasta de trabalho sem ATA aprovada, ou ATA aprovada não registrada; só chamado pelo encaminhar da especificação ou pela entrevista do PRD, e volta (o pedido direto entra pelo sa-especificar.especificar)"],
+ "quando": ["ata de reunião com o cliente durante a [ESP] aberta: transcrição (.vtt ou .md) em reunioes/ da pasta de trabalho sem ATA aprovada, ou ATA aprovada não registrada; só chamado pelo encaminhar da especificação, pela entrevista do PRD ou pela sa-prd.mudanca, e volta (o pedido direto entra pelo sa-especificar.especificar)"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa"],
  "passos": [
    {"id": "transcricao", "saidas": {"sem a pasta de trabalho do épico": "→ sa-especificar.especificar", "ATA draft já escrita para a transcrição": "aprovar", "ATA aprovada sem publicar": "publicar", "ATA aprovada com os D-nn só reservados": "decisoes"}},
    {"id": "escrever"},
    {"id": "aprovar", "saidas": {"ajuste pedido pela pessoa": "escrever", "sem o \"sim\" (a ATA fica draft)": "fim"}},
    {"id": "publicar"},
-   {"id": "decisoes", "saidas": {"outra transcrição sem ATA aprovada": "transcricao", "aprovado: decisão que muda o PRD, pela regra da tarefa de especificação": "→ sa-prd.mudanca", "fatiado: alteração de artefato que uma fatia não terminal cobre": "→ sa-especificar.fatia", "fatiado: escopo novo, ou a fatia já terminal": "→ sa-triar.triar"}}
+   {"id": "decisoes", "saidas": {"outra transcrição sem ATA aprovada": "transcricao", "aprovado: decisão que muda o PRD, pela regra da tarefa de especificação": "→ sa-prd.mudanca"}}
  ]}
 ---
 # Reunião — ata da reunião com o cliente
@@ -21,7 +21,7 @@ direto ("tenho a transcrição da reunião") entra pelo `sa-especificar.especifi
 Entrada: o épico com a `[ESP]` aberta (a linha dele na seção Especificação do `sprint-<nn>.md` aberto, `iniciada`) e a
 pasta de trabalho com a transcrição em `reunioes/`.
 
-Leia antes: `.sabia/sabia.md` (ELM, caminhos, papéis).
+Leia antes: `.sabia/sabia.md` (seções ELM e Projeto) e `<produto>/equipe.json` (papéis).
 
 ## Regras
 

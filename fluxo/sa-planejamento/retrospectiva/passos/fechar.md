@@ -7,8 +7,10 @@ As horas feitas (passo `horas`) e a pré-condição de novo antes da virada (pas
 
 ## Faça
 
-**Fechar:** concluídas — previstas e puxadas — contam na vazão e no lead time; a meta é avaliada (atingida ou
-não, e por quê). **Migram** para a próxima sprint as linhas fora de situação terminal (`concluida`, `dividida`,
+**Fechar:** concluídas — previstas e puxadas — contam na vazão e no lead time. Grave a primeira linha de
+`## Números`: concluídas (previstas = sem Observação `encaixe:`; por encaixe = com ela), a meta (`atingida` ou
+`não — <por quê>`), o lead time médio e, do bloco 🔁 da retrospectiva (passo `retro`), as rodadas de revisão por
+fatia e as correções humanas. **Migram** para a próxima sprint as linhas fora de situação terminal (`concluida`, `dividida`,
 `cancelada`, `concluido`, `cancelado`) cujo item tem, no `backlog.md`, a `sprint` que fecha — fatias (inclusive
 as do `**Fechamento sem consolidar:**`, com `não consolidada`), Especificação (pela Situação da linha, não pelo
 `status` do épico: épico `iniciado` com a Especificação `concluida` não migra) e Sustentação: no `sprint-<nn>.md`

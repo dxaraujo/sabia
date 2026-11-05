@@ -7,7 +7,7 @@ Os fatos e a causa confirmada (passos `fatos` e `causa`), ou a linha das Liçõe
 
 ## Faça
 
-Grave em `licoes.md`, no padrão `sa-aprender/licao.md`.
+Grave em `licoes.md`, no padrão `sa-aprender/licao.md`; commit `L-<nnn> registrar lição`.
 
 ## Saída
 
@@ -15,4 +15,4 @@ A lição gravada → passo `promocao`.
 
 ## Pare se
 
-Sem condição de parada própria: o `licoes.md` só muda na branch base (mestre).
+Sem condição de parada própria: o `licoes.md` só muda na branch base (Regras da skill).

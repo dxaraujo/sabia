@@ -28,8 +28,8 @@ fatia" → a `planejada` de maior prioridade da sprint aberta (empate: a mais ac
 
 - `bloqueada (de: …)` com Bloqueio `aguardando especificação [ESP] FT-<nnn>` e a `[ESP] FT` aberta → `sa-especificar.fatia` (agente `sa-especificador`)
 - `pesquisando`, `planejando`, `aguardando-aprovacao-plano` sem a `[APR]` ou `bloqueada (de: pesquisando | planejando)`, inclusive "aguardando troca de modo" → `sa-plano.plano`
-- `aguardando-aprovacao-plano` com a `[APR] Aprovar plano` criada → `sa-revisar.aprovar-plano`
-- `implementando`, `revisando`, `verificando`, `verificada`, `retrabalho (de: …)` `bloqueada (de: implementando | revisando | verificando)` ou `aguardando-aprovacao-pr` com Modo HITL na base (troca de modo) → `sa-codificar.codificar`
+- `aguardando-aprovacao-plano` com a `[APR] Aprovar plano` criada → `sa-revisar.aprovar-plano` (agente `sa-revisor`)
+- `implementando`, `revisando`, `verificando`, `verificada`, `retrabalho (de: …)`, `bloqueada (de: implementando | revisando | verificando)` ou `aguardando-aprovacao-pr` com Modo HITL na base (troca de modo) → `sa-codificar.codificar`
 - `aceita`, `aguardando-aprovacao-pr` com a `[APR] Aprovar PR` concluída, ou `pronta` com a `[DEV]` aberta → `sa-desenvolver.encerrar`
 
 ## Regras

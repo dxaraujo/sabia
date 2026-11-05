@@ -70,7 +70,7 @@ FATIA         desenvolver (iniciada na base) ─► pesquisar ─► plano ─�
                                                                                                                             │
 DEPOIS        merge (Dev, PR aprovado; remove a worktree do loop) ─► pronta na base
                 │
-PRODUTO       consolidar (P.O./SM, [GB]): ELM: ET as-built ligada à [DEV], CTs ─► débito de especificação (drift depois do merge) ─► ADRs do PR ─► concluida ─► aprender
+PRODUTO       consolidar (P.O./SM, [GB]): débito de especificação (drift depois do merge) ─► ELM: ET as-built ligada à [DEV], CTs ─► ADRs do PR ─► concluida ─► aprender
 ```
 
 **Scrumban:** a sprint é a cadência de inspeção (meta, review, retrospectiva, virada), não escopo congelado. O
@@ -84,8 +84,8 @@ pontos.
 
 | Gate | Quem | O que se aprova |
 |---|---|---|
-| PRD | P.O. | o quê e o porquê: histórias, cenários, regras, fora de escopo |
-| Backlog | P.O. + time | as fatias: granularidade, dependências, AFK/HITL |
+| PRD | o especificador (`[ESP]`) | o quê e o porquê: histórias, cenários, regras, fora de escopo |
+| Backlog | P.O. ou SM, com o time | as fatias: granularidade, dependências, AFK/HITL |
 | Ficha | P.O. | a fatia padrão sem épico: regras e cenários |
 | Plano | um Dev Sênior, na `[APR] Aprovar plano` (de preferência quem vai revisar o PR), com a fatia em `aguardando-aprovacao-plano` | a forma do programa e o contrato de pronto — maior alavanca |
 | PR | HITL: revisor (`[REV]`) e verificador (`[VER]`) · AFK: um Dev Sênior, na `[APR] Aprovar PR`, com a fatia em `aguardando-aprovacao-pr` | o código, lido de verdade, com a evidência de aceite; aprovado, o merge é do Dev responsável |
@@ -186,7 +186,7 @@ retoma pela skill da fase, que sincroniza o `status.md` pela base.
 | `.sabia/config/agentes.json` | as escolhas do projeto para os agentes, com a versão do Sabiá (`"sabia"`: a setup avisa quando difere da instalada) |
 | `.kiro/agents/sa-*.json` · `.opencode/agents/sa-*.md` | agentes (criados pela setup, com as skills escolhidas por agente e o que o projeto customizou) |
 | `<produto>/` — a pasta escolhida na setup (padrão `.sabia/planejamento`), registrada no `sabia.md` | `backlog.md`, `epicos/<EP>-<slug>/` (PRDs), `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<pai>/sprint-<nn>.md` (a sprint segue a iteração pai do EWM; chave `2026/Sprint 03`), `sustentacao/<pasta>/` (a pasta de cada categoria na tabela **Sustentação** do `sabia.md`), `aprendizado/` (só na branch base) |
-| `.kiro/specs/<ft>-<slug>/` | uma pasta por fatia: `status.md`, `research.md`, spec do Kiro, revisões, verificação |
+| `.kiro/specs/<ft>-<slug>/` | uma pasta por fatia: `status.md`, `research.md`, spec do Kiro, revisões, verificação. `<ft>` = o id da fatia em minúsculas (`ft-031`); a pasta é sempre `.kiro/specs/<ft>-<slug>/`, com o `<slug>` da ficha (`fatias/FT-<nnn>-<slug>.md`) |
 | glossário · ADRs · bundle do ELM | caminhos na seção Projeto do `sabia.md` (padrão: `.sabia/glossario.md` e `.sabia/adr/`) |
 | `.sabia/fluxo/` · `.sabia/padrao/` | override esparso: só o passo, as operações do mestre ou o padrão que o projeto customizou, pela `sa-setup` ("customizar …"); nenhum agente escreve |
 | `.sabia/http.sh` | da setup: chamada HTTP do verificador (opcional); o backpressure antes de cada commit é o passo `sa-codificar.codificar.validar`, com os Comandos do `sabia.md` |
@@ -251,6 +251,6 @@ a próxima e para — nunca invoca nem simula a do passo seguinte.
   PR aprovado), `--force`, `worktree remove` — nunca. O hub `sa-iniciar` está em todos os agentes de papel, e a `sa-status`
   em todos os agentes, menos o `sa-pesquisador`; os dois também funcionam na sessão padrão. Nenhuma skill depende de um agente para operar: o agente apenas recebe a skill
   pré-carregada para conveniência.
-- **Nenhuma skill cria branch ou `.kiro/specs/<ft>/status.md`** sem passar pelos passos `sa-desenvolver.desenvolver.compromisso` e `sa-desenvolver.desenvolver.iniciar`
+- **Nenhuma skill cria branch ou `.kiro/specs/<ft>-<slug>/status.md`** sem passar pelos passos `sa-desenvolver.desenvolver.compromisso` e `sa-desenvolver.desenvolver.iniciar`
   (DoR, sprint, WIP, `iniciada` na base, branch, commit). O `sa-orquestrar` é a única exceção (opera em worktree como
   orquestrador e grava a `iniciada` do lote na base).

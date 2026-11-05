@@ -23,7 +23,8 @@ assim; o item de origem em outro estado volta a ele com `elm_transicao(<id>, "re
   do épico confere): o problema, quem pede e o resultado esperado — falta algum → pergunte numa rodada. Completa →
   `status` `elegivel`; sem resposta, `novo` com `obs` `falta: <o quê>`. Com ELM:
   o épico nasce agora no backlog do EWM ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §3, `iteracao = backlog`, com "sim"; `pa` sem
-  backlog → §0 antes) e o id vai para a coluna `elm`; sem o MCP `elm` → `pendente`. Veio
+  backlog (erro `precondicao` ao criar no backlog) → peça "atualizar a configuração do Sabiá" (a `sa-setup`, na
+  sessão padrão, roda o §0 do elm-sprint.md); o item fica `pendente` na coluna `elm` e a triagem segue) e o id vai para a coluna `elm`; sem o MCP `elm` → `pendente`. Veio
   de um item do EWM: se ele já é do tipo de épico do `sabia.md`, ele é o épico (grave o id na coluna `elm` e leve-o
   para o backlog: `elm_atualizar_wi(id, iteracao = backlog)`) — quando
   esse tipo é o mesmo do item (Item de Backlog pai), pergunte se ele vira o épico ou o filho; filho (ou outro tipo)
@@ -41,15 +42,17 @@ assim; o item de origem em outro estado volta a ele com `elm_transicao(<id>, "re
   `[pasta](epicos/<EP>-<slug>/)` ou `—` se não criada.
 - **Fatia sem épico** (padrão, rápida — a fatia de Manutenção): próximo `FT-nnn`; linha em `## Fatias` com:
   - `origem` `Manutenção`; `trilha`; `ficha` (`[ficha](fatias/FT-<nnn>-<slug>.md)`, sempre);
-  - `tamanho` (padrão `P`/`M`/`G`; rápida `P`/`M`); `modo` proposto — `AFK` quando o esperado e o teste são claros
-    e não há dado sensível, senão `HITL` (a fatia ainda não tem responsável: o modo final é gravado pela
-    `sa-planejamento` quando ela ganha um, pela senioridade de quem implementa — Júnior → `HITL` · Pleno → estes
+  - `tamanho` (padrão `P`/`M`/`G`; rápida `P`/`M`); `modo` proposto pelos critérios de Autonomia
+    declarada do passo `sa-fatiar.fatiar.rascunho` (os do backlog.md, coluna `modo`) (a fatia ainda não tem responsável: o modo final é gravado pela
+    `sa-planejamento` quando ela ganha um, pela senioridade de quem implementa — Júnior → `HITL` · Pleno → esses
     critérios · Sênior → `AFK` por padrão); prioridade, `sprint` e `responsavel` `—`;
   - `bloqueada-por`: a `FT-<mmm>` que já tem o artefato na ficha (passo `triagem`), somada às dependências que a
     pessoa disser; sem nenhuma, `—`;
   - `status` `elegivel` se passa na Definition of Ready da trilha (formato do backlog — a ficha da trilha completa),
     senão `nova` com `obs` `falta: <o quê>` — linha em Artefatos afetados com Especificado `—` →
-    `falta: especificação` (a `[ESP] FT` nasce quando ela entrar na sprint, no planejamento ou no encaixe); lista sem
+    `falta: especificação` (a `[ESP] FT` nasce quando ela entrar na sprint, no planejamento ou no encaixe; a fatia que já tem `ESP` na
+    coluna `elm` → a tabela da [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação),
+    nunca uma `[ESP] FT` nova); lista sem
     a confirmação → `falta: artefatos afetados`;
   - de onde veio: o item do EWM (DF, IB) vai na `elm` como o item da fatia (`DF [4567](…)`; sem o MCP `elm`,
     `DF 4567` — o id já é conhecido, nunca `pendente`); o pedido (texto, chamado) fica no `**Origem:**` da ficha;
@@ -82,7 +85,8 @@ assim; o item de origem em outro estado volta a ele com `elm_transicao(<id>, "re
     saiu da sprint e não consome a reserva); cabe com a estimativa deste (A-6) → quem triou
     confirma; estourou → fica fora da sprint (`sprint` `—`), e a decisão é do P.O. pelo
     passo `sa-planejamento.durante.encaixe` (a Sustentação não tira fatia sozinha). Sem sprint aberta → `sprint` `—` e o aviso "sem sprint
-    aberta: o item entra no próximo planejamento". Responsável sugerido: quem tem `atende: true` no `equipe.json`.
+    aberta: o item entra no próximo planejamento". Responsável sugerido: o membro ativo com
+    `atende: true` no `equipe.json`; vários → liste-os e pergunte; nenhum → `—` e pergunte.
   - Linha na `### <Categoria>` da `## Sustentação` (a seção nasce com o primeiro item da categoria, aberta pelo IB
     dela), com `status` `aberto`, na sprint ou fora dela; `<produto>/sustentacao/<pasta>/<ID>-<slug>.md` (`<pasta>`
     da tabela **Sustentação** do `sabia.md`) no formato do padrão `sa-atender/registro.md`, com a
@@ -99,7 +103,7 @@ assim; o item de origem em outro estado volta a ele com `elm_transicao(<id>, "re
     id sem link); a `sa-atender` ou a `sa-executar` criam o que faltar antes de assumir.
 
 Atualize "Próximos ids". O commit é **um só, no fim da sessão de triagem** (passo `encaminhar`, resposta "não"), com o
-`backlog.md` (também os ids do espelhamento do passo `chegou`), as fichas, as pastas dos épicos, os registros de Sustentação e, no `sprint-<nn>.md` aberto, as linhas
+`backlog.md` (também os ids do espelhamento do passo `chegou`), as fichas, as pastas dos épicos, os registros de Sustentação, o glossário (termos do passo `sa-entrevistar.entrevistar.linguagem`) e, no `sprint-<nn>.md` aberto, as linhas
 da Sustentação, a coluna Tarefa do Débito de especificação e a de créditos da sessão na seção **Créditos de gestão** (Atividade `triagem`;
 ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4); sem sprint aberta, não há onde gravar) (padrão de
 commit do `sabia.md`). A triagem não tem tarefa própria: o padrão é a tarefa **`[GB] Gerenciamento do backlog`** (o

@@ -46,6 +46,18 @@ URL abaixo, nunca um caminho local:
       "atende": false,
       "ativo": true,
       "ausencias": []
+    },
+    {
+      "nome": "Rita Melo",
+      "login": "rita.melo",
+      "papeis": ["Dev", "Especificador"],
+      "senioridade": "Pleno",
+      "horas-semana": 40,
+      "horas-revisao-semana": 4,
+      "horas-especificacao-semana": 8,
+      "atende": true,
+      "ativo": true,
+      "ausencias": []
     }
   ]
 }
@@ -68,7 +80,8 @@ URL abaixo, nunca um caminho local:
 - Capacidade da sprint e totais **não** são gravados: calcule na hora. `historico` fica dentro de `projeto`.
 - `motivo` da ausência: `férias`, `folga`, `treinamento` ou `outro`.
 - Exatamente um P.O. e um SM ativos (a mesma pessoa pode ter os dois). Quem sai fica `ativo: false` (preserva o histórico).
-- Horas de uma sprint = `horas-semana × semanas` − ausências que caem nela (o mesmo para revisão).
+- Horas de uma sprint = `horas-semana × duracao-sprint-semanas` − (dias úteis, seg–sex, da ausência dentro das datas da
+  sprint × `horas-semana` ÷ 5); o mesmo para `horas-revisao-semana` e `horas-especificacao-semana`.
 - Sem dado pessoal além de nome e login.
 
 ## `acordos.md`
@@ -80,7 +93,7 @@ URL abaixo, nunca um caminho local:
 |---|---|
 | Cadência | Scrumban: sprints de 2 semanas (planejamento, review, retrospectiva, virada), fluxo puxado dentro da sprint, WIP limitado |
 | Cerimônias | planejamento (seg, 1h) · review (última qui, 30 min) · retrospectiva (última qui, 30 min) |
-| WIP | 1 fatia por sessão de agente · fatias esperando pessoa (`aguardando-aprovacao-plano`, `pr-aberto`, `em-revisao`, `em-verificacao`, `aceita`, `verificada`, `aguardando-aprovacao-pr`) ≤ 2 por revisor · PR parado > 1 dia: destravar antes de fatia nova (exceção fica registrada: `WIP excedido`) |
+| WIP | 1 fatia por sessão de agente · fatias esperando pessoa (`aguardando-aprovacao-plano`, `pr-aberto`, `em-revisao`, `em-verificacao`, `aceita`, `verificada`, `aguardando-aprovacao-pr`) ≤ 2 por revisor · PR parado > 1 dia: destravar antes de fatia nova (exceção registrada no Histórico do `status.md` da fatia que começa: `WIP excedido: <motivo>`) |
 | Tamanhos | P (horas) · M (≈ 1 dia) · G (2–3 dias) · maior → dividir (sem pontos; a previsão é pela vazão) |
 | Especificação | Épico com até 8 histórias (toda história conta, inclusive as desdobradas de outra) e um objetivo de negócio; mais → propor dividir em dois épicos antes de escrever o PRD |
 | Reserva (Sustentação + retrabalho) | 20% das horas da sprint do time, para a Sustentação sem mudança no repositório (toda categoria; a Manutenção entra pela vazão, como as fatias de épico) e o retrabalho da sprint anterior (fatias migradas primeiro); na virada, o P.O. pode mudar o % olhando o consumido (muda aqui, com "ok") |
@@ -112,8 +125,9 @@ O time só acrescenta itens próprios aqui (ex.: "massa de teste disponível"), 
 | R2 | … | EP-05 (a descobrir) | — |
 ```
 
-A previsão vem da vazão: `fatias restantes ÷ vazão média`, arredondando para cima, com a faixa (vazão mínima e
-máxima das últimas sprints) quando houver histórico.
+Previsão = a chave da sprint `ceil(fatias restantes ÷ vazão média)` sprints depois da aberta (sem aberta: a partir
+da próxima), no pai atual; com histórico, a faixa pelas vazões mínima e máxima das últimas 3 sprints:
+`2026/Sprint 03 (vazão média; faixa 2026/Sprint 02–2026/Sprint 05)`; épico sem fatias (a descobrir) → `—`.
 
 ## `sprints/<pai>/sprint-<nn>.md`
 
@@ -134,7 +148,7 @@ de início do cabeçalho (o nome do pai é livre e não ordena) — a do `histor
 **Plano no EWM:** <nome> - <nome curto da meta>   (o `plano` do `elm_iteracao`: `Sprint 03 - Exportar o relatório de contas`)
 **Power sabia:** <versões usadas, crescente: 2.0.0 · 2.0.1>   (o planejamento grava a da abertura; a virada acrescenta as das linhas de créditos)
 **Situação:** <aberta | fechada>   (a virada grava `fechada`; o painel usa a última `aberta`)
-**Fechamento sem consolidar:** <FT-… (<P.O.>, <data>)>   (só quando o P.O. decide fechar com fatia de PR mergeado sem consolidação)
+**Fechamento sem consolidar:** FT-031, FT-033 (<login do P.O.>, <AAAA-MM-DD>)   (só quando o P.O. decide fechar com fatia de PR mergeado sem consolidação; ids separados por vírgula; outra decisão na mesma sprint acrescenta ` · FT-… (<login do P.O.>, <AAAA-MM-DD>)`)
 **Publicação no EWM:** pendente   (só enquanto o §1 do [elm-sprint.md](elm-sprint.md) não rodou: planejamento sem o MCP ou com falha, ou a próxima, gravada no passo `sa-planejamento.retrospectiva.recalcular` da virada; a publicação a tira)
 
 ## Fatias
@@ -142,18 +156,19 @@ de início do cabeçalho (o nome do pai é livre e não ordena) — a do `histor
 | FT | Título | Origem | Tam. | Modo | Responsável | Revisor | Verificador | Status | Tarefa ELM | Créditos | Observação |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | FT-031 | Bloquear a conta após 3 tentativas | EP-03 | M | AFK | joao.lima | — | — | concluida | DEV 669401 | 41.20 | |
-| FT-033 | Avisar o usuário do bloqueio | EP-03 | M | HITL | ana.souza | joao.lima | rita.melo | iniciada | DEV 669410 · REV 669411 · VER 669412 | — | migrada para 2026/Sprint 04 |
+| FT-033 | Avisar o usuário do bloqueio | EP-03 | M | HITL | rita.melo | joao.lima | ana.souza | iniciada | DEV 669410 · REV 669411 · VER 669412 | — | migrada para 2026/Sprint 04 |
 | FT-034 | Corrigir o texto do e-mail | Manutenção | P | AFK | joao.lima | — | — | concluida | DEV 669420 | 6.75 | encaixe: entra na folga (ana.souza, 2026-10-22) |
 
 ## Especificação
 
-| EP | Responsável | Horas previstas | Situação | Tarefa ELM | Créditos | Observação |
+| EP · FT | Responsável | Horas previstas | Situação | Tarefa ELM | Créditos | Observação |
 |---|---|---|---|---|---|---|
 | EP-05 | rita.melo | 16 | iniciada | ESP 669377 | — | |
+| FT-040 | — | 6 | planejada | ESP 670500 | — | encaixe: entra na folga (ana.souza, 2026-10-23) |
 
 ## Sustentação
 
-Reserva (Sustentação + retrabalho): <h>h · consumido: <h>h · retrabalho migrado: <h>h
+Reserva (Sustentação + retrabalho): <h>h · retrabalho migrado: <h>h
 
 ### Atendimento
 
@@ -207,6 +222,23 @@ Concluídas: <n> fatias (<p> previstas · <q> por encaixe) · meta: <atingida | 
 Créditos por fatia concluída: <média> · por versão do power sabia: <versão> <x> · …
 ```
 
+| Coluna | Valores |
+|---|---|
+| FT · EP · Id | o id do `backlog.md` |
+| EP · FT (Especificação) | `EP-<nn>` (a `[ESP]` do épico) ou `FT-<nnn>` (a `[ESP] FT` da fatia `nova` em especificação, ou a Revisão <n> de uma fatia); uma linha por `[ESP]`: a Revisão <n> do mesmo item é uma linha nova (Observação `revisão <n>: <motivo>`) |
+| Título · Pedido | o `título` do `backlog.md` |
+| Origem | a `origem` do `backlog.md` (fatia: `EP-nn` · `Manutenção`; Sustentação: chamado, e-mail, `DF <id>`, `IB <id>`, `pedido`, `EWM <id>`) |
+| Tam. | `P` · `M` · `G` (o `tamanho`) |
+| Modo | `AFK` · `HITL` (o `modo` final; troca só pelo fluxo `sa-planejamento.troca-modo`) |
+| Responsável · Revisor · Verificador | `login` do `equipe.json` ou `—`: Responsável = o `responsavel` do backlog; Revisor e Verificador = o Dev Sênior da `[REV]` e quem verifica, só no HITL (`—` no AFK e até a atribuição) |
+| Horas previstas (Especificação) | a estimativa da `[ESP]` (`estimativa_h` no EWM), em horas inteiras |
+| Horas (Sustentação) | a estimativa do item, a do `**Estimativa:**` do registro, sem a unidade (as horas lançadas ficam no `## Horas` do registro e no EWM) |
+
+Reserva da `## Sustentação`: gravada pelo planejamento — a reserva = o % do `acordos.md` × as horas da sprint do time;
+`retrabalho migrado` = a soma, nas fatias com `migrada de`, das horas que faltam da [DEV]. O consumido não é gravado:
+quem lê calcula = retrabalho migrado + a soma da coluna Horas das linhas vivas das `### <Categoria>` (sem `saiu da
+sprint`).
+
 `## Sustentação`: a linha da reserva e só as `### <Categoria>` com item na sprint, na ordem da tabela Sustentação do
 `sabia.md` (a `### <Categoria>` nasce com o primeiro item dela na sprint; sem coluna Categoria: a seção diz).
 
@@ -216,7 +248,8 @@ quem causa a transição (ou pela sincronização, com a evidência do git: `ini
 [Situações](../../sa-fatiar/references/backlog.md#situações). Fatia: `planejada` → `iniciada` → `pronta` →
 `concluida` (a linha nasce `planejada`, também a do encaixe; a que sai da sprint fica `nova` ou `elegivel`, com
 `saiu da sprint`; desvios `dividida`, `cancelada`); o detalhe da `iniciada` é a fase do `status.md`. Especificação:
-`planejada` → `iniciada` → `concluida` · `cancelada` (a que sai da sprint fica `elegivel`, com `saiu da sprint`). Sustentação: `aberto` → `em-andamento` → `concluido` ·
+`planejada` → `iniciada` → `concluida` · `cancelada` (a que sai da sprint fica com a situação do item no backlog —
+épico `elegivel`, fatia `nova` — e `saiu da sprint`). Sustentação: `aberto` → `em-andamento` → `concluido` ·
 `cancelado` (a que sai da sprint fica `aberto`, com `saiu da sprint`). A linha migrada guarda a última situação.
 **O item que volta** à sprint de onde saiu ganha linha nova; a com `saiu da sprint` fica como histórico — nunca é
 editada e não migra na virada —, e a **viva**, que se lê e se escreve, é a sem ela
@@ -224,25 +257,35 @@ editada e não migra na virada —, e a **viva**, que se lê e se escreve, é a 
 
 "Tarefa ELM": as tarefas do item no EWM, com o tipo antes de cada id — nas fatias `DEV <id> · REV <id> · VER <id>`,
 mais `APR <id>` das aprovações criadas no gate (AFK, a `DEV` e as `APR`); `ESP <id>`; `ATD <id>`, `IMPL <id>`… —,
-ou `pendente`, gravada na publicação da sprint ([elm-sprint.md](elm-sprint.md) §4). Observação: `revisor único`, `encaixe: <decisão> (<quem aprovou>, <data>)` — a puxada; por outra pessoa,
+ou `pendente`, gravada pela publicação da sprint ([elm-sprint.md](elm-sprint.md) §4), pelo encaixe, pela troca de
+modo (`REV`/`VER`), pela sincronização (§9: por fora e publicação pendente) e pela consolidação (os ids do campo ELM
+do `status.md` que faltam, inclusive as `APR`, que até lá ficam só no `status.md`). Observação: `revisor único`, `encaixe: <decisão> (<quem aprovou>, <data>)` — a puxada; por outra pessoa,
 `encaixe: <decisão> (<quem aprovou>, <data>; puxada por <login>)`; a que entrou pelo EWM, `encaixe: trazida do EWM —
-<decisão> (<quem>, <data>)`; a começada por fora, `encaixe: começada por fora (<P.O.>, <data>)` —,
+<decisão> (<quem aprovou>, <data>)` (a linha `encaixe` da sincronização, pelo passo `sa-planejamento.durante.encaixe`);
+a que a sincronização grava direto, sem passar pelo encaixe (fatia `nova` que entra como especificação, épico com a
+`[ESP]`, `[ESP]` por fora — [elm-sprint.md](elm-sprint.md) §9), `encaixe: trazida do EWM — entra como especificação (<quem aprovou>, <data>)`;
+a começada por fora, `encaixe: começada por fora (<P.O.>, <data>)` —; `<decisão>`: `entra na folga` · `entra no lugar
+de FT-<nnn>` (a que sai recebe `saiu da sprint: encaixe de <FT> (<quem aprovou>, <data>)`) · `entra como
+especificação`; "fica para a próxima sprint" não grava linha —,
 `modo: <de> → <para> (<quem>, <data>, <motivo>)`, `modo: <atual> mantido (<quem>, <data>)`,
 `modo: HITL → AFK (Pleno <login> aceitou|recusou, <data>)`, `migrada para <chave>`, `migrada de <chave>`, `saiu da sprint: <motivo> (<quem>,
 <data>)` (movida no EWM: `saiu da sprint: movida no EWM para <iteração> (<P.O.>, <data>)`), `trazida do EWM`,
 `concluído no EWM`, `cancelado no EWM` (Sustentação: a tarefa fechou ou foi descartada direto no EWM, [elm-sprint.md](elm-sprint.md)
-§9), `revisão <n>: <motivo>` (a linha da `[ESP] <id> Revisão <n>` na Especificação), `não consolidada` ou texto livre.
+§9), `revisão <n>: <motivo>` (a linha da `[ESP] <id> Revisão <n>` na Especificação), `reaberta: <motivo>` (a linha da
+Especificação `concluida` que volta a `iniciada` na sprint aberta: [Volta à
+especificação](../../sa-fatiar/references/backlog.md#volta-à-especificação)), `não consolidada`; texto livre só para o
+que nenhuma convenção acima cobre. Vários valores na Observação: separados por ` · `, na ordem em que foram gravados.
 
 `## Débito de especificação`: a divergência entre o código mergeado e um artefato publicado, uma linha por artefato,
 gravada pela consolidação (`sa-consolidar.consolidar.drift`); lida na review (`sa-planejamento.review.rito`) e na
 retrospectiva. Tarefa fica `—` até o P.O. abrir a correção pela `sa-triar` (`origem FT-<nnn> (débito de
-especificação)`), que grava o id novo ali (na linha viva: a da sprint aberta). Na virada, a linha com Tarefa `—`
+especificação)`), que grava ali o `FT-<nnn>` da fatia de correção (na linha viva: a da sprint aberta). Na virada, a linha com Tarefa `—`
 migra (`sa-planejamento.retrospectiva.fechar`): na sprint que fecha, a Tarefa recebe `migrada para <chave>`; na
 próxima, a linha nasce igual, com Tarefa `—` e ` · migrada de <chave>` no Registrado. Sem linha, a seção fica só
 com o cabeçalho.
 
 Créditos (do Kiro): nas Fatias, Especificação e Sustentação, a soma das linhas de créditos do item, gravada na
 conclusão dele (`sa-consolidar`, `sa-especificar`, `sa-atender`, `sa-executar`), `—` antes; em Créditos de gestão, uma linha por
-sessão do P.O. ou do SM no agente de produto — triagem, consolidação, planejamento, ritos, sincronização —, com o
+sessão do P.O. ou do SM no agente de produto — Atividade, um destes valores: `inicial` · `planejamento` · `encaixe` · `sincronização` · `troca de modo` · `review` · `retrospectiva` · `virada` · `triagem` · `consolidação` · `fatiamento` · `refinamento` —, com o
 mesmo número no comentário de créditos da `[GB]` (`sa-status`, Fechar a sessão, item 4). A `[GB]` só tem as horas do
 SM: sem horas (dona que também é P.O.) não é falta.

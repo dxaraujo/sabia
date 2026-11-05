@@ -16,8 +16,8 @@ A demanda: a descrição que veio da `sa-triar` ou a que a pessoa dá; work item
    - código: onde o comportamento mora hoje, funcionalidades análogas;
    - glossário e ADRs (caminhos na seção Projeto do `sabia.md`): termos e decisões que já valem.
    Registre o que achou como fontes (id ELM, `arquivo:linha`).
-3. Defina o id: o `EP-<nn>` que a `sa-triar` registrou (linha com `prd` `—`: `novo` ou `elegivel` na triagem,
-   `iniciado` pela `sa-especificar`).
+3. Defina o id: o `EP-<nn>` da linha do `backlog.md` com `status` `iniciado` e `prd` `—` (a `sa-especificar` já
+   assumiu a `[ESP]`). Outra situação → "use `sa-especificar EP-<nn>`" e pare.
    Pasta de trabalho: a da `sa-especificar` (`.sabia/local/especificacao/<EP>-<slug>/`, `slug` em kebab-case, sem
    acento).
 4. **EWM:** nada a registrar aqui — o épico nasceu no backlog do EWM na triagem (o `IB` da coluna `elm`;
@@ -32,3 +32,5 @@ A demanda entendida, as fontes registradas, o `EP-<nn>` e a pasta de trabalho �
 
 - Sem registro, a demanda não passou pela triagem → "use `sa-triar`" e pare.
 - Sem a pasta de trabalho → "use `sa-especificar EP-<nn>`" e pare (é ela que assume a `[ESP]` e monta a pasta).
+
+Ao parar aqui (na sessão da `[ESP]`, feche-a: `sa-especificar.especificar.fechar-sessao`).

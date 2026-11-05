@@ -28,8 +28,8 @@ regras aprendidas).
 
 - sem `status.md` em nenhuma branch (fatia não iniciada) → `sa-desenvolver.desenvolver`
 - `pesquisando`, `planejando`, `aguardando-aprovacao-plano` sem a `[APR]` ou `bloqueada (de: pesquisando | planejando)` → `sa-plano.plano`
-- `aguardando-aprovacao-plano` com a `[APR] Aprovar plano` criada → `sa-revisar.aprovar-plano`
-- `aguardando-aprovacao-pr` (Modo AFK na base) com a `[APR] Aprovar PR` aberta → `sa-revisar.aprovar-pr`
+- `aguardando-aprovacao-plano` com a `[APR] Aprovar plano` criada → `sa-revisar.aprovar-plano` (agente `sa-revisor`)
+- `aguardando-aprovacao-pr` (Modo AFK na base) com a `[APR] Aprovar PR` aberta → `sa-revisar.aprovar-pr` (agente `sa-revisor`)
 - `aceita`, ou `aguardando-aprovacao-pr` com a `[APR] Aprovar PR` concluída: o merge → `sa-desenvolver.encerrar`
 - `bloqueada (de: …)` com Bloqueio `aguardando especificação [ESP] FT-<nnn>` e a `[ESP] FT` aberta → `sa-especificar.fatia` (agente `sa-especificador`)
 

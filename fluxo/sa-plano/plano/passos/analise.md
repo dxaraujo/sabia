@@ -10,15 +10,17 @@ Os artefatos do plano (passo `escrever`).
 Incremente "revisão do plano" em Rodadas. Peça ao agente **`sa-revisor`** (subagente) a rubrica **L**
 (o padrão `sa-revisar/rubricas.md`) — passe só a pasta da fatia e a
 rodada; ele grava o `analise-plano-<N>.md`.
-Assim que o relatório chegar (`OK` ou `AJUSTAR`), commite-o **com o `status.md`** (Rodadas, Histórico) —
+Assim que o relatório chegar (última linha `ANALISE: OK` ou `ANALISE: AJUSTAR`), commite-o **com o `status.md`** (Rodadas, Histórico) —
 mensagem no padrão do `sabia.md`, com o texto `registrar análise do plano <N>`. O GATE e a implementação citam esse
 arquivo; ele precisa estar na branch.
 - `ANALISE: OK` → passo `gate`.
-- `AJUSTAR`: falta **do plano** → corrija e peça nova análise (até 2 rodadas); falta **do PRD** → passo `decisoes`.
+- `ANALISE: AJUSTAR`: falta **do plano** → corrija e peça nova análise (até 2 rodadas); falta **do PRD ou da ficha** →
+  passo `decisoes`.
 
 ## Saída
 
-`ANALISE: OK` → passo `gate`. `AJUSTAR`: falta do plano → passo `escrever`; falta do PRD → passo `decisoes`.
+`ANALISE: OK` → passo `gate`. `ANALISE: AJUSTAR`: falta do plano → passo `escrever`; falta do PRD ou da ficha →
+passo `decisoes`.
 
 ## Pare se
 

@@ -15,6 +15,11 @@ Créditos: <x.xx> (<n> sessões · power sabia <versões>)
 Lições: <n> registradas
 ```
 
+Linha ELM: `ET <id>` só quando a linha ET do `sabia.md` publica as-built; `CT <ids>` ou `CSV`. Linha Épico: só na
+fatia de épico (Manutenção → omita). Próxima = a primeira fatia do épico em `planejada`, senão em `elegivel`, pela
+ordem do `backlog.md` (prioridade; no empate, a linha); `, desbloqueada agora` só se a FT consolidada estava no
+`bloqueada-por` dela; nenhuma → `próxima: —`.
+
 ## Saída
 
 Aqui o fluxo termina: mostre o fecho e pare.

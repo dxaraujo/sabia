@@ -5,8 +5,9 @@
 
 Os cenários verificados no `verificacao.md` (passo `executar`), **todos aceitos** — o `VERIFICACAO: ACEITO` do
 passo `decisao`; no AFK, também com cenários `🔁 possível alteração`, que não entram no `CT.csv`. Algum rejeitado ou
-⚠️ → pule este passo: siga para o passo `decisao`. Os CTs planejados do épico
-(`CT-nn-<slug>.md` no `elm/` da pasta do épico na base, padrão `sa-prd/ct.md`), quando a fatia é de épico.
+⚠️ → pule este passo: siga para o passo `decisao`. Os CTs planejados: primeiro os
+`CT-nn-<slug>.md` de `.kiro/specs/<ft>-<slug>/elm/` (aprovados na `[ESP] FT`; valem sobre os do épico), depois os do
+`elm/` da pasta do épico na base, quando a fatia é de épico (padrão `sa-prd/ct.md`).
 
 ## Faça
 
@@ -18,8 +19,9 @@ com a evidência da execução:
   `resource`/`id` do conceito); objetivo, pré-condições, passos e resultado
   esperado vêm do CT, e a evidência, da verificação. O CT planejado não muda aqui: resultado obtido diferente do
   esperado é rejeição (passo `executar`), não CT novo.
-- **CT novo**, só na fatia sem épico (um por cenário `C<n>` da ficha) e no caso que a verificação descobre fora dos
-  cenários (na fatia de épico, todo cenário da HF tem o seu CT planejado) → CT novo na linha, escrito do cenário ou do
+- **CT novo**, só para o cenário sem CT planejado em nenhuma das duas pastas — o `C<n>` da ficha sem épico e o caso
+  que a verificação descobre fora dos cenários (na fatia de épico, todo cenário da HF tem o seu CT planejado) → CT novo
+  na linha, escrito do cenário ou do
   caso, com o rótulo `CT<FT-nnn>-<nn>`.
 
 Na consolidação, depois do merge, pela linha Casos de teste do `sabia.md`: `ETM` → a `sa-consolidar` liga ao IB

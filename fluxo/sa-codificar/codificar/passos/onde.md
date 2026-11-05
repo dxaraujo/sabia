@@ -7,10 +7,10 @@
 
 ## Faça
 
-- **Quem retoma:** quem está na sessão não é o `responsavel` da linha viva da fatia na sprint (base) → "é de
-  <login>; trocar é do P.O. ou do SM" e pare. A `[DEV]`, pela seção Assumir do passo `sa-codificar.codificar.entrada`
+- **Quem retoma** (no loop, `AUTONOMO`, pule este item inteiro: o lote já conferiu e assumiu): quem está na sessão
+  não é o `responsavel` da linha viva da fatia na sprint (base) → "é de <login>; trocar é do P.O. ou do SM" e pare.
+  A `[DEV]`, pela seção Assumir do passo `sa-codificar.codificar.entrada`
   (já é dele → nada; fechada sem o PR mergeado → reabrir com "sim"; com o PR mergeado → `sa-desenvolver.encerrar`).
-  No loop (`AUTONOMO`), o lote já assumiu: pule.
 - **Fase:** `implementando`, `revisando`, `verificando`, `retrabalho (de: …)` ou `verificada` (AFK: passo `pr`);
   `bloqueada (de: <fase>)` → mostre o motivo e a pergunta; resolvido, `Bloqueio: —` e a fase de origem. Bloqueio
   `aguardando especificação [ESP] FT-<nnn>` ([Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação)) com a linha da
@@ -34,7 +34,7 @@
 - Retome do **primeiro item não marcado** do `tasks.md`. Achados abertos viram as próximas tarefas, numeradas em
   sequência no fim da seção `## Tasks` do `tasks.md` (`- [ ] 7. [R1] <achado> — origem: revisao-codigo-2.md`;
   e cada uma entra numa wave nova no fim do JSON do `## Task Dependency Graph`): os da seção "Achados
-  abertos" do `status.md` (PR, pessoa), os do último `revisao-codigo-<N>.md` com `VEREDITO: REVISAR` e os cenários
+  abertos" do `status.md` (PR, GATE do plano, `[ESP] FT-<nnn>`), os do último `revisao-codigo-<N>.md` com `VEREDITO: REVISAR` e os cenários
   rejeitados do `verificacao.md`. Como as anteriores estão marcadas, elas são as primeiras não marcadas.
 - **Retrabalho** (`fase: retrabalho (de: em-revisao | em-verificacao)`, HITL): a `[DEV]` ainda está em andamento (só
   é concluída no merge) — `elm_transicao(<id>, "assumir")` só confere (`ja_estava`). Os achados vêm do último `revisao-codigo-<N>.md` ou dos cenários rejeitados do
@@ -56,7 +56,7 @@ Branch atualizada, árvore limpa e a próxima tarefa não marcada → passo `tar
 
 ## Pare se
 
-- Quem está na sessão não é o `responsavel` da fatia → "é de <login>; trocar é do P.O. ou do SM" e pare.
+- Fora do loop, quem está na sessão não é o `responsavel` da fatia → "é de <login>; trocar é do P.O. ou do SM" e pare.
 - A branch não é a do `status.md` (no checkout ou na worktree dela) → avise e pare.
 - `aguardando-aprovacao-pr` que virou HITL → `pr-aberto` gravado, revisor avisado, e pare.
 - Pedido de fora da fatia (linha de Especificado `—` com a `[ESP] FT` aberta) → `bloqueada` gravada, e pare.

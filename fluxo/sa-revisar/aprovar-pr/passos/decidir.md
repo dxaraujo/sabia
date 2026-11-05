@@ -13,27 +13,30 @@ Volta à especificação, ou o código está errado?`): **código errado** → �
 alteração pendente: o Drift `—`, `não` ou já com ` · especificação:` de uma `[ESP] FT` concluída.
 
 1. **Aprovado** → **não commite na branch nem grave fase** (o `sha` que o Dev vai mergear não pode mudar; a fatia
-   segue em `aguardando-aprovacao-pr` até o merge): numa
-   confirmação, `elm_comentar(<id da [APR]>, "PR aprovado, sha <sha> · créditos <linha da seção Créditos>")` (
-   os créditos saem do script ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4), e o Dev grava a
-   linha no `status.md` da base, no registro do merge), o saldo de horas e a
-   conclusão (`elm_lancar_horas`, `elm_transicao(<id>, "concluir")`) e o vínculo da `[DEV]` da fatia: `elm_ligar(wi =
-   <id da [DEV]>, req = <id>, tipo implementa)` por requisito que a fatia cobre
-   ([vínculos](~/.sabia/framework/skills/sabia/references/elm.md#vínculos-cada-um-liga-o-que-gera)). Avise o Dev
-   responsável: o merge é dele (`sa-desenvolver.encerrar`), que confere essa `[APR]`. Sem o MCP `elm` → entregue ao
-   Dev a linha `PR aprovado por <login>, sha <sha>`, a linha de créditos e as pendências `ELM pendente [APR FT-<nnn>
-   concluir]: lançar <h>h e concluir (<login>)` e `ELM pendente [DEV FT-<nnn> ligar]: ligar a [DEV] a <rótulos>`
-   (esta também com o MCP, para o requisito sem `id`) — ele as grava na base, no commit `FT-<nnn> registrar merge`. Se a pessoa corrigiu algo nesta sessão, entregue também a linha da lição, que o
-   Dev grava nas **Lições candidatas** com o merge.
+   segue em `aguardando-aprovacao-pr` até o merge). Numa confirmação:
+   1. o comentário: `elm_comentar(<id da [APR]>, "PR aprovado, sha <sha> · créditos <linha da seção Créditos>")` (os
+      créditos saem do script ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4),
+      e o Dev grava a linha no `status.md` da base, no registro do merge);
+   2. o saldo de horas e a conclusão (`elm_horas` → `elm_lancar_horas` do saldo → `elm_transicao(<id>, "concluir")`);
+   3. o vínculo da `[DEV]` da fatia: `elm_ligar(wi = <id da [DEV]>, req = <id>, tipo implementa)` por requisito que a
+      fatia cobre ([vínculos](~/.sabia/framework/skills/sabia/references/elm.md#vínculos-cada-um-liga-o-que-gera));
+      requisito sem `id` → a pendência `ELM pendente [DEV FT-<nnn> ligar]: ligar a [DEV] a <rótulos>`, entregue ao Dev;
+   4. o aviso ao Dev responsável: o merge é dele (`sa-desenvolver.encerrar`), que confere essa `[APR]`. Se a pessoa
+      corrigiu algo nesta sessão, entregue também a linha da lição, que o Dev grava nas **Lições candidatas** com o
+      merge.
+
+   Sem o MCP `elm` → entregue ao Dev as linhas `PR aprovado por <login>, sha <sha>`, a de créditos, `ELM pendente
+   [APR FT-<nnn> concluir]: lançar <h>h e concluir (<login>)` e `ELM pendente [DEV FT-<nnn> ligar]: ligar a [DEV] a
+   <rótulos>` (e a da lição, se houver) — ele as grava na base, no commit `FT-<nnn> registrar merge`.
 2. **Mudanças pedidas** → cada uma em Achados abertos (origem: PR), `fase: retrabalho (de: aguardando-aprovacao-pr)`,
    "retrabalho" + 1 em Rodadas, uma linha na tabela Retrabalho (papel APR), os créditos da sessão ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4) e, se a
    pessoa corrigiu algo nesta sessão, uma linha nas **Lições candidatas** (a consolidação a registra). Commit
-   (`FT-<nnn> aprovação do PR: mudanças pedidas`) → push → conferir no remoto (como no passo `sa-revisar.hitl.entrega`) → horas
+   (mensagem no padrão do `sabia.md`, `FT-<nnn> aprovação do PR: mudanças pedidas`) → push → conferir no remoto (como no passo `sa-revisar.hitl.entrega`) → horas
    da sessão na `[APR]` (lança, não conclui) → avise o Dev responsável. A `[APR]` fica em andamento e é a mesma na
    nova aprovação.
 3. **Volta à especificação** → ` · especificação: [ESP] FT-<nnn>` no Drift e o bloco
    [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação)
-   (`de: aguardando-aprovacao-pr`), os créditos da sessão; commit (`FT-<nnn> aprovação do PR: volta à especificação`) → push → conferir no remoto →
+   (`de: aguardando-aprovacao-pr`), os créditos da sessão; commit (mensagem no padrão do `sabia.md`, `FT-<nnn> aprovação do PR: volta à especificação`) → push → conferir no remoto →
    horas da sessão na `[APR]` (lança, não conclui) → avise quem o `Próximo:` do bloco diz (o especificador, ou o
    P.O. ou o SM, agente `sa-produto`) e o Dev responsável. A `[APR]` fica em andamento e é a mesma na nova aprovação.
 

@@ -19,7 +19,7 @@ Toda tool devolve `{"ok":true,"dados":{…}}` ou `{"ok":false,"erro":{"codigo","
 | assumir · concluir · reabrir · cancelar | `elm_transicao(id, alvo)` |
 | comentar · anexos | `elm_comentar` · `elm_anexo(acao)` |
 | horas lançadas · relatório da iteração · lançar · remover (lançamento errado) | `elm_horas(id)` · `elm_horas(iteracao)` · `elm_lancar_horas` · `elm_remover_horas(id, data)` |
-| ligar (implementa, rastreia, afeta, testado por, valida, depende, relacionado) | `elm_ligar` |
+| ligar (`implementa`, `rastreia`, `afeta`, `testado_por`, `valida`, `depende`, `relacionado`) | `elm_ligar` |
 | buscar · ler · publicar requisito | `elm_buscar_req` · `elm_ler_req` · `elm_publicar_req` |
 | buscar · ler · listar requisito local (bundle) + indexar | `elm_buscar_req_local` · `elm_ler_req_local(id ou path)` · `elm_listar_req_local` · `elm_indexar_local` |
 | criar caso de teste (já ligado) | `elm_criar_ct` |
@@ -28,7 +28,7 @@ Toda tool devolve `{"ok":true,"dados":{…}}` ou `{"ok":false,"erro":{"codigo","
 | bundle do DOORS Next | `elm_sync` (skill `sa-sync`, que pergunta se indexa no fim) |
 
 **Comentário e anexo na própria tarefa:** todo papel com tarefa — Dev na `[DEV]`, revisor na `[REV]` e na `[APR]`,
-verificador na `[VER]`, produto na `[ESP]` e na `[GB]` (o P.O. e o SM, que é o dono), quem faz o item de Sustentação na tarefa dele (`[ATD]`,
+verificador na `[VER]`, o especificador na `[ESP]`; o P.O. e o SM (que é o dono) na `[GB]`, quem faz o item de Sustentação na tarefa dele (`[ATD]`,
 `[IMPL]`…) — pode comentar (`elm_comentar`) e anexar (`elm_anexo enviar`, arquivo de dentro do projeto) nela, sempre
 com "sim"; na tarefa de outro papel, não.
 
@@ -40,7 +40,10 @@ bundle. Sem nada baixado — erro `nao_encontrado` com `campo: "bundle"` — dig
 não há bundle e indique a `sa-sync`. `indexando: true, restantes: n` → a busca usou o que já estava indexado; a indexação
 segue em segundo plano (`elm_indexar_local` mostra o progresso).
 
-Erro `config` → o `pa` está incompleto: diga o campo e ofereça a `sa-setup`. `credencial` → peça a configuração do
+Erro `config` → o `pa` está incompleto: diga o campo e ofereça a `sa-setup`. `entrada` → o parâmetro (`campo`) está
+errado: corrija pelo schema da tool e tente uma vez; persistindo, mostre o `detalhe` e pare (não é pendência).
+`nao_encontrado` (WI, requisito ou CT) → mostre o id e pergunte à pessoa; nunca troque de id por conta própria.
+`credencial` → peça a configuração do
 `~/.config/mcp-elm/elm.properties` (o agente não lê esse arquivo). `indisponivel` → o servidor não respondeu: tente uma vez mais;
 persistindo, registre `ELM pendente` e siga. `permissao`/`precondicao` → mostre o atributo;
 não chute valor. Os campos que a PA exige por regra de processo (criar, mudar de estado, lançar horas) ficam em
@@ -50,8 +53,9 @@ criado fora do fluxo recusado numa transição → mostre o campo e peça o valo
 
 ## Regras de toda escrita
 
-1. **Prévia e um "sim" por lote:** `Ação (criar | atualizar | ligar | sem mudança) | Alvo | Título`. Nada é escrito
-   sem "sim". Mostre nomes, nunca ids internos (`FR_`, `OT_`, `_uuid`).
+1. **Prévia e um "sim" por lote:** `Ação (criar | atualizar | ligar | sem mudança | aguardando aprovação) | Alvo |
+   Título` — `aguardando aprovação` = conceito do escopo sem `verified` humano posterior ao `generated.at`: não sobe
+   neste lote. Nada é escrito sem "sim". Mostre nomes, nunca ids internos (`FR_`, `OT_`, `_uuid`).
 2. **Idempotência:** o repositório guarda o id (coluna `elm` do `backlog.md`, com o tipo antes de cada um —
    `IB [612010](…) · DEV [612011](…)` —, campo ELM do `status.md`, `resource` do conceito). Com id → atualizar o
    mesmo. Sem id → procure uma publicação interrompida: tarefa ou IB por `elm_listar_wi(pai, titulo_prefixo)`
@@ -102,7 +106,7 @@ grava o lado do arquivo.
 | fatia `iniciada`, `pronta` ou `concluida` | Histórico do `status.md` |
 | fatia não iniciada, `dividida` ou `cancelada` | rodapé da ficha `<produto>/fatias/FT-<nnn>-<slug>.md` |
 | épico | rodapé do `prd.md` (antes do GATE, o `rascunho.md`) |
-| item de Sustentação (toda categoria) | campo `**ELM:**` da ficha `<produto>/sustentacao/<pasta>/<ID>-<slug>.md` |
+| item de Sustentação (toda categoria) | campo `**ELM:**` do registro `<produto>/sustentacao/<pasta>/<ID>-<slug>.md` |
 | `[GB]` e IBs de estrutura (`Sustentação`, `Manutenção`, `<Categoria>`) | na `## Sustentação` do `backlog.md` (ou na `### <Categoria>`), logo abaixo da linha dos ids |
 | sprint | coluna "Tarefa ELM" do `sprint-<nn>.md` (`pendente`) |
 

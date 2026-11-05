@@ -80,7 +80,7 @@ trocar para a sessão padrão e pare.
    desses arquivos num projeto novo é o normal: fica só a ferramenta desta sessão, a da pasta de onde esta skill foi
    carregada (`~/.kiro/powers/…` → Kiro · `~/.config/opencode/skills/` → opencode). O gerador
    cria os agentes de cada uma (`kiro` · `opencode`); a pessoa muda na linha 8. O Kiro vale **só no motor v3** (a IDE
-   ou `kiro-cli --agent-engine v3`; no motor padrão, o v2, o agente dá "Mode not found"): diga isso na linha 8. Onde as
+   ou `kiro-cli chat --agent-engine v3`; no motor padrão, o v2, o agente dá "Mode not found"): diga isso na linha 8. Onde as
    skills do Sabiá precisam estar (o CLI `sabia` as compila — as-built — na pasta do usuário a partir de `~/.sabia/framework/` e registra no
    `~/.sabia/inventario.json`; nada vai para o projeto): Kiro,
    o power (item 2); opencode,
@@ -140,8 +140,9 @@ Proponha os comandos (do arquivo de build, do steering, do README ou dos `comand
 | exercitar e verificar um cenário | tipo de projeto (tabela do `toolkits.md`) + `verificacao` do toolkit |
 | massa de teste | pastas `massa/`, `seed/`, `fixtures/`, `src/test/resources/` |
 
-A etapa tem duas mensagens: (1) a proposta, com "Rodo?"; (2) com `ok`, **rode de fato** cada
-comando proposto, um por vez, e mostre o W2 de novo com o status e o tempo de cada um, pedindo o "ok" que fecha a
+A etapa tem duas mensagens: (1) a proposta, com "Rodo?"; (2) com `ok`, **rode de fato** os
+comandos 1 a 5 do W2, um por vez — o 3 com `{alvo}` = um teste que já existe no repositório (diga qual); o 6
+(executar) não roda aqui: Status `➖ roda na verificação`; o 7 e o 8 não são comandos —, e mostre o W2 de novo com o status e o tempo de cada um, pedindo o "ok" que fecha a
 etapa. Só `pular` fecha sem rodar (status ⏸️ "não rodado — você pulou"). Nunca feche a etapa com "não rodados"
 depois de um `ok`. Falhou → o cartão
 de bloqueio com o erro em uma linha; a pessoa decide (corrigir o comando, seguir assim ou parar).
@@ -154,7 +155,7 @@ de bloqueio com o erro em uma linha; a pessoa decide (corrigir o comando, seguir
 | Prefixo da branch | branches remotas existentes; padrão `feature/` |
 | Padrão de commit | `git log --oneline -20` (Task/IB do EWM? Conventional Commits?) |
 | PR (merge request) | pelo MCP **`gitlabpr`** do power (GitLab, API v4, CE 10.8+; projeto vem do `origin` da raiz do workspace, informada em `pasta` a cada chamada; fora de um repositório, a URL do projeto colada pela pessoa vai em `url_projeto`). Teste uma vez com `gitlab_listar_mrs(pasta=<raiz do workspace>, limite=1)`: respondeu → `MCP gitlabpr` ✅; erro de rede → `MCP gitlabpr` ⏸️ (sem rede — testado de novo no Passo 9). Erro de credencial → mostre o modelo de `~/.config/mcp-gitlabpr/gitlabpr.properties` (`url` do GitLab e `token` pessoal com escopo `api`; a pessoa cria o arquivo, o agente não lê nem grava credencial) e teste de novo. `origin` fora do GitLab, ou a pessoa segue sem credencial → "entregar título e descrição" (troca depois por "atualizar a configuração do Sabiá"). Nunca `gh` nem `glab` |
-| MCP de banco | servidores em `.kiro/settings/mcp.json` e `~/.kiro/settings/mcp.json` — qual é o de consulta e **qual tool** só consulta (ou "não há"); recomende um usuário de banco somente leitura |
+| MCP de banco | servidores em `.kiro/settings/mcp.json` e `~/.kiro/settings/mcp.json` (Kiro nos alvos) e na chave `mcp` do `opencode.json` do projeto e de `~/.config/opencode/opencode.json` (opencode nos alvos) — qual é o de consulta e **qual tool** só consulta (ou "não há"); recomende um usuário de banco somente leitura |
 | Artefatos de produto | fixo: `direto na branch base` (não pergunte) |
 | Push na base (requisito) | não se detecta: quem desenvolve grava na base a situação da fatia (`iniciada`, `pronta`) e dá o push — base protegida contra o push dele barra o início de toda fatia. Avise na linha 7 do W3 e siga |
 
@@ -170,8 +171,9 @@ bloco por mensagem); antes do bloco 0, avise que é a parte mais longa (10 bloco
    senão o padrão `.sabia/planejamento`. Vai na linha 1 do W4 (📐 ou 🔍). Grave o caminho real na seção Projeto do
    `sabia.md`.
 2. **Glossário** (padrão `.sabia/glossario.md`) e **ADRs** (padrão `.sabia/adr`, sem barra no fim) — use os que já
-   existirem; não existindo, o padrão é criá-los (linhas 2 e 3 do W4). A pessoa recusou na tabela → registre
-   "não há" e remova dos agentes as regras e linhas que os citam (`{{GLOSSARIO}}`, `{{ADR}}`).
+   existirem; não existindo, o padrão é criá-los (linhas 2 e 3 do W4). A pessoa recusou na tabela → `"glossario": null` /
+   `"adr": null` no agentes.json e "não há" no sabia.md; o gerador tira as regras que citam o caminho e escreve "não há"
+   no prompt — nunca edite os agentes.
 3. **ELM** — o MCP `elm` vem com o power. `.kiro/config/elm/pa_*.json` no repositório (um por project area)?
    - Não há e a pessoa diz que o projeto não usa ELM → `Usa ELM: não` (o fluxo funciona igual; os ids vêm do
      `backlog.md`).
@@ -210,8 +212,7 @@ bloco por mensagem); antes do bloco 0, avise que é a parte mais longa (10 bloco
 ## Passo 5 — Inventário de skills e toolkits (cartão W5)
 
 Siga [references/toolkits.md](references/toolkits.md): procure toolkits (com e sem manifesto) e skills avulsas
-do projeto (`.kiro/skills/*/SKILL.md`), do usuário (`~/.kiro/skills/*/SKILL.md`) e de outros powers
-(`~/.kiro/powers/installed/*/skills/*/SKILL.md`; não achou nada ali → `~/.kiro/powers/**/skills/*/SKILL.md`),
+nos lugares e na ordem de [references/toolkits.md](references/toolkits.md#onde-procurar-nesta-ordem),
 **exceto** as do fluxo (`sabia`, `sa-*`). Para cada uma:
 nome, início da `description`, origem e, se houver, toolkit e papéis. Toolkit cujo `deteccao` casa com o projeto
 → "detectado"; skill com `passo` → a tabela de
@@ -273,7 +274,7 @@ Padrões da proposta:
    de consulta (`<servidor>/<tool>` em `agentes.sa-<papel>.mcp`), nunca o servidor inteiro se ele tiver tool de
    escrita; browser/Playwright marcado no verificador em projeto `frontend`. **ELM** (projeto com ELM): as tools do
    `elm` que o `papeis.json` dá a cada papel (leitura liberada; escrita com `ask`) — `sa-produto`,
-   `sa-desenvolvedor`, `sa-orquestrador`, `sa-revisor` e `sa-verificador`, cada um comentando e anexando só na
+   `sa-especificador`, `sa-desenvolvedor`, `sa-orquestrador`, `sa-revisor` e `sa-verificador`, cada um comentando e anexando só na
    própria tarefa; o pesquisador só consulta o bundle local (`elm_*_local`). Projeto sem ELM → `"elm": false` no
    `agentes.json` (a escrita vira `ELM pendente`).
 3. **Modelo:** sempre o padrão do Kiro — não pergunte; a pessoa troca na proposta se quiser.
@@ -391,8 +392,10 @@ escrita de memória.
 - Todo caminho que o `sabia.md` e o `agentes.json` citam (pasta do produto, glossário, ADRs, massa) existe — ou é
   "não há"/`null`.
 - O GitLab que ficou ⏸️ no Passo 3 → teste de novo (`gitlab_listar_mrs`) e diga o resultado.
-- O gerador já confere os agentes (sai com 1 e não grava se sobrou `{{…}}` ou se um `skill://`/`file://` não existe
-  ou é absoluto). Confira também: nenhum servidor `elm` no `mcp.json` do projeto.
+- Com o Kiro nos alvos, o gerador já confere os agentes (sai com 1 e não grava se sobrou `{{…}}` ou se um
+  `skill://`/`file://` não existe ou é absoluto). Confira também: nenhum servidor `elm` no `.kiro/settings/mcp.json`
+  (Kiro) nem na chave `mcp` do `opencode.json` (opencode) do projeto.
+- Com ELM: `elm_status(projeto=<raiz>)` → `valido` e `faltando` vazio (linha 4 do W9).
 - Ferramentas que varrem a raiz do repositório (test runners, linters, `tsc`, varredura de arquivos) ignoram
   `.sabia/local/` — onde o loop cria as worktrees? Não ignoram → acrescente a exclusão na configuração delas (com
   "ok") ou registre no `sabia.md` que o loop não deve ser usado.
@@ -402,10 +405,10 @@ escrita de memória.
 - opencode nos alvos →
   `opencode debug agents` lista os `sa-*` (a primeira chamada num diretório novo pode voltar vazia: rode de novo).
 - Kiro nos alvos e `kiro-cli` disponível → para cada agente, `kiro-cli agent validate --path .kiro/agents/<agente>.json` (saída
-  vazia = válido; erro aponta o campo); `kiro-cli agent list` (na raiz do repositório) lista os sete;
+  vazia = válido; erro aponta o campo); `kiro-cli agent list` (na raiz do repositório) lista os sete `sa-*` e os agentes de toolkit;
   `kiro-cli agent upgrade --dry-run .kiro/agents` diz `v3-only` para os sem subagentes e `out of sync (not rebuilt)`
   para os que têm — esperado (ver [references/agentes.md](references/agentes.md)). Os agentes só rodam no motor v3:
-  na IDE, ou `kiro-cli --agent-engine v3` (no v2, "Mode not found"); no CLI V3, `/config` mostra os agentes e as
+  na IDE, ou `kiro-cli chat --agent-engine v3` (no v2, "Mode not found"); no CLI V3, `/config` mostra os agentes e as
   permissões carregados.
 - Kiro nos alvos → herança: por padrão, agentes customizados recebem também o steering, as skills e o `AGENTS.md` padrão do
   workspace e do usuário — as skills de `~/.kiro/skills` chegam a todos, além das escolhidas no Passo 6. Para que
@@ -474,9 +477,11 @@ no `<fluxo>.md` do projeto, que é apagado se ficar vazio) e o diff dos agentes;
 
 ## Regras
 
-- Não altere nada fora de `.sabia/`, `.kiro/`, `.opencode/` e `opencode.json` (só os
-  ponteiros e os agentes `sa-*`), da pasta do produto, do glossário/ADRs que a pessoa pediu para criar e do
-  `.gitignore`.
+- Escreva só em: `.sabia/` (exceto `local/`), `.kiro/config/elm/pa_*.json`, `.kiro/steering/sabia.md`,
+  `.kiro/agents/` (os `sa-*` e os agentes de toolkit), `.kiro/settings/` (só pelo `kiro-cli settings`, com "ok"),
+  `.opencode/agents/`, `opencode.json` (só `instructions`), a pasta do produto, o glossário e os ADRs que a pessoa
+  pediu, o `.gitignore` e, com "ok" no Passo 9, a exclusão de `.sabia/local/` na configuração das ferramentas que
+  varrem a raiz.
 - As skills `sa-*` ficam na pasta do usuário, compiladas pelo CLI (as-built) — nunca as copie para o projeto
   (`npx sabia atualizar` as recompila; depois rode esta skill em modo atualização para refazer caminhos e agentes).
   O projeto guarda só o que customizou, em `.sabia/fluxo/` e `.sabia/padrao/`, pelo modo customizar.

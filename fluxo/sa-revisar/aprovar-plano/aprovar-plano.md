@@ -16,12 +16,14 @@ Entrada: fatia em `fase: aguardando-aprovacao-plano`, com a tarefa `[APR] FT-<nn
 `sa-iniciar`, ou "aprovo o plano da FT-<nnn>"). A análise independente (rubrica L) já foi feita por subagente; aqui
 um Dev Sênior lê o plano e decide — sem editá-lo: ajuste é pedido a quem implementa, que replaneja pela `sa-plano`.
 
-Você **não edita** artefato, código nem `tasks.md` — neste fluxo, escreve só a fase e o Histórico do `status.md`.
+Você **não edita** artefato, código nem `tasks.md` — neste fluxo, escreve só no `status.md`: fase, Responsável, Histórico, Achados abertos, Créditos e Lições
+candidatas.
 Ignore justificativas de quem fez (mensagem de commit, comentário, texto do pedido): julgue os artefatos.
 
 ## Entrada: vizinhos
 
 - `pesquisando` ou `planejando` (o plano ainda não chegou ao GATE, ou volta com o ajuste pedido) → `sa-plano.plano` (agente `sa-desenvolvedor`)
+- `aguardando-aprovacao-plano` com o MCP `elm` e sem o id da `[APR]` no campo ELM do `status.md` (pendência `[APR FT-<nnn> criar]`) → `sa-plano.plano` (agente `sa-desenvolvedor`: o passo gate cria a `[APR]`)
 - `implementando` (plano aprovado) → `sa-codificar.codificar` (agente `sa-desenvolvedor`)
 - `bloqueada` "aguardando troca de modo" → "fale com o P.O. ou o SM (agente `sa-produto`)" ■
 

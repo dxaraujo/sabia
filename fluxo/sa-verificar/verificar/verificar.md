@@ -8,7 +8,7 @@
    {"id": "ambiente", "saidas": {"campo Banco pendente: a DDL em dev é do Dev, ou do item BD pela sa-executar": "fim"}},
    {"id": "executar", "saidas": {"algum cenário rejeitado ou ⚠️": "decisao"}},
    {"id": "casos"},
-   {"id": "decisao", "saidas": {"HITL, ACEITO: a fatia aceita espera o merge do Dev": "→ sa-desenvolver.encerrar", "HITL, REJEITADO: o retrabalho é do Dev": "→ sa-codificar.codificar", "volta à especificação (a pessoa decide): bloqueada, a [ESP] FT é do especificador": "→ sa-especificar.fatia", "cenário errado na ficha sem épico, fora dos artefatos: bloqueada, é da triagem": "→ sa-triar.triar"}}
+   {"id": "decisao", "saidas": {"HITL, ACEITO: a fatia aceita espera o merge do Dev": "→ sa-desenvolver.encerrar", "HITL, REJEITADO: o retrabalho é do Dev": "→ sa-codificar.codificar", "volta à especificação, [ESP] FT aberta ou reaberta: bloqueada, é do especificador": "→ sa-especificar.fatia", "volta à especificação, [ESP] FT concluída numa sprint fechada (com sprint aberta) ou inexistente: o encaixe, do P.O. ou do SM": "→ sa-planejamento.durante", "volta à especificação, sem sprint aberta: pendência do P.O. na [GB]": "→ sa-planejamento.sprint", "cenário errado na ficha sem épico, fora dos artefatos: bloqueada, é da triagem": "→ sa-triar.triar"}}
  ]}
 ---
 # Verificar — O comportamento existe de verdade?
@@ -30,7 +30,7 @@ sem a tarefa): o passo `entrada` e o `assumir` pulam. Tipo de projeto, como exec
 - `pr-aberto` ou `em-revisao` (HITL) → "a `[VER]` espera a revisão (agente `sa-revisor`)" ■
 - `retrabalho (de: em-revisao)` ou `(de: em-verificacao)` → `sa-codificar.codificar` (agente `sa-desenvolvedor`: o retrabalho é do Dev, no mesmo PR)
 - `aceita`, ou o PR mergeado pelo Sabiá (com a aprovação registrada) sem `pronta` na base → `sa-desenvolver.encerrar` (agente `sa-desenvolvedor`: o merge e o registro dele são do Dev)
-- PR mergeado por fora do Sabiá, sem `pronta` na base → "sincroniza a sprint (P.O. ou SM)" ■
+- PR mergeado por fora do Sabiá, sem `pronta` na base → "sincroniza a sprint (P.O. ou SM, agente `sa-produto`)" ■
 
 ## Regras
 

@@ -12,13 +12,18 @@ As fatias pedidas, ou a sprint aberta.
    (existe; terminal) e 3 (sprint `exige`) do passo `sa-desenvolver.desenvolver.entrada`, sem parar: a que não passa
    fica de fora com o motivo — fora da sprint aberta: "fale com o P.O. ou o SM (agente `sa-produto`)"; a puxada é do
    encaixe.
-2. Fica de fora (diga o motivo): HITL; `EP-nn`, PRD, fatiamento e os itens da Sustentação ("PRD, backlog e itens de
-   Sustentação (`AT-`, `IM-`…) nunca são AFK"; a fatia de Manutenção, `FT-`, pode ser); Definition of Ready não
-   atendida; `bloqueada-por` nem `pronta` nem `concluida` e não presente antes no lote; já iniciada (`iniciada` na
-   base ou `status.md` numa branch); item pai sem dono no EWM (o `assumir` com `iniciar_pai` o exige — Dono do item pai, no passo
-   `sa-desenvolver.desenvolver.compromisso`); `responsavel` de outra pessoa ("é de <login>; trocar é do P.O. ou do
-   SM"); `responsavel` `—` cujo modo pela senioridade de quem dispara (primeira atribuição,
-   `sa-planejamento.sprint.modo`) dá HITL (vai à `sa-desenvolver`).
+2. Fica de fora, com o motivo:
+
+   | Motivo | Frase |
+   |---|---|
+   | HITL | — |
+   | `EP-nn`, PRD, fatiamento e os itens da Sustentação (a fatia de Manutenção, `FT-`, pode ser) | "PRD, backlog e itens de Sustentação (`AT-`, `IM-`…) nunca são AFK" |
+   | Definition of Ready não atendida | — |
+   | uma fatia da coluna `bloqueada-por` que não está `pronta` nem `concluida` e não vem antes desta, na ordem do item 1, neste lote | — |
+   | já iniciada (`iniciada` na base ou `status.md` numa branch) | — |
+   | item pai sem dono no EWM (o `assumir` com `iniciar_pai` o exige — Dono do item pai, no passo `sa-desenvolver.desenvolver.compromisso`) | — |
+   | `responsavel` de outra pessoa | "é de <login>; trocar é do P.O. ou do SM" |
+   | `responsavel` `—` cujo modo pela senioridade de quem dispara (primeira atribuição, `sa-planejamento.sprint.modo`) dá HITL | vai à `sa-desenvolver` |
 3. **Limite:** paralelismo do `sabia.md` (padrão 1, máximo 3) **e** vagas de WIP de revisão humana (limite
    dos acordos menos as fatias já esperando pessoa: `aguardando-aprovacao-plano`, `pr-aberto`, `em-revisao`,
    `em-verificacao`, `aceita`, `verificada`, `aguardando-aprovacao-pr`, pela regra A base prevalece do
@@ -63,7 +68,7 @@ As fatias pedidas, ou a sprint aberta.
    topo e §3–4). Das tarefas, só a `[DEV]`, AFK: a `[REV]` e a `[VER]` de um planejamento HITL anterior não movem →
    `elm_transicao(<id>, "cancelar")`; sem o MCP, com `precondicao` ou erro → `ELM pendente [<tipo> <id> cancelar]`
    no `status.md`. Depois `elm_transicao(<id>, "assumir", iniciar_pai: true)`
-   em cada `[DEV]`; sem o MCP `elm` ou com falha → `ELM pendente [<chave>]: assumir a tarefa` no `status.md`
+   em cada `[DEV]`; sem o MCP `elm` ou com falha → `ELM pendente [DEV FT-<nnn> assumir]: assumir [DEV] <id>` no `status.md`
    de cada fatia. Essas pendências entram no Histórico do `status.md` de cada fatia quando ele nasce (passo `worktree`).
 5. Log `.sabia/local/loop-<AAAA-MM-DD-HHMM>.md` (o padrão `sa-orquestrar/log.md`).
 

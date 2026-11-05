@@ -23,7 +23,7 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
    o padrão [`sa-desenvolver/status.md`](~/.sabia/framework/padrao/sa-desenvolver/status.md).
 2. De cada `status.md`: fatia, título, trilha, modo, fase, responsável, rodadas, achados abertos, PR, ELM,
    Banco, Drift de negócio (`possível alteração — …` sem ` · especificação:`), última linha do Histórico (data) e pendências `ELM pendente [<chave>]:` sem `ELM feito` com a **mesma chave** (também
-   no rodapé das fichas de `fatias/`, no campo `**ELM:**` das fichas de `sustentacao/**`, na `## Sustentação` e nas
+   no rodapé das fichas de `fatias/`, no campo `**ELM:**` dos registros de `sustentacao/**`, na `## Sustentação` e nas
    `### <Categoria>` do `backlog.md` e na coluna "Tarefa ELM" da sprint aberta com `pendente`, fora das linhas com `saiu da sprint`). Também as do Histórico do `status.md` de
    `origin/<base>` de toda fatia `concluida` com pendência aberta (o item 1 não conta esse `status.md` para o resto):
    entram na lista 🏛️ e na contagem dela. Com ELM, também a linha não terminal do `backlog.md` (épico, fatia, item de
@@ -33,7 +33,8 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
    `gitlab_listar_mrs(origem=<branch>, estado=all)` (MCP `gitlabpr`, só leitura) — estado, conflitos e link;
    `merged` sem `Fase: pronta` na base → o Dev responsável registra o merge (`sa-desenvolver.encerrar`: `pronta` na
    base e conclusão da `[DEV]`; merge por fora do Sabiá → a sincronização da sprint grava a `pronta`); `closed` sem
-   merge → inconsistência. Sem o MCP → o link do `status.md`.
+   merge → inconsistência. Sem o MCP, ou no agente sem a tool (`sa-especificador`, `sa-verificador`) → o link do
+   `status.md`.
 3. De cada `tasks.md`: `[x]`/total e o primeiro item pendente.
 4. `<produto>/backlog.md` (da base), pelas [situações](../sa-fatiar/references/backlog.md#situações): fatias
    `planejada` (sprint aberta) e `elegivel` sem `status.md` em nenhuma branch, `iniciada` (em andamento; a data é a
@@ -187,12 +188,16 @@ o `status.md` que vale é o da base — os itens 1 e 4 gravam nele pelo bloco
    Sem o MCP `elm` → `ELM pendente [<DEV|REV|VER|APR> FT-<nnn> horas]: lançar <h>h (<data>)` no Histórico.
 4. **Créditos da sessão** (sempre, com ou sem ELM) — o Kiro grava o consumo de cada turno só na máquina de quem
    conversou (`~/.kiro`), por isso é quem fecha que registra, aqui, e o número chega aos outros pelo commit. O
-   Kiro só grava o consumo de um turno quando ele **termina**: leia sempre **na resposta a uma pergunta** — primeiro
-   `💳 Registrar os créditos desta sessão? (sim)` (nas entregas das skills de papel, antes do commit:
-   `💳 Registrar os créditos e entregar? (sim)`), e só na resposta rode o script; assim o turno do trabalho já
-   está gravado. Rode o script `scripts/creditos.py` desta skill:
+   Kiro só grava o consumo de um turno quando ele **termina**: leia sempre **na resposta a uma pergunta**, e assim o
+   turno do trabalho já está gravado. Se a pessoa acabou de responder `sim` a `💳 Registrar os créditos desta
+   sessão? (sim)` (steering) ou a `💳 Registrar os créditos e entregar? (sim)` (nas entregas das skills de papel,
+   antes do commit), rode o script já; senão, pergunte `💳 Registrar os créditos desta sessão? (sim)` e rode na
+   resposta. O script é o `scripts/creditos.py` desta skill:
    `uv run --no-project python <caminho>/creditos.py --pasta <cada pasta do git worktree
-   list> --desde <Data da sua última linha onde vai gravar | início do item>`. Sai uma linha por sessão do Kiro
+   list> --desde <AAAA-MM-DDTHH:MM:SS>` — a Data da última linha com o seu login na seção onde vai gravar; sem linha
+   sua, a data e hora do commit de início do item (`<id> iniciar` ou `<id> iniciar especificação`: `git log -1
+   --format=%cd --date=format:%Y-%m-%dT%H:%M:%S --grep="^<id> iniciar"`); gestão sem sprint aberta: a regra do
+   comentário da `[GB]`, abaixo. Sai uma linha por sessão do Kiro
    com consumo, a mais recente primeiro — é a atual; as outras são sessões que ninguém fechou: mostre-as com o
    título e pergunte quais são deste item (nenhuma é atribuída sem "sim").
    ```
@@ -207,10 +212,9 @@ o `status.md` que vale é o da base — os itens 1 e 4 gravam nele pelo bloco
    o número que o Kiro mostra, Sessão `informado`; nunca estime. Sobra só o turno do próprio registro, pequeno: o
    próximo fechamento do item o pega pelo `--desde`.
 
-   O mesmo vale fora da fatia, mudando só onde a linha vai: Sustentação → seção Créditos da ficha `<ID>` (`AT-<nnn>`,
+   O mesmo vale fora da fatia, mudando só onde a linha vai: Sustentação → seção Créditos do registro `<ID>` (`AT-<nnn>`,
    `IM-<nnn>`…); especificação → `status.md` do épico (`sa-especificar`); especificação de fatia (`[ESP] FT`) → seção
-   Créditos da ficha da fatia; gestão (triagem, consolidação, planejamento,
-   ritos, sincronização) → seção **Créditos de gestão** do `sprint-<nn>.md` aberto, com Atividade no lugar de Papel,
+   Créditos da ficha da fatia; gestão (Atividade: `inicial` · `planejamento` · `encaixe` · `sincronização` · `troca de modo` · `review` · `retrospectiva` · `virada` · `triagem` · `consolidação` · `fatiamento` · `refinamento`) → seção **Créditos de gestão** do `sprint-<nn>.md` aberto, com Atividade no lugar de Papel,
    quando há sprint aberta. Sem sprint aberta (só o comentário na `[GB]`) → `--desde` = a data e hora do último
    comentário `Créditos` da `[GB]` (`elm_ler_wi(<id da [GB]>, comentarios = -1)`). Toda sessão do P.O. ou do SM no
    agente de produto grava também, com o mesmo "sim", um comentário na `[GB]`: `elm_comentar(<id da [GB]>, "Créditos

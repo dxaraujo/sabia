@@ -24,8 +24,8 @@ os ids deles).
   Sem a ET no PR → `ELM pendente [ET FT-<nnn> escrever]` para o Dev, que a entrega num PR curto. Fatia de épico com
   ET inicial → a as-built sobe ligada a ela (seção ET as-built do `elm-publicar.md`);
 - *casos de teste* — pela linha Casos de teste do `sabia.md`: `ETM` (com `qm` no `pa`) → por cenário verificado
-  (`verificacao.md`/`CT.csv`), o CT planejado (publicado na `[ESP]`) ligado ao IB e o CT novo criado, ids no `verificacao.md` e no
-  `status.md`; `CSV` (ou sem `qm`) → o `CT.csv` é a
+  (`verificacao.md`/`CT.csv`), o CT planejado (publicado na `[ESP]`) ligado ao IB e o CT novo criado, ids no
+  `verificacao.md` (`- CT ETM: <id> (…)` abaixo da Evidência do cenário) e no `status.md`; `CSV` (ou sem `qm`) → o `CT.csv` é a
   entrega, sem ELM pendente;
 - *tarefas* — a consolidação **não** lança horas nem conclui `[DEV]`, `[REV]`, `[VER]` ou `[APR]`: cada skill de
   papel concluiu a sua (a `[DEV]` no merge, a `[REV]` ao aprovar, a `[VER]` ao aceitar, a `[APR]` na aprovação do
@@ -35,20 +35,23 @@ os ids deles).
 - *backlog* — concluir o IB da fatia (e o do épico, na última fatia — passo `fechar`). Tarefa concluída sem horas não
   trava: a virada aponta. A consolidação é **pré-condição dos ritos de fechamento** da sprint (review, retrospectiva,
   virada): fatia `pronta` sem ela para o rito, salvo decisão do P.O.;
-- *horas* — só o SM lança as da consolidação na `[GB] Gerenciamento do backlog`: `elm_lancar_horas(id, horas)`
-  (lança, não conclui — a `[GB]` é contínua). O P.O. nunca lança horas, nem quando também é o SM.
+- *horas* — só na sessão do SM (o P.O. nunca lança, nem quando também é o SM): "Quanto tempo nesta consolidação?" →
+  `elm_horas(<id da GB da primeira linha de ## Sustentação do backlog.md>)` → `elm_lancar_horas(<id>, <h>)` na mesma
+  confirmação (lança, não conclui: a `[GB]` é contínua). Sem o MCP ou com falha → `ELM pendente [GB <id> horas]:
+  lançar <h>h (<AAAA-MM-DD>)` no lugar das pendências da `[GB]`.
 - *créditos* — em toda consolidação, do P.O. ou do SM, os créditos desta sessão
   ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4) vão, no passo `fechar`, num comentário na `[GB]`
   (`elm_comentar(<id da [GB]>, "Créditos consolidação FT-<nnn>: <créditos> (sessão <sessão>, <login>, <AAAA-MM-DD>)")`,
-  com "sim") e na seção **Créditos de gestão** do `sprint-<nn>.md` aberto (Atividade `consolidação FT-<nnn>`), no
+  com "sim") e na seção **Créditos de gestão** do `sprint-<nn>.md` aberto (Atividade `consolidação`; o FT vai só no `<ids>` do comentário), no
   commit do passo `fechar`. `## Sustentação` sem a `GB` → indique o fluxo `sa-planejamento.inicial` (ou crie-a pelo
   [elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §2, com "sim"); sem ela, grave só a linha em
-  Créditos de gestão. Falha no comentário → `ELM pendente [GB <id> créditos]` no lugar das pendências da `[GB]`
+  Créditos de gestão. Sem o MCP ou com falha no comentário → `ELM pendente [GB <id> créditos]: comentar "Créditos
+  consolidação FT-<nnn>: <créditos> (sessão <sessão>, <login>, <AAAA-MM-DD>)"` no lugar das pendências da `[GB]`
   ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4), não no `status.md`.
 
-Sem o MCP `elm` nesta sessão ou com falha → `ELM pendente [<chave>]: <ação>` no Histórico do `status.md`
-([pendências](~/.sabia/framework/skills/sabia/references/elm.md#pendências)). Depois da publicação, a `sa-sync` traz o publicado ao bundle (e
-pergunta se indexa; a busca local também indexa o que mudou, em segundo plano).
+Sem o MCP `elm` nesta sessão ou com falha (fora a `[GB]`: horas e créditos, acima) → `ELM pendente [<chave>]:
+<ação>` no Histórico do `status.md` ([pendências](~/.sabia/framework/skills/sabia/references/elm.md#pendências)). Depois da publicação, diga:
+`Bundle: rode a sa-sync (baixar) na sessão padrão para trazer o publicado` — não a rode aqui.
 
 ## Saída
 

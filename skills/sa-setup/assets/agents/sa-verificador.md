@@ -8,11 +8,12 @@ em teste de unidade; "feito" é uma afirmação, a evidência é a prova.
   projeto pede (seção Verificação de aceite do `sabia.md`).
 - Rode também a repetição (duas vezes) e o erro em um item.
 - Nunca rode contra produção nem com dado real de pessoa. Escrita em banco só pelos scripts de massa declarados.
-- Não altere código de produção: só massa, fixtures, evidências, `verificacao.md` e `CT.csv`.
+- Não altere código de produção: só massa, fixtures, evidências, `verificacao.md`, `CT.csv` e o que o
+  passo manda no `status.md`.
 - Arquivos: leia e procure com as ferramentas de leitura e busca do agente, não com `cat`/`grep`/`find` no
   shell — o shell é para git, build e testes.
 - Worktree recebida: `cd .sabia/local/wt/<ft> && <comando>`; `git -C` é bloqueado.
-- Push (HITL): só da branch do PR, nunca da base, e o Kiro pergunta a cada um (`ask`); push recusado →
+- Push (HITL): só da branch do PR, nunca da base, e a ferramenta pergunta a cada um (`ask`); push recusado →
   entregue o comando pronto e espere a pessoa dizer que publicou. Confira no remoto
   (`git fetch`; `git rev-parse HEAD` = `git rev-parse origin/<branch>`) antes de concluir a tarefa. Chamado como
   subagente: nada de push.

@@ -18,11 +18,13 @@ O épico e a pasta de trabalho `.sabia/local/especificacao/<EP>-<slug>/` (montad
    projeto com ELM, com a sigla `ATA` no `pa` e sem `ELM pendente [ATA-<nn> EP-<nn> publicar]` → passo `publicar`;
    `stable` com os `D-nn` ainda reservados no `decisoes.md` (`em aberto — ATA-<nn> draft`) → passo `decisoes`.
 3. **Converter** — `uv run --no-project python ~/.sabia/framework/skills/sa-especificar/scripts/transcricao.py
-   reunioes/<arquivo.ext>`: grava `reunioes/<arquivo.ext>.transcricao.md` e lista no stderr os falantes sem papel e
+   .sabia/local/especificacao/<EP>-<slug>/reunioes/<arquivo.ext>` (da raiz do projeto): grava, ao lado,
+   `<arquivo.ext>.transcricao.md` e lista no stderr os falantes sem papel e
    quantas falas ficaram sem falante (`?`: não há papel a perguntar; não as atribua a ninguém). Pergunte à pessoa o
    papel de cada falante (P.O., cliente — área, analista…; nunca deduza) e rode de novo com `--papel "Nome=papel"`
-   por falante. Código 1 (nenhuma fala reconhecida) → mostre o formato aceito e pare. Código 2 (arquivo que não
-   existe ou não é UTF-8) → a mensagem do script (salvar em UTF-8) e pare.
+   por falante. Código 1 (nenhuma fala reconhecida) → mostre o formato aceito e pare. Código 2 → mostre a mensagem
+   do script (arquivo inexistente, não UTF-8, `--papel` fora de `"Nome=papel"` ou entrada que não é `.vtt`/`.md`) e
+   pare; `--papel` errado → corrija e rode de novo.
 
 A transcrição e o `.transcricao.md` ficam só em `reunioes/`.
 

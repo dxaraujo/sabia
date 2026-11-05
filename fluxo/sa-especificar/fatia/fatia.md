@@ -5,7 +5,7 @@
  "passos": [
    {"id": "entrada", "de": "entrada", "sprint": "exige", "saidas": {"linha iniciada com conceito da fatia aprovado na base e ainda não publicado (na fatia iniciada, o do Bloqueio com o verified mais novo que o Bloqueio)": "publicar"}},
    {"id": "assumir"},
-   {"id": "trabalho", "saidas": {"sem artefato afetado": "concluir"}},
+   {"id": "trabalho", "chama": "sa-entrevistar.entrevistar", "saidas": {"sem artefato afetado": "concluir"}},
    {"id": "artefatos"},
    {"id": "escrever"},
    {"id": "revisao", "chama": "sa-revisar.revisar", "saidas": {"achado que é decisão de negócio": "trabalho"}},
@@ -49,4 +49,8 @@ aprovação, nada dos artefatos vai à base — só a linha da Especificação (
 - O aprovado vai à base (passo `aprovacao`) e ao ELM na conclusão, ligado à `[ESP]` (passo `publicar`). Até ela
   concluir, a `[ESP]` aberta aceita mudança; depois, a mudança segue a Volta à especificação.
 - Toda sessão fecha como o passo `sa-especificar.especificar.fechar-sessao` (comentário, anexos `elm-<arquivo>.md`
-  da pasta de trabalho, horas na `[ESP]`), com a linha de créditos na seção `## Créditos` da ficha.
+  da pasta de trabalho, horas na `[ESP]`). Na `[ESP] FT`: a linha de créditos na seção `## Créditos` da ficha, na
+  base, pelo [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), commit
+  `FT-<nnn> registrar sessão`; o comentário começa com `Sessão de especificação — FT-<nnn> · <AAAA-MM-DDTHH:MMZ>`;
+  anexos só os de `elm/`, como `elm-<arquivo>.md`; a pendência `[ESP FT-<nnn> sessão <AAAA-MM-DD>]` no rodapé da
+  ficha.

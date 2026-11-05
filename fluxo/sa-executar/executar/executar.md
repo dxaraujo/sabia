@@ -25,7 +25,7 @@ Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configura
 
 ## Arquivos
 
-- `<produto>/sustentacao/<pasta>/<ID>-<slug>.md` — a ficha (formato: o padrão `sa-atender/registro.md`, com `## O
+- `<produto>/sustentacao/<pasta>/<ID>-<slug>.md` — o registro (formato: o padrão `sa-atender/registro.md`, com `## O
   que foi feito`), criada pela triagem.
 - Linha do item na `### <Categoria>` da `## Sustentação` do `backlog.md` e do `sprints/<pai>/sprint-<nn>.md`.
 - `.sabia/local/sustentacao/<pasta>/<ID>/` — o que tiver dado real. Fora do git.
@@ -38,5 +38,8 @@ Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configura
   faltam a um item registrado).
 - Lançar horas é registro de empenho, a qualquer momento na tarefa assumida; concluir é o passo `encerrar`, com o saldo.
 - Ficha, backlog e sprint são gravados na base (bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base)).
-  Cada escrita no EWM com "sim"; sem o MCP `elm` ou com falha → `ELM pendente [<chave>]: <assumir | lançar <h>h |
-  concluir tarefa e IB> <prefixo> <ID>` no campo `**ELM:**` da ficha, e siga.
+  Cada escrita no EWM com "sim"; sem o MCP `elm` ou com falha → uma linha por chave no campo `**ELM:**` do registro, e
+  siga: `ELM pendente [<PREFIXO> <ID> assumir]: assumir a tarefa` · `ELM pendente [<PREFIXO> <ID> horas]: lançar
+  <h>h (<AAAA-MM-DD>)` · `ELM pendente [<PREFIXO> <ID> concluir]: concluir a tarefa` · `ELM pendente [IB <ID>
+  concluir]: concluir o IB` (`<PREFIXO>` = o da tarefa, sem colchetes; ex.: `[IMPL IM-007 horas]`, `[IB IM-007
+  concluir]`).

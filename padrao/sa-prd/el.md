@@ -5,8 +5,8 @@
 
 **Leiaute (EL)** — uma tela, como o cliente a aprovou no protótipo, só com a linha **Telas** = `sim` na seção ELM do
 `sabia.md`. Uma EL por tela que as histórias usam, no lote do PRD (`sa-prd.prd.escrever`), escrita da versão
-aprovada do protótipo (o `D-nn` `Protótipo v<N> aprovado` da última versão registrada) e das decisões. Com o
-`D-nn` `Épico sem tela`, nenhuma EL. Na `[ESP] FT` (`sa-especificar.fatia.escrever`), a EL que a fatia altera ou
+aprovada do protótipo (o `D-nn` cuja Decisão começa por `Protótipo v<N> aprovado`, da última versão registrada) e
+das decisões. Com o `D-nn` cuja Decisão começa por `Épico sem tela`, nenhuma EL. Na `[ESP] FT` (`sa-especificar.fatia.escrever`), a EL que a fatia altera ou
 inclui parte da cópia aprovada e da ficha (o comportamento esperado e as decisões); o texto visível novo vem de uma
 fonte da ficha, senão é `em aberto`.
 

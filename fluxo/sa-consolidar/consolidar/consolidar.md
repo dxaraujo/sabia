@@ -31,8 +31,8 @@ pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backl
 
 ## Entrada: vizinhos
 
-- sem `pronta` na base, com o PR mergeado pelo Sabiá; ou `pronta` com a `[DEV]` aberta → `sa-desenvolver.encerrar` (agente `sa-desenvolvedor`: o merge, o registro dele e a conclusão da `[DEV]` são do Dev)
-- PR mergeado por fora do Sabiá, sem `pronta` na base → `sa-planejamento.durante.sincronizar` (a sincronização da sprint grava a `pronta` pela evidência do merge)
+- sem `pronta` na base, PR mergeado com a aprovação registrada (HITL: REV APROVADO e VER ACEITO; AFK: `[APR] Aprovar PR` concluída); ou `pronta` com a `[DEV]` aberta (`elm_ler_wi(<id da DEV>)` não concluída; sem o MCP: a `ELM pendente [<chave>]: lançar … e concluir [DEV] FT-<nnn>` sem o `ELM feito`) → `sa-desenvolver.encerrar` (agente `sa-desenvolvedor`: o merge, o registro dele e a conclusão da `[DEV]` são do Dev)
+- PR mergeado sem a aprovação registrada, sem `pronta` na base → `sa-planejamento.durante.sincronizar` (a sincronização da sprint grava a `pronta` pela evidência do merge)
 
 ## Regras
 

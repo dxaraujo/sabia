@@ -12,8 +12,8 @@ resolve hoje; corrigir o ambiente resolve para sempre. Arquivos (versionados):
 - a seção **Regras aprendidas** do `.sabia/sabia.md` — regras promovidas de **julgamento** (o revisor
   cobra, o plano respeita; o steering é sempre carregado, então cada regra é curta, imperativa, com exemplo).
 
-Os dois só mudam na **branch base** (artefato de produto), pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base) (com
-"sim" na troca de branch; alterações pendentes na branch da fatia → commite-as ou peça à pessoa antes).
+Os dois só mudam na **branch base** (artefato de produto), pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base)
+(item 1: "sim" na troca de branch; árvore com alterações não commitadas → avise e pare).
 
 **Ordem de preferência da correção:** (1) erro **mecânico** → checagem determinística (lint, teste, hook, CI) —
 ponto final, não vira texto; (2) regra de **julgamento** → seção Regras aprendidas do `sabia.md` (o revisor

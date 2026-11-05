@@ -1,5 +1,5 @@
 ---
-{"resumo": "Na mesma resposta da gravação, diz os próximos passos (EWM, planejamento ou encaixe para alocar) e para."}
+{"resumo": "Na mesma resposta da gravação, diz os próximos passos, com a frase exata da origem (fatiamento: encaixe ou planejamento para alocar; refinamento: o que foi cancelado), e para."}
 ---
 ## Entrada
 
@@ -7,12 +7,14 @@ O backlog gravado (passo `gravar`), ou o refinamento gravado (fluxo `sa-fatiar.r
 
 ## Faça
 
-Próximos passos, na mesma resposta:
+Na mesma resposta, diga, exata, pela origem:
 
-- Com ELM: os IBs das fatias já estão no backlog do EWM; entrar na sprint só muda o "Planejado para"
-  ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §3).
-- Para alocar as fatias na sprint (ou começar uma já): o planejamento ou o encaixe (`sa-planejamento`), aqui no
-  agente `sa-produto`.
+- Fatiamento: `Próximo: alocar FT-<a>–FT-<b> na sprint — com sprint aberta, o encaixe (sa-planejamento.durante); sem
+  ela, o planejamento (sa-planejamento.sprint), aqui no agente sa-produto. Com ELM, os IBs já estão no backlog do
+  EWM.` (a última frase, só com ELM; entrar na sprint só muda o "Planejado para" do IB:
+  [elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §3).
+- Refinamento: `Refinamento gravado: <ids> cancelada(s)<; épico EP-nn concluido | cancelado>. Nada mais a fazer
+  aqui.`
 
 ## Saída
 

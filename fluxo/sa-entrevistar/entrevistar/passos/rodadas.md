@@ -26,15 +26,18 @@ D-05 · O que a tela mostra para a conta bloqueada?
   `sa-pesquisador`, se houver) o que o código, o ELM ou o banco respondem.
 - Recomendação sempre com o motivo em uma linha. Pergunta sem recomendação transfere o trabalho de pensar.
 - Rodadas pequenas (até ~5 perguntas). Resposta que abre ramos novos → eles entram na próxima rodada.
-- Resposta vaga ("tanto faz", "o de sempre") → registre a recomendada como decisão e diga isso.
+- Resposta vaga ("tanto faz", "o de sempre") → registre a recomendada como `decidida`, Fonte `<login> (<papel>) —
+  aceitou a recomendada`, e diga isso.
 - Termo novo ou ambíguo (dois nomes para a mesma coisa, um nome para duas coisas) → vira pergunta da rodada
   seguinte: qual é o termo canônico (passo `linguagem`).
 - Termina quando a fronteira está vazia: resuma as decisões e **peça a confirmação do entendimento** antes de quem
   chamou escrever qualquer coisa. A pessoa pode dizer "chega" antes: o que restar fica `em aberto` (passo `registrar`).
+- Entendimento não confirmado → o que a pessoa corrigir vira decisão revista (`decidida — substitui D-nn`) e nova
+  rodada pela fronteira.
 
 ## Saída
 
-Fronteira com decisões → nova rodada (este passo). Fronteira vazia e entendimento confirmado, ou "chega" → passo
+Fronteira com decisões → nova rodada (este passo). Entendimento não confirmado → nova rodada (este passo). Fronteira vazia e entendimento confirmado, ou "chega" → passo
 `registrar`.
 
 ## Pare se

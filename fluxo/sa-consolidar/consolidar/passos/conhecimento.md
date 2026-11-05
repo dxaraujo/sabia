@@ -3,17 +3,20 @@
 ---
 ## Entrada
 
-Os ADRs do PR (`.kiro/specs/<ft>-<slug>/adr/`) e os `termo pendente` do `decisoes.md` da fatia.
+Os ADRs do PR (`.kiro/specs/ft-<nnn>-<slug>/adr/`), os `termo pendente` do `decisoes.md` da fatia e os nomes novos
+do diff do merge (`git diff <sha do merge>^1 <sha do merge>`: classes, campos, tabelas e mensagens).
 
 ## Faça
 
-- **ADRs:** o Dev os escreveu no PR (`.kiro/specs/<ft>-<slug>/adr/`, uma por decisão "Vira ADR? sim" do
+- **ADRs:** o Dev os escreveu no PR (`.kiro/specs/ft-<nnn>-<slug>/adr/`, uma por decisão "Vira ADR? sim" do
   `design.md`) e o Dev Sênior os julgou na revisão ou na `[APR]`. Leve cada um para a pasta de ADRs do `sabia.md`
-  (próximo número da pasta, `origem FT-<nnn>`), sem reescrever o conteúdo; a cópia da pasta da fatia fica como
+  (nome = o padrão dos arquivos que já estão nela, com o próximo número; pasta vazia → `0001-<slug-da-decisão>.md`, 4
+  dígitos, em sequência; `origem FT-<nnn>`), sem reescrever o conteúdo; a cópia da pasta da fatia fica como
   registro do PR. Pasta de ADRs "não há" → ficam só na pasta da fatia.
 - **Glossário:** termos que o código novo introduziu ou renomeou — e os `termo pendente` do `decisoes.md` da
-  fatia — estão no glossário? Faltando ou divergente → corrija o glossário (com "ok") ou abra a correção do código
-  como fatia.
+  fatia — estão no glossário? Faltando → proponha a linha no padrão `sa-entrevistar/glossario.md` e grave com "ok".
+  O código usa um termo diferente do glossário → pergunte à pessoa: corrigir o glossário (com "ok") ou o código (diga
+  "registre a correção pela `sa-triar`, origem FT-<nnn>" e siga).
 
 O lint do conhecimento (contradições entre glossário, ADRs, bundle e steering) não é por fatia: é da
 retrospectiva do épico ou da sprint (`sa-aprender`).

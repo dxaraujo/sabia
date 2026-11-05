@@ -53,7 +53,7 @@ conteúdo de toolkit.
   `agentes.json`: todo toolkit ligado ao projeto com `tipos`), com a skill do toolkit ligada a ele — a skill traz em
   `papeis` o papel de cada dono, senão o CLI e o gerador recusam o toolkit; sem agente, a seção
   **Tipos com skill de toolkit** do `.sabia/sabia.md` (a skill, o fluxo e o padrão de cada tipo, e os itens de rubrica).
-- **Contrato, na volta ao passo:** o arquivo pela coluna Arquivo, o envelope do `okf-elm.md` e `status: draft`.
+- **Contrato, na volta ao passo:** o arquivo pela coluna Arquivo, o envelope do `okf-elm.md` e o `status` do passo (`draft` na escrita; a ET as-built ajustada na consolidação, como o passo `sa-consolidar.consolidar.elm` diz).
   Fora dele → o dono completa no próprio passo e registra no `status.md`.
 - **Padrão do núcleo:** o toolkit não troca padrão do Sabiá; o tipo fora do passo de desvio (a ET as-built, no
   `sa-codificar.codificar.pr`) usa o padrão do Sabiá, e o `.sabia/padrao/` do projeto vale só sobre um padrão do Sabiá.

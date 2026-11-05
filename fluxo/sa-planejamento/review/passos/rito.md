@@ -13,7 +13,7 @@ e planejadas que migram —: é o que foi feito na sprint. Para cada fatia concl
 especificação: `Débito de especificação: <linhas com Tarefa —>` (seção Débito de especificação do `sprint-<nn>.md`;
 a consolidada sem sprint aberta, pelo Histórico do `status.md` e pela `obs` `débito de especificação` da fatia); a
 correção é decisão do P.O. Registre o retorno do P.O. no `sprint-<nn>.md`;
-pedido novo → registre-o pela `sa-triar` (origem: review `<chave>`) — não reabre fatia concluída.
+pedido novo → fluxo `sa-triar.triar` (origem: review `<chave>`), depois volte aqui — não reabre fatia concluída.
 
 ## Saída
 

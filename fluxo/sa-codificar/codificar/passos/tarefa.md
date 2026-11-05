@@ -15,29 +15,30 @@ Para cada tarefa do `tasks.md`, nesta ordem:
    `design.md`** — interface pública, sem mock de detalhe interno, sem recalcular o esperado do jeito que o código
    calcula — e rode só ele (comando de teste único). Ele tem de **falhar pelo motivo certo**. Corretiva: o teste
    que reproduz o defeito vem primeiro, e ele e a correção são **um ciclo só** — marcados e commitados juntos, já
-   verdes (o vermelho fica registrado no Histórico: `teste do defeito vermelho: <falha observada>`); os testes de
+   verdes (o vermelho fica registrado no Histórico: `<AAAA-MM-DD HH:MM> — teste do defeito vermelho: <falha observada>`); os testes de
    preservação rodam verdes antes da correção.
 3. **Verde:** a menor mudança de produção que faz o teste passar, imitando o análogo do `design.md`.
 4. **Arrumar** só o que você acabou de escrever (nomes do glossário, duplicação), com os testes verdes.
    Refatorar código existente não é desta tarefa: vira sugestão para a revisão ou fatia própria.
 5. **Backpressure:** o passo `validar` (compilar, testes, lint e cobertura do `sabia.md`). Falhou → corrija antes de
    seguir; não acumule vermelho.
-6. Marque `- [x]` e acrescente a linha no Histórico do `status.md`: `<data> — tarefa N ok · <testes>`.
+6. Marque `- [x]` e acrescente a linha no Histórico do `status.md`: `<AAAA-MM-DD HH:MM> — tarefa N ok · <testes>`.
 7. **Commit** pequeno, só com o passo `validar` verde (padrão do `sabia.md`, com o id da fatia) com o código, os testes, o `tasks.md` e o
    `status.md` — a árvore fica limpa a cada tarefa.
 
 Regras do ciclo:
 - **Nunca** apague, desabilite, pule ou enfraqueça um teste para ficar verde. Teste que parece errado → pare e
   pergunte (ou, autônomo, registre como bloqueio).
-- O código real não bate com o plano → **pare** e reporte, sem improvisar:
+- O código real não bate com o plano → mostre, sem improvisar:
   ```
   Divergência na tarefa N — Esperado: <o que o plano diz> · Encontrado: <o que o código tem, arquivo:linha>
   · Por que importa: <o que muda>
   ```
-  Muda comportamento de negócio (o código diverge de um artefato) → grave a indicação no **Drift de negócio** do
-  `status.md` (`possível alteração — <motivo> · artefatos: <id|rótulo> (<tipo>)`, padrão `sa-desenvolver/status.md`),
-  e siga o plano: quem decide é a REV (HITL) ou o Dev Sênior na `[APR] Aprovar PR` (AFK);
-  muda o desenho → `sa-plano.replanejar`. Decisão técnica equivalente → decida e registre no `design.md` (Decisões técnicas).
+  | Divergência | Faça | Para? |
+  |---|---|---|
+  | decisão técnica equivalente | decida e registre em Decisões técnicas do `design.md` | não |
+  | muda comportamento de negócio (o código diverge de um artefato) | grave no **Drift de negócio** do `status.md` `possível alteração — <motivo> · artefatos: <id\|rótulo> (<tipo>)` (padrão `sa-desenvolver/status.md`) e siga o plano; quem decide é a REV (HITL) ou o Dev Sênior na `[APR] Aprovar PR` (AFK) | não |
+  | muda o desenho | — | sim → `sa-plano.replanejar` |
 - Nada de funcionalidade que a fatia não pediu, mesmo "aproveitando".
 - Duas correções seguidas sem sair do lugar → pare de tentar variações: registre no `status.md` o que foi tentado e
   continue numa sessão nova a partir dele (contexto poluído piora a terceira tentativa); persistindo,
@@ -46,7 +47,8 @@ Regras do ciclo:
 - Contexto cheio ou sessão longa → atualize o `status.md` (o que foi feito, próximo passo, decisões), **commite-o**
   e continue numa sessão nova a partir dele. O estado vive nos arquivos, não na conversa.
 
-**Toolkit na tarefa.** Passo `desenvolvedor` de [passos.md](~/.sabia/framework/skills/sabia/references/passos.md). Quem
+**Toolkit na tarefa.** A linha `sa-codificar.codificar.tarefa` da tabela Os passos de
+[passos.md](~/.sabia/framework/skills/sabia/references/passos.md#os-passos). Quem
 decide é a sua configuração: a tarefa que casa com um desvio do seu prompt vai ao toolkit, sem marca no `tasks.md` e
 sem perguntar à pessoa:
 
@@ -65,4 +67,4 @@ Tarefa marcada, Histórico e commit; todas as tarefas `[x]` → passo `validar` 
 
 ## Pare se
 
-Teste que parece errado, divergência com o plano, ou a segunda correção seguida sem sair do lugar (acima).
+Teste que parece errado, divergência que muda o desenho, ou a segunda correção seguida sem sair do lugar (acima).

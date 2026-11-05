@@ -11,7 +11,7 @@ Recalcule vazão média, lead time médio e horas por tipo (`equipe.json` → `h
 retrabalho): o % é o do `acordos.md`; mostre o consumido da sprint (horas das tarefas de Sustentação +
 retrabalho) contra ela e, se ficou muito acima ou abaixo, **proponha** um novo % ao P.O. — muda o acordo só com
 "ok". Replaneje a próxima pelo fluxo `sa-planejamento.sprint` (migradas consomem capacidade primeiro); o `sprint-<nn>.md` dela nasce
-com `**Publicação no EWM:** pendente` no cabeçalho (o §1 dela ainda não rodou; a publicação vem no passo `virada`).
+com `**Publicação no EWM:** pendente` no cabeçalho (o §1 do [elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md), iteração e plano da sprint no EWM, ainda não rodou para ela; a publicação vem no passo `virada`).
 
 ## Saída
 

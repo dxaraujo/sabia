@@ -16,8 +16,7 @@ está fechado fica na iteração em que fechou, com as horas dele); o §3–4 e 
 da próxima. Iteração
 do EWM mais longa que a sprint (a mesma cobre as duas) → o movimento não muda nada (os ids já estão nela; diga
 isso), mas o §1 da próxima roda do mesmo jeito — acha a iteração e o plano, não cria nada e tira o
-`**Publicação no EWM:** pendente` —, e também o §3–4, o §6 e o §9 dela; o relatório de horas da sprint conta só
-as tarefas listadas no `sprint-<nn>.md`, não a iteração inteira.
+`**Publicação no EWM:** pendente` —, e também o §3–4, o §6 e o §9 dela.
 
 ## Saída
 

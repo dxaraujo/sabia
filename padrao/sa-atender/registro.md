@@ -8,7 +8,7 @@ e `## Resposta enviada` dão lugar a `## O que foi feito` (passos e evidência, 
 # AT-012 · Extração de contas bloqueadas em setembro
 
 **Categoria:** Atendimento · **Origem:** chamado 4521 · **Pedido por:** área de segurança · **Prazo:** 2026-10-16
-**Responsável:** joao.lima · **Situação:** aberto | em-andamento | concluido | cancelado
+**Responsável:** joao.lima · **Situação:** aberto | em-andamento | concluido | cancelado (<motivo>)
 **Critério de pronto:** planilha com as contas bloqueadas por tentativas, por dia · **Estimativa:** 3 h
 
 ## Pedido
@@ -34,6 +34,29 @@ Arquivo: `.sabia/local/sustentacao/atendimento/AT-012/contas-bloqueadas-2026-09.
 |---|---|---|---|---|---|
 | 2026-10-14T16:20:05 | atendimento | joao.lima | 5753e516 | 2.0.0 | 3.12 |
 
-**ELM:** feito | pendente: <o que falta>
-**Saída:** — | FT-040 (defeito, pela triagem) | lição L-015
+**ELM:** —
+ELM pendente [IB AT-012 concluir]: concluir o IB [AT-012]
+**Saída:** —
 ```
+
+`**Saída:**` `—` (1 · nada) · `triagem: <o que vai à sa-triar> (origem <ID>)` (2 · alteração ou regra) · `lição: <o que
+registrar> (sa-aprender)` (3); mais de uma → separadas por ` · `. O id que nasce depois (FT-nnn, L-nnn) não volta ao
+registro.
+
+`**ELM:** —` sem pendência; logo abaixo, uma linha por pendência: `ELM pendente [<chave>]: <o que falta>`. Resolvida,
+acrescente `ELM feito [<mesma chave>]: <o que foi feito> (<AAAA-MM-DD>)` sem apagar a pendência (chaves em
+[elm.md](~/.sabia/framework/skills/sabia/references/elm.md#pendências), Pendências).
+
+| Campo | Formato | Obrigatório | Quem grava |
+|---|---|---|---|
+| Categoria | o nome na tabela **Sustentação** do `sabia.md` | sim | `sa-triar` |
+| Origem | como a coluna `origem` da Sustentação no `backlog.md` | sim | `sa-triar` |
+| Pedido por | área ou papel, sem nome de pessoa | sim | `sa-triar` |
+| Prazo | `AAAA-MM-DD` ou `—` | não | `sa-triar` |
+| Critério de pronto | uma frase | sim | `sa-triar` |
+| Estimativa | `<n> h` (decimal com ponto) | sim | `sa-triar` |
+| Responsável | login ou `—` | sim | `sa-triar`, ou o passo `assumir` |
+| Situação | `aberto` · `em-andamento` · `concluido` · `cancelado`, com o significado em [backlog.md](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#situações), Situações (Item de Sustentação) | sim | quem causa |
+| Horas | uma linha por `elm_lancar_horas`: Data `AAAA-MM-DD`, Horas decimais | — | `sa-atender` · `sa-executar` |
+| Créditos | uma linha por sessão (item 4 do [Fechar a sessão](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão) da `sa-status`) | — | quem fecha a sessão |
+| O que foi feito (outras categorias) | lista numerada `<n>. <o que foi executado> · <onde> · <resultado> · <link do chamado ou da mudança>` | — | `sa-executar` |

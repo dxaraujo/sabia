@@ -34,6 +34,8 @@ conclusão da `[ESP]` (a do épico ou a da fatia), ligado à história; `CSV` �
 - **Sem caminho de arquivo, classe nem SQL:** como chegar ao estado e onde ver o resultado vêm do plano da fatia; aqui,
   o comportamento.
 - **Só dado fictício** nos exemplos e na massa descrita.
+- **Numeração:** `nn` sequencial no `elm/` do épico (o maior + 1, também na mudança); arquivo
+  `CT-<nn>-<slug do cenário>.md`; título `CT<nn> - <título do cenário>` (sem hífen, como no ETM).
 - **Envelope:** `type` = o tipo de artefato de teste do ETM (coluna Tipo da linha `CT.csv` da seção ELM do
   `sabia.md`; padrão `Caso de Teste`); `title: CT<nn> - <título do cenário>`; `sources` com o PRD e a HF; sem `tags`
   (não vai ao DOORS Next).

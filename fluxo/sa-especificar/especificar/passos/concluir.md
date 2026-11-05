@@ -16,7 +16,7 @@ O PRD publicado e ligado à `[ESP]` (ou `ELM pendente`), ou o projeto sem ELM (p
    `[ESP]`.
 2. **Conclusão da `[ESP]`** (com ELM): mostre as horas já lançadas (`elm_horas(id)`) e pergunte só o saldo a quem
    especificou → `elm_lancar_horas(id, horas)` e `elm_transicao(id, "concluir")`, numa confirmação. Sem o MCP `elm`
-   → `ELM pendente [<chave>]: lançar <h>h e concluir [ESP] EP-<nn>` (no commit do item 1).
+   → `ELM pendente [ESP EP-<nn> concluir]: lançar <h>h e concluir` (no commit do item 1).
 3. Diga, exata: `Próximo: fatiar o EP-<nn> — P.O. ou SM, agente sa-produto (sa-fatiar). O fatiamento vem logo em seguida.`
    e pare.
 

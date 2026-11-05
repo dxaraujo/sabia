@@ -25,4 +25,5 @@ A `[VER]` assumida (ou o passo pulado, como subagente) → passo `roteiro`.
 
 - Quem está na sessão é quem implementa → diga isso, quem é o verificador da fatia (coluna Verificador no
   `sprint-<nn>.md`) e pare, sem assumir a `[VER]`.
+- Árvore suja ou `git pull --ff-only` recusado (item 2) → avise e pare (nunca `reset`, `stash` ou rebase).
 - A regra comum de assumir parou (a `[VER]` é de outra pessoa; tarefa fechada sem o "sim") → a frase dela e pare.

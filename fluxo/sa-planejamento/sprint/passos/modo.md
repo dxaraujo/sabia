@@ -9,14 +9,14 @@ atribuição: `sa-desenvolver.desenvolver.compromisso`, ou o lote do `sa-orquest
 
 ## Faça
 
-O `modo` que a triagem ou o fatiamento gravaram é a proposta para a **fatia** (critérios da `sa-fatiar`). O modo
+O `modo` que a triagem ou o fatiamento gravaram é a proposta para a **fatia** (critérios do passo `sa-fatiar.fatiar.rascunho`, item Modo). O modo
 final sai quando a fatia ganha responsável — na seleção da sprint, no encaixe ou, se ela entrou sem responsável,
 quando alguém a assume (`sa-desenvolver.desenvolver.compromisso`) —, pela `senioridade` de quem implementa no `equipe.json`:
 
 | Senioridade | Modo da fatia |
 |---|---|
 | `Júnior` | sempre `HITL` |
-| `Pleno` | o Sabiá aplica os critérios da `sa-fatiar` (inclusive "tipo de trabalho novo começa `HITL`") e propõe; a pessoa confirma |
+| `Pleno` | o Sabiá aplica os critérios do passo `sa-fatiar.fatiar.rascunho`, item Modo (inclusive "tipo de trabalho novo começa `HITL`") e propõe; a pessoa confirma |
 | `Sênior` | `AFK` por padrão; `HITL` só com motivo forte da fatia — decisão de produto ou de UX no caminho, dado sensível, risco alto (diga qual) |
 
 Modo final diferente do backlog → grave-o com `obs` `modo pela senioridade (<login>)`; o `HITL` do Sênior leva o

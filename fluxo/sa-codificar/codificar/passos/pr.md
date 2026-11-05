@@ -11,7 +11,7 @@ Push e PR são do Dev: o agente `sa-desenvolvedor` (o Kiro confirma cada um) ou 
 ## Faça
 
 0. **ADRs:** cada decisão do `design.md` com "Vira ADR? sim" → um ADR curto em `.kiro/specs/<ft>-<slug>/adr/<slug-da-decisão>.md`
-   (contexto · decisão · consequências · origem FT-<nnn>), descrevendo o que o código faz. Vai no PR: o Dev Sênior
+   (corpo: `# <decisão>` · `## Contexto` · `## Decisão` · `## Consequências` · `Origem: FT-<nnn>`), descrevendo o que o código faz. Vai no PR: o Dev Sênior
    o julga na `[REV]` ou na `[APR]` (rubrica C15); a pasta de ADRs do projeto é artefato de produto (nunca em branch
    de fatia) — a consolidação o leva para lá.
    **ET as-built** (só se a linha ET da seção ELM do `sabia.md` diz `só as-built` ou `inicial no PRD + as-built`):
@@ -52,12 +52,14 @@ Push e PR são do Dev: o agente `sa-desenvolvedor` (o Kiro confirma cada um) ou 
       criar]: <login de quem aprova>` no Histórico.
    7. `status.md`: HITL → `fase: pr-aberto`; AFK → `fase: aguardando-aprovacao-pr`; link do PR (sem o MCP `gitlabpr`,
       item 4: o que a pessoa passou ou `PR: texto entregue` — o push foi feito, e a fase é a mesma; push "não" já parou
-      no item 2); linha no Histórico e os **créditos da sessão** na seção Créditos
-      ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4). Commit, push e conferência como nos itens 1–3
+      no item 3.2); linha no Histórico e os **créditos da sessão** na seção Créditos
+      ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4). Commit, push e conferência como nos itens 3.1–3.3
       (o `status.md` vai junto no PR).
-   8. **Horas da sessão** na `[DEV]`: `elm_horas(<id>)` → desconte → `elm_lancar_horas(<id>, <h>)`, com "sim" — lança, não conclui (retrabalho: as horas
-      também na tabela Retrabalho). Sem o MCP `elm` → `ELM pendente [DEV FT-<nnn> horas]: lançar <h>h` no
-      Histórico. **A `[DEV]` não é concluída no PR:** fica em andamento até o merge (`sa-desenvolver.encerrar`).
+   8. **Horas da sessão** na `[DEV]`, como no item 3 de Fechar a sessão da
+      [`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão): pergunte o tempo desta sessão →
+      `elm_horas(<id>)` → desconte o que esta sessão já lançou → `elm_lancar_horas(<id>, <h>)`, com "sim" — lança,
+      não conclui (retrabalho: as horas também na tabela Retrabalho). Sem o MCP `elm` → `ELM pendente [DEV FT-<nnn>
+      horas]: lançar <h>h (<data>)` no Histórico. **A `[DEV]` não é concluída no PR:** fica em andamento até o merge (`sa-desenvolver.encerrar`).
    9. **Avise:** HITL → o revisor, de que a `[REV]` está disponível; AFK → o Dev Sênior da `[APR]`, de que o PR
       espera a leitura dele (`sa-revisar.aprovar-pr`).
 

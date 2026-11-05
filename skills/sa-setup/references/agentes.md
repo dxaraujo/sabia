@@ -13,11 +13,11 @@ Os agentes são **gerados**, nunca editados à mão. Cinco fontes:
 O script [../scripts/gerar_agentes.py](../scripts/gerar_agentes.py) junta as cinco e grava os sete agentes, mais os agentes dos passos de toolkit ligados, em cada alvo (`.kiro/agents/<nome>.json`, `.opencode/agents/<nome>.md`):
 
 ```bash
-uv run --no-project python <power>/skills/sa-setup/scripts/gerar_agentes.py --projeto <raiz>            # mostra o diff e a tabela
-uv run --no-project python <power>/skills/sa-setup/scripts/gerar_agentes.py --projeto <raiz> --gravar   # grava
+uv run --no-project python <pasta desta skill>/scripts/gerar_agentes.py --projeto <raiz>            # mostra o diff e a tabela
+uv run --no-project python <pasta desta skill>/scripts/gerar_agentes.py --projeto <raiz> --gravar   # grava
 ... --alvo kiro,opencode           # padrão: `alvos` do agentes.json, ou kiro
 ... --framework <dir>              # padrão: ~/.sabia/framework (os testes passam outro)
-uv run --no-project python <power>/skills/sa-setup/scripts/gerar_agentes.py --base sa-codificar.codificar.tarefa  # a `base` de uma cópia
+uv run --no-project python <pasta desta skill>/scripts/gerar_agentes.py --base sa-codificar.codificar.tarefa  # a `base` de uma cópia
 ```
 
 Sai com código 1 (sem gravar nada) se sobrou um `{{…}}` ou se um `skill://`/`file://` não existe ou é absoluto, e
@@ -31,33 +31,34 @@ e não gera nada: a setup grava a `base` de toda cópia por ele, nunca por outro
 Alvos: **Kiro** (motor v3) e **opencode**. O formato é o **V3** do Kiro (campo `permissions`), carregado pela IDE e
 pela engine V3 do `kiro-cli`. A engine V2
 do CLI não é suportada pelos agentes do Sabiá (dá "Mode not found"): use a IDE ou `kiro-cli chat --agent-engine v3`. Não rode
-`/upgrade-agent` nem `kiro-cli agent upgrade` neles — os três com subagentes aparecem como `out of sync (not
-rebuilt)` no `--dry-run` (por causa do `toolsSettings.subagent`, que a V3 ainda usa), e o conversor os deixa de lado.
+`/upgrade-agent` nem `kiro-cli agent upgrade` neles — os quatro com subagentes (produto, especificador, desenvolvedor,
+orquestrador) aparecem como `out of sync (not rebuilt)` no `--dry-run` (por causa do `toolsSettings.subagent`, que a V3 ainda usa), e o conversor os deixa de lado.
 
 ## `agentes.json` do projeto
 
-| Campo | O quê |
-|---|---|
-| `alvos` | as ferramentas do time: `["kiro", "opencode"]` (padrão `["kiro"]`; `--alvo` no gerador troca) |
-| `sabia` | a versão do Sabiá com que o projeto foi configurado; diferente da instalada (`plugin.json` do framework) → o gerador e a setup avisam |
-| `power` | a pasta do power do Kiro, relativa ao home (Passo 0): `~/.kiro/powers/installed/sabia` |
-| `produto`, `glossario`, `adr` | os caminhos do Passo 4 (padrão `.sabia/planejamento`, `.sabia/glossario.md`, `.sabia/adr`; `null` = não há) |
-| `base` | a branch base, sem `origin/` — nas regras de push da base (pergunta no desenvolvedor e no orquestrador; negado nos demais) |
-| `bundle` | o `rm.download` do `pa` (leitura negada: a consulta é pelas `elm_*_local`), ou `null` |
-| `massa` | a pasta de massa do projeto que o verificador escreve, ou `null` |
-| `elm` | `false` → nenhuma tool do `elm` em nenhum agente (`sabia/elm/*` negado) |
-| `push_pr_no_loop` | `false` ("não — a pessoa abre") → o orquestrador não faz push (nem o da `iniciada` do lote, na base) nem abre PR |
-| `http_sh` | `true` se a setup instalou `.sabia/http.sh` (com o shell `*`, não vira regra) |
-| `steering` | `file://` do steering de produto, tecnologia e estrutura, para todos os agentes |
-| `comandos.build` | compilar, testes, teste único, lint, cobertura (com o shell `*`, não vira regra) |
-| `comandos.verificacao` | executar a aplicação ou o job, scripts de massa (idem) |
-| `agentes.sa-<papel>.skills` | `skill://` das skills escolhidas no Passo 6 |
-| `agentes.sa-<papel>.ler` | pastas dessas skills fora do projeto e do power (`~/.kiro/skills/<skill>/**`) |
-| `agentes.sa-<papel>.mcp` | tools de MCP do projeto: `servidor/tool` (banco: só a de consulta) ou `servidor` (inteiro, ex.: browser) |
-| `agentes.sa-<papel>.subagentes` | `[{"nome", "para"}]` — agentes do projeto (desenvolvedor e orquestrador) |
-| `agentes.sa-<papel>.modelo` | o modelo, se não for o padrão |
-| `toolkits.<nome>` | `{"pasta", "versao", "sha"}` de cada toolkit com passo ou tipos ligados — `pasta` relativa ao home (`~/.sabia/toolkits/<nome>`) ou ao projeto |
-| `passos` | `[{"toolkit", "skill", "agente"}]` — a skill do `toolkit.json` que tem `passo`; `agente: true` gera o agente do passo e o liga ao dono |
+Obrigatórios: `produto` e `base`; os demais são opcionais, com o padrão dito na linha.
+
+| Campo | Formato | O quê |
+|---|---|---|
+| `alvos` | `["kiro", "opencode"]` | as ferramentas do time (padrão `["kiro"]`; `--alvo` no gerador troca) |
+| `sabia` | `"<versão>"` | a versão do Sabiá com que o projeto foi configurado; diferente da instalada (`plugin.json` do framework) → o gerador e a setup avisam |
+| `power` | `"~/.kiro/powers/installed/sabia"` | a pasta do power do Kiro, relativa ao home (Passo 0) |
+| `produto`, `glossario`, `adr` | `"<caminho relativo à raiz>"` \| `null` | os caminhos do Passo 4 (padrão `.sabia/planejamento`, `.sabia/glossario.md`, `.sabia/adr`; `null` = não há) |
+| `base` | `"<branch>"` | a branch base, sem `origin/` — nas regras de push da base (pergunta no desenvolvedor e no orquestrador; negado nos demais) |
+| `bundle` | `"<caminho>"` \| `null` | o `rm.download` do `pa` (leitura negada: a consulta é pelas `elm_*_local`) |
+| `massa` | `"<caminho>"` \| `null` | a pasta de massa do projeto que o verificador escreve — só registro (nenhuma regra nem prompt o usa); o corpo do `http.sh` vem de `.kiro/specs/<ft>-<slug>/massa/` |
+| `elm` | `true` \| `false` | `false` → nenhuma tool do `elm` em nenhum agente (`sabia/elm/*` negado) |
+| `push_pr_no_loop` | `true` \| `false` | `false` ("não — a pessoa abre") → o orquestrador não faz push (nem o da `iniciada` do lote, na base) nem abre PR |
+| `http_sh` | `true` \| `false` | `true` se a setup instalou `.sabia/http.sh` (com o shell `*`, não vira regra) |
+| `steering` | `["file://<caminho relativo à raiz>", …]` \| `[]` | o steering de produto, tecnologia e estrutura, para todos os agentes |
+| `comandos` | `{"build": ["<comando>", …], "verificacao": ["<comando>", …]}` | `build`: compilar, testes, teste único, lint, cobertura; `verificacao`: executar a aplicação ou o job, scripts de massa — só registro (o gerador não lê; com o shell `*`, não vira regra) |
+| `agentes.sa-<papel>.skills` | `["skill://~/<caminho>/SKILL.md" \| "skill://.kiro/skills/<skill>/SKILL.md", …]` | as skills escolhidas no Passo 6 |
+| `agentes.sa-<papel>.ler` | `["~/.kiro/skills/<skill>/**", …]` | pastas dessas skills fora do projeto e do power |
+| `agentes.sa-<papel>.mcp` | `["<servidor>/<tool>" \| "<servidor>", …]` | tools de MCP do projeto: `servidor/tool` (banco: só a de consulta) ou `servidor` (inteiro, ex.: browser) |
+| `agentes.sa-<papel>.subagentes` | `[{"nome": "<agente>", "para": "<quando usar>"}]` | agentes do projeto (desenvolvedor e orquestrador) |
+| `agentes.sa-<papel>.modelo` | `"<modelo>"` | o modelo, se não for o padrão |
+| `toolkits.<nome>` | `{"pasta": "~/.sabia/toolkits/<nome>" \| ".sabia/toolkits/<nome>", "versao": "<versao do toolkit.json>", "sha": "<sha do .origem.json>" \| null}` | cada toolkit com passo ou tipos ligados; `sha` `null` no toolkit do projeto (só registro; o gerador não lê o sha) |
+| `passos` | `[{"toolkit": "<chave em toolkits>", "skill": "<caminho da skill no toolkit.json, ex.: skills/spring-batch-job/SKILL.md>", "agente": true \| false}]` | a skill do `toolkit.json` que tem `passo`; `agente: true` gera o agente do passo e o liga ao dono |
 
 O shell `trabalho` é liberado (`*`): os comandos do projeto não viram regra. O backpressure antes de cada commit é o
 passo `sa-codificar.codificar.validar`, que roda a seção Comandos do `sabia.md`.
@@ -67,7 +68,7 @@ passo `sa-codificar.codificar.validar`, que roda a seção Comandos do `sabia.md
 O gerador monta o agente do Kiro e o traduz:
 
 - **opencode** (`.opencode/agents/<nome>.md`): `permission` por agente, na ordem em que a última regra que casa
-  vence — `read` e `edit` por caminho (`**/x` vira `x` e `*/x`), `bash` (as negações por último), `task` (os
+  vence — `read` e `edit` por caminho (`read`: `**/x` vira `x` e `*/x`; `edit`: `**/x` vira `*/x`, e a raiz vem da regra própria), `bash` (as negações por último), `task` (os
   subagentes), `skill` (as skills do agente, pelo nome), as tools de MCP como `<servidor>_<tool>` e
   `external_directory` para o que se lê fora do projeto (o power vira `~/.config/opencode`, onde estão as skills
   compiladas). Agente do toolkit sai como `mode: subagent`.
@@ -151,7 +152,7 @@ do agente, que o gerador monta depois do `sa-<papel>.md`:
   pelo `allow` de `git show*`. A defesa é fora do agente — a confirmação de cada push, a revisão do PR por pessoa e
   o merge conferindo o ELM.
 
-Conferido em 23/10/2026 com o `kiro-cli` 2.32 na engine V3, com as regras de então: os seis passam no
+Conferido em 23/10/2026 com o `kiro-cli` 2.32 na engine V3: os agentes passam no
 `agent validate`; comando liberado roda, comando fora da lista e exceção caem em aprovação, `commit -n` e push para
 a base são negados pela regra. O `agent validate` não lê o `permissions`: o `exclude` no `fs_write` foi
 conferido no motor V3 do `kiro-cli` 2.35, que o aplica aos caminhos como aos comandos.

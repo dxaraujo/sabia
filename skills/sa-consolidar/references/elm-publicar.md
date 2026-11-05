@@ -21,7 +21,7 @@ da `[ESP]` (passo `sa-especificar.especificar.publicar` ou `sa-especificar.fatia
 
 **Filtro:** `status: stable` com um `verified` humano posterior ao `generated.at` e, além disso, sem `resource` ou
 com o `verified` mais novo que o `last_modified` da entrada `elm` em `sources`. Na prévia, o já publicado na versão
-aprovada é `sem mudança`, e o resto do escopo, "aguardando aprovação". Os tipos com Requisito `não` no catálogo ficam fora (a
+aprovada é `sem mudança`, e o resto do escopo, `aguardando aprovação`. Os tipos com Requisito `não` no catálogo ficam fora (a
 ATA e o CT planejado têm a seção deles, abaixo).
 Ordem: a **de publicação** do [catálogo de tipos](../../sabia/references/tipos.md), de baixo para cima, para cada um
 nascer com os ids que cita (GL → REG → EL → HF → ET), com a **2ª passada HF ↔ EL** (item 5) logo depois das HFs e
@@ -44,7 +44,7 @@ as-built da fatia segue a seção ET as-built abaixo.
    as HFs, republique cada EL que cita uma HF sem id no texto publicado, com o `id` dela e `modificado_em` = o
    `last_modified` gravado no item 4: as HFs passam a `[<id>](<id>)`, como no item 2 (o sentido HF → EL já sai no
    item 2). Na mesma confirmação do lote; sem o "sim" para ela ou com falha → `ELM pendente [EL-<nn> <EP-nn|FT-nnn>
-   ligar HF]`. O link tipado HF ↔ EL não existe: a relação é a citação nos dois corpos.
+   ligar HF]: republicar a EL com os ids das HFs`. O link tipado HF ↔ EL não existe: a relação é a citação nos dois corpos.
 
 **Exclusão** (`status: deprecated`, ação `exclui`): não publica — o ELM não apaga, move para a lixeira, e o MCP não
 tem essa operação. Na prévia, `🗑️ mover para a lixeira no DOORS Next: <id> · <título>`, e no lugar das pendências
@@ -61,13 +61,13 @@ elas), pela linha **Casos de teste** da seção ELM do `sabia.md`:
 - **`ETM`**, com `qm` no `pa`: cada CT `stable`, com um `verified` humano posterior ao `generated.at` e sem
   `resource` → `elm_criar_ct(titulo = title, cenario_md = o corpo sem a seção `## Relações`, reqs = ids das HFs que
   ele prova)`, sem `wi`; grave de volta como no item 4 dos requisitos. Erro `permissao` → `ELM pendente [CT-<nn>
-  <EP-nn|FT-nnn> criar]`.
+  <EP-nn|FT-nnn> criar]: criar o CT no ETM (permissão)`.
 - **`CSV`**, ou o `pa` sem `qm`: o CT planejado fica no repositório — nada sobe e nenhuma `ELM pendente`.
 
 ## ATA (reunião da `[ESP]`)
 
 Fora da ordem de publicação dos requisitos: cada ATA sobe na aprovação dela, pelo passo
-`sa-especificar.reuniao.publicar`. Entrada: a `elm/ATA-nn-<slug>.md` `stable`, com um `verified` humano posterior ao
+`sa-especificar.reuniao.publicar`. Entrada: a `elm/ATA-<nn>-<AAAA-MM-DD>-<assunto>.md` `stable`, com um `verified` humano posterior ao
 `generated.at`; a transcrição nunca sobe.
 
 1. **Texto:** o corpo da ATA; o `D-nn` fica como texto (o `decisoes.md` não sobe sozinho).
@@ -77,14 +77,17 @@ Fora da ordem de publicação dos requisitos: cada ATA sobe na aprovação dela,
 
 ## ET as-built (só se a linha ET da seção ELM do `sabia.md` disser `só as-built` ou `inicial no PRD + as-built`)
 
-A ET chega no PR (`.kiro/specs/<ft>-<slug>/elm/ET-<slug>.md`); publique como um requisito (sigla `ET`), com a linha
-`Código: PR <link> · merge <sha curto>` no fim do texto publicado, e `elm_ligar(wi = <id da [DEV]>, req = <id da ET>,
+A ET chega no PR (`.kiro/specs/ft-<nnn>-<slug>/elm/ET-<slug>.md`); publique como um requisito (sigla `ET`), com a
+linha `Código: PR <link> · merge <sha curto>` no fim do texto publicado (`<sha curto>` = os 8 primeiros caracteres do
+commit de merge: o do `gitlab_obter_mr(<iid do link do PR>)`; sem o MCP, o `(sha <sha>)` da linha `merge do PR … por
+fora do Sabiá` do Histórico ou, sem ela, pergunte à pessoa), e `elm_ligar(wi = <id da [DEV]>, req = <id da ET>,
 tipo implementa)`. O MCP não tem vínculo tipado com o código: a relação é a linha `Código:`. Uma ET por fatia: nunca sobre o id da inicial. A entrada `et-inicial` do `sources`
 (caminho relativo da inicial, sem URI) não entra no `modificado_em` nem no conflito: esses vêm só da `id: elm`.
 
 - **Fatia de épico com ET inicial:** o **Elabora** dela vira `[<id da inicial>](<id da inicial>)` no texto, como
   um requisito já publicado (item 2 dos requisitos). Inicial ainda sem id (a `[ESP] EP` com `ELM pendente`) → a
-  as-built sobe com o título da inicial e `ELM pendente [ET FT-<nnn> ligar]`.
+  as-built sobe com o título da inicial e `ELM pendente [ET FT-<nnn> ligar]: republicar a ET as-built com o Elabora
+  [<id da inicial>](<id>)`.
 - **Fatia sem épico** (ou épico sem ET inicial): sem ligação.
 
 ## Casos de teste da fatia (o `CT.csv`, com as evidências dos cenários `✅ aceito` do `verificacao.md`)
@@ -92,21 +95,32 @@ tipo implementa)`. O MCP não tem vínculo tipado com o código: a relação é 
 Pela linha **Casos de teste** da seção ELM do `sabia.md`:
 - **`CSV`**, ou o `pa` sem `qm`: o `CT.csv` da fatia é a entrega — nenhum `elm_criar_ct` e nenhuma `ELM pendente`.
   Diga o caminho dele (o time o importa no ETM se quiser); no campo ELM do `status.md`, `CT CSV <caminho>`.
-- **`ETM`**, com `qm` no `pa`: como abaixo.
+- **`ETM`**, com `qm` no `pa`: como abaixo. A linha `ETM` vale como `qm` no `pa` (a setup só a grava assim). O
+  primeiro `elm_criar_ct`/`elm_ligar` com CT devolve `config` com `campo: "qm"` → trate como `CSV` (o CT.csv é a
+  entrega, sem `ELM pendente`) e diga: `pa sem qm: CT.csv entregue; para ETM, configure o qm pela sa-setup`.
+
+IB da fatia = o item da coluna `elm` da linha da fatia: o `IB`, ou o `DF`/`IB` de origem na fatia que veio do EWM
+(vale para todo `wi = IB` abaixo). A linha do CT.csv é de um CT planejado quando o Resumo traz `CT<nn>` (o CT novo
+traz `CT<FT-nnn>-<nn>`): o conceito é o `CT-<nn>-*.md` em `elm/` da fatia ou do épico.
 
 Linha do `CT.csv` ligada a um CT planejado → o id vem do `resource`/`id` do `CT-nn-<slug>.md` em `elm/` do épico
 ou da fatia (`.kiro/specs/ft-<nnn>-<slug>/elm/`, que vale sobre a do épico), publicado na conclusão da `[ESP]` (seção
 CT planejado, acima), nunca da Descrição do `CT.csv` (informativa). Com id → não cria: `elm_ligar(wi = IB, ct = id)`
-e o id ao lado do cenário; ainda sem id (a `[ESP]` com `ELM pendente`) → crie-o como na seção CT planejado e grave de
-volta no conceito, depois `elm_ligar(wi = IB, ct = id)`. Só a linha de CT novo é criada do CSV: `elm_criar_ct(titulo = Resumo do CT.csv, cenario_md = Descrição, reqs = ids das
-histórias que ele cobre — sem HF: as REG da fatia —, wi = IB)`. Grave o id ao lado do cenário e no campo ELM do
-`status.md` (`CT <id>, …`). Erro `permissao` → `ELM pendente [CT FT-<nnn> criar]` e o `CT.csv`
-para importar à mão no ETM; com os ids que a pessoa informar, `elm_ligar(ct, req)` e `elm_ligar(wi, ct)`.
+e grave `- CT ETM: <id> (CT-<nn> planejado)` logo abaixo da Evidência do cenário no `verificacao.md`; ainda sem id
+(a `[ESP]` com `ELM pendente`) → crie-o como na seção CT planejado e grave de volta no conceito, depois
+`elm_ligar(wi = IB, ct = id)`. Só a linha de CT novo é criada do CSV: `elm_criar_ct(titulo = Resumo do CT.csv,
+cenario_md, reqs, wi = IB)` — `reqs` = o `id` dos conceitos citados entre parênteses na linha OBJETIVO da Descrição
+(as HF; sem HF, as REG), lidos de `elm/` da fatia ou do épico; nenhum com id → `reqs = []`; `cenario_md` = a
+Descrição sem as aspas de fora e com `""` → `"`. Grave `- CT ETM: <id> (novo)` logo abaixo da Evidência do cenário
+e o id no campo ELM do `status.md` (`CT <id>, …`). Erro `permissao` → `ELM pendente [CT FT-<nnn> criar]: importar o
+CT.csv no ETM e ligar (ct, req) e (wi, ct)` e o `CT.csv` para importar à mão no ETM; com os ids que a pessoa informar, `elm_ligar(ct, req)` e `elm_ligar(wi, ct)`.
 
 ## Conclusão do IB e do épico
 
-IB da fatia: `elm_comentar(id, "PR <link> · pasta <pasta> · publicados: <ids de ET, CT>")` e
+IB da fatia (o item da coluna `elm` da linha da fatia: o `IB`, ou o `DF`/`IB` de origem na fatia que veio do EWM):
+`elm_comentar(id, "PR <link> · pasta <pasta> · publicados: <ids de ET, CT>")` e
 `elm_transicao(id, "concluir")`, na mesma confirmação. Na última fatia do épico (as demais `concluida`, `dividida`
 ou `cancelada`), também o IB do épico (`elm_transicao(id, "concluir")`), junto com o `concluido` no `backlog.md` e
 na Fase do `status.md` do épico (passo `sa-consolidar.consolidar.fechar`); épico `cancelado` não conclui (fica como está). Erro
-`precondicao` → `ELM pendente [IB FT-<nnn> concluir]` (no épico, `[EP-<nn> concluir]`) com o atributo.
+`precondicao` → `ELM pendente [IB FT-<nnn> concluir]: concluir o IB <id> (<atributo exigido>)` (no épico, `ELM
+pendente [IB EP-<nn> concluir]: concluir o IB do épico <id> (<atributo exigido>)`).

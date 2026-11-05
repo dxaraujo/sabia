@@ -54,7 +54,8 @@ Nos arquivos do Sabiá: `sprints/2026/sprint-01.md`, chave `2026/Sprint 01` (do 
 ## 0. Backlog do produto (na setup ou em "atualizar a configuração do Sabiá"; uma vez por projeto)
 
 1. `elm_backlog()` → `atual` (o `ccm.backlog` do `pa`) e `candidatos` (planos de backlog da PA). Já há `atual` →
-   mostre e confirme e vá ao passo 4.
+   rode sobre ele a conferência "Um produto por iteração de backlog" (passo 2); passou → mostre, confirme e vá ao
+   passo 4; recusado, ou a pessoa não confirma → passo 2 (escolher ou criar outro), sem espelhar nada.
 2. Pergunte a **linha de base** do projeto (a iteração da timeline onde ficam o backlog e os pais das sprints; quem
    administra a PA cria, se não existir) e se ela **já tem** a iteração `Backlog` com o plano. Mostre os
    `candidatos`.
@@ -145,7 +146,10 @@ primeira linha da `## Sustentação` do `backlog.md`: `IB [<id>](<url>) · GB [<
 Sustentação já existe sem a `[GB]` → crie só a `[GB]` (na iteração da sprint aberta; sem ela, no backlog). **Pai
 novo** (a sprint nova é `2027/Sprint 01`): nasce a `[GB]` do pai novo, na iteração da primeira sprint dele (dono = o
 SM), e a antiga conclui com o saldo de horas do SM (sem horas, se ele é também o P.O.; `elm_transicao concluir`) e
-sai da linha; a Sustentação, a Manutenção e os IBs de categoria não mudam.
+sai da linha; a Sustentação, a Manutenção e os IBs de categoria não mudam. A `[GB]` do pai novo não usa a
+idempotência acima, que acharia a antiga ainda aberta: procure `elm_listar_wi(iteracao = <a da 1ª sprint do pai
+novo>, titulo_prefixo "[GB]")`; achou a aberta de título `[GB] Gerenciamento do backlog` → é ela (publicação
+interrompida); senão, crie. Grave o id novo no lugar do `GB` da linha da `## Sustentação` e só então conclua a antiga.
 
 ## 3. Épico e IB (nascem no registro; movem na sprint)
 
@@ -180,7 +184,9 @@ sai da linha; a Sustentação, a Manutenção e os IBs de categoria não mudam.
 - **Na sprint** (depois do "ok"; com ou sem responsáveis — o IB é sempre do P.O.): épicos, IBs das fatias e IBs dos itens de Sustentação da sprint que já têm `elm` →
   `elm_atualizar_wi(ids, iteracao = a da sprint)` numa chamada, só com a iteração; as tarefas que já existem movem
   cada uma na chamada dela, com o dono e a estimativa do papel (topo); os `—`/`pendente` nascem como acima, já na
-  iteração da sprint. Item que sai da sprint sem ter começado (`sa-planejamento.durante.encaixe`, ou §9: a Volta) volta com `iteracao =
+  iteração da sprint. Item que sai da sprint sem ter começado (`sa-planejamento.durante.encaixe`; §9, a linha 'saiu (aberto), item não
+  iniciado' da [Iteração](#soluções-propostas); ou a [Volta](../../sa-fatiar/references/backlog.md#situações) do
+  backlog.md) volta com `iteracao =
   backlog`, com as tarefas abertas, e o IB (ou a origem) volta ao estado inicial, se não está nele
   (`elm_transicao(<id>, "reabrir")`, na mesma confirmação; topo).
 
@@ -224,15 +230,19 @@ também os ids abertos de linha migrada que ainda estão numa sprint anterior da
 metade, abaixo) — não todo id aberto fora da listagem, que desfaria uma saída que espera o P.O. Listagem com `total` =
 1000 → avise e pare (§9, passo 1). Iteração que cobre as duas sprints (a mesma `**Iteração no EWM:**`) → o
 movimento não muda nada (os ids já estão nela), mas o §1 da próxima roda do mesmo jeito (acha a iteração e o plano,
-não cria nada e tira o marcador), e também o §3–4, o §6 e o §9 dela. Baseline por sprint, se o `sabia.md` exigir →
+não cria nada e tira o marcador), e também o §3–4, o §6 e o §9 dela; o relatório (abaixo) filtra as linhas do
+`elm_horas` pelos ids da Tarefa ELM e da `[GB]` do `sprint-<nn>.md` que fecha. Baseline por sprint, se o `sabia.md` exigir →
 roteiro manual.
 
 **Virada pela metade** (sem o MCP, falha no movimento ou sessão parada depois do passo `sa-planejamento.retrospectiva.recalcular`): os arquivos seguem; diga
 que o movimento fica para a sincronização da próxima, que o reconhece (§9: a sprint não publicada, a linha
 `migrada de` e a `[GB]` ainda na iteração de origem, a linha nova sem ids).
 
-Relatório: `elm_horas(iteracao)` → horas por prefixo e por pessoa, planejadas × lançadas, e as tarefas concluídas
-sem horas (a `[GB]` sem horas, da dona que também é P.O., não é falta: §2).
+Relatório: `elm_horas(iteracao)` → as horas lançadas por tarefa (`linhas[{tarefa_id, prefixo, pessoa, horas}]`,
+`total_h`; a tarefa sem lançamento vem com 0). O estado de cada tarefa vem da `elm_listar_wi(iteracao, limite 200)`;
+as horas planejadas, do `estimativa_h` de cada tarefa (`elm_ler_wi(id, comentarios 0)`; na Especificação, a coluna
+Horas previstas, e na Sustentação, a coluna Horas, do `sprint-<nn>.md`). Concluída com 0 h = falta, salvo a `[GB]` da dona
+que também é P.O. (§2).
 
 ## 6. Sustentação (chamado pela `sa-triar`, pelo encaixe ou aqui)
 
@@ -267,7 +277,8 @@ A `[DEV]` não muda; tudo no mesmo "sim" da troca.
   o verificador da decisão — só o papel que falta: a que já existe move, e a que tem pendência de cancelamento não
   conta (topo). PR aberto (`aguardando-aprovacao-pr`) → cancela a `[APR] FT-<nnn> Aprovar PR` existente.
 - **HITL → AFK** (só sem PR: campo PR do `status.md` = `—`): cancela a `[REV]` e a `[VER]` existentes, `elm_transicao(<id>, "cancelar")`; sem o
-  MCP, com `precondicao` ou erro → `ELM pendente [<REV|VER> FT-<nnn> cancelar]` no rodapé da ficha, e a
+  MCP, com `precondicao` ou erro → `ELM pendente [<REV|VER> <id> cancelar]` (o id da tarefa no EWM) onde a fatia guarda
+  as pendências (`elm.md`, Pendências: fatia não iniciada → rodapé da ficha; `iniciada` → Histórico do `status.md`), e a
   sincronização não as compara mais (§9). A `[APR] Aprovar plano`, se houver, fica: o GATE do plano vale nos dois
   modos.
 
@@ -290,7 +301,8 @@ o **mesmo id**, nunca recriada —, **o que mudou no EWM nos itens que os arquiv
 dono e estimativa) e **até onde a fatia chegou no git** (branch, PR, merge). Roda depois de publicar a sprint (§4; na
 virada, a da próxima só depois do movimento, §5), na pré-condição dos ritos de fechamento (`sa-planejamento.review.sincronizar`) — a rede de proteção dela
 roda aqui, também sob pedido — e sob pedido ("sincroniza a sprint", "sincronizar com o EWM"). Sem o MCP `elm` →
-"sincronização com o EWM não feita", e a tabela só com as linhas **Git e arquivos**, no lado do arquivo (o do EWM, a
+`🔄 <chave> × EWM: sincronização com o EWM não feita (sem o MCP elm) — só as linhas Git e arquivos`, e a tabela só
+com as linhas **Git e arquivos**, no lado do arquivo (o do EWM, a
 próxima sincronização vê de novo). Nunca diga que "não é preciso sincronizar" sem ter rodado a
 comparação: o resultado é sempre a tabela do passo 4 ou a linha do passo 6.
 
@@ -334,7 +346,10 @@ comparação: o resultado é sempre a tabela do passo 4 ou a linha do passo 6.
      registrado antes da regra, sem o MCP ou com falha) —, que vira a linha `EWM: criar no backlog (§0, passo 4)`,
      agrupada no item como as outras;
    - a **pendência registrada** — `ELM pendente [<chave>]` sem `ELM feito`, coletada como na `sa-status` (Coleta,
-     itens 2 e 4) e no Histórico do `status.md` da base das fatias `concluida` —, que já cobre a diferença;
+     itens 2 e 4) e no Histórico do `status.md` da base das fatias `concluida` —, que tira da comparação só o par (id,
+     Campo) da ação dela: o id é o da chave (`<tipo> <id do EWM>`) ou, com `<tipo> <FT|EP|ID>`, o id do `<tipo>` na
+     coluna `elm`/Tarefa ELM daquele item; `concluir`/`reabrir`/`cancelar` → Campo `estado`; `horas`, `ligar`,
+     `publicar`, `criar`, `créditos` → nenhum Campo (não tiram nada da comparação);
    - de vez, o id com pendência de **cancelamento** (`[<tipo> <id> cancelar]` ou a do item), aberta ou já com
      `ELM feito`: cancelar foi decisão registrada; e a tarefa descartada cujo papel o item não tem mais (o modo não o
      tem, ou outra tarefa do papel está aberta ou concluída) ou cuja fatia já é `pronta` ou `concluida` (as que o
@@ -386,27 +401,28 @@ comparação: o resultado é sempre a tabela do passo 4 ou a linha do passo 6.
    item**: as linhas de um mesmo item (o IB ou a origem e as tarefas dele) juntas, na ordem da coluna Item; a de
    publicação primeiro e as por fora no fim; numeração corrida:
    ```
-   🔄 2026/Sprint 03 × EWM — 14 divergências em 9 itens · 52 conferidos
+   🔄 2026/Sprint 03 × EWM — 14 divergências em 10 itens · 52 conferidos
    | # | Item | No EWM | Campo | Arquivo | EWM | Solução proposta |
    | 1 | AT-012 | ATD 670301 | estado | em-andamento | Concluído | arquivo: concluido, concluida-em 2026-10-28 (concluído no EWM) · EWM: concluir o IB 669379 |
    | 2 | EP-05 | ESP 669377 | estado | iniciada | Concluído | EWM: reabrir a [ESP] (fecha na conclusão, depois da publicação) |
    | 3 | FT-031 | DEV 669401 | iteração | 2026/Sprint 03 | Sprint 04 | EWM: volta para 2026/Sprint 03 (fatia iniciada) |
-   | 4 | FT-031 | VER 669403 | estado | implementando | Concluído | EWM: reabrir a [VER] (ela fecha no aceite) |
-   | 5 | FT-033 | — | git | iniciada · implementando | PR !48 merged · 4f2c9e1 | arquivo: pronta (merge 4f2c9e1 por fora do Sabiá) |
-   | 6 | FT-033 | DEV 669410 | estado | iniciada | Em Andamento | EWM: concluir a [DEV] (com as horas já lançadas) |
-   | 7 | FT-033 | REV 669411 | estado | iniciada | Novo | EWM: cancelar |
-   | 8 | FT-033 | VER 669412 | estado | iniciada | Novo | EWM: cancelar |
+   | 4 | FT-033 | — | git | iniciada · implementando | PR !48 merged · 4f2c9e1 | arquivo: pronta (merge 4f2c9e1 por fora do Sabiá) |
+   | 5 | FT-033 | DEV 669410 | estado | iniciada | Em Andamento | EWM: concluir a [DEV] (com as horas já lançadas) |
+   | 6 | FT-033 | REV 669411 | estado | iniciada | Novo | EWM: cancelar |
+   | 7 | FT-033 | VER 669412 | estado | iniciada | Novo | EWM: cancelar |
+   | 8 | FT-035 | VER 669432 | estado | implementando | Concluído | EWM: reabrir a [VER] (ela fecha no aceite) |
    | 9 | FT-036 | IB 670188 | iteração | 2026/Sprint 03 | Backlog | arquivo: sai da sprint — elegivel, sprint — (P.O.) · EWM: DEV, REV e VER de FT-036 → backlog |
    | 10 | FT-040 | IB 670400 · DEV 670401 | iteração | backlog (elegivel) | 2026/Sprint 03 | encaixe (P.O.; a DEV 670401 é a da fatia) — recusado: volta ao backlog |
    | 11 | FT-042 | IB 670420 | estado | elegivel (backlog) | Em Andamento | EWM: voltar ao estado inicial |
    | 12 | IM-003 | IMPL 670215 | dono | ana.souza | rita.melo | arquivo: responsável rita.melo |
    | 13 | IM-003 | IMPL 670215 | estimativa | 4 h | 6 h | arquivo: Horas 6 |
-   | 14 | — | 670210 | por fora | — | "ajustar job de carga" · joao.lima · Em Andamento | [DEV] de FT-034 → Tarefa ELM dela · título "[DEV] FT-034 ajustar job de carga" |
-   "ok" aplica tudo como proposto · ou ajuste uma ou mais linhas: "9: EWM", "4: manter", "12: manter", "14: só incluir o prefixo"
+   | 14 | — | 670210 | por fora | — | "ajustar job de carga" · joao.lima · Em Andamento | [DEV] de FT-034 → Tarefa ELM dela · título "[DEV] FT-034 Implementar" (renomear) |
+   "ok" aplica tudo como proposto · ou ajuste uma ou mais linhas: "9: EWM", "8: manter", "12: manter", "14: só incluir o prefixo", "14: manter o título"
    ```
    - **No EWM**: o tipo e o id (o item que entrou leva os ids dele na mesma linha); **Campo**: `estado` · `dono` ·
-     `estimativa` · `iteração` · `git` · `sumiu` · `por fora` · `publicação` (a linha que cria a iteração da sprint
-     não publicada vem primeiro). Na linha `git`, No EWM `—`, e a coluna EWM traz a evidência (o PR e o estado dele,
+     `estimativa` · `iteração` · `git` (evidência do git) · `situação` (`sprint-<nn>.md` × `backlog.md`: Arquivo = a
+     do `sprint-<nn>.md`, EWM = a do `backlog.md`) · `sumiu` · `por fora` · `publicação` (a sprint não publicada,
+     que vem primeiro, e a publicação pendente) · `backlog` (item do backlog sem IB). Na linha `git`, No EWM `—`, e a coluna EWM traz a evidência (o PR e o estado dele,
      o sha do merge, a branch); na `sprint-<nn>.md` × `backlog.md`, as duas situações.
    - **Cabeçalho**: `🔄 <chave> × EWM — <n> divergências em <m> itens · <k> conferidos` (as linhas, os itens delas e
      os ids conferidos, como no passo 6).
@@ -497,7 +513,7 @@ linha), nunca `arquivo:`.
 **Regra do dono da `[DEV]`.** Fatia `planejada`: o arquivo recebe o novo responsável só se ele é Dev ativo, não é o
 Verificador da linha nem o Revisor (salvo `revisor único`) e o modo não muda pela
 senioridade (`sa-planejamento.sprint.modo`) dele — Júnior só em fatia HITL; Sênior em fatia AFK, ou HITL com o
-motivo já na `obs`; Pleno quando os critérios da `sa-fatiar` dão o modo atual, com a confirmação do P.O. na linha;
+motivo já na `obs`; Pleno quando os critérios do passo `sa-fatiar.fatiar.rascunho` (item Modo) dão o modo atual, com a confirmação do P.O. na linha;
 fora disso, o dono volta (trocar o responsável com troca de modo é do P.O. ou do SM). Fatia `iniciada` em diante: o dono da
 `[DEV]` é **quem implementa** — só o dono lança horas, e outro Dev pode retomar a fatia (trocar o responsável é do
 planejamento, e esta sincronização é dele). A referência é o Responsável da **linha viva** da sprint (a sem `saiu da
@@ -514,7 +530,7 @@ destas linhas grava a situação como a `sa-desenvolver` grava, e é a sincroniz
 
 | Arquivo | Git | Solução proposta | Outras |
 |---|---|---|---|
-| antes de `pronta` | PR mergeado na base | arquivo: `pronta (merge <sha> por fora do Sabiá)`, como no fluxo `sa-desenvolver.encerrar` — o `status.md` da base (criado se faltar) com `Fase: pronta` e, no Histórico, `merge do PR <link> por fora do Sabiá (sha <sha>)`, Lições candidatas `—` e Créditos `—` (ninguém fechou a sessão; a virada aponta); `pronta` no backlog e na linha da sprint; as partes no EWM vão nas linhas das tarefas, logo abaixo (EWM: concluir a `[DEV]`, com as horas já lançadas; EWM: cancelar a `[APR]`, a `[REV]` e a `[VER]` abertas), e `<n>: manter` nesta linha mantém também as delas; depois, a `sa-consolidar` leva a `concluida` | manter: o Dev registra pelo fluxo `sa-desenvolver.encerrar` |
+| antes de `pronta` | PR mergeado na base | arquivo: `pronta (merge <sha> por fora do Sabiá)`, como no fluxo `sa-desenvolver.encerrar` — o `status.md` da base (criado se faltar) com `Fase: pronta` e, no Histórico, `merge do PR <link> por fora do Sabiá (sha <sha>)` e `lições não levantadas: merge por fora do Sabiá`, Lições candidatas com a linha `nenhuma` (como no padrão) e Créditos `—` (ninguém fechou a sessão; a virada aponta); `pronta` no backlog e na linha da sprint; as partes no EWM vão nas linhas das tarefas, logo abaixo (EWM: concluir a `[DEV]`, com as horas já lançadas; EWM: cancelar a `[APR]`, a `[REV]` e a `[VER]` abertas), e `<n>: manter` nesta linha mantém também as delas; depois, a `sa-consolidar` leva a `concluida` | manter: o Dev registra pelo fluxo `sa-desenvolver.encerrar` |
 | `planejada` · `iniciada` (ou `elegivel`: começada por fora) | PR aberto, e o `status.md` antes da fase do PR ou sem ele | arquivo: `iniciada`, se ainda não é (como no passo `sa-desenvolver.desenvolver.iniciar`; a `elegivel`, com a linha na sprint e a Observação `encaixe: começada por fora (<P.O.>, <data>)`), e o `status.md` na fase do PR — `pr-aberto` no HITL, `aguardando-aprovacao-pr` no AFK —, criado se faltar · no AFK, sem a `[APR] FT-<nnn> Aprovar PR` → EWM: criá-la pelo §8 (dono = o Dev Sênior e estimativa que a pessoa der na linha; sem eles, manter), com o id no campo ELM do `status.md` · EWM: na `elegivel` (começada por fora), o IB (ou a origem) e as tarefas que já existem → a iteração da sprint, com o dono e a estimativa do papel (como no passo `sa-desenvolver.desenvolver.iniciar`, ao assumir a `[DEV]`) | — |
 | `planejada` (ou `elegivel`) | branch com commits, sem PR; ou `status.md` numa branch | arquivo: `iniciada (status.md na branch)`, como no passo `sa-desenvolver.desenvolver.iniciar` — sem `status.md`, ele nasce na branch com `Fase: implementando` · EWM: na `elegivel` (começada por fora), o IB (ou a origem) e as tarefas que já existem → a iteração da sprint, com o dono e a estimativa do papel (como no passo `sa-desenvolver.desenvolver.iniciar`, ao assumir a `[DEV]`) | — |
 | não terminal | PR fechado sem merge | manter: o Dev diz — retomar, ou cancelar pela `sa-fatiar` | — |
@@ -559,8 +575,8 @@ o SM` (§2). Sem horas não é divergência.
 | fechado e fora da listagem | não é divergência: fica onde fechou | — |
 | sumiu (`nao_encontrado`) | manter: confira na UI do EWM — o `manter` registra `ELM pendente [<tipo> <id> sumiu]` no lugar das pendências do item (`elm.md`, Pendências), que tira o id da comparação até o `ELM feito` | arquivo: `pendente` (republicar) |
 | entrou: fatia `elegivel` fora da sprint (o IB, tarefas dela, ou os dois) | encaixe (P.O., `sa-planejamento.durante.encaixe`; a tarefa que já existe é a do papel — duas do mesmo papel: a trazida; a do backlog é cancelada, `elm_transicao(<id>, "cancelar")` (falha → `ELM pendente [<tipo> <id> cancelar]` no rodapé da ficha) —, e o IB e as tarefas que faltam vêm para a sprint) — recusado, EWM: tudo volta ao backlog, e o IB ao estado inicial | EWM: volta ao backlog |
-| entrou: fatia `nova` | a DoR primeiro, como no passo `sa-planejamento.sprint.previsao`: passa → `elegivel` e encaixe, como acima; não passa → arquivo (P.O.): entra **como especificação** — linha na Especificação `planejada`, a fatia `nova` com `sprint` e `obs` `em especificação`, `falta: …` e `encaixe: trazida do EWM (<P.O.>, <data>)` · EWM: a `[ESP] FT-<nnn>` nasce (ou é a trazida, se já veio) | EWM: volta ao backlog, com o `falta:` na `obs` |
-| entrou: épico `novo` ou `elegivel`, com a `[ESP]` | arquivo (P.O.): Especificação `planejada` e épico `planejado`, com `encaixe: trazida do EWM (<P.O.>, <data>)`; Responsável e Horas previstas pelo dono e pela estimativa da `[ESP]` · EWM: o IB do épico → sprint (o `novo` que não passa na DoR do épico entra assim mesmo: o que falta é trabalho da `[ESP]`) | EWM: volta ao backlog |
+| entrou: fatia `nova` | a DoR primeiro, como no passo `sa-planejamento.sprint.previsao`: passa → `elegivel` e encaixe, como acima; não passa → arquivo (P.O.): entra **como especificação** — linha na Especificação `planejada`, a fatia `nova` com `sprint` e `obs` `em especificação`, `falta: …` e `encaixe: trazida do EWM — entra como especificação (<quem aprovou>, <data>)` · EWM: a `[ESP] FT-<nnn>` nasce (ou é a trazida, se já veio) | EWM: volta ao backlog, com o `falta:` na `obs` |
+| entrou: épico `novo` ou `elegivel`, com a `[ESP]` | arquivo (P.O.): Especificação `planejada` e épico `planejado`, com `encaixe: trazida do EWM — entra como especificação (<quem aprovou>, <data>)`; Responsável e Horas previstas pelo dono e pela estimativa da `[ESP]` · EWM: o IB do épico → sprint (o `novo` que não passa na DoR do épico entra assim mesmo: o que falta é trabalho da `[ESP]`) | EWM: volta ao backlog |
 | entrou: épico `novo` ou `elegivel`, só o IB | EWM: volta ao backlog (a especificação entra pelo planejamento, que dá o responsável e as horas) | — |
 | entrou: item de Sustentação `aberto` (o IB, a tarefa, ou os dois) | arquivo: entra na sprint (linha nova), com a situação pelo estado da tarefa (Novo → `aberto`, Em Andamento → `em-andamento`, concluída → `concluido`, com `concluida-em` = a data da sincronização e a Observação `concluído no EWM`, como na linha "tarefa concluída") no backlog, na linha e no `**Situação:**` da ficha, e `trazida do EWM`; a tarefa que já existe é a dele — o arquivo recebe o dono e a estimativa dela (`responsavel`, Responsável, `**Responsável:**` da ficha, Horas e `**Estimativa:**`), e o EWM não muda o dono nem as horas dela; sem dono ou sem estimativa no EWM, vale o do arquivo (EWM: dono = o `responsavel`, estimativa = a `**Estimativa:**` da ficha, como na **Tarefa sem dono**) —, e só sem ela a tarefa nasce (§6), com o `responsavel` e a `**Estimativa:**` da ficha, ou os que a pessoa der na linha · EWM: o IB e a tarefa → sprint, e, com a tarefa concluída, concluir o IB (reserva estourada → o item fica, e o P.O. decide pelo encaixe (`sa-planejamento.durante.encaixe`) se uma fatia sai) | EWM: volta ao backlog |
 | entrou: item terminal | EWM: volta para a iteração esperada | — |
@@ -620,7 +636,7 @@ descrição), nesta ordem de pistas:
 - título e descrição (chamado → Atendimento; versão, deploy → Implantação; script, carga → Banco de dados…).
 
 Fatia ou épico sem pista → `?` na linha, para a pessoa dizer. A tarefa cujo pai é um item que entrou vai na linha
-dele (passo 3). Título: renomear (padrão do Sabiá) · só incluir o prefixo · manter o título. Soluções:
+dele (passo 3). Título: a proposta é renomear (o título padrão do Sabiá); outras: só incluir o prefixo · manter o título. Soluções:
 
 - **tarefa de papel** de fatia ou épico com linha viva na sprint (a sem `saiu da sprint`; o item que só tem a com
   `saiu da sprint` está fora dela) → o id entra na "Tarefa ELM" da linha viva (`DEV 669401 · DEV 670210`), com a
@@ -628,7 +644,7 @@ dele (passo 3). Título: renomear (padrão do Sabiá) · só incluir o prefixo �
   leva os ids); avise o Dev para registrar o id no `status.md`. Fatia fora da sprint → `encaixe` (a `nova` passa antes
   pela DoR; a tarefa é a do papel inferido). `[ESP]` de épico fora da sprint → a linha da Especificação nasce
   `planejada` (o épico `novo` ou `elegivel` fica `planejado` — o `novo` depois da DoR do épico —; o `iniciado` não muda
-  e a linha nasce `iniciada`), com `encaixe: trazida do EWM (<quem>, <data>)`, Responsável e Horas previstas pelo dono
+  e a linha nasce `iniciada`), com `encaixe: trazida do EWM — entra como especificação (<quem aprovou>, <data>)`, Responsável e Horas previstas pelo dono
   e pela estimativa dela, e o IB do épico vem para a sprint; o P.O. confirma. Fatia ou épico fora do `backlog.md` →
   `triar` (`sa-triar.lote-ewm`) para o IB;
 - **Sustentação** → pai IB ou defeito fora do `backlog.md` (também com o prefixo no título) → vai na linha `triar`
@@ -642,7 +658,7 @@ dele (passo 3). Título: renomear (padrão do Sabiá) · só incluir o prefixo �
   duplicado pelo `**Origem:**` das fichas de `sustentacao/**`), com `origem` `EWM <id>`, `sprint` = a desta,
   `responsavel` = o dono no EWM e o `status` pelo estado (Novo → `aberto`, Em Andamento → `em-andamento`, concluída →
   `concluido` com `concluida-em`); a ficha leva o título e a descrição do EWM (sem dado de cliente), `**Estimativa:**`
-  a da tarefa (ou `—`) e `falta: prazo, critério de pronto` no que o EWM não traz. Ligado ou novo, o item sem IB ganha
+  a da tarefa (ou `—`) e, no que o EWM não traz, `**Prazo:** —` e `**Critério de pronto:** falta`. Ligado ou novo, o item sem IB ganha
   o IB `[XX-nnn] <pedido>` (§6; a `### <Categoria>` nasce se for a primeira) e a tarefa passa a filha dele — com a
   tarefa concluída, o IB conclui na mesma linha; linha na `## Sustentação` do `sprint-<nn>.md` com `trazida do EWM`.
   Reserva estourada → o item fica na sprint e o P.O. decide pelo encaixe

@@ -28,3 +28,6 @@
 ## Relações
 - <restringe / satisfaz / elabora, com link — só local>
 ```
+
+Cenários `<h>.<c>`: `<h>` = o número da HF (HF-02 → 2.1, 2.2…), `<c>` sequencial na HF; é o `c.c` do `cobre`
+(`HF-02#2.1`).

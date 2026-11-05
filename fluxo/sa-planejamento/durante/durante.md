@@ -4,7 +4,7 @@
  "travas_gerais": ["sim-da-pessoa"],
  "passos": [
    {"id": "sincronizar", "saidas": {"nenhuma linha encaixe": "fim"}},
-   {"id": "encaixe", "saidas": {"a próxima linha encaixe da sincronização": "encaixe", "decidido: o executor retoma pela própria skill": "fim"}}
+   {"id": "encaixe", "saidas": {"a próxima linha encaixe da sincronização": "encaixe", "decidido: o executor retoma pela própria skill": "fim", "fica para a próxima sprint": "fim"}}
  ]}
 ---
 # Durante a sprint

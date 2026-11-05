@@ -8,7 +8,7 @@ A regra escrita (passo `escrever`).
 ## Faça
 
 Mostre o diff da seção Regras aprendidas do `.sabia/sabia.md` e grave só com "ok" (o resto do arquivo
-não muda). Regra que pertence à stack (ex.: "todo
+não muda); commit `R-<nn> promover regra`. Regra que pertence à stack (ex.: "todo
 `ItemWriter` deve ser idempotente") → proponha também levá-la para a skill do toolkit, onde serve a outros projetos.
 
 ## Saída

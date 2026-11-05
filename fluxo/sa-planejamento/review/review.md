@@ -5,7 +5,7 @@
  "passos": [
    {"id": "sincronizar"},
    {"id": "consolidacao", "travas": ["po-decide-fechamento"], "saidas": {"P.O. disse não": "fim"}},
-   {"id": "rito", "removivel": true}
+   {"id": "rito", "chama": "sa-triar.triar", "removivel": true}
  ]}
 ---
 # Review

@@ -4,7 +4,8 @@
 # Ata de reunião (ATA)
 
 **Ata de reunião (ATA)** — o registro de uma reunião com o cliente durante a `[ESP]` aberta, escrito da transcrição.
-Uma ata por reunião, em `elm/ATA-nn-<slug>.md` da pasta do épico (`nn` em sequência; `<slug>` = data e assunto).
+Uma ata por reunião, em `elm/ATA-<nn>-<AAAA-MM-DD>-<assunto em kebab-case, sem acento>.md` da pasta do épico (`<nn>`
+com 2 dígitos = o maior `ATA-<nn>` do `elm/` do épico + 1).
 
 ```markdown
 **Reunião:** <AAAA-MM-DD> · <duração> · <assunto> · [ESP] <id>
@@ -32,6 +33,8 @@ Uma ata por reunião, em `elm/ATA-nn-<slug>.md` da pasta do épico (`nn` em sequ
 |---|---|---|
 ```
 
+- **Duração** `<h>h<mm>`, do último `[mm:ss]` do `.transcricao.md`.
+- **Encaminhamentos:** O quê = a ação; Quem = `<nome> (<papel>)`; Até = `AAAA-MM-DD` ou `—`.
 - **Participantes por nome e papel**, só quem falou ou foi dado como presente; nenhum outro dado pessoal (e-mail,
   telefone, matrícula).
 - **Só o que a transcrição diz**, resumido; o `[mm:ss]` aponta a fala. Nada de transcrição literal longa: a

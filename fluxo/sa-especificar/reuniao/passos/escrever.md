@@ -12,7 +12,7 @@ siga o fluxo e o padrão da ATA pelos caminhos da linha, se a linha os trouxer (
 passo `sa-especificar.especificar.encaminhar`). Na volta, confira o artefato pelo contrato: arquivo pela coluna Arquivo do catálogo, envelope do `okf-elm.md`,
 `status: draft`.
 
-Sem ele, crie `elm/ATA-nn-<slug>.md` na pasta do épico (a da base se a linha do épico no `backlog.md` já tem o link `prd`; senão, a de trabalho), com o corpo do padrão
+Sem ele, crie `elm/ATA-<nn>-<AAAA-MM-DD>-<assunto>.md` (nome pelo padrão) na pasta do épico (a da base se a linha do épico no `backlog.md` já tem o link `prd`; senão, a de trabalho), com o corpo do padrão
 `sa-especificar/ata.md` e o envelope de [references/okf-elm.md](~/.sabia/framework/skills/sa-prd/references/okf-elm.md):
 `status: draft`, `sources` (a transcrição, só pelo nome e o sha256 no `title`, e o `decisoes.md`), `generated`.
 

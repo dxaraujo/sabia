@@ -1,5 +1,5 @@
 {
-  "$comment": "Fonte única dos agentes do Sabiá. O scripts/gerar_agentes.py junta isto com o .sabia/config/agentes.json do projeto e grava .kiro/agents/sa-<papel>.json (Kiro IDE e CLI V3). Protege só o framework: `harness` nenhum agente escreve; dos `registros`, cada papel escreve só os que lista. Regras em references/agentes.md. Shell `trabalho` = liberado (`*`), menos o `negar` e o push de cada papel. `harness_libera`: o que sai do harness só para o papel (o sa-produto grava a seção Regras aprendidas do sabia.md). Padrão com {{X}} cujo valor no projeto é null sai da saída.",
+  "$comment": "Fonte única dos agentes do Sabiá. O scripts/gerar_agentes.py junta isto com o .sabia/config/agentes.json do projeto e grava os agentes de cada alvo: .kiro/agents/sa-<papel>.json (Kiro, motor V3) e .opencode/agents/sa-<papel>.md (opencode). Protege só o framework: `harness` nenhum agente escreve; dos `registros`, cada papel escreve só os que lista. Regras em references/agentes.md. Shell `trabalho` = liberado (`*`), menos o `negar` e o push de cada papel. `harness_libera`: o que sai do harness só para o papel (o sa-produto grava a seção Regras aprendidas do sabia.md). Padrão com {{X}} cujo valor no projeto é null sai da saída.",
   "mcp_do_power": {
     "elm": ["elm_status", "elm_ler_wi", "elm_listar_wi", "elm_criar_wi", "elm_atualizar_wi",
         "elm_transicao", "elm_comentar", "elm_anexo", "elm_horas", "elm_lancar_horas",
@@ -125,7 +125,7 @@
           "gitlabpr/gitlab_criar_mr", "gitlabpr/gitlab_mesclar_mr"]
     },
     "revisor": {
-      "description": "Sabiá independent reviewer, with a clean context — reviews a PRD or the ELM artifacts of a slice's [ESP] FT (rubric P), a slice plan (rubric L) or code (rubric C, with the spec and standards axes kept separate), runs the backpressure and writes only its own report. Never changes code, plans or documentation.",
+      "description": "Sabiá independent reviewer, with a clean context — reviews a PRD or the ELM artifacts of a slice's [ESP] FT (rubric P), a slice plan (rubric L) or code (rubric C, with the spec and standards axes kept separate), runs the backpressure and writes only its own report and the status.md fields its flow step names. Never changes code, plans or documentation.",
       "welcomeMessage": "O que devo revisar? (PRD de um épico, artefatos da [ESP] FT, plano ou código de uma fatia)",
       "skills": ["sa-revisar", "sa-iniciar", "sa-status"],
       "escrita": "projeto",

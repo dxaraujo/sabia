@@ -20,3 +20,5 @@ Revisão OK (ou achados aceitos) → passo `gate`. Achado que é decisão de neg
 ## Pare se
 
 Nenhuma condição própria deste passo.
+
+Ao parar aqui (na sessão da `[ESP]`, feche-a: `sa-especificar.especificar.fechar-sessao`).

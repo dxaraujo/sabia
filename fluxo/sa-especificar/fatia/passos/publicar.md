@@ -15,7 +15,8 @@ Como o passo `sa-especificar.especificar.publicar`, com o escopo `[ESP] FT`: os 
 (`[FT-<nnn> publicar]`, `[<sigla> <id> lixeira]`) no lugar das pendências da fatia
 ([pendências](~/.sabia/framework/skills/sabia/references/elm.md#pendências): rodapé da ficha na fatia `nova`; Histórico do
 `status.md` na `iniciada`). O que volta (`resource`, `id`, `sources`) vai no
-commit do passo `concluir`. Projeto sem ELM → pule.
+commit do passo `concluir`, gravado também no conceito de mesmo nome em `<produto>/epicos/<EP>-<slug>/elm/`, quando a
+cópia veio dele. Projeto sem ELM → pule.
 
 ## Saída
 

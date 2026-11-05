@@ -1,5 +1,5 @@
 ---
-{"resumo": "Completa a DoR do épico (regra da sa-triar), grava na base o épico iniciado e a linha da Especificação (um commit) e assume a [ESP] pela regra comum de assumir."}
+{"resumo": "Completa a DoR do épico, grava na base o épico iniciado e a linha da Especificação (um commit) e assume a [ESP] pela regra comum de assumir."}
 ---
 ## Entrada
 
@@ -11,9 +11,9 @@ ELM da linha dele na seção Especificação do `sprint-<nn>.md` (a Revisão, qu
 
 1. **DoR do épico** — a do [`backlog.md`](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#definition-of-ready-o-que-faz-uma-fatia-elegivel)
    (o problema, quem pede, o resultado e o `po`): `elegivel` ou adiante já passou; `novo`, confira agora. Faltando →
-   liste e complete com a pessoa os campos da linha, pela regra "complete o registro" do passo
-   `sa-triar.triar.chegou` (sem id novo; passou → `elegivel`) — é trabalho desta `[ESP]`, que entrou na sprint
-   assim —, no commit do item 2.
+   liste e complete com a pessoa, na linha do épico do `backlog.md`, o que falta (o `po`; a descrição mínima: o
+   problema, quem pede, o resultado esperado), sem id novo (passou → `elegivel`) — é trabalho desta `[ESP]`, que
+   entrou na sprint assim —, no commit do item 2.
 2. **Situação na base** — a exceção ao "nada vai à base antes do GATE do PRD" (Regras): pelo bloco
    [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), o épico `iniciado` no `backlog.md` e a linha
    dele na seção Especificação do `sprint-<nn>.md` aberto com Situação `iniciada` (Responsável `—` → quem assume);

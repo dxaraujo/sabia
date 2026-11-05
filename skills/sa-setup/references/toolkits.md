@@ -40,7 +40,8 @@ e quais verificações a `sa-verificar` usa para executar os cenários de aceite
 3. **Powers instalados:** `~/.kiro/powers/installed/*/toolkit.json` (um toolkit pode ser distribuído como power;
    não achou nada ali → `~/.kiro/powers/**/toolkit.json`)
 4. **Sem manifesto** (toolkit implícito): skills em `.kiro/skills/`, `.opencode/skills/` e
-   `.agents/skills/` (no projeto e no home) e em `~/.kiro/powers/installed/*/skills/`, cada uma `*/SKILL.md`, cujo
+   `.agents/skills/` (no projeto e no home), em `~/.config/opencode/skills/` (exceto `sabia` e `sa-*`) e em
+   `~/.kiro/powers/installed/*/skills/`, cada uma `*/SKILL.md`, cujo
    frontmatter traga `metadata.toolkit` (nome do toolkit) — e, opcionalmente, `metadata.papeis` e
    `metadata.tipos-de-projeto`. Skills com o mesmo `metadata.toolkit` formam um toolkit (sem passos nem agentes:
    esses só existem com manifesto).
@@ -48,7 +49,8 @@ e quais verificações a `sa-verificar` usa para executar os cenários de aceite
 
 Ficam de fora do inventário: as skills deste power (`sabia`, `sa-*`).
 
-Use `glob`/`ls` nesses caminhos (expandindo `~` para o home). Pastas inexistentes são normais — siga sem comentar.
+São pastas ocultas: liste com `ls -A <pasta pai>` e, só das que existirem, `find <pasta> -maxdepth 3 -name SKILL.md`
+(ou `-name toolkit.json`), expandindo `~` para o home; nunca a busca do editor nem `ls` de um caminho que pode faltar. Pastas inexistentes são normais — siga sem comentar.
 Nunca leia arquivos de credenciais que encontrar no caminho.
 
 ## Manifesto `toolkit.json`
@@ -102,7 +104,7 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
 | `skills[].papeis` | **quem:** pré-seleciona a skill na proposta de cada agente (`produto`, `especificador`, `pesquisador`, `desenvolvedor`, `revisor`, `verificador`, `orquestrador`) — uma skill pode servir a vários |
 | `skills[].stack`, `skills[].deteccao` | **onde:** a stack da skill (ex.: `java 17`, `react`); com `deteccao`, a setup só a pré-marca se o repositório casar |
 | `skills[].passo` | **em que passo:** opcional — a skill assume o passo de um agente do Sabiá, pelo id (`passo`: `sa-codificar.codificar.tarefa`, o único com `"desvio": true` no mestre), com o `para` e, opcionais, os `arquivos` (globs) e o `agente` a quem delegar — ver [Passos](#passos) |
-| `tipos` | opcional — `{"HF": {"skill": "skills/<skill>/SKILL.md", "fluxo": "<arquivo>", "padrao": "<arquivo>"}}` (a skill do toolkit, com o fluxo e o padrão do tipo, relativos à pasta do toolkit; o padrão é opcional): o toolkit escreve um tipo desviável do catálogo (`HF`, `REG`, `EL`, `ET` e `CT` no `sa-prd.prd.escrever`; `ET` também no `sa-consolidar.consolidar.elm`; `ATA` no `sa-especificar.reuniao.escrever`; `GL` não desvia) — ver [Tipos](#tipos) |
+| `tipos` | opcional — `{"HF": {"skill": "skills/<skill>/SKILL.md", "fluxo": "<arquivo>", "padrao": "<arquivo>"}}` (a skill do toolkit, com o fluxo e o padrão do tipo, relativos à pasta do toolkit; o padrão é opcional): o toolkit escreve um tipo desviável do catálogo (`HF`, `REG`, `EL` e `CT` no `sa-prd.prd.escrever` e no `sa-especificar.fatia.escrever`; `ET` no `sa-prd.prd.escrever` e no `sa-consolidar.consolidar.elm`; `ATA` no `sa-especificar.reuniao.escrever`; `GL` não desvia — a fonte é a coluna Desviável do catálogo) — ver [Tipos](#tipos) |
 | `rubricas` | opcional — itens que o toolkit **acrescenta** à revisão: `id` (maiúsculas e número, ex.: `EX1`), `verificacao`, `severidade` (`BLOQUEANTE`, `IMPORTANTE` ou `SUGESTÃO`) e, opcional, o `tipo`; vão no prompt do revisor |
 | `requer` | opcional — `{"sabia": "<versão mínima>"}`: o toolkit usa o catálogo de tipos e ids de passo do Sabiá; abaixo dela, o CLI recusa o toolkit |
 | `autor` | **obrigatório:** `nome` e `area` de quem fez e responde pelo toolkit (`email` opcional). Aparece no W5 e no `sabia toolkits listar`; toolkit sem autor é recusado |
@@ -126,7 +128,7 @@ estão em [passos.md](../../sabia/references/passos.md).
   tabela do fluxo) no passo com desvio; o desvio vem do projeto: `agentes.json` → prompt do dono, e a tabela **Desvios de
   toolkit** do `sabia.md`, que vale também na sessão sem agente.
 
-- A setup lista os passos no W5 e os oferece no W6 do agente dono (`sa-especificador`, `sa-desenvolvedor`). Ligado,
+- A setup lista os passos no W5 e os oferece no W6 do agente dono (`sa-desenvolvedor`, dono do `sa-codificar.codificar.tarefa`, o único passo com `"desvio": true`). Ligado,
   vai no `agentes.json` (`toolkits`: pasta, versão e sha usados; `passos`: toolkit, skill e se usa o agente) e na
   tabela **Desvios de toolkit** do `sabia.md`.
 - **Agente neutro:** o toolkit traz só a definição (`agentes[]`) e o prompt em `.md`. O gerador cria o agente com
@@ -184,7 +186,8 @@ padrao/padrao-hf.md                padrão do tipo HF, idem
 A setup nunca liga uma skill sem a confirmação da pessoa — mas confirma a proposta inteira do agente de uma vez
 (skills, MCPs, modelo e subagentes; ver o Passo 6 da `SKILL.md`). Para cada agente, mostra o inventário **agrupado por toolkit**. Vêm
 pré-marcadas só as skills de toolkits **detectados** cujo `papeis` inclui o papel do agente; toolkit não
-detectado, skill do projeto e skill do usuário aparecem desmarcadas:
+detectado, skill do projeto e skill do usuário aparecem desmarcadas; toolkit sugerido (o `tipos-de-projeto` casa, o
+`deteccao` não) → skills desmarcadas, com "recomendo `pôr <n>`":
 
 O cartão é o W6 de [wizard.md](wizard.md): skills numeradas com a caixa `[✅]`/`[ ]` na primeira coluna, agrupadas por toolkit e origem na coluna
 "Para quê" (ex.: `spring-batch-job` — steps chunk/tasklet · toolkit spring-batch 🔍 detectado), e a resposta pelos

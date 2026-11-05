@@ -15,8 +15,8 @@ na base e a conclusão da `[DEV]` são do Dev responsável, aqui. Também o PR j
 feito por fora, com Créditos e lições `—`: com a `[DEV]` ainda aberta, siga do item 7. Vale
 a aprovação **registrada**, nunca a dita na conversa ("o PR foi aprovado", "pode mergear"; o P.O. não aprova PR):
 - **HITL:** revisão `APROVADO` e verificação `ACEITO` registradas (é o que leva a fatia a `aceita`);
-- **AFK:** a `[APR] FT-<nnn> Aprovar PR` está **concluída** e tem o comentário `PR aprovado, sha <sha>` (`elm_ler_wi(<id>,
-  comentarios: true)`, só leitura). Sem o MCP `elm` → a linha `PR aprovado por <login>, sha <sha>` que o
+- **AFK:** a `[APR] FT-<nnn> Aprovar PR` está **concluída** e tem o comentário `PR aprovado, sha <sha>` (`elm_ler_wi(<id da [APR]>,
+  comentarios = -1)`: todos; só leitura). Sem o MCP `elm` → a linha `PR aprovado por <login>, sha <sha>` que o
   aprovador entregou.
 
 1. **Leia o PR:** `gitlab_obter_mr` pelo `iid` do link no `status.md`. Tem de estar aberto, sem WIP/Draft e sem
@@ -24,7 +24,9 @@ a aprovação **registrada**, nunca a dita na conversa ("o PR foi aprovado", "po
    (de: <aceita | aguardando-aprovacao-pr>)` e, no Histórico, a linha `conflito no merge` com os arquivos (é por ela
    que o passo `sa-codificar.codificar.onde` separa este caso das mudanças pedidas na `[APR]`, que gravam a mesma fase);
    commit, push e conferência no remoto (como na Entrega do passo `sa-codificar.codificar.pr`)
-   e pare: a `sa-codificar` atualiza a branch, e a mudança passa de novo pela revisão.
+   e pare: a `sa-codificar` atualiza a branch, e a mudança passa de novo pela revisão. Sem o MCP `gitlabpr`, ou com
+   o campo PR `texto entregue` → a pessoa confere na UI do GitLab e diz: aberto, sem Draft e sem conflito, e o link
+   (grave-o no campo PR); o `sha` do PR é `git rev-parse origin/<branch>` (item 2).
 2. **Commit aprovado:** o `sha` do PR = `git rev-parse origin/<branch>` e é o commit que foi aprovado — HITL: o da
    entrega da verificação (o último commit que mudou o `verificacao.md`, `git log -1 --format=%H -- <pasta da fatia>/verificacao.md`, e nele o veredito `ACEITO` — não depende do padrão de mensagem do projeto); AFK: o `sha` do
    comentário da `[APR]`. Commit depois da aprovação → só vale se a base só trouxe registros: o aprovado segue na
@@ -57,19 +59,21 @@ a aprovação **registrada**, nunca a dita na conversa ("o PR foi aprovado", "po
      depois, liste as outras correções humanas que a fatia
      recebeu (tabela Retrabalho; Achados abertos de origem PR ou GATE do plano; bloqueio resolvido por uma pessoa;
      "não é assim" no Histórico) e, com a pessoa, grave uma linha por correção: feito × certo, onde estava o certo e
-     a causa proposta (tabela de causas do passo `sa-aprender.registrar.causa`). Correção sem lição
-     (ambiente, digitação) → causa `—`; `nenhuma` só com a seção vazia e nenhuma correção. O `licoes.md` é da base: quem o grava é a
+     a causa proposta (tabela de causas do passo `sa-aprender.registrar.causa`). Correção de ambiente (build, dado
+     ou serviço de teste) → causa `ambiente`; digitação ou engano sem causa no processo → `—`; `nenhuma` só com a
+     seção vazia e nenhuma correção. O `licoes.md` é da base: quem o grava é a
      consolidação.
    - `Fase: pronta`; no Histórico, `merge do PR <link> por <login>` (AFK: antes, `PR aprovado por <login>, sha <sha>`,
-     do comentário da `[APR]` ou a linha que o aprovador entregou); sem o MCP `elm`, também `ELM pendente [<chave>]:
-     lançar <h>h e concluir [DEV] FT-<nnn>` e, no AFK, a `ELM pendente [APR FT-<nnn> concluir]: …` que o aprovador
+     do comentário da `[APR]` ou a linha que o aprovador entregou); sem o MCP `elm`, pergunte o saldo de horas e
+     grave também `ELM pendente [DEV FT-<nnn> concluir]: lançar <saldo>h e concluir a [DEV] FT-<nnn>` e, no AFK, a `ELM pendente [APR FT-<nnn> concluir]: …` que o aprovador
      entregou; e `ELM pendente [DEV FT-<nnn> ligar]: ligar a [DEV] a <rótulos>` — HITL: sem o MCP, ou com o
      requisito que a fatia cobre ainda sem `id` (a `[ESP]` dele com `ELM pendente … publicar`); AFK: a que o
      aprovador entregou.
    - **Créditos** na seção Créditos ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4): os desta
      sessão; no AFK, a linha da `[APR]` que veio no comentário `PR aprovado` (ou que o aprovador entregou); e a
-     sessão do loop, que só fecha o consumo no fim do turno — o script a lista como sem registro: com o "sim",
-     `rateio 1/<n>` pelas fatias do lote.
+     sessão do loop, que só fecha o consumo no fim do turno: sessão sem registro com o título do loop do
+     `sa-orquestrador` que levou esta fatia → com o "sim", Sessão `<id> (rateio 1/<n>)`, com `<n>` = o número de
+     fatias do lote no log `.sabia/local/loop-<AAAA-MM-DD-HHMM>.md` (padrão `sa-orquestrar/log.md`).
    - `pronta` na linha da fatia no `backlog.md` e na da sprint dela.
 
    Commit `<FT> registrar merge` só com o `status.md`, o `backlog.md` e o `sprint-<nn>.md`; push com a conferência.
@@ -85,8 +89,8 @@ a aprovação **registrada**, nunca a dita na conversa ("o PR foi aprovado", "po
    **sem `--force`**; os agentes não podem (negado a todos): entregue o comando e a pessoa o roda. Falhou por arquivos
    não rastreados ou alterados → mostre quais (evidência com dado real fica em `.sabia/local/verificacao/`, fora da
    worktree) e deixe a pessoa decidir; nunca force.
-9. **Avise o P.O. ou o SM** de que a fatia está `pronta` para a consolidação (**`sa-consolidar`**, no agente
-   `sa-produto`, com os créditos num comentário na `[GB]`; horas, só do SM) e **pare**: a consolidação não é do Dev.
+9. **Avise o P.O. ou o SM** de que a fatia está `pronta` para a consolidação (**`sa-consolidar`**, agente
+   `sa-produto`) e **pare**: a consolidação não é do Dev, e o Dev não comenta nem lança horas na `[GB]`.
 
 ## Saída
 

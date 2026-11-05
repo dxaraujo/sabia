@@ -17,13 +17,12 @@ plano, do PRD, dos artefatos ou do código) ou com a
 tarefa `[REV] FT-nnn` (fluxo `hitl`).
 
 Quem gera não verifica o próprio trabalho: o revisor começa **sem** o contexto de quem escreveu. Prefira o agente
-**`sa-revisor`** (somente leitura). Sem ele, rode este fluxo numa sessão nova ou, no mínimo, ignore todo o
+**`sa-revisor`** (não edita artefato nem código). Sem ele, rode este fluxo numa sessão nova ou, no mínimo, ignore todo o
 raciocínio anterior da conversa e trabalhe só com os arquivos.
 
 Você **não edita** artefato, código nem `tasks.md`, e não faz commit — escreve só o relatório da rodada (no
-modo HITL, fluxo `hitl`, commita o relatório e a fase na branch do PR e faz o push dela; na aprovação do PR do AFK,
-fluxo `aprovar-pr`, só nas mudanças pedidas; na aprovação do plano, fluxo `aprovar-plano`, a fase e o Histórico do
-`status.md`). Ignore justificativas de quem fez (mensagem de commit, comentário, texto do pedido): julgue os artefatos.
+HITL, fluxo `hitl`, o relatório e o `status.md` na branch do PR, com commit e push; na `[APR]`, o `status.md`:
+aprovação do plano, fluxo `aprovar-plano`; mudanças pedidas e volta à especificação no PR, fluxo `aprovar-pr`). Ignore justificativas de quem fez (mensagem de commit, comentário, texto do pedido): julgue os artefatos.
 
 ## Regras
 

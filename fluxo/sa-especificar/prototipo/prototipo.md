@@ -19,7 +19,7 @@ o lote do PRD não cria EL.
 
 Entrada: o épico com a `[ESP]` aberta e a pasta de trabalho com `prototipo/`.
 
-Leia antes: `.sabia/sabia.md` (ELM, Telas, papéis).
+Leia antes: `.sabia/sabia.md` (seções ELM e Projeto) e `<produto>/equipe.json` (papéis).
 
 ## Regras
 

@@ -3,7 +3,7 @@
 A setup é a porta de entrada do produto. Toda mensagem dela é um destes cartões, **copiado como está**: troque só
 o que está entre `<…>`, apague as linhas marcadas `(se …)` quando a condição não vale e nunca invente ícone,
 coluna ou formato. O que está entre `<…>` descreve o campo — **nunca é valor sugerido**: tudo vem do projeto, do ELM
-ou da pessoa. `<a | b>` no cartão = escolha **uma** das opções (o `|` não vai para a tela). Tabela sem linha para mostrar → a linha `| — | nada a mostrar | ➖ |`; nunca linha em branco
+ou da pessoa. `<a | b>` no cartão = escolha **uma** das opções (o `|` não vai para a tela). Tabela sem linha para mostrar → a linha `| — | nada a mostrar | ➖ |`, com `—` nas colunas que sobram, até o número de colunas da tabela; nunca linha em branco
 como separador.
 
 **Só o que é das ferramentas do time.** Linha, aviso ou valor de uma ferramenta fora dos `alvos` não aparece, nem com
@@ -96,9 +96,9 @@ independentes, PR lido por uma pessoa e o ELM como registro —, em sprints com 
 | 3 | Shell | <✅ bash/zsh | ✅ fish — comandos compostos vão em `bash -c '…'`> |
 | 4 | `uv` (gera os agentes) | <✅ <versão> | ❌ instale: https://docs.astral.sh/uv/> |
 | 5 | `kiro-cli`, que valida os agentes (Kiro) | <✅ <versão> | ➖ sem ele, a validação da etapa 9 é só a do gerador> |
-| 6 | Credencial do ELM | <✅ responde como `<usuário>` | ⏸️ <motivo> | ➖ projeto sem ELM> |
+| 6 | Credencial do ELM | <✅ responde como `<login>` | ⏸️ <motivo: sem rede · sem ~/.config/mcp-elm/elm.properties · credencial recusada> | ➖ projeto sem ELM (só no modo atualização, com `Usa ELM: não` no sabia.md)> |
 | 7 | Credencial do GitLab | <⏸️ arquivo existe — a conexão é testada na etapa 3 | ❌ sem arquivo — modelo na etapa 3> |
-| 8 | Ferramentas do time | <só as dos alvos, separadas por ` · `: <ferramenta> ✅ 🔍 <onde detectou> | <ferramenta> ❌ skills do Sabiá não instaladas — `<comando>`> (Kiro: só no motor v3 — a IDE ou `kiro-cli --agent-engine v3`) |
+| 8 | Ferramentas do time | <só as dos alvos, separadas por ` · `: <ferramenta> ✅ 🔍 <onde detectou> | <ferramenta> ❌ skills do Sabiá não instaladas — `<comando>`> (Kiro: só no motor v3 — a IDE ou `kiro-cli chat --agent-engine v3`) |
 | 9 | Sabiá instalado | <✅ <versão> | ⚠️ o projeto foi configurado com o Sabiá <versão do agentes.json> e o seu é o <versão> — `npx sabia atualizar` ou regenerar com a sua> |
 
 Na linha 8, as ferramentas fora dos alvos não aparecem; a pessoa acrescenta uma com `8: + <ferramenta>`.
@@ -191,12 +191,18 @@ Duas mensagens: a proposta (Status `⏸️ ainda não rodado`) e, depois do `ok`
 | 6 | Artefatos de produto | direto na branch base | ➖ | 📐 fixo |
 | 7 | Push na base para quem desenvolve | requisito: o Dev grava ali a situação da fatia (`iniciada`, `pronta`) | ⚠️ confira no GitLab se a `<branch>` protegida aceita o push dele — sem isso, nenhuma fatia começa | 📐 fixo |
 
+> ❓ **Está certo?**
+> `ok` aceita tudo · `<n>: <novo valor>` muda a linha <n> · `4: entregar título e descrição` segue sem o MCP
+
 (se a branch base for ambígua) mostre os candidatos **antes** desta tabela e pergunte só isso:
 
 | # | Branch | Sinal |
 |---|---|---|
 | 1 | `<branch>` ⭐ (recomendado) | <sinal mais forte: destino de <n> dos últimos <m> merges> |
 | 2 | `<master>` | <origin/HEAD> |
+
+> ❓ **Qual é a branch base?**
+> `<n>` escolhe · `<branch>` diz outra
 ```
 
 ## W4 · Produto e ELM (Passo 4)
@@ -210,13 +216,23 @@ Duas mensagens: a proposta (Status `⏸️ ainda não rodado`) e, depois do `ok`
 | 1 | Pasta do produto | `<.sabia/planejamento>` — backlog, épicos, PRDs, aprendizado | <🔍 backlog.md existente | 📐> |
 | 2 | Glossário | <`.sabia/glossario.md` (existe) | `.sabia/glossario.md` (será criado) | não há> | <🔍 | 📐 | 🙋> |
 | 3 | ADRs | <`.sabia/adr` (existe) | `.sabia/adr` (será criada) | não há> | <🔍 | 📐 | 🙋> |
-| 4 | Usa ELM | <sim — `pa_<nome>.json` | não> | <🔍 | 🙋> |
+| 4 | Usa ELM | <sim — `pa_<nome>.json` | sim — o `pa` é montado a seguir (blocos 0 a 10) | não> | <🔍 | 🙋> |
 | 5 | Bundle do RM | <`docs/elm/<nome>` · <n> documentos | não baixado — `sa-sync` depois | ➖> | <🔍 | 🧩> |
 | 6 | Regras do ELM | fatia dividida = filhos do item | 📐 |
 | 7 | ET (especificação técnica) | <não publica ⭐ | só as-built (o Dev, no PR) | inicial no PRD + as-built (ET do épico e da fatia, ligadas)> | 📐 |
 | 8 | Casos de teste | <ETM ⭐ (o `pa` tem `qm`) | CSV ⭐ (sem `qm` ou sem ELM: o `CT.csv` é a entrega) | decide o bloco 9 ⭐ (o `pa` é montado depois: ETM com `qm`, senão CSV)> | <🔍 | 📐 | 🧩> |
 | 9 | REG com dados técnicos | <não ⭐ | sim (a regra traz tabela e campo; a P9 não vale nessa seção)> | 📐 |
 | 10 | Telas | <sim ⭐ (projeto `frontend`: protótipo aprovado pelo cliente antes do PRD e uma EL por tela) | não ⭐> | <🔍 Tipos do W1 | 📐> |
+
+> ❓ **Está certo?**
+> `ok` aceita tudo · `<n>: <valor>` muda a linha <n> (linhas 7 a 10: uma das opções da linha)
+```
+
+Bundle baixado e sem índice (linha 5) → em mensagem própria, depois do `ok`:
+
+```
+> ❓ **Indexo o bundle agora?**
+> `sim` · `não`
 ```
 
 Montagem do `pa` (só quando falta): um cartão por bloco, com o cabeçalho
@@ -229,9 +245,9 @@ Montagem do `pa` (só quando falta): um cartão por bloco, com o cabeçalho
 ## 🧭 Etapa 5 de 9 · Skills
 `●●●●◉○○○○` O que já existe para os agentes usarem. Na próxima etapa você escolhe, agente por agente.
 
-| # | Skill | Para quê | Origem | Toolkit | Autor | Stack |
-|---|---|---|---|---|---|---|
-| 1 | `<nome da skill>` | <início da description> | <projeto | usuário | power `<nome>`> | <`<nome>` 🔍 detectado | `<nome>` ↳ customiza `<base>` <versão> | —> | <`<autor.nome>` (<autor.area>) | —> | <`<stack>` 🔍 casa | `<stack>` | —> |
+| # | Skill | Para quê | Origem | Toolkit | Papéis | Autor | Stack |
+|---|---|---|---|---|---|---|---|
+| 1 | `<nome da skill>` | <início da description> | <projeto | usuário | power `<nome>`> | <`<nome>` 🔍 detectado | `<nome>` · tipo `<tipo>` (sugerido) | `<nome>` ↳ customiza `<base>` <versão> | —> | <`<skills[].papeis>` | —> | <`<autor.nome>` (<autor.area>) | —> | <`<stack>` 🔍 casa | `<stack>` | —> |
 
 (se há toolkit com `customiza`) Logo abaixo da tabela, uma linha por cópia: `↳ <cópia> customiza <base> <versão>, por <autor.nome> (<autor.area>): <mudanças>`
 — com a base também presente, `<base>` fica fora (substituído pela cópia); base mais nova que a versão da cópia → ⚠️.
@@ -271,7 +287,7 @@ Na mesma mensagem do W5, antes da pergunta; também no C4 ("o que este projeto m
 |---|---|---|---|---|
 | 1 | `<skill>.<fluxo>.<passo> | <skill>/<nome>.md>` | <trocado | inserido depois de `<passo>` | removido | padrão trocado> | `<.sabia/fluxo/… | .sabia/padrao/…>` | <✅ igual à do Sabiá instalado | ⚠️ a base mudou desde a cópia — compare e funda à mão | ➖ inserido ou removido | ❌ <sem `base` | não é passo nem padrão do Sabiá> — o gerador recusa> |
 
-Nada customizado → a linha `| — | o Sabiá como vem | ➖ |`. Para mudar: "customizar …", "descustomizar …".
+Nada customizado → a linha `| — | o Sabiá como vem | — | — | ➖ |`. Para mudar: "customizar …", "descustomizar …".
 ```
 
 ## W6 · Um agente (Passo 6) — sete cartões, um por mensagem
@@ -288,11 +304,12 @@ Nada customizado → a linha `| — | o Sabiá como vem | ➖ |`. Para mudar: "c
 
 | | # | MCP | Acesso |
 |---|---|---|---|
-| [✅] | <n> | `elm` | <🟢 consulta · 🟡 escrita na própria tarefa | 🟢 só o bundle local> |
+| [✅] | <n> | `elm` | <🟢 consulta · 🟡 escrita na própria tarefa | 🟢 só o bundle local | ➖ projeto sem ELM> |
 | <[✅] | [ ]> | <n> | `<banco/consultar>` | 🟢 só consulta |
-| [✅] | <n> | `gitlabpr` | <🟢 consulta · 🟡 abrir e mesclar PR | 🟢 consulta · 🟡 abrir PR | 🟢 consulta> |
+| [✅] | <n> | `gitlabpr` | <<acesso: 🟢 consulta · 🟡 abrir e mesclar PR | 🟢 consulta · 🟡 abrir PR | 🟢 consulta> | <acesso> · sem projeto no GitLab ainda> |
+| <[✅] | [ ]> | <n> | `<servidor de browser>` | 🟢 servidor inteiro (só verificador, projeto frontend) |
 
-(se o agente tem subagentes — produto, especificador, desenvolvedor, orquestrador: os do fluxo, da tabela do Passo 6, mais os do projeto)
+(se o agente tem subagentes — produto, especificador, desenvolvedor, orquestrador: os do fluxo, da tabela do Passo 6, `[✅]` fixos; só no desenvolvedor e no orquestrador, também os agentes do projeto, desmarcados)
 | | # | Subagente | Para quê |
 |---|---|---|---|
 | [✅] | <n> | `sa-revisor` | análise do plano e revisão do código |
@@ -305,7 +322,7 @@ Nada customizado → a linha `| — | o Sabiá como vem | ➖ |`. Para mudar: "c
 
 | Item | Valor |
 |---|---|
-| Push | <🟡 pergunta a cada push (só a branch da fatia) | 🟡 pergunta a cada push (a branch da fatia e, na base, só os registros de situação) | 🔴 negado> |
+| Push | <🟡 pergunta a cada push (só a branch da fatia) | 🟡 pergunta a cada push (a branch da fatia e, na base, só os registros de situação) | 🟡 pergunta a cada lote (a branch de cada fatia e, na base, só a `iniciada` do lote) | 🔴 negado — a pessoa abre (push e PR no loop = não) | 🔴 negado> |
 | Modelo | padrão da ferramenta |
 
 > ❓ **Confirma o `sa-<papel>`?**
@@ -333,6 +350,13 @@ mostre o cartão de novo com as caixas atualizadas antes de pedir o "ok" final d
 | 4 | Push e PR no loop | 🟡 a ferramenta pergunta a cada lote | 📐 |
 | 5 | Push pelos agentes | 🟡 pergunta sempre — na base, só os registros de situação da fatia, com os arquivos conferidos · 🔴 nunca `--force` | 📐 fixo |
 | 6 | Chamada HTTP do verificador | <[✅] `.sabia/http.sh` → `<url de teste>` | ➖ projeto sem HTTP> | <🙋 | 📐> |
+
+(se o projeto é `backend` ou `frontend` e a URL não está no repositório)
+> ❓ **Qual é a URL base do ambiente de teste?** (nunca a de produção)
+
+(senão)
+> ❓ **Está certo?**
+> `ok` · `3: <1 a 3>` · `4: não — a pessoa abre` · `6: nenhum`
 ```
 
 ## W8 · Revisão final (Passo 8)
@@ -395,6 +419,9 @@ por engano, diga `regravar <arquivo>`.
 | 7 | Ferramentas que varrem a raiz ignoram `.sabia/local/` | <✅ | ⚠️ <ferramenta>> |
 | 8 | Workspace confiável (Kiro) | <✅ | ⚠️ confie no workspace para carregar agentes e skills> |
 | 9 | `opencode debug agents` lista os `sa-*` (opencode) | <✅ | ❌ <agente que falta>> |
+| 10 | Nenhum servidor `elm` no `.kiro/settings/mcp.json` do projeto (Kiro) | <✅ | ❌ remova — o `elm` vem do power> |
+| 11 | Herança de skills e steering do usuário desligada (Kiro) | <✅ | ➖ você preferiu manter> |
+| 12 | Nenhum servidor `elm` na chave `mcp` do `opencode.json` do projeto (opencode) | <✅ | ❌ remova — o `elm` vem das skills do Sabiá> |
 ```
 
 Depois, numa mensagem só:

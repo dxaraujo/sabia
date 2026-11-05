@@ -9,21 +9,30 @@ Entrada: vizinhos do fluxo.
 
 ## Faça
 
-**Chamado por outro fluxo** (⇄ em linha, subagente, `AUTONOMO`) → pule este passo inteiro: quem chamou já entrou.
+**Chamado por outro fluxo** (⇄ em linha, subagente, `AUTONOMO=true`) → pule este passo inteiro: quem chamou já entrou.
+Passagem (⇒, a saída `→ sa-x.f` de outro fluxo) não é chamada: a entrada roda. Em qualquer caso, uma saída do passo
+`entrada` no mestre que casa com o estado vence a frase do caso (ex.: `→ sa-triar.triar` no lugar de "use `sa-triar`" e
+pare).
 
 Senão, nesta ordem; o primeiro caso que casar decide:
 
 1. **Existe?** Leia o item pela regra A base prevalece do padrão `sa-desenvolver/status.md`: o `status.md` da fatia
-   nas branches (atual, worktrees, remotas — `git grep -l '<id>' <ref> -- '.kiro/specs/*/status.md'`) e na base;
-   depois o `backlog.md` da base (ids locais e a coluna `elm`). Número do EWM → a linha com esse número na coluna
-   `elm`, depois do rótulo (`DF [4567](…)`, `IB [612010](…)`; registrado sem o MCP: `DF 4567`); IB de um épico ou
+   nas branches (as refs: `git for-each-ref --format='%(refname:short)' refs/heads refs/remotes`, que já cobre as
+   branches das worktrees; em cada ref,
+   `git ls-tree -r --name-only <ref> -- .kiro/specs/ | grep '^.kiro/specs/<id em minúsculas>-[^/]*/status.md$'`, e
+   leia o achado com `git show <ref>:<caminho>`) e na base; depois o `backlog.md` da base (ids locais e a coluna
+   `elm`). Épico (`EP-nn` ou `[ESP] EP-nn`): a Fase do `status.md` do épico (padrão `sa-especificar/status-epico.md`),
+   na pasta da coluna `pasta` do `backlog.md`, na base; sem ele na base (antes do GATE do PRD), o da pasta de trabalho
+   `.sabia/local/especificacao/<EP>-<slug>/` (Fase `rascunho` ou `em-revisao`). Número do EWM → a linha com esse
+   número na coluna `elm`, depois do rótulo (`DF [4567](…)`, `IB [612010](…)`; registrado sem o MCP: `DF 4567`); IB de um épico ou
    da Sustentação → as linhas abaixo dele; tarefa `[<papel>] <id>` → o item do pai. O EWM (`elm_ler_wi`) e a pessoa só completam dados;
    nunca se inventa dado de work item. Pedido em texto, ou id que não está no `status.md` nem no `backlog.md` → não
    está registrado: "use `sa-triar`" e pare. Terminal (`concluida`, `concluido`, `cancelada`, `cancelado`,
    `dividida`) → mostre a situação e a `obs` (a substituta, quando há) e pare; reabrir é item novo pela `sa-triar`.
    Uma linha dos vizinhos que qualifica o terminal vence esta regra.
 2. **É deste fluxo?** O estado do item (fase, tipo, tarefa e o que a linha qualifica) casa com uma linha dos
-   vizinhos → "<id> em <estado>: entre pela <dona>" (com o agente dela, quando é outro) e pare; a linha com
+   vizinhos → linha com a dona: "<id> em <estado>: entre pela <dona>" (com o agente dela, quando é outro) e pare;
+   linha terminada em ■: diga a frase entre aspas da linha, como está, e pare; a linha com
    qualificador vence a fase pura. O estado que segue num passo deste fluxo que não é o próximo vem nas saídas do
    passo `entrada` no mestre: siga por ele, sem parar. Nem deste fluxo nem dos vizinhos → "não é deste papel: use `sa-iniciar <id>`"
    e pare.
@@ -65,6 +74,8 @@ tocar no EWM. Passadas as travas, pelo `responsavel` da linha e pela tarefa do i
 - De outra pessoa (`conflito`): item de Sustentação → pergunte e, com "sim", repita com `forcar: true`; nos demais
   → "é de <login>; trocar é do P.O. ou do SM" e pare.
 - Tarefa fechada (`precondicao`) → mostre o estado e, com "sim", `elm_transicao(<id>, "reabrir")` e de novo o
-  `assumir`; sem o "sim" → "sincroniza a sprint (P.O. ou SM)" e pare.
-- Sem o MCP `elm` → `ELM pendente [<chave>]: assumir <tarefa> <id>` no registro do item, e siga.
+  `assumir`; sem o "sim" → "sincroniza a sprint (P.O. ou SM, agente `sa-produto`)" e pare.
+- Sem o MCP `elm` → `ELM pendente [<tipo> <id do item> assumir]: assumir a <tarefa>` (ex.: `[DEV FT-031 assumir]`,
+  `[ESP EP-05 assumir]`, `[ATD AT-012 assumir]`) no lugar das pendências do item
+  ([Pendências](~/.sabia/framework/skills/sabia/references/elm.md#pendências)), e siga.
 - Fluxo sem tarefa própria no EWM → pule esta seção.

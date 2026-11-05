@@ -13,15 +13,17 @@ O PRD aprovado só muda por um pedido explícito, e só antes do fatiamento:
 - **`fatiado`** → o PRD não muda (o DOORS Next é a fonte). Alteração de artefato que uma fatia não terminal cobre →
   a [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação) dessa fatia
   (não iniciada: a linha na seção Artefatos afetados, com Especificado `—`, e a DoR volta a `nova` com
-  `falta: especificação`; iniciada: item Pedido de fora da fatia) e "use `sa-especificar FT-<nnn>`"; escopo novo (história, regra ou ator que o PRD não tem), ou a fatia já terminal → "use
+  `falta: especificação`; iniciada: item Pedido de fora da fatia) e mostre o bloco 🔁 da Volta à especificação: o próximo é o da linha
+  `Próximo:` dele (`sa-especificar FT-<nnn>`, agente `sa-especificador` · encaixe: `sa-planejamento`, agente
+  `sa-produto` · próximo planejamento: P.O. ou SM, agente `sa-produto`); escopo novo (história, regra ou ator que o PRD não tem), ou a fatia já terminal → "use
   `sa-triar` com origem EP-<nn>" (agente `sa-produto`).
 - **`aprovado`** (o intervalo GATE do PRD → fatiamento) → a mudança é da tarefa de especificação do épico, pela
   tabela da [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação),
   com o bloco dela (`EP-<nn>`):
   1. **`[ESP]`** aberta → segue nela; a `[ESP] EP-<nn> Revisão <n>` ainda `planejada` → `assumir`, com "sim" (seção
      Assumir do passo `sa-especificar.especificar.entrada`). Concluída na sprint aberta → `reabrir` e `assumir`, com
-     "sim". Nos dois, a linha dela na seção Especificação do `sprint-<nn>.md` aberto fica `iniciada`, no commit do
-     item 2. Concluída numa sprint fechada → não reabre: o pedido fica na `obs` `falta: especificação (<motivo>,
+     "sim". Nos dois, a linha dela na seção Especificação do `sprint-<nn>.md` aberto fica `iniciada` (na reabertura,
+     com a Observação `reaberta: <motivo>`), no commit do item 2. Concluída numa sprint fechada → não reabre: o pedido fica na `obs` `falta: especificação (<motivo>,
      <login>, <AAAA-MM-DD>)` da linha do épico no `backlog.md` (bloco
      [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), commit
      `EP-<nn> registrar pendência de especificação`) e diga: com sprint aberta, "o EP-<nn> entra na sprint aberta pelo
@@ -53,8 +55,9 @@ segue as regras do passo `sa-prd.prd.escrever`.
   (`sa-planejamento.sprint.especificacao`).
 - PRD ainda na pasta de trabalho (sem o GATE, ou `aprovado` sem ir à base) → não é mudança: "use
   `sa-especificar EP-<nn>`" (a sessão da `[ESP]` segue no `sa-prd.prd`, ou leva o PRD para a base antes).
-- `fatiado` → a `[ESP] FT` da fatia (`sa-especificar.fatia`, agente `sa-especificador`) ou a `sa-triar` (agente
-  `sa-produto`).
+- `fatiado` → o próximo da linha `Próximo:` do bloco 🔁 (`sa-especificar FT-<nnn>`, agente `sa-especificador` ·
+  encaixe: `sa-planejamento`, agente `sa-produto` · próximo planejamento: P.O. ou SM, agente `sa-produto`) ou a
+  `sa-triar` (agente `sa-produto`).
 
 ## Pare se
 

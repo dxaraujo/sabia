@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-A correção (gatilho do mestre).
+A correção (um dos gatilhos da Entrada do fluxo `sa-aprender.registrar`).
 
 ## Faça
 

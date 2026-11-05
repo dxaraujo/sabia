@@ -19,7 +19,7 @@ link → `🏛️ <n> itens do backlog sem IB no EWM: <ids> → criar agora? (si
 | Entrada | Como ler |
 |---|---|
 | pedido em texto ("nova demanda: …", "corrigir o cálculo de juros") | a própria descrição |
-| número do EWM (DF, IB) | `elm_ler_wi(id, comentarios)`; sem o MCP `elm` → peça à pessoa o título, a descrição e o comportamento esperado — nunca invente dado de work item |
+| número do EWM (DF, IB) | `elm_ler_wi(id, comentarios = -1)` (todos); sem o MCP `elm` → peça à pessoa o título, a descrição e o comportamento esperado — nunca invente dado de work item |
 | "importar do EWM", "triar os defeitos do time" | **lote** → fluxo `sa-triar.lote-ewm` |
 | trabalho sem mudança no repositório — pedido de cliente ("extrai as contas bloqueadas", "por que o caso X deu Y?"), implantação, script de banco, ambiente, rotina de produção, ajuda a outro time | trilha sustentação (passo `triagem`) |
 
@@ -33,13 +33,15 @@ e `obs` — épicos, fatias e as `### <Categoria>` da `## Sustentação`), no `*
   (devolvida pela `sa-desenvolver`) → **retome a triagem dela**: passo `triagem` com o mesmo `FT` e
   a ficha que existe; no passo `registrar`, só atualize a linha (sem id novo), com a situação pela Volta das
   [Situações](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#situações) — de `iniciada` em diante ela não muda: avise quem a
-  conduz (artefato novo na seção Artefatos afetados → a
-  [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação), por quem a conduz);
+  conduz (artefato novo na seção Artefatos afetados → rode você o bloco
+  [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação), como pedido de fora da
+  fatia: a linha com Especificado `—` e a autorização, a `[ESP] FT` pela tabela do bloco, e avise quem a conduz);
 - **fatia sem épico que vira épico, se divide ou é cancelada** (decisão do P.O.) → `EP-nn` novo ou as fatias novas
   (passo `registrar`, situação `nova`, com `obs` `desmembrada de FT-…`; no EWM, o §3 "Fatia dividida" do
   [elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md)) e a original, no `backlog.md` e na linha da sprint,
   `cancelada` (`obs` `substituida-por EP-nn` ou o motivo) ou `dividida` (`substituida-por FT-…`). Já `iniciada` →
-  antes, conclua as tarefas abertas dela com as horas lançadas (sem o MCP, `ELM pendente`) e avise o Dev para
+  antes, conclua as tarefas abertas dela com as horas lançadas (sem o MCP, `ELM pendente [<tipo> <id> concluir]: concluir com <h>h lançadas` no
+  rodapé da ficha) e avise o Dev para
   fechar o PR. Cancelada → o IB (e, se não foi iniciada, as tarefas) cancela no EWM: `elm_transicao(<id>,
   "cancelar")`, um por id, com "sim"; na falha (sem o MCP, `precondicao`, erro), `ELM pendente [FT-<nnn> cancelar]`.
   As pendências da original moram no rodapé da ficha
@@ -47,7 +49,7 @@ e `obs` — épicos, fatias e as `### <Categoria>` da `## Sustentação`), no `*
 - **fatia `nova` no backlog com só `falta: especificação`** → não é da triagem: ela entra na sprint como
   especificação, com a `[ESP] FT`, no planejamento (`sa-planejamento.sprint.previsao`) ou pelo encaixe
   (`sa-planejamento.durante.encaixe`) — P.O. ou SM, no agente `sa-produto`;
-- **fatia `nova` no backlog** (`sprint` `—`, `obs` `falta: …`), de épico ou de Manutenção → **deixe-a pronta**, sem
+- **fatia `nova` de épico no backlog** (`origem` `EP-nn`, `sprint` `—`, `obs` `falta: …`) → **deixe-a pronta**, sem
   tarefa (o `falta: especificação` fica para a `[ESP] FT`): [Completar uma fatia `nova`](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#completar-uma-fatia-nova) (créditos no
   comentário da `[GB]`);
 - **épico `novo`** que voltou (falta de informação para o PRD, P.O. ou EWM pendentes —
@@ -56,15 +58,22 @@ e `obs` — épicos, fatias e as `### <Categoria>` da `## Sustentação`), no `*
   passo `encaminhar`;
 - **item de Sustentação** registrado por engano, em dobro ou com o pedido retirado → `cancelado`, com o motivo, na
   linha do `backlog.md` (e na da sprint, se houver) e no `**Situação:**` do registro; o IB e a tarefa cancelam no
-  EWM (`elm_transicao(<id>, "cancelar")`, com "sim"); na falha, `ELM pendente [<ID> cancelar]` no `**ELM:**` do
-  registro;
+  EWM (`elm_transicao(<id>, "cancelar")`, com "sim"); na falha, a linha `ELM pendente [<ID> cancelar]: <o que falta>` sob o
+  `**ELM:**` do registro;
 - **item de Sustentação devolvido pela `sa-atender` ou pela `sa-executar` por categoria errada** (outra categoria,
   muda o repositório ou tem regra de negócio em aberto) → **retome a triagem do pedido**: passo `triagem`, com
-  `origem` o `<ID>` devolvido. No passo `registrar`, o item novo (outra categoria: id da série dela; muda o
-  repositório: fatia de Manutenção) fica com o IB do devolvido como item de origem (sem IB novo; o pai passa ao IB
-  da categoria nova, ou à Manutenção, sem o "mantenha e avise"), e o devolvido fica `cancelado`, com o motivo
-  `substituido-por <novo>`, como o registrado por engano (acima), mas no EWM só a tarefa dele fecha, antes (com
-  horas lançadas, `concluir`; sem horas, `cancelar`), e a fechada não é a tarefa do novo;
+  `origem` o `<ID>` devolvido. No passo `registrar`:
+
+  | Devolvido para | Item novo | IB do item novo | Tarefa do devolvido | Devolvido fica |
+  |---|---|---|---|---|
+  | outra categoria | id da série dela | o IB do devolvido, como item de origem (sem IB novo), com o pai trocado pelo IB da categoria nova (sem o "mantenha e avise") | fecha antes: com horas lançadas `concluir`, sem horas `cancelar`; nunca vira a tarefa do item novo (a dele nasce pela regra do passo `registrar`, sem aproveitar a fechada) | `cancelado`, motivo `substituido-por <novo>` |
+  | muda o repositório | fatia de Manutenção | o IB do devolvido, como item de origem (sem IB novo), com o pai trocado pela Manutenção | idem | idem |
+
+  O devolvido fica `cancelado` como o registrado por engano (acima: a linha do `backlog.md`, a da sprint e o
+  `**Situação:**` do registro), mas no EWM só a tarefa dele fecha: o IB segue como o do item novo;
+- **item terminal** (`concluida`, `cancelada`, `dividida`, `concluido`, `cancelado`) com pedido novo → nunca reabre:
+  é item novo, pelo passo `triagem` (id novo). Fatia → `obs` `origem FT-<nnn>`; épico → `obs` `origem EP-<nn>` (como
+  no cenário novo de épico já fatiado); item de Sustentação → coluna `origem` = o `<ID>` terminal;
 - o resto → pare (abaixo).
 
 ## Saída
@@ -76,5 +85,5 @@ Item novo → passo `triagem`; item que já existe → a ação da lista acima.
 - Árvore suja ao trocar para a base (bloco Gravar na base).
 - Fatia com a `[ESP] FT` aberta na sprint (`nova` em especificação, ou a que voltou à especificação) → não é aqui:
   "use `sa-especificar FT-<nnn>`".
-- Item que já existe, fora dos casos acima → pare: começar ou retomar é pelo hub **`sa-iniciar`**; cancelar uma fatia de épico é
+- Item que já existe, não terminal, fora dos casos acima → pare: começar ou retomar é pelo hub **`sa-iniciar`**; cancelar uma fatia de épico é
   refinamento na **`sa-fatiar`** (depois do GATE do backlog, a fatia não se divide nem se junta).

@@ -9,7 +9,9 @@ A retrospectiva registrada (passo `retro`).
 
 **Horas:** relatório da sprint por tipo e por pessoa ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §5). Preencha "Números"
 (planejadas × lançadas) e aponte as tarefas concluídas sem horas lançadas — só aqui, no fechamento; a `[GB]` sem
-horas não é falta (só o SM lança nela, e a dona que também é P.O. não lança).
+horas não é falta (só o SM lança nela, e a dona que também é P.O. não lança). Iteração do EWM que cobre duas
+sprints → conte só as tarefas listadas no `sprint-<nn>.md` (e a `[GB]`). Sem o MCP `elm` → Planejadas e Lançadas
+`—` e `ELM pendente [<chave> horas]: relatório de horas` na `## Números`; os Créditos seguem (vêm do git).
 **Créditos** (só do git, nunca do `~/.kiro`): a coluna Créditos dos Números soma as colunas Créditos das seções
 Fatias, Especificação e Sustentação (todas as `### <Categoria>`) e a seção Créditos de gestão; `**Power sabia:**`
 ganha as versões que aparecem nessas linhas e nos `status.md`/fichas dos itens concluídos, em ordem crescente;

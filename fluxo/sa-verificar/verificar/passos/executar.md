@@ -13,7 +13,9 @@ Execute cenário por cenário e registre logo abaixo do roteiro, no padrão `sa-
   `sabia.md` o registra — o corpo vem da pasta `massa/`; senão `curl`, que pede confirmação) e estado no
   banco; **batch** → execução do job com a massa, status da execução e contagens; **frontend** → navegação real
   no browser (Playwright ou MCP de browser ligado ao agente), screenshot em `evidencias/`; **dados** → carga e
-  consultas de verificação.
+  consultas de verificação; **mobile** → emulador ou dispositivo, quando houver; senão roteiro manual com a pessoa,
+  evidência em `evidencias/`; **biblioteca** → testes de contrato públicos da API da biblioteca; **infra** →
+  `plan`/`lint`/`dry-run` e a saída como evidência — **nunca `apply`**.
 - Rode também os cenários de **repetição** (execute duas vezes; conte de novo) e de **erro em um item**.
 - Falha por ambiente (serviço fora do ar, credencial de teste) → `⚠️ ambiente`, não rejeição; diga o que faltou.
 

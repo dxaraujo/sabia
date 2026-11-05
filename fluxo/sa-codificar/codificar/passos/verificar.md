@@ -13,7 +13,8 @@ de aceite executados de ponta a ponta, com evidência) — nunca a execute você
 `onde`). Teto de 2 rodadas, como na revisão. Corrigida uma rejeição, volte aos passos `validar` e `revisar` (a nova
 revisão conta no teto de rodadas) antes de verificar de novo.
 
-Com `ACEITO` ou `REJEITADO`: grave o **Drift de negócio** do relatório no `status.md` (como no passo `revisar`: a
+Com `ACEITO` ou `REJEITADO`: grave a linha `Drift de negócio:` do bloco `🔎 Verificação` (o bloco Decisão, no fim do
+`verificacao.md`: padrão `sa-verificar/verificacao.md`) que o `sa-verificador` devolve no **Drift de negócio** do `status.md` (como no passo `revisar`: a
 indicação do agente, com os cenários `🔁 possível alteração`, decidida pelo Dev Sênior na `[APR] Aprovar PR`; o `🔁`
 não vira tarefa de código); com
 `REJEITADO`, some 1 em Retrabalho e acrescente a linha na tabela `## Retrabalho` (Papel `verificação (AFK)`); e

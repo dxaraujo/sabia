@@ -186,6 +186,7 @@ export function validar(m) {
         if (r.fl === fl) e(fl.arq, v.n, `vizinho → ${q2}: é deste fluxo → declare como saída do passo entrada ("saidas" no mestre)`);
         else if (!m.subag[r.fl.d.dono]) e(fl.arq, v.n, `vizinho → ${q2}: o dono ${r.fl.d.dono} não é agente do papeis.json`);
         else if (r.passo && r.fl.d.dono !== d.dono) e(fl.arq, v.n, `vizinho → ${q2}: passo de outro agente (${r.fl.d.dono}) → use o fluxo (${r.fl.skill}.${r.fl.fluxo})`);
+        else if (r.fl.d.dono !== d.dono && !(v.estado + " → " + v.destino).includes("agente `" + r.fl.d.dono + "`")) e(fl.arq, v.n, `vizinho → ${q2}: dono ${r.fl.d.dono} é outro agente → acrescente "(agente \`${r.fl.d.dono}\`)" na linha`);
       }
     }
     for (const x of fl.passos) {
@@ -361,7 +362,7 @@ const destinoId = (base, r) => (r.passo ? `${base}/${r.fl.skill}/references/${r.
 const cel = (t) => String(t).replace(/\|/g, "\\|").replace(/\n/g, " ");
 const italico = (resumo) => (resumo ? `_${resumo}_\n\n` : "");
 
-export const LEGENDA = "↓ segue · ↑ volta · ↺ repete · ⇄ chama · ⇒ passa a (o fluxo termina) · ↪ vizinhos da entrada (diga a dona e pare) · ■ fim · 🔒 trava · ⇢ passo com desvio de toolkit (pelo para e arquivos, ou pelo tipo que o passo cria)";
+export const LEGENDA = "↓ segue · ↑ volta · ↺ repete · ⇄ chama · ⇒ passa a (o fluxo termina) · ↪ vizinhos da entrada (diga a dona, ou a frase da linha ■, e pare) · ■ fim · 🔒 trava · ⇢ passo com desvio de toolkit (pelo para e arquivos, ou pelo tipo que o passo cria)";
 
 /** O passo aceita desvio de toolkit: pelo para e arquivos ("desvio": true) ou pelo tipo do catálogo que ele cria. */
 export const temDesvio = (x) => !!(x.desvio || x.tipos?.length);
@@ -408,9 +409,10 @@ Antes de ler o arquivo de um passo (\`…/skills/<skill>/references/<fluxo>/<pas
 direto \`.sabia/fluxo/<skill>/<fluxo>/passos/<passo>.md\` na raiz do projeto: se existir, vale ele; senão, o da skill.
 O mesmo para um padrão: \`.sabia/padrao/<skill>/<nome>.md\` no lugar de \`…/references/padrao/<nome>.md\`. Abra pelo
 caminho; não liste a pasta (a busca não vê pastas ocultas). Com agente do Sabiá, o prompt lista também os passos inseridos
-e removidos nos fluxos de que ele é dono. Num passo ⇢ de desvio por tipo, o tipo com skill de toolkit sai por ela: o
-agente dono a tem no prompt; sem agente, vale a seção **Tipos com skill de toolkit** do \`.sabia/sabia.md\`, com a skill,
-o fluxo e o padrão do tipo (arquivos do toolkit, lidos pelo caminho) e os itens de rubrica que ele acrescenta à revisão.
+e removidos nos fluxos de que ele é dono. Num passo ⇢, o desvio de toolkit sai pela skill dele: o agente dono a tem no
+prompt; sem agente, valem a seção **Desvios de toolkit** (desvio por passo) e a **Tipos com skill de toolkit** (desvio por
+tipo, com a skill, o fluxo e o padrão do tipo, arquivos do toolkit lidos pelo caminho, e os itens de rubrica que ele
+acrescenta à revisão) do \`.sabia/sabia.md\`.
 `;
 
 /** O SKILL.md compilado de uma skill de fluxo. */
@@ -429,8 +431,9 @@ function skillMd(m, s, fmYaml, h1, ctx) {
     const { titulo, resto } = semH1(fl.corpo);
     out.push(`## Fluxo ${fl.fluxo}`, "");
     if (titulo) out.push(`**${titulo}**`, "");
-    out.push(`Agente: \`${fl.d.dono}\`. Sem ele, sugira à pessoa usá-lo; seguindo aqui, os passos inseridos pelo projeto e os`,
-      "desvios de toolkit (⇢) não entram.", "");
+    out.push(`Agente: \`${fl.d.dono}\`. Sem ele, sugira à pessoa usá-lo; seguindo aqui, os passos inseridos e removidos pelo`,
+      "projeto não entram, e os desvios de toolkit (⇢) valem pelas seções **Desvios de toolkit** (desvio por passo) e",
+      "**Tipos com skill de toolkit** (desvio por tipo) do `.sabia/sabia.md`.", "");
     if (resto.trim()) out.push(rebaixar(reescrever(resto, fl.arq, ctx), 1).trimEnd(), "");
     out.push("| # | Passo | Arquivo | Chama | Travas | Saídas |", "|---|---|---|---|---|---|");
     (fl.d.travas_gerais || []).forEach((t) => usadas.add(t));
@@ -454,8 +457,8 @@ function skillMd(m, s, fmYaml, h1, ctx) {
       out.push(`| ${i + 1} | \`${x.id}\`${temDesvio(x) ? ` ⇢${x.tipos?.length ? ` (${x.tipos.join(", ")})` : ""}` : ""} | [${x.id}.md](${arq}) | ${cel(chama)} | ${cel((x.travas || []).join(", ") || "—")} | ${cel(saidas)} |`);
     });
     out.push("", `Grafo: [grafo.md](${base}/${s}/references/${fl.fluxo}/grafo.md)`);
-    out.push("", "Ao começar um passo, leia o arquivo dele (não os dos outros passos) e o que ele mandar ler. Sem Saídas, segue para o",
-      `próximo da lista. Travas do fluxo: ${(fl.d.travas_gerais || []).map((t) => `\`${t}\``).join(", ") || "—"}.`, "");
+    out.push("", "Ao começar um passo, leia o arquivo dele (não os dos outros passos) e o que ele mandar ler. Nenhuma Saída casou (ou o passo não tem Saídas) → o",
+      `próximo da lista; depois do último passo, o fluxo termina. Travas do fluxo: ${(fl.d.travas_gerais || []).map((t) => `\`${t}\``).join(", ") || "—"}.`, "");
   }
   const ordem = Object.keys(m.travas).filter((t) => usadas.has(t));
   if (ordem.length) out.push("## Travas", "", "Valem sobre o corpo de qualquer passo.", "", ...ordem.map((t) => `- **${t}** — ${m.travas[t].texto}`), "");
@@ -480,7 +483,7 @@ function tiposMd(m, ctx) {
     "Catálogo fechado: todo artefato da especificação e do ELM é de um destes tipos, e um toolkit não cria tipo. A coluna",
     "Desviável diz os passos de Cria que são o ponto de desvio (⇢): neles, o toolkit que traz uma skill com o fluxo e o",
     "padrão do tipo (`tipos` no `toolkit.json`) escreve esse artefato; nos outros passos de Cria, o tipo é sempre do Sabiá. O envelope OKF de todos",
-    "é o do `okf-elm.md` da `sa-prd`; o corpo é o do padrão do tipo. Tipo **pendente** está declarado, mas ainda não tem padrão nem fluxo: não é criado nem publicado.", "",
+    `é o do [\`okf-elm.md\`](${base}/sa-prd/references/okf-elm.md) da \`sa-prd\`; o corpo é o do padrão do tipo. Tipo **pendente** está declarado, mas ainda não tem padrão nem fluxo: não é criado nem publicado.`, "",
     "| Sigla | Nome | Arquivo | Cria | Padrão | ELM | Requisito | Desviável | Publica depois de | Embute | Rubrica |",
     "|---|---|---|---|---|---|---|---|---|---|---|"];
   for (const sg of Object.keys(m.tipos)) {

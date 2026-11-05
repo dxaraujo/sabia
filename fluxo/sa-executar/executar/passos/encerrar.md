@@ -3,16 +3,17 @@
 ---
 ## Entrada
 
-"concluir o <ID>": o trabalho feito e registrado na ficha (passo `registrar`).
+"concluir o <ID>": o trabalho feito e gravado no registro (passo `registrar`).
 
 ## Faça
 
-1. **Concluir:** mostre o já lançado (`elm_horas(id)`), pergunte só o saldo → `elm_lancar_horas`, depois
+1. **Concluir:** mostre o já lançado (`elm_horas(id)`), pergunte só o saldo → `elm_lancar_horas(<id da tarefa>,
+   <saldo>)` e a linha `| <AAAA-MM-DD> | <saldo> |` na tabela Horas do registro, depois
    `elm_transicao(id, "concluir")` na tarefa e no IB do item, numa confirmação. `**Situação:** concluido` e os
-   créditos da sessão na ficha ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4); no `backlog.md`,
+   créditos da sessão no registro ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4); no `backlog.md`,
    `status` `concluido` e `concluida-em`; na `### <Categoria>` do `sprint-<nn>.md`, a Situação e os Créditos da
-   linha (a soma da seção Créditos da ficha; o `creditos` do `backlog.md` é da virada da sprint).
-2. **Desdobramento**, registrado em **Saída** na ficha:
+   linha (a soma da seção Créditos do registro; o `creditos` do `backlog.md` é da virada da sprint).
+2. **Desdobramento**, registrado em **Saída** no registro:
 
    ```
    ✅ <ID> concluído. Algum desdobramento?
@@ -21,7 +22,7 @@
      3. algo a não repetir ou a reaproveitar → lição pela `sa-aprender`
    ```
 
-3. Um commit `<ID> concluir` (ficha, backlog e sprint), pelos itens 3 e 4 do bloco Gravar na base.
+3. Um commit `<ID> concluir` (registro, backlog e sprint), pelos itens 3 e 4 do bloco Gravar na base.
 
 ## Saída
 

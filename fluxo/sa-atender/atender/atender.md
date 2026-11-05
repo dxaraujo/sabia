@@ -41,3 +41,6 @@ Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configura
   nem abre AT (só cria no EWM o IB e a tarefa que faltam a um AT registrado).
 - Lançar horas é registro de empenho, a qualquer momento na `[ATD]` assumida; concluir é o passo `finalizar`, com o saldo.
 - Toda escrita no EWM e todo envio de resposta pedem confirmação da pessoa.
+- Sem o MCP `elm` ou com falha → uma linha por chave no campo `**ELM:**` do registro, e siga: `ELM pendente [ATD
+  AT-<nnn> assumir]: assumir a tarefa` · `ELM pendente [ATD AT-<nnn> horas]: lançar <h>h (<AAAA-MM-DD>)` · `ELM
+  pendente [ATD AT-<nnn> concluir]: concluir a tarefa` · `ELM pendente [IB AT-<nnn> concluir]: concluir o IB`.

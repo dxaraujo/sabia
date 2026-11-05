@@ -1,7 +1,7 @@
 #!/bin/sh
 # Sabiá — chamada HTTP do agente sa-verificador, só para a URL de teste do projeto.
-# Instalado pela sa-setup em .sabia/http.sh (o verificador tem permissão para rodar só este script, e nenhum
-# agente pode alterá-lo). A URL vem da seção Verificação de aceite do .sabia/sabia.md; mudou → rode a setup.
+# Instalado pela sa-setup em .sabia/http.sh (é a única chamada HTTP que o verificador faz sem confirmação — o
+# `curl` direto pergunta —, e nenhum agente pode alterá-lo). A URL vem da seção Verificação de aceite do .sabia/sabia.md; mudou → rode a setup.
 #
 # Uso (da raiz do repositório):
 #   sh .sabia/http.sh <MÉTODO> <caminho> [corpo.json]

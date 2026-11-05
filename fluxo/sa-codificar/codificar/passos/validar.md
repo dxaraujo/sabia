@@ -13,8 +13,8 @@ A seção **Comandos (backpressure)** do `.sabia/sabia.md`, gravada pela setup. 
 2. Mostre a evidência: o comando e o resultado (saída curta ou o resumo dos testes). "Passou" sem a saída não vale.
 3. **Validação completa** (todas as tarefas `[x]`): a suíte **inteira** de testes; a cobertura, com o gate do
    `sabia.md` (se houver), é medida no que a fatia criou ou alterou — as linhas e os ramos do diff. Falta de cobertura
-   que já existia no arquivo antes da fatia (fora do diff) não é tarefa dela: registre no Histórico (`cobertura
-   pré-existente: <arquivo> <o que falta>`) e siga.
+   que já existia no arquivo antes da fatia (fora do diff) não é tarefa dela: registre no Histórico (`<AAAA-MM-DD HH:MM> —
+   cobertura pré-existente: <arquivo> <o que falta>`) e siga.
 
 ## Saída
 

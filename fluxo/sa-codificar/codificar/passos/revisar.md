@@ -28,7 +28,8 @@ sessão nem o passo `onde`. O PR cita esse arquivo e
 ele precisa estar na branch antes da abertura.
 
 - `VEREDITO: APROVADO` → passo `verificar`.
-- `REVISAR` → corrija **só** os achados (como tarefas `[R<n>]`, passo `onde`) e volte ao passo `validar`. Até 2 rodadas.
+- `REVISAR` → os achados viram tarefas `[R<n>]` pela regra do passo `onde` (fim de `## Tasks`) e siga para o passo
+  `tarefa`, que corrige **só** eles; depois, `validar` e `revisar`. Até 2 rodadas.
 
 ## Saída
 

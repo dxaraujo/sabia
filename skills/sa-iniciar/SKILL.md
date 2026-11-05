@@ -25,6 +25,11 @@ da base (ids locais e as colunas `origem` e `elm`, inclusive as `### <Categoria>
 pessoa. Id que não está em (1) nem (2) não está registrado. Fatia `concluida`, `dividida` ou `cancelada` no
 `backlog.md` → mostre a situação (e a `obs`) e pare: o `status.md` de uma branch não vale.
 
+Fatia em `pr-aberto`, `em-revisao`, `em-verificacao`, `aceita`, `verificada` ou `aguardando-aprovacao-pr`: o estado
+do PR por `gitlab_listar_mrs(origem=<branch>, estado=all)` (MCP `gitlabpr`, só leitura, como no item 2 da Coleta da
+[`sa-status`](../sa-status/SKILL.md#coleta)); sem o MCP, ou no agente sem a tool (`sa-especificador`, `sa-verificador`), o link do campo PR do `status.md`, e pergunte à pessoa se o
+PR foi mergeado.
+
 **Número do EWM** (DF, IB): quem decide é o tipo do id local da linha que o tem na coluna `elm` (`FT-`, `EP-`, `AT-`,
 `IM-`…), não o tipo do work item. O IB `Sustentação`, `Manutenção` ou de uma categoria não é item de trabalho:
 diga o que ele é e peça o item.
@@ -86,12 +91,13 @@ Responda com a instrução e **pare**: nunca invoque nem simule a skill do papel
 1. Com o MCP `elm` e a sprint publicada: `elm_listar_wi(dono: "eu", iteracao: <a da sprint aberta>, tipo: "tarefa")`;
    sem ele, ou com `**Publicação no EWM:** pendente` no cabeçalho (nenhuma tool recebe a iteração dela antes da
    publicação — [elm.md](../sabia/references/elm.md), Regras de toda escrita, Sprint não publicada): as linhas do `sprint-<nn>.md`
-   aberto (Fatias, Especificação e as `### <Categoria>` da Sustentação) com `responsavel` = a pessoa (login do
-   `sabia.md` ou `git config user.email`) — com o marcador, diga também "sprint não publicada no EWM → sincroniza a
-   sprint (`sa-planejamento`)".
+   aberto em que a pessoa (login do `sabia.md` ou `git config user.email`) está em Responsável (Fatias: `[DEV]`;
+   Especificação: `[ESP]`; Sustentação: a tarefa da categoria), em Revisor (`[REV]`) ou em Verificador (`[VER]`) —
+   com o marcador, diga também "sprint não publicada no EWM → sincroniza a sprint (`sa-planejamento`)".
 2. Mostre as tarefas abertas (não concluídas) de **qualquer tipo**, na ordem de prioridade do `backlog.md` (`crítica`
-   → `baixa`, `—` no fim; empate pela ordem da linha) — as que já estão em andamento primeiro (sem o MCP: fatia e
-   especificação `iniciada`, item `em-andamento`):
+   → `baixa`, `—` no fim; empate pela ordem da linha; itens de Sustentação, sem prioridade, entram como `—`, na ordem
+   dos ids, a do `backlog.md`) — as que já estão em andamento primeiro (sem o MCP: fatia e especificação `iniciada`,
+   item `em-andamento`):
    ```
    📋 Suas tarefas na sprint <pai>/Sprint <nn> (<login>)
    | # | Tarefa | Item | Estado | Skill |

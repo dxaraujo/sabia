@@ -18,8 +18,8 @@ O AT assumido no passo `assumir`, já `em-andamento`.
    ficam só a consulta (SQL), a contagem, o caminho do arquivo e um resumo **sem identificar pessoas**.
 3. **Rascunho da resposta** → "ok" da pessoa antes de enviar. Quem envia é a pessoa; o agente não manda e-mail
    nem responde chamado.
-4. **Horas** podem ser lançadas a qualquer momento (`elm_lancar_horas(id, horas)`, com "sim"): lançar não conclui a
-   `[ATD]`. Ao fechar cada sessão do atendimento, os **créditos** dela na seção Créditos da ficha ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4)
+4. **Horas** podem ser lançadas a qualquer momento (`elm_lancar_horas(<id da [ATD]>, <h>)`, com "sim", e uma linha
+   `| <AAAA-MM-DD> | <h> |` na tabela Horas do registro): lançar não conclui a `[ATD]`. Ao fechar cada sessão do atendimento, os **créditos** dela na seção Créditos do registro ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4)
    — vão no commit do atendimento.
 
 ## Saída

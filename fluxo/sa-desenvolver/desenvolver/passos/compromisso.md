@@ -12,9 +12,11 @@ Vale para todas as trilhas. Tudo conferido **antes** de gravar na base, criar br
 1. **Definition of Ready e trilha** — a DoR do formato do backlog
    ([backlog.md](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#definition-of-ready-o-que-faz-uma-fatia-elegivel),
    mais os itens próprios do `acordos.md`): a fatia ainda passa (confira agora).
-   - Falhou → a fatia ainda é especificação, não desenvolvimento: volta a `nova` com o `falta:` e é completada por
-     [Completar uma fatia `nova`](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#completar-uma-fatia-nova) (no backlog, o
-     `sa-produto`; na sprint, a `[ESP] FT-<nnn>` pela `sa-especificar`).
+   - Falhou → a fatia ainda é especificação, não desenvolvimento: não grave nada na base nem no EWM; diga
+     `FT-<nnn> não passa na DoR: <item que falhou>` e que o rebaixamento a `nova` com o `falta:` é do P.O. ou do SM
+     (agente `sa-produto`), pela [Volta](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#situações), e a fatia
+     se completa por [Completar uma fatia `nova`](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#completar-uma-fatia-nova)
+     (no backlog, o `sa-produto`; na sprint, a `[ESP] FT-<nnn>` pela `sa-especificar`); e pare.
    - A trilha vem do registro, não de uma triagem nova: a coluna `trilha` da linha (de épico, sempre **padrão**).
      **padrão**: pesquisa → plano → GATE do plano → implementação → PR → revisão → verificação; **rápida**: pesquisa
      curta → `bugfix.md` + `tasks.md` (o teste que reproduz primeiro) → implementação → PR → revisão → verificação
@@ -38,7 +40,9 @@ Vale para todas as trilhas. Tudo conferido **antes** de gravar na base, criar br
    destravar antes (aprovar o plano, revisar o PR). A fatia já está planejada: a pessoa pode seguir mesmo assim, e
    `WIP excedido: <motivo>` vai no Histórico do `status.md` ao criá-lo (passo `iniciar`).
 4. **Registro publicado.** A linha da fatia, a ficha e a linha da sprint já estão em `origin/<base>`
-   (`git grep -q '<FT>' origin/<base> -- <produto>/backlog.md`)? Só no local → peça o push
+   (`git fetch`; `git show origin/<base>:<produto>/backlog.md | grep -q '^| FT-<nnn> |'`,
+   `git cat-file -e origin/<base>:<produto>/<caminho da coluna ficha>` e
+   `git show origin/<base>:<produto>/sprints/<pai>/sprint-<nn>.md | grep -q '^| FT-<nnn> |'`)? Só no local → peça o push
    antes: a branch nasce de `origin/<base>`, e um id que ainda não chegou lá pode mudar. Repositório sem remoto
    (ou base nunca publicada) → não há o que conferir: a branch nasce da base local; diga isso e siga.
 5. **Dono do item pai** (com o MCP `elm`): o item da fatia no EWM — o IB, ou o item de origem (`DF`/`IB` da coluna
@@ -54,4 +58,4 @@ Todos os itens conferidos → passo `iniciar`.
 ## Pare se
 
 Falhou um item → diga qual e o caminho, e não comece: DoR ou trilha que não serve (item 1), fatia de outra pessoa
-ou Júnior numa fatia `AFK` (item 2), item pai sem dono (item 5).
+ou Júnior numa fatia `AFK` (item 2), registro só no local (item 4: peça o push e pare), item pai sem dono (item 5).

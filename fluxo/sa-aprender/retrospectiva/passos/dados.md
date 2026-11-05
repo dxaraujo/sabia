@@ -23,7 +23,7 @@ Propostas: <promoções, rubricas, skills, steering>
 Fontes: `status.md` das fatias (Histórico; a seção Créditos, para a versão do power), `revisao-*`, `verificacao.md`,
 `licoes.md`, `backlog.md` e `sprint-<nn>.md` (Status; a coluna Créditos, para o total por item; a seção Débito de especificação, com a
 Tarefa preenchida nas `<m>` com tarefa). Termine
-perguntando quais propostas aplicar. Retrospectiva de épico ou de sprint grava, no commit dela, a linha de créditos
+perguntando quais propostas aplicar. Retrospectiva de épico ou de sprint grava, no commit dela (`<EP-nn | <pai>/Sprint <nn>> registrar retrospectiva`), a linha de créditos
 da sessão na seção **Créditos de gestão** do `sprint-<nn>.md` aberto (Atividade `retrospectiva`; ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4))
 e, na sessão do P.O. ou do SM, o comentário de créditos na `[GB]` (o mesmo item 4).
 
