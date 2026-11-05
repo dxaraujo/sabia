@@ -12,7 +12,7 @@ const RX=/(\[[A-Z]+\]|\.(?:kiro|sabia|opencode)\/(?:[\w.\/*-]|&lt;|&gt;)*|(?:[\w
 const fmt=t=>esc(t).replace(RX,"<code>$1</code>");
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
-const ST={line:null,st:null,sen:null,tr:"padrao",zoom:1,touring:false};
+const ST={line:null,st:null,sen:null,tr:"padrao",art:"sim",zoom:1,touring:false};
 window.SABIA_STATE=ST;
 const val=(v)=>typeof v==="function"?v(ST):v;
 
@@ -145,6 +145,7 @@ function view(){
   document.querySelectorAll("#lineChips .chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.k===L));
   document.querySelectorAll("#senChips .chip").forEach(c=>c.setAttribute("aria-pressed",(c.dataset.k||null)===(ST.sen||null)||(c.dataset.k==="all"&&!ST.sen)));
   document.querySelectorAll("#trChips .chip").forEach(c=>{c.setAttribute("aria-pressed",c.dataset.k===ST.tr);c.classList.toggle("na",!!L&&!["hitl","afk"].includes(L))});
+  document.querySelectorAll("#artChips .chip").forEach(c=>{c.setAttribute("aria-pressed",c.dataset.k===ST.art);c.classList.toggle("na",!!L&&!["hitl","afk"].includes(L))});
   document.querySelectorAll(".svc").forEach(b=>b.classList.remove("sel"));
   drawDyn();
   phases();
@@ -292,6 +293,9 @@ if(sc)[["all","Todas"],["jr","Júnior"],["pl","Pleno"],["sr","Sênior"]].forEach
 const tc2=$("#trChips");
 if(tc2)[["padrao","Padrão"],["rapida","Rápida"]].forEach(([k,n])=>{const b=document.createElement("button");b.className="chip";b.dataset.k=k;b.style.setProperty("--c",cv(k==="rapida"?"--l-rapida":"--blue"));b.textContent=n;
   b.addEventListener("click",()=>{ST.tr=k;view();panel()});tc2.insertBefore(b,tc2.querySelector(".hint"))});
+const ac=$("#artChips");
+if(ac)[["sim","Com artefatos"],["nao","Sem artefatos"]].forEach(([k,n])=>{const b=document.createElement("button");b.className="chip";b.dataset.k=k;b.style.setProperty("--c",cv("--blue"));b.textContent=n;
+  b.addEventListener("click",()=>{ST.art=k;view();panel()});ac.insertBefore(b,ac.querySelector(".hint"))});
 document.querySelectorAll(".maptools button").forEach(b=>b.addEventListener("click",()=>{const z=b.dataset.z;ST.zoom=z==="in"?Math.min(2.2,ST.zoom+.4):z==="out"?Math.max(1,ST.zoom-.4):1;
   svg.style.width=(ST.zoom*100)+"%";svg.style.minWidth=(1040*ST.zoom)+"px";if(ST.st){const[x,y]=center(ST.st);setTimeout(()=>follow(x,y),380)}}));
 document.addEventListener("keydown",e=>{if(e.target.closest("input,textarea"))return;if(!ST.st||!ST.line)return;
