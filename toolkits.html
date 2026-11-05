@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Toolkits · Sabiá</title>
-<meta name="description" content="Toolkits do Sabiá: como usar, como criar, os pontos de extensão, o desvio de passo e a customização de fluxos e de toolkits.">
+<meta name="description" content="Toolkits do Sabiá: como usar, como criar, os pontos de extensão, o desvio de passo, o desvio por tipo e a customização de fluxos e de toolkits.">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500;600&display=swap">
@@ -17,19 +17,19 @@
 <div class="wrap">
   <div class="top">
     <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá</span></a>
-    <span class="ver">2.0 · Kiro e opencode</span>
+    <span class="ver">2.0.0-beta.1 · Kiro e opencode</span>
     <span class="autor">Desenvolvido por <b>Daniel Xavier Araújo</b></span>
     <a class="gh" href="https://github.com/dxaraujo/sabia">GitHub</a>
   </div>
   <nav class="tabs" aria-label="Páginas">
     <a href="index.html">Início</a><a href="como-funciona.html">Como funciona</a><a href="fluxos.html">Fluxos</a><a href="papeis.html">Papéis e agentes</a><a href="arquivos.html">Arquivos</a><a href="ciclo.html">Ciclo da fatia</a><a href="toolkits.html" aria-current="page">Toolkits</a><a href="elm.html">IBM ELM</a><a href="gates.html">Gates e senioridade</a>
   </nav>
-  <header class="sign page"><h1>Toolkits e extensão</h1><p class="lead">O Sabiá cuida do fluxo: o quê, o como e a verificação. O conhecimento da stack vem de <b>toolkits</b>, que são pacotes de skills, regras e agentes mantidos fora do Sabiá. Esta página mostra como usar um toolkit, como criar um, os pontos onde o Sabiá aceita extensão e como customizar um fluxo num projeto.</p>
-  <nav class="indice" aria-label="Nesta página"><a href="#oque">O que é</a><a href="#usar">Usar</a><a href="#criar">Criar</a><a href="#pontos">Pontos de extensão</a><a href="#desvio">Desvio de passo</a><a href="#customizar">Customizar um fluxo</a><a href="#copia">Customizar um toolkit</a></nav>
+  <header class="sign page"><h1>Toolkits e extensão</h1><p class="lead">O Sabiá cuida do fluxo: o quê, o como e a verificação. O conhecimento da stack, e o padrão de especificação de uma casa, vem de <b>toolkits</b>: pacotes de skills, regras e agentes mantidos fora do Sabiá. Esta página mostra como usar um toolkit, como criar um, os pontos onde o Sabiá aceita extensão e como customizar um fluxo num projeto.</p>
+  <nav class="indice" aria-label="Nesta página"><a href="#oque">O que é</a><a href="#usar">Usar</a><a href="#criar">Criar</a><a href="#pontos">Pontos de extensão</a><a href="#desvio">Desvio de passo</a><a href="#tipos">Desvio por tipo</a><a href="#customizar">Customizar um fluxo</a><a href="#copia">Customizar um toolkit</a></nav>
   <div class="bands" aria-hidden="true"><i></i><i></i><i></i></div></header>
 
 <section id="oque">
-  <div class="lead-sec"><h2>O que é um toolkit</h2><p>Um toolkit atende um tipo de projeto ou uma stack: Java, Spring Batch, Angular, React. Ele fica <b>fora da compilação</b>. A <code>sa-setup</code> é a única parte do fluxo que sabe procurá-lo. Ela detecta o tipo do projeto e propõe, agente por agente, as skills que vai ligar.</p></div>
+  <div class="lead-sec"><h2>O que é um toolkit</h2><p>Um toolkit atende um tipo de projeto, uma stack ou uma casa: Java, Spring Batch, Angular, React, o padrão de especificação de uma equipe. <b>Toolkit é skill</b>: o Sabiá não compila conteúdo de toolkit, e fluxo com passos é só do framework. A <code>sa-setup</code> é a única parte do fluxo que sabe procurá-lo. Ela detecta o tipo do projeto e propõe, agente por agente, as skills que vai ligar.</p></div>
   <figure class="diag">
    <svg viewBox="0 0 1000 250" role="img" aria-labelledby="t1t"><title id="t1t">Toolkit, sa-setup e agentes: a setup descobre, propõe e liga, com a confirmação da pessoa</title>
     <defs>
@@ -42,7 +42,7 @@
     <text class="m" x="28" y="108">skills/&lt;skill&gt;/SKILL.md</text>
     <text class="m" x="28" y="134">agentes/&lt;agente&gt;.md</text>
     <text class="m" x="28" y="160">steering/*.md</text><text class="s" x="150" y="160">regras da stack</text>
-    <text class="s" x="28" y="190">comandos de build e o jeito de</text><text class="s" x="28" y="208">verificar o aceite desse tipo</text>
+    <text class="s" x="28" y="190">fluxo e padrão por tipo, comandos</text><text class="s" x="28" y="208">de build e verificação do aceite</text>
     <path class="seta" d="M290 125H352"/><text class="s" x="298" y="114">descobre</text>
     <rect x="355" y="40" width="290" height="170" rx="16" style="fill:var(--navy)"/><text style="fill:var(--on-navy)" class="t w" x="375" y="72">sa-setup</text>
     <text style="fill:var(--on-navy)" class="s w" x="375" y="100">W5 · detecta o tipo do projeto</text><text style="fill:var(--on-navy)" class="s w" x="375" y="124">W6 · um cartão por agente, com as</text><text style="fill:var(--on-navy)" class="s w" x="375" y="144">skills do toolkit pré-marcadas</text><text style="fill:var(--on-navy)" class="s w" x="375" y="170">a pessoa confirma, agente por agente</text>
@@ -59,24 +59,31 @@
 <section id="usar">
   <div class="lead-sec"><h2>Usar um toolkit</h2><p>Três passos: instalar na máquina, ligar no projeto e, quando houver versão nova, atualizar.</p></div>
   <ol class="passos">
-   <li><h3>Instale</h3><p><code>npx sabia toolkits listar</code> mostra os toolkits do índice público, com o autor e a versão. Depois, <code>npx sabia toolkits instalar spring-batch</code>, ou <code>…instalar &lt;url-git&gt;@&lt;ref&gt;</code> para um repositório próprio. O toolkit vai para <code>~/.sabia/toolkits/&lt;nome&gt;/</code>, com a origem e o sha em <code>.origem.json</code>.</p></li>
+   <li><h3>Instale</h3><p><code>npx sabia@next toolkits listar</code> mostra os toolkits dos índices, com o autor, a versão do índice, a instalada e a do projeto. Depois, <code>npx sabia@next toolkits instalar spring-batch</code>, ou <code>…instalar &lt;url-git|pasta&gt;[@&lt;ref&gt;][#&lt;subpasta&gt;]</code> para um repositório próprio. <code>#subpasta</code> pega o toolkit dentro de um repositório com vários. Numa pasta local, o <code>@ref</code> lê o toolkit daquele commit, e não da árvore de trabalho. O toolkit vai para <code>~/.sabia/toolkits/&lt;nome&gt;/</code>, com a origem e o sha em <code>.origem.json</code>. <code>toolkits baixar</code> só baixa e valida, sem copiar para as ferramentas. Baixar o mesmo toolkit de outra fonte regrava a origem, mesmo sem mudar o conteúdo.</p></li>
    <li><h3>Ligue no projeto</h3><p>Peça <b>"configurar o Sabiá"</b>, ou <b>"atualizar os agentes do Sabiá"</b> num projeto já configurado. No W5, a setup mostra o inventário por toolkit e marca o detectado com 🔍. No W6, cada agente recebe um cartão com as skills dos papéis dele já marcadas. A resposta é pelos números: <code>tirar 3,5</code>, <code>pôr 7</code>.</p></li>
-   <li><h3>Atualize</h3><p><code>npx sabia toolkits atualizar</code> e, no projeto, "atualizar os agentes do Sabiá". A setup pergunta só sobre as skills <b>novas</b>; a skill que sumiu sai do agente com aviso. Dentro do projeto, <code>sabia toolkits instalar</code> sem argumento instala as versões que ele usa.</p></li>
+   <li><h3>Atualize</h3><p><code>npx sabia@next toolkits atualizar</code> busca de novo na origem gravada e mostra os arquivos novos, alterados e removidos antes de trocar. Depois, no projeto, "atualizar os agentes do Sabiá". A setup pergunta só sobre as skills <b>novas</b>; a skill que sumiu sai do agente com aviso. Dentro do projeto, <code>sabia toolkits instalar</code> sem argumento instala as versões que ele usa. <code>sabia toolkits remover &lt;nome&gt;</code> avisa quando o projeto ainda usa o toolkit.</p></li>
   </ol>
   <div class="duas" style="margin-top:14px">
-   <div class="bloco"><h3>Onde a setup procura, nesta ordem</h3><ol><li><code>~/.sabia/toolkits/*/toolkit.json</code>: os que o CLI instalou.</li><li><code>.sabia/toolkits/*/toolkit.json</code>: o toolkit do próprio projeto, versionado com ele.</li><li><code>~/.kiro/powers/installed/*/toolkit.json</code>: toolkit distribuído como power.</li><li>Sem manifesto: skills em <code>.kiro/skills/</code>, <code>.opencode/skills/</code> e <code>.agents/skills/</code> com <code>metadata.toolkit</code> no front-matter. As skills com o mesmo nome formam um toolkit, mas sem passos nem agentes.</li><li>Skills avulsas: entram no inventário geral, e a pessoa decide por agente.</li></ol></div>
+   <div class="bloco"><h3>Onde a setup procura, nesta ordem</h3><ol><li><code>~/.sabia/toolkits/*/toolkit.json</code>: os que o CLI instalou.</li><li><code>.sabia/toolkits/*/toolkit.json</code>: o toolkit do próprio projeto, versionado com ele.</li><li><code>~/.kiro/powers/installed/*/toolkit.json</code>: toolkit distribuído como power.</li><li>Sem manifesto: skills em <code>.kiro/skills/</code>, <code>.opencode/skills/</code> e <code>.agents/skills/</code> (no projeto e no home), em <code>~/.config/opencode/skills/</code> e nos powers instalados, com <code>metadata.toolkit</code> no front-matter. As skills com o mesmo nome formam um toolkit, mas sem passos nem agentes.</li><li>Skills avulsas: entram no inventário geral, e a pessoa decide por agente.</li></ol></div>
    <div class="bloco"><h3>O cartão do W6, para o <code>sa-desenvolvedor</code></h3>
-<pre class="cod"> #  [✅] Skill                Para quê
- 1  [✅] java                 Java 17, testes e padrões
-                              · toolkit java
- 2  [✅] spring-batch-job     steps chunk/tasklet
-                              · toolkit spring-batch 🔍 detectado
-                              ⇢ assume sa-codificar.codificar.tarefa
- 3  [✅] spring-batch-teste   testes de job
- 4  [ ]  rest-api             controladores e contratos
+<pre class="cod">      #  Skill                Para quê · origem
+ [✅] 1  java                 Java 17, testes e padrões
+                              · toolkit java 🔍
+ [✅] 2  spring-batch-job     steps chunk/tasklet
+                              · toolkit spring-batch 🔍
+ [✅] 3  spring-batch-teste   testes de job
+                              · toolkit spring-batch 🔍
+ [ ]  4  rest-api             controladores e contratos
                               · toolkit java-web
+ <span class="c">… MCPs e subagentes, de 5 a 8</span>
 
-Responda: ok · tirar 3 · pôr 4 · nenhuma skill</pre></div>
+      #  Desvio de toolkit    Para · Agente
+ [✅] 9  spring-batch-job     tarefa que cria ou altera
+         · toolkit spring-batch  um job ou step
+                              [ ] batch-job — delegar a ele
+
+Responda: ok · tirar 3 · pôr 4 · agente 9 · nenhuma skill</pre>
+   <p>A numeração segue pelas tabelas. No desvio, a skill vem marcada se o toolkit foi detectado; o agente vem sempre desmarcado, porque delegar é escolha da pessoa.</p></div>
   </div>
 </section>
 
@@ -97,8 +104,8 @@ Responda: ok · tirar 3 · pôr 4 · nenhuma skill</pre></div>
 │   └── batch-step.md
 └── steering/
     └── batch-regras.md          <span class="c">regras da stack, por papel</span></pre>
-   <h3>Checklist</h3><ul><li><code>nome</code> em kebab-case e sem o prefixo <code>sa-</code>, mais <code>versao</code>, <code>descricao</code>, <code>tipos-de-projeto</code> e <code>skills</code>.</li><li><code>autor</code> com <code>nome</code> e <code>area</code>: quem fez responde pelo toolkit, e toolkit sem autor é recusado.</li><li>Todo <code>caminho</code> existe dentro da pasta.</li><li>O <code>passo</code> aponta para um passo com <code>"desvio": true</code>, e o <code>agente</code> está em <code>agentes[]</code>.</li><li>O agente não tem campo de permissão: quem dá as regras é o papel dono do passo.</li></ul>
-   <p>O CLI confere tudo isso no <code>sabia toolkits instalar</code>. O gerador confere de novo na setup e recusa sem gravar nada.</p></div>
+   <h3>Checklist</h3><ul><li><code>nome</code> em kebab-case e sem o prefixo <code>sa-</code>, mais <code>versao</code>, <code>descricao</code>, <code>tipos-de-projeto</code> e <code>skills</code>.</li><li>A pasta de cada skill não usa nome do Sabiá (<code>sa-*</code> ou <code>sabia</code>).</li><li><code>autor</code> com <code>nome</code> e <code>area</code>: quem fez responde pelo toolkit, e toolkit sem autor é recusado.</li><li>Todo <code>caminho</code> existe dentro da pasta.</li><li>O <code>passo</code> aponta para um passo com <code>"desvio": true</code> (hoje, só <code>sa-codificar.codificar.tarefa</code>), e o <code>agente</code> está em <code>agentes[]</code>.</li><li>Cada tipo em <code>tipos</code> é desviável no catálogo, e a skill dele traz em <code>papeis</code> o papel de cada dono do passo de desvio. Ver <a href="#tipos">Desvio por tipo</a>.</li><li><code>requer.sabia</code> não passa da versão do Sabiá instalado.</li><li>O agente não tem campo de permissão: quem dá as regras é o papel dono do passo.</li></ul>
+   <p>O CLI confere tudo isso no <code>sabia toolkits baixar</code> e no <code>instalar</code>. O gerador confere de novo na setup e recusa sem gravar nada.</p></div>
    <div class="bloco"><h3>O manifesto</h3>
 <pre class="cod">{
   <span class="k">"$schema"</span>: <span class="v">"https://raw.githubusercontent.com/dxaraujo/sabia/main/skills/sa-setup/assets/toolkit.schema.json"</span>,
@@ -137,6 +144,9 @@ Responda: ok · tirar 3 · pôr 4 · nenhuma skill</pre></div>
    <tr><td><code>skills[].papeis</code></td><td><b>Quem</b> recebe a skill: <code>produto</code>, <code>especificador</code>, <code>pesquisador</code>, <code>desenvolvedor</code>, <code>revisor</code>, <code>verificador</code>, <code>orquestrador</code>.</td></tr>
    <tr><td><code>skills[].stack</code> · <code>skills[].deteccao</code></td><td><b>Onde</b>: a stack da skill. Com <code>deteccao</code>, ela só vem marcada quando o repositório casa.</td></tr>
    <tr><td><code>skills[].passo</code></td><td><b>Em que passo</b> ela assume o trabalho do Sabiá. Ver <a href="#desvio">Desvio de passo</a>.</td></tr>
+   <tr><td><code>tipos</code></td><td><b>Que tipo</b> do catálogo a skill do toolkit escreve, com o fluxo e o padrão do tipo. Ver <a href="#tipos">Desvio por tipo</a>.</td></tr>
+   <tr><td><code>rubricas</code></td><td>Itens que o toolkit <b>acrescenta</b> à revisão: <code>id</code> (como <code>EX1</code>), <code>verificacao</code>, <code>severidade</code> e, se quiser, o <code>tipo</code>.</td></tr>
+   <tr><td><code>requer</code></td><td>A versão mínima do Sabiá: <code>{"sabia": "2.0.0"}</code>. Abaixo dela, o CLI recusa o toolkit.</td></tr>
    <tr><td><code>agentes[]</code></td><td>Agentes neutros (nome, descrição, prompt, skills, subagentes). O gerador cria cada um com as regras do papel dono do passo.</td></tr>
    <tr><td><code>steering[]</code></td><td>Regras da stack, ligadas aos agentes dos papéis indicados.</td></tr>
    <tr><td><code>comandos</code></td><td>Proposta para a seção Comandos do <code>sabia.md</code> quando o repositório não deixa claro. A pessoa confirma.</td></tr>
@@ -144,41 +154,44 @@ Responda: ok · tirar 3 · pôr 4 · nenhuma skill</pre></div>
    <tr><td><code>customiza</code></td><td>O toolkit é a cópia modificada de outro. Ver <a href="#copia">Customizar um toolkit</a>.</td></tr>
   </tbody></table></div>
   <div class="duas" style="margin-top:6px">
-   <div class="bloco"><h3>Publicar no índice</h3><p>O índice é um repositório git com <code>.claude-plugin/marketplace.json</code>. Cada entrada aponta para a fonte do toolkit: um caminho, um repositório <code>github</code>, uma <code>url</code> ou um <code>git-subdir</code>, com <code>ref</code> e <code>sha</code>. O índice público é o <code>dxaraujo/sabia-toolkits</code>. Para usar um índice próprio, passe <code>--indice &lt;url-git|pasta&gt;</code>.</p></div>
-   <div class="bloco"><h3>Toolkit sem manifesto</h3><p>Para começar rápido, basta uma skill comum com <code>metadata.toolkit: minha-stack</code> (e, se quiser, <code>metadata.papeis</code>) no front-matter, em <code>.kiro/skills/</code> ou <code>.opencode/skills/</code>. A setup a mostra agrupada pelo toolkit. Passos e agentes, porém, só existem com o <code>toolkit.json</code>.</p></div>
+   <div class="bloco"><h3>Publicar no índice</h3><p>O índice é um repositório git com <code>.claude-plugin/marketplace.json</code>, e só aponta para os toolkits: cada um vive no repositório dele. Cada entrada tem <code>name</code>, <code>version</code>, <code>description</code>, <code>autor</code>, o <code>customiza</code> quando houver, e a fonte: um caminho, um repositório <code>github</code>, uma <code>url</code> ou um <code>git-subdir</code>, com <code>ref</code> e <code>sha</code>. O CLI recusa o toolkit se o commit não for o <code>sha</code>. Confira antes com <code>npx sabia@next toolkits baixar &lt;url-git&gt;@&lt;ref&gt;</code>.</p><p>O índice público é o <code>dxaraujo/sabia-toolkits</code>. Para um índice próprio, passe <code>--indice &lt;url-git|pasta&gt;</code> ou ponha a URL em <code>~/.sabia/indices.json</code>. Estar no índice não é auditoria: quem instala decide se confia.</p>
+   <h3>No índice público</h3><ul><li><code>java</code> 1.1.0: Java 17 com Spring, JPA e testes.</li><li><code>spring-batch</code> 1.2.0: job, step, reader, writer, testes e o agente <code>spring-batch-job</code>.</li><li><code>spring-batch-pab</code> 1.3.0: cópia customizada do <code>spring-batch</code> 1.2.0.</li><li><code>iara</code> 0.3.2: padrão de especificação (HF, REG, EL, CT, ET e ATA) sobre o fluxo de especificação do Sabiá.</li></ul></div>
+   <div class="bloco"><h3>Toolkit sem manifesto</h3><p>Para começar rápido, basta uma skill comum com <code>metadata.toolkit: minha-stack</code> (e, se quiser, <code>metadata.papeis</code> e <code>metadata.tipos-de-projeto</code>) no front-matter, em <code>.kiro/skills/</code>, <code>.opencode/skills/</code> ou <code>.agents/skills/</code>. A setup a mostra agrupada pelo toolkit. Passos, tipos e agentes, porém, só existem com o <code>toolkit.json</code>.</p></div>
   </div>
 </section>
 
 <section id="pontos">
   <div class="lead-sec"><h2>Pontos de extensão</h2><p>Todo ponto de extensão entra pelos <b>agentes do projeto</b>, nunca pela skill compilada. Há duas origens: o toolkit, que é reaproveitado entre projetos, e o próprio projeto, que vale só nele.</p></div>
   <figure class="diag">
-   <svg viewBox="0 0 1000 400" role="img" aria-labelledby="t2t"><title id="t2t">Pontos de extensão: o que vem do toolkit e o que vem do projeto, e onde cada um entra</title>
-    <rect x="10" y="10" width="300" height="380" rx="16" style="fill:var(--soft)"/><text class="t" x="28" y="40">do toolkit</text><text class="s" x="28" y="60">reaproveitado entre projetos</text>
-    <g class="m"><text x="28" y="98">① skill de apoio</text><text x="28" y="150">② desvio de passo ⇢</text><text x="28" y="202">③ agente neutro</text><text x="28" y="254">④ steering da stack</text><text x="28" y="306">⑤ comandos e verificação</text><text x="28" y="358">⑥ cópia customizada</text></g>
-    <g class="s"><text x="28" y="116">skills[].papeis</text><text x="28" y="168">skills[].passo</text><text x="28" y="220">agentes[]</text><text x="28" y="272">steering[]</text><text x="28" y="324">comandos · verificacao</text><text x="28" y="376">customiza</text></g>
-    <path class="seta" d="M310 110 C350 110 360 170 392 170"/><path class="seta" d="M310 160 C350 160 360 190 392 190"/><path class="seta" d="M310 212 C350 212 360 210 392 210"/><path class="seta" d="M310 264 C350 264 360 230 392 230"/>
-    <path class="seta ret" d="M310 316 C360 316 380 330 392 330"/>
-    <rect x="395" y="120" width="210" height="140" rx="16" style="fill:var(--navy)"/><text style="fill:var(--on-navy)" class="t" x="500" y="150" text-anchor="middle">agentes sa-*</text><text style="fill:var(--on-navy)" class="s w" x="500" y="176" text-anchor="middle">prompt gerado pela setup</text><text style="fill:var(--on-navy)" class="s w" x="500" y="200" text-anchor="middle">skills · subagentes</text><text style="fill:var(--on-navy)" class="s w" x="500" y="222" text-anchor="middle">desvios · delta</text><text style="fill:var(--on-navy)" class="s w" x="500" y="244" text-anchor="middle">regras do papel</text>
-    <rect x="395" y="300" width="210" height="60" rx="12" style="fill:var(--grey)"/><text class="m" x="500" y="326" text-anchor="middle">.sabia/sabia.md</text><text class="s" x="500" y="346" text-anchor="middle">Comandos · Desvios de toolkit</text>
+   <svg viewBox="0 0 1000 430" role="img" aria-labelledby="t2t"><title id="t2t">Pontos de extensão: o que vem do toolkit e o que vem do projeto, e onde cada um entra</title>
+    <rect x="10" y="10" width="300" height="410" rx="16" style="fill:var(--soft)"/><text class="t" x="28" y="40">do toolkit</text><text class="s" x="28" y="60">reaproveitado entre projetos</text>
+    <g class="m"><text x="28" y="92">① skill de apoio</text><text x="28" y="134">② desvio de passo ⇢</text><text x="28" y="176">③ desvio por tipo ⇢</text><text x="28" y="218">④ agente neutro</text><text x="28" y="260">⑤ steering da stack</text><text x="28" y="302">⑥ itens de rubrica</text><text x="28" y="344">⑦ comandos e verificação</text><text x="28" y="386">⑧ cópia customizada</text></g>
+    <g class="s"><text x="28" y="109">skills[].papeis</text><text x="28" y="151">skills[].passo</text><text x="28" y="193">tipos</text><text x="28" y="235">agentes[]</text><text x="28" y="277">steering[]</text><text x="28" y="319">rubricas</text><text x="28" y="361">comandos · verificacao</text><text x="28" y="403">customiza</text></g>
+    <path class="seta" d="M310 102 C350 102 360 150 392 150"/><path class="seta" d="M310 144 C350 144 360 170 392 170"/><path class="seta" d="M310 186 C350 186 360 190 392 190"/><path class="seta" d="M310 228 C350 228 360 210 392 210"/><path class="seta" d="M310 270 C350 270 360 230 392 230"/><path class="seta" d="M310 312 C350 312 360 250 392 250"/>
+    <path class="seta ret" d="M310 354 C360 354 380 350 392 350"/>
+    <rect x="395" y="120" width="210" height="160" rx="16" style="fill:var(--navy)"/><text style="fill:var(--on-navy)" class="t" x="500" y="150" text-anchor="middle">agentes sa-*</text><text style="fill:var(--on-navy)" class="s w" x="500" y="176" text-anchor="middle">prompt gerado pela setup</text><text style="fill:var(--on-navy)" class="s w" x="500" y="198" text-anchor="middle">skills · subagentes</text><text style="fill:var(--on-navy)" class="s w" x="500" y="220" text-anchor="middle">desvios · tipos · delta</text><text style="fill:var(--on-navy)" class="s w" x="500" y="242" text-anchor="middle">regras do papel</text><text style="fill:var(--on-navy)" class="s w" x="500" y="264" text-anchor="middle">rubricas no revisor</text>
+    <rect x="395" y="310" width="210" height="80" rx="12" style="fill:var(--grey)"/><text class="m" x="500" y="336" text-anchor="middle">.sabia/sabia.md</text><text class="s" x="500" y="356" text-anchor="middle">Comandos · Desvios de toolkit</text><text class="s" x="500" y="376" text-anchor="middle">Tipos com skill de toolkit</text>
     <path class="seta" d="M690 150 C650 150 640 170 607 170"/><path class="seta" d="M690 210 C650 210 640 200 607 200"/><path class="seta" d="M690 262 C640 262 640 230 607 230"/>
-    <path class="seta ret" d="M690 330 H607"/>
-    <rect x="690" y="10" width="300" height="380" rx="16" style="fill:var(--nota)"/><text class="t" x="708" y="40">do projeto</text><text class="s" x="708" y="60">só neste repositório · harness</text>
-    <g class="m"><text x="708" y="146">⑦ trocar ou inserir passo</text><text x="708" y="206">⑧ remover passo</text><text x="708" y="258">⑨ trocar um padrão</text><text x="708" y="318">⑩ regras aprendidas</text></g>
+    <path class="seta ret" d="M690 336 H607"/>
+    <rect x="690" y="10" width="300" height="410" rx="16" style="fill:var(--nota)"/><text class="t" x="708" y="40">do projeto</text><text class="s" x="708" y="60">só neste repositório · harness</text>
+    <g class="m"><text x="708" y="146">⑨ trocar ou inserir passo</text><text x="708" y="206">⑩ remover passo</text><text x="708" y="258">⑪ trocar um padrão</text><text x="708" y="318">⑫ regras aprendidas</text></g>
     <g class="s"><text x="708" y="164">.sabia/fluxo/&lt;s&gt;/&lt;f&gt;/passos/</text><text x="708" y="224">.sabia/fluxo/&lt;s&gt;/&lt;f&gt;/&lt;f&gt;.md</text><text x="708" y="276">.sabia/padrao/&lt;s&gt;/&lt;nome&gt;.md</text><text x="708" y="336">## Regras aprendidas (sa-aprender)</text></g>
    </svg>
-   <figcaption>As travas valem para todos os pontos. Nenhuma extensão tira a revisão independente, o passo <code>validar</code>, o GATE nem o "sim" da pessoa.</figcaption>
+   <figcaption>As travas valem para todos os pontos. Nenhuma extensão tira a revisão independente, o passo <code>validar</code>, o GATE nem o "sim" da pessoa. O toolkit só acrescenta: não cria tipo, não troca padrão do núcleo nem item de rubrica do Sabiá.</figcaption>
   </figure>
   <div class="pontos">
    <article style="--c:var(--blue)"><h3>① Skill de apoio</h3><div class="onde">skills[].papeis</div><p>A skill vai ao agente dos papéis indicados, que a carrega quando o artefato pede. Exemplo: <code>java</code> para o desenvolvedor, o revisor e o pesquisador.</p></article>
-   <article style="--c:var(--brand)"><h3>② Desvio de passo</h3><div class="onde">skills[].passo.passo</div><p>A skill (ou um agente dela) assume um passo do Sabiá. Só em <code>sa-codificar.codificar.tarefa</code> e <code>sa-prd.prd.escrever</code>. <a href="#desvio">Detalhe</a>.</p></article>
-   <article style="--c:var(--cyan)"><h3>③ Agente neutro</h3><div class="onde">agentes[]</div><p>Vira subagente do dono do passo, com as regras do papel dele, nunca mais que isso. Pode ter subagentes próprios, que herdam o mesmo papel.</p></article>
-   <article style="--c:var(--teal)"><h3>④ Steering da stack</h3><div class="onde">steering[]</div><p>Regras da stack ligadas aos agentes dos papéis indicados, como "nunca commit dentro de um step".</p></article>
-   <article style="--c:var(--green)"><h3>⑤ Comandos e verificação</h3><div class="onde">comandos · verificacao</div><p>A proposta de compilar, testar, lint e cobertura para o <code>sabia.md</code>, que o passo <code>validar</code> roda, e o jeito de verificar o aceite.</p></article>
-   <article style="--c:var(--lime)"><h3>⑥ Cópia customizada</h3><div class="onde">customiza</div><p>Um toolkit derivado de outro para uma casa ou um projeto, completo por si e com as mudanças declaradas. <a href="#copia">Detalhe</a>.</p></article>
-   <article style="--c:var(--orange)"><h3>⑦ Trocar ou inserir um passo</h3><div class="onde">.sabia/fluxo/</div><p>O projeto troca o corpo de um passo ou insere um passo novo depois de outro. O dono do fluxo recebe o delta. <a href="#customizar">Detalhe</a>.</p></article>
-   <article style="--c:var(--yellow)"><h3>⑧ Remover um passo</h3><div class="onde">"remover": [...]</div><p>Só passo marcado como <code>removivel</code> e sem trava. Com trava, a setup diz qual trava o prende e oferece trocar o passo.</p></article>
-   <article style="--c:var(--navy)"><h3>⑨ Trocar um padrão</h3><div class="onde">.sabia/padrao/</div><p>O formato de um artefato (PRD, ficha, <code>status.md</code>) neste projeto. Vale para todos os agentes, porque o padrão é citado por fluxos de vários donos.</p></article>
-   <article style="--c:var(--red)"><h3>⑩ Regras aprendidas</h3><div class="onde">.sabia/sabia.md</div><p>A lição que se repete vira regra no <code>sabia.md</code>, pela <code>sa-aprender</code>. A setup refaz o arquivo e preserva essa seção.</p></article>
+   <article style="--c:var(--brand)"><h3>② Desvio de passo</h3><div class="onde">skills[].passo.passo</div><p>A skill (ou um agente dela) assume um passo do Sabiá. Hoje, só em <code>sa-codificar.codificar.tarefa</code>. <a href="#desvio">Detalhe</a>.</p></article>
+   <article style="--c:var(--orange)"><h3>③ Desvio por tipo</h3><div class="onde">tipos</div><p>A skill do toolkit, com o fluxo e o padrão do tipo, escreve um tipo desviável do catálogo no passo de desvio dele. <a href="#tipos">Detalhe</a>.</p></article>
+   <article style="--c:var(--cyan)"><h3>④ Agente neutro</h3><div class="onde">agentes[]</div><p>Vira subagente do dono do passo, com as regras do papel dele, nunca mais que isso. Pode ter subagentes próprios, que herdam o mesmo papel.</p></article>
+   <article style="--c:var(--teal)"><h3>⑤ Steering da stack</h3><div class="onde">steering[]</div><p>Regras da stack ligadas aos agentes dos papéis indicados, como "nunca commit dentro de um step".</p></article>
+   <article style="--c:var(--yellow)"><h3>⑥ Itens de rubrica</h3><div class="onde">rubricas</div><p>Itens que se somam à rubrica do revisor, com a severidade de cada um. O toolkit não troca nem afrouxa item do Sabiá.</p></article>
+   <article style="--c:var(--green)"><h3>⑦ Comandos e verificação</h3><div class="onde">comandos · verificacao</div><p>A proposta de compilar, testar, lint e cobertura para o <code>sabia.md</code>, que o passo <code>validar</code> roda, e o jeito de verificar o aceite.</p></article>
+   <article style="--c:var(--lime)"><h3>⑧ Cópia customizada</h3><div class="onde">customiza</div><p>Um toolkit derivado de outro para uma casa ou um projeto, completo por si e com as mudanças declaradas. <a href="#copia">Detalhe</a>.</p></article>
+   <article style="--c:var(--orange)"><h3>⑨ Trocar ou inserir um passo</h3><div class="onde">.sabia/fluxo/</div><p>O projeto troca o corpo de um passo ou insere um passo novo depois de outro. O dono do fluxo recebe o delta. <a href="#customizar">Detalhe</a>.</p></article>
+   <article style="--c:var(--yellow)"><h3>⑩ Remover um passo</h3><div class="onde">"remover": [...]</div><p>Só passo marcado como <code>removivel</code> e sem trava. Com trava, a setup diz qual trava o prende e oferece trocar o passo.</p></article>
+   <article style="--c:var(--navy)"><h3>⑪ Trocar um padrão</h3><div class="onde">.sabia/padrao/</div><p>O formato de um artefato (PRD, ficha, <code>status.md</code>) neste projeto. Vale para todos os agentes, porque o padrão é citado por fluxos de vários donos. Vale só sobre um padrão do Sabiá, não sobre o de um toolkit.</p></article>
+   <article style="--c:var(--red)"><h3>⑫ Regras aprendidas</h3><div class="onde">.sabia/sabia.md</div><p>A lição que se repete vira regra no <code>sabia.md</code>, pela <code>sa-aprender</code>. A setup refaz o arquivo e preserva essa seção.</p></article>
   </div>
 </section>
 
@@ -205,9 +218,44 @@ Responda: ok · tirar 3 · pôr 4 · nenhuma skill</pre></div>
 à pessoa e sem marcar no `status.md` nem no `tasks.md`:
 `tarefa que cria ou altera um job ou step` (arquivos
 `**/*JobConfig.java`) → delegue ao subagente `batch-job`, com o briefing e o
-contrato do `passos.md`.</pre>
+contrato do `references/passos.md` da skill `sabia`.</pre>
    <p>Sem <code>agente</code> no manifesto, a linha diz "carregue a skill <code>&lt;skill&gt;</code> e faça o passo por ela". A tabela <b>Desvios de toolkit</b> do <code>sabia.md</code> repete a regra para a sessão sem agente.</p></div>
-   <div class="bloco"><h3>Regras do desvio</h3><ul><li>Só vale em passo com <code>"desvio": true</code> no mestre. Com passo inexistente ou sem desvio, o gerador recusa e não grava nada.</li><li>O dono do fluxo (<code>sa-desenvolvedor</code> ou <code>sa-especificador</code>) é quem recebe o desvio.</li><li><code>para</code> e <code>arquivos</code> vão juntos: basta casar um dos dois.</li><li>O agente do toolkit ganha as regras do papel dono, as skills e os MCPs ligados ao dono (de outros toolkits, como o <code>java</code>, e do projeto), mas não os subagentes.</li><li>O briefing e o contrato do passo estão no <code>passos.md</code> da skill <code>sabia</code>.</li><li><code>sabia rota src/batch/CargaJobConfig.java</code> mostra por qual passo o arquivo passa e qual toolkit o assume.</li></ul></div>
+   <div class="bloco"><h3>Regras do desvio</h3><ul><li>Só vale em passo com <code>"desvio": true</code> no mestre: hoje, só o <code>sa-codificar.codificar.tarefa</code>. Com passo inexistente ou sem desvio, o CLI e o gerador recusam. O passo que cria um tipo do catálogo vai por <code>tipos</code>, não por <code>passo</code>.</li><li>O dono do fluxo, o <code>sa-desenvolvedor</code>, é quem recebe o desvio. Ligado, ele vai no <code>agentes.json</code> (<code>toolkits</code> e <code>passos</code>).</li><li><code>para</code> e <code>arquivos</code> vão juntos: basta casar um dos dois.</li><li>O agente do toolkit ganha as regras do papel dono, as skills e os MCPs ligados ao dono (de outros toolkits, como o <code>java</code>, e do projeto), mas não os subagentes.</li><li>O briefing e o contrato do passo estão no <code>passos.md</code> da skill <code>sabia</code>.</li><li><code>sabia rota src/batch/CargaJobConfig.java</code> mostra por qual passo o arquivo passa e qual toolkit o assume.</li></ul></div>
+  </div>
+</section>
+
+<section id="tipos">
+  <div class="lead-sec"><h2>Desvio por tipo</h2><p>Um toolkit também pode escrever um tipo do catálogo no formato de uma casa. O <b>toolkit é skill</b>: a skill dele, com o fluxo e o padrão do tipo, escreve o artefato no passo de desvio do tipo e volta ao passo. O catálogo, o envelope OKF, a revisão, o GATE e a publicação continuam do Sabiá.</p></div>
+  <div class="duas">
+   <div class="bloco"><h3>A estrutura</h3>
+<pre class="cod">exemplo/
+├── toolkit.json             <span class="c">"tipos", "rubricas", "requer"</span>
+├── skills/exemplo/SKILL.md  <span class="c">a skill, copiada como está</span>
+├── fluxo/fluxo-hf.md        <span class="c">fluxo do tipo HF, lido pela skill</span>
+└── padrao/padrao-hf.md      <span class="c">padrão do tipo HF, idem</span></pre>
+<pre class="cod">{
+  <span class="k">"nome"</span>: <span class="v">"exemplo"</span>, <span class="k">"versao"</span>: <span class="v">"1.0.0"</span>,
+  <span class="k">"skills"</span>: [{ <span class="k">"caminho"</span>: <span class="v">"skills/exemplo/SKILL.md"</span>,
+               <span class="k">"papeis"</span>: [<span class="v">"especificador"</span>] }],
+  <span class="k">"tipos"</span>: { <span class="k">"HF"</span>: { <span class="k">"skill"</span>: <span class="v">"skills/exemplo/SKILL.md"</span>,
+                    <span class="k">"fluxo"</span>: <span class="v">"fluxo/fluxo-hf.md"</span>,
+                    <span class="k">"padrao"</span>: <span class="v">"padrao/padrao-hf.md"</span> } },
+  <span class="k">"rubricas"</span>: [{ <span class="k">"id"</span>: <span class="v">"EX1"</span>, <span class="k">"tipo"</span>: <span class="v">"HF"</span>,
+    <span class="k">"verificacao"</span>: <span class="v">"Toda HF cita o campo de origem"</span>,
+    <span class="k">"severidade"</span>: <span class="v">"IMPORTANTE"</span> }],
+  <span class="k">"requer"</span>: { <span class="k">"sabia"</span>: <span class="v">"2.0.0"</span> },
+  …
+}</pre>
+   <p>O fluxo e o padrão são opcionais. Só com <code>{"skill": …}</code>, a skill segue as references dela.</p></div>
+   <div class="bloco"><h3>Os tipos desviáveis do catálogo</h3>
+   <div class="scroll"><table><thead><tr><th>Tipo</th><th>Passo de desvio</th></tr></thead><tbody>
+    <tr><td><code>HF</code> · <code>REG</code> · <code>EL</code> · <code>CT</code></td><td><code>sa-prd.prd.escrever</code> e <code>sa-especificar.fatia.escrever</code></td></tr>
+    <tr><td><code>ET</code></td><td><code>sa-prd.prd.escrever</code> e <code>sa-consolidar.consolidar.elm</code></td></tr>
+    <tr><td><code>ATA</code></td><td><code>sa-especificar.reuniao.escrever</code></td></tr>
+    <tr><td><code>GL</code></td><td>não desvia</td></tr>
+   </tbody></table></div>
+   <p>Nos outros passos que criam o tipo, ele é sempre do Sabiá. A ET as-built escrita no PR, por exemplo, usa o padrão do Sabiá.</p>
+   <h3>Regras</h3><ul><li>A sigla é do catálogo, desviável e não pendente. O toolkit não cria tipo.</li><li>A skill está em <code>skills[]</code> e traz em <code>papeis</code> o papel de cada dono do passo de desvio (<code>ET</code>: <code>especificador</code> e <code>produto</code>). Sem ele, o CLI e o gerador recusam o toolkit.</li><li>Sem pergunta por agente: o gerador liga a skill ao dono e põe no prompt dele a linha <b>Tipos com skill de toolkit</b>. A seção de mesmo nome no <code>sabia.md</code> vale na sessão sem agente.</li><li>O artefato sai no padrão OKF do Sabiá: o arquivo pela coluna Arquivo do catálogo, o envelope e o <code>status</code> que o passo manda.</li><li>Os itens de rubrica se somam à rubrica do revisor. Id de um item do Sabiá é recusado.</li><li>Dois toolkits do projeto no mesmo tipo ou no mesmo id de rubrica: o gerador recusa e não grava nada.</li><li>O Sabiá não confere os links dentro dos arquivos do toolkit: um link quebrado só aparece quando o agente o lê.</li><li><code>sabia rota --fluxo sa-prd.prd</code> mostra o tipo com <code>tipo ⇢</code>, a skill e o toolkit.</li></ul></div>
   </div>
 </section>
 
