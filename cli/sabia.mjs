@@ -664,8 +664,7 @@ export function listarToolkits(opcoes = {}) {
     l[0] = `↳ ${l[0]}`;
     linhas.splice(i < 0 ? linhas.length : i + 1, 0, l);
   }
-  ctx.log(["| Toolkit | Autor | No índice | Instalado | Neste projeto | Descrição |", "|---|---|---|---|---|---|",
-    ...linhas.map((l) => `| ${l.join(" | ")} |`)].join("\n"));
+  ctx.log(colunas([["TOOLKIT", "AUTOR", "NO ÍNDICE", "INSTALADO", "NESTE PROJETO", "DESCRIÇÃO"], ...linhas]));
   return linhas;
 }
 
