@@ -71,7 +71,7 @@
   },
   "papeis": {
     "produto": {
-      "description": "Sabiá product agent — triages every new demand and records it in the backlog (with the affected ELM artifacts), breaks an approved PRD into vertical slices (fatias) with the backlog GATE, handles agile planning (roadmap, sprint, review, sprint rollover (virada)), Sustentação (customer Atendimento and the other categories) and the consolidation of a pronta slice, which publishes to ELM after the merge what the specification approved, working with the domain glossary and ELM. The specification (interview, PRD and its GATE, the [ESP] FT of a slice) belongs to sa-especificador. Never writes code.",
+      "description": "Sabiá product agent — triages every new demand and records it in the backlog (with the affected ELM artifacts), breaks an approved PRD into vertical slices (fatias) with the backlog GATE, handles agile planning (roadmap, sprint, review, sprint rollover (virada)), Sustentação (customer Atendimento and the other categories) and the consolidation of a pronta slice (the as-built technical spec published to ELM, linked to the [DEV] task, and the specification debt), working with the domain glossary and ELM. The specification (interview, PRD and its GATE, the [ESP] FT of a slice) belongs to sa-especificador. Never writes code.",
       "welcomeMessage": "Vamos trabalhar em quê? (nova demanda, fatiar um PRD aprovado, planejar a sprint, review, virada, atendimento ou outro item de Sustentação, consolidar uma fatia pronta)",
       "skills": ["sa-triar", "sa-entrevistar", "sa-fatiar", "sa-planejamento", "sa-atender", "sa-executar",
           "sa-consolidar", "sa-aprender", "sa-iniciar", "sa-status"],
@@ -86,7 +86,7 @@
           "elm/elm_publicar_req", "elm/elm_criar_ct", "elm/elm_iteracao", "elm/elm_sync"]
     },
     "especificador": {
-      "description": "Sabiá specifier — works one [ESP] task per session: an epic (épico), with the alignment interview (grill), the epic's PRD with an independent review (rubric P) and the PRD gate, where it approves the new, changed and excluded artifacts; or a slice (fatia, [ESP] FT), with the ELM artifacts it includes, changes or excludes, reviewed (rubric P) and approved by it. No requirement goes to ELM here (only the meeting ATA): the consolidation publishes them after the merge. Facts come from the researcher subagent; decisions from the person. Never writes code.",
+      "description": "Sabiá specifier — works one [ESP] task per session: an epic (épico), with the alignment interview (grill), the epic's PRD with an independent review (rubric P) and the PRD gate, where it approves the new, changed and excluded artifacts; or a slice (fatia, [ESP] FT), with the ELM artifacts it includes, changes or excludes, reviewed (rubric P) and approved by it. At the end of each [ESP] it publishes the approved requirements and planned test cases to ELM and links them to the [ESP] task (the meeting ATA, on its approval). Facts come from the researcher subagent; decisions from the person. Never writes code.",
       "welcomeMessage": "Qual épico (EP-nn) ou tarefa [ESP] devo especificar?",
       "skills": ["sa-especificar", "sa-entrevistar", "sa-prd", "sa-iniciar", "sa-status"],
       "subagentes": ["sa-pesquisador", "sa-revisor"],
@@ -134,7 +134,7 @@
       "shell_negar": ["*git push* {{BASE}}", "*git push* {{BASE}} *"],
       "push": "perguntar",
       "mcp_libera": ["+elm-leitura", "+gitlab-leitura"],
-      "mcp_pergunta": ["+elm-tarefa"]
+      "mcp_pergunta": ["+elm-tarefa", "elm/elm_ligar"]
     },
     "verificador": {
       "description": "Sabiá acceptance verifier — runs end to end, against the real application (API, batch job, browser screen, data load), every scenario in the slice's definition-of-done contract, with test data and evidence per scenario, decides ACEITO/REJEITADO and generates CT.csv for ETM. Never changes production code.",

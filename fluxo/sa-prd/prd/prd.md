@@ -17,13 +17,14 @@ Saída, na **pasta de trabalho** da especificação — `.sabia/local/especifica
 pela **`sa-especificar`** — até o GATE; depois dele, a `sa-especificar` a leva para `<produto>/epicos/<EP>-<slug>/`: o `prd.md` no formato do
 padrão `sa-prd/prd.md`, o `decisoes.md` e a pasta `elm/` com **um conceito OKF
 v0.2 por artefato novo, alterado ou excluído**, de um tipo do [catálogo](~/.sabia/framework/skills/sabia/references/tipos.md) — o formato de [references/okf-elm.md](~/.sabia/framework/skills/sa-prd/references/okf-elm.md), o mesmo do
-bundle que a `sa-sync` mantém. Aprovados no GATE, vão à base com o PRD e sobem ao DOORS Next depois do merge da
-fatia que os cobre, na consolidação.
+bundle que a `sa-sync` mantém. Aprovados no GATE, vão à base com o PRD e sobem ao DOORS Next na conclusão da `[ESP]`
+do épico, logo depois do GATE (`sa-especificar`).
 
 O PRD é um **registro de decisões** e a **proposta de mudança** da documentação oficial — não um documento vivo.
 Os artefatos aprovados vão para o DOORS Next ([publicação](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md)), que é a fonte
-da verdade; o que vale a longo prazo é o ELM, o glossário e os ADRs. Depois do fatiamento o PRD não muda: a mudança
-de artefato é da `[ESP] FT` da fatia (`sa-especificar.fatia`). Se o PRD afirma algo que ninguém decidiu, é um
+da verdade; o que vale a longo prazo é o ELM, o glossário e os ADRs. Entre o GATE e o fatiamento, a mudança é da
+`sa-prd.mudanca`, numa versão nova do PRD. Depois do fatiamento o PRD não muda: a mudança de artefato é da `[ESP] FT`
+da fatia (`sa-especificar.fatia`). Se o PRD afirma algo que ninguém decidiu, é um
 defeito do PRD. Toda demanda entra pela `sa-triar`; só o que ela classifica como **épico** chega aqui. Uma fatia
 com regra clara é trilha padrão sem épico, com uma ficha no lugar do PRD.
 

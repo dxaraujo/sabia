@@ -54,7 +54,9 @@ assim; o item de origem em outro estado volta a ele com `elm_transicao(<id>, "re
   - de onde veio: o item do EWM (DF, IB) vai na `elm` como o item da fatia (`DF [4567](…)`; sem o MCP `elm`,
     `DF 4567` — o id já é conhecido, nunca `pendente`); o pedido (texto, chamado) fica no `**Origem:**` da ficha;
     desdobramento de um item de Sustentação (origem `AT-012`, `IM-003`…) → `obs`
-    `vinculada a [<ID>](sustentacao/<pasta>/<ID>-<slug>.md)`.
+    `vinculada a [<ID>](sustentacao/<pasta>/<ID>-<slug>.md)`; correção de débito de especificação (origem
+    `FT-<nnn> (débito de especificação)`) → `obs` `origem FT-<nnn> (débito de especificação)` e, com a linha da
+    `FT-<nnn>` na seção Débito de especificação do `sprint-<nn>.md` aberto, o `FT` novo na coluna Tarefa dela.
   - **Ficha** (`<produto>/fatias/FT-<nnn>-<slug>.md`, formato da trilha no padrão `sa-triar/ficha.md`;
     crie a pasta se não existir): sempre.
   - EWM (com ELM, com "sim"), pelo §3 do [elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) ("Fatia sem
@@ -98,7 +100,7 @@ assim; o item de origem em outro estado volta a ele com `elm_transicao(<id>, "re
 
 Atualize "Próximos ids". O commit é **um só, no fim da sessão de triagem** (passo `encaminhar`, resposta "não"), com o
 `backlog.md` (também os ids do espelhamento do passo `chegou`), as fichas, as pastas dos épicos, os registros de Sustentação e, no `sprint-<nn>.md` aberto, as linhas
-da Sustentação e a de créditos da sessão na seção **Créditos de gestão** (Atividade `triagem`;
+da Sustentação, a coluna Tarefa do Débito de especificação e a de créditos da sessão na seção **Créditos de gestão** (Atividade `triagem`;
 ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4); sem sprint aberta, não há onde gravar) (padrão de
 commit do `sabia.md`). A triagem não tem tarefa própria: o padrão é a tarefa **`[GB] Gerenciamento do backlog`** (o
 `GB` da linha da `## Sustentação` do `backlog.md`): mostre-a e confirme (a pessoa pode indicar outra). Sem `GB` →

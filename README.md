@@ -13,13 +13,13 @@ Desenvolvido por Daniel Xavier Araújo.
 ENTRADA   triar ─► backlog: EP novo · FT sem épico (padrão ou rápida, cada uma com a sua ficha e os artefatos afetados do ELM) · Sustentação (AT-/IM-… + IB) ─► "mais algum?"
 HUB       iniciar <item> ─► especificar · desenvolver · revisar ([REV], [APR]) · verificar · atender · planejamento (troca) · consolidar · executar (cada uma assume a sua tarefa)
             │
-PRODUTO   especificar (ATA de cada reunião · protótipo aprovado, com tela) ─► entrevistar ─► PRD ─► GATE PRD (especificador) ─► fatiar (P.O./SM) ─► GATE backlog ─► sprint (EWM)
+PRODUTO   especificar (ATA de cada reunião · protótipo aprovado, com tela) ─► entrevistar ─► PRD ─► GATE PRD (especificador) ─► ELM ─► fatiar (P.O./SM, logo em seguida) ─► GATE backlog ─► sprint (EWM)
                                                                                                                                                                    │
-FATIA     [ESP] FT (artefato afetado) ─► desenvolver (iniciada na base) ─► pesquisar ─► plano (spec do Kiro) ─► GATE plano ─► implementar (TDD) ─► PR ─► revisar ─► verificar   (AFK: revisão e verificação antes do PR)
+FATIA     [ESP] FT (artefato afetado) ─► ELM ─► encaixe ─► desenvolver (iniciada na base) ─► pesquisar ─► plano (spec do Kiro) ─► GATE plano ─► implementar (TDD) ─► PR ─► revisar ─► verificar   (AFK: revisão e verificação antes do PR)
                                                                                                                                                                     │
 DEPOIS    merge (Dev; remove a worktree do loop) ─► pronta na base
             │
-PRODUTO   consolidar (P.O./SM, [GB]): drift da REV/VER ─► ELM (aprovado na [ESP]: GL → REG → EL → HF; ET as-built, CTs) ─► ADRs do PR ─► concluida ─► aprender
+PRODUTO   consolidar (P.O./SM, [GB]): débito de especificação ─► ELM (ET as-built ligada à [DEV], CTs) ─► ADRs do PR ─► concluida ─► aprender
 ```
 
 **Mapa interativo do fluxo:** <https://dxaraujo.github.io/sabia/> — cada trilha é uma linha de metrô e cada skill uma
@@ -60,7 +60,7 @@ Fontes no fim deste arquivo.
 | `sa-status` | painel "onde parei", WIP de revisão, próxima ação de maior alavanca |
 | `sa-triar` | entrada de toda demanda nova: triagem em qualquer trilha, duplicados, ficha da fatia padrão sem épico, registro no backlog (inclusive a Sustentação: categoria, AT-nnn/IM-nnn…, IB do item no EWM; a tarefa `[ATD]`/`[IMPL]`… nasce quando o item entra numa sprint), importação de itens do EWM, "mais algum item?" — não começa nada |
 | `sa-iniciar` | hub: recebe o item registrado (ou "minha próxima tarefa") e diz a skill do papel |
-| `sa-especificar` | Especificador: assume a `[ESP]`, conduz entrevista → PRD numa pasta local até o GATE do PRD (a `[ESP] EP` termina ali), especifica os artefatos afetados de uma fatia na `[ESP] FT` até o GATE dele, registra cada sessão na tarefa (comentário + anexos), faz a ATA de cada reunião com o cliente a partir da transcrição e, em projeto com tela, registra o protótipo e a aprovação do cliente antes do PRD |
+| `sa-especificar` | Especificador: assume a `[ESP]`, conduz entrevista → PRD numa pasta local até o GATE do PRD, especifica os artefatos afetados de uma fatia na `[ESP] FT` até o GATE dele, publica no ELM e liga à `[ESP]` os requisitos aprovados e os CT planejados (a `[ESP]` termina com a publicação; alteração depois dela, pela regra única da tarefa de especificação: reabre na sprint corrente ou nasce a `[ESP] <id> Revisão <n>`), registra cada sessão na tarefa (comentário + anexos), faz a ATA de cada reunião com o cliente a partir da transcrição e, em projeto com tela, registra o protótipo e a aprovação do cliente antes do PRD |
 | `sa-desenvolver` | Dev: compromisso (Definition of Ready, sprint/encaixe, WIP), `iniciada` na base, branch, pasta, assume a `[DEV]`; retomada pela fase; merge do PR aprovado, `pronta` na base e conclusão da `[DEV]` |
 | `sa-entrevistar` | alinhamento em rodadas (grill), decisões e glossário |
 | `sa-prd` | PRD do épico (o quê e por quê, com os artefatos novos, alterados e excluídos e o impacto) e GATE do PRD, do especificador |
@@ -73,7 +73,7 @@ Fontes no fim deste arquivo.
 | `sa-codificar` | TDD + backpressure, commits pequenos, revisão e PR (termina no PR) |
 | `sa-revisar` | revisão independente: PRD (P), plano (L), código (C, dois eixos) |
 | `sa-verificar` | aceite de ponta a ponta com evidência; `CT.csv` para o ETM |
-| `sa-consolidar` | fatia `pronta` (pós-merge) → `concluida`, processo de produto (P.O. ou SM, agente `sa-produto`, créditos num comentário na `[GB]`; horas só do SM): drift decidido na revisão e na verificação (volta à especificação), publicação no ELM depois do merge (os requisitos aprovados na `[ESP]`, o IB que implementa a HF, a lixeira por roteiro; ET as-built, casos de teste (ETM ou CSV, pela política)), ADRs do PR, glossário, conclusão |
+| `sa-consolidar` | fatia `pronta` (pós-merge) → `concluida`, processo de produto (P.O. ou SM, agente `sa-produto`, créditos num comentário na `[GB]`; horas só do SM): divergência do código mergeado com um artefato como débito técnico de especificação (para a review e a retrospectiva), ET as-built ligada à `[DEV]` e casos de teste da fatia no ELM (ETM ou CSV, pela política), ADRs do PR, glossário, conclusão |
 | `sa-sync` | sincroniza o bundle OKF do DOORS Next nas duas vias (plano, baixar, enviar, conflitos) e, depois de baixar, pergunta se indexa o bundle local |
 | `sa-orquestrar` | fatias AFK até o PR, uma worktree por fatia, uma fase por contexto limpo |
 | `sa-aprender` | lições, promoção de regras, retrospectiva com dados, casos de avaliação |
@@ -134,9 +134,9 @@ schema em [`toolkit.schema.json`](skills/sa-setup/assets/toolkit.schema.json).
 
 O ELM é o sistema de registro; o repositório guarda as propostas de mudança (PRD, fatias) e como cada mudança foi
 feita. Mapeamento padrão (ajustável na setup): história → artefato *História de Usuário* (DOORS Next); regra →
-*Regra*; termo → *Termos de Glossário*; épico → *Épico* (EWM); fatia → *Item de Backlog* que **implementa** as
-histórias (sem épico, filho da `Manutenção`); item de Sustentação → *Item de Backlog* `[AT-nnn]`, filho do IB da
-categoria; tarefas filhas na sprint; cenário verificado → *Caso de Teste* (ETM) que **valida** a história.
+*Regra*; termo → *Termos de Glossário*; épico → *Épico* (EWM); fatia → *Item de Backlog* (sem épico, filho da `Manutenção`); item de Sustentação → *Item de Backlog* `[AT-nnn]`, filho do IB da
+categoria; tarefas filhas na sprint, cada uma ligada ao que gera (a `[ESP]` **rastreia** os requisitos que
+publica; a `[DEV]` **implementa** os que a fatia cobre e a ET as-built); cenário verificado → *Caso de Teste* (ETM) que **valida** a história.
 
 Todo artefato é de um tipo do catálogo fechado ([`fluxo/tipos.json`](fluxo/tipos.json); compilado em
 `skills/sabia/references/tipos.md`): `HF` história, `REG` regra, `GL` termo, `EL` leiaute (uma por tela, com a
@@ -145,14 +145,14 @@ as-built por fatia, pela política ET), `CT` caso de teste (planejado da HF no P
 reunião com o cliente durante a `[ESP]`, escrita da transcrição, que fica só local). Cada um nasce como um conceito
 **OKF v0.2** na pasta da spec (o mesmo formato do bundle da `sa-sync`), com aprovação registrada em `verified` no
 GATE da `[ESP]` (o do PRD, no épico; o da `[ESP] FT`, na fatia com artefato afetado); os requisitos aprovados sobem
-para o DOORS Next depois do merge, na consolidação, de baixo para cima (`GL` → `REG` → `EL` → `HF` → `ET`), com
+para o DOORS Next na conclusão da `[ESP]`, de baixo para cima (`GL` → `REG` → `EL` → `HF` → `ET`), com
 HF → REG como embed, sem nada extra no texto publicado e sempre com prévia e confirmação; o excluído vai à lixeira do DOORS Next por
 roteiro manual. A ATA sobe na aprovação dela. Atributos e links entre
 requisitos ficam registrados nos conceitos, porque o MCP não os grava. Detalhes em [`skills/sabia/references/elm.md`](skills/sabia/references/elm.md)
 e [`skills/sa-consolidar/references/elm-publicar.md`](skills/sa-consolidar/references/elm-publicar.md).
 
-Com a política Casos de teste = `ETM`, o CT planejado sobe ao ETM na consolidação, com os requisitos, e o
-agente o liga ao IB e cria só o CT novo da verificação, com o link **valida** (`elm_criar_ct`); sem permissão de criar no ETM, o `CT.csv` é importado à mão. O MCP `elm` ainda não grava atributos de requisito, links requisito↔requisito, módulos, change sets nem baselines: quando o
+Com a política Casos de teste = `ETM`, o CT planejado sobe ao ETM na conclusão da `[ESP]`, com os requisitos; na
+consolidação, o agente o liga ao IB e cria só o CT novo da verificação, com o link **valida** (`elm_criar_ct`); sem permissão de criar no ETM, o `CT.csv` é importado à mão. O MCP `elm` ainda não grava atributos de requisito, links requisito↔requisito, módulos, change sets nem baselines: quando o
 processo do projeto exige algum deles, a skill do passo entrega o roteiro manual e registra a pendência.
 
 ## Pré-requisitos

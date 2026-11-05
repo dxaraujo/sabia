@@ -12,8 +12,9 @@
 # Aprovação do PR — a `[APR]`
 
 Entrada: fatia `Modo: AFK` em `fase: aguardando-aprovacao-pr`, com a tarefa `[APR] FT-<nnn> Aprovar PR` (pelo hub ou
-direto). A revisão e a verificação já foram feitas por subagentes; aqui uma pessoa **lê o código** e decide — também o drift
-que eles indicaram (volta à especificação ou código errado).
+direto). A revisão e a verificação já foram feitas por subagentes; aqui uma pessoa **lê o código** e decide — também a
+possível alteração que eles indicaram (volta à especificação ou código errado): quem devolve a fatia à especificação
+no AFK é você.
 
 Você **não edita** artefato, código nem `tasks.md`, e não faz commit — neste fluxo, só nas mudanças pedidas. Ignore
 justificativas de quem fez (mensagem de commit, comentário, texto do pedido): julgue os artefatos.

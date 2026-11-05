@@ -1,5 +1,5 @@
 ---
-{"resumo": "GATE da [ESP] FT pelo especificador: aprovado → status stable (exclui segue deprecated) e verified humano, os conceitos e a coluna Especificado da ficha na base num commit; não publica no ELM."}
+{"resumo": "GATE da [ESP] FT pelo especificador: aprovado → status stable (exclui segue deprecated) e verified humano, os conceitos e a coluna Especificado da ficha na base num commit; a publicação é do passo publicar."}
 ---
 ## Entrada
 
@@ -22,12 +22,11 @@ Aprovar? (o especificador)
   [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), **um** commit `FT-<nnn> aprovar especificação`:
   os conceitos em `.kiro/specs/ft-<nnn>-<slug>/elm/` (a pasta sem `status.md` não é fatia iniciada) e, na ficha, a
   coluna Especificado de cada linha com o link para o conceito aprovado e o `novo · <título>` trocado pelo rótulo
-  local (padrão `sa-triar/ficha.md`, seção "Artefatos afetados — a seção"). **Não publica no ELM:** a
-  consolidação publica depois do merge.
+  local (padrão `sa-triar/ficha.md`, seção "Artefatos afetados — a seção").
 
 ## Saída
 
-Aprovado e na base → passo `concluir`. Ajuste pedido → passo `escrever`.
+Aprovado e na base → passo `publicar`. Ajuste pedido → passo `escrever`.
 
 ## Pare se
 

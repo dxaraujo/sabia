@@ -7,7 +7,7 @@
    {"id": "tarefa", "desvio": true, "travas": ["toolkit-sem-commit"], "saidas": {"ainda há tarefa não marcada": "tarefa", "divergência com o plano que muda o desenho": "→ sa-plano.replanejar"}},
    {"id": "validar"},
    {"id": "revisar", "chama": "sa-revisar.revisar", "travas": ["revisao-independente"], "saidas": {"HITL, APROVADO ou a pessoa decide seguir": "pr", "REVISAR": "tarefa", "AFK, 2ª reprovação: bloqueada": "fim"}},
-   {"id": "verificar", "chama": "sa-verificar.verificar", "travas": ["aceite-independente"], "saidas": {"REJEITADO": "tarefa", "2ª rejeição seguida: bloqueada": "fim", "cenário indicado como do artefato: bloqueada, a decisão é de um Dev Sênior": "fim"}},
+   {"id": "verificar", "chama": "sa-verificar.verificar", "travas": ["aceite-independente"], "saidas": {"REJEITADO": "tarefa", "2ª rejeição seguida: bloqueada": "fim"}},
    {"id": "pr", "saidas": {"HITL, PR aberto": "→ sa-revisar.hitl", "AFK, PR aberto": "→ sa-revisar.aprovar-pr", "pedido de merge nesta sessão": "→ sa-desenvolver.encerrar"}}
  ]}
 ---

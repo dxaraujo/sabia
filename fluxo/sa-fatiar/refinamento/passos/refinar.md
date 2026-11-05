@@ -17,11 +17,8 @@ commit, pelas [Situações](~/.sabia/framework/skills/sa-fatiar/references/backl
   fatia não muda: cancele-a e registre o novo pela `sa-triar`, ou siga com ela" e pare.
 - **Cenário novo** (inclusive o que falta numa história) → épico ou fatia nova pela `sa-triar` (`origem EP-<nn>`,
   agente `sa-produto`): diga isso e pare.
-- **Alteração de artefato** (regra, termo, leiaute, história) que uma fatia não terminal cobre → é da `[ESP] FT`
-  da fatia (o ELM é a fonte; o PRD fica como registro do épico): a linha `altera`/`exclui` na seção Artefatos
-  afetados da ficha (Especificado `—`, com a autorização do P.O. ou do SM); a fatia não iniciada volta a `nova` com
-  `falta: especificação` (Definition of Ready, abaixo) e entra pelo planejamento ou pelo encaixe; a iniciada vai pela
-  [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação), item Pedido de fora da fatia. Fatia terminal → `sa-triar`.
+- **Alteração de artefato** (regra, termo, leiaute, história) que uma fatia não terminal cobre → a
+  [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação). Fatia terminal → `sa-triar`.
 - **Cancelar** uma fatia não iniciada: `cancelada`, com o motivo na `obs`. Era a última não terminal de um épico com
   fatia `concluida` → no mesmo commit, o épico `concluido` no backlog, Fase `concluido` no `status.md` do épico e o
   IB do épico concluído (como no passo `sa-consolidar.consolidar.fechar`).

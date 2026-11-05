@@ -1,19 +1,17 @@
 ---
-{"resumo": "Numa confirmação, publica no ELM os artefatos aprovados na [ESP] que a fatia cobre (com o vínculo do IB às histórias e o roteiro da lixeira para o excluído), a ET as-built (ajustada pela skill de toolkit do tipo ET, quando há), casos de teste e a conclusão do IB, lança as horas do SM e prepara os créditos; sem o MCP, pendências."}
+{"resumo": "Numa confirmação, publica no ELM a ET as-built (ajustada pela skill de toolkit do tipo ET, quando há) ligada à [DEV] e ao código, os casos de teste da fatia e a conclusão do IB, lança as horas do SM e prepara os créditos; sem o MCP, pendências."}
 ---
 ## Entrada
 
-O drift resolvido (passo `drift`).
+O drift lido (passo `drift`).
 
 ## Faça
 
 Com o MCP `elm`; senão registre pendências.
 
-Numa confirmação só, nesta ordem, como diz [elm-publicar.md](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md) (os casos de teste precisam dos ids dos requisitos):
-- *requisitos* — os artefatos aprovados na `[ESP]` que a fatia cobre e ainda não estão no ELM na versão aprovada
-  (escopo e filtro da seção Requisitos do `elm-publicar.md`: os do épico no Cobre, os da seção Artefatos afetados e
-  os do `depois` do catálogo que eles citam); depois, o IB da fatia ligado às histórias (`implementa`). Você não os
-  escreve nem os reescreve. Conceito `exclui` não sobe: o roteiro manual da lixeira, com `ELM pendente`;
+Numa confirmação só, nesta ordem, como diz [elm-publicar.md](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md).
+Os requisitos e os CT planejados já foram publicados na conclusão da `[ESP]`: aqui não sobem (os casos de teste usam
+os ids deles).
 - *especificação técnica* — se a linha ET do `sabia.md` diz `só as-built` ou `inicial no PRD + as-built`: a ET
   **as-built** chegou escrita pelo Dev no PR (`elm/ET-<slug>.md`) e foi julgada com o código (rubrica C15); você
   não a escreve nem a reescreve, salvo pelo toolkit: tipo `ET` com skill de toolkit no seu prompt (**Tipos com skill
@@ -22,10 +20,11 @@ Numa confirmação só, nesta ordem, como diz [elm-publicar.md](~/.sabia/framewo
   envelope do `okf-elm.md`); a diferença vai na prévia, e o `verified` humano passa a ser de quem consolida.
   O `verified` humano é de quem aprovou o código: `{ by: human:<login>, at: <data da aprovação> }` do revisor
   (`revisao-codigo-<N>.md` APROVADO, HITL) ou do Dev Sênior da `[APR] Aprovar PR` (AFK), com `status: stable`.
+  Ela sobe com a linha `Código: PR <link> · merge <sha curto>` no texto e ligada à `[DEV]` da fatia (`implementa`).
   Sem a ET no PR → `ELM pendente [ET FT-<nnn> escrever]` para o Dev, que a entrega num PR curto. Fatia de épico com
   ET inicial → a as-built sobe ligada a ela (seção ET as-built do `elm-publicar.md`);
 - *casos de teste* — pela linha Casos de teste do `sabia.md`: `ETM` (com `qm` no `pa`) → por cenário verificado
-  (`verificacao.md`/`CT.csv`), o CT planejado já no ETM ligado ao IB e o CT novo criado, ids no `verificacao.md` e no
+  (`verificacao.md`/`CT.csv`), o CT planejado (publicado na `[ESP]`) ligado ao IB e o CT novo criado, ids no `verificacao.md` e no
   `status.md`; `CSV` (ou sem `qm`) → o `CT.csv` é a
   entrega, sem ELM pendente;
 - *tarefas* — a consolidação **não** lança horas nem conclui `[DEV]`, `[REV]`, `[VER]` ou `[APR]`: cada skill de

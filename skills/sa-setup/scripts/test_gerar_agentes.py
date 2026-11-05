@@ -119,7 +119,9 @@ class Gerar(unittest.TestCase):
             for t in ("elm_comentar", "elm_anexo", "elm_transicao", "elm_lancar_horas"):
                 self.assertIn(f"sabia/elm/{t}", regras(agentes[nome], "power", "ask"), nome)
                 self.assertIn(f"@elm/{t}", agentes[nome]["tools"])
-        self.assertIn("sabia/elm/elm_ligar", regras(agentes["desenvolvedor"], "power", "ask"))
+        # cada um liga o que gera: o especificador a [ESP], o Dev a [DEV], o Dev Sênior a [DEV] na [APR] do AFK
+        for nome in ("especificador", "desenvolvedor", "revisor", "produto"):
+            self.assertIn("sabia/elm/elm_ligar", regras(agentes[nome], "power", "ask"), nome)
 
     def test_pesquisador_so_le(self):
         p = self.gerar()["pesquisador"]

@@ -14,7 +14,10 @@
 ## Resultado (logo abaixo do roteiro)
 
 ```markdown
-- Resultado: ✅ aceito | ❌ rejeitado | ⚠️ ambiente
+- Resultado: ✅ aceito | ❌ rejeitado | ⚠️ ambiente | 🔁 possível alteração
 - Obtido: <o que aconteceu, com valores>
 - Evidência: <trecho da resposta | resultado da consulta | linha de log | evidencias/ft-031-1.2.png>
 ```
+
+`🔁 possível alteração`, só no AFK: o cenário que o verificador atribui a um artefato (o artefato parece errado, não o
+código). Não vira tarefa de código: vai ao Drift de negócio, e quem decide é o Dev Sênior na `[APR] Aprovar PR`.

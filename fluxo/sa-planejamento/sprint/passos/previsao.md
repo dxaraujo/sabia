@@ -15,7 +15,7 @@ se as dependências entram antes ou já estão `pronta` ou `concluida`. Pare ao 
 As fatias `nova` com só `falta: especificação` são **recomendadas** pela `prioridade`, antes das `elegivel` que
 dependem delas: entram como especificação (abaixo), dentro da capacidade de especificação, com o "sim" da pessoa.
 Outra fatia `nova` que a pessoa quer na sprint → **não barre**: avise que ela entra **como especificação**, com a
-`[ESP] FT-<nnn>` (`falta: <o quê>` — decisão, PRD, fatiar, ficha, especificação), na seção Especificação, dentro da capacidade
+`[ESP] FT-<nnn>` (a `[ESP] FT-<nnn> Revisão <n>` quando a dela já concluiu: passo `especificacao`; `falta: <o quê>` — decisão, PRD, fatiar, ficha, especificação), na seção Especificação, dentro da capacidade
 de especificação; ela não conta na vazão nem ganha `[DEV]` agora (ganha quando, `elegivel`, entrar numa sprint ou
 for puxada). Cada fatia **HITL** prevê
 **revisor** — um **Dev Sênior**, pela regra do revisor (passo `modo`) — e **verificador** (não quem

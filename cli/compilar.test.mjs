@@ -273,7 +273,7 @@ test("desvio por tipo no repo: o passo que cria um tipo desviável tem ⇢ e os 
   assert.deepEqual(m.fluxos["sa-consolidar.consolidar"].passos.find((p) => p.id === "elm").tipos, ["ET"]);
   assert.match(grafoAscii(m.fluxos["sa-consolidar.consolidar"]), /│ 3 elm ⇢ +│──▶ ⇢ por tipo: ET\n/);
   assert.deepEqual(m.tipos.CT.cria, ["sa-prd.prd.escrever", "sa-verificar.verificar.casos", "sa-especificar.fatia.escrever"]);
-  // a consolidação publica a regra aprovada na [ESP]: não escreve REG
+  // a [ESP] publica a regra que aprova (passo publicar, sem criar tipo): a consolidação não escreve REG
   assert.deepEqual(m.tipos.REG.cria, ["sa-prd.prd.escrever", "sa-especificar.fatia.escrever"]);
 });
 

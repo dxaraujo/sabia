@@ -173,6 +173,12 @@ Reserva (Sustentação + retrabalho): <h>h · consumido: <h>h · retrabalho migr
 |---|---|---|---|---|---|
 | 2026-10-06T10:41:12 | planejamento | ana.souza | 9ec1dcaa | 2.0.0 | 2.40 |
 
+## Débito de especificação
+
+| FT | Artefato | Divergência | Registrado | Tarefa |
+|---|---|---|---|---|
+| FT-031 | 2101 · REG - Desconto de pontualidade (REG) | o código limita a 12%; a REG diz 10% | ana.souza, 2026-11-04 | — |
+
 ## Capacidade
 Revisão: <h>h · HITL: <h>h · Especificação: <h>h · Reserva (Sustentação + retrabalho): <h>h · Vazão prevista: <n> fatias (previsão; o compromisso é a meta)
 
@@ -225,7 +231,15 @@ ou `pendente`, gravada na publicação da sprint ([elm-sprint.md](elm-sprint.md)
 `modo: HITL → AFK (Pleno <login> aceitou|recusou, <data>)`, `migrada para <chave>`, `migrada de <chave>`, `saiu da sprint: <motivo> (<quem>,
 <data>)` (movida no EWM: `saiu da sprint: movida no EWM para <iteração> (<P.O.>, <data>)`), `trazida do EWM`,
 `concluído no EWM`, `cancelado no EWM` (Sustentação: a tarefa fechou ou foi descartada direto no EWM, [elm-sprint.md](elm-sprint.md)
-§9), `não consolidada` ou texto livre.
+§9), `revisão <n>: <motivo>` (a linha da `[ESP] <id> Revisão <n>` na Especificação), `não consolidada` ou texto livre.
+
+`## Débito de especificação`: a divergência entre o código mergeado e um artefato publicado, uma linha por artefato,
+gravada pela consolidação (`sa-consolidar.consolidar.drift`); lida na review (`sa-planejamento.review.rito`) e na
+retrospectiva. Tarefa fica `—` até o P.O. abrir a correção pela `sa-triar` (`origem FT-<nnn> (débito de
+especificação)`), que grava o id novo ali (na linha viva: a da sprint aberta). Na virada, a linha com Tarefa `—`
+migra (`sa-planejamento.retrospectiva.fechar`): na sprint que fecha, a Tarefa recebe `migrada para <chave>`; na
+próxima, a linha nasce igual, com Tarefa `—` e ` · migrada de <chave>` no Registrado. Sem linha, a seção fica só
+com o cabeçalho.
 
 Créditos (do Kiro): nas Fatias, Especificação e Sustentação, a soma das linhas de créditos do item, gravada na
 conclusão dele (`sa-consolidar`, `sa-especificar`, `sa-atender`, `sa-executar`), `—` antes; em Créditos de gestão, uma linha por

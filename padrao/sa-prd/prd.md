@@ -32,7 +32,7 @@ atualizado: <AAAA-MM-DD>
 
 <!-- Cada história (HF), regra (REG), termo novo (GL), leiaute (EL), ET e caso de teste planejado (CT) é um conceito OKF
      v0.2 próprio em elm/ (formato em okf-elm.md da skill sa-prd): aprovado no GATE, vai à base com o PRD e sobe ao ELM
-     (o CT, ao ETM) depois do merge da fatia que o cobre, na consolidação. Aqui fica só o índice. Cenários são os
+     (o CT, ao ETM) na conclusão da [ESP] (sa-especificar). Aqui fica só o índice. Cenários são os
      critérios de aceite: cada um é verificável e tem o seu CT. No ELM: novo (verificado <data>) · altera <id> ·
      reusa <id> · exclui <id>. Impacto: quem cita o alterado ou o excluído e não muda (<id> <como cita>), ou —. -->
 
@@ -77,6 +77,14 @@ atualizado: <AAAA-MM-DD>
 ## Fora de escopo
 
 - <o que fica explicitamente de fora — evita fatias que crescem sozinhas>
+
+## Mudanças
+
+<!-- Uma linha por versão nova do PRD aprovado antes do fatiamento (sa-prd.mudanca): 1.1, 1.2… Aprovado por: quem
+     especifica, no GATE da mudança. Sem mudança, só o cabeçalho. -->
+
+| Versão | Data | O que mudou | Origem | Aprovado por |
+|---|---|---|---|---|
 
 ## Em aberto
 

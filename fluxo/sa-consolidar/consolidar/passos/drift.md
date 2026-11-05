@@ -1,5 +1,5 @@
 ---
-{"resumo": "Lê o campo Drift de negócio do status.md (indicado pela revisão e pela verificação) e, com sim sem a [ESP] FT concluída, leva a fatia de volta à especificação antes de publicar."}
+{"resumo": "Lê o campo Drift de negócio do status.md (indicado pela revisão e pela verificação) e registra a divergência depois do merge como débito técnico de especificação, sem reabrir a especificação."}
 ---
 ## Entrada
 
@@ -11,26 +11,28 @@ Leia o campo **Drift de negócio** do `status.md` — indicado pela revisão (`s
 verificação (`sa-verificar`), decidido pela pessoa que revisou ou verificou. Não releia o `design.md` nem o
 `verificacao.md` atrás de drift: isso já foi julgado.
 
-- `sim — <motivo> · artefatos: <id|rótulo> (<tipo>)`, sem ` · especificação:` → o código entregue não é o que o
-  artefato aprovado diz, e o artefato volta à especificação **antes** de publicar (passo `elm`): rode a
-  [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação) (a `[ESP] FT-<nnn>`
-  da fatia; sem ela na sprint aberta, o encaixe). A `pronta` não muda de fase: o campo recebe
-  ` · especificação: [ESP] FT-<nnn>`, na base, pelo bloco
-  [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base); pare.
-- `sim — … · especificação: [ESP] FT-<nnn>` → a `[ESP] FT` aberta (a linha dela na seção Especificação do
-  `sprint-<nn>.md` ainda não `concluida`) → aguardando a especificação: pare; concluída → os artefatos aprovados
-  estão na base (`.kiro/specs/ft-<nnn>-<slug>/elm/`): siga.
-- `não` → nada a especificar.
+- `não`, ou `… · especificação: [ESP] FT-<nnn>` com a linha da `[ESP]` `concluida` na seção Especificação do
+  `sprint-<nn>.md` → os artefatos foram publicados na conclusão dela: siga.
+- `possível alteração — <motivo> · artefatos: <id|rótulo> (<tipo>)` sem ` · especificação:` (sem decisão: merge por
+  fora do Sabiá), ou `—` respondido com divergência → **débito técnico de especificação**: o código está mergeado e a
+  `[DEV]` encerrada, então **não se reabre especificação, e o P.O. de negócio não altera artefato**. Grave uma linha
+  por artefato na seção **Débito de especificação** do `sprint-<nn>.md` aberto
+  ([arquivos.md](~/.sabia/framework/skills/sa-planejamento/references/arquivos.md#sprintspaisprint-nnmd)): FT, Artefato
+  (`<id|rótulo> · <título> (<tipo>)`), Divergência, Registrado (`<login>, <AAAA-MM-DD>`), Tarefa `—`. O campo recebe
+  ` · débito de especificação (<chave da sprint>)`, e diga, exata:
+  `Débito de especificação registrado: FT-<nnn> · <artefatos> (<chave da sprint>) — a correção é decisão do P.O.`
+  Sem sprint aberta → a linha vai no Histórico do `status.md` e na `obs` `débito de especificação` da linha da fatia no
+  `backlog.md`; a review seguinte lê dali. Vai no commit do passo `fechar`; siga.
+- `… · especificação: [ESP] FT-<nnn>` com a `[ESP]` ainda aberta (merge por fora do Sabiá) → a publicação é da
+  conclusão dela, com o especificador: siga.
 - vazio (`—`) → pergunte a quem revisou ou verificou (Histórico) e grave a resposta no campo; não procure você;
   sem REV nem VER no Histórico (fatia `pronta` pela sincronização, `merge do PR <link> por fora do Sabiá`) → pergunte
   ao Dev responsável (o dono da `[DEV]`) e grave a resposta no campo.
 
 ## Saída
 
-O drift resolvido (`não`, ou a `[ESP] FT` concluída) → passo `elm`. Drift `sim` sem a `[ESP] FT` concluída →
-`sa-especificar.fatia` (agente `sa-especificador`).
+O drift lido, e o débito de especificação registrado quando há → passo `elm`.
 
 ## Pare se
 
-- Drift `sim` sem ` · especificação:` → a Volta à especificação rodada: pare.
-- `[ESP] FT` do drift ainda aberta → aguardando a especificação: pare.
+—

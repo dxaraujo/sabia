@@ -18,8 +18,8 @@ O relatório e o `status.md` com a fase do veredito (passo `veredito`).
 4. só então: `APROVADO` → saldo de horas e conclusão da `[REV]` (`elm_horas` → `elm_lancar_horas` do saldo →
    `elm_transicao(<id>, "concluir")`, numa confirmação; sem o MCP `elm` → `ELM pendente [<chave>]: lançar <h>h e concluir [REV] FT-<nnn>`) e avise o
    verificador de que a `[VER]` está disponível; `REVISAR` → avise o Dev responsável (o retrabalho é dele, no
-   mesmo PR); volta à especificação → horas da sessão na `[REV]` (lança, não conclui) e avise o especificador
-   (`sa-especificar FT-<nnn>`, agente `sa-especificador`) e o Dev responsável (a fatia espera a `[ESP] FT`).
+   mesmo PR); volta à especificação → horas da sessão na `[REV]` (lança, não conclui) e avise quem o `Próximo:` do bloco
+   diz (o especificador, ou o P.O. ou o SM, agente `sa-produto`) e o Dev responsável (a fatia espera a `[ESP]`).
 
 ## Saída
 

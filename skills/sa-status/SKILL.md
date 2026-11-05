@@ -22,7 +22,7 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
    no `backlog.md` não conta) → a regra A base prevalece do
    o padrão [`sa-desenvolver/status.md`](~/.sabia/framework/padrao/sa-desenvolver/status.md).
 2. De cada `status.md`: fatia, título, trilha, modo, fase, responsável, rodadas, achados abertos, PR, ELM,
-   Banco, última linha do Histórico (data) e pendências `ELM pendente [<chave>]:` sem `ELM feito` com a **mesma chave** (também
+   Banco, Drift de negócio (`possível alteração — …` sem ` · especificação:`), última linha do Histórico (data) e pendências `ELM pendente [<chave>]:` sem `ELM feito` com a **mesma chave** (também
    no rodapé das fichas de `fatias/`, no campo `**ELM:**` das fichas de `sustentacao/**`, na `## Sustentação` e nas
    `### <Categoria>` do `backlog.md` e na coluna "Tarefa ELM" da sprint aberta com `pendente`, fora das linhas com `saiu da sprint`). Também as do Histórico do `status.md` de
    `origin/<base>` de toda fatia `concluida` com pendência aberta (o item 1 não conta esse `status.md` para o resto):
@@ -41,13 +41,16 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
    um (o de `epicos/<EP>-<slug>/`; antes do GATE do PRD, o da pasta de trabalho
    `.sabia/local/especificacao/<EP>-<slug>/`, se houver nesta máquina);
    sprint atual (em `<produto>/sprints/<pai>/`, a de início mais recente com `**Situação:** aberta`) e a meta.
-   PRDs (`epicos/*/prd.md`; antes do GATE, o `rascunho.md`): pendências `ELM pendente [<chave>]:` do rodapé.
+   PRDs (`epicos/*/prd.md`; antes do GATE, o `rascunho.md`): pendências `ELM pendente [<chave>]:` do rodapé e a
+   data da linha `Versão <x.y> · <AAAA-MM-DD>`. A `obs` `falta: especificação (<motivo>, …)` do épico `iniciado` e da fatia que
+   não está `nova` (pendência do P.O. na `[GB]`: a `[ESP] <id> Revisão <n>` pelo encaixe ou no próximo planejamento).
 5. `<produto>/acordos.md`: limites de WIP (sem o arquivo: 2 fatias esperando pessoa, e sugira a
    fluxo `sa-planejamento.inicial`). Sem `<produto>/equipe.json` → sugira o mesmo fluxo: sem ele não há
    senioridade (modo da fatia, GATE do plano, quem revisa).
 6. `<produto>/aprendizado/licoes.md`: lições com situação `proposta`.
-   Sprint aberta (`sprint-<nn>.md`): seções Especificação e Sustentação (reserva × consumido; a linha com
-   `saiu da sprint` não conta no consumido) e as linhas `ELM pendente [<chave>]:`, cada item pela linha viva, a sem
+   Sprint aberta (`sprint-<nn>.md`): seções Especificação, Débito de especificação (as linhas com Tarefa `—`; sem sprint aberta, a `obs`
+   `débito de especificação` das fatias no `backlog.md`) e
+   Sustentação (reserva × consumido; a linha com `saiu da sprint` não conta no consumido) e as linhas `ELM pendente [<chave>]:`, cada item pela linha viva, a sem
    `saiu da sprint` ([Gravar na base](../sa-fatiar/references/backlog.md#gravar-na-base)). Sustentação aberta: as
    linhas `aberto` e `em-andamento` de cada `### <Categoria>` da `## Sustentação` do `backlog.md` (na sprint ou com
    `sprint` `—`). Com o MCP `elm`: **conferência com o EWM** — só leitura, numa listagem (a sincronização inteira é o
@@ -94,6 +97,7 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
 - FT-030 verificada → abrir o PR (sa-codificar)
 - FT-026 bloqueada: aguardando troca de modo → P.O. ou SM (agente sa-produto, sa-planejamento, fluxo troca-modo)
 - FT-033 bloqueada: aguardando especificação [ESP] FT-033 → especificador (sa-especificar, agente sa-especificador)
+- FT-034 aguardando-aprovacao-pr · possível alteração: 2101 (REG) → Dev Sênior na [APR] decide
 🔁 Retrabalho: FT-026 (de: em-revisao) → o desenvolvedor retoma no mesmo PR (sa-codificar)
 📦 Prontas esperando consolidação: FT-025 (merge há 1 dia) → P.O. ou SM (sa-consolidar, agente sa-produto, [GB])
 
@@ -101,8 +105,11 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
 | FT | Título | Situação | Prioridade | Tam. | Modo | Depende de |
 
 📄 Produto (épicos pela Fase do status.md)
-- EP-04 em-revisao → GATE do PRD (<especificador>, sa-prd) · EP-06 aprovado → fatiar (sa-fatiar, P.O./SM) · EP-05 rascunho (a descobrir)
+- EP-04 em-revisao → GATE do PRD (<especificador>, sa-prd) · EP-05 rascunho (a descobrir)
+- ⏳ EP-06: PRD aprovado aguardando fatiamento há 3 dias → P.O. ou SM (sa-fatiar, agente sa-produto)
 - Especificação na sprint: EP-05 (rita.melo) iniciada · 8/16 h · FT-040 (—) planejada · falta: decisão do limite
+- 📝 Pendência de especificação: FT-029 (sem sprint aberta) → P.O. ou SM ([GB]): a [ESP] FT-029 Revisão 1 no próximo planejamento
+- 📝 Débito de especificação: 1 sem tarefa (FT-025)
 
 🎧 Reserva (Sustentação + retrabalho): <h>h · consumido <h>h (retrabalho <x>h · Sustentação <y>h)
 - Atendimento: AT-012 em-andamento (joao.lima, prazo 2026-10-16) · AT-014 aberto · Implantação: IM-003 aberto (ana.souza)
@@ -122,10 +129,19 @@ compara a estimativa e lê o que saiu da listagem). Marcador, `nao_encontrado` o
 `total` = 1000 → `🔄 EWM: não conferido (listagem no teto de 1000 itens)`. A 🏛️ conta também as pendências das
 fatias `concluida` (Coleta, item 2).
 
+**Possível alteração** — a linha `· possível alteração: <artefatos> → <quem> decide` vem do Drift (Coleta, item 2);
+quem decide, pela fase: `pr-aberto` ou `em-revisao` → o revisor; `em-verificacao` → o verificador; AFK → o Dev Sênior
+na `[APR]`. O merge espera a decisão.
+
+**Produto** — `⏳`: épico `iniciado` no `backlog.md`, com a Fase `aprovado` no `status.md` da base, sem a `obs`
+`falta: especificação` e sem linha viva `planejada` ou `iniciada` na seção Especificação da sprint aberta (a linha
+`concluida` da sprint fechada não migra); `<n>` = hoje − a data do rodapé do `prd.md`. As linhas `📝` vêm da Coleta, itens 4 (pendência) e 6 (débito); sem nenhuma, omita-as.
+
 **Sugestão** — nesta ordem: desbloquear quem espera uma pessoa (plano ou PR parado, WIP de revisão estourado, PR
 mergeado sem `pronta` na base) → item de Sustentação com prazo vencendo → terminar a fatia em andamento → começar a
 próxima elegível (a planejada do topo; nenhuma → a `elegivel` do topo, pelo encaixe com o P.O. ou o SM, agente `sa-produto`; AFK em quantidade → ofereça o `sa-orquestrar`) →
-trabalho de produto (PRD/fatiar) para manter o backlog com fatias elegíveis.
+PRD aprovado aguardando fatiamento (a linha ⏳) → trabalho de produto (PRD/fatiar) para manter o backlog com fatias
+elegíveis.
 
 ## Inconsistências a apontar
 
@@ -144,8 +160,8 @@ trabalho de produto (PRD/fatiar) para manter o backlog com fatias elegíveis.
 - fatia em andamento sem commit há mais de 3 dias úteis;
 - `concluida` com Banco = `pendente` ou `aplicada em dev` (implantação bloqueada);
 - Histórico fora de ordem cronológica ou fase que não bate com a última linha (conflito mal resolvido);
-- conceito aprovado (`stable` com `verified` humano) sem `resource` numa fatia `concluida` (no `elm/` dela, ou o do
-  `elm/` do épico no `cobre` dela): a consolidação não o publicou;
+- conceito aprovado (`stable`, `verified` humano) sem `resource`, com a `[ESP]` dele concluída e sem `ELM pendente
+  [… publicar]` (no `elm/` do épico ou no da fatia): a `[ESP]` não o publicou;
 - conceito de `elm/` alterado (`generated.at`) depois do último `verified` e ainda `stable` (falta reaprovar);
 - `backlog.md` alterado numa branch de fatia (deve mudar só na base);
 - reserva (Sustentação + retrabalho) estourada (consumido > reserva; o consumido não conta as linhas com

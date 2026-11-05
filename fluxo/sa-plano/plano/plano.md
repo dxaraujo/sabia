@@ -43,7 +43,7 @@ Leia: `status.md`, a fatia no `backlog.md`, o PRD do épico (histórias e regras
 
 `AUTONOMO=true`: sem perguntas; decisão técnica com alternativas → escolha a recomendada e registre; lacuna de
 negócio na ficha → `fase: bloqueada (de: planejando)` com a pergunta para o P.O.; artefato que precisa mudar → o bloco
-Volta à especificação (passo `decisoes`), sem reabrir a `[ESP]` (`ELM pendente [ESP FT-<nnn> reabrir]`). Passo `gate` sem pessoa: fatia AFK com risco →
+Volta à especificação (passo `decisoes`): a `[ESP]` concluída na sprint aberta tem a linha gravada `iniciada` (`reaberta: <motivo>`), e quem especifica a reabre no EWM ao assumir. Passo `gate` sem pessoa: fatia AFK com risco →
 `fase: bloqueada (de: planejando)`, `aguardando troca de modo` com o risco (a troca é do P.O. ou do SM); GATE → Sênior
 segue para `implementando`; Pleno → a escolha do lote que quem chamou passou (sem ela: `aguardando-aprovacao-plano`,
 e a pergunta fica para a sessão dele); nada de ELM (`ELM pendente [<chave>]`).
@@ -51,5 +51,5 @@ e a pergunta fica para a sessão dele); nada de ELM (`ELM pendente [<chave>]`).
 ## Regras
 
 - Não invoque nem simule outra skill do fluxo: termine dizendo a próxima (`sa-codificar`, o Dev Sênior da `[APR]`,
-  o P.O. ou o SM na troca de modo, o P.O. no plano grande demais, o especificador na volta à especificação) e pare. A `sa-pesquisar` e o subagente revisor, que os passos mandam
+  o P.O. ou o SM na troca de modo, o P.O. no plano grande demais, quem o `Próximo:` do bloco diz na volta à especificação) e pare. A `sa-pesquisar` e o subagente revisor, que os passos mandam
   chamar, fazem parte deste fluxo.

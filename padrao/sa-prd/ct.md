@@ -6,8 +6,8 @@
 **Caso de teste planejado (CT)** — como se prova um cenário de uma história, escrito antes do código. Nasce da HF
 no lote do PRD (`sa-prd.prd.escrever`) ou, da HF que a fatia altera ou inclui, no da `[ESP] FT`
 (`sa-especificar.fatia.escrever`), um por cenário da HF, e é aprovado com os demais (GATE do PRD ou aprovação da
-`[ESP] FT`). Pela linha **Casos de teste** da seção ELM do `sabia.md`: `ETM` → sobe ao ETM na publicação, depois do
-merge, ligado à história; `CSV` → fica no repositório. A execução é da verificação da fatia, que grava no
+`[ESP] FT`). Pela linha **Casos de teste** da seção ELM do `sabia.md`: `ETM` → sobe ao ETM na publicação, na
+conclusão da `[ESP]` (a do épico ou a da fatia), ligado à história; `CSV` → fica no repositório. A execução é da verificação da fatia, que grava no
 `CT.csv` (padrão `sa-verificar/ct-csv.md`) a evidência de cada CT planejado que a fatia cobre.
 
 ```markdown

@@ -23,7 +23,8 @@ Em Artefatos, uma contagem por tipo do [catálogo](~/.sabia/framework/skills/sab
 Quem especifica aprova o PRD e, com ele, todos os conceitos de `elm/`: os novos, os alterados e os excluídos.
 
 - Decisão **em aberto que muda comportamento** → não há aprovação; volte à entrevista.
-- Aprovado → Fase `aprovado` no `status.md` do épico; no `prd.md`, a versão (`1.0`; na mudança, a mesma), data e quem aprovou no rodapé. Em
+- Aprovado → Fase `aprovado` no `status.md` do épico; no `prd.md`, a versão (`1.0`; na mudança, a da linha nova da
+  seção Mudanças, `1.1`, `1.2`…, com o Aprovado por), data e quem aprovou no rodapé. Em
   **cada** conceito de `elm/` (fora a ATA, já aprovada no passo `sa-especificar.reuniao.aprovar`): `status: stable`
   (o excluído segue `deprecated`) e um `verified` com `{ by: human:<login de quem especifica>, at: <agora> }` — sem
   esse `verified` humano nada é publicado. Grave só onde o PRD está:
@@ -36,8 +37,8 @@ Quem especifica aprova o PRD e, com ele, todos os conceitos de `elm/`: os novos,
 
 - Decisão em aberto que muda comportamento → passo `entrevistar`.
 - Primeiro GATE aprovado, ou mudança aprovada → próximo: "use `sa-especificar EP-<nn>`" — ela fecha a sessão, leva o
-  PRD aprovado para a base (no primeiro GATE), conclui a `[ESP]` e diz o que vem depois (o fatiamento, do P.O. ou do
-  SM). A publicação no ELM é da consolidação, depois do merge de cada fatia.
+  PRD aprovado para a base (no primeiro GATE), publica no ELM, conclui a `[ESP]` e diz o que vem depois (o
+  fatiamento, do P.O. ou do SM).
 
 ## Pare se
 

@@ -3,8 +3,9 @@
 ---
 ## Entrada
 
-O épico na sprint aberta (passo `entrada`): a linha em `## Épicos` do `backlog.md` da base e a `[ESP]` pela coluna
-`elm` (`ESP <id>`) ou pela Tarefa ELM da linha dele na seção Especificação do `sprint-<nn>.md` (sem id → `pendente`).
+O épico na sprint aberta (passo `entrada`): a linha em `## Épicos` do `backlog.md` da base e a `[ESP]` pela Tarefa
+ELM da linha dele na seção Especificação do `sprint-<nn>.md` (a Revisão, quando há) ou pela coluna `elm` (`ESP <id>`)
+(sem id → `pendente`).
 
 ## Faça
 

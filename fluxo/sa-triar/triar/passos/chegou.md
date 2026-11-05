@@ -10,11 +10,6 @@ O pedido em texto, o número do EWM ou o pedido de lote, e o `backlog.md` da bas
 **Antes de tudo** — a triagem lê e escreve na base: itens 1 e 5 do bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base) (troca
 com "sim", `pull --ff-only`, árvore suja → pare; no fim, oferecer voltar).
 
-**Bundle do ELM** (com ELM; uma vez por sessão, já na base): a data do último sync é a do último commit da `sa-sync`
-(`git log -1 --format=%cs --grep='^ELM - Sincronizar bundle'`; sem esse commit, "sem data"). Mais de 7 dias ou sem
-data → `⚠️ Bundle do ELM de <data | sem data> (<n> dias): rode a sa-sync (baixar) antes de triar — a triagem segue se
-você quiser.` Não bloqueia; a data vai no `bundle de` da seção Artefatos afetados (passo `triagem`).
-
 **Backlog sem IB** (com ELM e o MCP `elm` nesta sessão): o backlog do EWM é a fonte dos relatórios das demandas, e
 nenhum item espera a sprint para nascer nele. Linha do `backlog.md` não terminal com `elm` `—`, `pendente` ou id sem
 link → `🏛️ <n> itens do backlog sem IB no EWM: <ids> → criar agora? (sim)`, com a prévia e o "sim" do

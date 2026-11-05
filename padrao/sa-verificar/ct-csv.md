@@ -4,8 +4,8 @@
 # `CT.csv` — evidências dos casos de teste da fatia
 
 Uma linha por cenário **verificado** (aceito com evidência) da fatia: a execução do CT planejado que o prova (padrão
-`sa-prd/ct.md`, aprovado no GATE do PRD) ou, sem ele, um CT novo. Na consolidação, o CT planejado já no ETM é
-ligado ao IB, e `elm_criar_ct` cria cada CT novo, com o Resumo como título e a Descrição como cenário, já
+`sa-prd/ct.md`, aprovado na `[ESP]`) ou, sem ele, um CT novo. Na consolidação, o CT planejado (publicado no ETM na
+conclusão da `[ESP]`) é ligado ao IB, e `elm_criar_ct` cria cada CT novo, com o Resumo como título e a Descrição como cenário, já
 ligado ([elm-publicar.md](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md)). Sem permissão de criar no ETM ou sem
 o MCP `elm`, o arquivo é importado à mão (Importar → CSV) e os links são feitos depois (`elm_ligar`).
 

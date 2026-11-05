@@ -18,7 +18,7 @@
 | Bloqueio | — (ou: `<motivo>` · pergunta: `<pergunta exata>` · ou `aguardando especificação [ESP] FT-<nnn>: <artefato> (<tipo>, <ação>) — <motivo>` — junto com `Fase: bloqueada (de: <fase>)`) |
 | ELM | <IB <id> (DF <id>, se o item da fatia é o defeito de origem) · DEV <id> · REV <id> · VER <id> (AFK: só DEV) · APR <id> (criadas nos gates) · CT <ids> \| CT CSV <caminho> (consolidação, pela linha Casos de teste) \| sem ELM \| pendente> — os rótulos da coluna `elm` do backlog |
 | Banco (DDL) | <não se aplica \| pendente \| aplicada em dev \| aplicada em prod> |
-| Drift de negócio | — (indicado pela REV e pela VER, decidido pela pessoa: `não` \| `sim — <motivo> · artefatos: <id\|rótulo> (<tipo>)` \| `… · especificação: [ESP] FT-<nnn>`) |
+| Drift de negócio | — (indicado pela REV, pela VER ou pelo Dev, decidido pela pessoa: `não` \| `possível alteração — <motivo> · artefatos: <id\|rótulo> (<tipo>)` \| `… · especificação: [ESP] FT-<nnn>` \| `… · débito de especificação (<chave da sprint>)`) |
 
 <!-- Fases por modo:
      HITL  pesquisando → planejando → [aguardando-aprovacao-plano: pela senioridade] → implementando → pr-aberto
@@ -69,15 +69,18 @@
      Rodadas: incrementadas por quem pede a rodada — sa-plano (análise), sa-codificar (revisão e
      verificação) ou, no loop, o orquestrador.
      O revisor e o verificador não incrementam — exceto no HITL, em que eles mesmos conduzem a rodada sobre o PR.
-     Drift de negócio: a REV (rubrica C: achado aceito ou decisão técnica que muda comportamento visível) e a VER
-     (comportamento entregue diverge do artefato aprovado) indicam `sim — <motivo> · artefatos: <id|rótulo> (<tipo>)`;
-     no AFK o subagente põe a linha no relatório e quem conduz grava aqui. A pessoa revisora ou verificadora decide
-     (no AFK, o Dev Sênior na [APR]): volta → acrescenta ` · especificação: [ESP] FT-<nnn>` e roda a Volta à
-     especificação (backlog.md); código errado → o motivo vira achado (retrabalho do Dev), o campo fica `não` e o
-     Histórico recebe `drift descartado: código errado (<login>)`. Outro `sim` acrescenta o motivo; sobre um campo já decidido (com
-     `especificação:`), o decidido vai ao Histórico (`drift <motivo> · especificação: [ESP] FT-<nnn>`) e o campo
-     recomeça com o `sim` novo, sem `especificação:`, para a pessoa decidir de novo. A consolidação só
-     lê (sim sem `especificação:` → Volta à especificação antes de publicar).
+     Drift de negócio: a possível alteração é a indicação de que o código mudou ou diverge de um artefato — da REV
+     (rubrica C: achado aceito ou decisão técnica que muda comportamento visível), da VER (comportamento entregue
+     diverge do artefato aprovado; no AFK, os cenários `🔁 possível alteração`) ou do próprio Dev na codificação:
+     `possível alteração — <motivo> · artefatos: <id|rótulo> (<tipo>)`; no AFK o subagente põe a linha no relatório
+     e quem conduz grava aqui. A pessoa revisora ou verificadora decide (no AFK, o Dev Sênior na [APR]): volta →
+     acrescenta ` · especificação: [ESP] FT-<nnn>` e roda a Volta à especificação (backlog.md); código errado → o
+     motivo vira achado (retrabalho do Dev), o campo fica `não` e o Histórico recebe `drift descartado: código errado
+     (<login>)`. Outra possível alteração acrescenta o motivo; sobre um campo já decidido (com `especificação:`), o
+     decidido vai ao Histórico (`drift <motivo> · especificação: [ESP] FT-<nnn>`) e o campo recomeça com a possível
+     alteração nova, sem `especificação:`, para a pessoa decidir de novo. O merge só sai sem possível alteração
+     pendente (decidida como código errado, ou com a [ESP] concluída). Depois do merge não há volta: a consolidação
+     registra a divergência como débito de especificação (` · débito de especificação (<chave da sprint>)`).
      Retrabalho: incrementado por quem reprova (revisor ou verificador, HITL) ou, no AFK, pelo orquestrador ou, sem o loop,
      pelo desenvolvedor no passo `sa-codificar.codificar.verificar` que registra a verificação REJEITADA. -->
 

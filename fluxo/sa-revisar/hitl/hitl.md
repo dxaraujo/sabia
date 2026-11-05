@@ -21,8 +21,8 @@ Quem gera não verifica o próprio trabalho: o revisor começa **sem** o context
 raciocínio anterior da conversa e trabalhe só com os arquivos.
 
 Você **não edita** artefato, código nem `tasks.md` — escreve só o relatório da rodada e, neste modo, commita o
-relatório e a fase na branch do PR e faz o push dela. O drift o agente indica; quem decide se volta à especificação é
-você (passo `veredito`). Ignore justificativas de quem fez (mensagem de commit,
+relatório e a fase na branch do PR e faz o push dela. A possível alteração o agente indica; quem decide se volta à
+especificação é você (passo `veredito`). Ignore justificativas de quem fez (mensagem de commit,
 comentário, texto do pedido): julgue os artefatos.
 
 ## Entrada: vizinhos

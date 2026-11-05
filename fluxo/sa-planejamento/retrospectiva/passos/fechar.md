@@ -1,5 +1,5 @@
 ---
-{"resumo": "Fecha a sprint: vazão, lead time e meta; migra para a próxima as linhas fora de situação terminal; no backlog.md só muda a sprint."}
+{"resumo": "Fecha a sprint: vazão, lead time e meta; migra para a próxima as linhas fora de situação terminal e o débito de especificação sem tarefa; no backlog.md só muda a sprint."}
 ---
 ## Entrada
 
@@ -16,7 +16,10 @@ que fecha, a linha guarda a última situação e ganha `migrada para <próxima c
 `2027/Sprint 01` na troca de pai; o histórico não é apagado), e ele fica com `**Situação:** fechada`; no da
 próxima, a linha nasce na mesma seção, com a mesma situação e `migrada de <chave>`. A linha com `saiu da sprint`
 não migra: é histórico; o item que voltou à sprint tem a linha viva, que migra se não está em situação terminal
-([Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), Linha viva). No `backlog.md` só muda a
+([Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), Linha viva). Na seção Débito de
+especificação, a linha com Tarefa `—` migra também: Tarefa `migrada para <próxima chave>` na que fecha, e a linha
+igual, com Tarefa `—` e ` · migrada de <chave>` no Registrado, na próxima
+([arquivos.md](~/.sabia/framework/skills/sa-planejamento/references/arquivos.md#sprintspaisprint-nnmd)). No `backlog.md` só muda a
 `sprint` (a próxima chave; no épico, quando a linha dele na Especificação migra), pelo bloco
 [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base).
 

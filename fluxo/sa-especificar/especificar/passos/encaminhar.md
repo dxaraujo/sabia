@@ -18,11 +18,11 @@ Próximo: <skill>
 | Fase (`status.md` do épico: o da base se a linha do épico já tem `prd`; senão, o da pasta de trabalho) | Próxima skill |
 |---|---|
 | `rascunho`/`em-revisao` com transcrição em `reunioes/` sem ATA aprovada, ou ATA aprovada não registrada | **`sa-especificar.reuniao`** (chama e volta); depois, a linha da Fase |
-| `em-revisao (de: aprovado)` (`prd` na base, a `[ESP]` reaberta pela `sa-prd.mudanca`), com transcrição sem ATA aprovada, ou ATA aprovada não registrada | **`sa-especificar.reuniao`** (chama e volta): registra a ATA; a decisão que muda o PRD segue o passo `sa-especificar.reuniao.decisoes` (`sa-prd.mudanca`, nesta `[ESP]`). O `aprovado` na pasta de trabalho vai antes ao passo `fechamentos`; a ATA entra no encaminhar seguinte |
+| `em-revisao (de: aprovado)` (`prd` na base, a `[ESP]` reaberta ou a Revisão, pela `sa-prd.mudanca`), com transcrição sem ATA aprovada, ou ATA aprovada não registrada | **`sa-especificar.reuniao`** (chama e volta): registra a ATA; a decisão que muda o PRD segue o passo `sa-especificar.reuniao.decisoes` (`sa-prd.mudanca`, nesta `[ESP]`). O `aprovado` na pasta de trabalho vai antes ao passo `fechamentos`; a ATA entra no encaminhar seguinte |
 | `rascunho`/`em-revisao`, linha Telas = `sim` (seção ELM do `.sabia/sabia.md`), com arquivo novo em `prototipo/` (sem o prefixo `prototipo-v<N>-`) ou com a última versão registrada (o maior `prototipo-v<N>-*`) sem o `D-nn` `Protótipo v<N> aprovado` dessa versão no `decisoes.md` | **`sa-especificar.prototipo`** (chama e volta); aprovado, a linha da Fase; aguardando o cliente ou a versão nova, o passo `fechar-sessao`. Sem arquivo em `prototipo/`, vale a linha da Fase: o protótipo entra no `sa-prd.prd.escrever` |
 | `rascunho`, sem `prd.md` | **`sa-prd`** (`sa-prd.prd.entender`: explora o código e o ELM; `sa-prd.prd.entrevistar`: `sa-entrevistar`) |
 | `rascunho`/`em-revisao` com `prd.md` | **`sa-prd`** no passo em que parou (escrita, revisão P ou GATE); com Telas = `sim` e o `D-nn` `Protótipo v<N> aprovado` de uma versão mais nova que a citada nas EL, no passo `sa-prd.prd.escrever` |
-| `aprovado` na pasta de trabalho (`prd` `—` no `backlog.md`) | **passo `fechamentos`** deste fluxo — levar para a base e concluir a `[ESP]` |
+| `aprovado` na pasta de trabalho (`prd` `—` no `backlog.md`) | **passo `fechamentos`** deste fluxo — levar para a base, publicar e concluir a `[ESP]` |
 
 ### Toolkit na especificação
 
@@ -45,7 +45,7 @@ pela setup. É transparente para quem está no fluxo: nada é perguntado nem mar
 A ATA de cada transcrição pendente, quando há; com Telas = `sim` e versão nova ou aguardando, o protótipo aprovado (ou,
 aguardando o cliente ou a versão nova, o passo `fechar-sessao`); depois, a próxima skill dita (e a sessão segue nela, até o passo
 `fechar-sessao`), ou, em `aprovado` na pasta de trabalho, o passo `fechamentos`. O `aprovado` na base não chega
-aqui: com a Especificação `iniciada`, vai do passo `entrada` ao `fechamentos`; `concluida` ou `fatiado`, é vizinho.
+aqui: com a Especificação `iniciada`, vai do passo `entrada` ao `publicar`; `concluida` ou `fatiado`, é vizinho.
 
 ## Pare se
 

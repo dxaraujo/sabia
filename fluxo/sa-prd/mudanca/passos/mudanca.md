@@ -1,9 +1,10 @@
 ---
-{"resumo": "PRD aprovado e não fatiado só muda por pedido explícito, na [ESP] do épico (reaberta, se concluída), reescrito no lugar; Fase em-revisao (de: aprovado), conceitos alterados em draft e o GATE de novo. Fatiado: a [ESP] FT da fatia ou a sa-triar."}
+{"resumo": "PRD aprovado e não fatiado só muda por pedido explícito, pela regra da tarefa de especificação (a [ESP] aberta, reaberta na sprint corrente, a Revisão pelo encaixe ou a pendência do P.O. na [GB]), numa versão nova do PRD com a mudança registrada nele; Fase em-revisao (de: aprovado), conceitos alterados em draft e o GATE de novo. Fatiado: a [ESP] FT da fatia ou a sa-triar."}
 ---
 ## Entrada
 
-Épico com o PRD aprovado na base, na Fase `aprovado` ou `fatiado`, e um pedido explícito de mudança no PRD.
+Épico com o PRD aprovado na base, na Fase `aprovado` ou `fatiado`, e um pedido explícito de mudança no PRD (da
+pessoa, da ATA, ou o da `[ESP] EP-<nn> Revisão <n>`: a Observação `revisão <n>: <motivo>` da linha dela).
 
 ## Faça
 
@@ -14,26 +15,42 @@ O PRD aprovado só muda por um pedido explícito, e só antes do fatiamento:
   (não iniciada: a linha na seção Artefatos afetados, com Especificado `—`, e a DoR volta a `nova` com
   `falta: especificação`; iniciada: item Pedido de fora da fatia) e "use `sa-especificar FT-<nnn>`"; escopo novo (história, regra ou ator que o PRD não tem), ou a fatia já terminal → "use
   `sa-triar` com origem EP-<nn>" (agente `sa-produto`).
-- **`aprovado`** → a mudança é trabalho da `[ESP]` do épico:
-  1. **`[ESP]`** aberta → segue nela. Concluída → `reabrir` e `assumir`, com "sim" (seção Assumir do passo
-     `sa-especificar.especificar.entrada`), e a linha do épico na seção Especificação do `sprint-<nn>.md` aberto volta
-     a `iniciada` (bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), commit
-     `EP-<nn> reabrir especificação`). Sem a linha viva na sprint aberta → "a `[ESP]` entra pelo encaixe (P.O. ou SM,
-     agente `sa-produto`)" e pare. A transcrição nova de uma reunião, sem ATA aprovada, é pedido explícito: reaberta a
-     `[ESP]`, a reunião registra a ATA antes de reescrever o PRD (`sa-especificar.reuniao`), e a decisão que muda o
-     PRD volta aqui.
-  2. **Reescrita no lugar** — nada foi publicado: a versão segue a mesma; o rodapé registra a data e o que mudou.
-     Fase `em-revisao (de: aprovado)` enquanto o que mudou é revisto, e o GATE de novo. Conceito alterado:
-     `status: draft`, `generated.at` novo; no GATE, um `verified` novo é acrescentado à lista.
+- **`aprovado`** (o intervalo GATE do PRD → fatiamento) → a mudança é da tarefa de especificação do épico, pela
+  tabela da [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação),
+  com o bloco dela (`EP-<nn>`):
+  1. **`[ESP]`** aberta → segue nela; a `[ESP] EP-<nn> Revisão <n>` ainda `planejada` → `assumir`, com "sim" (seção
+     Assumir do passo `sa-especificar.especificar.entrada`). Concluída na sprint aberta → `reabrir` e `assumir`, com
+     "sim". Nos dois, a linha dela na seção Especificação do `sprint-<nn>.md` aberto fica `iniciada`, no commit do
+     item 2. Concluída numa sprint fechada → não reabre: o pedido fica na `obs` `falta: especificação (<motivo>,
+     <login>, <AAAA-MM-DD>)` da linha do épico no `backlog.md` (bloco
+     [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), commit
+     `EP-<nn> registrar pendência de especificação`) e diga: com sprint aberta, "o EP-<nn> entra na sprint aberta pelo
+     encaixe e nasce a `[ESP] EP-<nn> Revisão <n>` (P.O. ou SM, agente `sa-produto`)"; sem sprint aberta, "pendência do
+     P.O. na [GB]: o próximo planejamento cria a `[ESP] EP-<nn> Revisão <n>` (P.O. ou SM, agente `sa-produto`)"; e
+     pare. A transcrição nova de uma reunião, sem ATA
+     aprovada, é pedido explícito: com a `[ESP]` aberta, a reunião registra a ATA antes de mudar o PRD
+     (`sa-especificar.reuniao`), e a decisão que muda o PRD volta aqui.
+  2. **Versão nova** — o PRD sobe de versão (`1.1`, `1.2`…): uma linha na seção Mudanças do `prd.md` (Versão, Data, O
+     que mudou, Origem: o pedido de `<login>`, a `ATA-<nn>` ou o `D-nn`; Aprovado por `—` até o GATE). Fase
+     `em-revisao (de: aprovado)` enquanto o que mudou é revisto, e o GATE de novo. Conceito alterado:
+     `status: draft`, `generated.at` novo; no GATE, um `verified` novo é acrescentado à lista, e o passo
+     `sa-especificar.especificar.publicar` republica (o filtro pega o `verified` mais novo). Antes de escrever, grave
+     na base, pelo bloco Gravar na base, **um** commit com a linha da seção Mudanças, a Fase `em-revisao (de:
+     aprovado)` no `status.md` do épico e a linha `iniciada` do item 1: `EP-<nn> reabrir especificação` na
+     reabertura, `EP-<nn> iniciar especificação` na Revisão assumida, `EP-<nn> registrar mudança do PRD` com a `[ESP]`
+     aberta. Assim a retomada volta à revisão do PRD, e não à publicação.
 
 Artefato novo, alterado ou excluído que a mudança trouxer passa antes pelo passo `sa-prd.prd.similares`; a escrita
 segue as regras do passo `sa-prd.prd.escrever`.
 
 ## Saída
 
-- `aprovado` com a transcrição nova → a `[ESP]` reaberta e `sa-especificar.reuniao` (a ATA primeiro).
+- `aprovado` com a transcrição nova → a `[ESP]` aberta (ou reaberta) e `sa-especificar.reuniao` (a ATA primeiro).
 - `aprovado` → o que mudou é revisto pelo passo `sa-prd.prd.revisao` e aprovado pelo passo `sa-prd.prd.gate`, no
   caminho "mudança antes do fatiamento".
+- `aprovado` com a `[ESP]` concluída numa sprint fechada → o pedido na `obs` `falta: especificação (<motivo>, …)` e o
+  encaixe da Revisão (P.O. ou SM) ou, sem sprint aberta, a pendência do P.O. na `[GB]` para o próximo planejamento
+  (`sa-planejamento.sprint.especificacao`).
 - PRD ainda na pasta de trabalho (sem o GATE, ou `aprovado` sem ir à base) → não é mudança: "use
   `sa-especificar EP-<nn>`" (a sessão da `[ESP]` segue no `sa-prd.prd`, ou leva o PRD para a base antes).
 - `fatiado` → a `[ESP] FT` da fatia (`sa-especificar.fatia`, agente `sa-especificador`) ou a `sa-triar` (agente
@@ -42,4 +59,4 @@ segue as regras do passo `sa-prd.prd.escrever`.
 ## Pare se
 
 - Sem pedido explícito de mudança → o PRD aprovado não muda: pare.
-- PRD na pasta de trabalho, `fatiado`, ou a `[ESP]` fora da sprint aberta → diga a próxima e pare.
+- PRD na pasta de trabalho, `fatiado`, ou a `[ESP]` concluída numa sprint fechada (item 1) → diga a próxima e pare.

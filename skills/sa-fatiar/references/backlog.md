@@ -58,17 +58,17 @@ separadas por vírgula. Cada item é **uma** linha da tabela — sem quebra de l
 | épico `po` | login do P.O. do épico (padrão: o P.O. ativo do `equipe.json`); é o responsável do épico no EWM |
 | épico `sprint` | a da `[ESP]` (formato na coluna `sprint` abaixo) |
 | épico `prd` · `pasta` | `[prd](epicos/<EP>-<slug>/prd.md)` (gravado no GATE do PRD) · `[pasta](epicos/<EP>-<slug>/)` (criada pela `sa-triar`; sem a pasta antecipada, no GATE do PRD), ou `—` |
-| épico `obs` | `falta: <…>` (o que impede a DoR do épico), `origem: <id>` (item do EWM posto sob o épico — [elm-sprint.md](../../sa-planejamento/references/elm-sprint.md) §3), o motivo do cancelamento |
+| épico `obs` | `falta: <…>` (o que impede a DoR do épico; no épico `iniciado`, `falta: especificação (<motivo>, <login>, <AAAA-MM-DD>)` é a pendência do P.O. na `[GB]` — [Volta à especificação](#volta-à-especificação)), `origem: <id>` (item do EWM posto sob o épico — [elm-sprint.md](../../sa-planejamento/references/elm-sprint.md) §3), o motivo do cancelamento |
 | fatia `origem` | `EP-nn` (fatia do épico) ou `Manutenção` (sem épico; no EWM, sob o IB Manutenção); dividida → a da original. O item do EWM de onde ela veio fica na coluna `elm`; o atendimento, na `obs` (`vinculada a`); o pedido, na ficha |
 | `trilha` | `padrão` · `rápida` (fatia de épico é sempre `padrão`) |
 | `ficha` | toda fatia: `[ficha](fatias/FT-<nnn>-<slug>.md)` — formato por trilha no padrão `sa-triar/ficha.md` (de Manutenção: escrita pela `sa-triar`; de épico: pela `sa-fatiar`) |
 | `cobre` | `HF-nn#c.c` (cenário) e `REG-nn` do PRD do épico; `—` na fatia de Manutenção (os cenários da padrão ficam na ficha, `C<n>`) |
 | `bloqueada-por` | as fatias de que ela depende, por qualquer motivo — código, ordem de execução, especificação (o artefato do ELM já na ficha de outra fatia aberta, gravado pela `sa-triar`) — (toda fatia; `—` quando não há) |
-| fatia `obs` | texto livre; convenções: `falta: <…>` (o que impede a DoR); `vinculada a [AT-012](sustentacao/atendimento/AT-012-<slug>.md)` (veio de um atendimento; no EWM, o link `relacionado` com o IB do item: `elm_ligar(wi, wi_destino, tipo relacionado)`); `desmembrada de FT-…` (nas novas) e `substituida-por FT-…` (na dividida) — só na divisão da fatia de Manutenção; o motivo do cancelamento |
+| fatia `obs` | texto livre; convenções: `falta: <…>` (o que impede a DoR); `vinculada a [AT-012](sustentacao/atendimento/AT-012-<slug>.md)` (veio de um atendimento; no EWM, o link `relacionado` com o IB do item: `elm_ligar(wi, wi_destino, tipo relacionado)`); `desmembrada de FT-…` (nas novas) e `substituida-por FT-…` (na dividida) — só na divisão da fatia de Manutenção; `débito de especificação` (divergência do código mergeado com um artefato, registrada na consolidação sem sprint aberta: `sa-consolidar.consolidar.drift`); o motivo do cancelamento |
 | `tamanho` | `P` · `M` · `G` |
 | `modo` | `AFK` · `HITL` — proposto na triagem ou no fatiamento (critérios da `sa-fatiar`); o modo final é gravado pela `sa-planejamento` quando a fatia ganha responsável e, na fatia `—` não iniciada, por quem a assume (`sa-desenvolver.desenvolver.iniciar`; no loop, o orquestrador), pela senioridade dele (Júnior → `HITL` · Pleno → os critérios · Sênior → `AFK` por padrão) |
 | `sprint` | chave da sprint `<pai>/Sprint <nn>` (`2026/Sprint 03`: o pai e o número do arquivo `sprints/<pai>/sprint-<nn>.md` — [arquivos.md](../../sa-planejamento/references/arquivos.md#sprintspaisprint-nnmd)) ou `—` (fora de sprint); gravada com `planejada`/`planejado` (`sa-planejamento`: o planejamento ou o encaixe durante a sprint). Na virada (`sa-planejamento.retrospectiva`), o item que migra passa à chave da próxima (o épico acompanha a linha dele na Especificação, que migra só se não está `concluida` nem `cancelada`) |
-| `elm` | o item no EWM e as tarefas, com o tipo antes de cada id, separados por ` · ` — o backlog do EWM é a cópia deste arquivo: o item nasce no backlog do produto ao registrar (triagem, GATE do backlog), no estado inicial — onde fica enquanto está fora de sprint —, e muda de iteração ao entrar na sprint; as tarefas nascem na sprint ([elm-sprint.md](../../sa-planejamento/references/elm-sprint.md)). Épico: `IB [<id>](<url>) · ESP [<id>](<url>)`; fatia: `IB [<id>](<url>) · DEV [<id>](<url>) · REV … · VER … · APR …`; item de Sustentação: `IB [<id>](<url>) · ATD [<id>](<url>)` (a tarefa pelo prefixo da categoria, sem colchetes). Fatia ou item de Sustentação que veio de um defeito ou IB do EWM: esse item fica no lugar do IB, com o tipo dele como rótulo (`DF [4567](<url>) · DEV …` · `DF [4567](<url>) · ATD …`). `pendente` (registrado sem o MCP `elm`; criado depois); id sem link (`DF 4567`, nunca `pendente`): item conhecido cujo tratamento no EWM ficou pendente (registrado sem o MCP) — o espelhamento do §0 e a publicação da sprint fazem o que faltou (pai, dono, prefixo no título, link `relacionado`) e gravam o link; `—` (sem ELM) |
+| `elm` | o item no EWM e as tarefas, com o tipo antes de cada id, separados por ` · ` — o backlog do EWM é a cópia deste arquivo: o item nasce no backlog do produto ao registrar (triagem, GATE do backlog), no estado inicial — onde fica enquanto está fora de sprint —, e muda de iteração ao entrar na sprint; as tarefas nascem na sprint ([elm-sprint.md](../../sa-planejamento/references/elm-sprint.md)). Épico: `IB [<id>](<url>) · ESP [<id>](<url>)`; fatia: `IB [<id>](<url>) · ESP … · DEV [<id>](<url>) · REV … · VER … · APR …` (`ESP` quando a fatia tem `[ESP] FT`); uma `ESP` por tarefa de especificação, a `Revisão <n>` também; item de Sustentação: `IB [<id>](<url>) · ATD [<id>](<url>)` (a tarefa pelo prefixo da categoria, sem colchetes). Fatia ou item de Sustentação que veio de um defeito ou IB do EWM: esse item fica no lugar do IB, com o tipo dele como rótulo (`DF [4567](<url>) · DEV …` · `DF [4567](<url>) · ATD …`). `pendente` (registrado sem o MCP `elm`; criado depois); id sem link (`DF 4567`, nunca `pendente`): item conhecido cujo tratamento no EWM ficou pendente (registrado sem o MCP) — o espelhamento do §0 e a publicação da sprint fazem o que faltou (pai, dono, prefixo no título, link `relacionado`) e gravam o link; `—` (sem ELM) |
 | `concluida-em` | data `AAAA-MM-DD` ou `—` |
 | `creditos` | créditos do Kiro do item, copiados da coluna Créditos do `sprint-<nn>.md` na virada da sprint (`sa-planejamento`; a conclusão grava só na sprint); `—` antes. Fatia: a seção Créditos do `status.md`; épico: só a especificação (a `[ESP]`, do `status.md` do épico), na virada da sprint em que a linha dele na Especificação ficou `concluida`; item de Sustentação: o registro |
 | Sustentação `origem` | chamado, e-mail, `DF 4567`, `IB 615`, `pedido` ou `EWM <id>` (tarefa criada direto no EWM e trazida para a sprint — [elm-sprint.md](../../sa-planejamento/references/elm-sprint.md) §9) |
@@ -100,9 +100,11 @@ mesmo commit** nos dois arquivos.
   `falta: especificação`, pelo planejamento (`sa-planejamento.sprint.previsao`, "entra como especificação") ou pelo
   encaixe — fica `nova`, com `sprint` e `obs` `em especificação`, e a linha dela na seção Especificação da sprint, com a
   `[ESP] FT-<nnn>` (`sa-planejamento`). Ela é completada por [Completar uma fatia `nova`](#completar-uma-fatia-nova)
-  e, com artefato afetado, especificada pela `sa-especificar.fatia`. Concluída a `[ESP] FT` → `elegivel` (saem o
-  `falta: especificação` e o `em especificação`); a rápida AFK segue como AFK padrão, e o próximo GATE é o do PR. A
-  `[DEV]` nasce quando ela, `elegivel`, entrar numa sprint.
+  e, com artefato afetado, especificada pela `sa-especificar.fatia`. Concluída a `[ESP] FT` (o aprovado na base e
+  publicado no ELM) → `elegivel` (saem o `falta: especificação` e o `em especificação`), e a `sa-especificar` oferece o
+  encaixe dela na sprint aberta (P.O. ou SM, `sa-planejamento.durante.encaixe`): a `[DEV]` nasce no encaixe; sem
+  encaixe, ela fica `elegivel` para o próximo planejamento. A rápida AFK segue como AFK padrão, e o próximo GATE é o do
+  PR.
 - **Fase:** o detalhe de `iniciada` é a Fase do `status.md` da fatia
   (padrão `sa-desenvolver/status.md`); `pronta` e `concluida` só existem no
   `status.md` da base (regra A base prevalece do padrão).
@@ -114,7 +116,7 @@ mesmo commit** nos dois arquivos.
   (`elm_transicao(<IB>, "reabrir")`, se saiu dele), e ficam lá até ela voltar a uma sprint, quando movem (elm-sprint.md, topo e §3).
   De `iniciada` em diante nada volta: a fatia para em `bloqueada (de: <fase>)` no `status.md`, com o motivo, até o
   P.O. decidir — ou, com artefato a mudar, até a `[ESP] FT` concluir
-  ([Volta à especificação](#volta-à-especificação)). A fatia de épico se divide ou se junta só antes do GATE do
+  ([Volta à especificação](#volta-à-especificação); na `pronta`, débito técnico de especificação). A fatia de épico se divide ou se junta só antes do GATE do
   backlog (no rascunho, passo `sa-fatiar.fatiar.perguntar`); no backlog, não se altera mais: o P.O. ainda a cancela (`sa-fatiar.refinamento`), e
   cenário novo é épico ou fatia nova pela `sa-triar`.
 - **Cancelada depois de `iniciada`** (ou dividida, na de Manutenção): a `sa-fatiar` (ou a `sa-triar`, na de
@@ -127,37 +129,48 @@ mesmo commit** nos dois arquivos.
 
 ### Volta à especificação
 
-Artefato que precisa mudar depois do fatiamento (achado no plano, na revisão, na verificação ou na consolidação) muda
-pela `[ESP] FT-<nnn>` da fatia (`sa-especificar.fatia`); o PRD fica como registro do épico. Fatia terminal não
-reabre: o pedido vira fatia nova pela `sa-triar` (`origem FT-<nnn>`). A `[ESP] EP` só reabre pela `sa-prd.mudanca`
-(PRD `aprovado`, não fatiado). Quem acha roda o bloco: o Dev no `sa-plano`; o revisor ou o verificador na REV ou na
-VER; o Dev Sênior na `[APR] Aprovar PR` (AFK); o P.O. ou o SM na consolidação.
+Artefato que precisa mudar é trabalho da tarefa de especificação do item — a `[ESP] EP-<nn>` só no intervalo GATE do
+PRD → fatiamento (`sa-prd.mudanca`); depois do fatiamento, sempre a `[ESP] FT-<nnn>` da fatia. Fatia terminal não
+volta: fatia nova pela `sa-triar` (`origem FT-<nnn>`). Fatia `pronta` não volta: é débito técnico de especificação
+(`sa-consolidar.consolidar.drift`). Quem acha roda o bloco: o especificador na `sa-prd.mudanca` e na reunião; o Dev no
+`sa-plano`; o revisor ou o verificador na REV ou na VER; o Dev Sênior na `[APR] Aprovar PR` (AFK); o P.O. ou o SM no
+refinamento e na triagem.
+
+| A `[ESP]` do item | O que acontece |
+|---|---|
+| aberta | a mudança é registrada nela |
+| concluída na sprint aberta (a linha dela `concluida` na seção Especificação do `sprint-<nn>.md` aberto) | reabre: quem roda o bloco grava na base, na hora, a linha dela `iniciada` com a Observação `reaberta: <motivo>` ([Gravar na base](#gravar-na-base), commit `<id> reabrir especificação`); no EWM, quem especifica reabre a `[ESP]` ao assumi-la (`elm_transicao(<id>, "reabrir")`, com "sim": seção Assumir do `fluxo/entrada.md`; sem o MCP, `ELM pendente [ESP <id> reabrir]`) |
+| concluída numa sprint fechada, com sprint aberta | não reabre: o pedido fica na `obs` `falta: especificação (<motivo>, <login>, <AAAA-MM-DD>)` da linha do item no `backlog.md` (commit `<id> registrar pendência de especificação`); o item entra na sprint aberta pelo encaixe (P.O. ou SM) e nasce a `[ESP] <id> Revisão <n>` |
+| concluída numa sprint fechada, sem sprint aberta | pendência do P.O., na `[GB]`: a mesma `obs` `falta: especificação (<motivo>, <login>, <AAAA-MM-DD>)`; o próximo planejamento cria a `[ESP] <id> Revisão <n>` |
+| não existe (fatia de épico) | o encaixe cria a `[ESP] FT-<nnn> Especificação` |
 
 ```
-🔁 Volta à especificação — FT-<nnn> · <artefato> (<tipo>, <inclui|altera|exclui>) · <motivo>
+🔁 Volta à especificação — <EP-nn | FT-nnn> · <artefato> (<tipo>, <inclui|altera|exclui>) · <motivo>
 Fatia: bloqueada (de: <fase>) · Bloqueio: aguardando especificação [ESP] FT-<nnn>: <artefato> (<tipo>, <ação>) — <motivo>
-[ESP] FT-<nnn>: <aberta | concluída com a linha na sprint aberta → reabrir (sim) | sem a linha viva na sprint aberta → encaixe pelo P.O. ou SM (a tarefa que existe move e reabre)>
-Próximo: sa-especificar FT-<nnn> (agente sa-especificador)
+[ESP] <id>: <aberta | concluída nesta sprint → reaberta (a linha iniciada) | concluída em <chave> → [ESP] <id> Revisão <n> pelo encaixe (P.O. ou SM) | sem sprint aberta → pendência do P.O. na [GB] | sem [ESP] → [ESP] FT-<nnn> Especificação pelo encaixe (P.O. ou SM)>
+Próximo: <sa-especificar <id> (agente sa-especificador) | encaixe: sa-planejamento (agente sa-produto) | próximo planejamento: P.O. ou SM (agente sa-produto)>
 ```
 
-- **Reabrir:** `elm_transicao(<id>, "reabrir")`, com "sim" (como a seção Assumir do `fluxo/entrada.md`); sem o MCP →
-  `ELM pendente [ESP FT-<nnn> reabrir]`.
-- **Sem a linha viva na seção Especificação da sprint aberta** (a `[ESP] FT` concluída numa sprint anterior, ou
-  nunca criada) → o `sa-planejamento.durante.encaixe` cria a linha `planejada` na Especificação (capacidade de
-  especificação), sem mexer na linha da fatia; no EWM, a `[ESP] FT` que existe move e reabre, ou nasce.
-- **`pronta`** (consolidação) não muda de fase: o Drift do `status.md` recebe ` · especificação: [ESP] FT-<nnn>` (na
-  base, pelo bloco [Gravar na base](#gravar-na-base)).
+- A linha `Fatia:` só na fatia `iniciada`. Fatia não iniciada (`nova`, `elegivel`, `planejada`): a linha entra na
+  seção Artefatos afetados com Especificado `—` e a DoR volta a `nova` com `falta: especificação` (a `planejada` sai da
+  sprint pela [Volta](#situações), ou fica nela com a `[ESP] FT`, pelo encaixe).
+- **`[ESP] <id> Revisão <n>`:** `<n>` = quantas `ESP` a coluna `elm` da linha já tem (a primeira, `Especificação`,
+  conta: a primeira revisão é a `Revisão 1`); nasce sob o IB do item (no épico, o IB do épico, que muda de iteração
+  no encaixe); a linha na seção Especificação traz a Observação `revisão <n>: <motivo>`, com o motivo da `obs`
+  `falta: especificação (<motivo>, …)`, que sai da linha do item no mesmo commit (na fatia `nova` ela fica: é a DoR,
+  e sai na conclusão da `[ESP]`). A concluída fica como está.
+- **Pendência na `[GB]`:** a `obs` `falta: especificação (<motivo>, …)` é o registro; o P.O. ou o SM a trata no trabalho da `[GB]`
+  (o próximo planejamento: `sa-planejamento.sprint.especificacao`). A [`sa-status`](../../sa-status/SKILL.md) a mostra.
+- O artefato fora da seção Artefatos afetados entra nela pela `[ESP]`, com a autorização do P.O. ou do SM registrada
+  na linha.
+- Toda conclusão de `[ESP]` publica a versão nova (`sa-especificar.especificar.publicar` ·
+  `sa-especificar.fatia.publicar`). Concluída: `iniciada` → o Dev traz a base para a branch (`git merge
+  origin/<base>`, com "sim") e retoma.
 - **Pedido de fora da fatia** (refinamento, `sa-prd.mudanca`, reunião, triagem) com a fatia `iniciada`: quem pede
   não toca na branch; grava na base só a linha na seção Artefatos afetados (Especificado `—`, autorização do P.O. ou
-  do SM) e a `[ESP] FT` (reabrir ou encaixe), e avisa o Dev responsável. O Dev, ao retomar (`sa-plano.plano` e
+  do SM) e a `[ESP]` pela tabela acima, e avisa o Dev responsável. O Dev, ao retomar (`sa-plano.plano` e
   `sa-codificar.codificar.onde`: linha com Especificado `—` na ficha e a `[ESP] FT` aberta), grava
   `bloqueada (de: <fase>)` com o Bloqueio `aguardando especificação [ESP] FT-<nnn>: …` e para.
-- **Fatia não iniciada** (`nova`, `elegivel`, `planejada`): não para em `bloqueada`; a linha entra na seção
-  Artefatos afetados com Especificado `—`, e a DoR volta a `nova` com `falta: especificação` (a `planejada` sai da
-  sprint pela [Volta](#situações), ou fica nela com a `[ESP] FT`, pelo encaixe).
-- O artefato fora da seção Artefatos afetados entra nela pela `[ESP] FT`, com a autorização do P.O. ou do SM registrada na
-  linha. Concluída a `[ESP] FT`: `iniciada` → o Dev traz a base para a branch
-  (`git merge origin/<base>`, com "sim") e retoma; `pronta` → a `sa-consolidar`.
 
 ### Épico — `status` no backlog · Situação da Especificação na sprint
 
@@ -168,18 +181,20 @@ Próximo: sa-especificar FT-<nnn> (agente sa-especificador)
 | `novo` | — | triado; sem informação para o PRD, a pasta antecipada guarda o `rascunho.md` | `sa-triar` |
 | `elegivel` | — (a linha que saiu da sprint: `elegivel`, com `saiu da sprint`) | passou na DoR do épico ([uma só](#definition-of-ready-o-que-faz-uma-fatia-elegivel): o problema, quem pede, o resultado e o `po`); ou `planejado` cuja `[ESP]` saiu da sprint sem começar (movida no EWM e aceita pelo P.O. na sincronização, §9 do `elm-sprint.md`; ela e o IB do épico, no estado inicial, ficam no backlog do EWM até voltar) | `sa-triar` · `sa-planejamento` |
 | `planejado` (+ `sprint`) | `planejada` | `[ESP]` planejada | `sa-planejamento` |
-| `iniciado` | `iniciada` | `[ESP]` assumida: só a situação vai à base; a `concluida` volta a `iniciada` quando a `sa-prd.mudanca` reabre a `[ESP]` (PRD `aprovado`, não fatiado) | `sa-especificar.especificar.assumir` · `sa-prd.mudanca` |
-| `iniciado` | `concluida` (+ Créditos) | GATE do PRD: o PRD na base e a `[ESP]` concluída; o épico segue com o fatiamento (`sa-fatiar`, P.O. ou SM) e as fatias | `sa-especificar.especificar.fechamentos` |
+| `iniciado` | `iniciada` | `[ESP]` assumida: só a situação vai à base; no intervalo GATE do PRD → fatiamento, a `concluida` volta a `iniciada` quando a `sa-prd.mudanca` reabre a `[ESP]` na sprint aberta, ou a `[ESP] EP-<nn> Revisão <n>` nasce numa linha nova (sprint fechada: [Volta à especificação](#volta-à-especificação)) | `sa-especificar.especificar.assumir` · `sa-prd.mudanca` · `sa-planejamento` (a linha da Revisão) |
+| `iniciado` | `concluida` (+ Créditos) | GATE do PRD e publicação: o PRD na base, os artefatos publicados no ELM e a `[ESP]` concluída; o épico segue com o fatiamento logo em seguida (`sa-fatiar`, P.O. ou SM) e as fatias | `sa-especificar.especificar.concluir` |
 | `concluido` | — | última fatia concluída, ou a última não terminal cancelada com outra `concluida` (backlog, Fase do `status.md` do épico e EWM); nunca o épico `cancelado`, que fica como está | `sa-consolidar` · `sa-fatiar.refinamento` |
 | `cancelado` | `cancelada` | decisão do P.O.: as fatias não iniciadas ficam `cancelada` e a `[ESP]`, se ainda aberta, conclui com as horas lançadas, na mesma gravação | `sa-fatiar` |
 
-- O GATE do PRD grava no backlog só o link `prd` (e a `pasta`, se estava `—`) e, na sprint, a linha da
-  Especificação `concluida` com os Créditos, pela `sa-especificar`, no commit que leva a pasta à base; o épico segue
-  `iniciado`.
+- O GATE do PRD grava no backlog só o link `prd` (e a `pasta`, se estava `—`), no commit que leva a pasta à base; a
+  conclusão da `[ESP]`, depois da publicação, grava na sprint a linha da Especificação `concluida` com os Créditos
+  (`sa-especificar`); o épico segue `iniciado`.
 - **Fase do `status.md` do épico** — o detalhe, como a da fatia (modelo no
   padrão `sa-especificar/status-epico.md`): `rascunho`
-  (triado, entrevista e escrita do PRD: `sa-triar` · `sa-especificar`) → `em-revisao` (revisão P, ou mudança depois
-  de aprovado: `sa-prd`) → `aprovado` (GATE do PRD: `sa-prd`) → `fatiado` (GATE do backlog: `sa-fatiar`, P.O. ou SM) →
+  (triado, entrevista e escrita do PRD: `sa-triar` · `sa-especificar`) → `em-revisao` (revisão P: `sa-prd`; `em-revisao
+  (de: aprovado)`: mudança no intervalo GATE → fatiamento, pela `sa-prd.mudanca`, na reabertura ou na Revisão) →
+  `aprovado` (GATE do PRD: `sa-prd`; a `sa-especificar` publica e conclui a `[ESP]`) → `fatiado` (GATE do backlog:
+  `sa-fatiar`, P.O. ou SM) →
   `concluido` (`sa-consolidar` · `sa-fatiar`, ao cancelar a última não terminal) · `cancelado` (`sa-fatiar`).
 
 ### Item de Sustentação sem mudança no repositório — `status` no backlog · Situação na sprint
@@ -223,7 +238,7 @@ Passou → `elegivel`; deixou de valer → a [Volta](#situações) (`nova`, com 
 | padrão de épico | ficha com Objetivo, Cobre e Como verificar; cenários de aceite do PRD em `cobre`, com o épico na Fase `aprovado` ou `fatiado` (`status.md` do épico) |
 | padrão sem épico | ficha `aprovada por` o P.O., com cenários `C<n>` |
 | rápida | ficha com o atual (com evidência), o esperado (com fonte), o que não muda e como verificar; sem regra nova (`inclui` de `REG` ou `HF`); tamanho ≤ M |
-| todas | a ficha existe no caminho da coluna `ficha`; a seção Artefatos afetados com a lista confirmada (ou a linha Nenhum…); toda linha com Especificado preenchido (a `[ESP] FT` concluída); `bloqueada-por` em `pronta` ou `concluida` (já na base) ou planejada antes dela na mesma sprint (ela só **começa** quando o que precisa está na base); nenhuma decisão bloqueante `em aberto` (`decisoes.md` ou ficha); tamanho ≤ G; modo declarado (AFK/HITL); cabe numa janela de contexto |
+| todas | a ficha existe no caminho da coluna `ficha`; a seção Artefatos afetados com a lista confirmada (ou a linha `Nenhum artefato afetado…` ou `Projeto sem ELM.`); toda linha com Especificado preenchido (a `[ESP] FT` concluída, que publica no ELM); `bloqueada-por` em `pronta` ou `concluida` (já na base) ou planejada antes dela na mesma sprint (ela só **começa** quando o que precisa está na base); nenhuma decisão bloqueante `em aberto` (`decisoes.md` ou ficha); tamanho ≤ G; modo declarado (AFK/HITL); cabe numa janela de contexto |
 
 Faltas da seção Artefatos afetados, exatas no `obs`: `falta: especificação` (linha `inclui`, `altera` ou `exclui` com
 Especificado `—`) · `falta: artefatos afetados` (a lista sem a confirmação de quem tria).

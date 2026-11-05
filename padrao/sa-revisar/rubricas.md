@@ -91,9 +91,9 @@ achado leva a excesso de engenharia.
 C3 falhando por ambiente (banco, rede, dependência fora do ar) → `AMBIENTE`, não conta como achado; diga o que
 falhou.
 
-**Drift de negócio** (não reprova; o revisor **indica**, a pessoa decide: volta à especificação ou código errado —
-passos `sa-revisar.hitl.veredito` e `sa-revisar.aprovar-pr.decidir`): na penúltima linha,
-`Drift de negócio: sim — <motivo> · artefatos: <id|rótulo> (<tipo>)` quando um achado aceito ou uma decisão técnica
+**Drift de negócio** (não reprova; o revisor **indica** a possível alteração, a pessoa decide: volta à especificação
+ou código errado — passos `sa-revisar.hitl.veredito` e `sa-revisar.aprovar-pr.decidir`): na penúltima linha,
+`Drift de negócio: possível alteração — <motivo> · artefatos: <id|rótulo> (<tipo>)` quando um achado aceito ou uma decisão técnica
 do `design.md` muda o comportamento visível ao usuário em relação ao cenário ou à regra do PRD, da ficha ou do
 artefato aprovado (`elm/` da pasta da fatia); senão `Drift de negócio: não`. Fecho: `VEREDITO: APROVADO` ou
 `VEREDITO: REVISAR`.
@@ -115,7 +115,7 @@ artefato aprovado (`elm/` da pasta da fatia); senão `Drift de negócio: não`. 
 | # | Resultado (✅ ❌ N/A AMBIENTE) | Observação |
 |---|---|---|
 
-<rubrica C, penúltima linha: Drift de negócio: não | sim — <motivo> · artefatos: <id|rótulo> (<tipo>)>
+<rubrica C, penúltima linha: Drift de negócio: não | possível alteração — <motivo> · artefatos: <id|rótulo> (<tipo>)>
 <última linha: RESULTADO: … | ANALISE: … | VEREDITO: …>
 ```
 

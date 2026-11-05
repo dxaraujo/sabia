@@ -9,9 +9,8 @@ da tela e as palavras-chave, os rótulos dos campos e das ações do protótipo 
 
 1. **Bundle** (pasta `rm.download` do `pa`), pelo `elm_buscar_req_local`: um pelo título e um por palavra-chave
    (sem bundle baixado → erro `nao_encontrado` campo `bundle`: diga isso, ofereça a `sa-sync` e siga só no passo 2).
-   A data do bundle é a do último commit da `sa-sync` na base,
-   `git log -1 --format=%cs --grep='^ELM - Sincronizar bundle'` (sem esse commit, `sem data`); mais de 7 dias ou
-   sem data → oriente a `sa-sync` (baixar) antes, sem bloquear.
+   A data do bundle é o `sincronizado_em` (a data) que o `elm_buscar_req_local` devolve; sem o campo, a do último
+   commit da `sa-sync` na base, `git log -1 --format=%cs --grep='^ELM - Sincronizar bundle'`; sem os dois, `sem data`.
 2. **Ao vivo:** `elm_buscar_req(texto)` pelo título e por palavra-chave, filtrando o resultado pelos tipos das
    siglas do `pa`. Sem o MCP `elm` → só o bundle, e a saída diz `ao vivo: pendente`.
 3. **Classifique** cada acerto (corpo pelo `elm_ler_req_local` ou `elm_ler_req`): **igual** (mesmo comportamento,

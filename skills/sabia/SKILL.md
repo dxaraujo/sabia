@@ -32,7 +32,7 @@ chamada direto:
 
 | Papel | Tarefa | Skill |
 |---|---|---|
-| Especificador | `[ESP]` | `sa-especificar` (entrevista → PRD → GATE do PRD, onde a `[ESP]` do épico termina; a ATA de cada reunião com o cliente e, com tela, o protótipo aprovado antes do PRD; a `[ESP] FT` de uma fatia: os artefatos do ELM que ela inclui, altera ou exclui), no agente `sa-especificador` |
+| Especificador | `[ESP]` | `sa-especificar` (entrevista → PRD → GATE do PRD → publicação no ELM, onde a `[ESP]` do épico termina; a ATA de cada reunião com o cliente e, com tela, o protótipo aprovado antes do PRD; a `[ESP] FT` de uma fatia: os artefatos do ELM que ela inclui, altera ou exclui, publicados na conclusão), no agente `sa-especificador` |
 | Dev | `[DEV]` | `sa-desenvolver` (compromisso, `iniciada` na base, branch) → pesquisar → plano → implementar → PR → merge (`pronta` na base; a fatia é dele de ponta a ponta) |
 | Revisor (Dev Sênior) | `[REV]` | `sa-revisar` |
 | Aprovador (Dev Sênior) | `[APR]` — só nos gates sem tarefa de papel; nasce quando a fatia chega ao gate | `[APR] … Aprovar plano` → `sa-revisar.aprovar-plano` · `[APR] … Aprovar PR` (AFK) → `sa-revisar.aprovar-pr` |
@@ -45,7 +45,7 @@ chamada direto:
 |---|---|---|
 | **rápida** | defeito ou ajuste ≤ 1 dia, comportamento certo já conhecido — inclusive o diff que cabe numa frase | `bugfix.md` + `tasks.md` → implementação → PR → revisão → verificação → consolidação (AFK: revisão e verificação antes do PR) |
 | **padrão** | uma fatia do backlog: de um épico, ou sem épico (Manutenção) com regra clara e ficha aprovada pelo P.O. | pesquisa → plano → **GATE do plano** → implementação (TDD) → PR → revisão → verificação → consolidação (AFK: revisão e verificação antes do PR) |
-| **épico** | funcionalidade com várias histórias ou decisão de produto em aberto | entrevista → PRD → **GATE do PRD** (o especificador; a `[ESP]` termina) → fatias (P.O. ou SM) → **GATE do backlog** → planejamento → cada fatia na trilha padrão → ELM na consolidação |
+| **épico** | funcionalidade com várias histórias ou decisão de produto em aberto | entrevista → PRD → **GATE do PRD** (o especificador) → ELM (a `[ESP]` termina) → fatias (P.O. ou SM, logo em seguida) → **GATE do backlog** → planejamento → cada fatia na trilha padrão |
 | **sustentação** | trabalho que não muda o repositório, numa categoria da tabela **Sustentação** do `sabia.md` — Atendimento (o cliente pede consulta, extração ou explicação), Implantação, Banco de dados, Infra, Operação, Apoio a outros times. Mudança no repositório sem épico é fatia (rápida ou padrão) da Manutenção | triagem: categoria e entrevista curta → item da categoria (`AT-nnn`, `IM-nnn`…) no backlog e o IB dele no EWM (`[AT-nnn] <pedido>`), filho do IB da categoria (nasce com o 1º item dela, filho da `Sustentação`); a tarefa (`[ATD]`, `[IMPL]`…) nasce quando o item entra numa sprint · Atendimento: `sa-atender` (assume → banco só leitura e bundle → resposta com "ok" → saldo de horas → desdobramentos) · demais: `sa-executar` (assumir → registrar (trabalho e horas) → encerrar com desdobramento) |
 
 Toda hora trabalhada cabe numa tarefa da sprint: `[ESP]` (especificação do épico), `[DEV]`, `[REV]`, `[VER]` (por
@@ -55,7 +55,7 @@ do SM; os créditos de toda sessão do P.O. ou do SM vão num comentário nela �
 concluir:** lançar horas é registro de empenho, a qualquer momento numa tarefa assumida (inclusive antes de um
 GATE); concluir é da skill do papel quando o trabalho dela termina, perguntando só o saldo —
 `[DEV]` no merge, `[REV]` ao aprovar (depois do push), `[VER]` ao aceitar (depois do push), `[APR]` na aprovação,
-`[ESP]` no GATE do PRD (a `[ESP] FT`, ao concluir a especificação da fatia), Sustentação ao finalizar (com o IB do item). **Entrega** (todo papel do HITL):
+`[ESP]` ao publicar o aprovado no ELM (a do épico, depois do GATE do PRD; a `[ESP] FT`, ao concluir a especificação da fatia), Sustentação ao finalizar (com o IB do item). **Entrega** (todo papel do HITL):
 commit → push → conferir no remoto (`git rev-parse HEAD` = `git rev-parse origin/<branch>`) → só então lançar horas
 ou concluir a tarefa e avisar o próximo — quem vem depois só acha no remoto o que foi publicado.
 
@@ -64,13 +64,13 @@ ENTRADA       triar ─► backlog: EP novo · FT sem épico (padrão ou rápida
                 │
 HUB           iniciar <item> ─► especificar · desenvolver · revisar ([REV], [APR]) · verificar · atender · executar · planejamento (troca) · consolidar   (cada uma assume a sua tarefa)
                 │
-PRODUTO       especificar (ATA de cada reunião · protótipo aprovado, com tela) ─► entrevistar ─► PRD ─► GATE PRD (especificador) ─► fatiar (P.O./SM) ─► GATE backlog ─► sprint (EWM)
-                                                                                                                                      │
+PRODUTO       especificar (ATA de cada reunião · protótipo aprovado, com tela) ─► entrevistar ─► PRD ─► GATE PRD (especificador) ─► ELM ─► fatiar (P.O./SM) ─► GATE backlog ─► sprint (EWM)
+                                                                                                                                             │
 FATIA         desenvolver (iniciada na base) ─► pesquisar ─► plano ─► GATE plano ─► implementar (TDD) ─► PR ─► revisar ─► verificar   (AFK: revisão e verificação antes do PR)
                                                                                                                             │
 DEPOIS        merge (Dev, PR aprovado; remove a worktree do loop) ─► pronta na base
                 │
-PRODUTO       consolidar (P.O./SM, [GB]): drift (REV/VER) → [ESP] FT ─► ELM: o aprovado na [ESP] (GL → REG → EL → HF), ET as-built, CTs, IB implementa HF ─► ADRs do PR ─► concluida ─► aprender
+PRODUTO       consolidar (P.O./SM, [GB]): ELM: ET as-built ligada à [DEV], CTs ─► débito de especificação (drift depois do merge) ─► ADRs do PR ─► concluida ─► aprender
 ```
 
 **Scrumban:** a sprint é a cadência de inspeção (meta, review, retrospectiva, virada), não escopo congelado. O
@@ -145,7 +145,7 @@ retoma pela skill da fase, que sincroniza o `status.md` pela base.
 7. **Autonomia gradual** — HITL até o tipo de trabalho provar que anda sozinho; AFK limitado pela capacidade de
    revisão humana.
 8. **Documentação ancorada no ELM** — PRD e plano são registros de decisão descartáveis; o ELM, o glossário e os
-   ADRs são o que dura; o aprovado na `[ESP]` sobe na consolidação (processo de produto), e o drift volta à especificação.
+   ADRs são o que dura; o aprovado na `[ESP]` sobe ao ELM na conclusão dela, e a divergência depois do merge vira débito técnico de especificação.
 9. **Aprendizado composto** — cada correção humana muda o ambiente (checagem, regra, skill, glossário), não só o código.
 10. **Leia o código** — PRs pequenos, com caminho de leitura e evidência; nada é mergeado sem uma pessoa.
 
@@ -203,7 +203,7 @@ fluxo e o padrão do tipo ([references/passos.md](references/passos.md#tipos-com
 | `GL` `REG` `HF` | `sa-prd.prd.escrever`; na fatia (sem épico, ou depois do fatiamento), a `[ESP] FT` (`sa-especificar.fatia.escrever`) | todo épico · fatia com artefato afetado |
 | `EL` | `sa-prd.prd.escrever`, uma por tela, lida do protótipo que o cliente aprovou (`sa-especificar.prototipo`); na fatia, a `[ESP] FT` | linha Telas = `sim` do `sabia.md` |
 | `ET` | inicial por épico no `sa-prd.prd.escrever`; as-built por fatia no `sa-codificar.codificar.pr`, ligada à inicial (com toolkit do tipo, ajustada por ele no `sa-consolidar.consolidar.elm`) | linha ET do `sabia.md` |
-| `CT` | planejado da HF no `sa-prd.prd.escrever` ou na `[ESP] FT` (no ETM, na consolidação); a evidência de cada um no `CT.csv` do `sa-verificar.verificar.casos` (CT novo da verificação, no ETM na consolidação) | linha Casos de teste do `sabia.md` |
+| `CT` | planejado da HF no `sa-prd.prd.escrever` ou na `[ESP] FT` (no ETM, na conclusão da `[ESP]`); a evidência de cada um no `CT.csv` do `sa-verificar.verificar.casos` (CT novo da verificação, no ETM na consolidação) | linha Casos de teste do `sabia.md` |
 | `ATA` | `sa-especificar.reuniao`, da transcrição em `reunioes/` (que nunca sai da máquina), com a `[ESP]` aberta | cada reunião com o cliente |
 
 ## Fronteiras de fase

@@ -153,7 +153,13 @@ test("prova front+back: o toolkit casa (HF ⇢ skill casa) com o override do pro
   assert.match(prot, /↑ volta a registrar {2}\(ajuste pedido pelo cliente \(versão nova\)\)/);
   const esp = s.rotaFluxo("sa-especificar.especificar", o);
   assert.match(esp, /│ 4 encaminhar +│──▶ ⇄ chama sa-especificar\.reuniao, sa-especificar\.prototipo, sa-prd\.prd\n/);
-  assert.match(esp, /│ 6 fechamentos +│──▶ ⇒ passa a sa-fatiar\.fatiar {2}\(GATE do PRD: PRD na base, \[ESP\] concluída\)\n/);
+  assert.deepEqual(ordem(esp).slice(5), ["6 fechamentos", "7 publicar", "8 concluir"]);
+  assert.match(esp, /┘ {4}↓ fechamentos {2}\(PRD na base na Fase aprovado/);
+  assert.match(esp, /│ 8 concluir +│──▶ ⇒ passa a sa-fatiar\.fatiar {2}\(PRD publicado e a \[ESP\] concluída/);
+  const ft = s.rotaFluxo("sa-especificar.fatia", o);
+  assert.deepEqual(ordem(ft).slice(6), ["7 aprovacao", "8 publicar", "9 concluir"]);
+  assert.match(ft, /│ 9 concluir +│──▶ ⇒ passa a sa-planejamento\.durante {2}\(elegivel: o encaixe na sprint aberta/);
+  assert.doesNotMatch(s.rotaFluxo("sa-consolidar.consolidar", o), /│ 2 drift +│──▶/);
   // o que o lote e a verificação fazem com as linhas do sabia.md do projeto, nos passos compilados (opencode)
   const ler = (f) => fs.readFileSync(path.join(home, ".config/opencode/skills", f), "utf8");
   const escr = ler("sa-prd/references/prd/escrever.md");

@@ -27,7 +27,10 @@ O item lido no passo `chegou` (novo, ou a fatia sem épico que voltou, com o mes
   "sim" aceita todas) para o que a ficha pede e a origem não traz: atual com evidência, esperado com fonte, o que
   não muda, como verificar.
 - **Artefatos afetados** (padrão e rápida, AFK ou HITL; a seção e o fecho no padrão `sa-triar/ficha.md`):
-  1. **Bundle:** a data conferida no passo `chegou` vai no `bundle de` do fecho.
+  1. **Bundle**, antes da pesquisa: a data é o `sincronizado_em` (a parte da data) do `elm_listar_req_local`; sem
+     o campo, `git log -1 --format=%cs --grep='^ELM - Sincronizar bundle'`; sem os dois, `sem data`. Mais de 7 dias
+     ou sem data, uma vez por sessão → `⚠️ Bundle do ELM de <data | sem data> (<n> dias): rode a sa-sync (baixar)
+     antes de triar — a triagem segue se você quiser.` Não bloqueia; a data vai no `bundle de` do fecho.
   2. **Pesquisa:** [similares](~/.sabia/framework/skills/sa-prd/references/similares.md) para o que a fatia toca, em
      todos os tipos da seção, bundle e ao vivo: reutilizar → `reusa` (sem linha) · alterar → `altera` · criar novo →
      `inclui`; o que a fatia retira → `exclui`. **Impacto:** para cada `altera` ou `exclui`, quem o cita
@@ -42,7 +45,7 @@ O item lido no passo `chegou` (novo, ou a fatia sem épico que voltou, com o mes
      complete com a pessoa e pergunte de novo; sem o "sim", `falta: artefatos afetados`.
 
   Linha `inclui`, `altera` ou `exclui` → a fatia espera a `[ESP] FT` (`falta: especificação`, passo `registrar`).
-  Projeto sem ELM → sem pesquisa nem pergunta: o fecho `projeto sem ELM` do padrão.
+  Projeto sem ELM → sem aviso, pesquisa nem pergunta: só a linha `Projeto sem ELM.` do padrão.
 - Fatos o agente busca (código, bundle do ELM pelas `elm_*_local`, banco só leitura); decisões são da pessoa.
 - **Não fazer** (já entregue, fora do produto, recusado pelo P.O.) → nada no backlog; item do EWM → ofereça um
   comentário `sabia: não fazer — <motivo>` (`elm_comentar`, com "sim"), que o tira dos próximos lotes;

@@ -118,21 +118,22 @@ Em **toda** ficha, sempre presente: o que a fatia inclui, altera ou exclui no EL
 - **Motivo:** uma frase com a origem (`R<n>`, `C<n>`, `D-nn`) e o impacto revisto sem mudança (`impacto: <id> <como
   cita>, sem mudança`); o impacto que muda tem linha própria.
 - **Especificado:** `—` até a `[ESP] FT`; depois, o link relativo ao conceito aprovado
-  (`.kiro/specs/ft-<nnn>-<slug>/elm/REG-01-<slug>.md`). Na ficha de épico, o link para `../epicos/<EP>-<slug>/elm/…`.
+  (`.kiro/specs/ft-<nnn>-<slug>/elm/REG-01-<slug>.md`), que sobe ao ELM na conclusão da `[ESP] FT`. Na ficha de
+  épico, o link para `../epicos/<EP>-<slug>/elm/…`, publicado na conclusão da `[ESP] EP`.
 - **Fecho**, abaixo da tabela, uma linha:
   - sem épico: `Autorização: <login> (<P.O. | SM>) em <AAAA-MM-DD> · Lista completa: confirmada por <login> em
     <AAAA-MM-DD> · bundle de <AAAA-MM-DD | sem data> · ao vivo: <sim | pendente>` — quem tria autoriza a alteração e
     se compromete com a lista;
-  - sem artefato, no lugar da tabela: `Nenhum artefato afetado. Lista completa: confirmada por <login> em
+  - com ELM e nada afetado, no lugar da tabela: `Nenhum artefato afetado. Lista completa: confirmada por <login> em
     <AAAA-MM-DD> · bundle de <AAAA-MM-DD | sem data> · ao vivo: <sim | pendente>`;
-  - projeto sem ELM: `Nenhum artefato afetado (projeto sem ELM).`;
+  - projeto sem ELM, no lugar da tabela, só: `Projeto sem ELM.`;
   - lista não confirmada (o lote do EWM, que não entrevista): `Lista a confirmar na triagem.`, e a fatia `nova` com
     `falta: artefatos afetados`;
   - de épico: `Aprovados no GATE do PRD v<x> (<login do especificador>, <AAAA-MM-DD>).` Cada `exclui` do PRD vai na
     ficha da fatia que o substitui; se nenhuma o substitui, na primeira.
 - Linha `inclui`, `altera` ou `exclui` com Especificado `—` → a fatia fica `nova` com `falta: especificação` até a
-  `[ESP] FT` concluir: ela escreve e aprova os conceitos (na base, em `.kiro/specs/ft-<nnn>-<slug>/elm/`) e preenche
-  Especificado. A publicação no ELM é depois do merge, na consolidação (`sa-consolidar`).
+  `[ESP] FT` concluir: ela escreve e aprova os conceitos (na base, em `.kiro/specs/ft-<nnn>-<slug>/elm/`), preenche
+  Especificado e, na conclusão, publica no ELM (passo `sa-especificar.fatia.publicar`).
 
 ## Regras de escrita
 

@@ -33,8 +33,8 @@ Preencha o padrão `sa-prd/prd.md` (o `prd.md`) e crie, em `elm/`, um arquivo po
   pelo `elm_ler_req(id)` e grave a mesma estrutura. A publicação atualiza o artefato existente em vez
   de criar outro. Na tabela do PRD, coluna "No ELM" = `altera <id>`.
 - **Exclusão** (decisão do passo `similares`) → a cópia, como na Alteração, com `status: deprecated`, `generated` novo
-  e o motivo em `## Relações` (o substituto, quando há); não é publicada: na consolidação, vai à lixeira do DOORS
-  Next por roteiro manual ([okf-elm.md](~/.sabia/framework/skills/sa-prd/references/okf-elm.md#ciclo-de-vida)). Na tabela do PRD,
+  e o motivo em `## Relações` (o substituto, quando há); não é publicada: na conclusão da `[ESP]`, vai à lixeira do
+  DOORS Next por roteiro manual ([okf-elm.md](~/.sabia/framework/skills/sa-prd/references/okf-elm.md#ciclo-de-vida)). Na tabela do PRD,
   coluna "No ELM" = `exclui <id>`.
 - **Impacto** (passo `similares`) → o artefato que cita o alterado ou o excluído e muda é alterado no mesmo lote (a HF
   que embute a REG alterada; o CT do cenário da HF alterada); o que não muda fica na coluna Impacto do PRD.
@@ -56,7 +56,7 @@ Preencha o padrão `sa-prd/prd.md` (o `prd.md`) e crie, em `elm/`, um arquivo po
   comportamento — e confirme com a pessoa: é por eles que as fatias vão provar que funcionam.
 - **Casos de teste planejados (CT)** — da HF, no mesmo lote: um `CT-nn-<slug>.md` por cenário, no padrão
   `sa-prd/ct.md`, com o resultado esperado igual ao "Então" do cenário; entram na tabela do PRD e são aprovados no
-  GATE com os demais. Pela linha Casos de teste: `ETM` → sobem ao ETM na publicação, depois do merge; `CSV` → ficam
+  GATE com os demais. Pela linha Casos de teste: `ETM` → sobem ao ETM na publicação, na conclusão da `[ESP]`; `CSV` → ficam
   no repositório. A execução e a evidência são da verificação da fatia (`CT.csv`, passo `sa-verificar.verificar.casos`).
 - Termos do glossário em todo o texto; termo novo já registrado pela entrevista.
 - **Limite do épico:** o da linha Especificação do `acordos.md` (toda história conta, inclusive as desdobradas de

@@ -26,7 +26,7 @@ raciocínio de outra fase. Delegação que roda em segundo plano → espere a de
 
 Depois de cada fase: grave a fase seguinte (`planejando` depois da pesquisa, `revisando` antes da revisão do
 código), atualize o log, as Rodadas e o Histórico do `status.md` — nas fases 6 e 7, também o campo **Drift de
-negócio** com a linha do relatório (só sobe de `não` para `sim`); **commite imediatamente** na worktree os
+negócio** com a linha do relatório (só sobe de `não` para `possível alteração`; na 7, com os cenários `🔁`, que não voltam à 5); **commite imediatamente** na worktree os
 relatórios que chegaram nesta fase — `analise-plano-<N>.md` (fase 3), `revisao-codigo-<N>.md` (fase 6),
 `verificacao.md`, `CT.csv`, `evidencias/` e `massa/` (fase 7) — antes de iniciar a fase seguinte. Esses arquivos não são commitados
 pelos subagentes que os geram; o orquestrador é o responsável pelo commit deles.

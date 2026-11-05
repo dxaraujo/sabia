@@ -1,5 +1,5 @@
 ---
-{"resumo": "Com a aprovação registrada: lê o PR, confere o sha aprovado, merge com confirmação, registro de pronta na base (lições, créditos), conclusão da [DEV], worktree e aviso ao P.O. ou SM."}
+{"resumo": "Com a aprovação registrada e sem possível alteração pendente: lê o PR, confere o sha aprovado, merge com confirmação, registro de pronta na base (lições, créditos), conclusão da [DEV] com o vínculo aos requisitos que a fatia cobre (HITL), worktree e aviso ao P.O. ou SM."}
 ---
 ## Entrada
 
@@ -34,7 +34,10 @@ a aprovação **registrada**, nunca a dita na conversa ("o PR foi aprovado", "po
    como em projeto com merge fast-forward ou semi-linear no GitLab); senão, não mergeie: a mudança volta à revisão.
    Branch rebaseada (botão Rebase do GitLab) também volta: o `sha` aprovado some (HITL: o commit da verificação
    reescrito, com data de commit diferente da de autoria) — o Sabiá atualiza a branch por merge da base.
-3. **Resumo e confirmação:**
+3. **Resumo e confirmação** — antes, a possível alteração: o Drift de negócio do `status.md` com `possível
+   alteração — …` sem ` · especificação:`, ou com a `[ESP] FT` dele ainda não `concluida` (a linha dela na seção
+   Especificação do `sprint-<nn>.md` da base) → `Possível alteração pendente: <artefatos> — o merge espera a decisão
+   (HITL: revisor/verificador; AFK: Dev Sênior na [APR]) ou a [ESP] FT-<nnn>.` e pare.
    ```
    🔀 Merge FT-<nnn> — <título>
    PR !<iid> <origem> → <destino> · sha <curto> · aprovado: <REV APROVADO + VER ACEITO | por <login>>
@@ -60,7 +63,9 @@ a aprovação **registrada**, nunca a dita na conversa ("o PR foi aprovado", "po
    - `Fase: pronta`; no Histórico, `merge do PR <link> por <login>` (AFK: antes, `PR aprovado por <login>, sha <sha>`,
      do comentário da `[APR]` ou a linha que o aprovador entregou); sem o MCP `elm`, também `ELM pendente [<chave>]:
      lançar <h>h e concluir [DEV] FT-<nnn>` e, no AFK, a `ELM pendente [APR FT-<nnn> concluir]: …` que o aprovador
-     entregou.
+     entregou; e `ELM pendente [DEV FT-<nnn> ligar]: ligar a [DEV] a <rótulos>` — HITL: sem o MCP, ou com o
+     requisito que a fatia cobre ainda sem `id` (a `[ESP]` dele com `ELM pendente … publicar`); AFK: a que o
+     aprovador entregou.
    - **Créditos** na seção Créditos ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4): os desta
      sessão; no AFK, a linha da `[APR]` que veio no comentário `PR aprovado` (ou que o aprovador entregou); e a
      sessão do loop, que só fecha o consumo no fim do turno — o script a lista como sem registro: com o "sim",
@@ -70,9 +75,12 @@ a aprovação **registrada**, nunca a dita na conversa ("o PR foi aprovado", "po
    Commit `<FT> registrar merge` só com o `status.md`, o `backlog.md` e o `sprint-<nn>.md`; push com a conferência.
    Na branch, nada: antes do merge, um commit nela mudaria o `sha` aprovado.
 7. **Conclusão da `[DEV]`** (depois do push do item 6): mostre as horas já lançadas (`elm_horas(<id>)`) e pergunte
-   só o saldo → `elm_lancar_horas(<id>, <saldo>)` e `elm_transicao(<id>, "concluir")`, numa confirmação (`[DEV]` já
-   fechada, no Assumir a `[DEV]` do passo `sa-desenvolver.desenvolver.iniciar` → só o saldo). Sem o MCP
-   `elm`, a pendência já foi no item 6.
+   só o saldo → `elm_lancar_horas(<id>, <saldo>)`, `elm_transicao(<id>, "concluir")` e, no HITL, `elm_ligar(wi = <id
+   da [DEV]>, req = <id>, tipo implementa)` por requisito que a fatia cobre
+   ([vínculos](~/.sabia/framework/skills/sabia/references/elm.md#vínculos-cada-um-liga-o-que-gera)), numa confirmação
+   (`[DEV]` já fechada, no Assumir a `[DEV]` do passo `sa-desenvolver.desenvolver.iniciar` → só o saldo e os
+   vínculos). No AFK, os vínculos são da `[APR]` (passo `sa-revisar.aprovar-pr.decidir`). Sem o MCP `elm`, as
+   pendências já foram no item 6.
 8. **Worktree do loop** (`.sabia/local/wt/<ft>`): depois do merge, `git worktree remove .sabia/local/wt/<ft>` —
    **sem `--force`**; os agentes não podem (negado a todos): entregue o comando e a pessoa o roda. Falhou por arquivos
    não rastreados ou alterados → mostre quais (evidência com dado real fica em `.sabia/local/verificacao/`, fora da
@@ -89,6 +97,7 @@ termina.
 
 - **Já registrado** e a `[DEV]` não está mais aberta → diga isso e pare.
 - Sem a aprovação registrada → avise que o PR espera a leitura do Dev Sênior e pare.
+- Possível alteração pendente (item 3) → avise e pare: o merge só sai com ela decidida ou com a `[ESP]` concluída.
 - PR `closed` ou WIP (item 1) → avise e pare; conflito com a base (item 1) → registre o retrabalho e pare.
 - Commit depois da aprovação fora do critério, ou branch rebaseada (item 2) → não mergeie: a mudança volta à revisão.
 - Não mergeado (item 5) → pare.

@@ -29,8 +29,9 @@ Senão, nesta ordem; o primeiro caso que casar decide:
    e pare.
 3. **Sprint**, pelo modo da linha Sprint deste fluxo:
    - `exige`: o item tem linha viva no `sprint-<nn>.md` aberto
-     ([Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), Linha viva). Sem
-     sprint aberta, sem linha ou só a linha com `saiu da sprint` → "fale com o P.O. ou o SM (agente `sa-produto`)" e
+     ([Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), Linha viva), na seção do
+     papel: Especificação para a `[ESP]`; Fatias ou Sustentação para os demais (a linha da fatia na seção Especificação
+     não põe a fatia na sprint do Dev). Sem sprint aberta, sem linha ou só a linha com `saiu da sprint` → "fale com o P.O. ou o SM (agente `sa-produto`)" e
      pare. A puxada é sempre do encaixe (`sa-planejamento.durante.encaixe`): o P.O., o SM ou quem puxa com a
      aprovação do P.O., registrada (quem aprovou e quando).
    - `nao`: pule; o item chega já dentro da sprint (a tarefa dele só nasce com ela).

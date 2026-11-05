@@ -3,7 +3,7 @@
 Cada artefato que vai ao ELM — um tipo do [catálogo](../../sabia/references/tipos.md) com ELM `DOORS` ou, o CT planejado, `ETM` — nasce
 como **um conceito OKF v0.2** (Open Knowledge Format,
 [SPEC.md](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md), versão 0.2) **na pasta da
-spec**, até ser aprovado (no GATE do PRD ou da `[ESP] FT`) e publicado, depois do merge, na consolidação. É o mesmo formato do bundle que a `sa-sync` mantém
+spec**, até ser aprovado (no GATE do PRD ou da `[ESP] FT`) e publicado na conclusão da `[ESP]`. É o mesmo formato do bundle que a `sa-sync` mantém
 no repositório, então o rascunho e a versão oficial se leem do mesmo jeito. Cada conceito vale por si, pelo
 frontmatter: a pasta não tem `index.md` nem `log.md` (OKF §8 e §9), que são do bundle da `sa-sync`.
 
@@ -111,10 +111,10 @@ O corpo é o do padrão do tipo, na coluna Padrão do [catálogo](../../sabia/re
 |---|---|
 | Rascunho | `sa-prd` (ou a `[ESP] FT`, `sa-especificar.fatia.escrever`) cria o conceito com `status: draft`, `sources`, `generated` |
 | GATE do PRD · aprovação da `[ESP] FT` | quem especifica aprova → cada conceito recebe `verified` humano e `status: stable` (o excluído segue `deprecated`); vai à base (a ATA já os recebe na aprovação dela, no passo `sa-especificar.reuniao.aprovar`, e é publicada ali) |
-| Publicação | depois do merge da fatia, na consolidação: [elm-publicar.md](../../sa-consolidar/references/elm-publicar.md#requisitos-conceitos-okf-de-elm--doors-next) (grava `resource`, `id` e a entrada do ELM em `sources`) |
+| Publicação | na conclusão da `[ESP]` (passo `sa-especificar.especificar.publicar` ou `sa-especificar.fatia.publicar`), ligado a ela: [elm-publicar.md](../../sa-consolidar/references/elm-publicar.md#requisitos-conceitos-okf-de-elm--doors-next) (grava `resource`, `id` e a entrada do ELM em `sources`) |
 | Depois | a `sa-sync` baixa a versão oficial para o bundle, que passa a ser a versão viva; o rascunho fica como registro histórico, com `resource` preenchido |
 | Alteração de artefato existente | traga o arquivo do bundle pelo `elm_ler_req_local` (sem bundle: `elm_ler_req`) e grave-o em `elm/`, mantendo `resource`, `id` e o `sources` do ELM; `status: draft`, `generated` novo; edite. O `last_modified` desse `sources` detecta conflito na publicação |
-| Exclusão | a cópia, como na alteração, com `status: deprecated`; aprovada, não é publicada: o ELM não apaga, move para a lixeira, e o MCP `elm` não tem essa operação → na consolidação, roteiro manual "mover para a lixeira no DOORS Next" e `ELM pendente` |
+| Exclusão | a cópia, como na alteração, com `status: deprecated`; aprovada, não é publicada: o ELM não apaga, move para a lixeira, e o MCP `elm` não tem essa operação → na publicação da `[ESP]`, roteiro manual "mover para a lixeira no DOORS Next" e `ELM pendente` |
 
 ## Conformidade (conferida pela rubrica P, item P11)
 

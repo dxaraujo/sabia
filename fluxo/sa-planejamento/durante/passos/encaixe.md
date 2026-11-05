@@ -1,10 +1,12 @@
 ---
-{"resumo": "A puxada (encaixe): item fora da sprint aberta, Sustentação com a reserva estourada ou linha encaixe do EWM → decisão do P.O. (ou aprovação registrada) e gravação na base e no EWM."}
+{"resumo": "A puxada (encaixe): item fora da sprint aberta, fatia que concluiu a [ESP] FT, tarefa de especificação da Volta, Sustentação com a reserva estourada ou linha encaixe do EWM → decisão do P.O. (ou aprovação registrada) e gravação na base e no EWM."}
 ---
 ## Entrada
 
 O caso 3 da entrada de qualquer fluxo (fatia, épico da `[ESP]` ou item de Sustentação sem linha viva na sprint
-aberta), a `[ESP] FT` da fatia que voltou à especificação sem a linha viva na seção Especificação da sprint aberta, o pedido de puxar um item, a `sa-triar` (item de Sustentação com a reserva estourada; fatia `nova` com só `falta: especificação`) ou uma linha
+aberta), a fatia que acabou de concluir a `[ESP] FT` (`sa-especificar.fatia.concluir`: a `elegivel` comum, e a
+`[DEV]` nasce aqui), a tarefa de especificação da Volta à especificação sem a linha viva na seção Especificação da
+sprint aberta, o pedido de puxar um item, a `sa-triar` (item de Sustentação com a reserva estourada; fatia `nova` com só `falta: especificação`) ou uma linha
 `encaixe` da sincronização (passo `sincronizar`).
 
 ## Faça
@@ -27,12 +29,16 @@ as opções, com a recomendada:
 - **fica para a próxima sprint** (a trazida do EWM: o IB e as tarefas voltam ao backlog do EWM, o IB no estado
   inicial).
 
-**`[ESP] FT` da fatia que voltou à especificação** (fatia em desenvolvimento ou `pronta`, [Volta à
+**Tarefa de especificação da Volta** ([Volta à
 especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação)): a mesma decisão, na capacidade de
 especificação; grava só a linha `planejada` na seção Especificação do `sprint-<nn>.md` (Observação `encaixe: …`) e,
-no EWM, a `[ESP] FT-<nnn> Especificação` nasce sob o IB da fatia (a que já existe, concluída numa sprint anterior,
-move, como abaixo, e reabre: `elm_transicao(<id>, "reabrir")`, no mesmo "sim") — sem mexer
-no `backlog.md` nem na linha da fatia.
+no EWM, nasce sob o IB do item: a `[ESP] FT-<nnn> Especificação` na fatia de épico que não tem `[ESP]`; a
+`[ESP] <id> Revisão <n>` (Observação também `revisão <n>: <motivo>`, o motivo da `obs` `falta: especificação (<motivo>,
+…)` do item) no item cuja `[ESP]` concluiu numa sprint fechada — a concluída não move nem reabre; no épico, o IB do
+épico entra na iteração da sprint (só `iteracao`). A concluída nesta sprint não passa por aqui: reabre pela Volta (a
+linha dela volta a `iniciada`), sem tarefa nova. Sem mexer na linha da fatia; no `backlog.md`, só o id novo na
+coluna `elm` (`ESP [<id>](<url>)`; no épico, também a `sprint`) e, com a Revisão, sai a `obs` `falta: especificação`
+(na fatia `nova` ela fica: é a DoR).
 
 **Fatia `nova` que entra como especificação** (`falta: …`, inclusive só `falta: especificação`, ou a `planejada`
 que voltou a `nova` e fica na sprint, [Volta à
@@ -40,7 +46,9 @@ especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta
 especificação. No `backlog.md` a fatia fica `nova`, com `sprint` e `obs` `em especificação` (nunca `planejada`), e
 ganha a linha `planejada` na seção Especificação do `sprint-<nn>.md` (Observação `encaixe: …`); no EWM, o IB entra
 na iteração e a `[ESP] FT-<nnn> Especificação` nasce sob ele
-([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §3–4; a que já existe move) — sem `[DEV]`, `[REV]` ou `[VER]`.
+([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §3–4; a que já existe e não concluiu move; a
+concluída numa sprint fechada fica como está, e nasce a `[ESP] FT-<nnn> Revisão <n>`; a concluída nesta sprint
+reabre pela Volta, com a linha dela `iniciada`, sem tarefa nova) — sem `[DEV]`, `[REV]` ou `[VER]`.
 
 Com a decisão (fatia `elegivel`, épico ou item de Sustentação): `status` `planejada` (no épico da `[ESP]`, `planejado`), `sprint`, `responsavel` (o definido, ou `—`:
 quem assumir define o modo pela senioridade) e o modo final pela senioridade (`sa-planejamento.sprint.modo`) no

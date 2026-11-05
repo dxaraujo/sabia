@@ -3,7 +3,7 @@
  "travas_gerais": ["sim-da-pessoa"],
  "passos": [
    {"id": "entrada", "de": "entrada", "sprint": "nao"},
-   {"id": "drift", "saidas": {"drift sim sem a [ESP] FT concluída: volta à especificação": "→ sa-especificar.fatia"}},
+   {"id": "drift"},
    {"id": "elm"},
    {"id": "conhecimento"},
    {"id": "fechar", "chama": "sa-aprender.registrar"},
@@ -14,8 +14,8 @@
 
 O plano da fatia (`research`, `design`, `tasks`) é andaime: cumpriu o papel quando o código chegou à base. O que
 fica valendo é a documentação oficial no ELM — e ela tem de descrever o que **foi** construído. Este fluxo fecha a
-distância entre os dois: os artefatos aprovados na `[ESP]` chegaram à base pelo merge e sobem ao ELM aqui, depois
-dele.
+distância entre os dois: os artefatos aprovados na `[ESP]` foram publicados na conclusão dela; aqui ficam a ET
+as-built, o vínculo dela e o débito de especificação.
 
 **Processo de produto:** quem consolida é o **P.O. ou o SM** (analista de negócio), no agente **`sa-produto`**, e
 a tarefa é a **`[GB] Gerenciamento do backlog`** (a `GB` da primeira linha de `## Sustentação` do `backlog.md`;
@@ -40,7 +40,7 @@ pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backl
   faz).
 - Toda escrita no ELM só com confirmação ([regras](~/.sabia/framework/skills/sabia/references/elm.md#regras-de-toda-escrita)).
 - Não escreve código: a correção que o glossário ou o drift pedirem no código vira fatia.
-- Não escreve requisito: o que a fatia cobre já foi aprovado na `[ESP]` (a ET as-built é do Dev, ajustada só pela
-  skill de toolkit do tipo); o drift volta à especificação.
-- Não invoque nem simule outra skill além das que os passos mandam chamar (`sa-aprender.registrar`; no drift, a
-  passagem à `sa-especificar`): termine com o passo `proximo` e pare.
+- Não escreve requisito: o que a fatia cobre já foi aprovado e publicado na `[ESP]` (a ET as-built é do Dev, ajustada
+  só pela skill de toolkit do tipo); a divergência depois do merge é débito técnico de especificação (passo `drift`).
+- Não invoque nem simule outra skill além das que os passos mandam chamar (`sa-aprender.registrar`): termine com o
+  passo `proximo` e pare.

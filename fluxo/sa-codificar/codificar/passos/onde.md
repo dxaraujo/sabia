@@ -8,10 +8,7 @@
 ## Faça
 
 - **Quem retoma:** quem está na sessão não é o `responsavel` da linha viva da fatia na sprint (base) → "é de
-  <login>; trocar é do P.O. ou do SM" e pare — salvo o Bloqueio com a pergunta `Volta à especificação, ou o código
-  está errado? (Dev Sênior)`: um Dev Sênior (regra do revisor, `sa-planejamento.sprint.modo`) responde mesmo sem ser o
-  `responsavel`, grava a decisão no `status.md` (Fase, abaixo), commit, push e conferência no remoto, e para; o
-  `responsavel` retoma depois. A `[DEV]`, pela seção Assumir do passo `sa-codificar.codificar.entrada`
+  <login>; trocar é do P.O. ou do SM" e pare. A `[DEV]`, pela seção Assumir do passo `sa-codificar.codificar.entrada`
   (já é dele → nada; fechada sem o PR mergeado → reabrir com "sim"; com o PR mergeado → `sa-desenvolver.encerrar`).
   No loop (`AUTONOMO`), o lote já assumiu: pule.
 - **Fase:** `implementando`, `revisando`, `verificando`, `retrabalho (de: …)` ou `verificada` (AFK: passo `pr`);
@@ -20,10 +17,7 @@
   Especificação `concluida` na base → `git merge origin/<base>` com "sim" (traz os conceitos aprovados de
   `.kiro/specs/<ft>-<slug>/elm/`), `Bloqueio: —` e: de `implementando`, `revisando` ou `verificando`, a fase de origem;
   de `em-revisao`, `em-verificacao` ou `aguardando-aprovacao-pr`, `retrabalho (de: <fase>)`, com o ajuste ao artefato
-  aprovado como achado aberto (origem: `[ESP] FT-<nnn>`). AFK `bloqueada (de: verificando)` com a pergunta
-  `Volta à especificação, ou o código está errado? (Dev Sênior)` → só a resposta de um Dev Sênior resolve: volta → o
-  bloco da Volta à especificação (`de: verificando`); código errado → `Bloqueio: —`, Drift `não`, Histórico
-  `drift descartado: código errado (<login>)` e os cenários rejeitados como tarefas. O **Modo** é
+  aprovado como achado aberto (origem: `[ESP] FT-<nnn>`). O **Modo** é
   o da base (regra A base prevalece do padrão `sa-desenvolver/status.md`): diverge do `status.md` (troca de modo do
   P.O. ou do SM) → sincronize como ela manda, num commit, antes de seguir. `aguardando-aprovacao-pr` com Modo HITL na
   base (AFK → HITL com o PR aberto; a `[APR] Aprovar PR` foi cancelada) → sincronize o Modo e os ids da `[REV]` e da
@@ -62,8 +56,7 @@ Branch atualizada, árvore limpa e a próxima tarefa não marcada → passo `tar
 
 ## Pare se
 
-- Quem está na sessão não é o `responsavel` da fatia (fora a resposta do Dev Sênior, item Quem retoma) → "é de
-  <login>; trocar é do P.O. ou do SM" e pare.
+- Quem está na sessão não é o `responsavel` da fatia → "é de <login>; trocar é do P.O. ou do SM" e pare.
 - A branch não é a do `status.md` (no checkout ou na worktree dela) → avise e pare.
 - `aguardando-aprovacao-pr` que virou HITL → `pr-aberto` gravado, revisor avisado, e pare.
 - Pedido de fora da fatia (linha de Especificado `—` com a `[ESP] FT` aberta) → `bloqueada` gravada, e pare.

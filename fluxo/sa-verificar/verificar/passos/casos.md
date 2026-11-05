@@ -4,7 +4,8 @@
 ## Entrada
 
 Os cenários verificados no `verificacao.md` (passo `executar`), **todos aceitos** — o `VERIFICACAO: ACEITO` do
-passo `decisao`. Algum rejeitado ou ⚠️ → pule este passo: siga para o passo `decisao`. Os CTs planejados do épico
+passo `decisao`; no AFK, também com cenários `🔁 possível alteração`, que não entram no `CT.csv`. Algum rejeitado ou
+⚠️ → pule este passo: siga para o passo `decisao`. Os CTs planejados do épico
 (`CT-nn-<slug>.md` no `elm/` da pasta do épico na base, padrão `sa-prd/ct.md`), quando a fatia é de épico.
 
 ## Faça
@@ -22,7 +23,7 @@ com a evidência da execução:
   caso, com o rótulo `CT<FT-nnn>-<nn>`.
 
 Na consolidação, depois do merge, pela linha Casos de teste do `sabia.md`: `ETM` → a `sa-consolidar` liga ao IB
-o CT planejado que já está no ETM e cria só o CT novo, já ligado à história (`elm_criar_ct`,
+o CT planejado (publicado no ETM na conclusão da `[ESP]`) e cria só o CT novo, já ligado à história (`elm_criar_ct`,
 [elm-publicar.md](~/.sabia/framework/skills/sa-consolidar/references/elm-publicar.md)), e o CSV é a
 alternativa para importar à mão quando a criação falha; `CSV` → o próprio `CT.csv` é a entrega, com as evidências.
 
