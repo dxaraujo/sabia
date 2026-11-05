@@ -663,7 +663,10 @@ export function listarToolkits(opcoes = {}) {
     l[0] = `↳ ${l[0]}`;
     linhas.splice(i < 0 ? linhas.length : i + 1, 0, l);
   }
-  ctx.log(colunas([["TOOLKIT", "AUTOR", "NO ÍNDICE", "INSTALADO", "NESTE PROJETO", "DESCRIÇÃO"], ...linhas]));
+  // no terminal, a descrição é cortada na largura da tela; em pipe ou arquivo, sai inteira
+  const largura = process.stdout.columns;
+  const corta = (s) => { const c = [...s]; return !largura || c.length <= largura ? s : c.slice(0, largura - 1).join("") + "…"; };
+  ctx.log(colunas([["TOOLKIT", "AUTOR", "NO ÍNDICE", "INSTALADO", "NESTE PROJETO", "DESCRIÇÃO"], ...linhas]).split("\n").map(corta).join("\n"));
   return linhas;
 }
 
