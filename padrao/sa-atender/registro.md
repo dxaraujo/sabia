@@ -35,7 +35,7 @@ Arquivo: `.sabia/local/sustentacao/atendimento/AT-012/contas-bloqueadas-2026-09.
 ## Créditos
 | Data | Papel | Login | Sessão Kiro | Power sabia | Créditos |
 |---|---|---|---|---|---|
-| 2026-10-14T16:20:05 | atendimento | joao.lima | 5753e516 | 2.0.0 | 3.12 |
+| 2026-10-14T16:20:05 | ATD | joao.lima | 5753e516 | 2.0.0 | 3.12 |
 
 **ELM:** —
 ELM pendente [IB AT-012 concluir]: concluir o IB [AT-012]
@@ -43,7 +43,7 @@ ELM pendente [IB AT-012 concluir]: concluir o IB [AT-012]
 ```
 
 `**Saída:**` `—` (1 · nada) · `triagem: <o que vai à sa-triar> (origem <ID>)` (2 · alteração ou regra) · `lição: <o que
-registrar> (sa-aprender)` (3); mais de uma → separadas por ` · `. O id que nasce depois (FT-nnn, L-nnn) não volta ao
+registrar> (sa-aprender)` (3, fora do Atendimento); mais de uma → separadas por ` · `. O id que nasce depois (FT-nnn, L-nnn) não volta ao
 registro.
 
 `**ELM:** —` sem pendência; logo abaixo, uma linha por pendência: `ELM pendente [<chave>]: <o que falta>`. Resolvida,
@@ -62,5 +62,5 @@ acrescente `ELM feito [<mesma chave>]: <o que foi feito> (<AAAA-MM-DD>)` sem apa
 | Situação | `aberto` · `em-andamento` · `concluido` · `cancelado`, com o significado em [backlog.md](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#situações), Situações (Item de Sustentação) | sim | quem causa |
 | Pesquisa de código | só com o `sa-pesquisar` (passo `sa-atender.atender.executar`): um resumo dos fatos, `arquivo:linha` — o fato, sem dado de cliente; sem pesquisa, a seção não entra | não | `sa-atender` |
 | Horas | uma linha por `elm_lancar_horas`: Data `AAAA-MM-DD`, Horas decimais | — | `sa-atender` · `sa-executar` |
-| Créditos | uma linha por sessão (item 4 do [Fechar a sessão](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão) da `sa-status`) | — | quem fecha a sessão |
+| Créditos | uma linha por sessão (item 4 do [Fechar a sessão](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão) da `sa-status`); Papel = a sigla da tarefa (`ATD`, `IMPL`, `BD`…) | — | quem fecha a sessão |
 | O que foi feito (outras categorias) | lista numerada `<n>. <o que foi executado> · <onde> · <resultado> · <link do chamado ou da mudança>` | — | `sa-executar` |

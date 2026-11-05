@@ -3,7 +3,7 @@
  "quando": ["o primeiro fatiamento de um PRD aprovado: rascunho, GATE do backlog e gravação na base", "fatiar o PRD", "quebrar em histórias", "gerar o backlog", "criar os itens de backlog", "PRD para issues"],
  "travas_gerais": ["sim-da-pessoa"],
  "passos": [
-   {"id": "entrada", "de": "entrada", "sprint": "nao"},
+   {"id": "entrada", "de": "entrada", "sprint": "nao", "branch": "nao"},
    {"id": "rascunho", "chama": "sa-pesquisar.pesquisar"},
    {"id": "perguntar", "saidas": {"ajuste pedido: repita até o ok": "perguntar", "conceito do PRD que precisa mudar": "→ sa-prd.mudanca"}},
    {"id": "gravar"},

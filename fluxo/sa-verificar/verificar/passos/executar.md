@@ -18,10 +18,13 @@ Execute cenário por cenário e registre logo abaixo do roteiro, no padrão `sa-
   `plan`/`lint`/`dry-run` e a saída como evidência — **nunca `apply`**.
 - Rode também os cenários de **repetição** (execute duas vezes; conte de novo) e de **erro em um item**.
 - Falha por ambiente (serviço fora do ar, credencial de teste) → `⚠️ ambiente`, não rejeição; diga o que faltou.
+- Cenário que você atribui a um artefato (o artefato parece errado, não o código) → `🔁 possível alteração` (padrão
+  `sa-verificar/verificacao.md`; quem decide: passo `resultado`, Drift de negócio).
 
 ## Saída
 
-O resultado de cada cenário no `verificacao.md` → passo `casos` (algum rejeitado ou ⚠️: passo `resultado`).
+O resultado de cada cenário no `verificacao.md` → passo `casos` (algum rejeitado ou ⚠️, ou 🔁 no HITL: passo
+`resultado`).
 
 ## Pare se
 

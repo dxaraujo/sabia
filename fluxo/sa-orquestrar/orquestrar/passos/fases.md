@@ -17,11 +17,11 @@ raciocínio de outra fase. Delegação que roda em segundo plano → espere a de
 |---|---|---|---|
 | 1 | pesquisa | `sa-pesquisador` (`sa-pesquisar`) | `research.md` devolvido e gravado por você na pasta da fatia |
 | 2 | plano | `sa-desenvolvedor` (passos `sa-plano.plano.decisoes` e `sa-plano.plano.escrever`) | spec do Kiro gravada · ou `bloqueada` |
-| 3 | análise do plano | `sa-revisor` (rubrica L) → `sa-desenvolvedor` corrige | `ANALISE: OK` · 2 rodadas sem OK → `bloqueada` |
+| 3 | análise do plano | `sa-revisor` (rubrica L) → `sa-desenvolvedor` corrige | `ANALISE: OK` · 2ª rodada em `AJUSTAR` → a 4 com GATE obrigatório (linha "Pleno que pediu", em qualquer senioridade), com o `analise-plano-2.md` |
 | 4 | troca e GATE do plano | você | o passo `sa-plano.plano.gate`, sem pessoa, pela tabela abaixo (GATE pela escolha do lote) |
-| 5 | implementação | `sa-desenvolvedor` (passos `sa-codificar.codificar.onde`, `sa-codificar.codificar.tarefa` e `sa-codificar.codificar.validar`) | tarefas `[x]` e backpressure verde · ou `bloqueada` |
-| 6 | revisão do código | `sa-revisor` (rubrica C) → volta à 5 com os achados | `VEREDITO: APROVADO` · 2ª reprovação → `bloqueada` |
-| 7 | verificação | `sa-verificador` (`sa-verificar`) | `ACEITO` (`fase: verificada`) · `REJEITADO` → volta à 5 com os cenários rejeitados (retrabalho: linha na tabela Retrabalho do `status.md`, Rodadas `retrabalho` + 1) e **passa de novo pela 6** antes da 7; de novo rejeitado → `bloqueada` |
+| 5 | implementação | `sa-desenvolvedor` (passos `sa-codificar.codificar.onde`, `sa-codificar.codificar.tarefa` e `sa-codificar.codificar.validar`) | tarefas `[x]` e backpressure verde · ou `bloqueada` (também `⚠️ ambiente`) |
+| 6 | revisão do código | `sa-revisor` (rubrica C) → volta à 5 com os achados | `VEREDITO: APROVADO` · 2ª reprovação desde o último desbloqueio → `bloqueada` · `VEREDITO: AMBIENTE` → `bloqueada (de: revisando)`, `⚠️ ambiente: <o que faltou>`, sem contar reprovação |
+| 7 | verificação | `sa-verificador` (`sa-verificar`) | `ACEITO` (`fase: verificada`) · `REJEITADO` → volta à 5 com os cenários rejeitados (retrabalho: linha na tabela Retrabalho do `status.md`, Rodadas `retrabalho` + 1) e **passa de novo pela 6** antes da 7; de novo rejeitado → `bloqueada` · `VERIFICACAO: AMBIENTE` → `bloqueada (de: verificando)`, gravada pelo verificador, sem contar rejeição · a DDL não aplicada → `bloqueada`, `aguardando aplicação de baseline de banco` |
 | 8 | entrega | você | de `verificada`: commit do que faltar; push, conferência no remoto (`git rev-parse HEAD` = `git rev-parse origin/<branch>`, na worktree) e PR se autorizado no lote (os itens 0 — ADRs e ET as-built —, 1 — branch atualizada; desatualizada → `fase: bloqueada (de: verificada)`, "branch desatualizada com a base": o merge da base é de uma pessoa —, 2 — texto — e 3.4 — `gitlab_listar_mrs` e, sem PR aberto, `gitlab_criar_mr` — do passo `sa-codificar.codificar.pr`, com `origem` = a branch da worktree — o MCP roda no checkout principal e não a enxerga; o Kiro ainda pode pedir confirmação a cada push e a cada PR, conforme as permissões) → a `[APR] FT-<nnn> Aprovar PR` para o Dev Sênior do lote ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §8, com a estimativa do log do lote) → `fase: aguardando-aprovacao-pr` com o link do PR no `status.md`, commit, push e conferência (como na Entrega do passo `sa-codificar.codificar.pr`); a `[DEV]` fica em andamento; sem PR autorizado → fica `verificada` |
 
 | Fase 4: caso | Fase e Bloqueio | Histórico | Commit e push | ELM | Segue? |
@@ -44,8 +44,8 @@ fase 5 (passo `sa-codificar.codificar.onde`); `planejando` com o ajuste pedido �
 Aprovação dita nesta sessão não vale.
 
 **Aprovação do PR:** é do Dev Sênior da `[APR]`, pelo fluxo `sa-revisar.aprovar-pr`. Mudanças pedidas →
-`retrabalho (de: aguardando-aprovacao-pr)`: a fatia volta à fase 5 com os achados (retome-a num lote, ou o Dev pela
-`sa-codificar`).
+`retrabalho (de: aguardando-aprovacao-pr)`: a fatia volta à fase 5 com os achados (retome-a pelo log do lote, passo
+`retomar`, valendo a autorização de push/PR dada no lote; ou o Dev pela `sa-codificar`).
 
 ## Saída
 

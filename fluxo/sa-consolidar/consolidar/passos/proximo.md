@@ -1,5 +1,5 @@
 ---
-{"resumo": "Mostra o fecho da consolidação: ELM, débito de especificação, créditos, situação do épico com a próxima fatia e as lições registradas."}
+{"resumo": "Mostra o fecho da consolidação: ELM, débito de especificação, créditos, situação do épico com a próxima fatia, as lições registradas e a promoção proposta."}
 ---
 ## Entrada
 
@@ -12,7 +12,7 @@ A fatia `concluida` na base (passo `fechar`).
 ELM: <publicado (ET · CT <ids | CSV>) | pendente: …> · Débito de especificação: <n linhas | —>
 Créditos: <x.xx> (<n> sessões · power sabia <versões>)
 Épico EP-<nn>: <c>/<t> fatias · próxima: FT-<…> (<planejada | elegivel> · <AFK|HITL>, desbloqueada agora)
-Lições: <n> registradas
+Lições: <n> registradas · promoção proposta: <L-nnn, … → sa-aprender.promover | —>
 ```
 
 Linha ELM: `ET <id>` só quando a linha ET do `sabia.md` publica as-built; `CT <ids>` ou `CSV`. Linha Épico: só na

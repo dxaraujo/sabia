@@ -25,7 +25,8 @@ O PRD aprovado só muda por um pedido explícito, e só antes do fatiamento:
      "sim". Nos dois, a linha dela na seção Especificação do `sprint-<nn>.md` aberto fica `iniciada` (na reabertura,
      com a Observação `reaberta: <motivo>`) na hora, num commit próprio pelo bloco Gravar na base, antes da reunião
      (que exige a linha `iniciada`): `EP-<nn> reabrir especificação` na reabertura, `EP-<nn> iniciar especificação`
-     na Revisão assumida. Concluída numa sprint fechada → não reabre: o pedido fica na `obs` `falta: especificação (<motivo>,
+     na Revisão assumida; na Revisão, o mesmo commit grava no campo `[ESP]` do `status.md` do épico o id dela (o
+     Início não muda). Concluída numa sprint fechada → não reabre: o pedido fica na `obs` `falta: especificação (<motivo>,
      <login>, <AAAA-MM-DD>)` da linha do épico no `backlog.md` (bloco
      [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), commit
      `EP-<nn> registrar pendência de especificação`) e diga: com sprint aberta, "o EP-<nn> entra na sprint aberta pelo
@@ -41,10 +42,16 @@ O PRD aprovado só muda por um pedido explícito, e só antes do fatiamento:
      `sa-especificar.especificar.publicar` republica (o filtro pega o `verified` mais novo). Antes de escrever, grave
      na base, pelo bloco Gravar na base, **um** commit `EP-<nn> registrar mudança do PRD` com a linha da seção
      Mudanças e a Fase `em-revisao (de: aprovado)` no `status.md` do épico. Assim a retomada volta à revisão do PRD, e
-     não à publicação.
+     não à publicação. Já registrada (a Fase `em-revisao (de: aprovado)`, pelo encaminhar da `sa-especificar`) → siga
+     na edição.
   3. **Onde se edita** — direto na pasta do épico na base (`<produto>/epicos/<EP>-<slug>/`; a de trabalho guarda só
      `reunioes/`): o que a mudança edita ali fica sem commit até o GATE, e o commit `EP-<nn> aprovar PRD` do passo
      `sa-prd.prd.gate` leva a pasta (a exceção do bloco Gravar na base).
+  4. **Desistência antes do GATE** → com "sim", desfaça na pasta do épico o que a mudança editou sem commit
+     (`git restore`; o arquivo novo, `git clean`, só nessa pasta) e reverta o commit de abertura
+     (`git revert --no-commit <sha>` do `EP-<nn> registrar mudança do PRD`), pelo bloco Gravar na base, num commit
+     `EP-<nn> desistir da mudança do PRD`: a Fase volta a `aprovado` e sai a linha de Mudanças. Próximo:
+     `sa-especificar EP-<nn>`, que conclui a `[ESP]` sem versão nova.
 
 Artefato novo, alterado ou excluído que a mudança trouxer passa antes pelo passo `sa-prd.prd.similares`; a escrita
 segue as regras do passo `sa-prd.prd.escrever`.
@@ -57,6 +64,7 @@ segue as regras do passo `sa-prd.prd.escrever`.
 - `aprovado` com a `[ESP]` concluída numa sprint fechada → o pedido na `obs` `falta: especificação (<motivo>, …)` e o
   encaixe da Revisão (P.O. ou SM) ou, sem sprint aberta, a pendência do P.O. na `[GB]` para o próximo planejamento
   (`sa-planejamento.sprint.especificacao`).
+- `aprovado` com a mudança desistida antes do GATE (item 4) → "use `sa-especificar EP-<nn>`".
 - PRD ainda na pasta de trabalho (sem o GATE, ou `aprovado` sem ir à base) → não é mudança: "use
   `sa-especificar EP-<nn>`" (a sessão da `[ESP]` segue no `sa-prd.prd`, ou leva o PRD para a base antes).
 - `fatiado` → o próximo da linha `Próximo:` do bloco 🔁 (`sa-especificar FT-<nnn>`, agente `sa-especificador` ·
@@ -66,4 +74,5 @@ segue as regras do passo `sa-prd.prd.escrever`.
 ## Pare se
 
 - Sem pedido explícito de mudança → o PRD aprovado não muda: pare.
-- PRD na pasta de trabalho, `fatiado`, ou a `[ESP]` concluída numa sprint fechada (item 1) → diga a próxima e pare.
+- PRD na pasta de trabalho, `fatiado`, a `[ESP]` concluída numa sprint fechada (item 1) ou a mudança desistida (item
+  4) → diga a próxima e pare.

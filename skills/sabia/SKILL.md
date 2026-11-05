@@ -102,7 +102,7 @@ dispensados.
 |---|---|---|
 | Quem roda | cada pessoa, a skill do seu papel | `sa-orquestrar` (`sa-orquestrador` + subagentes) |
 | Desenvolvedor (Dev) | revisão automática (rubrica C, subagente) → PR, com a `[DEV]` em andamento → merge depois da REV e da VER → `pronta` na base e `[DEV]` concluída | o loop leva a fatia até o PR (`aguardando-aprovacao-pr`); quem disparou o loop faz o merge do PR aprovado, grava `pronta` na base e conclui a `[DEV]` |
-| Revisão | o revisor assume a `[REV]` e revisa o PR: aprova → VER; reprova → retrabalho | subagente, até 2 rodadas |
+| Revisão | o revisor assume a `[REV]` e revisa o PR: aprova → VER; reprova → retrabalho | subagente, teto de 2 reprovações desde o último desbloqueio |
 | Verificação | o verificador assume a `[VER]` (só depois da REV): aceita → fase `aceita` (o Dev mergeia → `pronta` na base; `concluida` na consolidação); rejeita → retrabalho | subagente: aceita → `verificada`, e o PR abre em `aguardando-aprovacao-pr` |
 | Retrabalho | a `[DEV]`, ainda em andamento, recebe a correção no mesmo PR, que passa de novo pela REV | volta à implementação |
 | Tarefas no EWM | `[DEV]` `[REV]` `[VER]`, cada uma da sua pessoa; `[APR]` do plano, se houver GATE | a `[DEV]`, de quem disparou; as `[APR]` (plano com GATE, PR) do Dev Sênior que aprova |
@@ -242,8 +242,9 @@ a próxima e para — nunca invoca nem simula a do passo seguinte.
   pode (steering, agentes). A **`sa-aprender`** é do `sa-produto`, que escreve só a seção Regras aprendidas do
   `.sabia/sabia.md`. A **`sa-consolidar`** é do P.O. ou do SM, no `sa-produto`. **Push pelo agente:** orquestrador (no loop), desenvolvedor, revisor e verificador,
   com `ask` (o Kiro pergunta sempre), só a branch da fatia — e, no desenvolvedor e no orquestrador, a base com os
-  registros de situação (`iniciada`, `pronta`; o orquestrador, só a `iniciada` do lote); push recusado (pela pessoa
-  ou pela regra) → a skill entrega o comando pronto e espera a pessoa dizer que publicou; o da base recusado pelo
+  registros de situação (`iniciada`, `pronta`; o orquestrador, só a `iniciada` do lote); push da branch negado pela
+  regra (permissão do agente) → a skill entrega o comando pronto e espera a pessoa dizer que publicou; a pessoa
+  recusa ("não") → nada publicado e o fluxo para (sa-codificar e sa-verificar: em "aguardando o PR"); o da base recusado pelo
   remoto → desfaz só o commit de registro, com "sim", e para; produto, especificador e pesquisador não
   fazem push. Subagente do AFK não faz push (quem conduz commita). Com a branch no remoto, o PR é aberto pela
   `gitlab_criar_mr`, que o Kiro confirma (`ask` no desenvolvedor e no orquestrador; negada aos demais).

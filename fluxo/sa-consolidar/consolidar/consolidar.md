@@ -2,7 +2,7 @@
 {"fluxo": "consolidar", "dono": "sa-produto",
  "travas_gerais": ["sim-da-pessoa"],
  "passos": [
-   {"id": "entrada", "de": "entrada", "sprint": "nao"},
+   {"id": "entrada", "de": "entrada", "sprint": "nao", "branch": "nao"},
    {"id": "drift"},
    {"id": "elm"},
    {"id": "conhecimento"},

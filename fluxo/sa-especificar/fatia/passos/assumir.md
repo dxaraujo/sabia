@@ -21,6 +21,9 @@ sprint com a fatia `iniciada` e o Bloqueio `aguardando especificação [ESP] FT-
 Observação (achado na branch: a Volta não grava na base; [De quem é a Volta](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação)) → grave você a linha `iniciada` com a Observação `reaberta: <motivo>` (o motivo do Bloqueio do
 `status.md` da fatia, `git show origin/<branch>:.kiro/specs/<ft>-<slug>/status.md`), commit
 `FT-<nnn> reabrir especificação`; a `[ESP]` que quem achou já reabriu no EWM → nada; fechada → reabra aqui.
+Fatia `iniciada` com o artefato do Bloqueio na seção Artefatos afetados e Especificado preenchido (a Volta achada na
+branch) → a linha dele volta a Especificado `—`, no commit deste passo (sem nenhum, um
+`FT-<nnn> reabrir especificação` só com ela): é ela que guia a `[ESP]` (passo `artefatos`).
 
 ## Saída
 

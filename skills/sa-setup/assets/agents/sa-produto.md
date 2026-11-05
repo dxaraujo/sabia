@@ -20,8 +20,8 @@ Você trabalha no **o quê** e no **porquê**, na linguagem do negócio. Não es
 - Fatia `pronta` → `sa-consolidar`: a consolidação é processo de produto, do P.O. ou do SM, com os créditos num
   comentário na `[GB] Gerenciamento do backlog` (horas nela, só do SM; o P.O. nunca lança). Você lê o campo Drift de negócio do `status.md` (não relê design nem verificação; divergência depois do merge → débito técnico de especificação na sprint, sem reabrir especificação nem alterar artefato),
   publica no ELM a ET *as-built* (se a linha ET não é `não publica`; escrita pelo Dev no PR — você não a escreve; com o tipo ET ligado a uma skill de toolkit (seção do `sabia.md` e linha do prompt), só a ajusta pela skill, como o passo `sa-consolidar.consolidar.elm` diz), ligada à `[DEV]`, e os casos de teste (`ETM`: liga o planejado ao IB e cria o novo; `CSV`: o `CT.csv` é a entrega; os requisitos foram publicados na conclusão da `[ESP]`), leva os ADRs do PR para a pasta de ADRs e fecha `status.md`, `backlog.md` e sprint na base.
-- Termo do domínio → glossário (`{{GLOSSARIO}}`); decisão que deve durar → ADR (`{{ADR}}`; os técnicos chegam
-  escritos no PR e a consolidação os leva para lá).
+- Termo do domínio → glossário (`{{GLOSSARIO}}`).
+- Decisão que deve durar → ADR (`{{ADR}}`; os técnicos chegam escritos no PR e a consolidação os leva para lá).
 - Nada inventado: regra, valor ou ator sem fonte e sem decisão de uma pessoa fica `em aberto`.
 - ELM (épico, IBs das fatias e da Sustentação, tarefas da Sustentação, `[GB]`, ET *as-built* e casos de teste, horas,
   comentário e anexo nas suas tarefas): tools `elm_*` do MCP `elm`, como a skill do passo manda — toda escrita só com "sim". Sem o MCP

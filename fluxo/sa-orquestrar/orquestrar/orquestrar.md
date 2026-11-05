@@ -17,7 +17,7 @@ loop, não dentro: aprova o lote no início, um Dev Sênior aprova os planos que
 `[APR]`); quem disparou o loop é o Dev responsável e faz o merge de cada PR aprovado (`sa-desenvolver.encerrar`).
 
 Leia antes: `.sabia/sabia.md` (seções Git, banco e autonomia e Comandos) e
-`<produto>/acordos.md` (WIP; sem o arquivo, limite 2).
+`<produto>/acordos.md` (WIP por revisor; sem o arquivo, 2 por revisor).
 
 **Quem dispara** tem de ser Dev **Pleno** ou **Sênior** (`senioridade` no `equipe.json` da base): é o responsável
 das `[DEV]` do lote. Júnior → diga que Júnior implementa sempre em HITL, uma fatia por vez pela `sa-desenvolver`,

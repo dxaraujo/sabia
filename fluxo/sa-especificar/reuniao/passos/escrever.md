@@ -20,7 +20,8 @@ Sem ele, crie `elm/ATA-<nn>-<AAAA-MM-DD>-<assunto>.md` (nome pelo padrão) na pa
 - Cada decisão com o próximo `D-nn` livre do `decisoes.md`, na ordem da reunião, **reservado** ali na hora: a linha
   do `D-nn` com a pergunta e a Situação `em aberto — ATA-<nn> draft`, para a entrevista não dar o mesmo número. O
   que muda uma decisão já registrada diz qual (`revisa D-nn`). No ajuste, a decisão que sai libera o `D-nn` (apague
-  a linha reservada); a ATA descartada libera todos os dela.
+  a linha reservada); a ATA descartada libera todos os dela. A linha reservada é a única exceção ao só acréscimo
+  do `decisoes.md`.
 - Termos do glossário no texto; termo novo vai para as dúvidas da próxima reunião, não para o glossário.
 
 ## Saída

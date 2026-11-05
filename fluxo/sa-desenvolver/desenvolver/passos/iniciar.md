@@ -15,7 +15,8 @@ começou.
 1. **Revisor e verificador** — só na fatia que virou **HITL na primeira atribuição** (passo `compromisso`), sem
    revisor nem verificador na linha da sprint. Pergunte quem revisa e quem verifica (sugira pelo `equipe.json`:
    papéis, `senioridade` e `horas-revisao-semana`): o revisor é um **Dev Sênior** ativo que não é quem implementa —
-   quem implementa é o único Sênior ativo → ele mesmo, com `revisor único`; o verificador nunca é quem implementa.
+   quem implementa é o único Sênior ativo → ele mesmo, com `revisor único`; o verificador é qualquer membro ativo
+   que não é quem implementa, ou `—` (a `[VER]` nasce sem dono, e quem a assumir vira o dono).
 2. **`iniciada` na base** — pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base),
    variante do Dev: no `backlog.md`, `status` `iniciada` e, se estava `—`, `responsavel` = quem implementa (e o modo
    da primeira atribuição, com a `obs` `modo pela senioridade (<login>)`; Sênior em HITL: `modo pela senioridade
@@ -33,7 +34,7 @@ começou.
    publicada (passo `compromisso`, item 4) → `git switch -c <branch> <base>`.
 4. **Pasta** `.kiro/specs/ft-<nnn>-<slug>/` (`<ft>` = `ft-<nnn>` em minúsculas: FT-031 → `ft-031`; `<slug>` = o da
    ficha, `fatias/FT-<nnn>-<slug>.md`) — a mesma em que a `[ESP] FT` grava `elm/` — com `status.md` do
-   padrão `sa-desenvolver/status.md` e o `.config.kiro` da spec do Kiro (`specType` `feature` na trilha padrão,
+   padrão `sa-desenvolver/status.md`, só a estrutura (sem os comentários `<!-- … -->`, que são as regras do padrão), e o `.config.kiro` da spec do Kiro (`specType` `feature` na trilha padrão,
    `bugfix` na rápida — formato no padrão `sa-plano/plano.md`) e, se o passo `compromisso` seguiu acima do WIP, a
    linha `WIP excedido: <motivo>` no Histórico, depois da linha inicial. A pasta já existe com `elm/` (os conceitos
    aprovados na `[ESP] FT`) → só acrescente o `status.md` e o `.config.kiro`.
@@ -41,8 +42,8 @@ começou.
    iniciar_pai: true)`, com `estimativa_h` se faltar (regras: [elm.md](~/.sabia/framework/skills/sabia/references/elm.md)), pela
    seção Assumir do passo `sa-desenvolver.desenvolver.entrada`. O item de backlog continua do P.O. **Já fechada** (`precondicao` "já concluída:
    reabra antes": alguém a fechou à mão) com o PR da fatia mergeado (`gitlab_listar_mrs(origem=<branch>,
-   estado=merged)`; sem o MCP, a pessoa diz) → **fluxo `sa-desenvolver.encerrar`**, da conferência do merge; sem o PR
-   mergeado, a seção Assumir (reabrir com "sim").
+   estado=merged)`; sem o MCP, a pessoa diz) → merge por fora do Sabiá: "sincroniza a sprint (P.O. ou SM, agente
+   `sa-produto`)" e pare; sem o PR mergeado, a seção Assumir (reabrir com "sim").
    Tarefa ainda fora da sprint (a publicação do planejamento ou do encaixe falhou) → antes, o IB (ou o item de
    origem) sai do backlog do EWM para a iteração da sprint (`elm_atualizar_wi([<id do IB ou do item de origem>], iteracao = <a da sprint>)`; `elm` `pendente` →
    crie-o; id sem link, como `DF 4567` → complete o que a triagem não fez, como a publicação da sprint) e cada tarefa
@@ -80,12 +81,13 @@ começou.
 ## Saída
 
 `iniciada` na base, branch, pasta com `status.md` e `[DEV]` assumida (ou `ELM pendente`), commitados → o bloco do
-item 7: o próximo é o fluxo `sa-plano.plano`. `[DEV]` já fechada com o PR mergeado (item 5) → fluxo
-`sa-desenvolver.encerrar`, da conferência do merge.
+item 7: o próximo é o fluxo `sa-plano.plano`. `[DEV]` já fechada com o PR mergeado (item 5) → a sincronização
+da sprint (P.O. ou SM, agente `sa-produto`).
 
 ## Pare se
 
 - Retomada da `iniciada` sem `status.md` por quem não é o `responsavel` da linha → "iniciada por <login> em <data do
   commit `<FT> iniciar`>, sem branch publicada" e pare.
 - Push da `iniciada` recusado (item 2): o bloco desfaz o commit de registro e para.
+- `[DEV]` já fechada com o PR mergeado (item 5) → "sincroniza a sprint (P.O. ou SM, agente `sa-produto`)" e pare.
 - Depois do bloco do item 7: diga a próxima e **pare**; nunca invoque nem simule a `sa-plano`.

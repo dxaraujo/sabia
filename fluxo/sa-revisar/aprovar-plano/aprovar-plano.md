@@ -3,7 +3,7 @@
  "quando": ["[APR] Aprovar plano: o Dev Sênior lê o plano e aprova ou pede ajuste", "aprovo o plano da FT-031"],
  "travas_gerais": ["revisao-independente", "sim-da-pessoa"],
  "passos": [
-   {"id": "entrada", "de": "entrada", "sprint": "nao"},
+   {"id": "entrada", "de": "entrada", "sprint": "nao", "branch": "fatia"},
    {"id": "assumir", "saidas": {"não é Dev Sênior ativo, ou é quem implementa sem ser o único Dev Sênior ativo; árvore suja": "fim"}},
    {"id": "ler"},
    {"id": "decidir"},

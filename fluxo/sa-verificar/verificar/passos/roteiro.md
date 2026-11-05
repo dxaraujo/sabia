@@ -11,7 +11,8 @@ O contrato de pronto do `design.md` e os cenários que a fatia cobre (trilha rá
 linha no Histórico.
 
 O roteiro parte do **contrato de pronto** do `design.md` (acordado no GATE do plano, antes do código) — não o
-afrouxe agora. Para cada cenário que a fatia cobre, escreva-o em `verificacao.md` **antes** de executar
+afrouxe agora. Cada rodada é uma seção acrescentada no fim do `verificacao.md`, sem apagar as anteriores, com os cenários
+da rodada (padrão `sa-verificar/verificacao.md`, Rodada). Para cada cenário da rodada, escreva-o **antes** de executar
 (trilha rápida: os comportamentos esperado e que não muda do `bugfix.md`), no padrão `sa-verificar/verificacao.md`
 (roteiro). HF alterada na `[ESP] FT` → o cenário é o da cópia aprovada em `elm/` da pasta da fatia, não o do PRD nem
 o do bundle.

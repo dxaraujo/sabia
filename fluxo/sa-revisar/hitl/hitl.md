@@ -3,18 +3,19 @@
  "quando": ["fatia HITL com a tarefa [REV] e o PR aberto: a revisão oficial sobre o PR", "pegar a [REV] da FT-031", "revisa a FT-031"],
  "travas_gerais": ["revisao-independente", "sim-da-pessoa"],
  "passos": [
-   {"id": "entrada", "de": "entrada", "sprint": "nao"},
+   {"id": "entrada", "de": "entrada", "sprint": "nao", "branch": "fatia"},
    {"id": "assumir", "saidas": {"não é Dev Sênior ativo, ou é quem implementa sem ser o único Dev Sênior ativo": "fim"}},
    {"id": "pr", "saidas": {"PR closed ou árvore suja": "fim"}},
    {"id": "rubrica", "chama": "sa-revisar.revisar"},
    {"id": "veredito"},
-   {"id": "entrega", "saidas": {"APROVADO: a [VER] está disponível": "→ sa-verificar.hitl", "REVISAR: o retrabalho é do Dev, no mesmo PR": "→ sa-codificar.codificar", "volta à especificação, [ESP] FT aberta ou reaberta: bloqueada, é do especificador": "→ sa-especificar.fatia", "volta à especificação, [ESP] FT concluída numa sprint fechada (com sprint aberta) ou inexistente: o encaixe, do P.O. ou do SM": "→ sa-planejamento.durante", "volta à especificação, sem sprint aberta: pendência do P.O. na [GB]": "→ sa-planejamento.sprint"}}
+   {"id": "entrega", "saidas": {"APROVADO: a [VER] está disponível": "→ sa-verificar.hitl", "REVISAR: o retrabalho é do Dev, no mesmo PR": "→ sa-codificar.codificar", "volta à especificação, [ESP] FT aberta ou reaberta: bloqueada, é do especificador": "→ sa-especificar.fatia", "volta à especificação, [ESP] FT concluída numa sprint fechada (com sprint aberta) ou inexistente: o encaixe, do P.O. ou do SM": "→ sa-planejamento.durante", "volta à especificação, sem sprint aberta: pendência do P.O. na [GB]": "→ sa-planejamento.sprint", "AMBIENTE: bloqueada, você retoma quando o Bloqueio se resolve": "fim"}}
  ]}
 ---
 # Revisão HITL — a `[REV]` sobre o PR
 
 Entrada: fatia `Modo: HITL` com a tarefa `[REV]` e `fase: pr-aberto` (ou `em-revisao`, retomando) — a revisão
-oficial é sua, na sua sessão.
+oficial é sua, na sua sessão. Também `bloqueada (de: em-revisao)` com o Bloqueio `⚠️ ambiente`: resolvido,
+`Bloqueio: —`, `fase: em-revisao` e siga do passo `pr`; sem resolver, mostre o motivo e pare.
 
 Quem gera não verifica o próprio trabalho: o revisor começa **sem** o contexto de quem escreveu. Prefira o agente
 **`sa-revisor`** (não edita artefato nem código). Sem ele, rode este fluxo numa sessão nova ou, no mínimo, ignore todo o

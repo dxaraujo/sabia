@@ -3,11 +3,11 @@
  "quando": ["planejar a fatia: pesquisa, decisões, spec do Kiro, análise independente e GATE do plano", "planeja a FT-031", "gera a spec", "cria as tasks"],
  "travas_gerais": ["sim-da-pessoa"],
  "passos": [
-   {"id": "entrada", "de": "entrada", "sprint": "nao", "saidas": {"aguardando-aprovacao-plano sem a [APR], ou bloqueada \"aguardando troca de modo\"": "gate", "planejando com o ajuste pedido no GATE do plano, ou bloqueada \"plano acima do limite\" com a obs de seguir do P.O.": "escrever"}},
+   {"id": "entrada", "de": "entrada", "sprint": "nao", "branch": "fatia", "saidas": {"aguardando-aprovacao-plano sem a [APR], ou bloqueada \"aguardando troca de modo\"": "gate", "planejando com o ajuste pedido no GATE do plano, ou bloqueada \"plano acima do limite\" com a obs de seguir do P.O.": "escrever"}},
    {"id": "pesquisa", "chama": "sa-pesquisar.pesquisar"},
    {"id": "decisoes", "saidas": {"lacuna de negócio na ficha sem épico: é do P.O.": "fim", "artefato que precisa mudar, [ESP] FT aberta ou reaberta: bloqueada, a [ESP] é do especificador": "→ sa-especificar.fatia", "artefato que precisa mudar, [ESP] concluída numa sprint fechada ou sem [ESP]: bloqueada, o encaixe é do P.O. ou do SM": "→ sa-planejamento.durante", "artefato que precisa mudar, sem sprint aberta: bloqueada, pendência do P.O. na [GB]": "→ sa-planejamento.sprint"}},
    {"id": "escrever", "saidas": {"plano grande demais: bloqueada (de: planejando), o P.O. decide (de épico: seguir ou cancelar e registrar as partes pela sa-triar; sem épico: dividir pela sa-triar)": "fim"}},
-   {"id": "analise", "chama": "sa-revisar.revisar", "travas": ["revisao-independente"], "saidas": {"ANALISE: AJUSTAR, falta do plano": "escrever", "ANALISE: AJUSTAR, falta do PRD ou da ficha": "decisoes", "sem subagente: plano pronto para análise": "fim"}},
+   {"id": "analise", "chama": "sa-revisar.revisar", "travas": ["revisao-independente"], "saidas": {"ANALISE: AJUSTAR, falta do plano": "escrever", "ANALISE: AJUSTAR, falta do PRD ou da ficha": "decisoes", "2ª rodada em ANALISE: AJUSTAR: uma pessoa decide (HITL: achado a achado; AFK: GATE obrigatório)": "gate"}},
    {"id": "gate", "saidas": {"com GATE: aprovador avisado": "→ sa-revisar.aprovar-plano", "sem GATE: fase implementando": "→ sa-codificar.codificar", "AFK com risco: bloqueada, a troca é do P.O. ou do SM": "fim"}}
  ]}
 ---
@@ -53,7 +53,7 @@ negócio na ficha → `fase: bloqueada (de: planejando)` com a pergunta para o P
 Volta à especificação (passo `decisoes`). Passo `gate` sem pessoa: fatia AFK com risco →
 `fase: bloqueada (de: planejando)`, Bloqueio `aguardando troca de modo · motivo: <risco>` (a troca é do P.O. ou do SM); GATE → Sênior
 segue para `implementando`; Pleno → a escolha do lote que quem chamou passou (sem ela: `aguardando-aprovacao-plano`,
-e a pergunta fica para a sessão dele); nada de ELM (as pendências com a chave do passo: `[DEV FT-<nnn> horas]`, `[APR FT-<nnn> criar]`).
+e a pergunta fica para a sessão dele); 2ª rodada em `ANALISE: AJUSTAR` → com GATE, em qualquer senioridade; nada de ELM (as pendências com a chave do passo: `[DEV FT-<nnn> horas]`, `[APR FT-<nnn> criar]`).
 
 ## Regras
 

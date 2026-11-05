@@ -3,7 +3,8 @@
 ---
 # `CT.csv` — evidências dos casos de teste da fatia
 
-Uma linha por cenário **aprovado** na verificação (aceito com evidência) da fatia — só os aprovados: cenário
+Uma linha por cenário **aprovado** na verificação (aceito com evidência) da fatia — o último `✅` de cada um, em
+qualquer rodada do `verificacao.md` — só os aprovados: cenário
 rejeitado ou com possível alteração (`🔁`) não entra: a execução do CT planejado que o prova (padrão
 `sa-prd/ct.md`, aprovado na `[ESP]`) ou, sem ele, um CT novo. Na consolidação, o CT planejado (publicado no ETM na
 conclusão da `[ESP]`) é ligado ao IB, e `elm_criar_ct` cria cada CT novo, com o Resumo como título e a Descrição como cenário, já

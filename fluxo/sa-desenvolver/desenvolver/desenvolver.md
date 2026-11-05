@@ -3,9 +3,9 @@
  "quando": ["começar uma fatia planejada na sprint aberta (compromisso, `iniciada` na base, branch, pasta, `[DEV]`) ou retomar a que parou entre o registro e a branch", "vamos trabalhar na FT-031", "pegar a [DEV] da FT-031", "corrigir o defeito 4567", "próxima fatia", "retomar a FT-031"],
  "travas_gerais": ["sim-da-pessoa"],
  "passos": [
-   {"id": "entrada", "de": "entrada", "sprint": "exige", "saidas": {"iniciada sem status.md em nenhuma branch: só o responsavel retoma": "iniciar"}},
+   {"id": "entrada", "de": "entrada", "sprint": "exige", "branch": "nao", "saidas": {"iniciada sem status.md em nenhuma branch: só o responsavel retoma": "iniciar"}},
    {"id": "compromisso", "saidas": {"trilha registrada não serve": "→ sa-triar.triar", "outro item falhou (responsável, Júnior em AFK, DoR, registro, dono do pai)": "fim"}},
-   {"id": "iniciar", "saidas": {"fatia iniciada: Próximo sa-plano": "→ sa-plano.plano", "[DEV] já fechada e PR mergeado": "→ sa-desenvolver.encerrar", "push da iniciada recusado": "fim"}}
+   {"id": "iniciar", "saidas": {"fatia iniciada: Próximo sa-plano": "→ sa-plano.plano", "[DEV] já fechada e PR mergeado: merge por fora, sincronização da sprint do P.O. ou do SM": "→ sa-planejamento.durante", "push da iniciada recusado": "fim"}}
  ]}
 ---
 # Desenvolver — compromisso e início do código

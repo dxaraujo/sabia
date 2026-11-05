@@ -22,4 +22,4 @@ Roda no `sa-produto` (também na consolidação) ou na sessão padrão.
 
 ## Regras
 
-- Nunca promova sem "ok". Nunca apague lição (só acréscimo).
+- Nunca promova sem "ok". Nunca apague lição (só acréscimo; a Situação muda no lugar).

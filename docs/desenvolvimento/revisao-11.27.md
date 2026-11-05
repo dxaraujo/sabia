@@ -747,3 +747,24 @@ explicação melhor.
 | D76 | **confirmado:** na 2ª reprovação seguida, o agente para e passa a uma pessoa. No PRD e na [ESP] FT, a pessoa decide achado a achado (o aceito vai ao GATE; o de negócio volta à entrevista). No plano, no HITL a pessoa decide e no AFK o GATE do Dev Sênior vira obrigatório. No código AFK, 2 reprovações desde o último desbloqueio deixam a fatia `bloqueada` |
 
 **Todas as 131 decisões estão respondidas (05/11).**
+
+## 7. Implementação das 105 restantes (05/11)
+
+Todas as 105 foram implementadas. Testes: 50 no CLI e 48 no gerador; validação `[]`; 0 quebras em chamadas e links;
+iara válido. Pontos que os agentes deixaram para a pessoa confirmar (sem bloquear a 2.0):
+- **D88:** o "sem subagente" saiu só do revisor. Ficaram o do verificador (`sa-codificar/.../verificar.md`) e o do
+  pesquisador. Ele vale para os dois também?
+- **D10:** na sa-revisar, o "não" ao push para com "nada publicado; pare", porque o PR já existe.
+- **D23:** a fase `em-verificacao` conta no WIP contra o Verificador, e a `aceita` (HITL) contra o Revisor.
+- **D77:** `novo (não verificado)` é aceito na publicação, sem refazer os similares.
+- **D87:** o campo Banco ficou com só dois valores, `não se aplica | pendente`, e a fatia vai a
+  `bloqueada (aguardando aplicação de baseline de banco)`. A aplicação é registrada pela Sustentação.
+- **D25:** a forma da linha da `## Review` ficou `- FT-031: <retorno> (<P.O.>, <data>) · pedido novo: <id>`.
+- **D32:** sem ELM, também `**Plano no EWM:** —`.
+- **D38:** regravar os critérios no IB depende de o `elm_atualizar_wi` aceitar campos/descrição. Hoje ele só aceita
+  iteração, pai e título; conferir no mcp-elm.
+- **D129:** o campo `branch: fatia|nao` está no passo entrada de cada fluxo. Conferir os valores (ex.:
+  `sa-desenvolver.encerrar` = `nao`, porque lê pelo `origin/<branch>`).
+- **Fora do escopo:**
+  - o `sa-fatiar` rascunho não mapeia o CT com No ELM `novo` para `inclui`;
+  - a description da `sa-consolidar` está com 1427 caracteres. Fica para o lote 11.28.

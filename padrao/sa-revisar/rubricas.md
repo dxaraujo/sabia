@@ -24,7 +24,7 @@ ficha): P1, P10 e P13 não se aplicam, e P6 lê a seção Artefatos afetados no 
 | P3 | Cada história cobre: caminho feliz, o que não deve ser aceito, repetição/reexecução e erro em um item — ou diz por que não se aplica | BLOQUEANTE |
 | P4 | Toda regra é testável, tem valores e cita a origem (`D-nn`, artefato do ELM ou fonte) | BLOQUEANTE |
 | P5 | Nada inventado: regra, ator, valor ou integração sem fonte e sem decisão de uma pessoa | BLOQUEANTE |
-| P6 | Comportamento já documentado no ELM é **alterado**, **reutilizado** ou **excluído**, não duplicado: todo artefato tem a coluna "No ELM" preenchida (`novo (verificado <AAAA-MM-DD>)` · `novo (só bundle <AAAA-MM-DD | sem data>)` (sem a busca ao vivo; a publicação refaz) · `altera <id>` · `reusa <id>` · `exclui <id>`) com a decisão no `decisoes.md`; conceito novo sem verificação (`novo (só bundle …)` não é achado), ou com acerto `igual`/`sobrepõe` sem motivo registrado — conferir também no bundle (pelo `elm_buscar_req_local`). Impacto: quem cita o artefato alterado ou excluído (a HF que embute a REG, o CT da HF; `links.entrada`) foi revisto — muda → artefato próprio; não muda → na coluna `Impacto` (na ficha, no Motivo) | BLOQUEANTE |
+| P6 | Comportamento já documentado no ELM é **alterado**, **reutilizado** ou **excluído**, não duplicado: todo artefato tem a coluna "No ELM" preenchida (`novo (verificado <AAAA-MM-DD>)` · `novo (não verificado)` (sem o MCP `elm` ou sem o bundle) · `novo` (o CT planejado novo) · `altera <id>` · `reusa <id>` · `exclui <id>`) com a decisão no `decisoes.md`; conceito novo sem verificação (`novo (não verificado)` não é achado), ou com acerto `igual`/`sobrepõe` sem motivo registrado — conferir também no bundle (pelo `elm_buscar_req_local`). Impacto: quem cita o artefato alterado ou excluído (a HF que embute a REG, o CT da HF; `links.entrada`) foi revisto — muda → artefato próprio; não muda → na coluna `Impacto` (na ficha, no Motivo) | BLOQUEANTE |
 | P7 | Termos canônicos do glossário em todo o texto; nenhum sinônimo listado em "Evitar" | IMPORTANTE |
 | P8 | Nenhuma decisão `em aberto` que mude comportamento | BLOQUEANTE |
 | P9 | Sem caminho de arquivo, classe, SQL ou código — fora da ET (P13) e, com a linha REG com dados técnicos = `sim` do `sabia.md`, da seção `## Dados` da REG | SUGESTÃO |
@@ -89,14 +89,14 @@ segurança ou manutenção real**. Gosto pessoal e "eu faria diferente" são SUG
 achado leva a excesso de engenharia.
 
 C3 falhando por ambiente (banco, rede, dependência fora do ar) → `AMBIENTE`, não conta como achado; diga o que
-falhou.
+falhou. Sem o C3, a revisão não aprova: o fecho é `VEREDITO: AMBIENTE` (quem chamou para, sem contar reprovação).
 
 **Drift de negócio** (não reprova; o revisor **indica** a possível alteração, a pessoa decide: volta à especificação
 ou código errado — passos `sa-revisar.hitl.veredito` e `sa-revisar.aprovar-pr.decidir`): na penúltima linha,
 `Drift de negócio: possível alteração — <motivo> · artefatos: <id|rótulo> (<tipo>)` quando um achado aceito ou uma decisão técnica
 do `design.md` muda o comportamento visível ao usuário em relação ao cenário ou à regra do PRD, da ficha ou do
-artefato aprovado (`elm/` da pasta da fatia); senão `Drift de negócio: não`. Fecho: `VEREDITO: APROVADO` ou
-`VEREDITO: REVISAR`.
+artefato aprovado (`elm/` da pasta da fatia); senão `Drift de negócio: não`. Fecho: `VEREDITO: APROVADO`,
+`VEREDITO: REVISAR` ou `VEREDITO: AMBIENTE` (só o C3 sem rodar por ambiente, acima).
 
 ## Formato do relatório
 

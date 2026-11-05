@@ -19,9 +19,11 @@ commit, `backlog: refinamento <ids>`, pelas [Situações](~/.sabia/framework/ski
   `origem EP-<nn>`, agente `sa-produto`): diga isso e pare.
 - **Alteração de artefato** (regra, termo, leiaute, história) que uma fatia não terminal cobre → a
   [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação). Fatia terminal → `sa-triar`.
-- **Cancelar** uma fatia não iniciada: `cancelada`, com o motivo na `obs`. Era a última não terminal de um épico com
-  fatia `concluida` → no mesmo commit, o épico `concluido` no backlog, a linha `| Fase | concluido |` no `status.md`
-  do épico e o IB do épico concluído (como no passo `sa-consolidar.consolidar.fechar`).
+- **Cancelar** uma fatia não iniciada: `cancelada`, com o motivo na `obs`. Fatia que a tem no `bloqueada-por` → tire
+  o id dela ali, no mesmo commit, e mostre essas fatias ao P.O. Era a última não terminal de um épico com fatia
+  `concluida` → no mesmo commit, o épico `concluido` no backlog, a linha `| Fase | concluido |` no `status.md` do
+  épico e o IB do épico concluído (como no passo `sa-consolidar.consolidar.fechar`); sem nenhuma `concluida` → o
+  épico cancelado no mesmo commit, como no item Cancelar o épico.
 - **No EWM**, a fatia `cancelada` tem o IB (e, se não foi iniciada, as tarefas) cancelado:
   `elm_transicao(<id>, "cancelar")`, um por id, com "sim". Na falha (sem o MCP, `precondicao`, erro) →
   `ELM pendente [FT-<nnn> cancelar]` no rodapé da ficha da fatia, onde moram as pendências da fatia não iniciada ou
@@ -40,10 +42,12 @@ commit, `backlog: refinamento <ids>`, pelas [Situações](~/.sabia/framework/ski
   cancela como o das fatias (na falha, `ELM pendente [EP-<nn> cancelar]`, onde moram as do épico —
   [pendências](~/.sabia/framework/skills/sabia/references/elm.md#pendências)). As fatias `iniciada` em diante não mudam aqui: mostre-as ao
   P.O. (cancelar uma iniciada é o item Cancelar depois de `iniciada`).
-- **Definition of Ready** ([critérios](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#definition-of-ready-o-que-faz-uma-fatia-elegivel)): a
-  cada refinamento, grave `elegivel` nas `nova` que passam; a `elegivel` ou `planejada` que deixou de passar volta a
-  `nova` com `falta:` — a `planejada` sai da sprint pela [Volta](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#situações) (no EWM, o IB e as
-  tarefas voltam ao backlog, o IB no estado inicial: [elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §3).
+- **Definition of Ready** ([critérios](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#definition-of-ready-o-que-faz-uma-fatia-elegivel)), nas
+  fatias do épico refinado: grave `elegivel` nas `nova` que passam; a `elegivel` ou `planejada` que deixou de passar
+  volta a `nova` com `falta:`. A `planejada`: o P.O. escolhe — sai da sprint pela
+  [Volta](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#situações) (no EWM, o IB e as tarefas voltam ao
+  backlog, o IB no estado inicial: [elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md)
+  §3) ou fica nela como especificação, com a `[ESP] FT` pelo encaixe (`sa-planejamento.durante.encaixe`).
 - **Créditos** da sessão (e as horas, só do SM) na `[GB]`, como no passo `sa-consolidar.consolidar.elm` (*horas* e
   *créditos*), com a Atividade `refinamento` (os ids vão só no comentário: `Créditos refinamento <ids>: …`), no commit do refinamento.
 

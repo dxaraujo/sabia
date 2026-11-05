@@ -11,7 +11,8 @@ A sprint anterior (o pai dela) e a meta (passo `meta`).
 nome que ela der (`2026`, `Entrega 3`…); primeira sprint do projeto → pergunte o nome. A `<nn>` é a próxima
 dentro do pai (pai novo → `01`). Na virada (chamado pelo passo `sa-planejamento.retrospectiva.recalcular`), a
 chave é a do `sprint-<nn>.md` que o passo `sa-planejamento.retrospectiva.fechar` criou: não pergunte o pai.
-Proponha o nome da iteração no EWM (padrão `Sprint <nn>`; é livre: a chave da
+**Datas** pela regra do [arquivos.md](~/.sabia/framework/skills/sa-planejamento/references/arquivos.md#sprintspaisprint-nnmd).
+Projeto sem ELM → sem iteração nem plano (`—`), e o resto deste passo não se aplica. Proponha o nome da iteração no EWM (padrão `Sprint <nn>`; é livre: a chave da
 sprint vem do número do arquivo) e o do plano
 (`<nome> - <nome curto da meta>`: `Sprint 01 - Exportar o relatório de contas`); nada é criado no EWM antes do
 "ok" — a iteração, o pai que faltar e o plano nascem na publicação (passo `gravar`;

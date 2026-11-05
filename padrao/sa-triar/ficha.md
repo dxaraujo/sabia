@@ -12,7 +12,7 @@ sempre preenchida e a Definition of Ready confere o arquivo. O conteúdo muda co
 |---|---|---|
 | padrão sem épico | Pedido · Regras · Artefatos afetados · Cenários de aceite · Decisões · Fora de escopo (formato abaixo) | os cenários `C<n>` da própria ficha |
 | padrão de épico | Objetivo · Cobre (links para os cenários do PRD, sem copiar) · Artefatos afetados · Como verificar | o PRD (`cobre`) |
-| rápida | Comportamento (atual com evidência · esperado com fonte · o que não muda) · Artefatos afetados · Como verificar | a ficha — é o que o `bugfix.md` detalha |
+| rápida | Comportamento (atual com evidência · esperado com fonte · o que não muda) · Decisões (só com decisão nova) · Artefatos afetados · Como verificar | a ficha — é o que o `bugfix.md` detalha |
 
 Item das categorias da Sustentação (`AT-nnn`, `IM-nnn`…) não é fatia: não tem ficha, tem o registro
 `<produto>/sustentacao/<pasta>/<ID>-<slug>.md`. A fatia de Manutenção (sem épico) tem ficha, como toda fatia.
@@ -141,21 +141,24 @@ Em **toda** ficha, sempre presente: o que a fatia inclui, altera ou exclui no EL
 
 ## Regras de escrita
 
-- **Situação** (padrão sem épico): `rascunho` ou `aprovada por <login do P.O.> em <data>`. Regra nova ou alterada só vale aprovada;
-  sem isso, a fatia fica `nova` com `falta: aprovação do P.O.`.
+- **Origem** (sem épico): o item do EWM (`DF 4567`, `IB 613`) ou o chamado (`chamado 4521`); pedido em texto, sem os
+  dois → `—`.
+- **Situação** (padrão sem épico; na rápida, só com a seção Decisões): `rascunho` ou `aprovada por <login do P.O.>
+  em <data>`. Regra nova ou alterada (na rápida, a decisão nova) só vale aprovada; sem isso, a fatia fica `nova` com
+  `falta: aprovação do P.O.`.
 - **Cenários** como na `sa-prd`: caminho feliz, o que **não** deve ser aceito, repetição, erro em um item — ou por
   que não se aplica; "Então" sempre verificável. Numerados `C1`, `C2`… — são o `cobre` da fatia: o plano, a
   rubrica L e a verificação leem daqui.
 - **Regras:** uma por linha, com valores e a fonte (`D-nn` ou id do ELM). Antes de escrever uma regra nova ou
   alterada, [similares](~/.sabia/framework/skills/sa-prd/references/similares.md); "No ELM" = `reusa <id>` · `altera <id>` ·
   `inclui`. Toda regra `altera` ou `inclui` tem a sua linha em Artefatos afetados (esta é a lista que vale).
-- **Rápida:** sem Regras nem Cenários — o que está no formato dela. Aprovação do P.O. só se a fonte do esperado é
-  uma decisão nova (aí é `D-nn` aprovada). Sem `inclui` de `REG` ou `HF` (regra nova → trilha padrão).
+- **Rápida:** sem Regras nem Cenários — o que está no formato dela. Esperado cuja fonte é uma decisão nova → a
+  seção `## Decisões` (depois de Comportamento, com a `D-nn` na fonte) e a linha `**Situação:**`. Sem `inclui` de `REG` ou `HF` (regra nova → trilha padrão).
 - **Padrão de épico:** nada de regra ou cenário copiado do PRD — só os links; o PRD continua a fonte.
 - **Decisões** no formato do `decisoes.md` da `sa-entrevistar`, aqui dentro (a ficha não tem pasta).
 - **Créditos da `[ESP] FT`** (`sa-especificar.fatia`: a fatia `nova` em especificação na sprint, ou a que voltou à
   especificação): uma seção `## Créditos` no
-  fim da ficha, com a tabela do `status.md` (`| Data | Papel | Login | Sessão Kiro | Power sabia | Créditos |`), criada na
+  fim da ficha, com a tabela do `status.md` (`| Data | Papel | Login | Sessão Kiro | Power sabia | Créditos |`, Papel `ESP`), criada na
   primeira sessão; a `sa-desenvolver` não a leva para o `status.md` da fatia.
 - **Pendências do ELM** da fatia não iniciada, `dividida` ou `cancelada` (sem `status.md` que valha): no rodapé da
   ficha, `ELM pendente [<chave>]: <o que falta>` — ex.: `[FT-040 cancelar]`, quando o `elm_transicao(<id>,

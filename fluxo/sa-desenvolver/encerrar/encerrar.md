@@ -3,7 +3,7 @@
  "quando": ["PR aprovado (`aceita` no HITL; `[APR]` concluída no AFK): merge, `pronta` na base e conclusão da `[DEV]`", "mergeia a FT-031", "o PR da FT-031 foi aprovado"],
  "travas_gerais": ["sim-da-pessoa", "sem-force"],
  "passos": [
-   {"id": "entrada", "de": "entrada", "sprint": "nao"},
+   {"id": "entrada", "de": "entrada", "sprint": "nao", "branch": "nao"},
    {"id": "merge", "travas": ["pr-lido-por-pessoa"], "saidas": {"conflito com a base: retrabalho registrado": "→ sa-codificar.codificar", "pronta, P.O. ou SM avisado": "→ sa-consolidar.consolidar"}}
  ]}
 ---

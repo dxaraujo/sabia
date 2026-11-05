@@ -3,7 +3,7 @@
  "quando": ["especificação de épico: EP-nn ou [ESP] EP-nn, da tarefa [ESP] à conclusão dela depois do GATE do PRD, com a publicação no ELM", "especificar o EP-03", "pegar a [ESP] do EP-03", "retomar a especificação", "fechar a sessão de especificação", "tenho a transcrição da reunião", "registrar a ata da reunião", "tenho o protótipo", "o cliente aprovou o protótipo"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa"],
  "passos": [
-   {"id": "entrada", "de": "entrada", "sprint": "exige", "saidas": {"PRD na base na Fase aprovado, com a Especificação ainda iniciada, sem mudança aberta e ainda não registrada e sem transcrição sem ATA aprovada": "fechamentos"}},
+   {"id": "entrada", "de": "entrada", "sprint": "exige", "branch": "nao", "saidas": {"PRD na base na Fase aprovado, com a Especificação ainda iniciada, sem mudança aberta e ainda não registrada e sem transcrição sem ATA aprovada": "fechamentos"}},
    {"id": "assumir"},
    {"id": "pasta"},
    {"id": "encaminhar", "chama": ["sa-especificar.reuniao", "sa-especificar.prototipo", "sa-prd.prd"], "saidas": {"aprovado na pasta de trabalho": "fechamentos"}},

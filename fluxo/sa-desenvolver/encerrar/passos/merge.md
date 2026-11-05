@@ -5,7 +5,9 @@
 
 A fatia deste fluxo (passo `entrada`): em `aceita` (HITL) ou em `aguardando-aprovacao-pr` (AFK), o merge, o registro
 na base e a conclusão da `[DEV]` são do Dev responsável, aqui. Também o PR já mergeado com a aprovação registrada
-(abaixo; a sessão do merge parou): siga do item 5 — a `pronta` só com o merge conferido.
+(abaixo; a sessão do merge parou): siga do item 5 — a `pronta` só com o merge conferido. Quem está na sessão não é o
+`responsavel` da linha da fatia no `backlog.md` da base (no loop, quem disparou) → avise (`a fatia é de <login>`) e
+siga; as horas da `[DEV]` (item 7) ficam com o dono: o saldo é o dele.
 
 ## Faça
 
@@ -16,8 +18,9 @@ feito por fora, com Créditos e lições `—`: com a `[DEV]` ainda aberta, siga
 a aprovação **registrada**, nunca a dita na conversa ("o PR foi aprovado", "pode mergear"; o P.O. não aprova PR):
 - **HITL:** revisão `APROVADO` e verificação `ACEITO` registradas (é o que leva a fatia a `aceita`);
 - **AFK:** a `[APR] FT-<nnn> Aprovar PR` está **concluída** e tem o comentário `PR aprovado, sha <sha>` (`elm_ler_wi(<id da [APR]>,
-  comentarios = -1)`: todos; só leitura). Sem o MCP `elm` → a linha `PR aprovado por <login>, sha <sha>` que o
-  aprovador entregou.
+  comentarios = -1)`: todos; só leitura). Sem o MCP `elm` → a linha `PR aprovado por <login>, sha <sha>` do
+  comentário do aprovador no MR. O que o aprovador entregou (a lição, os créditos, as pendências) está nesse
+  comentário: o da `[APR]` ou, sem o MCP `elm`, o do MR.
 
 1. **Leia o PR:** `gitlab_obter_mr` pelo `iid` do link no `status.md`. Tem de estar aberto, sem WIP/Draft e sem
    conflito. `merged` → vá ao item 5; `closed` ou WIP → avise e pare. **Conflito** com a base → `fase: retrabalho
@@ -55,7 +58,7 @@ a aprovação **registrada**, nunca a dita na conversa ("o PR foi aprovado", "po
 6. **Registro do merge na base** — pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base),
    variante do Dev; o `status.md` já chegou à base com o merge:
    - **Lições candidatas** no `status.md` — antes de fechar a `[DEV]`: mantenha as linhas que a revisão, a
-     verificação e a aprovação já gravaram na branch e acrescente a que o aprovador entregou com a `[APR]` (AFK);
+     verificação e a aprovação já gravaram na branch e acrescente a que o aprovador entregou (AFK);
      depois, liste as outras correções humanas que a fatia
      recebeu (tabela Retrabalho; Achados abertos de origem PR ou GATE do plano; bloqueio resolvido por uma pessoa;
      "não é assim" no Histórico) e, com a pessoa, grave uma linha por correção: feito × certo, onde estava o certo e

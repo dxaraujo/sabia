@@ -34,10 +34,10 @@ Push e PR são do Dev: o agente `sa-desenvolvedor` (o Kiro confirma cada um) ou 
 2. Texto do PR: o padrão `sa-codificar/pr.md`.
 3. **Entrega**, nesta ordem — quem vem depois só acha no remoto o que você publicou:
    1. **Commit** do que faltar (árvore limpa), `<FT> abrir PR`.
-   2. **Push** da branch da fatia: `git push -u origin <branch>` (nunca a base; o Kiro pergunta). Push recusado
-      (pela pessoa ou pela regra) → entregue o comando pronto e espere a pessoa dizer que publicou. Push "não" →
-      a branch não foi publicada e não há PR (nem PR atualizado): a fase não muda (AFK: `verificada`; HITL:
-      `implementando`); pare em "aguardando o PR", com o título e a descrição do item 2.
+   2. **Push** da branch da fatia: `git push -u origin <branch>` (nunca a base; o Kiro pergunta). Push negado pela
+      regra (permissão do agente) → entregue o comando pronto e espere a pessoa dizer que publicou. A pessoa recusa
+      o push ("não") → a branch não foi publicada e não há PR (nem PR atualizado): a fase não muda (AFK: `verificada`;
+      HITL: `implementando`); pare em "aguardando o PR", com o título e a descrição do item 2.
    3. **Confira no remoto:** `git fetch` e `git rev-parse HEAD` = `git rev-parse origin/<branch>`. Diferente → não
       siga: diga o que falta.
    4. **PR** pelo MCP `gitlabpr`: `gitlab_listar_mrs(origem=<branch>, estado=opened)` — já existe (retrabalho) → é

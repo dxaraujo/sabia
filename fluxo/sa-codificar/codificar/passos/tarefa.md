@@ -44,7 +44,9 @@ Regras do ciclo:
 - Duas correções seguidas sem sair do lugar → pare de tentar variações: registre no `status.md` o que foi tentado e
   continue numa sessão nova a partir dele (contexto poluído piora a terceira tentativa); persistindo,
   `fase: bloqueada (de: implementando)`, com motivo e pergunta.
-- Banco: somente leitura pelo MCP; DDL é do time de banco (registre no `status.md`, campo Banco).
+- Banco: somente leitura pelo MCP; DDL nunca é aplicada à mão: é do time de banco, pela Sustentação (item
+  BD/Implantação) — registre `pendente` no campo Banco do `status.md`. A tarefa que depende da DDL aplicada →
+  `fase: bloqueada (de: implementando)`, Bloqueio `aguardando aplicação de baseline de banco`, até a aplicação.
 - Contexto cheio ou sessão longa → atualize o `status.md` (o que foi feito, próximo passo, decisões), **commite-o**
   (`<FT> registrar progresso`) e continue numa sessão nova a partir dele. O estado vive nos arquivos, não na conversa.
 

@@ -18,10 +18,10 @@ dos passos `publicar` e `concluir`. O fatiamento e o backlog são do P.O. ou do 
 2. **Base**, pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), **um** commit
    (padrão do `sabia.md`), direto na base; nunca numa branch de fatia:
    - **primeiro GATE** → leve a pasta: copie-a, fora de `reunioes/` (a transcrição fica só nesta máquina), para
-     `<produto>/epicos/<EP>-<slug>/`, com `prototipo/` só com as versões registradas (`prototipo-v<N>-<slug>.<ext>`,
+     `<produto>/epicos/<EP>-<slug>/`, com `prototipo/` só com as versões registradas (`prototipo-v<N>-*`,
      conferidas com dado fictício; arquivo sem o prefixo fica fora; o anexo da `[ESP]` continua) (substitui o
      `rascunho.md`, o `decisoes.md` e o `status.md` da triagem), com o `revisao-prd-<N>.md`; no `backlog.md`, só o
-     link `prd` na linha do épico e, se estava `—`, o da `pasta` (ele segue `iniciado`). Commit `EP-<nn> aprovar PRD`.
+     link `prd` na linha do épico (ele segue `iniciado`). Commit `EP-<nn> aprovar PRD`.
      A partir daí a base é a fonte; a pasta local pode ser apagada pela pessoa (o fluxo não apaga);
    - **PRD já na base** (a mudança, que o passo `sa-prd.prd.gate` commitou, ou a retomada) → nada aqui.
 

@@ -232,6 +232,7 @@ da condição do defeito, verificação da correção e da preservação. Seçã
   exatamente uma wave, inclusive as opcionais `*`; checkpoint e tarefa-mãe ficam de fora; ids de wave contíguos a
   partir de 0; dependente (ou que mexe no mesmo arquivo) vai numa wave posterior; sem dependência → uma wave só.
   O porquê de cada dependência, se não for óbvio, vai em `## Notes`.
-- Mudança em código compartilhado → primeiro a tarefa de **preparação** ("deixar a mudança fácil"), depois a
-  mudança; refatoração larga usa expandir → migrar → contrair, em fatias próprias.
+- Mudança desta fatia em código compartilhado → primeiro a tarefa de **preparação** ("deixar a mudança fácil"),
+  depois a mudança; prefactoring de que várias fatias precisam e refatoração larga não são fatia nem plano: são um
+  épico técnico, pela `sa-triar`.
 - DDL não vira tarefa: vai para Riscos e para o campo Banco do `status.md`.

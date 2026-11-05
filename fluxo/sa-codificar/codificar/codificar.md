@@ -2,12 +2,12 @@
 {"fluxo": "codificar", "dono": "sa-desenvolvedor",
  "travas_gerais": ["sim-da-pessoa", "backpressure", "sem-force"],
  "passos": [
-   {"id": "entrada", "de": "entrada", "sprint": "nao"},
-   {"id": "onde", "saidas": {"fatia `verificada` (AFK)": "pr", "sem a linha do GATE do plano": "fim", "aguardando-aprovacao-pr que virou HITL: pr-aberto, revisor avisado": "→ sa-revisar.hitl"}},
+   {"id": "entrada", "de": "entrada", "sprint": "nao", "branch": "fatia"},
+   {"id": "onde", "saidas": {"fatia `verificada` (AFK)": "pr", "fase `verificando` (AFK): nova rodada, sem nova revisão": "verificar", "vermelho antes de mexer: bloqueada, ⚠️ ambiente": "fim", "sem a linha do GATE do plano": "fim", "aguardando-aprovacao-pr que virou HITL: pr-aberto, revisor avisado": "→ sa-revisar.hitl"}},
    {"id": "tarefa", "desvio": true, "travas": ["toolkit-sem-commit"], "saidas": {"ainda há tarefa não marcada": "tarefa", "divergência com o plano que muda o desenho": "→ sa-plano.replanejar"}},
-   {"id": "validar"},
-   {"id": "revisar", "chama": "sa-revisar.revisar", "travas": ["revisao-independente"], "saidas": {"HITL, APROVADO ou a pessoa decide seguir": "pr", "REVISAR": "tarefa", "AFK, 2ª reprovação: bloqueada": "fim"}},
-   {"id": "verificar", "chama": "sa-verificar.verificar", "travas": ["aceite-independente"], "saidas": {"REJEITADO": "tarefa", "2ª rejeição seguida: bloqueada": "fim"}},
+   {"id": "validar", "saidas": {"vermelho na validação completa: tarefa nova": "tarefa", "falha de ambiente: bloqueada, ⚠️ ambiente": "fim"}},
+   {"id": "revisar", "chama": "sa-revisar.revisar", "travas": ["revisao-independente"], "saidas": {"HITL, APROVADO ou a pessoa decide seguir": "pr", "REVISAR": "tarefa", "AFK, 2ª reprovação desde o último desbloqueio: bloqueada": "fim", "AFK, VEREDITO: AMBIENTE: bloqueada": "fim"}},
+   {"id": "verificar", "chama": "sa-verificar.verificar", "travas": ["aceite-independente"], "saidas": {"REJEITADO": "tarefa", "2ª rejeição seguida: bloqueada": "fim", "VERIFICACAO: AMBIENTE, ou a DDL não aplicada: bloqueada": "fim"}},
    {"id": "pr", "saidas": {"HITL, PR aberto": "→ sa-revisar.hitl", "AFK, PR aberto": "→ sa-revisar.aprovar-pr", "pedido de merge nesta sessão": "→ sa-desenvolver.encerrar"}}
  ]}
 ---
@@ -33,6 +33,7 @@ regras aprendidas).
 - `aceita`, ou `aguardando-aprovacao-pr` com a `[APR] Aprovar PR` concluída: o merge → `sa-desenvolver.encerrar`
 - `bloqueada (de: …)` com Bloqueio `aguardando especificação [ESP] FT-<nnn>` que é de quem especifica ([De quem é a Volta](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação)) → `sa-especificar.fatia` (agente `sa-especificador`)
 - `bloqueada (de: em-verificacao)` com o Bloqueio do ambiente ou da pergunta da ficha → `sa-verificar.hitl` (agente `sa-verificador`: a retomada é do verificador)
+- `bloqueada (de: em-revisao)` com o Bloqueio `⚠️ ambiente` → `sa-revisar.hitl` (agente `sa-revisor`: a retomada é do revisor)
 
 ## Modo autônomo
 

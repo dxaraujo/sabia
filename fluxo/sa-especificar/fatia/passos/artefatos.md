@@ -4,7 +4,8 @@
 ## Entrada
 
 A ficha com a seção **Artefatos afetados** com linha `inclui`, `altera` ou `exclui` (passo `trabalho`). Fatia
-`iniciada` (reaberta, Revisão ou a `[ESP] FT-<nnn> Especificação` que o encaixe criou na Volta): o Bloqueio do `status.md` da fatia (`aguardando especificação [ESP] FT-<nnn>: <artefato> (<tipo>, <ação>) — <motivo>`).
+`iniciada` (reaberta, Revisão ou a `[ESP] FT-<nnn> Especificação` que o encaixe criou na Volta): as linhas da seção com
+Especificado `—` (passo `assumir`).
 
 ## Faça
 
@@ -25,7 +26,9 @@ A ficha com a seção **Artefatos afetados** com linha `inclui`, `altera` ou `ex
      `generated` novo. Conceito de épico ainda sem `resource` (o Artefato da linha é o rótulo do PRD, ex.: `REG-01`,
      sem id do ELM) → o arquivo de `<produto>/epicos/<EP>-<slug>/elm/`, mesmo nome.
    - **`inclui`** → ficha com `ao vivo: pendente` → [similares](~/.sabia/framework/skills/sa-prd/references/similares.md) antes de
-     virar arquivo; acerto `igual` ou `sobrepõe` → a decisão da pessoa, no Motivo da linha.
+     virar arquivo; acerto `igual` ou `sobrepõe` → a Ação da linha segue a decisão da pessoa (reutilizar → a linha
+     sai; alterar → `altera`, com a cópia, acima; excluir o existente → linha `exclui` dele; criar novo → segue
+     `inclui`), sem outra autorização, com o motivo no Motivo da linha.
 3. **Impacto** — por `altera` e `exclui`, quem cita o artefato (`elm_ler_req_local(id).links.entrada`: a HF que
    embute a REG, o CT da HF, a EL…), revisto: muda → linha própria; não muda → no Motivo da linha de origem,
    `impacto: <id> <como cita>, sem mudança`.
@@ -33,8 +36,8 @@ A ficha com a seção **Artefatos afetados** com linha `inclui`, `altera` ou `ex
    registrada na linha nova (`autorizado por <login> (<P.O. | SM>) em <AAAA-MM-DD>`, no Motivo), como na
    [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação); sem ela,
    fica para o desdobramento (passo `concluir`).
-5. **Fatia `iniciada`** (reaberta, Revisão ou a do encaixe) → o artefato e o motivo do Bloqueio: a linha dele na seção e a cópia vinda da
-   especificação aprovada. Fora da seção → peça a autorização do P.O. ou do SM (item 4, com "sim"); sem ela, a
+5. **Fatia `iniciada`** (reaberta, Revisão ou a do encaixe) → as linhas com Especificado `—` (item 2), com a cópia
+   vinda da especificação aprovada. O artefato do Bloqueio fora da seção → peça a autorização do P.O. ou do SM (item 4, com "sim"); sem ela, a
    `[ESP]` fica aberta, sem concluir, a fatia segue `bloqueada` (o Bloqueio não muda) e o aviso é
    `aguardando autorização do P.O. ou do SM para <artefato> (sa-triar, agente sa-produto)` (Pare se).
 

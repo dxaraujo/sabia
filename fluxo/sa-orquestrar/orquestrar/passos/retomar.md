@@ -7,8 +7,9 @@ Os logs `.sabia/local/loop-*.md`.
 
 ## Faça
 
-Existe `.sabia/local/loop-*.md` com fatias não finalizadas → mostre o estado (fatia, fase, rodada, último resultado)
-e pergunte se retoma. Retomar = continuar cada fatia da fase registrada no `status.md` dela, por esta tabela:
+Existe `.sabia/local/loop-*.md` com fatias não finalizadas (padrão `sa-orquestrar/log.md`) → mostre o estado (fatia,
+fase, rodada, último resultado) e pergunte se retoma. Retomar vale a autorização de push/PR do cabeçalho do log e o
+paralelo dele. Retomar = continuar cada fatia da fase registrada no `status.md` dela, por esta tabela:
 
 | Fase do `status.md` | Fase do lote |
 |---|---|

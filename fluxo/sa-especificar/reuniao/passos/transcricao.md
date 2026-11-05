@@ -13,15 +13,15 @@ O épico e a pasta de trabalho `.sabia/local/especificacao/<EP>-<slug>/` (montad
 2. **Transcrição sem ATA aprovada** — em `reunioes/`, cada `.vtt` ou `.md` (fora os `.transcricao.md`, que são a
    saída) cujo nome nenhuma `elm/ATA-*.md` da pasta do épico (a da base se a linha do épico no `backlog.md` já tem o link `prd`; senão, a de trabalho) traz no `title` da
    entrada `transcricao` de `sources`. Mais de uma → a mais antiga primeiro, uma ATA por reunião. Já há ATA `draft`
-   para ela → passo `aprovar`. A ATA aprovada traz o mesmo nome com outro sha256 (a transcrição foi trocada) →
-   mostre e pergunte se refaz a ATA. **ATA aprovada não registrada** (retomada): `stable` sem `resource`/`id`, num
-   projeto com ELM, com a sigla `ATA` no `pa` e sem `ELM pendente [ATA-<nn> EP-<nn> publicar]` → passo `publicar`;
+   para ela → passo `aprovar`. **ATA aprovada não registrada** (retomada): `stable` sem `resource`/`id`, num
+   projeto com ELM e sem `ELM pendente [ATA-<nn> EP-<nn> publicar]` → passo `publicar`;
    `stable` com os `D-nn` ainda reservados no `decisoes.md` (`em aberto — ATA-<nn> draft`) → passo `decisoes`.
 3. **Converter** — `uv run --no-project python ~/.sabia/framework/skills/sa-especificar/scripts/transcricao.py
    .sabia/local/especificacao/<EP>-<slug>/reunioes/<arquivo.ext>` (da raiz do projeto): grava, ao lado,
    `<arquivo.ext>.transcricao.md` e lista no stderr os falantes sem papel e
    quantas falas ficaram sem falante (`?`: não há papel a perguntar; não as atribua a ninguém). Pergunte à pessoa o
-   papel de cada falante (P.O., cliente — área, analista…; nunca deduza) e rode de novo com `--papel "Nome=papel"`
+   papel de cada falante (P.O., cliente — área, analista…; nunca deduza) e qual cliente é o representante que
+   decide (papel `representante do cliente — <área>`), e rode de novo com `--papel "Nome=papel"`
    por falante. Código 1 (nenhuma fala reconhecida) → mostre o formato aceito e pare. Código 2 → mostre a mensagem
    do script (arquivo inexistente, não UTF-8, `--papel` fora de `"Nome=papel"` ou entrada que não é `.vtt`/`.md`) e
    pare; `--papel` errado → corrija e rode de novo.

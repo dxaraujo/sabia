@@ -6,7 +6,7 @@ FT-<nnn> — <título>   (<EP-<nn> | Manutenção> · <IB | DF> <id ELM | —>)
 O quê: <1–3 linhas do comportamento entregue>
 Cobre: <o campo Cobre do status.md, como está>   (ELM: <ids | pendente>)
 Plano: .kiro/specs/<ft>-<slug>/ (research · requirements · design · tasks)
-Revisão: <AFK: revisao-codigo-<N>.md (APROVADO) · Aceite: verificacao.md (ACEITO, <n> cenários) | HITL: revisão automática <OK | não feita (sem subagente)> (achados aceitos: <…> | nenhum) — revisão e aceite no PR>
+Revisão: <AFK: revisao-codigo-<N>.md (APROVADO) · Aceite: verificacao.md (ACEITO, <n> cenários) | HITL: revisão automática <OK | ambiente: <o que falhou>> (achados aceitos: <…> | nenhum) — revisão e aceite no PR>
 Backpressure: compilar ok · testes ok · lint ok · cobertura <x% | sem gate>
 Banco (DDL): <não se aplica | pendente — implantação bloqueada>
 ADRs: <adr/<arquivo>, … | nenhum> · ET as-built: <elm/ET-<slug>.md | não se aplica>

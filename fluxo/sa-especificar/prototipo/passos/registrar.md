@@ -8,9 +8,10 @@ A pasta de trabalho `.sabia/local/especificacao/<EP>-<slug>/` (passo `sa-especif
 
 ## Faça
 
-1. **Versão** — em `prototipo/`, a versão registrada tem o nome `prototipo-v<N>-<slug>.<ext>`. Arquivo sem esse
-   prefixo → é a versão nova, `v<N>` = a maior registrada + 1 (a primeira, `v1`); mais de um → pergunte se é uma
-   versão só (várias telas) ou se sobra algum. Nenhum arquivo novo: a linha da última versão na seção Protótipo do `rascunho.md` em
+1. **Versão** — em `prototipo/`, a versão registrada tem o nome `prototipo-v<N>-<slug>.<ext>`; com várias telas, um
+   arquivo por tela, `prototipo-v<N>-<slug>-<nn>.<ext>` (`<nn>` com 2 dígitos, de 01). Arquivo sem o prefixo
+   `prototipo-v<N>-` → é a versão nova, `v<N>` = a maior registrada + 1 (a primeira, `v1`); mais de um → pergunte se
+   são as telas de uma versão só ou se sobra algum. Nenhum arquivo novo: a linha da última versão na seção Protótipo do `rascunho.md` em
    `aguardando o cliente` → passo `aprovacao` (retomada); em `ajuste — aguardando a v<N+1>` → Pare se. Link no
    lugar do arquivo → peça a exportação da versão (Regras).
 
@@ -25,23 +26,23 @@ A pasta de trabalho `.sabia/local/especificacao/<EP>-<slug>/` (passo `sa-especif
 
    ```
    🖼️ Protótipo v<N> — EP-<nn> · [ESP] <id | pendente>
-   Arquivo: prototipo/prototipo-v<N>-<slug>.<ext> (era <nome original>) · telas: <n>
+   Arquivos: prototipo/prototipo-v<N>-<slug>[-<nn>].<ext> (era <nome original>) · … · telas: <n>
    Muda desde a v<N-1>: <o que o cliente pediu, com a fonte | primeira versão>
    Só dado fictício: confirmado por <login>
    Anexar na [ESP]? (sim)
    ```
 
-   Com "sim": renomeie o arquivo, `elm_anexo(id da [ESP], "enviar", caminho)` (o nome do anexo é o do arquivo) e,
-   na seção Protótipo do `rascunho.md`, a linha `Protótipo v<N> — <arquivo> · <data> · <o que muda> · aguardando o cliente` (a da
+   Com "sim": renomeie os arquivos, `elm_anexo(id da [ESP], "enviar", caminho)` por arquivo (o nome do anexo é o do
+   arquivo) e, na seção Protótipo do `rascunho.md`, a linha `Protótipo v<N> — <arquivos da versão> · <data> · <o que muda> · aguardando o cliente` (a da
    versão anterior em `ajuste — aguardando a v<N+1>` passa a `ajuste`). Sem o MCP
    `elm` ou com falha → `ELM pendente [ESP EP-<nn> anexar prototipo-v<N>]: anexar prototipo-v<N> na [ESP] EP-<nn>` na seção ELM pendente do `rascunho.md`, e o
    fluxo segue.
 
 Até o GATE do PRD, o registro é o anexo da `[ESP]`; com o PRD aprovado, as versões registradas vão com a pasta do
 épico para a base (passo `sa-especificar.especificar.fechamentos`), e o anexo continua. Na mudança do PRD
-(`sa-prd.mudanca`, o PRD já na base), `prototipo/` e o `rascunho.md` são os da pasta do épico na base: o arquivo da
-versão vai à base no commit `EP-<nn> registrar protótipo v<N>` (bloco
-[Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base); só ele), e a linha da
+(`sa-prd.mudanca`, o PRD já na base), `prototipo/` e o `rascunho.md` são os da pasta do épico na base: os arquivos da
+versão vão à base no commit `EP-<nn> registrar protótipo v<N>` (bloco
+[Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base); só os arquivos dela), e a linha da
 seção Protótipo do `rascunho.md` fica sem commit até o GATE, no `EP-<nn> aprovar PRD`.
 
 ## Saída

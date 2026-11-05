@@ -18,9 +18,13 @@ A seção **Comandos (backpressure)** do `.sabia/sabia.md`, gravada pela setup. 
 
 ## Saída
 
-**Verde:** todos os comandos passaram, com a evidência. **Vermelho:** o comando que falhou e a falha.
+**Verde:** todos os comandos passaram, com a evidência. **Vermelho:** o comando que falhou e a falha — dentro de uma
+tarefa, volte a ela (passo `tarefa`, item 5); na validação completa, a falha vira a próxima tarefa no fim de
+`## Tasks` (`- [ ] <n>. <comando> vermelho: <falha> — origem: validação completa`, numa wave nova no fim do JSON do
+`## Task Dependency Graph`) → passo `tarefa`.
 
 ## Pare se
 
 - Sem a seção Comandos, ou com comando `<…>` → avise que falta rodar a setup e pare.
-- Erro de ambiente (não do código) → `AMBIENTE` no `status.md`, nunca consertar.
+- Erro de ambiente (não do código) → `fase: bloqueada (de: <fase>)`, Bloqueio `⚠️ ambiente: <o que faltou>` (o
+  comando e a falha); nunca consertar.

@@ -30,11 +30,12 @@ Registre no `decisoes.md` uma linha por decisão: D = `D-nn` · Pergunta = `<sig
 sobrepõe | relacionado> a <id> <título no ELM>?` (a exclusão sem proposta: `<id> <título no ELM>: deixa de valer?`) ·
 Decisão = `<reutilizar | alterar | excluir | criar novo> <id> — <motivo>` · Fonte / quem decidiu = `<login> (<papel>)`
 · Data = `<AAAA-MM-DD>` · Situação = `decidida`. Na tabela de artefatos do PRD, a coluna **No ELM** — `reusa <id>` ·
-`altera <id>` · `exclui <id>` · `novo (verificado <AAAA-MM-DD>)` — e a coluna **Impacto** (`<id> (<sigla>) <rel>`,
+`altera <id>` · `exclui <id>` · `novo (verificado <AAAA-MM-DD>)` · `novo (não verificado)` · `novo` (o CT planejado
+novo) — e a coluna **Impacto** (`<id> (<sigla>) <rel>`,
 com `rel` = o campo `rel` de `links.entrada` do `elm_ler_req_local`, como veio; vários separados por ` · `; sem
 impacto, `—`).
-Verificação ao vivo pendente (sem o MCP `elm`) → `novo (só bundle <AAAA-MM-DD | sem data>)`: a publicação refaz a
-busca.
+Sem o MCP `elm` ou sem o bundle → o aviso de risco do [similares](~/.sabia/framework/skills/sa-prd/references/similares.md)
+e `novo (não verificado)`; o passo segue.
 Artefato que surgir depois (na escrita, na revisão ou numa mudança antes do fatiamento) passa por aqui antes de
 virar arquivo. Projeto sem ELM → pule (No ELM `—`, Impacto `—`).
 

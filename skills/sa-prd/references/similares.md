@@ -2,13 +2,14 @@
 
 Chamado pela `sa-prd`, pela `sa-triar` (artefatos afetados da ficha de toda fatia sem épico), pela `[ESP] FT`
 (`sa-especificar.fatia.artefatos`) e pela publicação de um conceito novo. Não pede confirmação. Entrada: por
-artefato proposto, a sigla (todo tipo do [catálogo](../../sabia/references/tipos.md) com ELM, fora a `ATA` e os
-pendentes), o título provisório e 3–6 palavras-chave do domínio (termos do glossário, sinônimos da entrevista,
+artefato proposto, a sigla (todo tipo do [catálogo](../../sabia/references/tipos.md) com ELM `DOORS`, fora a `ATA` e os
+pendentes; o CT planejado não passa aqui: No ELM `novo`), o título provisório e 3–6 palavras-chave do domínio (termos do glossário, sinônimos da entrevista,
 atores, valores). Leiaute (`EL`, só com a linha Telas = `sim`): o título é o nome
 da tela e as palavras-chave, os rótulos dos campos e das ações do protótipo aprovado.
 
 1. **Bundle** (pasta `rm.download` do `pa`), pelo `elm_buscar_req_local`: um pelo título e um por palavra-chave
-   (sem bundle baixado → erro `nao_encontrado` campo `bundle`: diga isso, ofereça a `sa-sync` e siga só no passo 2).
+   (sem bundle baixado → erro `nao_encontrado` campo `bundle`: diga isso, ofereça a `sa-sync` e siga só no passo 2;
+   sem o impacto do item 4, que lê o bundle).
    A data do bundle é o `sincronizado_em` (a data) que o `elm_buscar_req_local` devolve; sem o campo, a do último
    commit da `sa-sync` na base, `git log -1 --format=%cs --grep='^ELM - Sincronizar bundle'`; sem os dois, `sem data`.
 2. **Ao vivo:** `elm_buscar_req(texto)` pelo título e por palavra-chave, filtrando o resultado pelos tipos das
@@ -34,3 +35,6 @@ da tela e as palavras-chave, os rótulos dos campos e das ações do protótipo 
    existente (caminho "Alteração" do passo `sa-prd.prd.escrever`), ou **excluir** o que a proposta substitui (caminho
    "Exclusão") · **relacionado → criar novo**, citando o existente em `## Relações` · **nenhum → criar novo**
    (`novo (verificado <data>)`). A decisão é da pessoa.
+
+Sem o MCP `elm` ou sem o bundle → avise o risco (sem o bundle, o impacto não é visto; sem a busca ao vivo, o que
+mudou no ELM depois do bundle) e siga, sem parar e sem pendência: o artefato novo fica `novo (não verificado)`.

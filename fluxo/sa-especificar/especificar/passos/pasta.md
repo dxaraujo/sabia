@@ -8,7 +8,7 @@ O épico `iniciado` e a `[ESP]` assumida (passo `assumir`).
 ## Faça
 
 Pasta de trabalho (fora do git): `.sabia/local/especificacao/<EP>-<slug>/` (`<slug>`: o da coluna `pasta` do
-`backlog.md`, `[pasta](epicos/<EP>-<slug>/)`; `pasta` `—` → o título do épico em kebab-case, minúsculas, sem acento) — é ali que a `sa-entrevistar`, a `sa-prd` e a revisão P trabalham até
+`backlog.md`, `[pasta](epicos/<EP>-<slug>/)`) — é ali que a `sa-entrevistar`, a `sa-prd` e a revisão P trabalham até
 o GATE. Monte-a pela primeira fonte que existir:
 
 1. **Já existe nesta máquina** → use-a, mas compare antes com a `[ESP]` (`elm_ler_wi(id, comentarios = -1)`): o
@@ -22,11 +22,6 @@ o GATE. Monte-a pela primeira fonte que existir:
    `prototipo-v<N>-*` para `prototipo/`. Mostre a data do último comentário de sessão.
 3. **Só a base** → copie `rascunho.md`, `decisoes.md` e `status.md` de `<produto>/epicos/<EP>-<slug>/` em
    `origin/<base>` (`git show origin/<base>:<caminho>`, depois de `git fetch`; criados pela triagem).
-   Sem essa pasta na base → crie-os: `rascunho.md` pelo padrão `sa-especificar/rascunho.md`, com o Pedido = o título
-   e a descrição do IB do épico (`elm_ler_wi(<IB>, comentarios = 0)`, o IB da coluna `elm`;
-   sem o MCP `elm` ou IB `pendente` → o título do `backlog.md` e a descrição `—`; sem dado inventado),
-   `decisoes.md` no formato do padrão [`sa-entrevistar/decisoes.md`](~/.sabia/framework/padrao/sa-entrevistar/decisoes.md) (título `# Decisões — <EP-nn> <título>` e a tabela vazia)
-   e o `status.md` pelo padrão `sa-especificar/status-epico.md`.
 
 Em qualquer das três, a pasta tem o **`status.md` do épico** — a Fase (o detalhe do épico, como o da fatia; a
 situação fica no `backlog.md`), o início e os créditos de cada sessão. A triagem o cria com Fase `rascunho` e

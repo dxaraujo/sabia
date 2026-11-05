@@ -191,8 +191,15 @@ class Gerar(unittest.TestCase):
 
     def test_sem_glossario_nem_bundle(self):
         agentes = self.gerar(glossario=None, bundle=None)
-        self.assertIn("glossário (`não há`)", agentes["produto"]["prompt"])
+        # a linha que cita o glossário sai do prompt; a do ADR fica
+        for n in ("produto", "especificador"):
+            self.assertNotIn("glossário (`", agentes[n]["prompt"])
+            self.assertIn("ADR (`docs/adr`", agentes[n]["prompt"])
         self.assertFalse([m for m in regras(agentes["desenvolvedor"], "fs_read", "deny") if "elm/pa" in m])
+
+    def test_subagentes_do_projeto_so_no_desenvolvedor_e_no_orquestrador(self):
+        with self.assertRaisesRegex(ValueError, r"subagentes do projeto só no sa-desenvolvedor e no sa-orquestrador, não em \['sa-especificador'\]"):
+            g.gerar(self.projeto, {**self.cfg, "agentes": {"sa-especificador": {"subagentes": [{"nome": "dba", "para": "x"}]}}})
 
     def test_extras_do_projeto(self):
         cfg = {"agentes": {"sa-desenvolvedor": {"skills": ["skill://.kiro/skills/java/SKILL.md"], "mcp": ["banco/consultar"],

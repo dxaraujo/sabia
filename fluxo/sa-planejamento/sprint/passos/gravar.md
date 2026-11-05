@@ -30,7 +30,8 @@ sem commit próprio (o da virada, no passo `sa-planejamento.retrospectiva.recalc
    | Revisão (`[ESP] <id> Revisão <n>`) de épico ou fatia | não muda | `planejada`, Observação `revisão <n>: <motivo>` |
    | Sustentação | não muda (`aberto`) | `aberto` |
 
-3. **Publique sempre no EWM** ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §1–4 e §6),
+3. **Publique sempre no EWM** (projeto sem ELM: não há publicação nem sincronização com o EWM — o cabeçalho e a Tarefa
+   ELM pelo [arquivos.md](~/.sabia/framework/skills/sa-planejamento/references/arquivos.md#sprintspaisprint-nnmd)) ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §1–4 e §6),
    para a sprint e o EWM ficarem iguais — **também sem responsáveis**: os IBs com o P.O. como dono e todas as tarefas
    de cada item, sem dono onde não há responsável.
 4. **Sem o MCP `elm` ou com falha:** a coluna "Tarefa ELM" fica `pendente` e é publicada depois. O `sprint-<nn>.md`

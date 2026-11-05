@@ -3,8 +3,8 @@
 ---
 ## Entrada
 
-Os ADRs do PR (`.kiro/specs/ft-<nnn>-<slug>/adr/`), os `termo pendente` do `decisoes.md` da fatia e os nomes novos
-do diff do merge (`git diff <sha do merge>^1 <sha do merge>`: classes, campos, tabelas e mensagens).
+Os ADRs do PR (`.kiro/specs/ft-<nnn>-<slug>/adr/`) e os nomes novos do diff do merge (`git diff <sha do merge>^1
+<sha do merge>`: classes, campos, tabelas e mensagens).
 
 ## Faça
 
@@ -13,8 +13,8 @@ do diff do merge (`git diff <sha do merge>^1 <sha do merge>`: classes, campos, t
   (nome = o padrão dos arquivos que já estão nela, com o próximo número; pasta vazia → `0001-<slug-da-decisão>.md`, 4
   dígitos, em sequência; `origem FT-<nnn>`), sem reescrever o conteúdo; a cópia da pasta da fatia fica como
   registro do PR. Pasta de ADRs "não há" → ficam só na pasta da fatia.
-- **Glossário:** termos que o código novo introduziu ou renomeou — e os `termo pendente` do `decisoes.md` da
-  fatia — estão no glossário? Faltando → proponha a linha no padrão `sa-entrevistar/glossario.md` e grave com "ok".
+- **Glossário:** termos que o código novo introduziu ou renomeou estão no glossário? Faltando → proponha a linha no
+  padrão `sa-entrevistar/glossario.md` e grave com "ok".
   O código usa um termo diferente do glossário → pergunte à pessoa: corrigir o glossário (com "ok") ou o código (diga
   "registre a correção pela `sa-triar`, origem FT-<nnn>" e siga).
 

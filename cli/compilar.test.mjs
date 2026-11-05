@@ -165,18 +165,18 @@ test("chama: em linha (mesmo dono ou skill do agente), subagente, e recusa quand
   assert.match(validar(carregar(ruim)).join("\n"), /chama sa-a\.a \(dono sa-um\), mas sa-dois não tem a skill nem esse subagente/);
 });
 
-const ENTRADA = { id: "entrada", de: "entrada", sprint: "exige" };
+const ENTRADA = { id: "entrada", de: "entrada", sprint: "exige", branch: "fatia" };
 const VIZ = "# Título\n\nIntro.\n\n## Entrada: vizinhos\n\n- `pronta` com a tarefa aberta → `sa-b.x` (agente `sa-dois`)\n- `bloqueada` aguardando troca → \"fale com o P.O.\" ■\n\n## Regras\n\n- Uma.\n";
 const comEntrada = (passos = [ENTRADA, { id: "ini" }, { id: "rev" }], corpo = VIZ, extra = {}) => fixture({
   "fluxo/entrada.md": passo("Entrada comum.", "Pule se chamado."),
   "fluxo/sa-a/a/a.md": mestre({ fluxo: "a", dono: "sa-um", passos }, corpo), ...extra });
 
-test("passo compartilhado: corpo de fluxo/entrada.md, linha do sprint injetada, na tabela e no grafo; vizinhos no SKILL.md", () => {
+test("passo compartilhado: corpo de fluxo/entrada.md, linha do sprint e da branch injetada, na tabela e no grafo; vizinhos no SKILL.md", () => {
   const fw = comEntrada();
   assert.deepEqual(validar(carregar(fw)), []);
   const st = compilar(fw, path.join(raiz, "st"), { base: BASE });
   assert.equal(out(st, "sa-a/references/a/entrada.md").split("\n## Entrada")[0],
-    `_Entrada comum._\n\nSprint deste fluxo: \`exige\`. Vizinhos: a seção Entrada: vizinhos do [Fluxo a](${BASE}/sa-a/SKILL.md#fluxo-a).\n`);
+    `_Entrada comum._\n\nSprint deste fluxo: \`exige\`. Branch deste fluxo: \`fatia\`. Vizinhos: a seção Entrada: vizinhos do [Fluxo a](${BASE}/sa-a/SKILL.md#fluxo-a).\n`);
   assert.ok(out(st, "sa-a/references/a/entrada.md").includes("Pule se chamado."));
   const s = out(st, "sa-a/SKILL.md");
   assert.match(s, /\| 1 \| `entrada` \| \[entrada\.md\]\(~\/\.config\/opencode\/skills\/sa-a\/references\/a\/entrada\.md\)/);
@@ -185,11 +185,12 @@ test("passo compartilhado: corpo de fluxo/entrada.md, linha do sprint injetada, 
   assert.match(g, /│ 1 entrada \[exige\] +│──▶ ↪ vizinhos \(diga e pare\): sa-b\.x · ■ bloqueada aguardando troca\n/);
 });
 
-test("passo compartilhado: recusa passos/entrada.md, de sem arquivo, sprint fora de exige|nao, id entrada local e falta dos vizinhos", () => {
+test("passo compartilhado: recusa passos/entrada.md, de sem arquivo, sprint fora de exige|nao, branch fora de fatia|nao, id entrada local e falta dos vizinhos", () => {
   const casos = [
     [() => comEntrada(undefined, undefined, { "fluxo/sa-a/a/passos/entrada.md": passo("x") }), /a\.md:2: passo entrada: vem de fluxo\/entrada\.md; apague passos\/entrada\.md/],
     [() => comEntrada([{ ...ENTRADA, de: "nada" }, { id: "ini" }, { id: "rev" }]), /passo entrada: de "nada" sem fluxo\/nada\.md/],
     [() => comEntrada([{ ...ENTRADA, sprint: "puxa" }, { id: "ini" }, { id: "rev" }]), /passo entrada: sprint "puxa" \(use exige ou nao\)/],
+    [() => comEntrada([{ ...ENTRADA, branch: undefined }, { id: "ini" }, { id: "rev" }]), /passo entrada: branch "" \(use fatia ou nao\)/],
     [() => comEntrada([{ id: "entrada" }, { id: "ini" }, { id: "rev" }], VIZ, { "fluxo/sa-a/a/passos/entrada.md": passo("x") }), /passo entrada: id reservado ao passo compartilhado/],
     [() => comEntrada(undefined, "# Título\n"), /passo entrada sem a seção "## Entrada: vizinhos"/],
   ];

@@ -4,8 +4,8 @@
 ## Entrada
 
 A especificação aprovada na base (passo `aprovacao`); ou, pelo passo `entrada`, a linha `iniciada` com conceito da
-fatia aprovado na base e ainda não publicado — na fatia `iniciada`, o artefato do Bloqueio, com o `verified` mais
-novo que o Bloqueio (retomada: o filtro dá `sem mudança` no que já subiu).
+fatia aprovado na base e ainda não publicado, pelo filtro do `elm-publicar.md` (retomada: o filtro dá `sem mudança`
+no que já subiu).
 
 ## Faça
 

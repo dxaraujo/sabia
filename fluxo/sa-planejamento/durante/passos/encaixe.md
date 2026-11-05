@@ -22,7 +22,9 @@ tarefa de papel por fora) chega aqui pela sincronização (§9) como linha `enca
 (responsável, modo pela senioridade e, no HITL, revisor e verificador), e a tarefa que já existe é a do papel
 inferido.
 Mostre a fatia (trilha, tamanho, modo, origem), o que sobra da capacidade (revisão, vazão, HITL; no item de
-Sustentação, a reserva, cujo usado não soma as linhas com `saiu da sprint`: o item saiu da sprint e não a consome;
+Sustentação, a reserva e o consumido, pela conta do
+[arquivos.md](~/.sabia/framework/skills/sa-planejamento/references/arquivos.md#sprintspaisprint-nnmd), sem as linhas com
+`saiu da sprint`: o item saiu da sprint e não a consome;
 na especificação, a capacidade de especificação) e as opções, com a recomendada:
 - **entra na folga** — cabe sem tirar nada;
 - **entra no lugar de** `FT-…` — uma `planejada` (ainda não iniciada), que sai da sprint;

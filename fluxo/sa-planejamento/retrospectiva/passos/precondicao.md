@@ -10,7 +10,8 @@ pela metade (a sprint aberta é a próxima, criada no passo `fechar`).
 
 **Virada pela metade** (a sprint aberta tem `**Publicação no EWM:** pendente` e a anterior está `**Situação:**
 fechada`): sem `**Meta:**` (só o cabeçalho mínimo e as linhas migradas do passo `fechar`) → retome no passo
-`recalcular`; planejada (com a meta) → no passo `virada`.
+`recalcular`; planejada (com a meta) → no passo `virada`. Projeto sem ELM (sem o marcador): só a aberta sem
+`**Meta:**`, com a anterior `fechada` → passo `recalcular`.
 
 **Pré-condição** — a dos ritos de fechamento, antes da retrospectiva e de novo antes da virada: leia e execute,
 nesta ordem, os passos `sa-planejamento.review.sincronizar` e `sa-planejamento.review.consolidacao`.

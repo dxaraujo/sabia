@@ -11,7 +11,8 @@
   não é o `responsavel` da linha viva da fatia na sprint (base) → "é de <login>; trocar é do P.O. ou do SM" e pare.
   A `[DEV]`, pela seção Assumir do passo `sa-codificar.codificar.entrada`
   (já é dele → nada; fechada sem o PR mergeado → reabrir com "sim"; com o PR mergeado → `sa-desenvolver.encerrar`).
-- **Fase:** `implementando`, `revisando`, `verificando`, `retrabalho (de: …)` ou `verificada` (AFK: passo `pr`);
+- **Fase:** `implementando`, `revisando`, `verificando` (AFK: passo `verificar`, uma rodada nova, sem nova revisão),
+  `retrabalho (de: …)` ou `verificada` (AFK: passo `pr`);
   `bloqueada (de: <fase>)` → mostre o motivo e a pergunta; resolvido, `Bloqueio: —` e a fase de origem. Bloqueio
   `aguardando especificação [ESP] FT-<nnn>` ([Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação)) com a linha da
   Especificação `concluida` na base e o motivo do Bloqueio na Observação ([De quem é a Volta](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação); sem ele, é do
@@ -35,9 +36,9 @@
 - Atualize: a branch tem upstream → `git pull --ff-only`; não tem (worktree nova) → `git fetch` basta.
 - Retome do **primeiro item não marcado** do `tasks.md`. A seção "Achados abertos" do `status.md` é a fonte única:
   antes, os achados do último `revisao-codigo-<N>.md` com `VEREDITO: REVISAR` e os cenários rejeitados do
-  `verificacao.md` que ainda não estão nela entram como linhas `aberto` (origem: o nome do relatório). Viram as
+  `verificacao.md` (o último resultado de cada um) que ainda não estão nela entram como linhas `aberto` (origem: o nome do relatório). Viram as
   próximas tarefas só os `aberto` de origem `revisao-codigo-<N>.md`, `verificacao.md`, `PR` ou `[ESP] FT-<nnn>` sem
-  tarefa `[R<n>]` no `tasks.md` (os de `GATE do plano` são do plano; os de `ambiente` não são código), numeradas em
+  tarefa `[R<n>]` no `tasks.md` (os de `GATE do plano` são do plano), numeradas em
   sequência no fim da seção `## Tasks` do `tasks.md` (`- [ ] 7. [R1] <achado> — origem: revisao-codigo-2.md`;
   e cada uma entra numa wave nova no fim do JSON do `## Task Dependency Graph`). Como as anteriores estão marcadas,
   elas são as primeiras não marcadas.
@@ -53,7 +54,8 @@
   revisor e o verificador reabrem a `[REV]` e a `[VER]`; AFK: passos `validar`, `revisar` e `verificar` de novo, e quem aprova reabre a
   `[APR] Aprovar PR` (`sa-revisar`).
 - Rode o comando de **testes** uma vez antes de mexer: vermelho antes de começar = problema do ambiente ou da
-  base, não seu. Registre e avise; não "conserte" o que não é da fatia.
+  base, não seu → `fase: bloqueada (de: <fase>)`, Bloqueio `⚠️ ambiente: <o que faltou>` (o comando e a falha), avise e
+  pare; não "conserte" o que não é da fatia.
 
 ## Saída
 
@@ -69,4 +71,5 @@ Branch atualizada, árvore limpa e a próxima tarefa não marcada → passo `tar
   pergunta e pare.
 - `implementando` sem a linha do GATE no Histórico (`plano aprovado por <login>`, `plano do Sênior` ou `Pleno
   dispensou o GATE do plano`, gravada no passo `sa-plano.plano.gate`) → o plano não passou pelo GATE: avise e pare.
+- Vermelho antes de mexer → `bloqueada` com o `⚠️ ambiente`, e pare.
 - Qualquer outra alteração na árvore → avise e pare.

@@ -1,5 +1,5 @@
 ---
-{"resumo": "Numa confirmação, publica no ELM a ET as-built (ajustada pela skill de toolkit do tipo ET, quando há) ligada à [DEV] e ao código, os casos de teste da fatia e a conclusão do IB, lança as horas do SM e prepara os créditos; sem o MCP, pendências."}
+{"resumo": "Numa confirmação, publica no ELM a ET as-built (ajustada pela skill de toolkit do tipo ET, quando há) ligada à [DEV] e ao código e os casos de teste da fatia, lança as horas do SM e prepara os créditos; sem o MCP, pendências."}
 ---
 ## Entrada
 
@@ -20,7 +20,8 @@ os ids deles).
   envelope do `okf-elm.md`); a diferença vai na prévia. Com o "sim" da prévia, antes de publicar, você grava na ET
   `status: stable` e um `verified` de quem consolida, `{ by: human:<login de quem consolida>, at: <agora,
   AAAA-MM-DDThh:mm:ssZ> }` (vai no commit do passo `fechar`). Ela sobe com a linha `Código: PR <link> · merge <sha curto>` no texto e ligada à `[DEV]` da fatia (`implementa`).
-  Sem a ET no PR → `ELM pendente [ET FT-<nnn> escrever]` para o Dev, que a entrega num PR curto. Fatia de épico com
+  Sem a ET no PR → siga, com a `ELM pendente [ET FT-<nnn> escrever]` para o Dev, que a entrega num PR curto; o P.O. ou
+  o SM a publica ao resolver a pendência. Fatia de épico com
   ET inicial → a as-built sobe ligada a ela (seção ET as-built do `elm-publicar.md`);
 - *casos de teste* — pela linha Casos de teste do `sabia.md`: `ETM` (com `qm` no `pa`) → por cenário verificado
   (`verificacao.md`/`CT.csv`), o CT planejado (publicado na `[ESP]`) ligado ao IB e o CT novo criado, ids no
@@ -31,20 +32,19 @@ os ids deles).
   plano ou do PR; no AFK não há `[REV]` nem `[VER]`). Tarefa da fatia ainda aberta (a `[DEV]` aberta já parou no
   passo `entrada`) → mostre qual e de quem, e
   registre `ELM pendente [<chave>]: concluir <tarefa> (<login>)`, que a pessoa faz na sessão dela;
-- *backlog* — concluir o IB da fatia (e o do épico, na última fatia — passo `fechar`). Tarefa concluída sem horas não
-  trava: a virada aponta. A consolidação é **pré-condição dos ritos de fechamento** da sprint (review, retrospectiva,
+- *backlog* — a conclusão do IB da fatia (e a do IB do épico, na última fatia) é do passo `fechar`, depois do push
+  conferido. Tarefa concluída sem horas não trava: a virada aponta. A consolidação é **pré-condição dos ritos de fechamento** da sprint (review, retrospectiva,
   virada): fatia `pronta` sem ela para o rito, salvo decisão do P.O.;
 - *horas* — só na sessão do SM (o P.O. nunca lança, nem quando também é o SM): "Quanto tempo nesta consolidação?" →
   `elm_horas(<id da GB da primeira linha de ## Sustentação do backlog.md>)` → `elm_lancar_horas(<id>, <h>)` na mesma
   confirmação (lança, não conclui: a `[GB]` é contínua). Sem o MCP ou com falha → `ELM pendente [GB <id> horas]:
   lançar <h>h (<AAAA-MM-DD>)` no lugar das pendências da `[GB]`.
 - *créditos* — em toda consolidação, do P.O. ou do SM, os créditos desta sessão
-  ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4) vão, no passo `fechar`, num comentário na `[GB]`
+  ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4) vão, no passo `fechar`, num comentário na `[GB]` (depois do push conferido)
   (`elm_comentar(<id da [GB]>, "Créditos consolidação FT-<nnn>: <créditos> (sessão <sessão>, <login>, <AAAA-MM-DD>)")`,
   com "sim") e na seção **Créditos de gestão** do `sprint-<nn>.md` aberto (Atividade `consolidação`; o FT vai só no `<ids>` do comentário), no
-  commit do passo `fechar`. `## Sustentação` sem a `GB` → indique o fluxo `sa-planejamento.inicial` (ou crie-a pelo
-  [elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §2, com "sim"); sem ela, grave só a linha em
-  Créditos de gestão. Sem o MCP ou com falha no comentário → `ELM pendente [GB <id> créditos]: comentar "Créditos
+  commit do passo `fechar`. `## Sustentação` sem a `GB` → indique o fluxo `sa-planejamento.inicial`; sem ela, grave só
+  a linha em Créditos de gestão. Sem o MCP ou com falha no comentário → `ELM pendente [GB <id> créditos]: comentar "Créditos
   consolidação FT-<nnn>: <créditos> (sessão <sessão>, <login>, <AAAA-MM-DD>)"` no lugar das pendências da `[GB]`
   ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4), não no `status.md`.
 

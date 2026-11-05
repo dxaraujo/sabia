@@ -145,8 +145,8 @@ primeira linha da `## Sustentação` do `backlog.md`: `IB [<id>](<url>) · GB [<
 [<id>](<url>)` (a Manutenção entra quando nasce, §3; o IB de cada categoria abre a `### <Categoria>` dele, §6).
 Sustentação já existe sem a `[GB]` → crie só a `[GB]` (na iteração da sprint aberta; sem ela, no backlog). **Pai
 novo** (a sprint nova é `2027/Sprint 01`): nasce a `[GB]` do pai novo, na iteração da primeira sprint dele (dono = o
-SM), e a antiga conclui com o saldo de horas do SM (sem horas, se ele é também o P.O.; `elm_transicao concluir`) e
-sai da linha; a Sustentação, a Manutenção e os IBs de categoria não mudam. A `[GB]` do pai novo não usa a
+SM), e a antiga conclui sem o saldo de horas do SM (`elm_transicao concluir`; o SM lança depois, no EWM — lançar
+horas nunca para a virada) e sai da linha; a Sustentação, a Manutenção e os IBs de categoria não mudam. A `[GB]` do pai novo não usa a
 idempotência acima, que acharia a antiga ainda aberta: procure `elm_listar_wi(iteracao = <a da 1ª sprint do pai
 novo>, titulo_prefixo "[GB]")`; achou a aberta de título `[GB] Gerenciamento do backlog` → é ela (publicação
 interrompida); senão, crie. Grave o id novo no lugar do `GB` da linha da `## Sustentação` e só então conclua a antiga.
@@ -164,9 +164,10 @@ interrompida); senão, crie. Grave o id novo no lugar do `GB` da linha da `## Su
   (topo).
 - **IB da fatia** (no GATE do backlog da `sa-fatiar`; fatia sem épico, na triagem; `iteracao = backlog` ou a da
   sprint em que já entra): `elm_criar_wi(tipo ib, "[FT-<nnn>] <título>", pai = épico — sem épico, a Manutenção —,
-  dono = P.O., descricao_md = modo, bloqueada por, pasta prevista, campos =
-  {<campo de critérios do sabia.md>: os cenários Dado/Quando/Então copiados do PRD ou da ficha, com "gerado do PRD — não
-  edite aqui"})`. Defeito: `campos` com a categoria de correção da seção ELM do `sabia.md`. Depois
+  dono = P.O., descricao_md = modo, bloqueada por, pasta prevista, critérios)`. Critérios = os cenários
+  Dado/Quando/Então copiados do PRD ou da ficha, com "gerado do PRD — não edite aqui", no campo da linha `Critérios de
+  aceite no IB` do `sabia.md` (`campos`) ou, com `descrição`, no fim da `descricao_md`; regravados
+  (`elm_atualizar_wi`) pela `sa-triar` na aprovação da ficha e pela `sa-especificar.fatia.concluir`. Depois
   `elm_ligar(wi, wi_destino, tipo depende)` para cada `bloqueada-por` (sem `links.depende` no `pa` → fica na
   descrição). Os vínculos com os requisitos são das tarefas
   ([elm.md](../../sabia/references/elm.md#vínculos-cada-um-liga-o-que-gera)).
@@ -176,7 +177,8 @@ interrompida); senão, crie. Grave o id novo no lugar do `GB` da linha da `## Su
   parecido do §2), com o id na
   linha da `## Sustentação` do `backlog.md`. Com item de origem (DF, IB), não há IB novo:
   `elm_atualizar_wi(origem, iteracao = backlog)`, com `pai = Manutenção` se ele não tem pai (outro pai: mantém e
-  avisa) e `dono = P.O.` se ele não tem dono — o `assumir` da `[DEV]` com `iniciar_pai` exige dono no pai. Fatia
+  avisa) e `dono = P.O.` se ele não tem dono — o `assumir` da `[DEV]` com `iniciar_pai` exige dono no pai —, e o
+  título ganha o `[FT-<nnn>]` pelas opções do §9 (renomear · só incluir o prefixo · manter). Fatia
   vinculada a um item de Sustentação (`obs` `vinculada a [AT-012](…)`) → `elm_ligar(wi = item da fatia, wi_destino =
   IB do item, tipo relacionado)`.
 - **Fatia dividida:** como a linha do `sabia.md` manda (filhos do IB original, ou fecha o original e cria novos); sem

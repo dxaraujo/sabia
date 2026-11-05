@@ -9,7 +9,8 @@ O `equipe.json`, o `acordos.md`, o `backlog.md` e as sprints anteriores.
 
 **Capacidade**, da `equipe.json` (horas da sprint menos ausências):
 - **revisão humana** (horas de revisão e verificação) — o limite principal;
-- **HITL**: fatias HITL consomem horas de dev acompanhando;
+- **HITL**: fatias HITL consomem horas de dev acompanhando — a soma das horas da `[DEV]` das fatias HITL da sprint
+  (as da proposta, passo `proposta`);
 - **vazão**: média de fatias concluídas nas últimas 3 sprints, incluídas as puxadas (primeira sprint: comece
   com 1 fatia por dev por semana e ajuste na virada), e o lead time médio por fatia;
 - **especificação**: horas de especificação da sprint (`horas-especificacao-semana`); zero no time inteiro e

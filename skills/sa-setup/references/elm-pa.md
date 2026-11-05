@@ -80,7 +80,6 @@ valor que não está nela.
 | 3 | Sustentação (pai da `[GB]`, da Manutenção e dos IBs de categoria) | `Sustentação` | Apoio Técnico |
 | 4 | Manutenção (pai das fatias sem épico) | `Manutenção` | — (pergunte: valor da lista da PA) |
 | 5 | item de Sustentação (`[AT-012] <pedido>`) | `[AT-` · `[IM-` · `[BD-` · `[IN-` · `[OP-` · `[EX-` | Apoio Técnico (a mesma da linha 3) |
-| 6 | IB de defeito | — (vai na chamada) | Correção → linha "IB de defeito" do `sabia.md` |
 | — | padrão do tipo (`padroes`) | qualquer outro título (inclusive o IB de categoria: `Atendimento`, `Implantação`…) | Apoio Técnico |
 
 **Tarefa** — obrigatórios 🔒 `Categoria` (de integração de horas), `OTR`, `ID do Produto (Clarity)` e `Classificação
@@ -88,23 +87,23 @@ da Tarefa`:
 
 | # | Tarefa | Título começa por | Classificação da Tarefa |
 |---|---|---|---|
-| 7 | especificação | `[ESP]` | Análise / Especificação |
-| 8 | desenvolvimento | `[DEV]` | Desenvolvimento (Transacional / Analítico / IA / etc ) |
-| 9 | revisão | `[REV]` | Desenvolvimento (Transacional / Analítico / IA / etc ) |
-| 10 | verificação | `[VER]` | Testes |
-| 11 | aprovação do plano e do PR | `[APR]` | Outra - Não listada |
-| 12 | Sustentação — Atendimento | `[ATD]` | Suporte / Apoio Técnico Especializado |
-| 13 | gerenciamento do backlog | `[GB]` | Outra - Não listada |
-| 14 | Sustentação — Implantação | `[IMPL]` | — (pergunte: valor da lista da PA) |
-| 15 | Sustentação — Banco de dados | `[BD]` | — (pergunte) |
-| 16 | Sustentação — Infra | `[INF]` | — (pergunte) |
-| 17 | Sustentação — Operação | `[OPE]` | — (pergunte) |
-| 18 | Sustentação — Apoio a outros times | `[EXT]` | — (pergunte) |
+| 6 | especificação | `[ESP]` | Análise / Especificação |
+| 7 | desenvolvimento | `[DEV]` | Desenvolvimento (Transacional / Analítico / IA / etc ) |
+| 8 | revisão | `[REV]` | Desenvolvimento (Transacional / Analítico / IA / etc ) |
+| 9 | verificação | `[VER]` | Testes |
+| 10 | aprovação do plano e do PR | `[APR]` | Outra - Não listada |
+| 11 | Sustentação — Atendimento | `[ATD]` | Suporte / Apoio Técnico Especializado |
+| 12 | gerenciamento do backlog | `[GB]` | Outra - Não listada |
+| 13 | Sustentação — Implantação | `[IMPL]` | — (pergunte: valor da lista da PA) |
+| 14 | Sustentação — Banco de dados | `[BD]` | — (pergunte) |
+| 15 | Sustentação — Infra | `[INF]` | — (pergunte) |
+| 16 | Sustentação — Operação | `[OPE]` | — (pergunte) |
+| 17 | Sustentação — Apoio a outros times | `[EXT]` | — (pergunte) |
 | — | padrão do tipo (`padroes`) | qualquer outro título | Outra - Não listada |
 
-As linhas 12 e 14–18 são as categorias da tabela **Sustentação** do `sabia.md` (a Classificação escolhida aqui vai
+As linhas 11 e 13–17 são as categorias da tabela **Sustentação** do `sabia.md` (a Classificação escolhida aqui vai
 também para a coluna dela lá); categoria que o projeto acrescenta ganha uma linha aqui, com o prefixo dela, e a série
-dela entra na linha 5. A Manutenção não tem linha de tarefa: as fatias dela usam as das linhas 8–11.
+dela entra na linha 5. A Manutenção não tem linha de tarefa: as fatias dela usam as das linhas 7–10.
 
 Iguais em toda tarefa (vão em `padroes`): `Categoria` = Aplicativo · `OTR` = 1-Apoio-Produtos · `ID do Produto
 (Clarity)` = o código do produto do projeto — campo de texto, **sempre perguntado** (é de cada projeto; sem ele a
@@ -184,7 +183,7 @@ Mostre o `pa` inteiro numa tabela legível — PA, time e categoria, cada tipo c
 `por-prefixo`, horas, RM com cada sigla (tipo e pasta), bundle e ETM —, com a origem de cada valor (descoberta, pessoa ou
 fixo), e depois o JSON. O JSON mostrado é **o que será gravado, byte a byte**: monte-o no formato do schema
 (ids da descoberta inclusos — `ccm.id`, `time.id`, `categoria.id`, `tipos.*.id`, `campos` como `nome → qname`) e
-confira contra o [schema](https://dxaraujo.github.io/mcps/elm/pa.schema.json) **antes** de mostrar. "ok" → grave `.kiro/config/elm/pa_<nome>.json` (relativo à raiz, `/`, sem segredos — vai
+confira contra o [schema](https://dxaraujo.github.io/mcps/elm/pa.schema.json) **antes** de mostrar. "ok" → grave `.kiro/config/elm/pa_<nome>.json` (`<nome>` = o nome da PA do EWM em minúsculas, sem acento, com hífen no lugar do espaço; relativo à raiz, `/`, sem segredos — vai
 para o git) e confira com `elm_status(projeto)`: `valido` e `faltando` vazio. A validação pediu mudança → mostre o diff do que
 muda e peça "ok" de novo; nunca regrave em silêncio o que a pessoa aprovou.
 

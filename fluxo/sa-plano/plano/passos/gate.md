@@ -3,7 +3,8 @@
 ---
 ## Entrada
 
-`ANALISE: OK` (passo `analise`), também na volta do ajuste pedido no GATE. Ou, pelo passo `entrada`: retomando em `aguardando-aprovacao-plano` sem `[APR]`, ou
+`ANALISE: OK` (passo `analise`), também na volta do ajuste pedido no GATE, ou a 2ª rodada em `ANALISE: AJUSTAR`
+(passo `analise`: HITL, com a decisão da pessoa; AFK, com GATE). Ou, pelo passo `entrada`: retomando em `aguardando-aprovacao-plano` sem `[APR]`, ou
 em `bloqueada (de: planejando)` com `aguardando troca de modo`.
 
 ## Faça
@@ -28,8 +29,8 @@ Na troca, o Dev não grava na base nem cria ou cancela tarefa.
 
 ### Fatia AFK com risco
 
-`Modo: AFK` e o plano mostra risco — regra de negócio sensível, muitos cenários, integração externa, mudança de
-dado (diga qual) → mostre o risco e **pergunte** se o Dev pede a troca para HITL. A troca de modo é só do P.O. ou do
+`Modo: AFK` e o plano mostra risco — regra de negócio sensível (dinheiro, acesso, dado pessoal), mais de 6 cenários
+no contrato de pronto, integração externa, mudança de dado (diga qual) → mostre o risco e **pergunte** se o Dev pede a troca para HITL. A troca de modo é só do P.O. ou do
 SM, na base; aqui só se para.
 
 - Não pede → o GATE abaixo, no AFK.
@@ -51,13 +52,14 @@ Requisitos: <n> (<c> critérios) · Tarefas: <n> · Arquivos: <criar n · altera
 Análogo: <…> · Pontos de teste: <…> · Decisões técnicas: <lista curta>
 Testes existentes que mudam: <nenhum | lista>
 Contrato de pronto: <n> cenários, executados por <API | job | browser | carga>
-Análise: OK na rodada <N>
+Análise: <OK na rodada <N> | AJUSTAR na rodada 2 · achados aceitos: <#> | AJUSTAR na rodada 2 (analise-plano-2.md)>
 Leia de preferência: forma do programa e contrato de pronto.
 ```
 
 A `senioridade` de quem implementa — o `responsavel` da linha da fatia no `backlog.md` da base (no loop, quem
 disparou); nunca o `Responsável` do `status.md`, que em `aguardando-aprovacao-plano` é quem aprova — no `equipe.json`
-da base decide; trilha e modo não entram:
+da base decide; trilha e modo não entram — fora a fatia AFK com a 2ª rodada em `ANALISE: AJUSTAR` (passo
+`analise`): com GATE, em qualquer senioridade:
 
 | Senioridade | GATE |
 |---|---|
@@ -65,7 +67,7 @@ da base decide; trilha e modo não entram:
 | **Pleno** | **pergunte** se ele quer a aprovação de um Dev Sênior (recomende "sim" quando o plano muda a expectativa de um teste existente). Sim → como o Júnior; não → `fase: implementando`, Histórico `Pleno dispensou o GATE do plano` |
 | **Sênior** | nunca: ele aprova o próprio plano — `fase: implementando`, Histórico `plano do Sênior` —, inclusive quando o plano muda a expectativa de um teste existente |
 
-**Com GATE** (Júnior, ou Pleno que pediu): pergunte qual Dev Sênior aprova — sugira o que vai revisar o PR (coluna
+**Com GATE** (Júnior, Pleno que pediu, ou AFK com a 2ª rodada em `AJUSTAR`): pergunte qual Dev Sênior aprova — sugira o que vai revisar o PR (coluna
 Revisor da fatia no `sprint-<nn>.md`, que a puxada também tem); AFK, sem revisor: um Dev Sênior ativo que não é quem
 implementa. Então `fase: aguardando-aprovacao-plano` (conta no WIP de revisão humana), `Responsável` = quem aprova,
 e a tarefa **`[APR] FT-<nnn> Aprovar plano`** para ele
@@ -75,8 +77,10 @@ e a tarefa **`[APR] FT-<nnn> Aprovar plano`** para ele
 (como na Entrega do passo `sa-codificar.codificar.pr`) — quem aprova lê o plano no remoto → horas da sessão na
 `[DEV]` (lança, não conclui) → avise o aprovador (`sa-revisar.aprovar-plano`).
 
-**Sem GATE** (Sênior, ou Pleno que dispensou): `fase: implementando`, a linha no Histórico, os créditos da sessão ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4) e **um commit** com os
-mesmos arquivos (`<FT> registrar plano`). Próximo: **`sa-codificar`** — numa sessão nova, de preferência (o plano está
+**Sem GATE** (Sênior, ou Pleno que dispensou): `fase: implementando`, a linha no Histórico, os créditos da sessão ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4),
+as horas da sessão na `[DEV]` — pergunte; com "sim", `elm_horas(<id>)` → desconte → `elm_lancar_horas(<id>, <h>)`
+(lança, não conclui); sem o MCP `elm` → `ELM pendente [DEV FT-<nnn> horas]: lançar <h>h (<AAAA-MM-DD>)` no
+Histórico; sem resposta, siga sem lançar — e **um commit** com os mesmos arquivos (`<FT> registrar plano`). Próximo: **`sa-codificar`** — numa sessão nova, de preferência (o plano está
 no disco; o contexto da pesquisa não é mais necessário).
 
 **Volta do ajuste** (a última decisão no Histórico é `ajuste do plano pedido por <login>`, sem `plano aprovado por`

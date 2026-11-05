@@ -1,5 +1,5 @@
 ---
-{"resumo": "Toda sessão, antes de parar: créditos no status.md do épico, comentário e anexos na [ESP] e as horas da sessão, numa pergunta só."}
+{"resumo": "Toda sessão, antes de parar: pergunta as horas, roda o script dos créditos e mostra a prévia completa com um \"sim\"; grava os créditos no status.md do épico, o comentário e os anexos na [ESP] e lança as horas."}
 ---
 ## Entrada
 
@@ -8,15 +8,21 @@ PRD na base (a mudança, `sa-prd.mudanca`, ou a retomada da publicação), a do 
 
 ## Faça
 
-Fechar a sessão (toda sessão, antes de parar). Pergunta única, com prévia do que vai:
+Fechar a sessão (toda sessão, antes de parar), nesta ordem:
+
+1. **Horas** — pergunte as horas desta sessão na `[ESP]` (nunca estime pela pessoa).
+2. **Créditos** — o script da [`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4, na
+   resposta das horas, sem a pergunta `💳` dela (sem as horas, no passo `concluir`, na resposta da pergunta `💳`); só
+   no Kiro (no opencode, pule, e a prévia sai sem a linha Créditos).
+3. **Prévia completa** e um "sim":
 
 ```
 📝 Sessão de especificação — EP-<nn> · <data>
 Comentário na [ESP] <id>: Sessão de especificação — EP-<nn> · <AAAA-MM-DDTHH:MMZ>
   <resumo do levantamento · decisões D-nn novas · dúvidas para a próxima reunião>
 Anexos (última versão, substituem os anteriores): rascunho.md · decisoes.md · status.md · prd.md · elm-<arquivo>.md …
-Horas desta sessão na [ESP]: <h> h em <data>   (pergunte à pessoa; nunca estime por ela)
-Créditos desta sessão: <x.xx> (sessão <id>) · power sabia <versão>   (script da sa-status, item 4)
+Horas desta sessão na [ESP]: <h> h em <data>
+Créditos desta sessão: <x.xx> (sessão <id>) · power sabia <versão>
 Registrar? (sim)
 ```
 

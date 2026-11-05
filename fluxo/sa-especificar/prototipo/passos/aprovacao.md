@@ -19,12 +19,12 @@ aguardando
 - **Aprovado** — só com quem, data, versão e evidência; faltando uma delas, é `aguardando`.
   - **ATA:** a `ATA-<nn>` aprovada que registra a aprovação; o `D-nn` dela (passo `sa-especificar.reuniao.decisoes`) é o da
     aprovação, se diz a versão: a Pergunta e a Decisão dele passam ao texto abaixo, com a ATA na Fonte (é por esse
-    texto que o encaminhar e o `sa-prd.prd.escrever` acham a aprovação). ATA ainda `draft` ou transcrição sem ATA → a ATA antes (o encaminhar a
-    traz); a ATA sem essa decisão → `D-nn` novo, com a ATA na fonte.
+    texto que o encaminhar e o `sa-prd.prd.escrever` acham a aprovação); a ATA sem essa decisão → `D-nn` novo, com a
+    ATA na fonte.
   - **E-mail:** `D-nn` novo. O e-mail fica com quem o recebeu (não sobe: pode ter dado do cliente).
 
   O `D-nn` (padrão `sa-entrevistar/decisoes.md`): Pergunta `Protótipo aprovado pelo cliente?`, Decisão
-  `Protótipo v<N> aprovado (prototipo-v<N>-<slug>.<ext>)`, Fonte / quem decidiu
+  `Protótipo v<N> aprovado (<arquivos da versão>)`, Fonte / quem decidiu
   `<nome> (<papel>) · <ATA-<nn> [mm:ss] | e-mail <AAAA-MM-DD> "<assunto>">`, a data da aprovação, Situação
   `decidida` (a de uma versão aprovada antes: `decidida — substitui D-nn`). Na seção Protótipo do `rascunho.md`, a linha
   da versão passa a `aprovado — D-<nn>`.

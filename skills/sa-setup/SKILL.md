@@ -124,7 +124,8 @@ e confirme. Tipos de projeto e sinais: tabela de [references/toolkits.md](refere
 
 - **Steering de produto/tecnologia/estrutura:** padrão do Kiro (`.kiro/steering/product.md`, `tech.md`,
   `structure.md`) → confirme; faltando → pergunte, um papel por vez, qual arquivo faz aquele papel (liste os `.md`
-  candidatos) ou ofereça gerar (o Kiro tem "Generate Steering Docs"); "nenhum" é resposta válida.
+  candidatos) ou peça que a pessoa o gere: ela roda o "Generate Steering Docs" do Kiro e avisa, e a setup relê
+  `.kiro/steering/`; "nenhum" é resposta válida.
 - **Regras críticas:** leia o steering de tecnologia/estrutura e proponha as regras que, violadas, causam perda de
   dado, duplicidade ou falha em produção; a pessoa confirma, edita ou diz "nenhuma além do steering".
 
@@ -172,8 +173,8 @@ bloco por mensagem); antes do bloco 0, avise que é a parte mais longa (10 bloco
    `sabia.md`.
 2. **Glossário** (padrão `.sabia/glossario.md`) e **ADRs** (padrão `.sabia/adr`, sem barra no fim) — use os que já
    existirem; não existindo, o padrão é criá-los (linhas 2 e 3 do W4). A pessoa recusou na tabela → `"glossario": null` /
-   `"adr": null` no agentes.json e "não há" no sabia.md; o gerador tira as regras que citam o caminho e escreve "não há"
-   no prompt — nunca edite os agentes.
+   `"adr": null` no agentes.json e "não há" no sabia.md; o gerador tira as regras e a linha do prompt que citam o
+   caminho — nunca edite os agentes.
 3. **ELM** — o MCP `elm` vem com o power. `.kiro/config/elm/pa_*.json` no repositório (um por project area)?
    - Não há e a pessoa diz que o projeto não usa ELM → `Usa ELM: não` (o fluxo funciona igual; os ids vêm do
      `backlog.md`).
@@ -191,8 +192,8 @@ bloco por mensagem); antes do bloco 0, avise que é a parte mais longa (10 bloco
      `frontend`; senão `não`). Vão nas linhas de mesmo nome da seção ELM do `sabia.md`.
    - Seção ELM do `sabia.md`, sem perguntas (linha 6 do W4): manual `nada`,
      pontos `não`, fatia dividida "filhos do item original", títulos das tarefas e colunas do `CT.csv` do template (sem `qm`, `Status=Aprovado`; com `qm`, `Status=` o estado de aprovado
-     que a pessoa deu no bloco 9 do `elm-pa.md`);
-     a categoria do IB de defeito é a do bloco 5 do `elm-pa.md`. A Sustentação não é perguntada: o IB `Sustentação`
+     que a pessoa deu no bloco 9 do `elm-pa.md`).
+     A Sustentação não é perguntada: o IB `Sustentação`
      nasce no backlog do EWM, um por produto, com a `[GB]`, no fluxo
      `sa-planejamento.inicial` ou no espelhamento do backlog ([elm-sprint.md](../sa-planejamento/references/elm-sprint.md)
      §0 e §2); o IB
@@ -202,7 +203,8 @@ bloco por mensagem); antes do bloco 0, avise que é a parte mais longa (10 bloco
    - **Backlog do produto no EWM** (`ccm.backlog` do `pa`; também no modo atualização — com `pa` que já o tem, só o espelhamento): onde os
      itens triados nascem — [elm-sprint.md](../sa-planejamento/references/elm-sprint.md) §0 (pergunta a linha de
      base e se `<linha de base>/Backlog` já existe; senão cria a iteração e o plano `Backlog`; com `backlog.md` em uso,
-     oferece o espelhamento). Estrutura padrão no início do [elm-sprint.md](../sa-planejamento/references/elm-sprint.md#estrutura-no-ewm-padrão).
+     oferece o espelhamento — sem `<produto>/equipe.json`, ele pula a Sustentação e a `[GB]`, que nascem no fluxo
+     `sa-planejamento.inicial`). Estrutura padrão no início do [elm-sprint.md](../sa-planejamento/references/elm-sprint.md#estrutura-no-ewm-padrão).
    - **Bundle do RM** (`rm.download` do `pa`): pastas com `index.md` de `okf_version` → mostre e confirme; vazio →
      ofereça a `sa-sync` (baixar). É a base que os agentes consultam **pelas `elm_*_local` do MCP `elm`**, nunca lendo os arquivos —
      com "sim", `elm_indexar_local` (segundo plano: responde na hora; a 1ª vez baixa o modelo) e mostre quantos
@@ -218,7 +220,8 @@ nome, início da `description`, origem e, se houver, toolkit e papéis. Toolkit 
 → "detectado"; skill com `passo` → a tabela de
 desvios do W5 (o passo pelo id, como `sa-codificar.codificar.tarefa`; `para`, skill e agente), ligados no Passo 6;
 `passo` num passo sem desvio → ❌ na linha, e a skill não é ligada. Toolkit com `tipos` → a tabela de tipos do W5
-(o tipo, a skill do toolkit com o fluxo do tipo e o passo de desvio); vai para o projeto com o toolkit. Skill com
+(o tipo, a skill do toolkit com o fluxo do tipo e o passo de desvio) e o sim é ali, uma linha por toolkit de tipo
+(marcado o detectado; desmarcado o sugerido): ligado, vai para o projeto (`toolkits` no `agentes.json`). Skill com
 `stack`/`deteccao` própria → a coluna Stack diz se casa. Liste também os **agentes do projeto** (`.kiro/agents/*.json`, `~/.kiro/agents/*.json` e
 `.opencode/agents/*.md`, exceto `sa-*`), com o "para quê" tirado da `description` — eles são oferecidos como
 subagentes no Passo 6, sem a pessoa precisar lembrar deles.
@@ -288,7 +291,7 @@ Padrões da proposta:
    tabela **Desvios de toolkit** do `sabia.md` (a que vale na sessão sem agente); o gerador liga a skill ao agente dono e gera o agente do toolkit, e põe o desvio no
    prompt do dono; o agente do toolkit fica
    com as permissões do dono ([references/toolkits.md](references/toolkits.md#passos)).
-6. Toolkit com `tipos` ligado ao projeto (em `toolkits` no `agentes.json`): sem pergunta por agente. O gerador põe a
+6. Toolkit com `tipos` ligado ao projeto no W5 (em `toolkits` no `agentes.json`): sem pergunta por agente. O gerador põe a
    linha **Tipos com skill de toolkit** no prompt do dono do passo de desvio do tipo, liga a skill a ele e
    imprime a seção **Tipos com skill de toolkit** (tipos e itens de rubrica), que vai para o `sabia.md` como saiu
    ([references/toolkits.md](references/toolkits.md#tipos)).
@@ -344,8 +347,9 @@ Na ordem:
 Itens:
 1. `.sabia/sabia.md` ← [assets/steering/sabia.md](assets/steering/sabia.md) com as respostas (nada de `<…>`
    sobrando; o que não se aplica fica "não há"/"nenhum"). É o **único** steering do fluxo. Monte-o sempre do modelo,
-   nunca do `sabia.md` antigo (no modo atualização, o antigo só dá as respostas): o gerador avisa a linha do modelo
-   que falta e a que sobra — aviso desses → corrija antes do W8. Ao regravá-lo (no modo
+   nunca do `sabia.md` antigo (no modo atualização, o antigo só dá as respostas): gravado no item d, o gerador com
+   `--gravar` o confere e avisa a linha do modelo que falta e a que sobra — aviso desses → corrija o `sabia.md` e
+   rode o gerador de novo. Ao regravá-lo (no modo
    atualização), a seção Regras aprendidas fica como está no disco, do título `## Regras aprendidas` até a próxima
    `## ` ou o fim do arquivo: ela é do fluxo `sa-aprender.promover` (agente `sa-produto`), que grava só ela — nunca
    apague regras promovidas nem as reescreva, e o diff do W8 não a mostra mudando. Para cada ferramenta carregá-lo, um
@@ -369,8 +373,8 @@ Itens:
    base do ambiente de teste (sem barra no fim).
 4. `<produto>/` (só o que não existir): `backlog.md` mínimo
    (`# Backlog — <nome>`, `Próximos ids: EP-01 · FT-001 · AT-001 · IM-001 · BD-001 · IN-001 · OP-001 · EX-001` e
-   as seções `## Épicos`, `## Fatias` e `## Sustentação` vazias, sem `### <Categoria>`: cada uma nasce com o primeiro
-   item dela — formato na `sa-fatiar`), `<produto>/aprendizado/licoes.md` com o título `# Lições` (a pasta
+   as seções `## Épicos` e `## Fatias` com o cabeçalho e o separador da tabela, e `## Sustentação` com `—`, sem
+   `### <Categoria>`: cada uma nasce com o primeiro item dela — formato na `sa-fatiar`), `<produto>/aprendizado/licoes.md` com o título `# Lições` (a pasta
    `sustentacao/` nasce com o primeiro item de categoria, pela `sa-triar`) e `fatias/` (as fichas). O `equipe.json`
    e o `acordos.md` não: são do fluxo `sa-planejamento.inicial`, que só grava a equipe depois dos acordos (duração
    da sprint). No modo atualização, acrescente só o que falta — nunca recrie o que existe.
@@ -417,7 +421,8 @@ escrita de memória.
 - Kiro nos alvos e workspace não confiável → avise: até a pessoa confiar nele, o Kiro não carrega os agentes, o steering, as skills
   e os workflows do projeto e pergunta antes de cada comando de shell.
 
-Sugira o commit — o comando pronto no shell da pessoa, no padrão de commit do projeto — (`.sabia/` sem `local/`, os agentes e ponteiros de cada ferramenta, `<produto>/` e `.gitignore`) — só com confirmação — e termine
+Sugira o commit — o comando pronto no shell da pessoa, no padrão de commit do projeto, com `<descrição>` =
+`configurar o Sabiá`; padrão com o id do EWM → pergunte qual id usar (W9) — (`.sabia/` sem `local/`, os agentes e ponteiros de cada ferramenta, `<produto>/` e `.gitignore`) — só com confirmação — e termine
 com o próximo passo — sem `<produto>/equipe.json` (confira no disco; existindo, não sugira o planejamento), primeiro "monte o planejamento" (fluxo
 `sa-planejamento.inicial`: equipe com a senioridade, acordos e roadmap; sem ela não há modo da fatia, GATE do plano nem revisor); depois
 "nova demanda: …" (`sa-triar`: faz a triagem e registra no backlog; épico → `sa-prd`), "iniciar <id>" ou "minha próxima tarefa"
@@ -485,4 +490,4 @@ no `<fluxo>.md` do projeto, que é apagado se ficar vazio) e o diff dos agentes;
 - As skills `sa-*` ficam na pasta do usuário, compiladas pelo CLI (as-built) — nunca as copie para o projeto
   (`npx sabia atualizar` as recompila; depois rode esta skill em modo atualização para refazer caminhos e agentes).
   O projeto guarda só o que customizou, em `.sabia/fluxo/` e `.sabia/padrao/`, pelo modo customizar.
-- Toolkit nunca é ligado sem a pessoa dizer sim, agente por agente.
+- Toolkit nunca é ligado sem a pessoa dizer sim, agente por agente (o de tipo, no W5).

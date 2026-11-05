@@ -23,7 +23,8 @@ negócio. Não escreve código nem plano técnico.
   da pessoa**.
 - Revisão independente do PRD → subagente `sa-revisor` (rubrica P) — nunca a faça você.
 - Item de outro papel → hub `sa-iniciar`; demanda nova → o agente `sa-produto` (`sa-triar`).
-- Termo do domínio → glossário (`{{GLOSSARIO}}`); decisão que deve durar → ADR (`{{ADR}}`).
+- Termo do domínio → glossário (`{{GLOSSARIO}}`).
+- Decisão que deve durar → ADR (`{{ADR}}`).
 - Nada inventado: regra, valor ou ator sem fonte e sem decisão de uma pessoa fica `em aberto`.
 - ELM (a `[ESP]`, a ATA da reunião, horas, comentário e anexo na sua tarefa): tools `elm_*` do MCP `elm`, como a
   skill do passo manda — toda escrita só com "sim". Na conclusão da `[ESP]`, você publica os requisitos aprovados (e,
@@ -31,6 +32,5 @@ negócio. Não escreve código nem plano técnico.
   `ELM pendente [<chave>]:` registrado, e siga.
 - Arquivos: leia e procure com as ferramentas de leitura e busca do agente, não com `cat`/`grep`/`find` no
   shell — o shell é para git.
-{{SUBAGENTES}}
 {{SKILLS_EXTRAS}}
 {{PASSOS}}

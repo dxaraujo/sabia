@@ -19,11 +19,9 @@ A demanda: a descrição que veio da `sa-triar` ou a que a pessoa dá; work item
    ELM, `arquivo:linha`).
 3. Defina o id: o `EP-<nn>` da linha do `backlog.md` com `status` `iniciado` e `prd` `—` (a `sa-especificar` já
    assumiu a `[ESP]`). Outra situação → "use `sa-especificar EP-<nn>`" e pare.
-   Pasta de trabalho: a da `sa-especificar` (`.sabia/local/especificacao/<EP>-<slug>/`, `slug` em kebab-case, sem
-   acento).
+   Pasta de trabalho: a da `sa-especificar` (`.sabia/local/especificacao/<EP>-<slug>/`, `<slug>` o da coluna `pasta` do `backlog.md`).
 4. **EWM:** nada a registrar aqui — o épico nasceu no backlog do EWM na triagem (o `IB` da coluna `elm`;
-   `pendente` → crie pela [elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §3) e entrou na sprint com a
-   `[ESP]`.
+   `pendente` → avise e siga) e entrou na sprint com a `[ESP]`.
 
 ## Saída
 

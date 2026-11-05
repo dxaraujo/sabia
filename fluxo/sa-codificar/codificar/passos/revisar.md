@@ -1,5 +1,5 @@
 ---
-{"resumo": "HITL: revisão automática (rubrica C, subagente) antes do PR. AFK: revisão oficial pelo sa-revisor, até 2 rodadas."}
+{"resumo": "HITL: revisão automática (rubrica C, subagente) antes do PR. AFK: revisão oficial pelo sa-revisor, com teto de 2 reprovações desde o último desbloqueio."}
 ---
 ## Entrada
 
@@ -9,9 +9,10 @@ Todas as tarefas `[x]` e o passo `validar` verde (validação completa).
 
 **HITL — revisão automática (backpressure):** peça ao agente **`sa-revisor`** (subagente) a rubrica **C**
 passando id, pasta, branch e "pré-PR" — relatório só na conversa, sem `revisao-codigo-<N>.md` e sem contar rodada.
-`REVISAR` → corrija os achados (tarefas `[R<n>]`) e repita, até 2 vezes; persistindo, mostre à pessoa, que decide
+`REVISAR` → corrija os achados (tarefas `[R<n>]`) e repita; na 2ª reprovação seguida, mostre à pessoa, que decide
 seguir para o PR (os achados vão listados no texto do PR) ou corrigir antes. `APROVADO` → passo `pr`: a revisão
-oficial (`[REV]`) e a verificação (`[VER]`) são das pessoas, sobre o PR. Sem subagente → siga para o passo `pr`.
+oficial (`[REV]`) e a verificação (`[VER]`) são das pessoas, sobre o PR. `AMBIENTE` (o C3 não rodou) → mostre à
+pessoa o que falhou (o ambiente não é da fatia), e ela decide seguir para o PR ou esperar o ambiente.
 
 **AFK:** `fase: revisando`; incremente "revisão do código" em Rodadas. Peça ao agente **`sa-revisor`** (subagente) a
 rubrica **C** passando só: id da fatia, pasta, branch/worktree e rodada — **nunca** o seu raciocínio. Ele grava o
@@ -29,15 +30,20 @@ ele precisa estar na branch antes da abertura.
 
 - `VEREDITO: APROVADO` → passo `verificar`.
 - `REVISAR` → os achados viram tarefas `[R<n>]` pela regra do passo `onde` (fim de `## Tasks`) e siga para o passo
-  `tarefa`, que corrige **só** eles; depois, `validar` e `revisar`. Até 2 rodadas.
+  `tarefa`, que corrige **só** eles; depois, `validar` e `revisar`. Teto: 2 reprovações (`VEREDITO: REVISAR`) desde
+  o último desbloqueio, contadas pelos `revisao-codigo-<N>.md`; a revisão depois de uma rejeição na verificação conta
+  igual.
+- `VEREDITO: AMBIENTE` (o C3 não rodou por ambiente) → `fase: bloqueada (de: revisando)`, Bloqueio `⚠️ ambiente: <o
+  que faltou>`, commit com o relatório; não conta como reprovação.
 
 ## Saída
 
-HITL → passo `pr`. AFK, `APROVADO` → passo `verificar`; `REVISAR` → tarefas `[R<n>]` e passo `tarefa`.
+HITL → passo `pr`. AFK, `APROVADO` → passo `verificar`; `REVISAR` → tarefas `[R<n>]` e passo `tarefa`;
+`AMBIENTE` → `bloqueada`.
 
 ## Pare se
 
-- AFK sem subagente disponível (você é um agente sem essa ferramenta) → pare aqui e devolva a quem chamou:
-  "aguardando revisão (rodada <N>)".
-- 2ª reprovação → `fase: bloqueada (de: revisando)`; mostre à pessoa os relatórios e as opções: orientar a correção (zera as
-  rodadas), voltar ao plano, ou aceitar explicitamente os achados restantes (quem e por quê no `status.md`).
+- 2ª reprovação desde o último desbloqueio → `fase: bloqueada (de: revisando)`; mostre à pessoa os relatórios e as
+  opções: orientar a correção (o desbloqueio recomeça a contagem de reprovações; o campo Rodadas não muda), voltar
+  ao plano, ou aceitar explicitamente os achados restantes (quem e por quê no `status.md`).
+- `VEREDITO: AMBIENTE` → `bloqueada` com o `⚠️ ambiente`, e pare.

@@ -2,7 +2,7 @@
 {"fluxo": "executar", "dono": "sa-produto",
  "travas_gerais": ["sim-da-pessoa"],
  "passos": [
-   {"id": "entrada", "de": "entrada", "sprint": "exige", "saidas": {"pedido novo ou id fora do backlog": "→ sa-triar.triar", "item terminal, ou fora da sprint aberta (P.O. ou SM)": "fim"}},
+   {"id": "entrada", "de": "entrada", "sprint": "exige", "branch": "nao", "saidas": {"pedido novo ou id fora do backlog": "→ sa-triar.triar", "item terminal, ou fora da sprint aberta (P.O. ou SM)": "fim"}},
    {"id": "assumir"},
    {"id": "registrar", "saidas": {"não é desta categoria (categoria errada)": "→ sa-triar.triar"}},
    {"id": "encerrar", "saidas": {"alteração (muda o repositório) ou regra que ninguém decidiu": "→ sa-triar.triar", "lição": "→ sa-aprender.registrar", "nada": "fim"}}
@@ -33,6 +33,9 @@ Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configura
 ## Regras
 
 - O agente não executa o trabalho: script, deploy e comando em ambiente são da pessoa; aqui fica o registro.
+- A aplicação de baseline de banco (DDL) de uma fatia é item de Banco de dados (ou de Implantação), do time de banco,
+  nunca do Dev; a fatia espera `bloqueada`, com o Bloqueio `aguardando aplicação de baseline de banco`, até a
+  aplicação.
 - **Dado de cliente nunca vai para o git**: fica em `.sabia/local/sustentacao/<pasta>/<ID>/`.
 - Registrar o item é da `sa-triar`; este fluxo nunca numera nem abre item (só cria no EWM o IB e a tarefa que
   faltam a um item registrado).

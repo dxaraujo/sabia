@@ -5,14 +5,15 @@
 
 Os cenários verificados no `verificacao.md` (passo `executar`), **todos aceitos** — o `VERIFICACAO: ACEITO` do
 passo `resultado`; no AFK, também com cenários `🔁 possível alteração`, que não entram no `CT.csv`. Algum rejeitado ou
-⚠️ → pule este passo: siga para o passo `resultado`. Os CTs planejados: primeiro os
+⚠️, ou `🔁` no HITL (provisório: o `CT.csv` espera a decisão da pessoa, passo `sa-verificar.hitl.decisao`) → pule
+este passo: siga para o passo `resultado`. Os CTs planejados: primeiro os
 `CT-nn-<slug>.md` de `.kiro/specs/<ft>-<slug>/elm/` (aprovados na `[ESP] FT`; valem sobre os do épico), depois os do
 `elm/` da pasta do épico na base, quando a fatia é de épico (padrão `sa-prd/ct.md`).
 
 ## Faça
 
-Gere `CT.csv` na pasta da fatia — uma linha por cenário verificado — no formato do padrão `sa-verificar/ct-csv.md`,
-com a evidência da execução:
+Gere `CT.csv` na pasta da fatia — uma linha por cenário aprovado (o último `✅` de cada um) — no formato do padrão
+`sa-verificar/ct-csv.md`, com a evidência da execução:
 
 - **Cenário com CT planejado** (o CT que cita a HF e o número do cenário) → a linha liga ao CT: o rótulo dele no
   Resumo e, na Descrição, o caminho e o id no ETM (quando já subiu; informativo: a consolidação lê o id do

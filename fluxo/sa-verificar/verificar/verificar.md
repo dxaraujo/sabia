@@ -4,8 +4,8 @@
  "travas_gerais": ["sim-da-pessoa", "aceite-independente"],
  "passos": [
    {"id": "roteiro"},
-   {"id": "ambiente", "saidas": {"campo Banco pendente: a DDL em dev é do Dev, ou do item BD pela sa-executar": "fim"}},
-   {"id": "executar", "saidas": {"algum cenário rejeitado ou ⚠️": "resultado"}},
+   {"id": "ambiente", "saidas": {"DDL do campo Banco ainda não aplicada: bloqueada, a aplicação é da Sustentação (item BD/Implantação)": "fim"}},
+   {"id": "executar", "saidas": {"algum cenário rejeitado ou ⚠️, ou 🔁 no HITL": "resultado"}},
    {"id": "casos"},
    {"id": "resultado", "saidas": {"cenário errado na ficha sem épico, fora dos artefatos: bloqueada, é da triagem": "→ sa-triar.triar"}}
  ]}

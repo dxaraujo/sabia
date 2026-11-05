@@ -20,7 +20,7 @@ Origem: <EWM <id> | chamado <n> | texto livre>
 
 ## Protótipo
 
-- Protótipo v<N> — prototipo-v<N>-<slug>.<ext> · <AAAA-MM-DD> · <o que muda | primeira versão> · aguardando o cliente
+- Protótipo v<N> — <arquivos da versão> · <AAAA-MM-DD> · <o que muda | primeira versão> · aguardando o cliente
 
 ## ELM pendente
 
@@ -28,8 +28,7 @@ Origem: <EWM <id> | chamado <n> | texto livre>
 - ELM feito [<chave>]: <o que foi feito> (<AAAA-MM-DD>)
 ```
 
-- **Pedido** — da triagem (`sa-triar`), com a pasta antecipada; sem ela, o passo `sa-especificar.especificar.pasta`
-  o escreve do título e da descrição do IB do épico.
+- **Pedido** — da triagem (`sa-triar`), na pasta antecipada.
 - **Levantamento** — uma subseção por sessão, com a data: o que o cliente contou e os exemplos. Decisão vai para o `decisoes.md` (`D-nn`), nunca só para cá. A sessão
   mais recente desta máquina não se lê daqui: é a última linha da seção Créditos do `status.md` do épico.
 - **Dúvidas** — uma linha por dúvida para a próxima reunião, com a data e a origem (a sessão ou o passo

@@ -15,8 +15,8 @@ lições — e **ignore** qualquer justificativa de quem os fez (mensagens de co
 - Arquivos: leia e procure com as ferramentas de leitura e busca do agente, não com `cat`/`grep`/`find` no
   shell — o shell é para git, build e testes.
 - Worktree recebida: `cd .sabia/local/wt/<ft> && <comando>`; `git -C` é bloqueado.
-- Push (HITL): só da branch do PR, nunca da base, e a ferramenta pergunta a cada um (`ask`); push recusado →
-  entregue o comando pronto e espere a pessoa dizer que publicou. Confira no remoto
+- Push (HITL): só da branch do PR, nunca da base, e a ferramenta pergunta a cada um (`ask`); push negado pela regra →
+  entregue o comando pronto e espere a pessoa dizer que publicou; a pessoa recusa ("não") → nada publicado; pare. Confira no remoto
   (`git fetch`; `git rev-parse HEAD` = `git rev-parse origin/<branch>`) antes de concluir a tarefa. Chamado como
   subagente: nada de push.
 - Tarefa `[REV]` ou `[APR]` (`Aprovar plano`, `Aprovar PR`) recebida (direto ou pelo hub `sa-iniciar`; a `[APR]`

@@ -55,7 +55,7 @@ Obrigatórios: `produto` e `base`; os demais são opcionais, com o padrão dito 
 | `agentes.sa-<papel>.skills` | `["skill://~/<caminho>/SKILL.md" \| "skill://.kiro/skills/<skill>/SKILL.md", …]` | as skills escolhidas no Passo 6 |
 | `agentes.sa-<papel>.ler` | `["~/.kiro/skills/<skill>/**", …]` | pastas dessas skills fora do projeto e do power |
 | `agentes.sa-<papel>.mcp` | `["<servidor>/<tool>" \| "<servidor>", …]` | tools de MCP do projeto: `servidor/tool` (banco: só a de consulta) ou `servidor` (inteiro, ex.: browser) |
-| `agentes.sa-<papel>.subagentes` | `[{"nome": "<agente>", "para": "<quando usar>"}]` | agentes do projeto (desenvolvedor e orquestrador) |
+| `agentes.sa-<papel>.subagentes` | `[{"nome": "<agente>", "para": "<quando usar>"}]` | agentes do projeto (só desenvolvedor e orquestrador: em outro agente, o gerador recusa) |
 | `agentes.sa-<papel>.modelo` | `"<modelo>"` | o modelo, se não for o padrão |
 | `toolkits.<nome>` | `{"pasta": "~/.sabia/toolkits/<nome>" \| ".sabia/toolkits/<nome>", "versao": "<versao do toolkit.json>", "sha": "<sha do .origem.json>" \| null}` | cada toolkit com passo ou tipos ligados; `sha` `null` no toolkit do projeto (só registro; o gerador não lê o sha) |
 | `passos` | `[{"toolkit": "<chave em toolkits>", "skill": "<caminho da skill no toolkit.json, ex.: skills/spring-batch-job/SKILL.md>", "agente": true \| false}]` | a skill do `toolkit.json` que tem `passo`; `agente: true` gera o agente do passo e o liga ao dono |

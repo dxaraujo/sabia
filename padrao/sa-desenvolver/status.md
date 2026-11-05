@@ -15,10 +15,10 @@
 | Responsável | <login de quem implementa \| agente:sa-orquestrador (no loop) \| login do Dev Sênior da [APR] (só em aguardando-aprovacao-plano: o gate grava; a decisão da [APR] Aprovar plano devolve a quem implementa)> (quem tem a próxima ação na fatia; nunca muda o `responsavel` do backlog nem a linha da sprint) |
 | Rodadas | revisão do plano 0 · revisão do código 0 · verificação 0 · retrabalho 0 |
 | PR | <— (até o PR) \| [!<iid>](<url>) (sa-codificar.codificar.pr) \| texto entregue (sem o MCP `gitlabpr`: a pessoa abre o PR, e o link entra no lugar)> |
-| Bloqueio | — (ou: `<motivo>` · pergunta: `<pergunta exata>` · ou `aguardando especificação [ESP] FT-<nnn>: <artefato> (<tipo>, <ação>) — <motivo>` · ou `aguardando troca de modo · motivo: <risco>` (sa-plano.plano.gate; no loop, o mesmo) · ou `plano acima do limite: <n> linhas, <m> tarefas · proposta: <seguir \| dividir em …>` (sa-plano.plano.escrever) — sempre junto com `Fase: bloqueada (de: <fase>)`) |
+| Bloqueio | — (ou: `<motivo>` · pergunta: `<pergunta exata>` · ou `aguardando especificação [ESP] FT-<nnn>: <artefato> (<tipo>, <ação>) — <motivo>` · ou `aguardando troca de modo · motivo: <risco>` (sa-plano.plano.gate; no loop, o mesmo) · ou `plano acima do limite: <n> linhas, <m> tarefas · proposta: <seguir \| dividir em …>` (sa-plano.plano.escrever) · ou `⚠️ ambiente: <o que faltou>` (falha de ambiente: validação, revisão C3 ou verificação; ninguém conserta o ambiente) · ou `aguardando aplicação de baseline de banco` (a DDL do campo Banco, aplicada pela Sustentação, item BD/Implantação) — sempre junto com `Fase: bloqueada (de: <fase>)`) |
 | ELM | <o item da fatia primeiro, com o rótulo da coluna `elm` (`IB <id>` ou, se o item da fatia é o defeito de origem, `DF <id>` no lugar dele) · DEV <id> · REV <id> · VER <id> (AFK: só DEV) · APR <id> (criadas nos gates) · CT <ids> \| CT CSV <caminho> (consolidação, pela linha Casos de teste) \| pendente (só sem o MCP) \| sem ELM (projeto sem ELM)> |
-| Banco (DDL) | <não se aplica \| pendente \| aplicada em dev \| aplicada em prod> |
-| Drift de negócio | — (indicado pela REV, pela VER ou pelo Dev, decidido pela pessoa: `não` \| `possível alteração — <motivo> · artefatos: <id\|rótulo> (<tipo>)` \| `… · especificação: [ESP] FT-<nnn>` \| `… · débito de especificação (<chave da sprint>)`) |
+| Banco (DDL) | <não se aplica \| pendente (a fatia tem DDL: a aplicação é da Sustentação, item BD/Implantação, nunca à mão)> |
+| Drift de negócio | — (indicado pela REV, pela VER ou pelo Dev, decidido pela pessoa: `não` \| `possível alteração — <motivo> · artefatos: <id\|rótulo> (<tipo>)` \| `… · especificação: [ESP] FT-<nnn>` \| `… · débito de especificação (<chave da sprint> \| sem sprint)`) |
 
 <!-- Fases por modo:
      HITL  pesquisando → planejando → [aguardando-aprovacao-plano: pela senioridade] → implementando → pr-aberto
@@ -62,8 +62,9 @@
      WIP esperando pessoa = aguardando-aprovacao-plano + pr-aberto + em-revisao + em-verificacao + aceita
      + verificada + aguardando-aprovacao-pr.
      Quem grava a fase: quem conduz a sessão (a skill da fase) ou, no loop, o orquestrador; o pesquisador nunca
-     grava o status.md; o revisor só no HITL (a rodada é dele); o verificador grava a fase do resultado também como
-     subagente do AFK (`verificada` ou `implementando`, sa-verificar.verificar), e o resto, só no HITL; o Dev Sênior da [APR]
+     grava o status.md; o revisor só no HITL (a rodada é dele); o verificador grava também como
+     subagente do AFK `verificando` (no roteiro) e a fase do resultado (`verificada`, `implementando` ou `bloqueada`,
+     sa-verificar.verificar), e o resto, só no HITL; o Dev Sênior da [APR]
      na aprovação do plano e nas mudanças pedidas no PR (o PR aprovado não ganha commit: o sha não muda); pronta, o
      Dev, na base (sa-desenvolver, fluxo encerrar), ou a sincronização da sprint, pela evidência do merge por fora
      (elm-sprint.md §9), que também grava a fase do PR (ou implementando) no status.md da iniciada por fora, na
@@ -82,7 +83,7 @@
      decidido vai ao Histórico (`drift <motivo> · especificação: [ESP] FT-<nnn>`) e o campo recomeça com a possível
      alteração nova, sem `especificação:`, para a pessoa decidir de novo. O merge só sai sem possível alteração
      pendente (decidida como código errado, ou com a [ESP] concluída). Depois do merge não há volta: a consolidação
-     registra a divergência como débito de especificação (` · débito de especificação (<chave da sprint>)`).
+     registra a divergência como débito de especificação (` · débito de especificação (<chave da sprint>)`; sem sprint aberta, ` · débito de especificação (sem sprint)`).
      Retrabalho: incrementado por quem reprova (revisor ou verificador, HITL), pelo Dev Sênior que pede mudanças na
      [APR] Aprovar PR (AFK) ou, na verificação REJEITADA do AFK, pelo orquestrador ou, sem o loop, pelo
      desenvolvedor (passo `sa-codificar.codificar.verificar`). -->
@@ -92,8 +93,7 @@
 <!-- Fonte única dos achados da fatia (os relatórios da revisão e da verificação guardam a evidência). Origem:
      `revisao-codigo-<N>.md` (achado da revisão com `VEREDITO: REVISAR`) · `verificacao.md` (cenário rejeitado) · `PR`
      (mudança pedida no PR ou na [APR] Aprovar PR) · `GATE do plano` (ajuste pedido na [APR] Aprovar plano: é do plano,
-     sa-plano.plano.escrever) · `[ESP] FT-<nnn>` (ajuste ao artefato aprovado na [ESP] FT, sa-codificar.codificar.onde) ·
-     `ambiente` (⚠️ da verificação: não é código). Achado = uma frase com o que corrigir. Situação: `aberto` (valor
+     sa-plano.plano.escrever) · `[ESP] FT-<nnn>` (ajuste ao artefato aprovado na [ESP] FT, sa-codificar.codificar.onde). Achado = uma frase com o que corrigir. Situação: `aberto` (valor
      inicial) · `resolvido — tarefa <n>` (a sa-codificar transforma os de código em tarefas [R<n>] e marca quando a
      tarefa fica verde) · `resolvido — plano` (o ajuste entrou no plano). -->
 
@@ -135,7 +135,7 @@
      metadata.version da skill · sessão do loop com várias fatias → `<id> (rateio 1/<n>)` · sem sessão do Kiro →
      `informado` (o número que a pessoa leu). Depois do merge, a linha vai no status.md da base. A sa-consolidar
      soma a seção na sprint; a virada a copia para o backlog.md.
-     Papel: `Dev` · `REV` · `VER` · `APR` (o papel da tarefa de quem fecha a sessão). -->
+     Papel: `DEV` · `REV` · `VER` · `APR` (o papel da tarefa de quem fecha a sessão). -->
 
 | Data | Papel | Login | Sessão Kiro | Power sabia | Créditos |
 |---|---|---|---|---|---|

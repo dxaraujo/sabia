@@ -17,6 +17,9 @@ Observação `modo: <de> → <para> (<quem>, <data>, <motivo>)` (no Pleno, a do 
   (`REV <id> · VER <id>`) e no `elm` do `backlog.md`; PR aberto → cancele a `[APR] Aprovar PR`.
 - **HITL → AFK:** cancele a `[REV]` e a `[VER]` existentes (`elm_transicao(<id>, "cancelar")`) e tire os ids da
   "Tarefa ELM"; na falha ou sem o MCP `elm` → `ELM pendente [<REV|VER> <id> cancelar]` (o id da tarefa no EWM) onde a fatia guarda as pendências (elm.md, Pendências: não iniciada → rodapé da ficha; `iniciada` → Histórico do `status.md`).
+  Na `iniciada`, quem troca grava a pendência na branch da fatia, no mesmo "sim": `git switch <branch>`,
+  `git pull --ff-only`, a linha no fim do Histórico, commit `<FT> trocar modo`, push conferido no remoto e
+  `git switch <base>`; ela chega à base no merge, sem cópia na base.
 
 A fatia bloqueada com `aguardando troca de modo` sai do bloqueio na retomada do Dev, que sincroniza o `status.md`
 (Modo e ids) pela base.

@@ -8,7 +8,7 @@ A pré-condição cumprida (passo `precondicao`).
 ## Faça
 
 **Retrospectiva com dados** — fluxo `sa-aprender.retrospectiva` (vazão, lead time, rodadas de revisão,
-correções humanas por causa, AFK que chegaram ao PR sozinhas). Registre no `sprint-<nn>.md`: bom · melhorar ·
+correções humanas por causa, AFK sem intervenção). Registre no `sprint-<nn>.md`: bom · melhorar ·
 ações (cada ação com dono).
 
 ## Saída

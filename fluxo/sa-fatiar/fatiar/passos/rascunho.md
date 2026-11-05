@@ -19,8 +19,6 @@ O `prd.md`, a `elm/` aprovada e o `decisoes.md` do épico, na base.
   *"o que dá para demonstrar quando ela terminar?"* — se a resposta é "nada visível", junte com a vizinha.
 - **Critério falsificável:** cada cenário coberto falha hoje, na base (diga a observação que mostra isso). Cenário
   que já passa não prova nada; cenário que só outra fatia consegue fazer passar está na fatia errada.
-- **Preparação antes:** se a mudança exige mexer em código compartilhado, a primeira fatia deixa a mudança fácil
-  (prefactoring) e a seguinte faz a mudança. Refatoração larga: expandir → migrar em lotes → contrair.
 - **Independente quando der:** dependência só quando uma fatia precisa de algo que outra entrega (`bloqueada-por`).
 - **Autonomia declarada:**
   - `AFK` — critérios claros, padrão conhecido no código, backpressure forte (testes e verificação automatizáveis),
@@ -39,8 +37,7 @@ O `prd.md`, a `elm/` aprovada e o `decisoes.md` do épico, na base.
 1. Leia o `prd.md`, todos os conceitos de `elm/` do épico (os cenários estão nas HF; as citações, nos links de cada
    conceito) e o `decisoes.md` do épico. Releia o código dos módulos existentes que as fatias tocam pelo subagente
    `sa-pesquisador` (fluxo `sa-pesquisar.pesquisar`). Passe a ele o `prd.md`, os conceitos de `elm/` do épico e a
-   lista provisória das fatias, com três perguntas: onde entra o gatilho do PRD, que módulos cada fatia toca e que
-   código compartilhado precisa mudar antes. Ele devolve os fatos na resposta e nada é gravado (sem `research.md` nem
+   lista provisória das fatias, com duas perguntas: onde entra o gatilho do PRD e que módulos cada fatia toca. Ele devolve os fatos na resposta e nada é gravado (sem `research.md` nem
    `status.md`). Sem o subagente na sessão, leia você mesmo, com as mesmas perguntas: a fatia tem de ser possível no
    código real.
 2. Monte a lista, com ids provisórios (`FT-?1`, `FT-?2`…, na ordem da lista): os reais saem no passo `gravar`:
@@ -61,8 +58,8 @@ O `prd.md`, a `elm/` aprovada e o `decisoes.md` do épico, na base.
    com fatias que só entregam peças internas (classificador, DAO, regra isolada) **não** passa: falta a fatia que
    liga as peças ao gatilho — acrescente-a (ou engrosse a primeira) antes de mostrar.
 5. Monte os **artefatos afetados** de cada fatia, do PRD: entram os conceitos HF, REG, GL, EL e CT com No ELM
-   `novo (verificado …)` → ação `inclui`, `altera <id>` → `altera` e `exclui <id>` → `exclui`; `reusa` e a ET não
-   entram (a ET é do Dev, as-built). HF e REG vão na fatia que os cobre; o CT, na fatia que cobre o cenário que ele
+   `novo (verificado …)` ou `novo (não verificado)` → ação `inclui`, `altera <id>` → `altera` e `exclui <id>` →
+   `exclui`; `reusa` e a ET não entram (a ET é do Dev, as-built). HF e REG vão na fatia que os cobre; o CT, na fatia que cobre o cenário que ele
    testa (o Resumo do PRD diz `HF-nn · cenário c.c`); GL e EL, na primeira fatia cuja HF ou REG os cita (links do
    conceito), e, se nenhuma cita, na primeira fatia; o `exclui`, na fatia que o substitui (nenhuma o substitui → a
    primeira). Todo conceito desses em ao menos uma fatia; faltando → corrija antes de mostrar. Cada `altera` ou

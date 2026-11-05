@@ -5,7 +5,7 @@
 id: EP-<nn>
 titulo: <título curto, linguagem do negócio>
 po: <login do P.O.>
-demanda: <id da demanda/épico no EWM | —>
+demanda: <id do IB do épico (coluna elm do backlog.md) | pendente | — (projeto sem ELM)>
 atualizado: <AAAA-MM-DD>
 ---
 
@@ -34,21 +34,21 @@ atualizado: <AAAA-MM-DD>
      v0.2 próprio em elm/ (formato em okf-elm.md da skill sa-prd): aprovado no GATE, vai à base com o PRD e sobe ao ELM
      (o CT, ao ETM, só com a linha Casos de teste = ETM) na conclusão da [ESP] (sa-especificar). Aqui fica só o
      índice. Cenários são os critérios de aceite: cada um é verificável e tem o seu CT. No ELM: novo (verificado
-     <AAAA-MM-DD>) · novo (só bundle <AAAA-MM-DD | sem data>) (sem a busca ao vivo; a publicação refaz) · altera <id> ·
-     reusa <id> · exclui <id> · — (projeto sem ELM). Impacto: quem cita o alterado ou o excluído e não muda — <id> (<sigla>) <rel>, com rel =
+     <AAAA-MM-DD>) · novo (não verificado) (sem o MCP elm ou sem o bundle) · novo (o CT planejado novo) · altera <id> ·
+     reusa <id> · exclui <id> · — (projeto sem ELM). O reutilizado não tem arquivo: o rótulo é <sigla>-<id do ELM>. Impacto: quem cita o alterado ou o excluído e não muda — <id> (<sigla>) <rel>, com rel =
      o campo rel de links.entrada do elm_ler_req_local, como veio; vários separados por " · " —, ou —. -->
 
 | Artefato | Arquivo | Resumo | No ELM | Impacto |
 |---|---|---|---|---|
 | HF-01 | [HF - <nome>](elm/HF-01-<slug>.md) | <description> | novo (verificado <AAAA-MM-DD>) \| altera <id> | — |
 | HF-02 | [HF - <nome>](elm/HF-02-<slug>.md) | <description> | novo (verificado <AAAA-MM-DD>) | — |
-| REG-01 | — (existente no ELM) | <description> | reusa <id> | — |
+| REG-<id> | — (existente no ELM) | <description> | reusa <id> | — |
 | REG-02 | [REG - <nome>](elm/REG-02-<slug>.md) | <description> | altera <id> | 1890 (HF) cita |
 | REG-03 | [REG - <nome>](elm/REG-03-<slug>.md) | <motivo da exclusão · substituída por REG-02> | exclui <id> | — |
 | GL | [<termo>](elm/GL-<termo>.md) | <definição curta> | novo (verificado <AAAA-MM-DD>) | — |
 | EL-01 | [EL - <tela>](elm/EL-01-<slug>.md) | <description> — só com a linha Telas = `sim` | novo (verificado <AAAA-MM-DD>) | — |
 | ET | [ET - EP-<nn> <título>](elm/ET-<slug>.md) | <description> — só com a linha ET = `inicial no PRD + as-built` | novo (verificado <AAAA-MM-DD>) | — |
-| CT-01 | [CT01 - <título do cenário>](elm/CT-01-<slug>.md) | <objetivo> (HF-01 · cenário 1.2) | novo (verificado <AAAA-MM-DD>) | — |
+| CT-01 | [CT01 - <título do cenário>](elm/CT-01-<slug>.md) | <objetivo> (HF-01 · cenário 1.2) | novo | — |
 
 ## Decisões de implementação
 

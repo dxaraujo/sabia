@@ -434,6 +434,8 @@ def agente(nome, p, base, cfg, ext=None, tk=None, fluxo=""):
                             if subs_projeto else "")
     if not tk:
         prompt = prompt.rstrip() + "\n\n" + "\n\n".join(x for x in (fluxo, CHAMADA) if x)
+    # glossário ou ADR "não há" (null): a linha do prompt que cita o caminho sai
+    prompt = "\n".join(l for l in prompt.split("\n") if not any(n in valores and valores[n] is None for n in PH.findall(l)))
     prompt = re.sub(r"\n{3,}", "\n\n", PH.sub(lambda m: valores.get(m.group(1)) or "não há", prompt)).rstrip() + "\n"
 
     a = {"name": tk["nome"] if tk else f"sa-{nome}", "description": tk["descricao"] if tk else p["description"], "prompt": prompt,
@@ -603,6 +605,8 @@ def gerar(projeto: Path, cfg: dict) -> dict:
     nomes = [f"sa-{n}" for n in base["papeis"]]
     if desconhecidos := sorted(set(cfg.get("agentes", {})) - set(nomes)):
         raise ValueError(f"agentes.json: agente desconhecido {desconhecidos}; use {nomes}")
+    if com_subs := sorted(n for n, a in cfg.get("agentes", {}).items() if a.get("subagentes") and n not in ("sa-desenvolvedor", "sa-orquestrador")):
+        raise ValueError(f"agentes.json: subagentes do projeto só no sa-desenvolvedor e no sa-orquestrador, não em {com_subs}")
     fw = Path(cfg.get("framework") or "~/.sabia/framework").expanduser()
     fluxos = ler_fluxos(fw)
     if not fluxos:
@@ -611,7 +615,6 @@ def gerar(projeto: Path, cfg: dict) -> dict:
     tk, gerar.tabela_tipos = fonte_toolkits(projeto, cfg, fw, fluxos)
     delta, padroes, avisos = override(projeto, fw, fluxos)
     gerar.avisos = avisos
-    avisos.extend(conferir_sabia_md(projeto))
     if cfg.get("sabia") and (fw / "plugin.json").exists():
         instalado = json.loads((fw / "plugin.json").read_text(encoding="utf-8")).get("version")
         if instalado != cfg["sabia"]:
@@ -692,6 +695,8 @@ def main(argv=None):
             alvo.parent.mkdir(parents=True, exist_ok=True)
             alvo.write_text(novo, encoding="utf-8")
             print(f"gravado {alvo}")
+    if args.gravar:  # o sabia.md já foi gravado pela setup (Passo 8, item d): a conferência é contra o do disco
+        gerar.avisos.extend(conferir_sabia_md(projeto))
     print("\n" + resumo(agentes, cfg), end="")
     if gerar.tabela_tipos:  # a setup grava estas tabelas no sabia.md (o que vale na sessão sem agente)
         print("\nTipos com skill de toolkit (seção do sabia.md):\n" + "\n".join(gerar.tabela_tipos))

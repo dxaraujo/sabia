@@ -11,8 +11,8 @@ O bloco `🔎 Verificação` no fim do `verificacao.md` e o Drift de negócio do
 mostre-a e pergunte: `Possível alteração: <motivo> · <artefatos>. Volta à especificação, ou o código está errado?` A
 decisão é sua, não do agente:
 
-- **código errado** → o cenário é rejeitado (`VERIFICACAO: REJEITADO`), o Drift fica `não` e o Histórico ganha
-  `drift descartado: código errado (<login>)`;
+- **código errado** → o cenário é rejeitado (o `🔁` provisório vira `❌`, e o fecho, `VERIFICACAO: REJEITADO`), o
+  Drift fica `não` e o Histórico ganha `drift descartado: código errado (<login>)`;
 - **volta** → ` · especificação: [ESP] FT-<nnn>` no Drift e o bloco [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação) (`de: em-verificacao`), só na branch do PR (nada na base); a `[VER]` fica em andamento e o resultado abaixo
   não se aplica.
 

@@ -32,12 +32,14 @@ Vale para todas as trilhas. Tudo conferido **antes** de gravar na base, criar br
    - quem implementa e é **Júnior** (`senioridade` no `equipe.json`), com a fatia `AFK` e o responsável já definido →
      não comece (nada na base, nem `[DEV]`, nem branch): "Júnior implementa sempre em HITL; a troca de modo é do P.O.
      ou do SM (agente `sa-produto`)" e pare.
-3. **WIP** (`<produto>/acordos.md`; sem o arquivo, 2 fatias esperando pessoa). Conte as fatias em
-   `aguardando-aprovacao-plano`, `pr-aberto`, `em-revisao`, `em-verificacao`, `aceita`, `verificada` e
+3. **WIP** (`<produto>/acordos.md`; sem o arquivo, 2 fatias esperando pessoa por revisor). Conte, por revisor, as
+   fatias em `aguardando-aprovacao-plano`, `pr-aberto`, `em-revisao`, `em-verificacao`, `aceita`, `verificada` e
    `aguardando-aprovacao-pr` nos `status.md` das branches, pela regra A base prevalece do
    padrão `sa-desenvolver/status.md` (`pronta` ou `concluida` na base não conta), como a
-   `sa-status`. No limite, ou com PR parado há mais tempo que o acordo (padrão 1 dia) → mostre quais e recomende
-   destravar antes (aprovar o plano, revisar o PR). A fatia já está planejada: a pessoa pode seguir mesmo assim, e
+   `sa-status`: cada uma conta contra quem ela espera, pela linha WIP do
+   [arquivos.md](~/.sabia/framework/skills/sa-planejamento/references/arquivos.md#acordosmd). O revisor desta fatia no limite (HITL: o da coluna Revisor; AFK, com o aprovador ainda não escolhido: todos os Dev
+   Sênior ativos no limite), ou PR parado — aberto (`gitlab_listar_mrs(estado=opened)`) com `atualizado_em` há mais
+   de 1 dia (ou o prazo do acordo) — → mostre quais e recomende destravar antes (aprovar o plano, revisar o PR). A fatia já está planejada: a pessoa pode seguir mesmo assim, e
    `WIP excedido: <motivo>` vai no Histórico do `status.md` ao criá-lo (passo `iniciar`).
 4. **Registro publicado.** A linha da fatia, a ficha e a linha da sprint já estão em `origin/<base>`
    (`git fetch`; `git show origin/<base>:<produto>/backlog.md | grep -q '^| FT-<nnn> |'`,

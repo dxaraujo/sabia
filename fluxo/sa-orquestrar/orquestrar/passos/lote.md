@@ -24,11 +24,10 @@ As fatias pedidas, ou a sprint aberta.
    | item pai sem dono no EWM (o `assumir` com `iniciar_pai` o exige — Dono do item pai, no passo `sa-desenvolver.desenvolver.compromisso`) | — |
    | `responsavel` de outra pessoa | "é de <login>; trocar é do P.O. ou do SM" |
    | `responsavel` `—` cujo modo pela senioridade de quem dispara (primeira atribuição, `sa-planejamento.sprint.modo`) dá HITL | vai à `sa-desenvolver` |
-3. **Limite:** paralelismo do `sabia.md` (padrão 1, máximo 3) **e** vagas de WIP de revisão humana (limite
-   dos acordos menos as fatias já esperando pessoa: `aguardando-aprovacao-plano`, `pr-aberto`, `em-revisao`,
-   `em-verificacao`, `aceita`, `verificada`, `aguardando-aprovacao-pr`, pela regra A base prevalece do
-   padrão `sa-desenvolver/status.md`). PR que ninguém vai
-   revisar hoje não deve ser produzido hoje.
+3. **Limite:** paralelismo do `sabia.md` (padrão 1, máximo 3) **e** vagas de WIP de revisão humana, contadas
+   contra o Dev Sênior da `[APR] Aprovar PR` do lote (o da proposta do item 4; trocado, refaça a conta): o limite
+   por revisor dos acordos (sem o arquivo, 2) menos as fatias já esperando pessoa que contam para ele, como no
+   passo `sa-desenvolver.desenvolver.compromisso` (item 3). PR que ninguém vai revisar hoje não deve ser produzido hoje.
 4. Proposta — **uma confirmação para o lote todo**:
    ```
    🤖 Loop AFK — <n> fatias · paralelo <p> · base <branch>
@@ -40,7 +39,8 @@ As fatias pedidas, ou a sprint aberta.
    Aprovação dos PRs: [APR] Aprovar PR para <Dev Sênior> (sugestão: outro que não quem dispara; ele mesmo só se
    for o único Dev Sênior ativo)
    Estimativa de cada [APR] do lote (plano e PR): <h>h?
-   Plano com risco (regra sensível, muitos cenários, integração externa, mudança de dado) → a fatia para em
+   Plano com risco (regra sensível — dinheiro, acesso, dado pessoal —, mais de 6 cenários no contrato de pronto,
+   integração externa, mudança de dado) → a fatia para em
    bloqueada, "aguardando troca de modo" (a troca é do P.O. ou do SM), e o loop segue com as outras
    Ao fim de cada fatia aprovada e verificada: push + PR? (sim/não)   — nunca merge; só se o sabia.md diz
    "perguntar a cada lote" (com "não — a pessoa abre", omita a linha: o loop para em `verificada`)

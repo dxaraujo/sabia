@@ -25,23 +25,29 @@
    confirmação para o lote**:
    ```
    📥 Lote EWM — <time> · <tipos> · estado <…> · <n> itens novos (<m> já no backlog)
-   | Item | Tipo | Título | Trilha | Status | Motivo |
-   |---|---|---|---|---|---|
-   | DF 4567 | Defeito | Juros calculados em dobro no atraso | rápida | nova | comportamento certo na REG 2101; falta: artefatos afetados |
-   | IB 611 | Item de Backlog | Portal de renegociação de dívidas | épico | novo | várias histórias, decisões de produto; falta: quem pede |
-   | IB 613 | Item de Backlog | Limitar o desconto de pontualidade a 10% | padrão | nova | regra nova clara; falta: regras, cenários, artefatos afetados e aprovação do P.O. |
-   | DF 4570 | Defeito | Erro ao consultar CPF sem máscara | rápida | nova | falta: como reproduzir, artefatos afetados |
-   | IB 615 | Item de Backlog | Relação de contas bloqueadas para a auditoria | sustentação · Atendimento | aberto · 2026/Sprint 03 | extração, sem mudança |
+   | Item | Tipo | Título | Trilha | Status | Responsável | Estimativa | Motivo |
+   |---|---|---|---|---|---|---|---|
+   | DF 4567 | Defeito | Juros calculados em dobro no atraso | rápida | nova | — | — | comportamento certo na REG 2101; falta: artefatos afetados |
+   | IB 611 | Item de Backlog | Portal de renegociação de dívidas | épico | novo | — | — | várias histórias, decisões de produto; falta: quem pede |
+   | IB 613 | Item de Backlog | Limitar o desconto de pontualidade a 10% | padrão | nova | — | — | regra nova clara; falta: regras, cenários, artefatos afetados, aprovação do P.O. |
+   | DF 4570 | Defeito | Erro ao consultar CPF sem máscara | rápida | nova | — | — | falta: como reproduzir, artefatos afetados |
+   | IB 615 | Item de Backlog | Relação de contas bloqueadas para a auditoria | sustentação · Atendimento | aberto · 2026/Sprint 03 | joao.lima | 3 h | extração, sem mudança |
    "sim" registra tudo · ou ajuste por linha (ex.: "DF 4570: não fazer")
    ```
+   Responsável e Estimativa, só na Sustentação (nas demais linhas, `—`): o membro ativo com `atende: true` no
+   `equipe.json` (vários → o primeiro da lista; nenhum → `—`) e a estimativa proposta pelo pedido, em `<n> h`. As
+   demais perguntas do passo `sa-triar.triar.registrar` têm padrão fixo, que o "sim" aceita: o IB sem pai `[EP-…]`
+   da linha de épico é o épico; a descrição mínima do épico é a do item, e o que faltar fica na `obs` (`novo`); a
+   categoria e a sprint são as da tabela; o `**Pedido por:**` é a área que o item cita, ou `—`; o título do item do
+   EWM ganha só o prefixo `[<ID>]` (§9 do [elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md)).
 4. Com "sim": o passo `sa-triar.triar.registrar` para cada linha (o item fora do estado inicial volta a ele), sem commit aqui (o lote entra no commit
-   único do passo `sa-triar.triar.encaminhar`, resposta "não") e com o EWM numa confirmação só. Padrão no lote → ficha em `rascunho` só com o Pedido e `falta: regras, cenários, artefatos afetados e aprovação
+   único do passo `sa-triar.triar.encaminhar`, resposta "não") e com o EWM numa confirmação só. Padrão no lote → ficha em `rascunho` só com o Pedido e `falta: regras, cenários, artefatos afetados, aprovação
    do P.O.`; rápida → `nova` com `falta: artefatos afetados` e o mais que a ficha da trilha pedir (a entrevista e a
    lista confirmada são uma a uma, depois, pelo fluxo `sa-triar.triar`). A seção Artefatos afetados das duas fica
    `Lista a confirmar na triagem.` (padrão `sa-triar/ficha.md`). Sustentação no
    lote → registrado como no passo `sa-triar.triar.registrar`, sem a entrevista curta (o item do EWM é o pedido e o IB do item; prazo e
-   critério de pronto ficam `—`), com a categoria, a sprint e o responsável da tabela e, se entra na sprint, a tarefa
-   na mesma confirmação.
+   critério de pronto ficam `—`), com a categoria, a sprint, o responsável e a estimativa da tabela e, se entra na
+   sprint, a tarefa na mesma confirmação.
 
 ## Saída
 

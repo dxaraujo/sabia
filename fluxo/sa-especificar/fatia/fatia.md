@@ -3,7 +3,7 @@
  "quando": ["especificação de fatia: a [ESP] FT-nnn da fatia nova que não passa na DoR (inclusive falta: especificação) ou da fatia que voltou à especificação (plano, revisão, verificação, aprovação do PR)", "pegar a [ESP] da FT-031", "especificar a FT-031"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa"],
  "passos": [
-   {"id": "entrada", "de": "entrada", "sprint": "exige", "saidas": {"linha iniciada com conceito da fatia aprovado na base e ainda não publicado (na fatia iniciada, o do Bloqueio com o verified mais novo que o Bloqueio)": "publicar"}},
+   {"id": "entrada", "de": "entrada", "sprint": "exige", "branch": "nao", "saidas": {"linha iniciada com conceito da fatia aprovado na base e ainda não publicado (pelo filtro do elm-publicar)": "publicar"}},
    {"id": "assumir"},
    {"id": "trabalho", "chama": "sa-entrevistar.entrevistar", "saidas": {"sem artefato afetado": "concluir"}},
    {"id": "artefatos"},
@@ -51,7 +51,7 @@ aprovação, nada dos artefatos vai à base — só a linha da Especificação (
 - O aprovado vai à base (passo `aprovacao`) e ao ELM na conclusão, ligado à `[ESP]` (passo `publicar`). Até ela
   concluir, a `[ESP]` aberta aceita mudança; depois, a mudança segue a Volta à especificação.
 - Toda sessão fecha como o passo `sa-especificar.especificar.fechar-sessao` (comentário, anexos `elm-<arquivo>.md`
-  da pasta de trabalho, horas na `[ESP]`). Na `[ESP] FT`: a linha de créditos na seção `## Créditos` da ficha, na
+  da pasta de trabalho, horas na `[ESP]`). Na `[ESP] FT`: a linha de créditos (Papel `ESP`) na seção `## Créditos` da ficha, na
   base, pelo [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), commit
   `FT-<nnn> registrar sessão`; o comentário começa com `Sessão de especificação — FT-<nnn> · <AAAA-MM-DDTHH:MMZ>`;
   anexos só os de `elm/`, como `elm-<arquivo>.md`; a pendência `[ESP FT-<nnn> sessão <AAAA-MM-DD>]` como as demais.

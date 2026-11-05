@@ -10,7 +10,8 @@ A fatia com a `[ESP]` assumida (passo `assumir`), ou o achado da revisão P que 
 **Trabalho:** fatia `nova` com falta além de `especificação` → [Completar uma fatia `nova`](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#completar-uma-fatia-nova),
 itens 1–3 (nunca pela `sa-fatiar`). Decisão em aberto (da ficha ou da revisão P) → **`sa-entrevistar`**, com a
 pessoa. Depois, na fatia `nova`, a DoR (item 4) fora a falta `especificação`: não passa → a `[ESP]` segue aberta, sem
-escrever nem publicar artefato (Pare se).
+escrever nem publicar artefato (Pare se). A ficha completada e o `falta:` atualizado (item 4) vão à base pelo bloco
+[Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), commit `FT-<nnn> completar ficha`.
 
 Depois, a seção **Artefatos afetados** da ficha: alguma linha `inclui`, `altera` ou `exclui` com Especificado `—` → passo
 `artefatos`; nenhuma (`Projeto sem ELM.` ou a linha `Nenhum artefato afetado…`) → passo `concluir`.

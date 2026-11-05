@@ -4,7 +4,7 @@
  "travas_gerais": ["sim-da-pessoa"],
  "passos": [
    {"id": "equipe"},
-   {"id": "acordos"},
+   {"id": "acordos", "saidas": {"rever a equipe e os acordos": "fim"}},
    {"id": "roadmap"},
    {"id": "base-ewm"}
  ]}

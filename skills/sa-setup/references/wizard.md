@@ -148,7 +148,7 @@ No lugar da tabela de etapas do W0 (a pré-checagem continua):
 | 8 | Regras críticas | <1. … 2. … | nenhuma além do steering> | 🔍 <tech.md> |
 
 > ❓ **Está certo?**
-> `ok` aceita tudo · `<n>: <novo valor>` muda a linha <n> · steering ❌ → `<n>: <arquivo>`, `<n>: gerar` ou `<n>: nenhum`
+> `ok` aceita tudo · `<n>: <novo valor>` muda a linha <n> · steering ❌ → `<n>: <arquivo>`, `<n>: gerar` (você roda o "Generate Steering Docs" do Kiro e eu releio) ou `<n>: nenhum`
 ```
 
 ## W2 · Comandos (Passo 2)
@@ -265,6 +265,12 @@ escreve o tipo no passo de desvio dele (coluna Desviável do catálogo):
 |---|---|---|---|---|
 | `<sigla>` | `<skill>` | `<fluxo>` <com o padrão `<padrão>`> <ou — (as references da skill)> | `<toolkit>` <versão> | `<id do passo>` |
 
+Ligar ao projeto — um toolkit de tipo por linha (marcado o detectado; desmarcado o sugerido):
+
+| | # | Toolkit | Tipos |
+|---|---|---|---|
+| <[✅] | [ ]> | <n> | `<toolkit>` <versão> <🔍 detectado | (sugerido)> | `<sigla>` · … |
+
 Agentes do projeto (podem virar subagentes do desenvolvedor e do orquestrador):
 
 | # | Agente | Para quê | Status |
@@ -274,7 +280,7 @@ Agentes do projeto (podem virar subagentes do desenvolvedor e do orquestrador):
 <o bloco Fluxos (W5-F)>
 
 > ❓ **Falta alguma skill ou agente que eu não achei?**
-> `ok` segue · `<caminho>` acrescenta
+> `ok` segue · `<caminho>` acrescenta · (se há toolkit de tipo) `toolkit <n>: sim` liga · `toolkit <n>: não` desliga
 ```
 
 ## W5-F · Fluxos (Passo 5)
@@ -443,10 +449,15 @@ Depois, numa mensagem só:
 | 1. **Nova demanda: …** (`sa-triar`).>
 
 ### Commit
-`<git add … && git commit -m "<padrão de commit>: configurar o Sabiá">`
+`<git add … && git commit -m "<padrão de commit, com <descrição> = configurar o Sabiá>">`
 
+(padrão sem o id do EWM)
 > ❓ **Faço o commit?**
 > `ok` commita · `não` deixa para você
+
+(padrão com o id do EWM — `Task <id> - …`)
+> ❓ **Qual id do EWM vai no commit?**
+> `<id>` commita com ele · `não` deixa para você
 ```
 
 ## C1 · Customizar — achar o ponto

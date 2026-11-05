@@ -28,9 +28,9 @@ nascer com os ids que cita (GL → REG → EL → HF → ET), com a **2ª passad
 antes da ET. A ET inicial do épico (linha ET = `inicial no PRD + as-built`) entra nessa ordem, com os requisitos; a
 as-built da fatia segue a seção ET as-built abaixo.
 
-1. **Conceito novo** (sem `resource`): no PRD, a coluna "No ELM" diz `novo (verificado <data>)`; na fatia, a linha
-   `inclui` da seção Artefatos afetados, com o conceito aprovado na `[ESP] FT`; sem isso →
-   [similares](../../sa-prd/references/similares.md) só para ele. Acerto `igual`/`sobrepõe` → não cria: volta à
+1. **Conceito novo** (sem `resource`): no PRD, a coluna "No ELM" diz `novo (verificado <data>)` ou
+   `novo (não verificado)`; na fatia, a linha `inclui` da seção Artefatos afetados, com o conceito aprovado na
+   `[ESP] FT`; sem isso → [similares](../../sa-prd/references/similares.md) só para ele. Acerto `igual`/`sobrepõe` → não cria: volta à
    escrita da `[ESP]` (`sa-prd.prd.escrever` no épico, `sa-especificar.fatia.escrever` na fatia); o lote segue.
 2. **Texto:** o corpo sem a seção `## Relações`; regra, termo ou leiaute já publicado → `[<id>](<id>)` (na HF, a
    linha **Telas:** já sai com o id da EL); conceito sem id → só o título. Os conceitos dos tipos da coluna Embute do
@@ -130,10 +130,12 @@ CT.csv no ETM e ligar (ct, req) e (wi, ct)` e o `CT.csv` para importar à mão n
 
 ## Conclusão do IB e do épico
 
-IB da fatia (o item da coluna `elm` da linha da fatia: o `IB`, ou o `DF`/`IB` de origem na fatia que veio do EWM):
+No passo `sa-consolidar.consolidar.fechar`, depois do push conferido do commit de consolidação. IB da fatia (o item da
+coluna `elm` da linha da fatia: o `IB`, ou o `DF`/`IB` de origem na fatia que veio do EWM):
 `elm_comentar(id, "PR <link> · pasta <pasta> · publicados: <ids de ET, CT>")` e
 `elm_transicao(id, "concluir")`, na mesma confirmação. Na última fatia do épico (as demais `concluida`, `dividida`
 ou `cancelada`), também o IB do épico (`elm_transicao(id, "concluir")`), junto com o `concluido` no `backlog.md` e
 na Fase do `status.md` do épico (passo `sa-consolidar.consolidar.fechar`); épico `cancelado` não conclui (fica como está). Erro
 `precondicao` → `ELM pendente [IB FT-<nnn> concluir]: concluir o IB <id> (<atributo exigido>)` (no épico, `ELM
-pendente [IB EP-<nn> concluir]: concluir o IB do épico <id> (<atributo exigido>)`).
+pendente [IB EP-<nn> concluir]: concluir o IB do épico <id> (<atributo exigido>)`), no commit e no push do passo
+`sa-consolidar.consolidar.fechar`.

@@ -7,7 +7,7 @@ Implementação descobriu que o plano não serve (esperado × encontrado).
 
 ## Faça
 
-Atualize `design.md`/`tasks.md` só no que
+`fase: planejando` (até o GATE). Atualize `design.md`/`tasks.md` só no que
 mudou, acrescente tarefas (nunca desmarque as feitas), registre o motivo no Histórico.
 
 ## Saída

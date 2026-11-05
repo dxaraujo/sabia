@@ -8,7 +8,7 @@ Valem em todos os fluxos da skill.
 Todo retrabalho tem uma causa no **ambiente** do agente: contexto, verificação ou processo. Corrigir só o código
 resolve hoje; corrigir o ambiente resolve para sempre. Arquivos (versionados):
 
-- `<produto>/aprendizado/licoes.md` — log de lições (só acréscimo);
+- `<produto>/aprendizado/licoes.md` — log de lições (só acréscimo; a Situação muda no lugar);
 - a seção **Regras aprendidas** do `.sabia/sabia.md` — regras promovidas de **julgamento** (o revisor
   cobra, o plano respeita; o steering é sempre carregado, então cada regra é curta, imperativa, com exemplo).
 

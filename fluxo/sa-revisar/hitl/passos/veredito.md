@@ -1,5 +1,5 @@
 ---
-{"resumo": "Possível alteração indicada → a pessoa decide (volta à especificação: bloqueada; código errado: achado); APROVADO → fase em-verificacao; REVISAR → retrabalho (de: em-revisao), Rodadas e linha na tabela Retrabalho; a [REV] fica em andamento."}
+{"resumo": "Possível alteração indicada → a pessoa decide (volta à especificação: bloqueada; código errado: achado); APROVADO → fase em-verificacao; REVISAR → retrabalho (de: em-revisao), Rodadas e linha na tabela Retrabalho; AMBIENTE → bloqueada com o ⚠️ ambiente; a [REV] fica em andamento."}
 ---
 ## Entrada
 
@@ -20,6 +20,9 @@ decisão é sua, não do agente:
 - **`REVISAR`** → `fase: retrabalho (de: em-revisao)`; incremente "retrabalho" em Rodadas e grave uma linha na
   tabela **Retrabalho** do `status.md` (papel REV, motivo = o relatório). A `[REV]` fica em andamento: você
   revisa de novo quando o PR for atualizado (a retomada começa no passo `pr`).
+- **`AMBIENTE`** (o C3 não rodou por ambiente) → `fase: bloqueada (de: em-revisao)`, Bloqueio `⚠️ ambiente: <o que
+  faltou>`; não é reprovação (sem Retrabalho). A `[REV]` fica em andamento: você a retoma quando o Bloqueio se
+  resolve.
 
 ## Saída
 

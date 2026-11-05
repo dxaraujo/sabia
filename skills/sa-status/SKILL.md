@@ -45,16 +45,16 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
    PRDs (`epicos/*/prd.md`; antes do GATE, a seção ELM pendente do `rascunho.md`): pendências `ELM pendente [<chave>]:` do rodapé e a
    data da linha `Versão <x.y> · <AAAA-MM-DD>`. A `obs` `falta: especificação (<motivo>, …)` do épico `iniciado` e da fatia que
    não está `nova` (pendência do P.O. na `[GB]`: a `[ESP] <id> Revisão <n>` pelo encaixe ou no próximo planejamento).
-5. `<produto>/acordos.md`: limites de WIP (sem o arquivo: 2 fatias esperando pessoa, e sugira a
+5. `<produto>/acordos.md`: limites de WIP, por revisor, pela linha WIP do [arquivos.md](../sa-planejamento/references/arquivos.md#acordosmd) (sem o arquivo: 2 por revisor, e sugira a
    fluxo `sa-planejamento.inicial`). Sem `<produto>/equipe.json` → sugira o mesmo fluxo: sem ele não há
    senioridade (modo da fatia, GATE do plano, quem revisa).
 6. `<produto>/aprendizado/licoes.md`: lições com situação `proposta`.
-   Sprint aberta (`sprint-<nn>.md`): seções Especificação, Débito de especificação (as linhas com Tarefa `—`; sem sprint aberta, a `obs`
-   `débito de especificação` das fatias no `backlog.md`) e
-   Sustentação (reserva × consumido; a linha com `saiu da sprint` não conta no consumido) e as linhas `ELM pendente [<chave>]:`, cada item pela linha viva, a sem
+   Sprint aberta (`sprint-<nn>.md`): seções Especificação, Débito de especificação (as linhas com Tarefa `—`; sem sprint aberta, o
+   Drift de negócio com ` · débito de especificação (sem sprint)` no `status.md` da base das fatias `concluida`) e
+   Sustentação (reserva × consumido, pela conta do [arquivos.md](../sa-planejamento/references/arquivos.md#sprintspaisprint-nnmd), pelas estimativas; a linha com `saiu da sprint` não conta no consumido) e as linhas `ELM pendente [<chave>]:`, cada item pela linha viva, a sem
    `saiu da sprint` ([Gravar na base](../sa-fatiar/references/backlog.md#gravar-na-base)). Sustentação aberta: as
    linhas `aberto` e `em-andamento` de cada `### <Categoria>` da `## Sustentação` do `backlog.md` (na sprint ou com
-   `sprint` `—`). Com o MCP `elm`: **conferência com o EWM** — só leitura, numa listagem (a sincronização inteira é o
+   `sprint` `—`), com o `**Prazo:**` do registro (coluna `registro`; `—` fica fora do prazo vencendo). Com o MCP `elm`: **conferência com o EWM** — só leitura, numa listagem (a sincronização inteira é o
    §9 do [elm-sprint.md](../sa-planejamento/references/elm-sprint.md)). Cabeçalho com o marcador
    `**Publicação no EWM:** pendente` → não liste nem rode o §1: sprint não publicada. Senão,
    `elm_listar_wi(iteracao da sprint, limite 200)`, **sem `tipo`** (tarefas, IBs, defeitos e épicos); `truncado` →
@@ -90,7 +90,7 @@ seção. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofe
 | FT | Título | Fase | Modo | Tarefas | Achados | PR | Parada há | Próximo passo |
 ⏸️ Iniciadas sem branch publicada: FT-035 (iniciada por joao.lima em 2026-10-20) → só ele retoma (sa-desenvolver)
 
-👀 Esperando pessoa (WIP de revisão: <n>/<limite> — aguardando-aprovacao-plano + pr-aberto + em-revisao + em-verificacao + aceita + verificada + aguardando-aprovacao-pr)
+👀 Esperando pessoa (WIP de revisão por revisor: <login> <n>/<limite> · … — aguardando-aprovacao-plano + pr-aberto + em-revisao + em-verificacao + aceita + verificada + aguardando-aprovacao-pr)
 - FT-031 aguardando-aprovacao-plano há 1 dia → aprovar o plano: [APR] de <Dev Sênior> (sa-revisar, fluxo aprovar-plano)
 - FT-029 pr-aberto há 2 dias → esperando revisão: [REV] de <revisor> (sa-revisar, fluxo hitl) <link>
 - FT-028 em-verificacao → esperando verificação: [VER] de <verificador> (sa-verificar, fluxo hitl)
@@ -132,15 +132,15 @@ compara a estimativa e lê o que saiu da listagem). Marcador, `nao_encontrado` o
 fatias `concluida` (Coleta, item 2).
 
 **Possível alteração** — a linha `· possível alteração: <artefatos> → <quem> decide` vem do Drift (Coleta, item 2);
-quem decide, pela fase: `pr-aberto` ou `em-revisao` → o revisor; `em-verificacao` → o verificador; AFK → o Dev Sênior
-na `[APR]`. O merge espera a decisão.
+quem decide, pela fase: HITL antes da VER (`pr-aberto`, `em-revisao`) → o revisor; da VER em diante (`em-verificacao`,
+`aceita`) → o verificador; AFK → o Dev Sênior na `[APR]`. O merge espera a decisão.
 
 **Produto** — `⏳`: épico `iniciado` no `backlog.md`, com a Fase `aprovado` no `status.md` da base, sem a `obs`
 `falta: especificação` e sem linha viva `planejada` ou `iniciada` na seção Especificação da sprint aberta (a linha
 `concluida` da sprint fechada não migra); `<n>` = hoje − a data do rodapé do `prd.md`. As linhas `📝` vêm da Coleta, itens 4 (pendência) e 6 (débito); sem nenhuma, omita-as.
 
 **Sugestão** — nesta ordem: desbloquear quem espera uma pessoa (plano ou PR parado, WIP de revisão estourado, PR
-mergeado sem `pronta` na base) → item de Sustentação com prazo vencendo → terminar a fatia em andamento → começar a
+mergeado sem `pronta` na base) → item de Sustentação com prazo vencendo (vencido ou vence até o próximo dia útil) → terminar a fatia em andamento → começar a
 próxima elegível (a planejada do topo; nenhuma → a `elegivel` do topo, pelo encaixe com o P.O. ou o SM, agente `sa-produto`; AFK em quantidade → ofereça o `sa-orquestrar`) →
 PRD aprovado aguardando fatiamento (a linha ⏳) → trabalho de produto (PRD/fatiar) para manter o backlog com fatias
 elegíveis.
@@ -160,7 +160,6 @@ elegíveis.
   `pronta`/`concluida` no `status.md` da base e não no `backlog.md` (ou o contrário) — a sincronização da sprint
   (§9) propõe a solução;
 - fatia em andamento sem commit há mais de 3 dias úteis;
-- `concluida` com Banco = `pendente` ou `aplicada em dev` (implantação bloqueada);
 - Histórico fora de ordem cronológica ou fase que não bate com a última linha (conflito mal resolvido);
 - conceito aprovado (`stable`, `verified` humano) sem `resource`, com a `[ESP]` dele concluída e sem `ELM pendente
   [… publicar]` (no `elm/` do épico ou no da fatia): a `[ESP]` não o publicou;
@@ -168,7 +167,9 @@ elegíveis.
 - `backlog.md` alterado numa branch de fatia (deve mudar só na base);
 - reserva (Sustentação + retrabalho) estourada (consumido > reserva; o consumido não conta as linhas com
   `saiu da sprint`) sem decisão do P.O. registrada no `sprint-<nn>.md`;
-- arquivo com dado de cliente versionado (extração, CSV ou evidência fora de `.sabia/local/`).
+- possível dado de cliente versionado, pelo caminho e pela extensão (`git ls-files`): arquivo em
+  `<produto>/sustentacao/**` além do `<ID>-<slug>.md`, ou `*.csv`/`*.xlsx` — fora o `CT.csv`, as `evidencias/` e a
+  `massa/` da fatia.
 
 Tarefa concluída **sem horas lançadas** não é apontada aqui: só no fechamento da sprint (passo
 `sa-planejamento.retrospectiva.horas`). A `[GB]` sem horas (a dona também é o P.O., que nunca lança) é normal: nem aqui nem no relatório de horas.
@@ -187,7 +188,8 @@ o `status.md` que vale é o da base — os itens 1 e 4 gravam nele pelo bloco
 3. **Horas da sessão** (com ELM): "Quanto tempo nesta sessão em `<tarefa>`?" — a tarefa do papel de quem fecha,
    pelo campo ELM do `status.md` → `elm_horas(<id>)` → desconte → `elm_lancar_horas(<id>, <h>)`, com "sim" (lança, não conclui).
    Sem o MCP `elm` → `ELM pendente [<DEV|REV|VER|APR> FT-<nnn> horas]: lançar <h>h (<data>)` no Histórico.
-4. **Créditos da sessão** (sempre, com ou sem ELM) — o Kiro grava o consumo de cada turno só na máquina de quem
+4. **Créditos da sessão** (sempre no Kiro, com ou sem ELM; no opencode não se registra crédito de sessão: pule este
+   item) — o Kiro grava o consumo de cada turno só na máquina de quem
    conversou (`~/.kiro`), por isso é quem fecha que registra, aqui, e o número chega aos outros pelo commit. O
    Kiro só grava o consumo de um turno quando ele **termina**: leia sempre **na resposta a uma pergunta**, e assim o
    turno do trabalho já está gravado. Se a pessoa acabou de responder `sim` a `💳 Registrar os créditos desta
@@ -208,8 +210,9 @@ o `status.md` que vale é o da base — os itens 1 e 4 gravam nele pelo bloco
    Gravar? (sim)
    ```
    Com "sim", uma linha por sessão na seção **Créditos** do `status.md`: `| <ate> | <papel> | <login> | <id> |
-   <versão> | <x.xx> |` — Data é o `ate` do script (o `--desde` da próxima vez). Sessão com várias fatias (loop)
-   → rateio igual entre elas, Sessão `<id> (rateio 1/<n>)`. Script sem sessão (código 1, outro editor) → pergunte
+   <versão> | <x.xx> |` — Data é o `ate` do script (o `--desde` da próxima vez); Papel é a sigla da tarefa (`DEV`
+   `REV` `VER` `APR` `ESP` `ATD`…; na Revisão do épico, `ESP`). Sessão com várias fatias (loop)
+   → rateio igual entre elas, Sessão `<id> (rateio 1/<n>)`. Script sem sessão (código 1) → pergunte
    o número que o Kiro mostra, Sessão `informado`; nunca estime. Sobra só o turno do próprio registro, pequeno: o
    próximo fechamento do item o pega pelo `--desde`.
 
@@ -218,7 +221,7 @@ o `status.md` que vale é o da base — os itens 1 e 4 gravam nele pelo bloco
    Créditos da ficha da fatia; gestão (Atividade: `inicial` · `planejamento` · `encaixe` · `sincronização` · `troca de modo` · `review` · `retrospectiva` · `virada` · `triagem` · `consolidação` · `fatiamento` · `refinamento`) → seção **Créditos de gestão** do `sprint-<nn>.md` aberto, com Atividade no lugar de Papel,
    quando há sprint aberta. Sem sprint aberta (só o comentário na `[GB]`) → `--desde` = a data e hora do último
    comentário `Créditos` da `[GB]` (`elm_ler_wi(<id da [GB]>, comentarios = -1)`). Toda sessão do P.O. ou do SM no
-   agente de produto grava também, com o mesmo "sim", um comentário na `[GB]`: `elm_comentar(<id da [GB]>, "Créditos
+   agente de produto, fora da Sustentação (que grava só no registro), grava também, com o mesmo "sim", um comentário na `[GB]`: `elm_comentar(<id da [GB]>, "Créditos
    <atividade> <ids>: <créditos> (sessão <sessão>, <login>, <AAAA-MM-DD>)")` — ex.: `Créditos triagem FT-040, AT-013:
    2.40 (sessão 9ec1dcaa, ana.souza, 2026-10-29)`. Horas na `[GB]`, só o SM lança; o P.O. nunca, nem quando também
    é o SM. Sem o MCP `elm` ou com falha → `ELM pendente [GB <id> créditos]: comentar "Créditos <atividade> <ids>: …"` no lugar das pendências da `[GB]`

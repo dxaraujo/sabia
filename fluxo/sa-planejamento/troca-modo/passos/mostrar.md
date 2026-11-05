@@ -27,7 +27,8 @@ da fatia no `sprint-<nn>.md`: `modo: <atual> mantido (<quem>, <data>)`, ou, no P
 
 ## Saída
 
-Alterar → passo `gravar`. Seguir, Júnior, PR aberto ou o Pleno recusou → a Observação gravada, com o "ok", pelo
+Alterar → passo `gravar`. Júnior ou PR aberto → nada gravado; diga por onde o Dev retoma, pela fase (a lista do
+passo `avisar`): o fluxo termina. Seguir ou o Pleno recusou → a Observação gravada, com o "ok", pelo
 bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), commit `<FT> trocar modo`; a fatia bloqueada
 sai do bloqueio na retomada do Dev, no modo atual; diga por onde o Dev retoma, pela fase (a lista do passo `avisar`): o fluxo
 termina.

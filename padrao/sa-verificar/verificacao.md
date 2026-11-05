@@ -1,6 +1,15 @@
 ---
-{"resumo": "Formato de cada cenário no verificacao.md: o roteiro (passo roteiro da sa-verificar) e, logo abaixo, o resultado (passo executar); no fim do arquivo, a decisão de cada rodada (passo resultado)."}
+{"resumo": "Formato do verificacao.md: uma seção por rodada, acrescentada sem apagar, com o roteiro de cada cenário (passo roteiro da sa-verificar), logo abaixo o resultado (passo executar) e, no fim da rodada, a decisão (passo resultado)."}
 ---
+## Rodada (acrescentada no fim do arquivo, sem apagar as anteriores)
+
+```markdown
+## Rodada <N> · <AAAA-MM-DD>
+```
+
+A rodada 1 tem todos os cenários; a seguinte, só os rejeitados e os de repetição da anterior (AFK e HITL; no HITL, o
+verificador pode pedir todos). Vale o resultado mais recente de cada cenário (o `CT.csv`: padrão `sa-verificar/ct-csv.md`).
+
 ## Roteiro (escrito antes de executar)
 
 ```markdown
@@ -22,16 +31,18 @@
 
 `CT ETM` é opcional: só depois da consolidação, com o ETM (passo `sa-consolidar.consolidar.elm`).
 
-`🔁 possível alteração`, só no AFK: o cenário que o verificador atribui a um artefato (o artefato parece errado, não o
-código). Não vira tarefa de código: vai ao Drift de negócio, e quem decide é o Dev Sênior na `[APR] Aprovar PR`.
+`🔁 possível alteração`: o cenário que o verificador atribui a um artefato (o artefato parece errado, não o
+código). Não vira tarefa de código: vai ao Drift de negócio, e quem decide é o Dev Sênior na `[APR] Aprovar PR`
+(AFK) ou a pessoa verificadora (HITL: provisório até a decisão dela; código errado → `❌`).
 
-## Decisão (fim do arquivo, uma por rodada)
+## Decisão (fim da rodada, uma por rodada)
 
 ```markdown
 🔎 Verificação FT-<nnn> — rodada <N>
-Cenários: <a> aceitos · <r> rejeitados · <e> ambiente · <p> possível alteração (AFK)
+Cenários: <a> aceitos · <r> rejeitados · <e> ambiente · <p> possível alteração
 Drift de negócio: não | possível alteração — <motivo> · artefatos: <id|rótulo> (<tipo>)
-VERIFICACAO: ACEITO | REJEITADO
+VERIFICACAO: ACEITO | REJEITADO | AMBIENTE
 ```
 
-A **última linha** do arquivo é `VERIFICACAO: ACEITO` ou `VERIFICACAO: REJEITADO`.
+`AMBIENTE` = só `⚠️ ambiente`, nenhum `❌`. A **última linha** do arquivo é `VERIFICACAO: ACEITO`,
+`VERIFICACAO: REJEITADO` ou `VERIFICACAO: AMBIENTE`.

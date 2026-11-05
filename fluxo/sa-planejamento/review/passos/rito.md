@@ -11,8 +11,9 @@ Abra pelo resumo da coluna Status das Fatias do `sprint-<nn>.md` — concluídas
 e planejadas que migram —: é o que foi feito na sprint. Para cada fatia concluída: o cenário entregue e a
 **evidência** do `verificacao.md` (resposta, contagem, screenshot). Depois das concluídas, o débito técnico de
 especificação: `Débito de especificação: <linhas com Tarefa —>` (seção Débito de especificação do `sprint-<nn>.md`;
-a consolidada sem sprint aberta, pelo Histórico do `status.md` e pela `obs` `débito de especificação` da fatia); a
-correção é decisão do P.O. Registre o retorno do P.O. na `## Review` do `sprint-<nn>.md` (bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base),
+a consolidada sem sprint aberta, pela marca ` · débito de especificação (sem sprint)` no Drift de negócio do `status.md` da fatia, na base); a
+correção é decisão do P.O. Registre o retorno do P.O. na `## Review` do `sprint-<nn>.md`, uma linha por fatia concluída
+([arquivos.md](~/.sabia/framework/skills/sa-planejamento/references/arquivos.md#sprintspaisprint-nnmd)) (bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base),
 commit `<pai>/Sprint <nn>: review`; sem retorno, a linha
 `sem retorno (<P.O.>, <AAAA-MM-DD>)`: a retrospectiva confere que a review foi feita); pedido novo → fluxo
 `sa-triar.triar` (origem: review `<chave>`), depois volte aqui — não reabre fatia concluída.

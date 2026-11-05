@@ -62,11 +62,8 @@
               },
               "lead-time-medio-dias": {
                 "type": "number",
-                "minimum": 0
-              },
-              "horas-revisao": {
-                "type": "number",
-                "minimum": 0
+                "minimum": 0,
+                "description": "Lead time médio das fatias concluídas na sprint: de iniciada até pronta (merge), em dias corridos, com 1 casa decimal."
               },
               "horas-lancadas": {
                 "type": "object",
@@ -104,7 +101,7 @@
                 "type": "number",
                 "minimum": 0,
                 "maximum": 1,
-                "description": "Reserva da sprint para a Sustentação (toda categoria) e o retrabalho da sprint anterior (0.2 = 20% das horas da sprint do time)."
+                "description": "O % da reserva (Sustentação de toda categoria + retrabalho da sprint anterior) do acordos.md na sprint, em fração (0.2 = 20% das horas da sprint do time)."
               }
             }
           }

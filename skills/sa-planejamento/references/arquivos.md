@@ -19,7 +19,7 @@ URL abaixo, nunca um caminho local:
     "duracao-sprint-semanas": 2,
     "inicio": "2026-10-06",
     "historico": [
-      { "sprint": "2026/Sprint 01", "fatias-concluidas": 5, "lead-time-medio-dias": 3.2, "horas-revisao": 22,
+      { "sprint": "2026/Sprint 01", "fatias-concluidas": 5, "lead-time-medio-dias": 3.2,
         "horas-lancadas": { "entrega": 120, "revisao": 18, "aprovacao": 4, "verificacao": 6, "especificacao": 24, "sustentacao": 9 },
         "reserva-sustentacao": 0.2 }
     ]
@@ -76,7 +76,8 @@ URL abaixo, nunca um caminho local:
 - `atende: true` marca quem faz Sustentação (toda categoria: responsável sugerido na triagem); a reserva é das horas
   do time inteiro, não só dessas pessoas.
 - `historico` ganha uma entrada na virada, com `sprint` = a chave da sprint (`2026/Sprint 01`);
-  `horas-lancadas` e `reserva-sustentacao` vêm do relatório de horas ([elm-sprint.md](elm-sprint.md) §5).
+  `lead-time-medio-dias` é o da `## Números`; `horas-lancadas` vem do relatório de horas ([elm-sprint.md](elm-sprint.md)
+  §5); `reserva-sustentacao` é o % da reserva do `acordos.md` na sprint, em fração (`0.2` = 20%).
 - Capacidade da sprint e totais **não** são gravados: calcule na hora. `historico` fica dentro de `projeto`.
 - `motivo` da ausência: `férias`, `folga`, `treinamento` ou `outro`.
 - Exatamente um P.O. e um SM ativos (a mesma pessoa pode ter os dois). Quem sai fica `ativo: false` (preserva o histórico).
@@ -92,8 +93,7 @@ URL abaixo, nunca um caminho local:
 | Item | Acordo |
 |---|---|
 | Cadência | Scrumban: sprints de 2 semanas (planejamento, review, retrospectiva, virada), fluxo puxado dentro da sprint, WIP limitado |
-| Cerimônias | planejamento (seg, 1h) · review (última qui, 30 min) · retrospectiva (última qui, 30 min) |
-| WIP | 1 fatia por sessão de agente · fatias esperando pessoa (`aguardando-aprovacao-plano`, `pr-aberto`, `em-revisao`, `em-verificacao`, `aceita`, `verificada`, `aguardando-aprovacao-pr`) ≤ 2 por revisor · PR parado > 1 dia: destravar antes de fatia nova (exceção registrada no Histórico do `status.md` da fatia que começa: `WIP excedido: <motivo>`) |
+| WIP | 1 fatia por sessão de agente · fatias esperando pessoa (`aguardando-aprovacao-plano`, `pr-aberto`, `em-revisao`, `em-verificacao`, `aceita`, `verificada`, `aguardando-aprovacao-pr`) ≤ 2 por revisor (cada fatia conta contra quem ela espera: o Dev Sênior da `[APR]` em `aguardando-aprovacao-plano`, `verificada` e `aguardando-aprovacao-pr`, inclusive as do lote do `sa-orquestrar`; no HITL, o Revisor da linha da sprint em `pr-aberto`, `em-revisao` e `aceita`, e o Verificador em `em-verificacao`) · PR parado (o `atualizado_em` do PR há mais de 1 dia): destravar antes de fatia nova (exceção registrada no Histórico do `status.md` da fatia que começa: `WIP excedido: <motivo>`) |
 | Tamanhos | P (horas) · M (≈ 1 dia) · G (2–3 dias) · maior → dividir (sem pontos; a previsão é pela vazão) |
 | Horas por tamanho | P: [DEV] 4 · [REV] 1 · [VER] 1 · M: [DEV] 8 · [REV] 2 · [VER] 2 · G: [DEV] 20 · [REV] 3 · [VER] 3 (exemplo: os números são do time; horas inteiras; a estimativa das tarefas de papel na publicação, ajustável por fatia na proposta; AFK: só a [DEV]) |
 | Especificação | Épico com até 8 histórias (toda história conta, inclusive as desdobradas de outra) e um objetivo de negócio; mais → propor dividir em dois épicos antes de escrever o PRD |
@@ -135,18 +135,21 @@ da próxima), no pai atual; com histórico, a faixa pelas vazões mínima e máx
 A sprint acompanha a iteração do EWM de que ela é filha (estrutura padrão: `<linha de base>` → `2026` → `Sprint 01`, `Sprint 02`…;
 `2027` → `Sprint 01`… — [elm-sprint.md](elm-sprint.md#estrutura-no-ewm-padrão)): `<pai>` é o nome da iteração pai (`2026`) e `<nn>` recomeça em `01` em cada pai — `sprints/2026/sprint-01.md`,
 `sprints/2027/sprint-01.md`. A **chave** da sprint é `<pai>/Sprint <nn>` (`2026/Sprint 03`), do número do arquivo
-(o nome do arquivo não muda; o da iteração no EWM é livre e fica só no `**Iteração no EWM:**`, com ou sem ELM): é
+(o nome do arquivo não muda; o da iteração no EWM é livre e fica só no `**Iteração no EWM:**`): é
 ela que vai no cabeçalho, na coluna `sprint` do `backlog.md`, em `historico[].sprint` do `equipe.json`, nas
 Observações `migrada para <chave>` e `migrada de <chave>` e nos commits (`2026/Sprint 03: planejar`). Nas skills,
 `sprint-<nn>.md` abrevia `sprints/<pai>/sprint-<nn>.md` e "sprint `<nn>`", a chave. A ordem das sprints é a da data
 de início do cabeçalho (o nome do pai é livre e não ordena) — a do `historico`, que cruza pais na vazão.
+As datas do cabeçalho: início = o dia seguinte ao fim da sprint anterior (a primeira do projeto: o `inicio` do
+`equipe.json`); fim = início + 7 × `duracao-sprint-semanas` − 1. **Projeto sem ELM** (`Usa ELM: não` no `sabia.md`):
+`**Iteração no EWM:** —` e `**Plano no EWM:** —`, sem `**Publicação no EWM:**`, e a Tarefa ELM `—`.
 
 ```markdown
 # <pai>/Sprint <nn> · <AAAA-MM-DD> → <AAAA-MM-DD>
 
 **Meta:** <resultado de negócio>
 **Iteração no EWM:** <pai>/<nome> | —   (o caminho que o `elm_iteracao` recebe: `2026/Sprint 03`)
-**Plano no EWM:** <nome> - <nome curto da meta>   (o `plano` do `elm_iteracao`: `Sprint 03 - Exportar o relatório de contas`)
+**Plano no EWM:** <nome> - <nome curto da meta> | —   (o `plano` do `elm_iteracao`: `Sprint 03 - Exportar o relatório de contas`)
 **Power sabia:** <versões usadas, crescente: 2.0.0 · 2.0.1>   (o planejamento grava a da abertura; a virada acrescenta as das linhas de créditos)
 **Situação:** <aberta | fechada>   (a virada grava `fechada`; o painel usa a última `aberta`)
 **Fechamento sem consolidar:** FT-031, FT-033 (<login do P.O.>, <AAAA-MM-DD>)   (só quando o P.O. decide fechar com fatia de PR mergeado sem consolidação; ids separados por vírgula; outra decisão na mesma sprint acrescenta ` · FT-… (<login do P.O.>, <AAAA-MM-DD>)`)
@@ -199,7 +202,7 @@ Reserva (Sustentação + retrabalho): <h>h · retrabalho migrado: <h>h
 Revisão: <h>h · HITL: <h>h · Especificação: <h>h · Reserva (Sustentação + retrabalho): <h>h · Vazão prevista: <n> fatias (previsão; o compromisso é a meta)
 
 ## Review
-<retorno do P.O. por fatia; pedidos novos → backlog> ou, sem retorno, a linha `sem retorno (<P.O.>, <AAAA-MM-DD>)` (a retrospectiva exige a seção preenchida)
+- FT-031: <retorno do P.O.> (<P.O.>, <AAAA-MM-DD>) · pedido novo: <id da triagem>   (uma linha por fatia concluída; `pedido novo: <id>` só quando a review gerou triagem; sem retorno, a linha `sem retorno (<P.O.>, <AAAA-MM-DD>)`: a retrospectiva exige a seção preenchida)
 
 ## Retrospectiva
 | Bom | Melhorar | Ação (dono) |
@@ -223,6 +226,12 @@ Concluídas: <n> fatias (<p> previstas · <q> por encaixe) · meta: <atingida | 
 Créditos por fatia concluída: <média> · por versão do power sabia: <versão> <x> · …
 ```
 
+Números da sprint, das fatias concluídas nela (pelos `status.md` delas): **lead time** = da linha `fatia iniciada` do
+Histórico até o merge (`pronta`), em dias corridos, com 1 casa decimal (o médio, a média deles); **rodadas de
+revisão por fatia** = a média de `revisão do código` + `verificação` do campo Rodadas; **correções humanas** = as
+linhas das `## Lições candidatas` (sem a linha `nenhuma`); **AFK sem intervenção** = a AFK sem linha em `## Retrabalho` nem em `## Lições
+candidatas`.
+
 | Coluna | Valores |
 |---|---|
 | FT · EP · Id | o id do `backlog.md` |
@@ -237,7 +246,7 @@ Créditos por fatia concluída: <média> · por versão do power sabia: <versão
 
 Reserva da `## Sustentação`: gravada pelo planejamento — a reserva = o % do `acordos.md` × as horas da sprint do time;
 `retrabalho migrado` = a soma, nas fatias com `migrada de`, das horas que faltam da [DEV]. O consumido não é gravado:
-quem lê calcula = retrabalho migrado + a soma da coluna Horas das linhas vivas das `### <Categoria>` (sem `saiu da
+quem lê calcula, sempre pelas estimativas (a mesma conta na triagem, no encaixe, no painel e na virada) = retrabalho migrado + a soma da coluna Horas das linhas vivas das `### <Categoria>` (sem `saiu da
 sprint`).
 
 `## Sustentação`: a linha da reserva e só as `### <Categoria>` com item na sprint, na ordem da tabela Sustentação do
@@ -258,7 +267,7 @@ editada e não migra na virada —, e a **viva**, que se lê e se escreve, é a 
 
 "Tarefa ELM": as tarefas do item no EWM, com o tipo antes de cada id — nas fatias `DEV <id> · REV <id> · VER <id>`,
 mais `APR <id>` das aprovações criadas no gate (AFK, a `DEV` e as `APR`); `ESP <id>`; `ATD <id>`, `IMPL <id>`… —,
-ou `pendente`, gravada pela publicação da sprint ([elm-sprint.md](elm-sprint.md) §4), pelo encaixe, pela troca de
+ou `pendente` (projeto sem ELM: `—`), gravada pela publicação da sprint ([elm-sprint.md](elm-sprint.md) §4), pelo encaixe, pela troca de
 modo (`REV`/`VER`), pela sincronização (§9: por fora e publicação pendente) e pela consolidação (os ids do campo ELM
 do `status.md` que faltam, inclusive as `APR`, que até lá ficam só no `status.md`). Observação: `revisor único`, `encaixe: <decisão> (<quem aprovou>, <data>)` — a puxada; por outra pessoa,
 `encaixe: <decisão> (<quem aprovou>, <data>; puxada por <login>)`; a que entrou pelo EWM, `encaixe: trazida do EWM —

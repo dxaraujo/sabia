@@ -10,12 +10,13 @@ As horas feitas (passo `horas`) e a pré-condição de novo antes da virada (pas
 **Fechar:** concluídas — previstas e puxadas — contam na vazão e no lead time. Grave a primeira linha de
 `## Números`: concluídas (previstas = sem Observação `encaixe:`; por encaixe = com ela), a meta (`atingida` ou
 `não — <por quê>`), o lead time médio e, do bloco 🔁 da retrospectiva (passo `retro`), as rodadas de revisão por
-fatia e as correções humanas.
+fatia e as correções humanas (as contas do
+[arquivos.md](~/.sabia/framework/skills/sa-planejamento/references/arquivos.md#sprintspaisprint-nnmd)).
 
 **Próxima chave:** o pai é o da sprint que fecha; pai novo só se a pessoa disser agora, com o nome que ela der
 (`2027`, `Entrega 3`…). A `<nn>` é a próxima dentro do pai (pai novo → `01`). Crie
 `sprints/<pai>/sprint-<nn>.md` da próxima com o cabeçalho mínimo do modelo — `# <pai>/Sprint <nn>`,
-`**Situação:** aberta`, `**Publicação no EWM:** pendente` — e só as seções que recebem linha migrada; o
+`**Situação:** aberta` e, com ELM, `**Publicação no EWM:** pendente` — e só as seções que recebem linha migrada; o
 replanejamento (passo `recalcular`) completa o resto.
 
 **Migram** para a próxima sprint as linhas fora de situação terminal (`concluida`, `dividida`,

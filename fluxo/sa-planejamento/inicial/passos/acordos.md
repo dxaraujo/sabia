@@ -12,8 +12,9 @@ A equipe confirmada (passo `equipe`), ainda não gravada.
   WIP limitado dentro da sprint; pergunte só a duração (padrão 2 semanas);
 - **WIP:** uma fatia por sessão de agente; fatias esperando pessoa (`aguardando-aprovacao-plano`, `pr-aberto`,
   `em-revisao`, `em-verificacao`, `aceita`, `verificada`, `aguardando-aprovacao-pr`) ≤ capacidade de revisão
-  (ex.: 2 por revisor); PR parado há mais de 1 dia → recomendar destravá-lo
-  antes de começar fatia nova (seguir mesmo assim fica registrado: `WIP excedido`);
+  (ex.: 2 por revisor, contadas pela linha WIP do
+  [arquivos.md](~/.sabia/framework/skills/sa-planejamento/references/arquivos.md#acordosmd)); PR parado (o
+  `atualizado_em` do PR) há mais de 1 dia → recomendar destravá-lo antes de começar fatia nova (seguir mesmo assim fica registrado: `WIP excedido`);
 - **Definition of Ready** e **Definition of Done** (padrão no `arquivos.md`);
 - tamanho: `P`/`M`/`G` — só para a Definition of Ready e para saber quando dividir (maior que G → dividir);
   pontos por tamanho, só se o time os quiser no EWM;
@@ -33,7 +34,7 @@ A equipe confirmada (passo `equipe`), ainda não gravada.
 ## Saída
 
 `acordos.md` com "ok" → commit `planejamento: acordos`; grave a equipe, como no passo `equipe` (agora com `duracao-sprint-semanas`), e siga para o
-passo `roadmap`.
+passo `roadmap`; rever a equipe e os acordos → o fluxo termina aqui.
 
 ## Pare se
 

@@ -63,6 +63,7 @@ diga o que ele é e peça o item.
 | fatia em `pr-aberto` ou `em-revisao` (a `[VER]` dela espera a revisão: diga e pare) | **`sa-revisar.hitl`** | Revisor / `sa-revisor` |
 | fatia em `em-verificacao` | **`sa-verificar.hitl`** | Verificador (QA) / `sa-verificador` |
 | fatia em `bloqueada (de: em-verificacao)` com o Bloqueio do ambiente ou da pergunta da ficha (sem `aguardando especificação`) | **`sa-verificar`** (fluxo hitl: o verificador retoma quando o Bloqueio se resolve) | Verificador / `sa-verificador` |
+| fatia em `bloqueada (de: em-revisao)` com o Bloqueio `⚠️ ambiente` | **`sa-revisar`** (fluxo hitl: o revisor retoma quando o Bloqueio se resolve) | Revisor / `sa-revisor` |
 | fatia em `verificada` (AFK) | **`sa-codificar.codificar.pr`** (abrir o PR) | Dev / `sa-desenvolvedor` |
 | fatia em `aceita` (HITL), ou em `aguardando-aprovacao-pr` (AFK) com a `[APR] Aprovar PR` concluída — qualquer item dela, menos a `[APR]` | **`sa-desenvolver.encerrar`** (merge do PR aprovado) | Dev responsável / `sa-desenvolvedor` |
 | fatia em `aguardando-aprovacao-pr` (Modo AFK na base) sem a `[APR] Aprovar PR` concluída | **`sa-revisar.aprovar-pr`** | Aprovador (Dev Sênior) / `sa-revisor` |

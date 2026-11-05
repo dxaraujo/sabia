@@ -217,8 +217,8 @@ Com o **Kiro CLI 2.31.0** (o binário oficial):
   permissões usam comandos simples;
 - o `http.sh` foi exercitado contra um servidor local (método, caminho e corpo fora da pasta `massa/` recusados).
 
-Com o **Kiro CLI 2.32.0**, engine V3 (23/10/2026), os agentes gerados pelo `gerar_agentes.py`: os seis passam no
-`kiro-cli agent validate`; numa conversa sem interação, comando liberado roda, comando fora da lista e exceção
+Com o **Kiro CLI 2.32.0**, engine V3 (23/10/2026), os agentes gerados pelo `gerar_agentes.py`: os sete passam no
+`kiro-cli agent validate` (também no 2.37.0, em 05/11/2026); numa conversa sem interação, comando liberado roda, comando fora da lista e exceção
 (`git log --output`) caem em aprovação, e `git commit -n` e push para a base são negados pela regra. Não foi
 possível abrir a IDE.
 
@@ -231,9 +231,6 @@ Telas do `sabia.md` (ET inicial, `CT.csv`, HF ↔ EL, P12 e P13 nos passos compi
 da tarefa de job ao agente do toolkit. Nos dois, os agentes são gerados pelo
 `gerar_agentes.py` sobre a instalação, e a `sabia rota` mostra o desvio e a origem de cada passo.
 
-**Verificação pendente** (da pessoa, numa PA real, com `elm_setup_descobrir`): os tipos de artefato do DOORS Next para
-a `ATA` (Reunião) e a `EL` (Leiaute) — o nome, o `OT_` e os atributos obrigatórios de cada um.
-
 **O que a documentação não resolve** (comportamento a observar no primeiro uso): o formato do `.config.kiro` das
 specs; EARS em português no Analyze Requirements; se os subagentes somam ou intersectam os `allow` de quem os
 chama (a doc diz "deny-wins intersection" — se um subagente do loop falhar por permissão, libere o comando também
@@ -243,8 +240,9 @@ steering e de configuração divergem sobre agentes herdarem o steering padrão 
 
 ## Limitações conhecidas e próxima versão
 
-- **Próxima versão:** toolkits oficiais (backend Java/Spring, Spring Batch, frontend Angular/React); execução automatizada dos
-  casos de avaliação que a `sa-aprender` já guarda em `<produto>/aprendizado/avaliacoes/`; e — quando o MCP do ELM
+- **Não verificado numa PA real:** os tipos de artefato do DOORS Next para a `ATA` (Reunião) e a `EL` (Leiaute) — o
+  nome, o `OT_` e os atributos obrigatórios de cada um (`elm_setup_descobrir`).
+- **Próxima versão:** toolkits oficiais (backend Java/Spring, Spring Batch, frontend Angular/React); e — quando o MCP do ELM
   suportar — atributo de chave, links entre requisitos, módulos, change sets e baselines automáticos.
 
 ## Fontes (consultadas em 13 e 14/10/2026)

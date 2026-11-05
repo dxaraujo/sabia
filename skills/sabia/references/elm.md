@@ -78,7 +78,7 @@ criado fora do fluxo recusado numa transição → mostre o campo e peça o valo
    leitura inclusive, recebe a iteração dela antes do §1 do
    [elm-sprint.md](../../sa-planejamento/references/elm-sprint.md) — sem ele, o MCP procura o caminho pelo nome na PA
    inteira e pode achar a sprint homônima de outro produto. No agente de produto, rode o §1 antes — sprint em pai
-   novo: também o §2 (a `[GB]` do pai novo nasce, e a antiga conclui com o saldo e sai da linha) —, com o mesmo "sim",
+   novo: também o §2 (a `[GB]` do pai novo nasce, e a antiga conclui sem o saldo do SM e sai da linha) —, com o mesmo "sim",
    e tire o marcador no commit (linha `migrada de` ou linha sem ids: indique também "sincroniza a sprint"); nos
    agentes sem o `elm_iteracao` (desenvolvedor, orquestrador), registre o lado do EWM como `ELM pendente [<chave>]` e
    indique "sincroniza a sprint" (`sa-planejamento`).

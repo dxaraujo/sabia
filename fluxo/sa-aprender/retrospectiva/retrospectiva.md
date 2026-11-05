@@ -15,4 +15,4 @@ Entrada: o fim de uma fatia ou de um épico ("retrospectiva", "resumo das liçõ
 
 ## Regras
 
-- Nunca promova sem "ok". Nunca apague lição (só acréscimo).
+- Nunca promova sem "ok". Nunca apague lição (só acréscimo; a Situação muda no lugar).

@@ -24,6 +24,7 @@ const ancoras = (texto) => new Set([...texto.matchAll(/^#+ (.+)$/gm)].map((m) =>
 
 export const VIZINHOS = "## Entrada: vizinhos";
 export const SPRINT = ["exige", "nao"];
+export const BRANCH = ["fatia", "nao"];
 
 /** As linhas "- <estado> → <destino>" da seção Entrada: vizinhos do corpo do mestre (null sem a seção). */
 function vizinhos(corpo, pulo) {
@@ -191,9 +192,10 @@ export function validar(m) {
     }
     for (const x of fl.passos) {
       if (x.id === "grafo") e(fl.arq, 2, "passo grafo: id reservado (o compilador gera references/<fluxo>/grafo.md)");
-      if (x.id === "entrada" && !x.de) e(fl.arq, 2, 'passo entrada: id reservado ao passo compartilhado → {"id": "entrada", "de": "entrada", "sprint": "exige|nao"}');
+      if (x.id === "entrada" && !x.de) e(fl.arq, 2, 'passo entrada: id reservado ao passo compartilhado → {"id": "entrada", "de": "entrada", "sprint": "exige|nao", "branch": "fatia|nao"}');
       if (x.de) {
         if (!SPRINT.includes(x.sprint)) e(fl.arq, 2, `passo ${x.id}: sprint "${x.sprint ?? ""}" (use ${SPRINT.join(" ou ")})`);
+        if (!BRANCH.includes(x.branch)) e(fl.arq, 2, `passo ${x.id}: branch "${x.branch ?? ""}" (use ${BRANCH.join(" ou ")})`);
         if (fs.existsSync(path.join(path.dirname(fl.arq), "passos", `${x.id}.md`))) e(fl.arq, 2, `passo ${x.id}: vem de fluxo/${x.de}.md; apague passos/${x.id}.md`);
         if (!fs.existsSync(x.arq)) { e(fl.arq, 2, `passo ${x.id}: de "${x.de}" sem fluxo/${x.de}.md`); continue; }
       }
@@ -483,7 +485,8 @@ function tiposMd(m, ctx) {
     "Catálogo fechado: todo artefato da especificação e do ELM é de um destes tipos, e um toolkit não cria tipo. A coluna",
     "Desviável diz os passos de Cria que são o ponto de desvio (⇢): neles, o toolkit que traz uma skill com o fluxo e o",
     "padrão do tipo (`tipos` no `toolkit.json`) escreve esse artefato; nos outros passos de Cria, o tipo é sempre do Sabiá. O envelope OKF de todos",
-    `é o do [\`okf-elm.md\`](${base}/sa-prd/references/okf-elm.md) da \`sa-prd\`; o corpo é o do padrão do tipo. Tipo **pendente** está declarado, mas ainda não tem padrão nem fluxo: não é criado nem publicado.`, "",
+    `é o do [\`okf-elm.md\`](${base}/sa-prd/references/okf-elm.md) da \`sa-prd\`; o corpo é o do padrão do tipo. Tipo **pendente** está declarado, mas ainda não tem padrão nem fluxo: não é criado nem publicado.`,
+    `Na coluna Arquivo, \`nn\` = 2 dígitos a partir de \`01\`, por tipo, em cada pasta \`elm/\`; na fatia, segue a numeração do épico (a cópia de um conceito do épico fica com o mesmo nome, e o novo continua a série); \`<slug>\` pela regra do \`backlog.md\` da \`sa-fatiar\` (seção Formato).`, "",
     "| Sigla | Nome | Arquivo | Cria | Padrão | ELM | Requisito | Desviável | Publica depois de | Embute | Rubrica |",
     "|---|---|---|---|---|---|---|---|---|---|---|"];
   for (const sg of Object.keys(m.tipos)) {
@@ -544,7 +547,7 @@ function escreverSkill(m, s, out, ctx, versao = null) {
     for (const fl of fluxosDa(m, s)) {
       fs.mkdirSync(path.join(out, "references", fl.fluxo), { recursive: true });
       fs.writeFileSync(path.join(out, "references", fl.fluxo, "grafo.md"), grafoMd(fl));
-      const linhaSprint = (x) => (x.de ? `Sprint deste fluxo: \`${x.sprint}\`. Vizinhos: a seção Entrada: vizinhos do [Fluxo ${fl.fluxo}](${base}/${s}/SKILL.md#${slug(`Fluxo ${fl.fluxo}`)}).\n\n` : "");
+      const linhaSprint = (x) => (x.de ? `Sprint deste fluxo: \`${x.sprint}\`. Branch deste fluxo: \`${x.branch}\`. Vizinhos: a seção Entrada: vizinhos do [Fluxo ${fl.fluxo}](${base}/${s}/SKILL.md#${slug(`Fluxo ${fl.fluxo}`)}).\n\n` : "");
       for (const x of fl.passos)
         fs.writeFileSync(path.join(out, "references", fl.fluxo, `${x.id}.md`), italico(x.dados.resumo) + linhaSprint(x) + reescrever(x.corpo, x.arq, ctx).replace(/^\n+/, ""));
     }

@@ -7,7 +7,7 @@
    {"id": "retro", "chama": "sa-aprender.retrospectiva"},
    {"id": "horas", "saidas": {"antes da virada, a pré-condição de novo": "precondicao"}},
    {"id": "fechar"},
-   {"id": "recalcular", "chama": "sa-planejamento.sprint"},
+   {"id": "recalcular", "chama": "sa-planejamento.sprint", "saidas": {"projeto sem ELM": "fim"}},
    {"id": "virada"}
  ]}
 ---

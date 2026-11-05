@@ -2,11 +2,11 @@
 {"fluxo": "atender", "dono": "sa-produto",
  "travas_gerais": ["sim-da-pessoa"],
  "passos": [
-   {"id": "entrada", "de": "entrada", "sprint": "exige", "saidas": {"pedido novo ou AT fora do backlog": "→ sa-triar.triar", "AT terminal, ou fora da sprint aberta (P.O. ou SM)": "fim"}},
+   {"id": "entrada", "de": "entrada", "sprint": "exige", "branch": "nao", "saidas": {"pedido novo ou AT fora do backlog": "→ sa-triar.triar", "AT terminal, ou fora da sprint aberta (P.O. ou SM)": "fim"}},
    {"id": "assumir"},
    {"id": "executar", "chama": "sa-pesquisar.pesquisar", "saidas": {"não é atendimento (categoria errada)": "→ sa-triar.triar"}},
    {"id": "finalizar"},
-   {"id": "desdobramentos", "saidas": {"alteração (defeito ou mudança) ou regra que ninguém decidiu": "→ sa-triar.triar", "consulta reaproveitável: lição": "→ sa-aprender.registrar", "nada": "fim"}}
+   {"id": "desdobramentos", "saidas": {"alteração (defeito ou mudança) ou regra que ninguém decidiu": "→ sa-triar.triar", "nada": "fim"}}
  ]}
 ---
 # Atender — atender sem perder o rastro

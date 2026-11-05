@@ -31,8 +31,8 @@ assim; o item de origem em outro estado volta a ele com `elm_transicao(<id>, "re
   "não", ou outro item
   (DF, IB com pai `[EP-…]`) → `obs` `origem: <id>`, cria o épico e põe o item sob ele, no backlog (§3).
 
-  **Pasta antecipada:** se o título tem mais de 3 palavras (slug formável), crie
-  `<produto>/epicos/<EP>-<slug>/` com:
+  **Pasta antecipada**, sempre: `<produto>/epicos/<EP>-<slug>/` (`<slug>` pela regra do
+  [backlog](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#formato)), com:
   - `rascunho.md`: o padrão [`sa-especificar/rascunho.md`](~/.sabia/framework/padrao/sa-especificar/rascunho.md), com
     a seção Pedido preenchida (as demais só com o título): o pedido original (nas palavras de quem pediu, sem dado inventado) e a Origem (EWM id,
     chamado, texto livre);
@@ -40,8 +40,7 @@ assim; o item de origem em outro estado volta a ele com `elm_transicao(<id>, "re
   - `status.md`: o modelo do padrão [`sa-especificar/status-epico.md`](~/.sabia/framework/padrao/sa-especificar/status-epico.md),
     com `Fase` `rascunho` e `[ESP]`, Responsável e Início `—` (a especificação os preenche).
   A pasta só é criada aqui; o `sa-prd` completa com `prd.md`, `elm/` e os demais artefatos.
-  Inclua o caminho relativo da pasta na coluna `pasta` do `backlog.md`:
-  `[pasta](epicos/<EP>-<slug>/)` ou `—` se não criada.
+  Inclua o caminho relativo da pasta na coluna `pasta` do `backlog.md`: `[pasta](epicos/<EP>-<slug>/)`.
 - **Fatia sem épico** (padrão, rápida — a fatia de Manutenção): próximo `FT-nnn`; linha em `## Fatias` com:
   - `origem` `Manutenção`; `trilha`; `ficha` (`[ficha](fatias/FT-<nnn>-<slug>.md)`, sempre);
   - `tamanho` (padrão `P`/`M`/`G`; rápida `P`/`M`); `modo` proposto pelos critérios de Autonomia
@@ -57,7 +56,8 @@ assim; o item de origem em outro estado volta a ele com `elm_transicao(<id>, "re
     nunca uma `[ESP] FT` nova); lista sem
     a confirmação → `falta: artefatos afetados`;
   - de onde veio: o item do EWM (DF, IB) vai na `elm` como o item da fatia (`DF [4567](…)`; sem o MCP `elm`,
-    `DF 4567` — o id já é conhecido, nunca `pendente`); o pedido (texto, chamado) fica no `**Origem:**` da ficha;
+    `DF 4567` — o id já é conhecido, nunca `pendente`) e no `**Origem:**` da ficha; o chamado, no `**Origem:**`
+    (`chamado <n>`); pedido em texto, sem os dois → `**Origem:** —`;
     desdobramento de um item de Sustentação (origem `AT-012`, `IM-003`…) → `obs`
     `vinculada a [<ID>](sustentacao/<pasta>/<ID>-<slug>.md)`; correção de débito de especificação (origem
     `FT-<nnn> (débito de especificação)`) → `obs` `origem FT-<nnn> (débito de especificação)` e, com a linha da
@@ -68,21 +68,23 @@ assim; o item de origem em outro estado volta a ele com `elm_transicao(<id>, "re
     épico"; a Sustentação faltando → §2 antes): a primeira fatia de Manutenção (a linha da `## Sustentação` sem
     `Manutenção`) cria antes o IB `Manutenção`, com o id na linha. Item de origem → é o item da fatia, sem IB novo:
     `elm_atualizar_wi(origem, iteracao = backlog)`, com `pai` = a Manutenção se ele não tem pai (outro pai: mantenha e
-    avise) e `dono` = o P.O. se não tem dono. Sem item de origem → o IB `[FT-nnn]` nasce agora sob a Manutenção, no
+    avise) e `dono` = o P.O. se não tem dono, e o título ganha o `[FT-<nnn>]` pelas opções do §9 (renomear · só incluir o prefixo · manter). Sem item de origem → o IB `[FT-nnn]` nasce agora sob a Manutenção, no
     backlog. Vinculada → `elm_ligar(wi = item da fatia, wi_destino = IB do <ID>, tipo relacionado)`. Sem o MCP
     `elm` → `pendente` (com item de origem, o id sem link).
 - **Sustentação** (categorias sem mudança no repositório):
   - **Categoria:** proponha a da tabela **Sustentação** do `sabia.md` pelo pedido (consulta ou extração para o cliente →
     Atendimento; subida de versão → Implantação; script ou carga de dados → Banco de dados; ambiente, acesso →
-    Infra; rotina de produção → Operação; ajuda a outra equipe → Apoio a outros times) e confirme. Muda o
+    Infra; rotina de produção → Operação; ajuda a outra equipe → Apoio a outros times; aplicação de baseline de
+    banco (DDL) → Banco de dados, ou Implantação junto com a subida de versão) e confirme. Muda o
     repositório → é fatia (de Manutenção): volte ao passo `triagem`.
   - **Entrevista curta:** Atendimento → `sa-entrevistar.atendimento` (uma rodada: o que o cliente precisa
-    receber, origem, prazo, quem atende, critério de pronto). Demais categorias → sem entrevista: pergunte numa
-    mensagem o pedido, a origem, o prazo, quem faz, o critério de pronto e a estimativa. Regra de negócio em aberto →
+    receber, origem, prazo, quem atende, critério de pronto, estimativa e quem pediu). Demais categorias → sem
+    entrevista: pergunte numa mensagem o pedido, a origem, quem pediu, o prazo, quem faz, o critério de pronto e a
+    estimativa. Regra de negócio em aberto →
     não é item de categoria: volte ao passo `triagem`.
   - Próximo id da série da categoria em "Próximos ids" (`AT-`, `IM-`…; série que falta → começa em `001`).
   - **Sprint sugerida:** a aberta (`sprint-<nn>.md` com `**Situação:** aberta`), pela regra da reserva — a reserva
-    (Sustentação + retrabalho) está na `## Sustentação` do `sprint-<nn>.md`; o usado é o retrabalho migrado mais a
+    (Sustentação + retrabalho) está na `## Sustentação` do `sprint-<nn>.md`; o consumido é o retrabalho migrado mais a
     soma das estimativas dos itens das `### <Categoria>` dela, sem as linhas com `saiu da sprint` (o item
     saiu da sprint e não consome a reserva); cabe com a estimativa deste (A-6) → quem triou
     confirma; estourou → fica fora da sprint (`sprint` `—`), e a decisão é do P.O. pelo
@@ -119,7 +121,9 @@ com "sim" — `elm_comentar(<id da [GB]>, "Créditos triagem <ids>: <créditos> 
 triagem, só o SM lança, na `[GB]` (`elm_lancar_horas`, com "sim"); o P.O. nunca lança — nem quando também é o SM:
 o registro dele é o comentário. Sem tarefa, não commite: deixe os arquivos e o comando pronto; push direto na base
 com o "sim" da pessoa (no agente `sa-produto`, que não faz push, entregue o comando pronto — a pessoa executa). **Conflito de id**
-no push: a regra das [Regras](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#regras) do backlog; **antes de renumerar**,
+no push: a regra das [Regras](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#regras) do backlog — também
+no push que a pessoa fez pelo comando pronto, depois do fim da triagem: ela volta ao agente `sa-produto` ("conflito de
+id no push da triagem"), e a `sa-triar` retoma aqui pelo passo `chegou`; **antes de renumerar**,
 confira de novo de onde o item veio (DF, IB, AT, chamado, pedido — colunas `origem`, `elm` e `obs`, `**Origem:**` da
 ficha ou do registro): já está numa linha do remoto → pare (abaixo).
 

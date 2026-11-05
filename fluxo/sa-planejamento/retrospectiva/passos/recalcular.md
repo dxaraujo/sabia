@@ -8,10 +8,11 @@ A sprint fechada (passo `fechar`).
 ## Faça
 
 Recalcule vazão média, lead time médio e horas por tipo (`equipe.json` → `historico`). Reserva (Sustentação +
-retrabalho): o % é o do `acordos.md`; mostre o consumido da sprint (horas das tarefas de Sustentação +
-retrabalho) contra ela e, se ficou muito acima ou abaixo, **proponha** um novo % ao P.O. — muda o acordo só com
+retrabalho): o % é o do `acordos.md`; mostre o consumido da sprint (a conta do
+[arquivos.md](~/.sabia/framework/skills/sa-planejamento/references/arquivos.md#sprintspaisprint-nnmd), pelas
+estimativas) contra ela e, se ficou muito acima ou abaixo, **proponha** um novo % ao P.O. — muda o acordo só com
 "ok". Replaneje a próxima pelo fluxo `sa-planejamento.sprint` (migradas consomem capacidade primeiro); o `sprint-<nn>.md` dela,
-criado no passo `fechar`, segue com `**Publicação no EWM:** pendente` no cabeçalho (o §1 do [elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md), iteração e plano da sprint no EWM, ainda não rodou para ela; a publicação vem no passo `virada`).
+criado no passo `fechar`, segue com `**Publicação no EWM:** pendente` no cabeçalho (o §1 do [elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md), iteração e plano da sprint no EWM, ainda não rodou para ela; a publicação vem no passo `virada`; projeto sem ELM: sem o marcador).
 
 Grave pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), num
 commit só — o da virada, `<pai>/Sprint <nn>: virada`, com a chave da sprint que fecha —: o que os passos `horas` e
@@ -20,7 +21,8 @@ commit só — o da virada, `<pai>/Sprint <nn>: virada`, com a chave da sprint q
 
 ## Saída
 
-O `historico` atualizado e a próxima sprint planejada → passo `virada`.
+O `historico` atualizado e a próxima sprint planejada → passo `virada`; projeto sem ELM → o fluxo termina (não há
+virada no EWM).
 
 ## Pare se
 

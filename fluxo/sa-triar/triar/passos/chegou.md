@@ -23,6 +23,10 @@ link → `🏛️ <n> itens do backlog sem IB no EWM: <ids> → criar agora? (si
 | "importar do EWM", "triar os defeitos do time" | **lote** → fluxo `sa-triar.lote-ewm` |
 | trabalho sem mudança no repositório — pedido de cliente ("extrai as contas bloqueadas", "por que o caso X deu Y?"), implantação, script de banco, ambiente, rotina de produção, ajuda a outro time | trilha sustentação (passo `triagem`) |
 
+**Conflito de id no push** do commit de uma triagem já encerrada (a pessoa publicou pelo comando pronto e o remoto
+recusou) → sem o item 1 do bloco (a base tem o commit não publicado): o bloco do conflito de id do passo
+`registrar`, que renumera.
+
 **Já existe?** Antes de triar, procure no `backlog.md` da base (ids, títulos parecidos e as colunas `origem`, `elm`
 e `obs` — épicos, fatias e as `### <Categoria>` da `## Sustentação`), no `**Origem:**` das fichas e dos
 `<produto>/sustentacao/**/*.md` e nos `status.md` das branches
@@ -56,8 +60,9 @@ e `obs` — épicos, fatias e as `### <Categoria>` da `## Sustentação`), no `*
   devolvido pela `sa-prd`, pela `sa-especificar` ou pela Definition of Ready) → **complete o registro**: o que
   falta da linha (`po`, descrição mínima, `elm`), sem id novo (passa na DoR → `elegivel`), e siga para o
   passo `encaminhar`;
-- **item de Sustentação** registrado por engano, em dobro ou com o pedido retirado → `cancelado`, com o motivo, na
-  linha do `backlog.md` (e na da sprint, se houver) e no `**Situação:**` do registro; o IB e a tarefa cancelam no
+- **item de Sustentação** registrado por engano, em dobro ou com o pedido retirado → `cancelado` na linha do
+  `backlog.md` e na da sprint, se houver (o motivo na Observação), e `**Situação:** cancelado (<motivo>)` no
+  registro; o IB e a tarefa cancelam no
   EWM (`elm_transicao(<id>, "cancelar")`, com "sim"); na falha, a linha `ELM pendente [<ID> cancelar]: <o que falta>` sob o
   `**ELM:**` do registro;
 - **item de Sustentação devolvido pela `sa-atender` ou pela `sa-executar` por categoria errada** (outra categoria,
@@ -78,7 +83,8 @@ e `obs` — épicos, fatias e as `### <Categoria>` da `## Sustentação`), no `*
 
 ## Saída
 
-Item novo → passo `triagem`; item que já existe → a ação da lista acima.
+Item novo → passo `triagem`; item que já existe → a ação da lista acima; conflito de id no push de uma triagem já
+encerrada → passo `registrar` (o bloco do conflito).
 
 **Sessão com gravação pendente** (os ids do espelhamento acima, ou um item registrado antes, no "sim: mais um
 item"): antes de sair para outro fluxo, para o fim (o resto) ou por uma parada do Pare se, feche a sessão como o passo

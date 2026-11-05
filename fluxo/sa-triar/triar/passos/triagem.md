@@ -9,7 +9,7 @@ O item lido no passo `chegou` (novo, ou a fatia sem épico que voltou, com o mes
 
 | Trilha | Quando | O que se registra |
 |---|---|---|
-| **épico** | funcionalidade nova com várias histórias ou fatias, mais de ~3 dias, mais de um objetivo, ou decisão de produto em aberto | `EP-nn` `novo` ou `elegivel` (DoR do épico) → depois `sa-prd` → `sa-fatiar` |
+| **épico** | funcionalidade nova com várias histórias ou fatias, mais de ~3 dias, mais de um objetivo, ou decisão de produto em aberto; mudança técnica de que várias fatias precisam (prefactoring, refatoração larga) é um épico técnico | `EP-nn` `novo` ou `elegivel` (DoR do épico) → depois `sa-prd` → `sa-fatiar` |
 | **padrão** | uma fatia (≤ G) que cria ou muda regra de negócio **clara** — o P.O. decide aqui —, sem decisão de produto em aberto | fatia sem épico, com **ficha** (regras, cenários, decisões, artefatos afetados) aprovada pelo P.O. |
 | **rápida** | defeito ou ajuste ≤ 1 dia **sem** regra nova (`inclui` de `REG` ou `HF` é regra nova; o comportamento certo já está documentado ou é óbvio) — inclusive o diff que cabe numa frase (texto, configuração, ajuste trivial) | fatia sem épico, com ficha de **comportamento** (atual · esperado · não muda), artefatos afetados e como verificar |
 | **sustentação** | trabalho que não muda o repositório, numa das categorias da tabela **Sustentação** do `sabia.md` (Atendimento: consulta, extração, explicação ou conferência pedida pelo cliente; Implantação; Banco de dados; Infra; Operação; Apoio a outros times) | item da categoria (`AT-nnn`, `IM-nnn`…) na `### <Categoria>` da `## Sustentação`, com o registro, a sprint sugerida e o IB do item (a tarefa da categoria, `[ATD]`, `[IMPL]`…, nasce quando ele entra numa sprint) (a triagem registra; quem executa: **`sa-atender`** no Atendimento, a **`sa-executar`** nas demais) |
@@ -21,11 +21,14 @@ O item lido no passo `chegou` (novo, ou a fatia sem épico que voltou, com o mes
   ~3 cenários de comportamentos diferentes, ou de mais de uma regra nova independente → é épico.
 - **Padrão:** rodadas da `sa-entrevistar` até as regras e os cenários fecharem, gravando na seção Decisões da
   ficha (ela nasce aqui, com o próximo `FT-nnn` de "Próximos ids"); regra nova ou alterada → a pesquisa de
-  Artefatos afetados (abaixo) antes de escrevê-la; no fim, o P.O. aprova a ficha. Sem a aprovação, a fatia fica
+  Artefatos afetados (abaixo) antes de escrevê-la; no fim, o P.O. aprova a ficha. Aprovada, com o IB da fatia já no EWM
+  (a ficha que volta pelo passo `chegou`), os cenários da ficha regravam os critérios dele (`elm_atualizar_wi`,
+  [elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §3), no mesmo "sim". Sem a aprovação, a fatia fica
   `nova` com `falta: aprovação do P.O.`.
 - **Rápida:** **uma** rodada no formato da `sa-entrevistar` (numerada, cada pergunta com a recomendação,
   "sim" aceita todas) para o que a ficha pede e a origem não traz: atual com evidência, esperado com fonte, o que
-  não muda, como verificar.
+  não muda, como verificar. Esperado cuja fonte é uma decisão nova → na seção Decisões da ficha, e o P.O. aprova a
+  ficha (padrão `sa-triar/ficha.md`).
 - **Artefatos afetados** (padrão e rápida, AFK ou HITL; a seção e o fecho no padrão `sa-triar/ficha.md`):
   1. **Bundle**, antes da pesquisa: a data é o `sincronizado_em` (a parte da data) do `elm_listar_req_local`; sem
      o campo, `git log -1 --format=%cs --grep='^ELM - Sincronizar bundle'`; sem os dois, `sem data`. Mais de 7 dias

@@ -19,9 +19,13 @@
      GATE do backlog do P.O. ou do SM (sa-fatiar) · concluido: última fatia concluída (sa-consolidar), ou a última não terminal cancelada com outra concluída
      (sa-fatiar.refinamento) · cancelado:
      decisão do P.O. (sa-fatiar).
-     Até o GATE do PRD vive na pasta de trabalho; no GATE vai à base com a pasta, e a base passa a ser a fonte. -->
+     Até o GATE do PRD vive na pasta de trabalho; no GATE vai à base com a pasta, e a base passa a ser a fonte.
+     [ESP]: o id da tarefa aberta; na [ESP] EP-<nn> Revisão <n>, só o id dela (gravado pela sa-prd.mudanca ao
+     assumi-la). Início: o da primeira [ESP]; não muda. -->
 
 ## Créditos
+
+<!-- Papel: `ESP` (também na [ESP] EP-<nn> Revisão <n>). -->
 
 | Data | Papel | Login | Sessão Kiro | Power sabia | Créditos |
 |---|---|---|---|---|---|

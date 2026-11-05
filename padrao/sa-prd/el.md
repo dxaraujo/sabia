@@ -12,7 +12,7 @@ fonte da ficha, senão é `em aberto`.
 
 ```markdown
 **Tela:** <nome da tela, como o usuário a vê> · **Objetivo:** <o que o ator faz nela> · **Atores:** <…> ·
-**Protótipo:** `prototipo-v<N>-<slug>.<ext>` (em `prototipo/` da pasta do épico e anexo da [ESP] <id>), aprovado em D-<nn>
+**Protótipo:** `<o arquivo da tela: prototipo-v<N>-<slug>.<ext> | prototipo-v<N>-<slug>-<nn>.<ext>>` (em `prototipo/` da pasta do épico e anexo da [ESP] <id>), aprovado em D-<nn>
 
 ## Campos
 | Campo (rótulo) | Tipo | Obrigatório | Formato e exemplo fictício | Regra · origem |
@@ -42,6 +42,8 @@ fonte da ficha, senão é `em aberto`.
 
 - **Texto visível igual ao do protótipo** (rótulo, mensagem, ação): é o que a verificação compara, palavra por
   palavra. Divergência entre o protótipo e uma decisão → `em aberto`, nunca escolhida na escrita.
+- **Tipo** do campo, lista fechada: `texto` · `número` · `data` · `moeda` · `lista` · `sim/não` · `arquivo`; outro →
+  `em aberto` no `decisoes.md`.
 - **Nada inventado:** campo, regra ou mensagem que o protótipo mostra sem história, regra ou `D-nn` que o sustente
   → `em aberto` no `decisoes.md`.
 - **Só dado fictício** nos exemplos; nenhuma imagem no corpo: o protótipo é citado pelo anexo.

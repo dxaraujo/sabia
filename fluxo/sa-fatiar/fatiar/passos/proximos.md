@@ -14,7 +14,8 @@ Na mesma resposta, diga, exata, pela origem:
   EWM.` (a última frase, só com ELM; entrar na sprint só muda o "Planejado para" do IB:
   [elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §3).
 - Refinamento: `Refinamento gravado: <ids> cancelada(s)<; épico EP-nn concluido | cancelado><; FT-<nnn> segue com
-  o plano acima do limite: o Dev retoma pela sa-plano>. Nada mais a fazer aqui.` (cada parte, só se houve)
+  o plano acima do limite: o Dev retoma pela sa-plano><; FT-<nnn> fica na sprint como especificação: o encaixe
+  (sa-planejamento.durante)>. Nada mais a fazer aqui.` (cada parte, só se houve)
 
 ## Saída
 

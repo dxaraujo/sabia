@@ -7,3 +7,6 @@
 - Certo: <…> — fonte: <onde estava | "não estava escrito">
 - Correção na fonte: <proposta> · Situação: <proposta | aplicada | promovida → R-<nn> | descartada>
 ```
+
+Só acréscimo, menos a Situação, que muda no lugar: `proposta` ao registrar · `aplicada` por quem aplica a Correção na
+fonte · `promovida → R-<nn>` no passo `sa-aprender.promover.gravar` · `descartada` por quem recusa a proposta.

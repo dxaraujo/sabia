@@ -9,8 +9,8 @@ O resultado de cada fatia do lote (passo `fases`).
 
 - **Fatia bloqueada** (lacuna de negócio, divergência com o plano, 2 reprovações, verificação rejeitada duas
   vezes) → registre o motivo e a pergunta exata no `status.md`; siga com as outras.
-- `⚠️ ambiente` numa fatia só → ela fica `bloqueada (de:
-  verificando)` e o lote segue com as outras.
+- Bloqueio `⚠️ ambiente` numa fatia só (da validação, da revisão ou da verificação) → ela fica `bloqueada (de:
+  <fase>)` e o lote segue com as outras.
 - Ao fim, o resumo:
   ```
   🤖 Loop AFK — resultado
@@ -21,8 +21,9 @@ O resultado de cada fatia do lote (passo `fases`).
   ELM pendente [<chave>]: <o que falhou ou ficou sem o MCP `elm`>
   Lições para registrar: <correções que o loop precisou — sa-aprender>
   ```
-- **Horas, numa pergunta só** (com o MCP `elm`): uma tabela `tarefa | horas sugeridas` com as `[DEV]` das
-  fatias que chegaram a `verificada` ou a `aguardando-aprovacao-pr`, ou pararam na troca de modo; a pessoa ajusta e confirma de uma vez → `elm_horas(<id>)` →
+- **Horas, numa pergunta só** (com o MCP `elm`): uma tabela `tarefa | horas sugeridas` com a `[DEV]` de toda fatia
+  que o lote tocou, inclusive as paradas no GATE do plano e as bloqueadas; horas sugeridas = o tempo da sessão em
+  partes iguais entre elas; a pessoa ajusta e confirma de uma vez → `elm_horas(<id>)` →
   desconte → `elm_lancar_horas` (lança, não conclui). A conclusão da `[DEV]` é no merge de cada fatia (`sa-desenvolver.encerrar`), com
   o saldo. No AFK, revisão e verificação por subagente não têm tarefa nem horas; as das `[APR]` são lançadas por
   quem aprova, na sessão dele.

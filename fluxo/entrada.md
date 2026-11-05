@@ -4,7 +4,7 @@
 ## Entrada
 
 Um id (`FT-031`, `EP-04`, `AT-012`, número do EWM), uma tarefa (`[DEV]`, `[REV]`, `[VER]`, `[APR]`, `[ESP]`, `[ATD]`…)
-ou um pedido em texto. O que muda de um fluxo para outro vem da linha Sprint deste fluxo (acima) e da seção
+ou um pedido em texto. O que muda de um fluxo para outro vem de Sprint e de Branch deste fluxo (acima) e da seção
 Entrada: vizinhos do fluxo.
 
 ## Faça
@@ -24,8 +24,9 @@ Senão, nesta ordem; o primeiro caso que casar decide:
    `elm`). Épico (`EP-nn` ou `[ESP] EP-nn`): a Fase do `status.md` do épico (padrão `sa-especificar/status-epico.md`),
    na pasta da coluna `pasta` do `backlog.md`, na base; sem ele na base (antes do GATE do PRD), o da pasta de trabalho
    `.sabia/local/especificacao/<EP>-<slug>/` (Fase `rascunho` ou `em-revisao`). Número do EWM → a linha com esse
-   número na coluna `elm`, depois do rótulo (`DF [4567](…)`, `IB [612010](…)`; registrado sem o MCP: `DF 4567`); IB de um épico ou
-   da Sustentação → as linhas abaixo dele; tarefa `[<papel>] <id>` → o item do pai. O EWM (`elm_ler_wi`) e a pessoa só completam dados;
+   número na coluna `elm`, depois do rótulo (`DF [4567](…)`, `IB [612010](…)`; registrado sem o MCP: `DF 4567`); IB de um épico →
+   a linha do épico; IB de estrutura (`Sustentação`, `Manutenção`, de categoria) → liste os itens não terminais
+   abaixo dele e pergunte qual; tarefa `[<papel>] <id>` → o item do pai. O EWM (`elm_ler_wi`) e a pessoa só completam dados;
    nunca se inventa dado de work item. Pedido em texto, ou id que não está no `status.md` nem no `backlog.md` → não
    está registrado: "use `sa-triar`" e pare. Terminal (`concluida`, `concluido`, `cancelada`, `cancelado`,
    `dividida`) → mostre a situação e a `obs` (a substituta, quando há) e pare; reabrir é item novo pela `sa-triar`.
@@ -44,22 +45,23 @@ Senão, nesta ordem; o primeiro caso que casar decide:
      pare. A puxada é sempre do encaixe (`sa-planejamento.durante.encaixe`): o P.O., o SM ou quem puxa com a
      aprovação do P.O., registrada (quem aprovou e quando).
    - `nao`: pule; o item chega já dentro da sprint (a tarefa dele só nasce com ela).
-4. **Branch da fatia** (só o fluxo que lê ou grava nela): fatia em branch diferente da atual → pergunte se troca
-   (nunca ofereça descartar, `stash` ou `reset`); com alterações locais não commitadas → avise e pare. **Branch
+4. **Branch da fatia**, pela linha Branch deste fluxo: `nao` → pule. `fatia`: fatia em branch diferente da atual →
+   pergunte se troca (nunca ofereça descartar, `stash` ou `reset`); sem o "sim" → pare; com alterações locais não
+   commitadas → avise e pare. **Branch
    aberta numa worktree** (`git worktree list` mostra `.sabia/local/wt/<ft>` com ela — fatia do `sa-orquestrar`):
    não troque, o `git switch` falha; trabalhe na worktree — comandos com `cd .sabia/local/wt/<ft> && <comando>`,
    arquivos pelo caminho `.sabia/local/wt/<ft>/<caminho>` — e passe isso à próxima skill.
 
 ## Saída
 
-Item registrado, deste fluxo, na sprint (modo `exige`) e na branch certa → o próximo da lista, ou o passo que uma
+Item registrado, deste fluxo, na sprint (modo `exige`) e na branch certa (branch `fatia`) → o próximo da lista, ou o passo que uma
 saída do passo `entrada` no mestre indica; ele assume pela seção Assumir abaixo.
 
 ## Pare se
 
 - Não registrado, terminal, vizinho ou de outro papel (casos 1 e 2) → a frase do caso e pare.
 - Modo `exige` sem linha viva na sprint aberta → "fale com o P.O. ou o SM (agente `sa-produto`)" e pare.
-- Branch diferente da atual, com alterações locais não commitadas → avise e pare.
+- Branch `fatia` diferente da atual: sem o "sim" à troca, ou com alterações locais não commitadas → avise e pare.
 
 ## Assumir
 

@@ -15,7 +15,8 @@ O AT assumido no passo `assumir`, já `em-andamento`.
    do código, passando só o `AT-<nnn>`, o pedido do registro e o escopo fechado (termos ou arquivos e o limite de
    leitura); ele devolve os fatos na resposta e não grava nada; grave um resumo, sem dado de cliente, na seção
    `## Pesquisa de código` do registro; nesse caso, registre no AT: `"análise baseada em pesquisa de código"`. Sem tempo para pesquisa:
-   registre `"resposta baseada apenas no bundle do ELM e no banco"` na seção Consultas do AT.
+   registre `"resposta baseada apenas no bundle do ELM e no banco"` na seção Consultas do AT. Sem MCP de banco
+   (`não há` no `sabia.md`) → escreva a consulta (SQL); a pessoa a roda e informa o resultado.
 2. **Resultado com dado real** (linhas, telas, planilhas) → `.sabia/local/sustentacao/atendimento/AT-<nnn>/`. No registro
    ficam só a consulta (SQL), a contagem, o caminho do arquivo e um resumo **sem identificar pessoas**.
 3. **Rascunho da resposta** → "ok" da pessoa antes de enviar. Quem envia é a pessoa; o agente não manda e-mail

@@ -15,7 +15,7 @@ Tipo com skill de toolkit no seu prompt (sem agente: a seção **Tipos com skill
 carregue-a, siga o fluxo e o padrão do tipo pelos caminhos da linha, se a linha os trouxer (senão, a skill), e volte a este passo ("Toolkit na
 especificação", no passo `sa-especificar.especificar.encaminhar`).
 Na volta, confira o artefato pelo contrato: arquivo pela coluna Arquivo do catálogo, envelope do `okf-elm.md`,
-`status: draft`. Fora dele, complete aqui mesmo e registre no `status.md`.
+`status: draft`. Fora dele, complete aqui mesmo.
 Os demais tipos seguem as regras abaixo; o `prd.md` e o contrato continuam deste passo.
 
 Preencha o padrão `sa-prd/prd.md` (o `prd.md`) e crie, em `elm/`, um arquivo por artefato, de um tipo do
@@ -42,7 +42,8 @@ Preencha o padrão `sa-prd/prd.md` (o `prd.md`) e crie, em `elm/`, um arquivo po
 - **Impacto** (passo `similares`) → o artefato que cita o alterado ou o excluído e muda é alterado no mesmo lote (a HF
   que embute a REG alterada; o CT do cenário da HF alterada); o que não muda fica na coluna Impacto do PRD.
 - **Reutilizar** (decisão do passo `similares`) → não crie conceito: a HF embute a REG existente (`[<id>](<id>)`), linka o termo
-  existente e cita a HF existente; a linha na tabela do PRD fica com `reusa <id>` e sem arquivo em `elm/`.
+  existente e cita a HF existente; a linha na tabela do PRD fica com o rótulo `<sigla>-<id do ELM>` (ex.: `REG-2101`), `reusa <id>` e sem arquivo
+  em `elm/`.
 - **HF → REG** sempre por link para o arquivo da regra: na publicação ele vira **embed**. Relações entre requisitos
   (restringe, satisfaz) vão na seção `## Relações` do conceito — ficam só no repositório.
 - **Decisões de implementação** sem caminho de arquivo e sem código — módulos, interfaces e contratos.
