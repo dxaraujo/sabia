@@ -608,3 +608,138 @@ Para as 105 restantes, entram também: o achado de origem `ambiente` que nenhum 
 | D10 | push recusado na confirmação = o "não": o fluxo para em "aguardando o PR" (também na entrega da sa-verificar) |
 | D11 | **mantém o de hoje:** sem o gitlabpr e sem o link, a fase avança com `PR: texto entregue`. Exigir o link seria uma trava a mais, já que o Dev pode ter aberto o PR por fora do Sabiá |
 | D12 | coluna Papel dos Créditos = a sigla da tarefa: `DEV` `REV` `VER` `APR` `ESP` `ATD`… (na Revisão do épico, `ESP`) |
+| D13 | **com id** (desfaz o que a integração tinha aplicado): a Atividade dos Créditos de gestão leva o id do item. Motivo da pessoa: alguns repositórios têm o hook do ELM ativo, que exige o id do work item no commit. O hook é decisão de cada projeto, então o framework deve sempre produzir mensagens com o `<id>` |
+| D14 | o `creditos.py` vale só para o Kiro; no opencode não se registra crédito de sessão |
+| D15 | confirmadas as três regras: a retrospectiva de sprint não grava créditos próprios (vale a linha da sa-planejamento); a retrospectiva de fatia grava como gestão; a Sustentação feita pelo P.O./SM grava só no registro, sem a [GB] |
+| D16 | **conclui sem o saldo:** a [GB] antiga é concluída sem lançar o saldo do SM, e o SM lança depois. Princípio da pessoa: **lançar horas é uma ajuda, não uma obrigação do Sabiá; nunca bloquear o processo por causa disso.** A orientação é perguntar e registrar, porque a pessoa pode não ter como abrir o ELM e lançar as horas |
+| D18 | `HITL <h>h` da capacidade = a soma das horas estimadas da [DEV] das fatias HITL da sprint (pela tabela P/M/G da D17) |
+| D19 | `historico[].horas-revisao` sai do schema (o `horas-lancadas` já separa); `reserva-sustentacao` = o % do acordo, gravado em fração (0,2) |
+| D20 | horas do lote do orquestrador: rateio igual, ajustável, entre toda fatia que o lote tocou, inclusive as paradas no GATE e as bloqueadas |
+| D21 | lead time = de `iniciada` até `pronta` (merge), em dias corridos, com 1 casa decimal |
+| D22 | números da retrospectiva: rodadas = contadores `revisão do código` + `verificação` do status.md; correções humanas = linhas das Lições candidatas; sem intervenção = AFK sem Retrabalho nem Lições; recorte por fatia, épico e sprint |
+| D23 | WIP "esperando pessoa" contado por revisor; PR parado = `atualizado_em` há mais de 1 dia; o lote conta contra o Sênior da [APR] |
+| D24 | "prazo vencendo" = vencido ou vence até o próximo dia útil |
+| D25 | consumido da reserva = soma das estimativas, a mesma conta nos três lugares; a linha da `## Review` como proposta |
+| D26 | "dado de cliente versionado" detectado pelo caminho e pela extensão (`git ls-files`), fora `CT.csv`, `evidencias/` e `massa/` |
+| D31 | início da sprint = dia seguinte ao fim da anterior; fim = início + 7×semanas − 1 |
+| D32 | sem ELM, o `sprint-<nn>.md` traz `**Iteração no EWM:** —`, sem marcador de publicação e com a Tarefa ELM `—` |
+| D33 | a pendência da troca de modo **fica na branch** (Histórico do `status.md`) e chega à base no merge, como todo o resto; não há cópia na base. Grava quem faz a troca, na branch da fatia |
+| D13 ↩ | a pessoa pediu para voltar a ela depois, com uma explicação melhor (o que é a Atividade dos Créditos de gestão, onde aparece e a relação com o id do commit) |
+| D35 | o roadmap.md só muda a pedido (fluxo inicial do planejamento), como hoje |
+| D38 | a linha "Critérios de aceite no IB" fica (campo do IB ou a descrição, regravada pela sa-triar na aprovação da ficha e pela [ESP] FT na conclusão); a linha "IB de defeito" sai, porque o DF de origem já é o item |
+| D41 | o motivo do cancelamento de um item de Sustentação vai em `**Situação:** cancelado (<motivo>)` no registro e na Observação da sprint |
+| D42 | várias faltas na obs: um só `falta:`, com os itens separados por vírgula e em ordem fixa |
+| D43 | `**Origem:**` da ficha = o id do EWM (DF/IB) ou o número do chamado; a rápida com decisão nova ganha `## Decisões` e a Situação |
+| D44 | decisão bloqueante: `bloqueia: sim` ou `bloqueia: não` escrito dentro da Decisão, no decisoes.md |
+| D45 | lote do EWM: valores padrão fixos, aceitos pelo "sim" da tabela, que ganha as colunas Responsável e Estimativa |
+| D46 | atendimento: a pergunta nova A-7 ("quem pediu?") alimenta o `**Pedido por:**` |
+| D47 | conflito de id depois do fim da triagem: a pessoa volta ao sa-produto, que retoma no bloco de conflito e renumera |
+| D48 | slug kebab-case sem acento e sem artigos/preposições, com corte em 5 palavras; pasta antecipada do épico sempre; `nn` com 2 dígitos a partir de 01 por `elm/`, e na fatia segue a numeração do épico; `CT.csv` sai da célula Arquivo e vai para o `$comment` |
+| D51 ↩ | a pessoa pediu para voltar a ela depois, com uma explicação melhor (os 7 casos do refinamento) |
+| D52 | **prefactoring e refatoração larga não são fatia nem plano: são um épico.** O caso "várias fatias precisam de uma mudança técnica" sai dos fluxos; o caminho é a triagem de um épico técnico |
+| D54 | o caso "termo novo na entrevista de fatia" sai (da linguagem.md e da consolidação): nenhum fluxo entrevista na branch |
+| D63 | com o PRD na base, a ATA nasce na pasta do épico, na base, no commit do passo decisoes |
+| D64 | fechar-sessao: horas → script → prévia completa → "Registrar? (sim)" |
+| D65 | o campo [ESP] do status.md do épico guarda **só o id da tarefa nova** ([ESP] EP-<nn> Revisão <n>); o pai continua sendo o IB do épico, que vem da sprint anterior; o Início não muda |
+| D66 | a decisão antiga fica como está (o decisoes.md é só acréscimo); a única exceção é a linha reservada por uma ATA ainda em draft |
+| D67 | numa reunião, decidem o P.O. do épico e o representante do cliente marcado no passo transcricao |
+| D68 | protótipo com várias telas: um arquivo por tela, `prototipo-v<N>-<slug>-<nn>.<ext>` |
+| D69 | um roteador único: o encaminhar da sa-especificar escolhe o passo da sa-prd pela Fase do PRD e pelo último `revisao-prd-<N>.md` |
+
+**Observação da pessoa (05/11, depois da D69):** a maioria das perguntas novas vem de fluxos de exceção, ou até de
+fluxos que não existem e que os agentes levantaram. Ela vai responder mais algumas para conferir. Se o padrão
+continuar, avisa, e as perguntas seguintes serão revisadas (filtrando as que tratam de caso inexistente ou improvável)
+antes de seguir. Exemplos até aqui: D52 ("isso deveria ser um épico, esse caso não existe") e D51 (sete casos de
+refinamento).
+| D70 | na [ESP] FT, a ficha completada entra no commit `FT-<nnn> completar ficha` do passo trabalho; os artefatos, no commit do passo aprovacao |
+| D71 | **mantém a chave da sprint:** a coluna sprint registra a mesma sprint da [ESP] FT. Na conclusão, o encaixe cria a [DEV] nessa sprint, e o registro da sprint em que a [DEV] nasceu e foi desenvolvida se mantém |
+| D72 | na fatia iniciada que volta à especificação, o que guia a [ESP] FT são as linhas de Artefatos afetados com Especificado `—`, mais o filtro do elm-publicar |
+| D73 | **casos que não existem:** transcrição trocada depois da ATA aprovada, publicação sem "sim" e ATA sem sigla no `pa` ou sem ELM. Não tratar; o texto que existir sobre eles sai |
+| D74 | **caso que não existe:** a aprovação do protótipo pelo cliente não depende de ATA. O texto sobre isso sai |
+| D76 ↩ | a pessoa não entendeu a pergunta. Voltar com uma explicação melhor do teto de 2 rodadas por tipo de revisão, ou descartar, conforme a triagem das restantes |
+| D77 | similares sem o MCP elm ou sem o bundle: não há o que fazer além de **informar os riscos** (sem parar e sem pendência a mais); segue como `novo (não verificado)` |
+| D78 | mudança do PRD desistida antes do GATE: revert do commit de abertura, e a Fase volta a `aprovado` |
+
+## 6. Triagem das 57 decisões restantes (05/11)
+
+A pessoa notou que muitas perguntas eram de exceção ou de casos inexistentes. Um agente conferiu cada uma no código
+e classificou: **X** inexistente (descartar) · **E** exceção (regra mínima, sem trava) · **M** mecânica (aplicar sem
+perguntar) · **I** importante (perguntar).
+
+| Classe | Decisões |
+|---|---|
+| X (3) | D88, D99, D120 |
+| E (10) | D3, D53, D75, D86, D92, D94, D110, D111, D113, D115 |
+| M (41) | D4, D5, D6, D27, D34, D36, D39, D79–D83, D89–D91, D93, D95–D98, D102, D103, D105–D107, D112, D114, D116, D118, D119, D121–D131 |
+| I (3) | D87, D104, D117 |
+
+**Propostas para X, E e M** (aplicar sem perguntar, se a pessoa confirmar em bloco):
+- **X, descartar:** D88 (o revisor sempre é subagente na sessão), D99 (sem sprint não há loop), D120 (pasta `avaliacoes/` sem leitor: a frase sai).
+- **E, regra mínima, sem trava:**
+  - D3: quem mergeia não sendo o responsável → avisa e segue; as horas ficam com o dono.
+  - D53: mantém "use `sa-prd.mudanca`".
+  - D75: a Ação segue a decisão de similares.
+  - D86: merge por fora → sincronização da sprint.
+  - D92: divergência na pesquisa: fora do Cobre → Histórico + sa-triar; dentro do Cobre → `possível alteração` e segue.
+  - D94: retoma no passo verificar.
+  - D110: drift sem sprint → só a marca; campo vazio → segue como `não`, com o registro no Histórico.
+  - D111: segue, com a pendência.
+  - D113: só indica a `sa-planejamento.inicial`.
+  - D115: sem MCP de banco → o agente escreve o SQL, a pessoa roda e informa.
+- **M, mecânica:**
+  - D4: verificador = qualquer membro ativo que não implementa, com `—` aceito.
+  - D5, D79, D97, D116: confirmar o que já está aplicado.
+  - D6: tirar `{{SUBAGENTES}}` do sa-especificador e o gerador recusar outro papel.
+  - D27: painel com "HITL antes da VER → o revisor".
+  - D34: nada gravado na troca recusada.
+  - D36: a linha Cerimônias sai.
+  - D39: as opções do §9.
+  - D80: tirar "registre no status.md" (toolkit transparente).
+  - D81: `demanda` = o IB do épico.
+  - D82: avisa e segue.
+  - D83: listas fechadas.
+  - D89: `planejando`.
+  - D90: lançar horas no caminho Sem GATE, perguntado, sem bloquear.
+  - D91: risco = mais de 6 cenários ou regra sensível.
+  - D93: só a estrutura.
+  - D95: vermelho → tarefa nova.
+  - D96: `⚠️ ambiente` = um marcador só, fechando com AMBIENTE.
+  - D98: log com Fase + contador.
+  - D102: `revisao-esp-<N>.md`.
+  - D103: corrigir o padrão (`verificando`).
+  - D105: 🔁 provisório também no HITL.
+  - D106: rejeitados só no `verificacao.md`.
+  - D107: aprovação AFK pelo comentário da [APR], ou no MR, sem trava.
+  - D112: concluir depois do push.
+  - D114: como hoje, sem campo novo.
+  - D118: Situação da lição muda no lugar (`promovida → R-nn`, `descartada`).
+  - D119: mesma causa + mesma correção.
+  - D121: anota e mostra no fecho.
+  - D122: conferir depois de gravar.
+  - D123: perguntar no W5.
+  - D124: cabeçalho e separador.
+  - D125: pular Sustentação e [GB] na setup.
+  - D126: a pessoa gera o steering e a setup relê.
+  - D127: nome da PA em minúsculas, sem acento, com hífen.
+  - D128: (a).
+  - D129: campo `branch: fatia|nao` no passo entrada.
+  - D130: redação.
+  - D131: README com os sete agentes.
+- **Divergem da recomendação do relatório** (para não travar e não criar caso): D3, D4, D36, D53, D92, D110, D114.
+
+**Importantes:**
+- **D87:** quem grava `aplicada em dev`/`prod` no campo Banco.
+- **D104:** alcance da reverificação HITL depois de uma rejeição.
+- **D117:** a consulta SQL reaproveitável de um atendimento.
+
+**Respostas da pessoa à triagem (05/11):**
+
+| # | Decisão |
+|---|---|
+| D87 | **A aplicação de baseline de banco é atividade de manutenção (Sustentação: item BD/Implantação), não do Dev.** O time de banco pode levar dias, e DDL nunca é aplicada à mão. O que importa é a fatia poder ficar `bloqueada (aguardando aplicação de baseline de banco)` até a aplicação; sai a cobrança de `aplicada em dev/prod` gravada pelo Dev |
+| D104 | reverificação HITL depois de uma rejeição: só os rejeitados e os de repetição, como no AFK (o verificador pode pedir todos); o CT.csv usa o último ✅ de cada cenário |
+| D117 | **consulta de atendimento não se reaproveita:** em homologação e produção não há acesso; em dev, a consulta fica no registro do atendimento ou a pessoa a copia para a IDE (ex.: DBeaver). Sai a opção de virar lição, e não há catálogo |
+| X/E/M (54) | **confirmadas em bloco,** como propostas na seção 6 (inclusive as 7 que divergem da recomendação original: D3, D4, D36, D53, D92, D110, D114) |
+
+**Situação (05/11):** das 131, todas estão decididas, menos **D13, D51 e D76**, que a pessoa pediu para voltar com uma
+explicação melhor.
