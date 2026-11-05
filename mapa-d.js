@@ -113,10 +113,12 @@ function barra(){const L=ST.line;passos.hidden=!L;
   const{it,i}=onde(),nome=x=>esc(D.S[x.id].nome),naEst=!!ST.st&&i>=0;
   const ant=!naEst?"Visão geral":i>0?nome(it[i-1]):"Linha inteira";
   const prox=!naEst?(it.length?"Começar: "+nome(it[0]):""):i<it.length-1?nome(it[i+1]):"Linha inteira";
-  passos.innerHTML=`<button type="button" class="ant" data-p="-1" title="Fase anterior (←)">←<span>${ant}</span></button>`+
+  passos.innerHTML=`<button type="button" class="ant home" data-home title="Visão geral" aria-label="Visão geral"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h5v-6h4v6h5V9.5"/></svg></button>`+
+    `<button type="button" class="ant" data-p="-1" title="Fase anterior (←)">←<span>${ant}</span></button>`+
     `<span class="dz-onde">${naEst?`passo ${i+1} de ${it.length}`:`${it.length} estações`}</span>`+
     (prox?`<button type="button" class="prox" data-p="1" title="Próxima fase (→)" style="--tc:${cv(D.LINES[L].c)}"><span>${prox}</span>→</button>`:"")}
-passos.addEventListener("click",e=>{const b=e.target.closest("[data-p]");if(b)anda(+b.dataset.p)});
+passos.addEventListener("click",e=>{if(e.target.closest("[data-home]")){ST.touring=false;M.setLine(null);return}
+  const b=e.target.closest("[data-p]");if(b)anda(+b.dataset.p)});
 
 /* ---------- a cada mudança do mapa: foco, camadas, navegação e câmera ---------- */
 let VIASkey="";

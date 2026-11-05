@@ -37,6 +37,8 @@
 .pdz .dz-passos button{display:inline-flex;align-items:center;gap:10px;min-width:0;min-height:44px;padding:0 16px;border:0;border-radius:10px 0 10px 0;cursor:pointer;font:700 14px/1.1 var(--display)}
 .pdz .dz-passos button span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:240px}
 .pdz .dz-passos .ant{background:var(--grey2);color:var(--title)}
+.pdz .dz-passos .home{padding:0 12px;flex:none}
+.pdz .dz-passos .home svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .pdz .dz-passos .prox{background:var(--navy);color:#fff;box-shadow:inset 6px 0 0 var(--tc,var(--blue));padding-left:20px}
 .pdz .dz-passos button:hover{filter:brightness(1.08)}
 .pdz .dz-passos button:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
