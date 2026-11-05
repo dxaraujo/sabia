@@ -87,12 +87,14 @@
     "timesheet",
     "sincronizar o elm",
     "baixar os requisitos",
+    "visualizar o bundle",
+    "explorar o bundle",
     "configurar o elm"
   ],
   "extensions": {
     "io.github.dxaraujo.sabia": {
       "requires": {
-        "pypi:mcp-elm": ">=3.5.1"
+        "pypi:mcp-elm": ">=3.6.4"
       },
       "note": "Projeto com ELM: a sa-setup grava .kiro/config/elm/pa_<nome>.json, que o MCP elm lê."
     }

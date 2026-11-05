@@ -74,7 +74,7 @@ Fontes no fim deste arquivo.
 | `sa-revisar` | revisão independente: PRD (P), plano (L), código (C, dois eixos) |
 | `sa-verificar` | aceite de ponta a ponta com evidência; `CT.csv` para o ETM |
 | `sa-consolidar` | fatia `pronta` (pós-merge) → `concluida`, processo de produto (P.O. ou SM, agente `sa-produto`, créditos num comentário na `[GB]`; horas só do SM): divergência do código mergeado com um artefato como débito técnico de especificação (para a review e a retrospectiva), ET as-built ligada à `[DEV]` e casos de teste da fatia no ELM (ETM ou CSV, pela política), ADRs do PR, glossário, conclusão |
-| `sa-sync` | sincroniza o bundle OKF do DOORS Next nas duas vias (plano, baixar, enviar, conflitos) e, depois de baixar, pergunta se indexa o bundle local |
+| `sa-sync` | sincroniza o bundle OKF do DOORS Next nas duas vias (plano, baixar, enviar, conflitos) e, depois de baixar, pergunta se indexa o bundle local e gera a visualização offline dele (`explorar.html`, galáxias 3D) |
 | `sa-orquestrar` | fatias AFK até o PR, uma worktree por fatia, uma fase por contexto limpo |
 | `sa-aprender` | lições, promoção de regras, retrospectiva com dados, casos de avaliação |
 
@@ -94,7 +94,7 @@ de `skills/sa-setup/assets/`:
 | `.sabia/http.sh` (opcional) | única chamada HTTP que o verificador faz sem perguntar: só à URL de teste, com corpo da pasta `massa/`; o backpressure antes de cada commit (compila, testa, roda o lint e a cobertura) é o passo `validar` da `sa-codificar`, com os Comandos do `sabia.md` |
 | pasta do produto (proposta pela setup; padrão `.sabia/planejamento`) | `backlog.md`, épicos e PRDs, `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<iteração pai>/`, `sustentacao/<pasta>/`, `aprendizado/` — versionada; o que é local fica em `.sabia/local/` (fora do git) |
 
-O ELM vem no próprio power: o MCP **`mcp-elm`** (≥ 3.5.1) lê o `.kiro/config/elm/pa_<nome>.json` do projeto (um por
+O ELM vem no próprio power: o MCP **`mcp-elm`** (≥ 3.6.4) lê o `.kiro/config/elm/pa_<nome>.json` do projeto (um por
 project area, gravado pela `sa-setup`) e expõe operações (`elm_transicao`, `elm_lancar_horas`, `elm_criar_wi`,
 `elm_ligar`, `elm_publicar_req`…): a skill do passo passa só o caminho do projeto, os ids e o conteúdo, e recebe
 `{"ok": …}`. Regras comuns em [`skills/sabia/references/elm.md`](skills/sabia/references/elm.md). Leituras liberadas nos

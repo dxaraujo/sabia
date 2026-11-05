@@ -22,6 +22,7 @@ Toda tool devolve `{"ok":true,"dados":{…}}` ou `{"ok":false,"erro":{"codigo","
 | ligar (`implementa`, `rastreia`, `afeta`, `testado_por`, `valida`, `depende`, `relacionado`) | `elm_ligar` |
 | buscar · ler · publicar requisito | `elm_buscar_req` · `elm_ler_req` · `elm_publicar_req` |
 | buscar · ler · listar requisito local (bundle) + indexar | `elm_buscar_req_local` · `elm_ler_req_local(id ou path)` · `elm_listar_req_local` · `elm_indexar_local` |
+| visualizar o bundle (explorar.html offline, galáxias 3D) | `elm_explorar_local` (skill `sa-sync`; exige o índice: `precondicao` com `campo: "indice"` → `elm_indexar_local`) |
 | criar caso de teste (já ligado) | `elm_criar_ct` |
 | iteração e plano da sprint | `elm_iteracao` |
 | backlog do produto (onde os itens nascem; `iteracao: "backlog"`) | `elm_backlog` |
@@ -39,6 +40,10 @@ bundle. Sem nada baixado — erro `nao_encontrado` com `campo: "bundle"` — dig
 (`elm_buscar_req`/`elm_ler_req`) e ofereça a `sa-sync` para baixar. Sem o ELM remoto (pesquisador) → registre que
 não há bundle e indique a `sa-sync`. `indexando: true, restantes: n` → a busca usou o que já estava indexado; a indexação
 segue em segundo plano (`elm_indexar_local` mostra o progresso).
+
+Visualização do bundle: `elm_explorar_local` (skill `sa-sync`) gera o `explorar.html` offline na pasta do bundle — o
+bundle em galáxias num HTML único (vista 3D ou 2D, busca e filtros); lê o índice em modo somente leitura, sem índice →
+`precondicao` com `campo: "indice"`: indexe antes (`elm_indexar_local`).
 
 Erro `config` → o `pa` está incompleto: diga o campo e ofereça a `sa-setup`. `entrada` → o parâmetro (`campo`) está
 errado: corrija pelo schema da tool e tente uma vez; persistindo, mostre o `detalhe` e pare (não é pendência).
