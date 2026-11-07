@@ -312,11 +312,11 @@ async function rodar(argv) {
   try { return { codigo: await s.main(argv), erro: erros.join("\n") }; } finally { console.error = antes; }
 }
 
-test("instalar: as detectadas vêm marcadas na multisseleção, o resumo antes do confirm, e só então o disco muda", async () => {
+test("instalar: a multisseleção traz as ferramentas desmarcadas, o resumo antes do confirm, e só então o disco muda", async () => {
   respostas = [["opencode"], true];
   await s.instalar({ fonte: framework("fw", "1.1.0"), semMcp: true });
   const alvos = escolhas.find((p) => p.mensagem === "Em quais ferramentas?");
-  assert.deepEqual(alvos.opcoes.map((o) => [o.valor, o.marcado]), [["kiro", true], ["opencode", true]]);
+  assert.deepEqual(alvos.opcoes.map((o) => [o.valor, o.marcado]), [["kiro", false], ["opencode", false]]);
   assert.equal(alvos.minimo, 1);
   assert.deepEqual(Object.keys(s.lerInventario().alvos), ["opencode"]);
   const i = saida.findIndex((x) => x.startsWith("[Resumo]"));
@@ -324,17 +324,27 @@ test("instalar: as detectadas vêm marcadas na multisseleção, o resumo antes d
   assert.match(saida[i], /framework +— → 1\.1\.0\nopencode +3 skills/);
 });
 
-test("instalar: com uma ferramenta detectada não pergunta; Esc ou não no confirm: cancelado, nada gravado", async () => {
+test("instalar: com uma ferramenta detectada ainda pergunta; Esc ou não no confirm: cancelado, nada gravado", async () => {
   s.ctx.exec = (cmd, args) => { chamadas.push([cmd, ...args].join(" ")); return { status: cmd === "kiro-cli" ? 1 : 0, stdout: "", stderr: "" }; };
-  respostas = [false];
+  respostas = [["opencode"], false];
   assert.equal((await rodar(["instalar", "--fonte", framework("fw", "1.1.0"), "--sem-mcp"])).codigo, 0);
-  assert.ok(saida.includes("Instalando em: opencode") && !escolhas.length);
+  const alvos = escolhas.find((p) => p.mensagem === "Em quais ferramentas?");
+  assert.ok(alvos && alvos.opcoes.find((o) => o.valor === "kiro").dica.includes("não achado no PATH"));
   assert.ok(saida.includes("cancelado — nada foi alterado"));
   assert.ok(!fs.existsSync(path.join(home, ".sabia/framework")) && !fs.existsSync(skill("sa-setup")));
   s.ctx.escolher = async () => { throw new s.Cancelado(); };  // Esc na multisseleção
   s.ctx.exec = () => ({ status: 0, stdout: "", stderr: "" });
   assert.equal((await rodar(["instalar", "--fonte", path.join(raiz, "fw")])).codigo, 0);
   assert.ok(!fs.existsSync(path.join(home, ".sabia/framework")));
+});
+
+test("instalar no opencode sem o comando opencode: erro antes de gravar (os MCPs ficariam de fora)", async () => {
+  s.ctx.exec = (cmd, args) => { chamadas.push([cmd, ...args].join(" ")); return { status: cmd === "opencode" ? 1 : 0, stdout: "", stderr: "" }; };
+  respostas = [["opencode"]];
+  const r = await rodar(["instalar", "--fonte", framework("fw", "1.1.0")]);
+  assert.equal(r.codigo, 1);
+  assert.match(r.erro, /opencode não está no PATH.*--sem-mcp/);
+  assert.ok(!fs.existsSync(path.join(home, ".sabia/framework")) && !fs.existsSync(skill("sa-setup")));
 });
 
 test("sem terminal: sem -y, a pergunta necessária vira saída 1 com a flag; com -y, as detectadas e sem perguntas", async () => {

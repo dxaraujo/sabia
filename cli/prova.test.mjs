@@ -13,6 +13,7 @@ import { carregar, grafoAscii } from "./compilar.mjs";
 import * as s from "./sabia.mjs";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const VERSAO_FW = JSON.parse(fs.readFileSync(path.join(REPO, "plugin.json"), "utf8")).version;  // o projeto configurado com o Sabiá deste repositório
 const GERAR = path.join(REPO, "skills/sa-setup/scripts/gerar_agentes.py");
 const PYTHON = spawnSync("python3", ["--version"]).status === 0;
 let raiz, home, falhaInstalar = null;
@@ -54,7 +55,7 @@ function projeto(nome, { tipos, elm = {}, toolkits = {}, passos = [] }, extra = 
   const linhas = Object.entries(elm).map(([k, v]) => `| ${k} | \`${v}\` |\n`).join("");
   return escrever(path.join(raiz, nome), {
     ".sabia/sabia.md": `# Sabiá — ${nome}\n\n## Projeto\n\n| Item | Valor |\n|---|---|\n| Tipos · stack · módulos | \`${tipos}\` |\n\n## ELM\n\n| Item | Valor |\n|---|---|\n${linhas}`,
-    ".sabia/config/agentes.json": { sabia: "2.1.0", alvos: ["kiro", "opencode"], formato_spec: "kiro", produto: ".sabia/planejamento",
+    ".sabia/config/agentes.json": { sabia: VERSAO_FW, alvos: ["kiro", "opencode"], formato_spec: "kiro", produto: ".sabia/planejamento",
       base: "develop", prefixo_branch: "", glossario: ".sabia/glossario.md", adr: "docs/adr", elm: false, toolkits, passos, agentes: {} },
     ...extra,
   });

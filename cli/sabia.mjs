@@ -301,7 +301,7 @@ export function detectarAlvos() {
 
 const DICA_ALVO = { kiro: "power em ~/.kiro/powers/installed/sabia", opencode: "~/.config/opencode/skills e os MCPs" };
 
-/** --alvo; senão as detectadas: uma só (ou -y) sem perguntar; mais de uma ou nenhuma, multisseleção no terminal. */
+/** --alvo; com -y, as detectadas; senão, no terminal, a multisseleção de todas, desmarcadas (a pessoa escolhe). */
 async function escolherAlvos(opcoes, uso = "sabia instalar") {
   if (opcoes.alvo) {
     const alvos = opcoes.alvo.split(",").filter(Boolean);
@@ -310,15 +310,14 @@ async function escolherAlvos(opcoes, uso = "sabia instalar") {
     return alvos;
   }
   const achadas = detectarAlvos();
-  if (opcoes.sim || achadas.length === 1) {
+  if (opcoes.sim) {
     if (!achadas.length) throw new Error(`nenhuma ferramenta achada (kiro-cli, opencode) — use: ${opcoes.linha ?? uso} -a opencode -y`);
     ctx.tela.passo(`Instalando em: ${achadas.join(", ")}`);
     return achadas;
   }
   if (!ctx.interativo) throw new Error(`preciso escolher as ferramentas e não há terminal — use: ${opcoes.linha ?? uso} -a opencode -y`);
-  if (achadas.length) ctx.tela.passo(`Achadas: ${achadas.join(", ")}`);
   return ctx.escolher({ mensagem: "Em quais ferramentas?", multi: true, minimo: 1,
-    opcoes: ALVOS.map((a) => ({ valor: a, rotulo: a, dica: DICA_ALVO[a], marcado: achadas.includes(a) })) });
+    opcoes: ALVOS.map((a) => ({ valor: a, rotulo: a, dica: `${DICA_ALVO[a]}${achadas.includes(a) ? "" : " · não achado no PATH"}`, marcado: false })) });
 }
 
 function servidoresMcp(fw) {
@@ -416,6 +415,9 @@ function previa(alvo, inv, novo, opcoes) {
     if (alteradosAMao(destino, copias[chave]).length) mantidas.push(chave);
   }
   const mcps = opcoes.semMcp ? 0 : Object.keys(servidoresMcp(novo.pasta)).filter((n) => !mcpsDoOpencode().includes(n)).length;
+  // os MCPs entram pelo `opencode mcp add`: sem o comando, a cópia das skills sairia sem eles
+  if (mcps && !temComando("opencode"))
+    throw new Error("o comando opencode não está no PATH: sem ele não registro os MCPs (opencode mcp add) — ponha o opencode no PATH ou use --sem-mcp");
   return [`${qt(skills.length, "skill")}${mcps ? ` · ${qt(mcps, "MCP")}` : ""}`,
     ...mantidas.map((k) => `✎ ${alterada(k)}`)];
 }

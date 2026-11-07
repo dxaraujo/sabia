@@ -4,7 +4,7 @@ description: "Read-only dashboard of the Sabiá flow and the entry door for any 
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.0"
+  version: "2.1.1"
 ---
 
 # sa-status — Onde está o fluxo
