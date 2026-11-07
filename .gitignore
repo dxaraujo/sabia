@@ -1,2 +1,5 @@
 __pycache__/
 *.pyc
+
+# sessões locais do Claude Code
+.claude/
