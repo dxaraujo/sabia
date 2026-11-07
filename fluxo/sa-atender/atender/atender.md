@@ -6,10 +6,10 @@
    {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao", "saidas": {"id de Sustentação já registrado, nova ou em-andamento": "puxar"}},
    {"id": "registrar", "saidas": {"só registrar, sem atender agora": "fim"}},
    {"id": "puxar", "saidas": {"reserva estourada, sem quem tem produto na sessão ou com a decisão de esperar": "fim"}},
-   {"id": "assumir"},
+   {"id": "assumir", "chama": "sa-elm.item"},
    {"id": "executar", "chama": "sa-pesquisar.pesquisar", "saidas": {"a sessão termina antes de resolver (commit '<ID> registrar sessão')": "fim", "resolvido ou retirado, nada fora do escopo": "finalizar"}},
    {"id": "fora-do-escopo", "saidas": {"categoria errada: o item ficou 'cancelada · virou <novo id>'": "gravar-na-base"}},
-   {"id": "finalizar"},
+   {"id": "finalizar", "chama": "sa-elm.finalizar"},
    {"id": "desdobramentos", "saidas": {"nenhum desdobramento": "gravar-na-base"}},
    {"id": "captura", "de": "captura"},
    {"id": "gravar-na-base", "de": "gravar-na-base"}

@@ -169,8 +169,8 @@ test("chama: em linha (mesmo dono ou skill do agente), subagente, e recusa quand
 });
 
 test("dono: só agente do perfis.json", () => {
-  const ruim = fixture({ "fluxo/sa-b/x/x.md": mestre({ fluxo: "x", dono: "sa-produto", quando: ["q"], passos: [{ id: "olhar" }] }) });
-  assert.match(validar(carregar(ruim)).join("\n"), /x\.md:2: dono sa-produto não é agente do perfis\.json \(sa-um, sa-dois\)/);
+  const ruim = fixture({ "fluxo/sa-b/x/x.md": mestre({ fluxo: "x", dono: "sa-outro", quando: ["q"], passos: [{ id: "olhar" }] }) });
+  assert.match(validar(carregar(ruim)).join("\n"), /x\.md:2: dono sa-outro não é agente do perfis\.json \(sa-um, sa-dois\)/);
 });
 
 const ENTRADA = { id: "entrada", de: "entrada", papel: "desenvolvedor", branch: "fatia" };

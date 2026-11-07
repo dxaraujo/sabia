@@ -7,7 +7,7 @@ A rota, o modo, o `formato_spec` do `agentes.json`, o tipo da linha (fatia ou bu
 
 ## Faça
 
-Rota `trivial` → nada a fazer; siga.
+Rota `trivial`, ou volta da virada (a pasta e o `status.md` já estão na branch) → nada a fazer; siga.
 
 1. **Pasta**: `.kiro/specs/ft-<nnn>-<slug>/` no Kiro; `openspec/changes/ft-<nnn>-<slug>/` no OpenSpec (`<nnn>` e
    `<slug>` da ficha, em minúsculas). Já existe na base (o `elm/` nasceu no refinamento) → reaproveite.

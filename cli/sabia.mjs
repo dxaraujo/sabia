@@ -737,7 +737,7 @@ function contextoRota(opcoes) {
 /** Os passos do fluxo `q` na ordem, com o que o projeto mudou: origem sabia | projeto (corpo trocado) | inserido | removido. */
 function resolverFluxo(c, q) {
   const fl = c.m.fluxos[q.replace("/", ".")];
-  if (!fl) throw new Error(`fluxo ${q} não existe em ${curto(c.fw)} (use skill.fluxo, ex.: sa-codificar.codificar)`);
+  if (!fl) throw new Error(`fluxo ${q} não existe em ${curto(c.fw)} (use skill.fluxo, ex.: sa-desenvolver.codificar)`);
   const dir = path.join(c.projeto, ".sabia", "fluxo", fl.skill, fl.fluxo);
   const ops = lerFm(path.join(dir, `${fl.fluxo}.md`)) || {};
   const doProjeto = (id) => path.join(dir, "passos", `${id}.md`);

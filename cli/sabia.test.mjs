@@ -17,7 +17,7 @@ function escrever(base, arquivos) {
   return base;
 }
 
-function framework(nome, versao, skills = ["sabia", "sa-setup", "sa-codificar"]) {
+function framework(nome, versao, skills = ["sabia", "sa-setup", "sa-desenvolver"]) {
   return escrever(path.join(raiz, nome), {
     "plugin.json": { name: "sabia", version: versao },
     "mcp.json": { mcpServers: { elm: { type: "stdio", command: "uvx", args: ["mcp-elm@latest"], env: { UV_SYSTEM_CERTS: "true" } } } },
@@ -51,7 +51,7 @@ test("instala no opencode e no Kiro, com o inventário; cursor é ferramenta des
   const inv = s.lerInventario();
   assert.equal(inv.framework.versao, "1.1.0");
   const p = "~/.config/opencode/skills/";
-  assert.deepEqual(Object.keys(inv.alvos.opencode.copias).sort(), [`${p}sa-codificar`, `${p}sa-setup`, `${p}sabia`]);
+  assert.deepEqual(Object.keys(inv.alvos.opencode.copias).sort(), [`${p}sa-desenvolver`, `${p}sa-setup`, `${p}sabia`]);
   assert.match(inv.alvos.opencode.copias[`${p}sa-setup`]["SKILL.md"], /^[0-9a-f]{64}$/);
   assert.deepEqual(inv.alvos.opencode.mcp, ["elm"]);
   assert.deepEqual(inv.alvos.kiro, { power: "sabia" });
@@ -76,37 +76,37 @@ test("skill que já existe e não é do Sabiá é recusada", async () => {
 
 test("atualizar mostra a diferença, troca as cópias, tira a skill que saiu e pergunta pela alterada à mão", async () => {
   await s.instalar({ fonte: framework("fw1", "1.1.0"), alvo: "opencode", semMcp: true });
-  fs.writeFileSync(skill("sa-codificar"), "mexi");
+  fs.writeFileSync(skill("sa-desenvolver"), "mexi");
   respostas = ["s", "n"];  // atualizar? sim · sobrescrever a alterada à mão? não
-  await s.atualizar({ fonte: framework("fw2", "1.2.0", ["sabia", "sa-setup", "sa-codificar"]) });
+  await s.atualizar({ fonte: framework("fw2", "1.2.0", ["sabia", "sa-setup", "sa-desenvolver"]) });
   assert.equal(fs.readFileSync(skill("sa-setup"), "utf8"), "sa-setup 1.2.0");
-  assert.equal(fs.readFileSync(skill("sa-codificar"), "utf8"), "mexi");
+  assert.equal(fs.readFileSync(skill("sa-desenvolver"), "utf8"), "mexi");
   assert.equal(s.lerInventario().framework.versao, "1.2.0");
 
   await s.atualizar({ fonte: framework("fw3", "1.3.0", ["sabia", "sa-setup"]) });  // padrão das respostas: "n"
   assert.equal(s.lerInventario().framework.versao, "1.2.0");
   respostas = ["s", "s"];
   await s.atualizar({ fonte: framework("fw3b", "1.3.0", ["sabia", "sa-setup"]) });
-  assert.ok(!fs.existsSync(skill("sa-codificar")));
-  assert.ok(!("~/.config/opencode/skills/sa-codificar" in s.lerInventario().alvos.opencode.copias));
+  assert.ok(!fs.existsSync(skill("sa-desenvolver")));
+  assert.ok(!("~/.config/opencode/skills/sa-desenvolver" in s.lerInventario().alvos.opencode.copias));
 });
 
 test("skill de fluxo é compilada: os passos gerados entram no inventário e o passo editado à mão é detectado", async () => {
   const fw = framework("fw", "2.0.0");
   escrever(fw, {
-    "skills/sa-codificar/SKILL.md": "---\nname: sa-codificar\nmetadata:\n  version: \"2.0.0\"\n---\n# sa-codificar\n",
+    "skills/sa-desenvolver/SKILL.md": "---\nname: sa-desenvolver\nmetadata:\n  version: \"2.0.0\"\n---\n# sa-desenvolver\n",
     "fluxo/travas.json": { travas: {} },
-    "fluxo/sa-codificar/codificar/codificar.md": '---\n{"fluxo": "codificar", "dono": "sa-x", "passos": [{"id": "tarefa"}]}\n---\n# Codificar\n',
-    "fluxo/sa-codificar/codificar/passos/tarefa.md": '---\n{"resumo": "Uma tarefa."}\n---\n## Entrada\n\n## Faça\n\nCiclo.\n\n## Saída\n\n## Pare se\n\n—\n',
+    "fluxo/sa-desenvolver/codificar/codificar.md": '---\n{"fluxo": "codificar", "dono": "sa-x", "passos": [{"id": "tarefa"}]}\n---\n# Codificar\n',
+    "fluxo/sa-desenvolver/codificar/passos/tarefa.md": '---\n{"resumo": "Uma tarefa."}\n---\n## Entrada\n\n## Faça\n\nCiclo.\n\n## Saída\n\n## Pare se\n\n—\n',
   });
   await s.instalar({ fonte: fw, alvo: "opencode" });
-  const dir = path.join(home, ".config/opencode/skills/sa-codificar");
+  const dir = path.join(home, ".config/opencode/skills/sa-desenvolver");
   assert.match(fs.readFileSync(path.join(dir, "SKILL.md"), "utf8"), /## Fluxo codificar/);
-  const copias = s.lerInventario().alvos.opencode.copias["~/.config/opencode/skills/sa-codificar"];
+  const copias = s.lerInventario().alvos.opencode.copias["~/.config/opencode/skills/sa-desenvolver"];
   assert.match(copias["references/codificar/tarefa.md"], /^[0-9a-f]{64}$/);
   assert.equal(s.lerInventario().framework.compilador, JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8")).version);
   fs.appendFileSync(path.join(dir, "references/codificar/tarefa.md"), "editado\n");
-  escrever(fw, { "fluxo/sa-codificar/codificar/passos/tarefa.md": '---\n{"resumo": "Uma tarefa."}\n---\n## Entrada\n\n## Faça\n\nCiclo novo.\n\n## Saída\n\n## Pare se\n\n—\n' });
+  escrever(fw, { "fluxo/sa-desenvolver/codificar/passos/tarefa.md": '---\n{"resumo": "Uma tarefa."}\n---\n## Entrada\n\n## Faça\n\nCiclo novo.\n\n## Saída\n\n## Pare se\n\n—\n' });
   respostas = ["s", "n"];  // atualizar? sim · sobrescrever a alterada à mão? não
   await s.atualizar({ fonte: fw });
   assert.match(fs.readFileSync(path.join(dir, "references/codificar/tarefa.md"), "utf8"), /editado/);
@@ -320,28 +320,28 @@ function cenarioRota() {
   const fw = escrever(path.join(raiz, "fw-rota"), {
     "plugin.json": { name: "sabia", version: "2.0.0" },
     "fluxo/travas.json": { travas: { "sim-da-pessoa": { texto: "sim" }, "toolkit-sem-commit": { texto: "sem commit" }, "revisao-independente": { texto: "outro revisa" } } },
-    "fluxo/sa-codificar/codificar/codificar.md": mestre({ fluxo: "codificar", dono: "sa-desenvolvedor", travas_gerais: ["sim-da-pessoa"], passos: [
+    "fluxo/sa-desenvolver/codificar/codificar.md": mestre({ fluxo: "codificar", dono: "sa-desenvolvedor", travas_gerais: ["sim-da-pessoa"], passos: [
       { id: "tarefa", desvio: true, travas: ["toolkit-sem-commit"], saidas: { "ainda há tarefa: não marcada": "tarefa" } },
       { id: "revisar", chama: "sa-revisar.revisar", travas: ["revisao-independente"], saidas: { REVISAR: "tarefa" } },
       { id: "rito", removivel: true },
       { id: "pr", saidas: { "PR aberto": "→ sa-revisar.hitl", "sem GATE": "fim" } }] }),
     "fluxo/sa-revisar/revisar/revisar.md": mestre({ fluxo: "revisar", dono: "sa-revisor", passos: [{ id: "ler" }] }),
-    "fluxo/sa-revisar/hitl/hitl.md": mestre({ fluxo: "hitl", dono: "sa-revisor", passos: [{ id: "aprovar-pr", saidas: { pronto: "→ sa-codificar.codificar.pr" } }] }),
+    "fluxo/sa-revisar/hitl/hitl.md": mestre({ fluxo: "hitl", dono: "sa-revisor", passos: [{ id: "aprovar-pr", saidas: { pronto: "→ sa-desenvolver.codificar.pr" } }] }),
   });
   escrever(path.join(home, ".sabia/toolkits/batch-alfa"), {
     "toolkit.json": { nome: "batch-alfa", versao: "1.0.0",
-      skills: [{ caminho: "skills/batch/SKILL.md", passo: { passo: "sa-codificar.codificar.tarefa", para: "tarefa de job", arquivos: ["src/*.java", "**/*JobConfig.java"], agente: "batch-job" } },
-        { caminho: "skills/sql/SKILL.md", passo: { passo: "sa-codificar.codificar.revisar", para: "sql", arquivos: ["**/*.sql"] } }],  // passo sem gancho
+      skills: [{ caminho: "skills/batch/SKILL.md", passo: { passo: "sa-desenvolver.codificar.tarefa", para: "tarefa de job", arquivos: ["src/*.java", "**/*JobConfig.java"], agente: "batch-job" } },
+        { caminho: "skills/sql/SKILL.md", passo: { passo: "sa-desenvolver.codificar.revisar", para: "sql", arquivos: ["**/*.sql"] } }],  // passo sem gancho
       agentes: [{ nome: "batch-job", prompt: "agentes/job.md", skills: ["skills/batch/SKILL.md", "skills/java/SKILL.md"] }] },
   });
   const projeto = escrever(path.join(raiz, "proj"), {
     ".sabia/config/agentes.json": { toolkits: { "batch-alfa": { pasta: "~/.sabia/toolkits/batch-alfa", versao: "1.0.0" } },
       passos: [{ toolkit: "batch-alfa", skill: "skills/batch/SKILL.md", agente: true },
         { toolkit: "batch-alfa", skill: "skills/sql/SKILL.md" }] },
-    ".sabia/fluxo/sa-codificar/codificar/codificar.md": '---\n{"inserir": [{"id": "fim2", "depois": "metricas"}, {"id": "metricas", "depois": "revisar"}], "remover": ["rito"]}\n---\n',
-    ".sabia/fluxo/sa-codificar/codificar/passos/tarefa.md": '---\n{"base": "3f9a1c0b7e21"}\n---\n## Entrada\n',
-    ".sabia/fluxo/sa-codificar/codificar/passos/metricas.md": "---\n{}\n---\n## Entrada\n",
-    ".sabia/fluxo/sa-codificar/codificar/passos/fim2.md": "---\n{}\n---\n## Entrada\n",
+    ".sabia/fluxo/sa-desenvolver/codificar/codificar.md": '---\n{"inserir": [{"id": "fim2", "depois": "metricas"}, {"id": "metricas", "depois": "revisar"}], "remover": ["rito"]}\n---\n',
+    ".sabia/fluxo/sa-desenvolver/codificar/passos/tarefa.md": '---\n{"base": "3f9a1c0b7e21"}\n---\n## Entrada\n',
+    ".sabia/fluxo/sa-desenvolver/codificar/passos/metricas.md": "---\n{}\n---\n## Entrada\n",
+    ".sabia/fluxo/sa-desenvolver/codificar/passos/fim2.md": "---\n{}\n---\n## Entrada\n",
     ".opencode/agents/sa-desenvolvedor.md": "agente",
   });
   return { framework: fw, projeto };
@@ -359,11 +359,11 @@ test("glob do passo.arquivos: ** atravessa /, * não", () => {
 test("rota de um arquivo: o desvio que casa, o dono, o motivo e as travas; sem casar, o fluxo padrão", () => {
   const o = cenarioRota();
   const com = s.rota(path.join(o.projeto, "src/main/java/x/ImportarPedidosJobConfig.java"), o);
-  assert.match(com, /^passo +sa-codificar\.codificar\.tarefa +\.sabia\/fluxo\/sa-codificar\/codificar\/passos\/tarefa\.md \(projeto\)$/m);
+  assert.match(com, /^passo +sa-desenvolver\.codificar\.tarefa +\.sabia\/fluxo\/sa-desenvolver\/codificar\/passos\/tarefa\.md \(projeto\)$/m);
   assert.match(com, /^dono +sa-desenvolvedor +\.opencode\/agents\/sa-desenvolvedor\.md$/m);
   assert.match(com, /^desvio +batch-job +toolkit batch-alfa 1\.0\.0$/m);
   assert.match(com, /^motivo +casou \*\*\/\*JobConfig\.java$/m);
-  assert.match(com, /^skills +sa-codificar, batch, java$/m);
+  assert.match(com, /^skills +sa-desenvolver, batch, java$/m);
   assert.match(com, /^travas +sim-da-pessoa, toolkit-sem-commit$/m);
   const sem = s.rota("src/main/java/x/PedidoDto.java", o);
   assert.match(sem, /^desvio +— fluxo padrão +nenhum padrão casou$/m);
@@ -372,7 +372,7 @@ test("rota de um arquivo: o desvio que casa, o dono, o motivo e as travas; sem c
   assert.match(s.rota("db/x.sql", o), /^desvio +— fluxo padrão/m);
   // sem o projeto: o passo do Sabiá, sem agente gerado
   const fora = s.rota("x.java", { framework: o.framework, projeto: path.join(raiz, "vazio") });
-  assert.match(fora, /^passo +sa-codificar\.codificar\.tarefa +.*fw-rota\/fluxo\/sa-codificar\/codificar\/passos\/tarefa\.md \(Sabiá 2\.0\.0\)$/m);
+  assert.match(fora, /^passo +sa-desenvolver\.codificar\.tarefa +.*fw-rota\/fluxo\/sa-desenvolver\/codificar\/passos\/tarefa\.md \(Sabiá 2\.0\.0\)$/m);
   assert.match(fora, /agente não gerado neste projeto/);
 });
 
@@ -415,17 +415,17 @@ test("rota de uma tarefa do tasks.md: casa pelos arquivos que ela cita; sem casa
 
 test("rota --fluxo: a ordem com o que o projeto mudou, o grafo ASCII e o diagrama de estados", () => {
   const o = cenarioRota();
-  const t = s.rotaFluxo("sa-codificar/codificar", o);
+  const t = s.rotaFluxo("sa-desenvolver/codificar", o);
   const linhas = t.split("\n");
   const ordem = linhas.filter((l) => /^(\d+|-) {2}/.test(l)).map((l) => l.split(/\s+/).slice(0, 2).join(" "));
   assert.deepEqual(ordem, ["1 tarefa", "2 revisar", "3 metricas", "4 fim2", "- rito", "5 pr"]);
-  assert.match(t, /^fluxo +sa-codificar\.codificar +dono sa-desenvolvedor +Sabiá 2\.0\.0$/m);
+  assert.match(t, /^fluxo +sa-desenvolver\.codificar +dono sa-desenvolvedor +Sabiá 2\.0\.0$/m);
   assert.match(t, /^desvio ⇢ +tarefa: src\/\*\.java, \*\*\/\*JobConfig\.java +→ batch-job +toolkit batch-alfa 1\.0\.0$/m);
   assert.match(t, /tarefa ⇢ +projeto \(base 3f9a1c0b7e21\)/);
   assert.match(t, /metricas +projeto, inserido depois de revisar/);
   assert.match(t, /rito +removido no projeto/);
   // o grafo ASCII resolvido: inserido com a origem, removido fora, desvio ligado com o toolkit
-  const g = t.slice(t.indexOf("sa-codificar.codificar   dono"), t.indexOf("```mermaid"));
+  const g = t.slice(t.indexOf("sa-desenvolver.codificar   dono"), t.indexOf("```mermaid"));
   assert.deepEqual([...g.matchAll(/│ (\d+ [a-z0-9-]+)/g)].map((x) => x[1]), ["1 tarefa", "2 revisar", "3 metricas", "4 fim2", "5 pr"]);
   assert.match(g, /│ 1 tarefa ⇢ +│──▶ origem: projeto \(base 3f9a1c0b7e21\)\n.*┘ {4}⇢ desvio → batch-job \(toolkit batch-alfa 1\.0\.0\)\n {32}🔒 toolkit-sem-commit\n {32}↺ tarefa/);
   assert.match(g, /│ 3 metricas +│──▶ origem: projeto, inserido depois de revisar/);
@@ -444,8 +444,8 @@ test("rota --fluxo: a ordem com o que o projeto mudou, o grafo ASCII e o diagram
 test("rota --mapa: chama e passagens de todo o framework em Mermaid", async () => {
   const o = cenarioRota();
   const t = s.rotaMapa(o);
-  for (const l of ["flowchart LR", 'sa_codificar_codificar["sa-codificar.codificar"]', "sa_codificar_codificar -->|revisar| sa_revisar_revisar",
-    "sa_codificar_codificar -.->|pr| sa_revisar_hitl", "sa_revisar_hitl -.->|aprovar-pr| sa_codificar_codificar"]) assert.ok(t.includes(l), l);
+  for (const l of ["flowchart LR", 'sa_desenvolver_codificar["sa-desenvolver.codificar"]', "sa_desenvolver_codificar -->|revisar| sa_revisar_revisar",
+    "sa_desenvolver_codificar -.->|pr| sa_revisar_hitl", "sa_revisar_hitl -.->|aprovar-pr| sa_desenvolver_codificar"]) assert.ok(t.includes(l), l);
   const logs = [];
   s.ctx.log = (x) => logs.push(x);
   assert.equal(await s.main(["rota", "--mapa", "--framework", o.framework]), 0);

@@ -3,29 +3,36 @@
 > *A IA levanta voo. O Sabiá garante o pouso.*
 
 O agente escreve muito código e rápido. O que limita o resultado é o alinhamento antes e a verificação depois. O Sabiá
-conduz cada demanda por sete etapas: triagem, alinhamento, fatiamento, plano, implementação, verificação e consolidação.
-Cada etapa tem um dono, um gate e uma evidência. O IBM ELM é o registro oficial, e cada erro vira uma regra para a
-próxima fatia.
+conduz cada demanda por sete disciplinas — triagem, refinamento, planejamento, especificação, desenvolvimento,
+revisão e aceite, sustentação — com Kanban e WIP, Shape Up no épico, três amigos na fatia, TDD e MR revisado por
+outro desenvolvedor. Do Sabiá fica só o que dá produtividade ou preserva o rastreio de requisitos; o resto segue o
+mercado. Com IBM ELM, o DOORS Next é o registro oficial; sem ELM, a spec viva fica no repositório.
 
 Desenvolvido por Daniel Xavier Araújo.
 
 ```
-ENTRADA   triar ─► backlog: EP novo · FT sem épico (padrão ou rápida, cada uma com a sua ficha e os artefatos afetados do ELM) · Sustentação (AT-/IM-… + IB) ─► "mais algum?"
-HUB       iniciar <item> ─► especificar · desenvolver · revisar ([REV], [APR]) · verificar · atender · planejamento (troca) · consolidar · executar (cada uma assume a sua tarefa)
-            │
-PRODUTO   especificar (ATA de cada reunião · protótipo aprovado, com tela) ─► entrevistar ─► PRD ─► GATE PRD (especificador) ─► ELM ─► fatiar (P.O./SM, logo em seguida) ─► GATE backlog ─► sprint (EWM)
-                                                                                                                                                                   │
-FATIA     [ESP] FT (artefato afetado) ─► ELM ─► encaixe ─► desenvolver (iniciada na base) ─► pesquisar ─► plano (spec do Kiro) ─► GATE plano ─► implementar (TDD) ─► PR ─► revisar ─► verificar   (AFK: revisão e verificação antes do PR)
-                                                                                                                                                                    │
-DEPOIS    merge (Dev; remove a worktree do loop) ─► pronta na base
-            │
-PRODUTO   consolidar (P.O./SM, [GB]): débito de especificação ─► ELM (ET as-built ligada à [DEV], CTs) ─► ADRs do PR ─► concluida ─► aprender
+demanda ─► captura (fluxo/captura.md; entrada direta sa-triar.capturar)   tipo ∈ épico · fatia · bug · sustentação
+   └─► TRIAGEM ───────── sa-triar.triar                                    (qualquer pessoa)
+        ├─ épico ──────► REFINAMENTO sa-refinar.moldar: pitch.md ─► go/kill (produto)
+        │                  └─ go ─► ESPECIFICAÇÃO sa-prd.prd: prd.md aprovado ─► sa-refinar.fatiar ─► FT-nnn
+        ├─ fatia · bug ► REFINAMENTO sa-refinar.detalhar: ficha (regras · CT-nn · Cobre) [+ elm/] ─► pronta
+        │                  └─ sa-refinar.ajustar até alguém puxar
+        └─ sustentação ► SUSTENTAÇÃO sa-atender.atender (AT · IM · BD · IN · OP · EX, dentro da folga)
+
+PLANEJAMENTO ─────── sa-planejamento.inicial · .sprint · .review · .retrospectiva · inspeção diária sa-status.painel
+DESENVOLVIMENTO ──── sa-desenvolver.iniciar ─► [sa-plano.plano] ─► sa-desenvolver.codificar ─► MR
+                     rota: trivial · quick · completo       modo: IA supervisionada · IA autopilot · manual
+REVISÃO E ACEITE ─── sa-verificar.verificar · sa-revisar.mr (desenvolvedor ≠ autor) · [sa-verificar.uat]
+                     └─► sa-desenvolver.encerrar (merge) ─► sa-especificar.archive ─► [sa-elm.publicar]
+
+estado (backlog.md · sprint-<nn>.md) e documentos (pitch · prd · ficha · elm/): commit pequeno direto na base
+MR: só para código, com o delta da spec, o design e as tasks
+ELM (borda, só com ELM configurado): sa-elm — a skill do trabalho oferece e nunca trava
 ```
 
 **Mapa interativo do fluxo:** <https://dxaraujo.github.io/sabia/> — cada trilha é uma linha de metrô e cada skill uma
-estação. Escolha a linha (épico, fatia HITL ou AFK, Sustentação, ciclo da sprint), a senioridade de quem implementa
-e a trilha da fatia; a ficha ao lado mostra papel, agente, tarefa no EWM, arquivos, chamadas ao ELM e as transições de
-cada passo. Fonte: branch `gh-pages` deste repositório.
+estação; a ficha ao lado mostra papel, agente, arquivos, chamadas ao ELM e as transições de cada passo. Fonte: branch
+`gh-pages` deste repositório.
 
 ## Fundamentos
 
@@ -33,7 +40,7 @@ cada passo. Fonte: branch `gh-pages` deste repositório.
 |---|---|---|
 | 1 | Alinhar antes de escrever: entrevista em rodadas, com resposta recomendada; fatos o agente busca, decisões a pessoa toma | Matt Pocock (`grilling`), Anthropic (entrevista → spec), Dex Horthy (QRSPI), Andrej Karpathy (modelos não pedem esclarecimento) |
 | 2 | Cerimônia do tamanho do trabalho | Birgitta Böckeler ("marreta para quebrar noz"), Anthropic ("se o diff cabe numa frase, pule o plano"), Horthy (~40% *oneshot*), Spec Kit |
-| 3 | Spec é registro de decisão, sem caminho de arquivo; o que dura é glossário, ADR e — aqui — o ELM | Pocock (`to-spec`), Böckeler (*spec-anchored*), Kent Beck e Martin Fowler (aprender durante a implementação) |
+| 3 | Spec é registro de decisão, sem caminho de arquivo; o que dura é glossário, ADR e — aqui — o ELM ou a spec viva | Pocock (`to-spec`), Böckeler (*spec-anchored*), Kent Beck e Martin Fowler (aprender durante a implementação) |
 | 4 | Linguagem ubíqua num glossário usado no PRD, nos testes e no código | Pocock (`domain-modeling`), DDD |
 | 5 | Fatias verticais (*tracer bullets*) que cabem numa janela de contexto nova, com critérios falsificáveis | Pocock (`to-tickets`), Horthy ("modelos amam planos horizontais"), Anthropic (uma funcionalidade por vez), Geoffrey Huntley (um item por loop) |
 | 6 | Pesquisar → planejar → implementar, com compactação em arquivo e revisão humana do plano | Horthy (*Advanced Context Engineering*), Boris Cherny (comece no plan mode) |
@@ -43,139 +50,173 @@ cada passo. Fonte: branch `gh-pages` deste repositório.
 | 10 | Proteger o oráculo: teste não se apaga nem se afrouxa | Anthropic (*long-running harnesses*), Beck ("o gênio trapaceando"), Karpathy (`autoresearch`) |
 | 11 | Gerador ≠ avaliador; revisão em contexto limpo e em eixos separados; avaliador cético mas sem caçar gosto | Anthropic (*harness design*), Pocock (`code-review`), Cherny |
 | 12 | Contexto limpo por fatia e estado em disco | Horthy (zona burra acima de ~40%), Pocock (*smart zone*), Huntley, Anthropic (*context engineering*) |
-| 13 | Slider de autonomia: HITL até o tipo de trabalho provar que anda sozinho; WIP limitado pela revisão humana | Karpathy ("Iron Man suits"), Pocock (AFK/HITL), Addy Osmani (*orchestration tax*), DORA 2025 |
-| 14 | Leia o código: PRs pequenos, com caminho de leitura e evidência | Horthy ("read the dang code"), Willison, Osmani (*comprehension debt*), Thoughtworks Radar vol. 34 |
+| 13 | Slider de autonomia: IA supervisionada, IA autopilot ou manual, escolhido por item por quem desenvolve; WIP limitado pela revisão humana | Karpathy ("Iron Man suits"), Pocock (AFK/HITL), Addy Osmani (*orchestration tax*), DORA 2025 |
+| 14 | Leia o código: MRs pequenos, com caminho de leitura e evidência | Horthy ("read the dang code"), Willison, Osmani (*comprehension debt*), Thoughtworks Radar vol. 34 |
 | 15 | Aprendizado composto: cada correção muda o ambiente — checagem determinística primeiro | Mitchell Hashimoto (*engineer the harness*), Cherny, Pocock (`retro`), Fowler (*guides & sensors*) |
 | 16 | Conhecimento mantido por LLM, com *lint* de contradições | Karpathy (*LLM Wiki*) — aqui, o bundle do ELM + glossário + ADRs |
 | 17 | Harness mínimo, revisto a cada modelo; segurança sem a "tríade letal" | Anthropic, Fowler (*Are Harnesses Worth the Cost?*), Willison |
 
 Fontes no fim deste arquivo.
 
-## Conteúdo
+## Skills
 
-| Skill | Função |
-|---|---|
-| `sabia` | guia do fluxo: trilhas, gates, princípios, qual skill usar |
-| `sa-setup` | configura o projeto: entende o repositório, descobre skills e toolkits, cria os agentes perguntando as skills de cada um |
-| `sa-status` | painel "onde parei", WIP de revisão, próxima ação de maior alavanca |
-| `sa-triar` | entrada de toda demanda nova: triagem em qualquer trilha, duplicados, ficha da fatia padrão sem épico, registro no backlog (inclusive a Sustentação: categoria, AT-nnn/IM-nnn…, IB do item no EWM; a tarefa `[ATD]`/`[IMPL]`… nasce quando o item entra numa sprint), importação de itens do EWM, "mais algum item?" — não começa nada |
-| `sa-iniciar` | hub: recebe o item registrado (ou "minha próxima tarefa") e diz a skill do papel |
-| `sa-especificar` | Especificador: assume a `[ESP]`, conduz entrevista → PRD numa pasta local até o GATE do PRD, especifica os artefatos afetados de uma fatia na `[ESP] FT` até o GATE dele, publica no ELM e liga à `[ESP]` os requisitos aprovados e os CT planejados (a `[ESP]` termina com a publicação; alteração depois dela: no épico, só entre o GATE do PRD e o fatiamento, pela `sa-prd.mudanca`, e depois do fatiamento sempre na `[ESP] FT` da fatia; a tarefa aberta registra, a concluída na sprint corrente reabre, e a concluída numa sprint fechada vai à `[GB]` ou nasce a `[ESP] <id> Revisão <n>`), registra cada sessão na tarefa (comentário + anexos), faz a ATA de cada reunião com o cliente a partir da transcrição e, em projeto com tela, registra o protótipo e a aprovação do cliente antes do PRD |
-| `sa-desenvolver` | Dev: compromisso (Definition of Ready, sprint/encaixe, WIP), `iniciada` na base, branch, pasta, assume a `[DEV]`; retomada pela fase; merge do PR aprovado, `pronta` na base e conclusão da `[DEV]` |
-| `sa-entrevistar` | alinhamento em rodadas (grill), decisões e glossário |
-| `sa-prd` | PRD do épico (o quê e por quê, com os artefatos novos, alterados e excluídos e o impacto) e GATE do PRD, do especificador |
-| `sa-fatiar` | processo de produto (P.O. ou SM, agente `sa-produto`): PRD → fatias verticais AFK/HITL com os artefatos afetados, backlog e GATE do backlog |
-| `sa-planejamento` | roadmap, acordos (cadência Scrumban, DoR/DoD, WIP, reserva para Sustentação e retrabalho), sprint com especificação e Sustentação, encaixe, troca AFK → HITL, "sincroniza a sprint", review, retrospectiva, virada e relatório de horas |
-| `sa-executar` | executa os demais itens de Sustentação já triados (`[IMPL]` `[BD]` `[INF]` `[OPE]` `[EXT]`; a pessoa faz o trabalho fora do repositório): assumir no ELM (`em-andamento`), registrar o trabalho, lançar horas, concluir a tarefa e o IB do item |
-| `sa-atender` | executa o atendimento (categoria Atendimento da Sustentação) já triado (AT-nnn): assume a `[ATD]`, consulta só leitura, extração fora do git, resposta, saldo de horas, desdobramentos |
-| `sa-pesquisar` | pesquisa do código compactada em `research.md` |
-| `sa-plano` | spec do Kiro (`requirements.md`/`bugfix.md`, `design.md`, `tasks.md`) e GATE do plano |
-| `sa-codificar` | TDD + backpressure, commits pequenos, revisão e PR (termina no PR) |
-| `sa-revisar` | revisão independente: PRD (P), plano (L), código (C, dois eixos) |
-| `sa-verificar` | aceite de ponta a ponta com evidência; `CT.csv` para o ETM |
-| `sa-consolidar` | fatia `pronta` (pós-merge) → `concluida`, processo de produto (P.O. ou SM, agente `sa-produto`, créditos num comentário na `[GB]`; horas só do SM): divergência do código mergeado com um artefato como débito técnico de especificação (para a review e a retrospectiva), ET as-built ligada à `[DEV]` e casos de teste da fatia no ELM (ETM ou CSV, pela política), ADRs do PR, glossário, conclusão |
-| `sa-sync` | sincroniza o bundle OKF do DOORS Next nas duas vias (plano, baixar, enviar, conflitos) e, depois de baixar, pergunta se indexa o bundle local e gera a visualização offline dele (`explorar.html`, galáxias 3D) |
-| `sa-orquestrar` | fatias AFK até o PR, uma worktree por fatia, uma fase por contexto limpo |
-| `sa-aprender` | lições, promoção de regras, retrospectiva com dados, casos de avaliação |
+| Skill | Fluxos | Função |
+|---|---|---|
+| `sabia` | — | guia e roteador: disciplinas, papéis, aprovações, autonomia e qual skill usar |
+| `sa-setup` | `configurar` · `customizar` | configura o projeto na sessão padrão: alvos, comandos, base, formato da spec, "usa ELM?", toolkits e os 5 agentes; customiza um passo ou padrão |
+| `sa-status` | `painel` · `item` · `minha-proxima` · `pendencias` · `licoes` · `fechar-sessao` | painel só leitura (WIP, vazão, idade, lead time, pendências de rastreio), estado de um `<id>`, a próxima tarefa e os créditos da sessão |
+| `sa-triar` | `capturar` · `triar` | captura sem triar e triagem da fila `nova`: duplicado, falta informação, adiar, cancelar, aceitar |
+| `sa-refinar` | `moldar` · `detalhar` · `fatiar` · `ajustar` | pitch e go/kill do épico; três amigos da fatia (ficha com regras, `CT-nn` e Cobre, e `elm/` com ELM); fatiamento do PRD; ajuste do item pronto |
+| `sa-prd` | `prd` · `mudanca` | PRD do épico depois do go, aprovado pelo produto no próprio documento |
+| `sa-especificar` | `elm` · `prototipo` · `reuniao` · `archive` | arquivos de `elm/` da fatia, protótipo de tela, ATA de reunião e archive da spec depois do merge |
+| `sa-entrevistar` | `entrevistar` | alinhamento em rodadas de até 5 perguntas, cada uma com recomendação |
+| `sa-desenvolver` | `iniciar` · `codificar` · `encerrar` | assume a tarefa num passo (tamanho, rota e modo), codifica com TDD e backpressure até o MR, faz o merge e fecha |
+| `sa-plano` | `plano` · `replanejar` | `research.md`, design e tasks; copia o texto aprovado para o delta sem reescrever |
+| `sa-pesquisar` | `pesquisar` | pesquisa neutra e só leitura no `sa-pesquisador`; devolve fatos com arquivo:linha |
+| `sa-revisar` | `revisar` · `mr` | autorrevisão independente (rubrica L do plano, C do código) e revisão do MR de outro autor |
+| `sa-verificar` | `verificar` · `uat` | aceite de ponta a ponta com a evidência no MR e o `CT.csv`; UAT por risco |
+| `sa-atender` | `atender` | Sustentação: um fluxo para as seis categorias |
+| `sa-elm` | `regras` · `setup` · `item` · `finalizar` · `horas` · `importar-backlog` · `publicar` · `iteracao` · `conferir` · `lint` · `baixar` · `visualizar` | tudo o que fala com o IBM ELM (DOORS Next e EWM) |
+
+Arquivos comuns em [`fluxo/`](fluxo/): `entrada.md` (pré-condição do papel e da branch), `captura.md` (o único
+mecanismo de captura, que grava o tipo), `gravar-na-base.md` (commit pequeno de estado direto na base),
+`travas.json` e `tipos.json` (catálogo fechado de artefatos). Padrões dos documentos em [`padrao/`](padrao/).
+
+## Agentes
+
+Cinco agentes por função, gerados pela `sa-setup` a partir do
+[`perfis.json`](skills/sa-setup/assets/agents/perfis.json) e do `.sabia/config/agentes.json` do projeto, em
+`.kiro/agents/sa-<nome>.json` e `.opencode/agents/sa-<nome>.md`. Nunca se editam à mão.
+
+```
+primários (a pessoa escolhe ao abrir a sessão; a pré-condição de cada skill confere a booleana do equipe.json)
+├─ sa-desenvolvedor   build · sa-desenvolver · sa-plano · sa-revisar.mr · sa-verificar.uat · sa-atender · sa-especificar.archive
+│    chama sa-pesquisador · sa-revisor · sa-verificador · ele mesmo no autopilot
+├─ sa-especificador   build · sa-refinar · sa-prd · sa-especificar · sa-entrevistar · sa-planejamento (inclui o produto)
+│    chama sa-pesquisador
+└─ nos dois: sa-triar · sa-status · sabia · ofertas da sa-elm
+subagentes (contexto limpo)
+├─ sa-pesquisador     só leitura ── sa-pesquisar
+├─ sa-revisor         só leitura ── sa-revisar.revisar + rubricas do toolkit + Regras aprendidas
+└─ sa-verificador     só leitura + Executar do sabia.md, curl/wget só à URL de teste e o CT.csv ── sa-verificar.verificar
+sessão padrão: sa-setup e sa-elm.setup (as únicas que gravam o harness)
+```
+
+| Modelo | Ler | Editar | Comandos | MCP |
+|---|---|---|---|---|
+| `build` | tudo, menos segredos (`.env*`, `*.pem`, `*.key`, `~/.ssh`, `~/.aws`, `~/.config/mcp-*`) | tudo, menos o harness: `.kiro/agents`, `.kiro/settings`, `.kiro/steering/sabia.md`, `.opencode`, `opencode.json`, `.sabia/config`, `.sabia/fluxo`, `.sabia/padrao` | allow; ask: `git push`, `git merge`, `curl`, `wget`; deny: `rebase`, `--force`, `reset --hard`, `clean -f`, `--no-verify`, `sudo`, `kubectl`, `helm`, `terraform apply` | GitLab: leitura allow, abrir e mesclar MR ask; ELM pelas regras da `sa-elm.setup` |
+| `leitura` | tudo, menos segredos | deny | só leitura (`git status/diff/log/show`, `grep`, `ls`) | só leitura |
+
+No Kiro, os agentes levam só os nomes de capability; os limites por caminho e URL vão no prompt. Detalhes em
+[`skills/sa-setup/references/agentes.md`](skills/sa-setup/references/agentes.md).
+
+## Modos de trabalho
+
+IA supervisionada · IA autopilot · manual, escolhido antes de começar e fixo até o fim daquele trabalho.
+Especificação e codificação têm modos independentes.
+
+| | IA supervisionada | IA autopilot | manual |
+|---|---|---|---|
+| **Codificação** (`sa-desenvolver.iniciar`; campo Autonomia do `status.md`) | o `sa-desenvolvedor` na sessão da pessoa | o `sa-desenvolvedor` como subagente na worktree `.sabia/local/wt/<id>`; a pessoa segue na base e pode puxar outro item | só a geração do código-fonte é da pessoa; no "terminei", o fluxo segue da validação com as mesmas checagens |
+| **Especificação** (só com ELM; `sa-refinar.detalhar`; campo Especificação da ficha) | o `sa-especificador` edita o arquivo inteiro de `elm/` com o especificador | o `sa-especificador` como subagente edita sem perguntas; o que não tem fonte vai ao Em aberto, e o especificador aprova | o especificador altera direto no DOORS e avisa "alterei"; a skill sincroniza `elm/`, o Cobre e o delta |
+
+No autopilot ficam liberados o push da própria branch (sem `--force`), o merge da base nela e abrir ou atualizar o
+MR dela; merge do MR, ELM e rede seguem bloqueados. O disjuntor (teto do `acordos.md` ou 2 reprovações seguidas)
+grava `.sabia/local/loop-<id>.md` e devolve o item à pessoa. O MR passa pela mesma revisão humana.
+
+## Spec da fatia
+
+O formato é decidido por projeto na `sa-setup`: alvo Kiro → Kiro, sem perguntar; só opencode → pergunta Kiro ou
+OpenSpec. Fica em `formato_spec` no `agentes.json` e na seção Especificação do `sabia.md`. A pasta é
+`.kiro/specs/ft-<nnn>-<slug>/` ou `openspec/changes/ft-<nnn>-<slug>/`.
+
+| Rota | Kiro | OpenSpec |
+|---|---|---|
+| `trivial` | nenhum arquivo de spec; tudo no MR | idem |
+| `quick` fatia | Quick Spec: `requirements.md`, `design.md`, `tasks.md` | `proposal.md` + delta + `tasks.md` |
+| `quick` bug | Bugfix Spec: `bugfix.md`, `design.md`, `tasks.md` | `proposal.md` + delta MODIFIED + `tasks.md` |
+| `completo` | `requirements.md` → `design.md` → `tasks.md`, com "quer revisar agora?" | `proposal.md` + delta + `design.md` + `tasks.md` |
+
+Quick e completo têm também `research.md`, `status.md` e `CT.csv`. O delta traz sempre o texto completo dos
+requisitos tocados (OpenSpec: ADDED/MODIFIED/REMOVED; Kiro: o bloco completo de cada requisito). Depois do merge, o
+archive: sem ELM, o OpenSpec funde o delta na spec viva (`openspec/specs/`) e, no Kiro, o vigente são as specs em
+`.kiro/specs/`; com ELM, a `sa-elm.publicar` sobe os arquivos de `elm/` ao DOORS conferindo a versão lida, ou o
+archive grava "Publicação: pendente" para o especificador.
 
 ## O que a setup instala no projeto
 
-O formato de power recomendado pelo Kiro (Agent Plugins, `plugin.json`) carrega só `skills/` e `mcp.json` — steering,
-agentes e scripts dentro de um power são ignorados. Por isso a `sa-setup` instala no projeto, a partir
-de `skills/sa-setup/assets/`:
+O power do Kiro (Agent Plugins, `plugin.json`) carrega só `skills/` e `mcp.json`; steering e agentes dentro de um
+power são ignorados. Por isso a `sa-setup` grava no projeto, a partir de `skills/sa-setup/assets/`:
 
 | Arquivo | O quê |
 |---|---|
-| `.sabia/sabia.md` (e o ponteiro `.kiro/steering/sabia.md`) | o único steering do fluxo (sempre carregado): resumo, configuração do projeto (pasta do produto, comandos, verificação, git, banco, autonomia, ELM, agentes) e regras aprendidas |
-| `.sabia/config/agentes.json` | as escolhas do projeto para os agentes (caminhos, comandos, skills e MCPs por agente) e a versão do Sabiá — a entrada do gerador |
-| agentes de cada ferramenta do time: `.kiro/agents/sa-*.json` · `.opencode/agents/sa-*.md` | `produto`, `especificador`, `pesquisador`, `desenvolvedor`, `revisor`, `verificador`, `orquestrador` — gerados pelo script da setup a partir do `agentes.json`, cada um com as skills e MCPs que a pessoa liberou |
-| `.sabia/glossario.md` · `.sabia/adr/` | glossário e ADRs, quando o projeto ainda não os tem em outro lugar |
-| `.sabia/fluxo/` · `.sabia/padrao/` (só ao customizar) | o passo, as operações do mestre ou o padrão que o projeto mudou ("customizar …" na `sa-setup`) |
-| `.sabia/http.sh` (opcional) | única chamada HTTP que o verificador faz sem perguntar: só à URL de teste, com corpo da pasta `massa/`; o backpressure antes de cada commit (compila, testa, roda o lint e a cobertura) é o passo `validar` da `sa-codificar`, com os Comandos do `sabia.md` |
-| pasta do produto (proposta pela setup; padrão `.sabia/planejamento`) | `backlog.md`, épicos e PRDs, `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<iteração pai>/`, `sustentacao/<pasta>/`, `aprendizado/` — versionada; o que é local fica em `.sabia/local/` (fora do git) |
-
-O ELM vem no próprio power: o MCP **`mcp-elm`** (≥ 3.6.4) lê o `.kiro/config/elm/pa_<nome>.json` do projeto (um por
-project area, gravado pela `sa-setup`) e expõe operações (`elm_transicao`, `elm_lancar_horas`, `elm_criar_wi`,
-`elm_ligar`, `elm_publicar_req`…): a skill do passo passa só o caminho do projeto, os ids e o conteúdo, e recebe
-`{"ok": …}`. Regras comuns em [`skills/sabia/references/elm.md`](skills/sabia/references/elm.md). Leituras liberadas nos
-agentes; escritas com confirmação do Kiro, além do "sim" da skill; cada papel comenta e anexa só na própria tarefa; o
-pesquisador só consulta o bundle local. Sem o MCP, a escrita vira pendência registrada.
-
-Cada agente tem as permissões mínimas do papel, definidas uma vez em
-[`skills/sa-setup/assets/agents/papeis.json`](skills/sa-setup/assets/agents/papeis.json) e geradas no campo
-`permissions` do Kiro e no `permission` do opencode: lê o projeto e o power, mas não `.env`, chaves, `~/.ssh`, `~/.aws` nem as credenciais do ELM;
-escreve só o que produz (nunca o harness: configuração, agentes, `.sabia/fluxo/`, `.sabia/padrao/`); o shell é
-liberado para quem escreve no projeto (o pesquisador só lê), menos o que a regra nega. Merge,
-rebase, `--force`, `reset --hard`, `git -C` (que esconde o subcomando das regras), credenciais e os arquivos do
-harness no comando são negados em todos; push com
-confirmação a cada um (`ask`), só da branch da fatia, no orquestrador, no desenvolvedor, no revisor e no verificador —
-e, no desenvolvedor e no orquestrador, o da base com os registros de situação (`backlog.md`, `sprints/**` e o
-`status.md` da fatia, conferidos antes; quem desenvolve precisa de push na base); o merge do PR aprovado é do Dev
-responsável, pelo desenvolvedor. Detalhes em
-[`skills/sa-setup/references/agentes.md`](skills/sa-setup/references/agentes.md).
+| `.sabia/sabia.md` (e o ponteiro `.kiro/steering/sabia.md` ou a entrada no `opencode.json`) | o steering do fluxo: resumo, Especificação, Verificação de aceite, Sustentação, ELM, Desvios de toolkit, Tipos com skill de toolkit e Regras aprendidas |
+| `AGENTS.md` | `## Projeto` e `## Comandos` (o backpressure em camadas), mesclados, não reescritos |
+| `.sabia/config/agentes.json` | as escolhas do projeto (alvos, `formato_spec`, pasta do produto, base, prefixo da branch, ELM, toolkits, desvios e extras por agente) — a entrada do gerador |
+| `.sabia/config/elm/pa_<nome>.json` · `.sabia/config/elk/elk-<ambiente>.json` | a project area do ELM (da `sa-elm.setup`) e a configuração do ELK |
+| `.kiro/agents/sa-*.json` · `.opencode/agents/sa-*.md` | os 5 agentes (e os de toolkit), gerados pelo `gerar_agentes.py` |
+| `.sabia/fluxo/` · `.sabia/padrao/` (só ao customizar) | override esparso de um passo ou padrão; nenhum agente escreve |
+| pasta do produto (padrão `.sabia/planejamento`) | `backlog.md`, `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<AAAA>/sprint-<nn>.md`, `fatias/`, `epicos/EP-nn-<slug>/` (`pitch.md`, `prd.md`), `prototipos/`, `atas/`, `sustentacao/` — versionada |
+| `.sabia/creditos/<usuario>.csv` | créditos do Kiro por sessão, gravados pela `sa-status.fechar-sessao` |
+| `.sabia/local/` (fora do git) | worktrees do autopilot, `loop-<id>.md`, transcrições e dados de cliente |
 
 ## Toolkits
 
 O fluxo não sabe programar em nenhuma stack: o conhecimento de Java, Spring Batch, Angular, React etc. vem de
-**toolkits** — pacotes de skills mantidos fora do power, um por tipo de projeto ou stack. A `sa-setup` é a única
-parte do fluxo que sabe procurá-los (`.sabia/toolkits/`, `~/.sabia/toolkits/`, powers instalados com `toolkit.json`,
-ou skills com `metadata.toolkit`), detecta o tipo do projeto e **propõe, agente por agente**, as skills a ligar (uma confirmação por agente) —
-num projeto 100% Spring Batch, o desenvolvedor recebe as de batch e Java que a pessoa escolher, e não as de REST ou
-frontend. Uma skill de toolkit também pode assumir um passo do Sabiá pelo id (`sa-codificar.codificar.tarefa`): o
-desvio vai no prompt do agente dono. E um toolkit pode trazer a skill que escreve um tipo desviável do catálogo,
-com o fluxo e o padrão do tipo (`"tipos": {"HF": {"skill", "fluxo", "padrao"}}`; `HF`, `REG`, `EL`, `ET`, `CT` e `ATA`), os
-itens que ele acrescenta à revisão (`rubricas`) e a versão mínima do Sabiá (`requer`). Fluxo com passos é só do
-framework: o Sabiá não compila conteúdo de toolkit, e o toolkit não troca padrão do núcleo; o catálogo, o envelope OKF,
-a revisão, o GATE e a publicação continuam do Sabiá.
-Contrato em [`skills/sa-setup/references/toolkits.md`](skills/sa-setup/references/toolkits.md) e
-schema em [`toolkit.schema.json`](skills/sa-setup/assets/toolkit.schema.json).
+**toolkits** — pacotes de skills mantidos fora do power, um por tipo de projeto ou stack. A `sa-setup` os procura
+(`.sabia/toolkits/`, `~/.sabia/toolkits/`, powers instalados com `toolkit.json`, ou skills com `metadata.toolkit`),
+detecta o tipo do projeto e **propõe, agente por agente**, as skills a ligar.
+
+| Campo do `toolkit.json` | Vai para |
+|---|---|
+| `skills[].papeis` · `steering[].papeis` | 1:1: `desenvolvedor` → `sa-desenvolvedor` · `especificador` e `produto` → `sa-especificador` · `pesquisador` → `sa-pesquisador` · `revisor` → `sa-revisor` · `verificador` → `sa-verificador` |
+| `skills[].passo` | desvio de um passo do Sabiá pelo id; hoje a tarefa da codificação, `sa-desenvolver.codificar.tarefa`, no prompt do agente dono |
+| `tipos` | a skill que escreve um tipo desviável do catálogo: `HF`, `REG`, `EL` e `GL` → `sa-especificador`; `ET` as-built → `sa-desenvolvedor` |
+| `rubricas` | itens que se somam à revisão do `sa-revisor` |
+| `verificacao` | texto de apoio ao `sa-verificador` |
+| `agentes[]` | subagente do dono do passo, com as permissões dele |
+| `requer` | versão mínima do Sabiá (`{"sabia": ">=2.1"}`) |
+
+Fluxo com passos é só do framework: o Sabiá não compila conteúdo de toolkit, e o toolkit não troca padrão do núcleo.
+Contrato em [`skills/sa-setup/references/toolkits.md`](skills/sa-setup/references/toolkits.md) e schema em
+[`toolkit.schema.json`](skills/sa-setup/assets/toolkit.schema.json).
 
 ## IBM ELM
 
-O ELM é o sistema de registro; o repositório guarda as propostas de mudança (PRD, fatias) e como cada mudança foi
-feita. Mapeamento padrão (ajustável na setup): história → artefato *História de Usuário* (DOORS Next); regra →
-*Regra*; termo → *Termos de Glossário*; épico → *Épico* (EWM); fatia → *Item de Backlog* (sem épico, filho da `Manutenção`); item de Sustentação → *Item de Backlog* `[AT-nnn]`, filho do IB da
-categoria; tarefas filhas na sprint, cada uma ligada ao que gera (a `[ESP]` **rastreia** os requisitos que
-publica; a `[DEV]` **implementa** os que a fatia cobre e a ET as-built); cenário verificado → *Caso de Teste* (ETM) que **valida** a história.
+Opcional. Tudo o que fala com o ELM é da `sa-elm`; as outras skills só oferecem e nunca param o fluxo por causa dele.
+Sem ELM configurado, nenhuma oferta aparece.
 
-Todo artefato é de um tipo do catálogo fechado ([`fluxo/tipos.json`](fluxo/tipos.json); compilado em
-`skills/sabia/references/tipos.md`): `HF` história, `REG` regra, `GL` termo, `EL` leiaute (uma por tela, com a
-política Telas = `sim`, lido do protótipo que o cliente aprovou), `ET` especificação técnica (inicial no PRD e
-as-built por fatia, pela política ET), `CT` caso de teste (planejado da HF no PRD ou na `[ESP] FT` e aprovado no GATE da `[ESP]`; a evidência da execução no `CT.csv` da verificação; ETM ou CSV, pela linha Casos de teste do `sabia.md`) e `ATA` (a ata de cada
-reunião com o cliente durante a `[ESP]`, escrita da transcrição, que fica só local). Cada um nasce como um conceito
-**OKF v0.2** na pasta da spec (o mesmo formato do bundle da `sa-sync`), com aprovação registrada em `verified` no
-GATE da `[ESP]` (o do PRD, no épico; o da `[ESP] FT`, na fatia com artefato afetado); os requisitos aprovados sobem
-para o DOORS Next na conclusão da `[ESP]`, de baixo para cima (`GL` → `REG` → `EL` → `HF` → `ET`), com
-HF → REG como embed, sem nada extra no texto publicado e sempre com prévia e confirmação; o excluído vai à lixeira do DOORS Next por
-roteiro manual. A ATA sobe na aprovação dela. Atributos e links entre
-requisitos ficam registrados nos conceitos, porque o MCP não os grava. Detalhes em [`skills/sabia/references/elm.md`](skills/sabia/references/elm.md)
-e [`skills/sa-consolidar/references/elm-publicar.md`](skills/sa-consolidar/references/elm-publicar.md).
+| Momento | Fluxo | O quê |
+|---|---|---|
+| setup | `sa-elm.setup` | produz o `pa`, a chave `elm` do `agentes.json`, a seção ELM do `sabia.md` e as regras dos agentes; a `sa-setup` aplica |
+| assumir · horas · concluir | `sa-elm.item` · `sa-elm.horas` · `sa-elm.finalizar` | o IB e a tarefa `DEV` · `ESP` · `ATD` no EWM; horas só por pergunta ou pedido |
+| refinamento | `sa-elm.baixar` | o original do DOORS em `elm/` da fatia, com o commit de base (original + versão lida) |
+| depois do merge | `sa-elm.publicar` | do especificador: confere a versão de cada artefato (mudou → avisa e pula), cria os novos e troca o id provisório pelo do ELM |
+| a pedido | `sa-elm.importar-backlog` · `iteracao` · `conferir` · `lint` · `visualizar` | importar do EWM, iteração, "o DOORS mudou?", lint do bundle e visualização offline |
 
-Com a política Casos de teste = `ETM`, o CT planejado sobe ao ETM na conclusão da `[ESP]`, com os requisitos; na
-consolidação, o agente o liga ao IB e cria só o CT novo da verificação, com o link **valida** (`elm_criar_ct`); sem permissão de criar no ETM, o `CT.csv` é importado à mão. O MCP `elm` ainda não grava atributos de requisito, links requisito↔requisito, módulos, change sets nem baselines: quando o
-processo do projeto exige algum deles, a skill do passo entrega o roteiro manual e registra a pendência.
+Catálogo fechado de artefatos em [`fluxo/tipos.json`](fluxo/tipos.json): `HF` história, `REG` regra, `EL` leiaute
+(só com Telas = sim), `GL` termo, `ET` especificação técnica (só as-built), `CT` caso de teste (cenários `CT-nn` na
+ficha; o `CT.csv` da verificação) e `ATA`. Artefato novo: id provisório `<sigla>-<EP|FT>-nn` até a publicação. O MCP
+`mcp-elm` lê o `pa` em `.sabia/config/elm/`; tools, retornos e erros em
+[`skills/sa-elm/references/mcp.md`](skills/sa-elm/references/mcp.md).
 
 ## Pré-requisitos
 
 - Uma das ferramentas: Kiro IDE 1.x ou Kiro CLI 2.32+ no motor V3 (`--agent-engine v3`, obrigatório; na V2 o agente
-  dá "Mode not found") ou opencode (conferido no 2.1.3); repositório git com branch base
-  e PRs; e `uv` para os scripts da setup e da `sa-status`. No opencode, a proteção por papel é
-  menor que no Kiro: o gerador lista o que não tem tradução.
+  dá "Mode not found") ou opencode; repositório git no GitLab, com a base aceitando push (ex.: `develop`); e `uv`
+  para os scripts da setup e da `sa-status`. No opencode, a proteção por agente é menor que no Kiro: o gerador lista
+  o que não tem tradução.
 - Kiro Web não lê `~/.kiro`: os agentes do projeto aparecem lá, mas sem as skills do power — use a IDE ou o CLI.
-- MCPs do próprio power (o `mcp.json` os sobe com `uvx`): [`mcp-elm`](https://pypi.org/project/mcp-elm/), que também consulta o
-  bundle do ELM (`elm_*_local`, nunca lendo os arquivos), e [`mcp-gitlabpr`](https://pypi.org/project/mcp-gitlabpr/), que lista, lê e abre os PRs (merge
-  requests do GitLab) — credencial em `~/.config/mcp-gitlabpr/gitlabpr.properties` (`url` e `token`). Repositório
-  fora do GitLab, ou sem a credencial → o fluxo entrega título e descrição do PR, e a pessoa o abre. O `mcp.json`
-  também sobe o [`mcp-elk`](https://pypi.org/project/mcp-elk/), que consulta logs no ELK com a configuração do projeto.
-  Os três ficam no PyPI; o código e os schemas públicos (como o
+- MCPs do próprio power (o `mcp.json` os sobe com `uvx`): [`mcp-gitlabpr`](https://pypi.org/project/mcp-gitlabpr/),
+  que lista, lê, abre e mescla os MRs — credencial em `~/.config/mcp-gitlabpr/gitlabpr.properties` (`url` e
+  `token`); sem ela, o fluxo entrega título e descrição do MR, e a pessoa o abre;
+  [`mcp-elm`](https://pypi.org/project/mcp-elm/), que também consulta o bundle local; e
+  [`mcp-elk`](https://pypi.org/project/mcp-elk/), que consulta logs no ELK. O código e os schemas públicos (como o
   [`pa.schema.json`](https://dxaraujo.github.io/mcps/elm/pa.schema.json)) estão em
   [`dxaraujo/mcps`](https://github.com/dxaraujo/mcps).
-- Opcional: IBM ELM — credencial em `~/.config/mcp-elm/elm.properties` e o `pa` gerado pela `sa-setup`; MCP de consulta ao banco (somente leitura);
-  MCP de browser/Playwright para verificar frontend.
+- Opcional: IBM ELM — credencial em `~/.config/mcp-elm/elm.properties` e o `pa` gerado pela `sa-elm.setup`; MCP de
+  consulta ao banco (somente leitura); MCP de browser/Playwright para verificar frontend.
 - Toolkits da stack do projeto (opcional — sem eles os agentes dependem do steering e do código vizinho).
-
-Horas: **lançar ≠ concluir** — lançar é registro de empenho, a qualquer momento numa tarefa assumida (ao fechar a
-sessão, por exemplo); concluir é da skill do papel, com o saldo. No AFK há a `[DEV]` e a `[APR] Aprovar PR`.
 
 ## Primeiros passos
 
@@ -190,10 +231,11 @@ sessão, por exemplo); concluir é da skill do papel, com o saldo. No AFK há a 
    travas): `sabia rota <arquivo>`, ou `sabia rota <spec>/tasks.md#2.1` (pelos arquivos que a tarefa cita; sem casar,
    mostra o texto dela e os `para` dos desvios); o fluxo resolvido no projeto (tabela, grafo ASCII e Mermaid):
    `sabia rota --fluxo <skill.fluxo>`.
-2. No projeto, peça **"configurar o Sabiá"** e confirme as propostas (os padrões vêm marcados; uma confirmação por bloco).
-3. Comece: **"nova demanda: …"** (a `sa-triar` faz a triagem e registra no backlog; épico → PRD), **"iniciar a
-   FT-031"** ou **"minha próxima tarefa"** (o hub `sa-iniciar` diz a skill do papel), **"corrigir o defeito 4567"**
-   (registra pela triagem, se preciso) — ou **"onde parei?"**.
+2. No projeto, na sessão padrão, peça **"configurar o Sabiá"** e confirme as propostas (os padrões vêm marcados; uma
+   confirmação por bloco).
+3. Abra a sessão no `sa-especificador` ou no `sa-desenvolvedor` e comece: **"nova demanda: …"** (a `sa-triar`
+   registra e tria), **"minha próxima tarefa"** ou **"onde está a FT-031?"** (a `sa-status` mostra o estado e oferece
+   seguir), **"puxar a FT-031"** (a `sa-desenvolver.iniciar` assume a tarefa) — ou **"onde parei?"**.
 
 Depois de atualizar o power ou um toolkit, peça "atualizar os agentes do Sabiá".
 
@@ -204,46 +246,34 @@ Não use o `/upgrade-agent` (nem `kiro-cli agent upgrade`) nos agentes `sa-*`: q
 
 **Documentação oficial do Kiro**, lida inteira nas páginas `.md` de `kiro.dev/docs` em 14/10/2026 (powers, skills,
 steering, custom agents e referência de configuração, subagentes, permissões, hooks, specs, workflows, CLI V3 e
-migração), mais o schema do `plugin.json` (Agent Plugins) e a especificação Agent Skills. Uma auditoria do power
-contra essas páginas gerou as correções do Sabiá: `git -C` negado, leitura restrita, confirmação de push e PR,
-delegação a subagente sem pergunta por agente, chamada HTTP do verificador por script.
+migração), mais o schema do `plugin.json` (Agent Plugins) e a especificação Agent Skills.
 
-Com o **Kiro CLI 2.31.0** (o binário oficial):
+Com o **Kiro CLI**: `kiro-cli powers install <pasta>` instala o power em `~/.kiro/powers/installed/sabia/`, com todas
+as skills, `references/` e `assets/`; o formato `.md` de agente não é carregado pela engine V2, por isso os agentes
+do Kiro são JSON; padrões de comando encadeado (`cd … && …`) são descartados pelo `kiro-cli agent upgrade`, por isso
+as permissões usam comandos simples.
 
-- `kiro-cli powers install <pasta>` instala o power em `~/.kiro/powers/installed/sabia/`, com todas as skills,
-  `references/` e `assets/` — o caminho que a setup usa nos agentes;
-- o formato `.md` de agente **não** é carregado pela engine V2 do CLI (ainda a padrão), por isso os agentes do Kiro
-  são JSON; padrões de comando encadeado (`cd … && …`) são descartados pelo `kiro-cli agent upgrade`, por isso as
-  permissões usam comandos simples;
-- o `http.sh` foi exercitado contra um servidor local (método, caminho e corpo fora da pasta `massa/` recusados).
-
-Com o **Kiro CLI 2.32.0**, engine V3 (23/10/2026), os agentes gerados pelo `gerar_agentes.py`: os sete passam no
-`kiro-cli agent validate` (também no 2.37.0, em 05/11/2026); numa conversa sem interação, comando liberado roda, comando fora da lista e exceção
-(`git log --output`) caem em aprovação, e `git commit -n` e push para a base são negados pela regra. Não foi
-possível abrir a IDE.
-
-**Prova do núcleo**, só com fixtures sintéticas (`node --test` em `cli/` e `python3 -m unittest test_gerar_agentes`
-em `skills/sa-setup/scripts/`): o framework deste repositório instalado e compilado no Kiro e no opencode, com o
-grafo de cada fluxo igual ao do mestre, o catálogo sem tipo pendente e a linha Telas = `sim` como condição do
-protótipo, da EL e da P12 nos passos compilados; um projeto front+back com um toolkit de especificação (HF ⇢ a skill
-dele, com o fluxo e o padrão do tipo, e um item de rubrica), um passo do Sabiá trocado no projeto e as linhas ET, Casos de teste e
-Telas do `sabia.md` (ET inicial, `CT.csv`, HF ↔ EL, P12 e P13 nos passos compilados); e um projeto batch com o desvio
-da tarefa de job ao agente do toolkit. Nos dois, os agentes são gerados pelo
+**Prova do núcleo**, só com fixtures sintéticas (`node --test` em `cli/` e `python3 -m unittest` em
+`skills/sa-setup/scripts/`): o framework deste repositório validado, compilado e instalado no Kiro e no opencode, com
+o grafo de cada fluxo igual ao do mestre e todo link da saída resolvido; um projeto front+back com um toolkit de
+especificação (HF ⇢ a skill dele, com o fluxo e o padrão do tipo) e um passo do Sabiá trocado no projeto; e um
+projeto batch com o desvio da tarefa de job ao agente do toolkit. Nos dois, os 5 agentes são gerados pelo
 `gerar_agentes.py` sobre a instalação, e a `sabia rota` mostra o desvio e a origem de cada passo.
 
-**O que a documentação não resolve** (comportamento a observar no primeiro uso): o formato do `.config.kiro` das
-specs; EARS em português no Analyze Requirements; se os subagentes somam ou intersectam os `allow` de quem os
-chama (a doc diz "deny-wins intersection" — se um subagente do loop falhar por permissão, libere o comando também
-no orquestrador); o alcance de `trustedAgents`; e as páginas de
-steering e de configuração divergem sobre agentes herdarem o steering padrão (a setup oferece
-`chat.disableInheritingDefaultResources` no CLI).
+**A conferir num Kiro e num opencode reais:** o `.config.kiro` da pasta da spec em cada rota; se os subagentes
+`sa-pesquisador`, `sa-revisor` e `sa-verificador` exigem declaração própria; se o `sa-desenvolvedor` roda como
+subagente no autopilot (no opencode, se precisa de `mode: all`); e EARS em português no Analyze Requirements.
 
 ## Limitações conhecidas e próxima versão
 
 - **Não verificado numa PA real:** os tipos de artefato do DOORS Next para a `ATA` (Reunião) e a `EL` (Leiaute) — o
   nome, o `OT_` e os atributos obrigatórios de cada um (`elm_setup_descobrir`).
-- **Próxima versão:** toolkits oficiais (backend Java/Spring, Spring Batch, frontend Angular/React); e — quando o MCP do ELM
-  suportar — atributo de chave, links entre requisitos, módulos, change sets e baselines automáticos.
+- **A construir:** o MCP do Jenkins (resultado do pipeline no codificar e na revisão do MR); o `sabia validar-spec`
+  (forma e ligações da spec nos dois formatos); a busca da configuração do `mcp-elm` e do `mcp-elk` em
+  `.sabia/config/<mcp>`.
+- **Próxima versão:** o ELM como toolkit; toolkits oficiais (backend Java/Spring, Spring Batch, frontend
+  Angular/React); e — quando o MCP do ELM suportar — atributos de requisito, links entre requisitos, módulos, change
+  sets e baselines automáticos.
 
 ## Fontes (consultadas em 13 e 14/10/2026)
 

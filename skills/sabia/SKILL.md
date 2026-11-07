@@ -1,6 +1,6 @@
 ---
 name: sabia
-description: "Sabiá guide and router for the agent workflow (Kiro and opencode). Use when the person asks how the Sabiá flow works, which skill to use, or makes a request without naming a skill. Covers intake and triage, refinement (shaping with go/kill, three amigos, slicing), sprint planning with WIP limits, development routes (trivial, quick, complete) in supervised or autopilot mode, merge request review by a developer other than the author, verification, archive and optional publication to IBM ELM through sa-elm. Routes each request to the right sa-* skill. Use when the user says \"como funciona o Sabiá\", \"qual o fluxo\", \"qual skill eu uso\", \"o que eu faço agora com isso\", \"Sabiá\"."
+description: "Sabiá guide and router for the agent workflow (Kiro and opencode). Use when the person asks how the Sabiá flow works, which skill to use, or makes a request without naming a skill. Covers intake and triage, refinement (shaping with go/kill, three amigos, slicing), sprint planning with WIP limits, development routes (trivial, quick, complete) with AI supervised, AI autopilot or manual coding, merge request review by a developer other than the author, verification, archive and optional publication to IBM ELM through sa-elm. Routes each request to the right sa-* skill. Use when the user says \"como funciona o Sabiá\", \"qual o fluxo\", \"qual skill eu uso\", \"o que eu faço agora com isso\", \"Sabiá\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
@@ -37,7 +37,7 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
 
 - **Papéis** são booleanas no `equipe.json`. `desenvolvedor`: puxa item para desenvolvimento e revisa o MR de outro
   autor. `especificador`: aprova os arquivos de `elm/` e publica no ELM. `produto`: decide go/kill, ordena e aprova
-  pitch, PRD e ficha. Captura, triagem e UAT ficam abertos a qualquer pessoa. Não há regra por senioridade.
+  pitch, PRD e ficha. Captura, triagem e UAT ficam abertos a qualquer pessoa.
 - **Identidade** é o usuário do GitLab: o `usuario` do `equipe.json` é o autor do MR e o `@dono` no CODEOWNERS. O
   `elm_login` é opcional e só a `sa-elm` o lê.
 - **Agentes.** A pessoa abre a sessão num dos dois primários: `sa-desenvolvedor` (desenvolvimento, plano, MR, UAT,

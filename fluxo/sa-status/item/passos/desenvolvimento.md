@@ -7,8 +7,9 @@ O estado.
 
 ## Faça
 
-- `pronta` sem branch → `sa-desenvolver.iniciar`.
-- `pronta` com branch (voltou na virada) ou `em-andamento` sem MR → `sa-desenvolver.codificar`, pelo Retomar.
+- `pronta` sem branch, ou `pronta` com branch (voltou na virada: a posse volta e a branch é reaproveitada) →
+  `sa-desenvolver.iniciar`.
+- `em-andamento` sem MR → `sa-desenvolver.codificar`, pelo Retomar.
 - `em-andamento` sem branch publicada (a sessão parou antes do push) → só o responsável retoma
   (`sa-desenvolver.iniciar`).
 - Retrabalho ou autopilot devolvido → `sa-desenvolver.codificar`.

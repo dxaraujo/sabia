@@ -18,7 +18,7 @@ Monte, sem gravar:
    `allow` em todos; escrita `ask` nos primários `sa-desenvolvedor` e `sa-especificador`; escrita, `elm_sync` e
    `elm_indexar_local` `deny` nos subagentes e no autopilot.
 2. O `bundle` da chave `elm`: o `rm.download` do `pa` (ex.: `docs/elm/<pa>/`).
-3. Seção ELM do `sabia.md`: `pa: <nome>` · `ET as-built: sim | não` · `Bundle desatualizado após: <n> dias` ·
+3. Seção ELM do `sabia.md`: `pa: <nome>` · `ET as-built: sim | não` ·
    `Tarefas: [DEV] <id> <título> · [ESP] <id> <título> · [ATD] <id> <título>` · `Manual no DOORS Next: <texto |
    nada>` (o roteiro do que o MCP não grava: [mcp.md](~/.sabia/framework/skills/sa-elm/references/mcp.md)).
 

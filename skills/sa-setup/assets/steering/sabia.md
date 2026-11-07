@@ -57,7 +57,7 @@ Trabalho sem mudança no repositório. O que muda código ou configuração é f
 
 ## ELM
 
-<só com ELM: o texto que a `sa-elm.setup` devolveu — pa · ET as-built · Bundle desatualizado após · Tarefas ·
+<só com ELM: o texto que a `sa-elm.setup` devolveu — pa · ET as-built · Tarefas ·
 Manual no DOORS Next. Sem ELM, a seção sai inteira.>
 
 ## Desvios de toolkit

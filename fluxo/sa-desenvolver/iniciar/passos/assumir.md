@@ -7,7 +7,10 @@ O item conferido, a ficha (Regras, Cenários `CT-nn`, Cobre) e o código do trec
 
 ## Faça
 
-Leia o código do trecho tocado e mostre, de uma vez, as três escolhas com a recomendação; quem pega confirma ou
+**Volta da virada** (branch `<id>` publicada): tamanho, rota e modo são os já escolhidos (Rota e Autonomia do
+`status.md`; no trivial, sem `status.md`, confirme só o modo): mostre e siga.
+
+Senão, leia o código do trecho tocado e mostre, de uma vez, as três escolhas com a recomendação; quem pega confirma ou
 corrige:
 
 1. **Tamanho**: o triado (`P` = horas · `M` ≈ 1 dia · `G` = 2–3 dias, linha Tamanhos do `acordos.md`). O corrigido

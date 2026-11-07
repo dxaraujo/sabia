@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O item da entrada comum (fatia ou bug, sem branch `<id>` publicada), a linha dele no `backlog.md` da base, o
+O item da entrada comum (fatia ou bug, sem branch `<id>` publicada ou com a branch que voltou na virada), a linha dele no `backlog.md` da base, o
 `sprint-<nn>.md` aberto (o de maior chave), o `acordos.md` e a ficha `.sabia/planejamento/fatias/FT-nnn-<slug>.md`.
 
 ## Faça

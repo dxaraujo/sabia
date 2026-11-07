@@ -7,6 +7,9 @@ O modo escolhido, o `prefixo_branch` e a `base` do `agentes.json` e o `slug` da 
 
 ## Faça
 
+Volta da virada (branch `<id>` publicada, do mesmo responsável) → `git fetch` e `git switch <branch>` (IA autopilot:
+`git worktree add .sabia/local/wt/<id> <branch>`), sem criar outra; siga.
+
 1. Sugira a branch `<prefixo_branch>ft-<nnn>-<slug>` e espere o ok (a pessoa pode trocar o nome).
 2. IA supervisionada e manual: `git fetch` e `git switch -c <branch> origin/<base>`.
 3. IA autopilot: `git worktree add -b <branch> .sabia/local/wt/<id> origin/<base>`; a pessoa continua na base.

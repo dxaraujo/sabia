@@ -16,8 +16,6 @@ const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const GERAR = path.join(REPO, "skills/sa-setup/scripts/gerar_agentes.py");
 const PYTHON = spawnSync("python3", ["--version"]).status === 0;
 let raiz, home, falhaInstalar = null;
-// shortcut: o gerar_agentes.py ainda lê o papeis.json; tire o todo destes testes quando ele ler o perfis.json
-const EM_REESCRITA = "gerador da 2.1 em reescrita";
 
 const fm = (d) => `---\n${JSON.stringify(d)}\n---\n`;
 const sha12 = (f) => crypto.createHash("sha256").update(fs.readFileSync(f)).digest("hex").slice(0, 12);
@@ -57,7 +55,7 @@ function projeto(nome, { tipos, elm = {}, toolkits = {}, passos = [] }, extra = 
   return escrever(path.join(raiz, nome), {
     ".sabia/sabia.md": `# Sabiá — ${nome}\n\n## Projeto\n\n| Item | Valor |\n|---|---|\n| Tipos · stack · módulos | \`${tipos}\` |\n\n## ELM\n\n| Item | Valor |\n|---|---|\n${linhas}`,
     ".sabia/config/agentes.json": { sabia: "2.1.0", alvos: ["kiro", "opencode"], formato_spec: "kiro", produto: ".sabia/planejamento",
-      base: "develop", prefixo_branch: "", glossario: ".sabia/glossario.md", adr: "docs/adr", bundle: null, elm: false, toolkits, passos, agentes: {} },
+      base: "develop", prefixo_branch: "", glossario: ".sabia/glossario.md", adr: "docs/adr", elm: false, toolkits, passos, agentes: {} },
     ...extra,
   });
 }
@@ -112,7 +110,7 @@ test("prova: o framework compilado nos dois alvos tem o catálogo e o grafo de c
   }
 });
 
-test("prova front+back: o toolkit casa (HF ⇢ skill casa) com o override do projeto num passo do Sabiá, gerado e na rota", { todo: EM_REESCRITA, skip: !PYTHON && "sem python3" }, () => {
+test("prova front+back: o toolkit casa (HF ⇢ skill casa) com o override do projeto num passo do Sabiá, gerado e na rota", { skip: !PYTHON && "sem python3" }, () => {
   assert.ifError(falhaInstalar);
   const fonte = path.join(home, ".sabia/framework/fluxo/sa-prd/prd/passos/entender.md");
   const base = sha12(fonte);
@@ -139,7 +137,7 @@ test("prova front+back: o toolkit casa (HF ⇢ skill casa) com o override do pro
   assert.match(s.rotaFluxo("sa-especificar.reuniao", o), /│ \d+ escrever ⇢ +│──▶ ⇢ por tipo: ATA\n/);
 });
 
-test("prova batch: o desvio do batch-alfa na tarefa de job, gerado nos dois alvos, sem tipo de toolkit", { todo: EM_REESCRITA, skip: !PYTHON && "sem python3" }, () => {
+test("prova batch: o desvio do batch-alfa na tarefa de job, gerado nos dois alvos, sem tipo de toolkit", { skip: !PYTHON && "sem python3" }, () => {
   assert.ifError(falhaInstalar);
   const proj = projeto("lote", { tipos: "batch",
     toolkits: { "batch-alfa": { pasta: "~/.sabia/toolkits/batch-alfa", versao: "1.0.0" } },
@@ -147,7 +145,10 @@ test("prova batch: o desvio do batch-alfa na tarefa de job, gerado nos dois alvo
   const saida = gerar(proj);
   const d = agenteOpencode(proj, "sa-desenvolvedor");
   assert.ok(d.includes("`tarefa de job` (arquivos `**/*JobConfig.java`) → delegue ao subagente `batch-job`"));
-  assert.equal(agenteKiro(proj, "batch-job").prompt, "Codifique o job da tarefa na base develop.\n");
+  // o agente do toolkit: o prompt dele, com os limites do dono do passo (no Kiro, os limites valem pelo prompt)
+  const job = agenteKiro(proj, "batch-job");
+  assert.ok(job.prompt.startsWith("Codifique o job da tarefa na base develop.\n"), job.prompt);
+  assert.deepEqual(job.tools, agenteKiro(proj, "sa-desenvolvedor").tools.filter((t) => t !== "subagent"));
   assert.ok(fs.existsSync(path.join(proj, ".opencode/agents/batch-job.md")));
   assert.ok(!agenteKiro(proj, "sa-especificador").prompt.includes("Tipos com skill de toolkit"));
   assert.doesNotMatch(saida, /Tipos com skill de toolkit/);

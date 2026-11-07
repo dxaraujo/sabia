@@ -62,7 +62,7 @@ Então o desconto aplicado é de R$ 50,00
 - [x] nenhum artefato do Cobre bloqueado por outra fatia
 - [x] nenhum Em aberto que bloqueie a fatia inteira
 - [x] tamanho ≤ G
-- [x] ficha aprovada pelo P.O.
+- [x] ficha aprovada pelo P.O. (bug sem Cobre dispensa)
 ```
 
 ## Campos

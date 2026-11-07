@@ -1,8 +1,8 @@
 # MCP elm — tools, retornos e erros
 
-Quem fala com o ELM é o MCP `elm`. Ele lê o `pa` do projeto: `.sabia/config/elm/pa_<nome>.json` (depois
-`.kiro/config/elm/` e `.kiro/config/sdd/`), com tipos, campos, padrões, pastas e ids. A skill passa só `projeto` (o
-caminho absoluto da raiz do repositório), `pa` (quando o projeto tem mais de um) e os ids e o conteúdo. Nunca repasse
+Quem fala com o ELM é o MCP `elm`. Ele lê o `pa` do projeto: `.sabia/config/elm/pa_<nome>.json`, com tipos,
+campos, padrões, pastas e ids. A skill passa só `projeto` (o caminho absoluto da raiz do repositório), `pa` (quando o
+projeto tem mais de um) e os ids e o conteúdo. Nunca repasse
 campos, URLs ou ids internos do `pa`: o MCP resolve. Os parâmetros de cada tool estão no schema dela.
 
 Toda tool devolve `{"ok": true, "dados": {…}}` ou `{"ok": false, "erro": {"codigo", "detalhe", "campo"}}`.

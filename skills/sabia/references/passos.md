@@ -28,8 +28,7 @@ toolkit** do `.sabia/sabia.md` (gravada pela `sa-setup`), que vale também na se
 compilação: a skill instalada só marca o gancho (⇢ na tabela do fluxo) no passo com desvio, e o desvio vem do projeto.
 
 No `toolkit.json`, `passo.passo` é o id do passo no formato `skill.fluxo.passo`, com o `para` e, opcionais, os
-`arquivos` (globs) e o `agente`. Só vale em passo com `"desvio": true` no mestre — hoje o da tabela abaixo. O gerador
-aceita também o id sa-codificar.codificar.tarefa como o mesmo passo.
+`arquivos` (globs) e o `agente`. Só vale em passo com `"desvio": true` no mestre — hoje o da tabela abaixo.
 
 ## Os passos
 

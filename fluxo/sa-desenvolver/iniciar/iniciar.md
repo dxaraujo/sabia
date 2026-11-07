@@ -23,7 +23,8 @@ Quem tem a booleana `desenvolvedor` pega uma fatia ou um bug (`FT-nnn`) e assume
 e o modo, grava a posse na base e cria a branch `<id>` e a pasta da spec. A posse é o push da branch.
 
 Deste fluxo: fatia ou bug `pronta` (ou `aceita`, com o sim de quem puxa) sem branch `<id>` publicada; ou
-`em-andamento` sem branch publicada, retomado pelo responsável (a sessão parou antes do push). "Próxima" sem id: o
+`em-andamento` sem branch publicada, retomado pelo responsável (a sessão parou antes do push); ou `pronta` com branch
+`<id>` publicada, que voltou ao backlog na virada (a posse volta; branch, pasta e `status.md` são reaproveitados). "Próxima" sem id: o
 primeiro item do `sprint-<nn>.md` aberto com Trabalho `desenvolvimento`, status `pronta` e sem Responsável; nenhum →
 "o topo está vazio; o reabastecimento é do P.O. (`sa-planejamento.sprint`)" e pare.
 
