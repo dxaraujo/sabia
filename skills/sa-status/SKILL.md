@@ -4,7 +4,7 @@ description: "Sabiá flow dashboard, read-only — where I left off and what to 
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.0.2"
+  version: "2.0.3"
 ---
 
 # sa-status — Onde parei
