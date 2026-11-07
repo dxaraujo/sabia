@@ -362,6 +362,7 @@ function mostrarDiferencas(dif) {
 }
 
 export async function instalar(opcoes = {}) {
+  if (process.stdout.isTTY) ctx.log(BANNER + "\n");
   const inv = lerInventario();
   const novo = baixarFramework(opcoes);
   fs.rmSync(sabia("framework"), { recursive: true, force: true });
@@ -887,6 +888,8 @@ export function rotaMapa(opcoes = {}) {
 
 const AJUDA = `sabia ${VERSAO} — instala o Sabiá e os toolkits no Kiro e no opencode
 
+  sabia            (sem comando, no terminal) modo interativo: o banner uma vez e um prompt para vários comandos
+
   sabia instalar   [--alvo kiro,opencode] [--versao X] [--fonte <pasta|url-git>[@ref]]
   sabia atualizar  [--versao X] [--fonte <pasta|url-git>[@ref]]
   sabia desinstalar [--alvo …]
@@ -921,16 +924,39 @@ export function lerArgs(argv) {
   return { posicionais, opcoes };
 }
 
-export async function main(argv = process.argv.slice(2)) {
+/** `sabia` sem comando, no terminal: o banner uma vez e um prompt; cada linha é um comando, até "sair". */
+export async function interativo(entrada) {
+  ctx.log(BANNER + "\n\nDigite um comando (ex.: toolkits listar), ajuda ou sair.\n");
+  const rl = entrada ? null : readline.createInterface({ input: process.stdin, output: process.stdout });
+  const antes = ctx.perguntar;
+  // as confirmações dos comandos usam o mesmo prompt: dois readline no mesmo stdin brigam pela linha
+  if (rl) ctx.perguntar = async (texto, padrao) => { const r = (await rl.question(`${texto} `)).trim(); return r === "" ? padrao : r; };
+  const linhas = entrada ?? (async function* () { for (;;) { try { yield await rl.question("sabia › "); } catch { return; } } })();
+  try {
+    for await (const linha of linhas) {
+      const args = linha.trim().split(/\s+/).filter(Boolean);
+      if (args[0] === "sabia") args.shift();
+      if (!args.length) continue;
+      if (["sair", "exit", "quit"].includes(args[0])) break;
+      await main(args.length === 1 && args[0] === "ajuda" ? ["--ajuda"] : args, { dentro: true });
+    }
+  } finally {
+    ctx.perguntar = antes;
+    rl?.close();
+  }
+  return 0;
+}
+
+export async function main(argv = process.argv.slice(2), { dentro = false } = {}) {
   let args;
   try { args = lerArgs(argv); } catch (e) { console.error(`sabia: ${e.message}`); return 1; }
   const { posicionais: [cmd, sub, arg], opcoes } = args;
+  if (!cmd && !opcoes.ajuda && !opcoes.help && !dentro && process.stdin.isTTY && process.stdout.isTTY) return interativo();
+  const perguntarAntes = ctx.perguntar;  // o --sim vale só para este comando (no modo interativo vêm outros)
   if (opcoes.sim) {  // cópia alterada à mão continua perguntando: só o --forcar passa por cima
     const antes = ctx.perguntar;
     ctx.perguntar = async (texto, padrao) => (/alterado à mão/.test(texto) ? antes(texto, padrao) : /\[s\/N\]/.test(texto) ? "s" : padrao);
   }
-  // o banner em todo comando, só no terminal: em pipe ou arquivo (o Mermaid do rota) a saída fica limpa
-  if (process.stdout.isTTY) ctx.log(BANNER + "\n");
   try {
     if (cmd === "instalar") await instalar(opcoes);
     else if (cmd === "atualizar") await atualizar(opcoes);
@@ -942,11 +968,13 @@ export async function main(argv = process.argv.slice(2)) {
     else if (cmd === "toolkits" && sub === "remover" && arg) await removerToolkit(arg, opcoes);
     else if (cmd === "rota" && (sub || opcoes.fluxo || opcoes.mapa))
       ctx.log(opcoes.mapa ? rotaMapa(opcoes) : opcoes.fluxo ? rotaFluxo(opcoes.fluxo, opcoes) : rota(sub, opcoes));
-    else { ctx.log(AJUDA); return cmd && !opcoes.ajuda && !opcoes.help ? 1 : 0; }
+    else { ctx.log((!dentro && process.stdout.isTTY ? BANNER + "\n\n" : "") + AJUDA); return cmd && !opcoes.ajuda && !opcoes.help ? 1 : 0; }
     return 0;
   } catch (e) {
     console.error(`sabia: ${e.message}`);
     return 1;
+  } finally {
+    ctx.perguntar = perguntarAntes;
   }
 }
 

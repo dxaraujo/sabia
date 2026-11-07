@@ -270,6 +270,23 @@ test("a versão do CLI é a do framework (o instalar baixa a tag sabia-<versão 
   assert.equal(ler("./package.json"), ler("../plugin.json"));
 });
 
+test("interativo: o banner uma vez, um comando por linha, até sair", async () => {
+  const logs = [];
+  s.ctx.log = (x) => logs.push(String(x));
+  async function* linhas() { yield ""; yield "ajuda"; yield "sabia voar"; yield "sair"; yield "ajuda"; }
+  try {
+    assert.equal(await s.interativo(linhas()), 0);
+  } finally { s.ctx.log = () => {}; }
+  assert.equal(logs.filter((l) => l.includes("███████╗ █████╗")).length, 1);  // o banner só na abertura
+  assert.equal(logs.filter((l) => l.includes("modo interativo")).length, 2);  // ajuda e o comando desconhecido; nada depois do sair
+});
+
+test("--sim vale só para o comando que o recebeu", async () => {
+  const antes = s.ctx.perguntar;
+  await s.main(["voar", "--sim"]);
+  assert.equal(s.ctx.perguntar, antes);
+});
+
 test("banner: o sabiá colorido ao lado do nome; sem cores, só o nome", () => {
   const sem = s.banner({ cores: false });
   assert.ok(!sem.includes("\x1b") && sem.includes("███████╗ █████╗"));
