@@ -78,7 +78,7 @@ before(async () => {
   fs.mkdirSync(home);
   process.env.HOME = home;
   s.ctx.log = () => {};
-  s.ctx.perguntar = async (texto, padrao) => padrao;
+  s.ctx.tela = { ...Object.fromEntries(["abrir", "fechar", "passo", "ok", "aviso", "marca", "nota", "cancelar"].map((k) => [k, () => {}])), esperar: (t, fn) => fn() };
   // o kiro-cli não roda no teste: o "powers install" vira a cópia da compilação para onde o Kiro a poria
   s.ctx.exec = (cmd, args) => {
     if (cmd === "kiro-cli" && args[0] === "powers" && args[1] === "install") fs.cpSync(args[2], path.join(home, ".kiro/powers/installed/sabia"), { recursive: true });
@@ -86,7 +86,7 @@ before(async () => {
   };
   const fw = path.join(raiz, "fw");
   for (const f of ["fluxo", "padrao", "skills", "plugin.json", "mcp.json", "README.md", "LICENSE"]) fs.cpSync(path.join(REPO, f), path.join(fw, f), { recursive: true });
-  await s.instalar({ fonte: fw, alvo: "opencode,kiro", semMcp: true });
+  await s.instalar({ fonte: fw, alvo: "opencode,kiro", semMcp: true, sim: true });
   await s.instalarToolkit(casa(), { alvo: "opencode,kiro" });
   await s.instalarToolkit(batchAlfa(), { alvo: "opencode,kiro" });
 });

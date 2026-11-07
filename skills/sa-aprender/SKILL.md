@@ -4,7 +4,7 @@ description: "Compound learning for the Sabiá flow — turns each human correct
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.0.3"
+  version: "2.0.4"
 ---
 
 # sa-aprender — Cada erro corrigido uma vez só

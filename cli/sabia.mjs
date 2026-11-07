@@ -2,13 +2,13 @@
 // Sabiá CLI — instala, atualiza e desinstala o Sabiá e os toolkits no Kiro e no opencode, e explica a rota (`sabia rota`).
 // ~/.sabia/ é a fonte (framework/ e toolkits/), cada ferramenta recebe uma cópia no padrão dela, e o
 // ~/.sabia/inventario.json registra cada cópia (com o hash de cada arquivo) e cada MCP: atualizar e desinstalar
-// mexem só no que está lá. Só a biblioteca padrão do Node 18+.
+// mexem só no que está lá. Node 18+ e o @clack/prompts (as perguntas e as linhas ┌ ◇ └).
+import { cancel, confirm, intro, isCancel, log, multiselect, note, outro, spinner, updateSettings } from "@clack/prompts";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import readline from "node:readline/promises";
 import { fileURLToPath } from "node:url";
 import { carregar, compilar, grafoAscii, LEGENDA, partes, temDesvio, validarToolkitFonte } from "./compilar.mjs";
 
@@ -84,18 +84,73 @@ export function banner({ cores = process.stdout.isTTY && !process.env.NO_COLOR, 
 }
 const BANNER = banner();
 
+/** Esc, Ctrl+C ou "não" no confirm: as perguntas vêm antes de qualquer gravação, então nada mudou. */
+export class Cancelado extends Error {}
+
+// o que o clack escreve sozinho (Ctrl+C no meio do spinner, por exemplo) sai em português
+updateSettings({ messages: { cancel: "cancelado — nada foi alterado", error: "falhou" } });
+let quadroAberto = false;  // ┌ sem └: o erro do main fecha o quadro
+
 // trocáveis nos testes
 export const ctx = {
   exec: (cmd, args, opcoes = {}) => spawnSync(cmd, args, { encoding: "utf8", ...opcoes }),
-  perguntar: async (texto, padrao) => {
-    if (!process.stdin.isTTY) return padrao;
-    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-    const r = (await rl.question(`${texto} `)).trim();
-    rl.close();
-    return r === "" ? padrao : r;
-  },
   log: (...xs) => console.log(...xs),
+  interativo: Boolean(process.stdin.isTTY && process.stdout.isTTY && !process.env.CI),
+  /** Multisseleção. opcoes: [{ valor, rotulo, dica, marcado }]; devolve a lista dos valores marcados. */
+  escolher: async ({ mensagem, opcoes, minimo = 0 }) => {
+    const options = opcoes.map((o) => ({ value: o.valor, label: o.rotulo, hint: o.dica }));
+    for (;;) {
+      // o required do clack avisa em inglês: a regra do mínimo fica aqui
+      const r = await multiselect({ message: `${mensagem} (espaço marca · a marca todas · enter confirma)`, options, required: false,
+        initialValues: opcoes.filter((o) => o.marcado).map((o) => o.valor) });
+      if (isCancel(r)) throw new Cancelado();
+      if (r.length >= minimo) return r;
+      log.warn(`marque pelo menos ${minimo}`);
+    }
+  },
+  confirmar: async (mensagem, padrao) => {
+    const r = await confirm({ message: mensagem, initialValue: padrao, active: "Sim", inactive: "Não" });
+    if (isCancel(r)) throw new Cancelado();
+    return r;
+  },
+  tela: {
+    abrir: (t) => { quadroAberto = true; intro(t); },
+    fechar: (t) => { quadroAberto = false; outro(t); },
+    passo: (t) => log.step(t),
+    ok: (t) => log.message(t, { symbol: "✓" }),
+    aviso: (t) => log.warn(t),
+    marca: (simbolo, t) => log.message(t, { symbol: simbolo }),
+    nota: (t, titulo) => note(t, titulo),
+    cancelar: (t) => { quadroAberto = false; cancel(t); },
+    /** `fn` é síncrona (o git roda com spawnSync): o spinner não gira, mas mostra o que está acontecendo. */
+    esperar(texto, fn, fim) {
+      if (!ctx.interativo) { const r = fn(); log.step(fim(r)); return r; }
+      const s = spinner({ cancelMessage: texto });  // Ctrl+C: o passo fica riscado e o main diz "cancelado"
+      s.start(texto);
+      try { const r = fn(); s.stop(fim(r)); return r; } catch (e) { s.error(texto); throw e; }
+    },
+  },
 };
+
+const qt = (n, nome) => `${n} ${nome}${n === 1 ? "" : "s"}`;
+
+/** Antes de mexer no disco: -y vale como sim; sem terminal, erro com o comando a rodar (o da pessoa, com as flags dela,
+ * quando veio do main); "não" cancela. */
+async function confirmar(opcoes, texto, padrao, uso) {
+  if (opcoes.sim) return;
+  if (!ctx.interativo) throw new Error(`preciso confirmar e não há terminal — use: ${opcoes.linha ?? uso} -y`);
+  if (!(await ctx.confirmar(texto, padrao))) throw new Cancelado();
+}
+
+/** A cópia mantida por ter sido alterada à mão aparece com ✎; `forcar` diz o que o --forcar faria com ela. */
+const alterada = (k, forcar = "sobrescreve") => `${k} alterada à mão — mantida (--forcar ${forcar})`;
+function mostrar({ texto, mantidos = [] }, forcar) {
+  ctx.tela.passo(texto);
+  for (const k of mantidos) ctx.tela.marca("✎", alterada(k, forcar));
+}
+
+/** As cópias que o apagar() manteria (alteradas à mão), sem apagar nada: para a prévia do remover e do desinstalar. */
+const ficariam = (copias, opcoes) => (opcoes.forcar ? [] : Object.keys(copias).filter((k) => alteradosAMao(longo(k), copias[k]).length));
 
 // ---------- caminhos e inventário ----------
 
@@ -141,44 +196,39 @@ export function alteradosAMao(dir, registrado) {
 
 /**
  * Copia `origem` para `destino` e registra em `copias` (destino curto → hashes). Destino que existe e não está no
- * inventário é de outra pessoa ou ferramenta: recusa, salvo `forcar`. Cópia alterada à mão: mostra e pergunta.
+ * inventário é de outra pessoa ou ferramenta: recusa, salvo `forcar`. Cópia alterada à mão: mantida, salvo `forcar`.
+ * Devolve "copiado" ou "mantido".
  */
-export async function copiar(origem, destino, copias, { forcar = false } = {}) {
+export function copiar(origem, destino, copias, { forcar = false } = {}) {
   const chave = curto(destino);
   if (fs.existsSync(destino)) {
     if (!copias[chave] && !forcar) throw new Error(`${chave} já existe e não foi instalado pelo Sabiá (use --forcar para sobrescrever)`);
-    const mudou = copias[chave] ? alteradosAMao(destino, copias[chave]) : [];
-    if (mudou.length && !forcar) {
-      const r = await ctx.perguntar(`${chave} foi alterado à mão (${mudou.join(", ")}). Sobrescrever? [s/N]`, "n");
-      if (!/^s/i.test(r)) return ctx.log(`mantido ${chave}`);
-    }
+    if (!forcar && alteradosAMao(destino, copias[chave]).length) return "mantido";
     fs.rmSync(destino, { recursive: true, force: true });
   }
   fs.mkdirSync(path.dirname(destino), { recursive: true });
   fs.cpSync(origem, destino, { recursive: true });
   copias[chave] = hashes(destino);
-  ctx.log(`copiado ${chave}`);
+  return "copiado";
 }
 
-/** Apaga as cópias registradas; a alterada à mão só com "sim". */
-export async function apagar(copias, { forcar = false } = {}) {
+/** Apaga as cópias registradas; a alterada à mão fica, salvo `forcar`. Devolve as mantidas. */
+export function apagar(copias, { forcar = false } = {}) {
+  const mantidos = [];
   for (const [chave, registrado] of Object.entries(copias)) {
     const destino = longo(chave);
-    const mudou = alteradosAMao(destino, registrado);
-    if (mudou.length && !forcar) {
-      const r = await ctx.perguntar(`${chave} foi alterado à mão (${mudou.join(", ")}). Apagar mesmo assim? [s/N]`, "n");
-      if (!/^s/i.test(r)) { ctx.log(`mantido ${chave}`); continue; }
-    }
+    if (!forcar && alteradosAMao(destino, registrado).length) { mantidos.push(chave); continue; }
     fs.rmSync(destino, { recursive: true, force: true });
     delete copias[chave];
-    ctx.log(`apagado ${chave}`);
   }
+  return mantidos;
 }
 
 // ---------- git e fontes ----------
 
 function git(args, cwd) {
   const r = ctx.exec("git", args, { cwd });
+  if (r.signal === "SIGINT") throw new Cancelado();  // Ctrl+C no clone: o git morre antes de qualquer gravação
   if (r.status !== 0) throw new Error(`git ${args.join(" ")}: ${(r.stderr || r.error?.message || "").trim()}`);
   return (r.stdout || "").trim();
 }
@@ -249,16 +299,26 @@ export function detectarAlvos() {
   return ALVOS.filter((a) => temComando({ kiro: "kiro-cli", opencode: "opencode" }[a]));
 }
 
-async function escolherAlvos(opcoes) {
+const DICA_ALVO = { kiro: "power em ~/.kiro/powers/installed/sabia", opencode: "~/.config/opencode/skills e os MCPs" };
+
+/** --alvo; senão as detectadas: uma só (ou -y) sem perguntar; mais de uma ou nenhuma, multisseleção no terminal. */
+async function escolherAlvos(opcoes, uso = "sabia instalar") {
   if (opcoes.alvo) {
-    const alvos = opcoes.alvo.split(",");
+    const alvos = opcoes.alvo.split(",").filter(Boolean);
     const fora = alvos.filter((a) => !ALVOS.includes(a));
-    if (fora.length) throw new Error(`ferramenta desconhecida: ${fora.join(", ")} (use ${ALVOS.join(", ")})`);
+    if (fora.length || !alvos.length) throw new Error(`ferramenta desconhecida: ${fora.join(", ")} (use ${ALVOS.join(", ")})`);
     return alvos;
   }
   const achadas = detectarAlvos();
-  const r = await ctx.perguntar(`Ferramentas do time (${ALVOS.join(", ")}) [${achadas.join(",") || "nenhuma achada"}]:`, achadas.join(","));
-  return r.split(",").map((a) => a.trim()).filter(Boolean);
+  if (opcoes.sim || achadas.length === 1) {
+    if (!achadas.length) throw new Error(`nenhuma ferramenta achada (kiro-cli, opencode) — use: ${opcoes.linha ?? uso} -a opencode -y`);
+    ctx.tela.passo(`Instalando em: ${achadas.join(", ")}`);
+    return achadas;
+  }
+  if (!ctx.interativo) throw new Error(`preciso escolher as ferramentas e não há terminal — use: ${opcoes.linha ?? uso} -a opencode -y`);
+  if (achadas.length) ctx.tela.passo(`Achadas: ${achadas.join(", ")}`);
+  return ctx.escolher({ mensagem: "Em quais ferramentas?", multi: true, minimo: 1,
+    opcoes: ALVOS.map((a) => ({ valor: a, rotulo: a, dica: DICA_ALVO[a], marcado: achadas.includes(a) })) });
 }
 
 function servidoresMcp(fw) {
@@ -288,24 +348,25 @@ function tirarMcpDoOpencode(nome) {
     const servidores = c.mcp?.servers || c.mcp || {};
     delete servidores[nome];
     fs.writeFileSync(arq, JSON.stringify(c, null, 2) + "\n");
-    ctx.log(`MCP ${nome} tirado do opencode`);
   } catch {
-    ctx.log(`opencode: tire o MCP ${nome} de mcp.servers no ${curto(arq)} (o arquivo tem comentários; não o reescrevo)`);
+    ctx.tela.aviso(`opencode: tire o MCP ${nome} de mcp.servers no ${curto(arq)} (o arquivo tem comentários; não o reescrevo)`);
   }
 }
 
-/** Os MCPs do framework no opencode (no Kiro, vão no mcp.json do power). */
-async function registrarMcps(fw, reg) {
+/** Os MCPs do framework no opencode (no Kiro, vão no mcp.json do power); o que já existe lá fica. Devolve quantos registrou. */
+function registrarMcps(fw, reg) {
   reg.mcp ||= [];
   const ja = mcpsDoOpencode();
+  let n = 0;
   for (const [nome, s] of Object.entries(servidoresMcp(fw))) {
-    if (ja.includes(nome)) { ctx.log(`MCP ${nome} já existe no opencode — mantido`); continue; }
+    if (ja.includes(nome)) continue;
     const env = Object.entries(s.env || {}).map(([k, v]) => `${k}=${v}`);
     const r = ctx.exec("opencode", ["mcp", "add", "--global", ...env.flatMap((e) => ["--env", e]), nome, "--", s.command, ...s.args]);
     if (r.status !== 0) throw new Error(`MCP ${nome} no opencode: ${(r.stderr || r.error?.message || "").trim()}`);
     if (!reg.mcp.includes(nome)) reg.mcp.push(nome);
-    ctx.log(`MCP ${nome} registrado no opencode`);
+    n++;
   }
+  return n;
 }
 
 /** Onde as skills do Sabiá ficam no alvo (caminho com ~). */
@@ -317,34 +378,59 @@ function compilarPara(alvo, fw) {
   return compilar(fw, sabia("compilado", alvo), { base: baseSabia(alvo), raiz: alvo === "kiro", versao });
 }
 
-async function instalarAlvo(alvo, inv, opcoes) {
+/** Instala no alvo o framework de ~/.sabia/framework; devolve a linha do alvo e as cópias mantidas (✎). */
+function instalarAlvo(alvo, inv, opcoes) {
   const fw = compilarPara(alvo, sabia("framework"));
   if (alvo === "kiro") {
     const nosso = inv.alvos.kiro?.power;
-    // o painel Powers instala em ~/.kiro/powers/installed/sabia: fora do inventário, é de outra instalação
-    if (!nosso && fs.existsSync(path.join(home(), ".kiro", "powers", "installed", "sabia")) && !opcoes.forcar)
-      throw new Error("o power sabia já está no Kiro e não foi instalado pelo CLI (desinstale pelo painel Powers ou use --forcar)");
     if (nosso || opcoes.forcar) ctx.exec("kiro-cli", ["powers", "uninstall", "sabia"]);
     const r = ctx.exec("kiro-cli", ["powers", "install", fw]);
     if (r.status !== 0) throw new Error(`kiro-cli powers install: ${(r.stderr || r.error?.message || "").trim()}`);
     inv.alvos.kiro = { power: "sabia" };
-    ctx.log("power sabia instalado no Kiro");
-    return;
+    return { texto: "kiro: power sabia" };
   }
   const reg = (inv.alvos[alvo] ||= { copias: {}, mcp: [] });
-  for (const s of skillsDoFluxo(fw)) await copiar(path.join(fw, "skills", s), path.join(PASTA_SKILLS[alvo](), s), reg.copias, opcoes);
-  if (!opcoes.semMcp) await registrarMcps(sabia("framework"), reg);
+  const skills = skillsDoFluxo(fw), mantidos = [];
+  for (const s of skills) {
+    const destino = path.join(PASTA_SKILLS[alvo](), s);
+    if (copiar(path.join(fw, "skills", s), destino, reg.copias, opcoes) === "mantido") mantidos.push(curto(destino));
+  }
+  const mcps = opcoes.semMcp ? 0 : registrarMcps(sabia("framework"), reg);
+  return { texto: `${alvo}: ${qt(skills.length - mantidos.length, "skill")}${mcps ? `, ${qt(mcps, "MCP")}` : ""}`, mantidos };
 }
 
-/** Baixa o framework para uma pasta temporária e diz o que muda em relação a ~/.sabia/framework/. */
+/** O que o instalar fará no alvo, para o resumo; o que seria recusado (cópia de outra pessoa, power de fora) é erro já aqui,
+ * antes de qualquer gravação. */
+function previa(alvo, inv, novo, opcoes) {
+  if (alvo === "kiro") {
+    // o painel Powers instala em ~/.kiro/powers/installed/sabia: fora do inventário, é de outra instalação
+    if (!inv.alvos.kiro?.power && fs.existsSync(path.join(home(), ".kiro", "powers", "installed", "sabia")) && !opcoes.forcar)
+      throw new Error("o power sabia já está no Kiro e não foi instalado pelo CLI (desinstale pelo painel Powers ou use --forcar)");
+    return ["power sabia"];
+  }
+  const copias = inv.alvos[alvo]?.copias || {}, skills = skillsDoFluxo(novo.pasta), mantidas = [];
+  for (const s of skills) {
+    const destino = path.join(PASTA_SKILLS[alvo](), s), chave = curto(destino);
+    if (!fs.existsSync(destino) || opcoes.forcar) continue;
+    if (!copias[chave]) throw new Error(`${chave} já existe e não foi instalado pelo Sabiá (use --forcar para sobrescrever)`);
+    if (alteradosAMao(destino, copias[chave]).length) mantidas.push(chave);
+  }
+  const mcps = opcoes.semMcp ? 0 : Object.keys(servidoresMcp(novo.pasta)).filter((n) => !mcpsDoOpencode().includes(n)).length;
+  return [`${qt(skills.length, "skill")}${mcps ? ` · ${qt(mcps, "MCP")}` : ""}`,
+    ...mantidas.map((k) => `✎ ${alterada(k)}`)];
+}
+
+/** Baixa o framework para uma pasta temporária (nada muda em ~/.sabia/ ainda). */
 function baixarFramework(opcoes) {
   const versao = opcoes.versao || VERSAO;
   const [url, ref] = opcoes.fonte ? separarRef(opcoes.fonte) : [REPO, `sabia-${versao}`];
   const { pasta, sha } = baixar(url, { ref });
   if (!fs.existsSync(path.join(pasta, "skills", "sa-setup", "SKILL.md"))) throw new Error(`${url}: não parece o Sabiá (falta skills/sa-setup)`);
   const plugin = JSON.parse(fs.readFileSync(path.join(pasta, "plugin.json"), "utf8"));
-  return { pasta, sha, versao: plugin.version, fonte: opcoes.fonte || REPO };
+  return { pasta, sha, ref, versao: plugin.version, fonte: opcoes.fonte || REPO };
 }
+
+const baixando = (fn) => ctx.tela.esperar("baixando o Sabiá …", fn, (n) => `Sabiá ${n.versao} baixado (${n.ref || curto(n.fonte)})`);
 
 export function diferencas(antes, depois) {
   const a = fs.existsSync(antes) ? hashes(antes) : {};
@@ -356,75 +442,122 @@ export function diferencas(antes, depois) {
   };
 }
 
-function mostrarDiferencas(dif) {
-  for (const [rotulo, xs] of Object.entries(dif)) if (xs.length) ctx.log(`  ${rotulo} (${xs.length}): ${xs.slice(0, 20).join(", ")}${xs.length > 20 ? ", …" : ""}`);
-  return Object.values(dif).some((xs) => xs.length);
+const linhasDif = (dif) => Object.entries(dif).filter(([, xs]) => xs.length)
+  .map(([rotulo, xs]) => `${rotulo} (${xs.length}): ${xs.slice(0, 5).join(", ")}${xs.length > 5 ? ", …" : ""}`);
+
+/** Toolkits para instalar junto: -t; sem ele, no terminal, a multisseleção opcional dos que o índice tem e não estão instalados. */
+async function escolherToolkits(opcoes, inv) {
+  const pedidos = opcoes.toolkits?.split(",").filter(Boolean);
+  if (pedidos?.every(ehUrl) || (!pedidos && (opcoes.sim || !ctx.interativo))) return pedidos || [];
+  const todos = ctx.tela.esperar("lendo os índices de toolkits …", () => entradasDosIndices(opcoes), (l) => `${qt(l.length, "toolkit")} nos índices`);
+  // o -t é conferido antes do resumo: nome fora do índice não pode aparecer depois do framework gravado
+  if (pedidos) {
+    const fora = pedidos.filter((p) => { const [n, v] = separarRef(p); return !ehUrl(p) && !todos.some((e) => e.nome === n && (!v || e.versao === v)); });
+    if (fora.length) throw new Error(`${fora.length === 1 ? `toolkit ${fora[0]} não está` : `toolkits ${fora.join(", ")} não estão`} nos índices — veja: sabia toolkits`);
+    return pedidos;
+  }
+  if (!todos.length) { ctx.tela.aviso(SEM_INDICE); return []; }
+  const livres = todos.filter((e) => !inv.toolkits[e.nome]);
+  if (!livres.length) return [];
+  return ctx.escolher({ mensagem: "Toolkits (opcional)", multi: true, minimo: 0,
+    opcoes: livres.map((e) => ({ valor: e.nome, rotulo: e.nome, dica: [e.versao, e.descricao].filter(Boolean).join("  ") })) });
 }
 
 export async function instalar(opcoes = {}) {
   if (process.stdout.isTTY) ctx.log(BANNER + "\n");
+  ctx.tela.abrir("sabia instalar");
   const inv = lerInventario();
-  const novo = baixarFramework(opcoes);
+  // todas as perguntas e o resumo antes de mexer em ~/.sabia: cancelar não deixa nada pela metade; as ferramentas antes
+  // do download, que é o passo lento
+  const alvos = await escolherAlvos(opcoes, "sabia instalar");
+  const novo = baixando(() => baixarFramework(opcoes));
+  const toolkits = await escolherToolkits(opcoes, inv);
+  const resumo = [["framework", `${inv.framework?.versao || "—"} → ${novo.versao}`],
+    ...alvos.flatMap((a) => previa(a, inv, novo, opcoes).map((t, i) => [i ? "" : a, t])),
+    ...(toolkits.length ? [["toolkits", toolkits.join(", ")]] : [])];
+  ctx.tela.nota(colunas(resumo), "Resumo");
+  await confirmar(opcoes, "Instalar?", true, `sabia instalar -a ${alvos.join(",")}`);
   fs.rmSync(sabia("framework"), { recursive: true, force: true });
   fs.mkdirSync(sabia(), { recursive: true });
   fs.cpSync(novo.pasta, sabia("framework"), { recursive: true });
   inv.framework = { versao: novo.versao, sha: novo.sha, fonte: novo.fonte, compilador: VERSAO, instalado_em: new Date().toISOString() };
-  ctx.log(`Sabiá ${novo.versao} em ~/.sabia/framework`);
   try {
-    for (const alvo of await escolherAlvos(opcoes)) await instalarAlvo(alvo, inv, opcoes);
+    for (const alvo of alvos) mostrar(instalarAlvo(alvo, inv, opcoes));
   } finally {
     gravarInventario(inv);
   }
-  ctx.log((opcoes.semMcp ? 'Pronto: skills instaladas (MCPs não registrados: --sem-mcp).' : 'Pronto: skills e MCPs instalados.') + ' Os agentes são de cada projeto: abra a ferramenta na raiz dele, na sessão\n' +
-    'padrão, e peça "configurar o Sabiá" (ou, num projeto já configurado, "atualizar os agentes do Sabiá").');
+  for (const t of toolkits) mostrar(await instalarToolkit(t, { ...opcoes, alvo: alvos.join(",") }));
+  ctx.tela.fechar(`Pronto.${opcoes.semMcp ? " (MCPs não registrados: --sem-mcp)" : ""}\n` +
+    '   → na raiz do projeto, no Kiro ou no opencode, peça "configurar o Sabiá" (já configurado: "atualizar os agentes do Sabiá")');
 }
 
 export async function atualizar(opcoes = {}) {
+  ctx.tela.abrir("sabia atualizar");
   const inv = lerInventario();
-  if (!inv.framework) throw new Error("o Sabiá não está instalado: rode `sabia instalar`");
-  const novo = baixarFramework({ fonte: inv.framework.fonte === REPO ? undefined : inv.framework.fonte, ...opcoes });
-  ctx.log(`Sabiá ${inv.framework.versao} → ${novo.versao}`);
+  if (!inv.framework) throw new Error("o Sabiá não está instalado — use: sabia instalar");
+  const fonte = { fonte: inv.framework.fonte === REPO ? undefined : inv.framework.fonte, ...opcoes };
+  const novo = baixando(() => baixarFramework(fonte));
   // o compilador também conta: a mesma fonte compilada por outro CLI pode dar outra skill
-  const compilador = inv.framework.compilador === VERSAO ? null : `compilador ${inv.framework.compilador || "—"} → ${VERSAO}`;
-  if (!mostrarDiferencas(diferencas(sabia("framework"), novo.pasta)) && !compilador) return ctx.log("nada mudou");
-  if (compilador) ctx.log(`  ${compilador}`);
-  if (!/^s/i.test(await ctx.perguntar("Atualizar? [s/N]", "n"))) return ctx.log("nada foi alterado");
+  const compilador = inv.framework.compilador === VERSAO ? [] : [`compilador ${inv.framework.compilador || "—"} → ${VERSAO}`];
+  const muda = [...linhasDif(diferencas(sabia("framework"), novo.pasta)), ...compilador];
+  if (!muda.length) return ctx.tela.fechar(`já na última versão (${novo.versao})`);
+  ctx.tela.nota([`framework ${inv.framework.versao} → ${novo.versao}`, ...muda, `em ${Object.keys(inv.alvos).join(", ") || "nenhuma ferramenta"}`].join("\n"), "Resumo");
+  await confirmar(opcoes, "Atualizar?", true, "sabia atualizar");
   fs.rmSync(sabia("framework"), { recursive: true, force: true });
   fs.cpSync(novo.pasta, sabia("framework"), { recursive: true });
   inv.framework = { ...inv.framework, versao: novo.versao, sha: novo.sha, compilador: VERSAO, instalado_em: new Date().toISOString() };
   try {
     for (const alvo of Object.keys(inv.alvos)) {
+      const mantidos = [];
       if (alvo !== "kiro") {  // skill que saiu do framework sai da ferramenta
         const copias = inv.alvos[alvo].copias;
         const fica = new Set(skillsDoFluxo(sabia("framework")).map((s) => curto(path.join(PASTA_SKILLS[alvo](), s))));
         const sai = Object.fromEntries(Object.entries(copias).filter(([k]) => !fica.has(k)));
-        await apagar(sai, opcoes);
+        mantidos.push(...apagar(sai, opcoes));
         for (const k of Object.keys(copias)) if (!fica.has(k) && !(k in sai)) delete copias[k];
       }
-      await instalarAlvo(alvo, inv, { ...opcoes, semMcp: true });
+      const r = instalarAlvo(alvo, inv, { ...opcoes, semMcp: true });
+      mostrar({ ...r, mantidos: [...mantidos, ...(r.mantidos || [])] });
     }
   } finally {
     gravarInventario(inv);
   }
-  ctx.log('Pronto. Em cada projeto, peça "atualizar os agentes do Sabiá".');
+  ctx.tela.fechar('Pronto.\n   → em cada projeto, peça "atualizar os agentes do Sabiá"');
 }
 
 export async function desinstalar(opcoes = {}) {
+  ctx.tela.abrir("sabia desinstalar");
   const inv = lerInventario();
-  const alvos = opcoes.alvo ? opcoes.alvo.split(",") : Object.keys(inv.alvos);
+  const alvos = (opcoes.alvo ? opcoes.alvo.split(",") : Object.keys(inv.alvos)).filter((a) => inv.alvos[a]);
+  if (!alvos.length) return ctx.tela.fechar("nada a desinstalar: o Sabiá não está em nenhuma ferramenta");
+  const sai = alvos.flatMap((a) => {
+    const reg = inv.alvos[a], tks = Object.keys(inv.toolkits).filter((n) => inv.toolkits[n].alvos?.[a]);
+    const fica = [...(a === "kiro" ? [] : ficariam(reg.copias, opcoes)), ...tks.flatMap((n) => ficariam(inv.toolkits[n].alvos[a].copias, opcoes))];
+    const skills = a === "kiro" ? 0 : Object.keys(reg.copias).filter((k) => !fica.includes(k)).length;
+    const o = a === "kiro" ? ["power sabia"] : [qt(skills, "skill"), ...(reg.mcp?.length ? [`MCP ${reg.mcp.join(", ")}`] : [])];
+    return [`✗ ${a}: ${[...o, ...(tks.length ? [`toolkits ${tks.join(", ")}`] : [])].join(" · ")}`, ...fica.map((k) => `✎ ${alterada(k, "apaga")}`)];
+  });
+  // com cópia alterada que fica, o alvo fica no inventário e o framework também
+  if (alvos.length === Object.keys(inv.alvos).length && !sai.some((l) => l.startsWith("✎"))) sai.push("✗ ~/.sabia/framework e ~/.sabia/compilado");
+  ctx.tela.nota(sai.join("\n"), "Sai");
+  await confirmar(opcoes, `Desinstalar o Sabiá de ${alvos.join(", ")}?`, false, `sabia desinstalar -a ${alvos.join(",")}`);
+  const sobrou = [];
   try {
     for (const alvo of alvos) {
-      const reg = inv.alvos[alvo];
-      if (!reg) { ctx.log(`${alvo}: nada instalado pelo Sabiá`); continue; }
-      for (const tk of Object.values(inv.toolkits)) if (tk.alvos?.[alvo]) { await apagar(tk.alvos[alvo].copias, opcoes); delete tk.alvos[alvo]; }
+      const reg = inv.alvos[alvo], mantidos = [];
+      for (const tk of Object.values(inv.toolkits)) if (tk.alvos?.[alvo]) {
+        mantidos.push(...apagar(tk.alvos[alvo].copias, opcoes));
+        if (!Object.keys(tk.alvos[alvo].copias).length) delete tk.alvos[alvo];  // a alterada à mão fica registrada
+      }
       if (alvo === "kiro") {
         const r = ctx.exec("kiro-cli", ["powers", "uninstall", reg.power]);
-        if (r.status !== 0) { ctx.log(`kiro: kiro-cli powers uninstall falhou: ${(r.stderr || r.error?.message || "").trim()}`); continue; }
-      } else await apagar(reg.copias, opcoes);
+        if (r.status !== 0) { ctx.tela.aviso(`kiro: kiro-cli powers uninstall falhou: ${(r.stderr || r.error?.message || "").trim()}`); continue; }
+      } else mantidos.push(...apagar(reg.copias, opcoes));
       if (alvo === "opencode") for (const nome of reg.mcp || []) tirarMcpDoOpencode(nome);
-      if (alvo !== "kiro" && Object.keys(reg.copias).length) continue;  // ficou cópia alterada à mão
-      delete inv.alvos[alvo];
-      ctx.log(`${alvo}: Sabiá desinstalado`);
+      // com cópia alterada à mão (do Sabiá ou de um toolkit), o alvo fica no inventário para o --forcar achá-la
+      if (mantidos.length) sobrou.push(alvo);
+      else delete inv.alvos[alvo];
+      mostrar({ texto: `${alvo}: Sabiá ${mantidos.length ? "desinstalado, menos as cópias alteradas à mão" : "desinstalado"}`, mantidos }, "apaga");
     }
     if (!Object.keys(inv.alvos).length) {
       fs.rmSync(sabia("framework"), { recursive: true, force: true });
@@ -434,6 +567,8 @@ export async function desinstalar(opcoes = {}) {
   } finally {
     gravarInventario(inv);
   }
+  ctx.tela.fechar(sobrou.length ? `Pronto.\n   → para tirar as cópias alteradas: sabia desinstalar -a ${sobrou.join(",")} --forcar`
+    : 'Pronto.\n   → para voltar: sabia instalar');
 }
 
 // ---------- toolkits ----------
@@ -463,7 +598,7 @@ export function validarToolkit(pasta, nomeEsperado = null, fw = null) {
     try { if (!fs.existsSync(path.join(pasta, dentro(c, de)))) erros.push(`${de}: não existe ${c}`); } catch (e) { erros.push(e.message); }
   };
   const agentes = new Set((m.agentes || []).map((a) => a.nome));
-  // sem o framework (toolkits baixar antes do instalar), o gancho é conferido na setup
+  // sem o framework (toolkit baixado antes do Sabiá), o gancho é conferido na setup
   const ganchos = fw && fs.existsSync(path.join(fw, "fluxo")) ? carregar(fw) : null;
   for (const s of m.skills || []) {
     existe(s.caminho, "skills");
@@ -517,31 +652,41 @@ function acharNoIndice(nome, versao, opcoes) {
     const e = lerIndice(i).find((x) => x.nome === nome && (!versao || x.versao === versao));
     if (e) return e;
   }
-  throw new Error(`toolkit ${nome}${versao ? "@" + versao : ""} não está nos índices`);
+  throw new Error(`toolkit ${nome}${versao ? "@" + versao : ""} não está nos índices — veja: sabia toolkits`);
 }
 
-export async function baixarToolkit(alvo, opcoes = {}) {
-  const ehUrl = /[:/]/.test(alvo) && !/^[a-z0-9-]+(@[\w.-]+)?$/.test(alvo);
+const SEM_INDICE = "nenhum toolkit nos índices — confira o --indice ou ~/.sabia/indices.json";
+
+/** As entradas de todos os índices (ou do --indice); índice que não abre vira aviso. */
+function entradasDosIndices(opcoes) {
+  return (opcoes.indice ? [opcoes.indice] : indices()).flatMap((i) => {
+    try { return lerIndice(i); } catch (e) { ctx.tela.aviso(`índice ${i}: ${e.message}`); return []; }
+  });
+}
+
+/** Baixa e valida o toolkit numa pasta temporária e diz o que muda em ~/.sabia/toolkits/<nome> (nada é gravado). */
+const ehUrl = (alvo) => /[:/]/.test(alvo) && !/^[a-z0-9-]+(@[\w.-]+)?$/.test(alvo);
+
+function buscarToolkit(alvo, opcoes = {}) {
   // `<url>[@ref]#<subpasta>`: o toolkit numa subpasta de um repositório (monorepo de toolkits)
-  const [semSub, subpasta = null] = ehUrl ? alvo.split("#") : [alvo];
+  const [semSub, subpasta = null] = ehUrl(alvo) ? alvo.split("#") : [alvo];
   const [nomeOuUrl, versaoOuRef] = separarRef(semSub);
-  const e = ehUrl ? { nome: null, url: nomeOuUrl, ref: versaoOuRef, subpasta } : acharNoIndice(nomeOuUrl, versaoOuRef, opcoes);
+  const e = ehUrl(alvo) ? { nome: null, url: nomeOuUrl, ref: versaoOuRef, subpasta } : acharNoIndice(nomeOuUrl, versaoOuRef, opcoes);
   const { pasta, sha } = baixar(e.url, e);
   const erros = validarToolkit(pasta, e.nome, sabia("framework"));
   if (erros.length) throw new Error(`toolkit recusado:\n- ${erros.join("\n- ")}`);
   const m = JSON.parse(fs.readFileSync(path.join(pasta, "toolkit.json"), "utf8"));
   const destino = sabia("toolkits", m.nome);
   const dif = diferencas(destino, pasta);
-  dif.removidos = dif.removidos.filter((f) => f !== ".origem.json");  // é nossa, regravada abaixo
-  let mudou = true;
-  if (fs.existsSync(destino)) {
-    ctx.log(`toolkit ${m.nome}: ${JSON.parse(fs.readFileSync(path.join(destino, "toolkit.json"), "utf8")).versao} → ${m.versao}`);
-    mudou = mostrarDiferencas(dif);
-    if (!mudou) ctx.log("nada mudou");
-    else if (!/^s/i.test(await ctx.perguntar("Substituir? [s/N]", "n"))) { ctx.log("nada foi alterado"); return null; }
-    else fs.rmSync(destino, { recursive: true, force: true });
-  }
+  dif.removidos = dif.removidos.filter((f) => f !== ".origem.json");  // é nossa, regravada no gravarToolkit
+  const de = fs.existsSync(path.join(destino, "toolkit.json")) ? JSON.parse(fs.readFileSync(path.join(destino, "toolkit.json"), "utf8")).versao : null;
+  return { e, pasta, sha, m, destino, de, dif, mudou: Object.values(dif).some((xs) => xs.length) };
+}
+
+/** Grava em ~/.sabia/toolkits/<nome> o que o buscarToolkit trouxe, com a origem, e registra no inventário. */
+function gravarToolkit({ e, pasta, sha, m, destino, mudou }) {
   if (mudou) {
+    fs.rmSync(destino, { recursive: true, force: true });
     fs.mkdirSync(path.dirname(destino), { recursive: true });
     fs.cpSync(pasta, destino, { recursive: true });
   }
@@ -551,15 +696,19 @@ export async function baixarToolkit(alvo, opcoes = {}) {
   const inv = lerInventario();
   inv.toolkits[m.nome] = { ...(inv.toolkits[m.nome] || { alvos: {} }), versao: m.versao, sha, fonte: e.url };
   gravarInventario(inv);
-  if (mudou) ctx.log(`toolkit ${m.nome} ${m.versao} em ~/.sabia/toolkits/${m.nome}`);
   return m.nome;
 }
 
-/** Copia as skills do toolkit para as ferramentas (o Kiro lê de ~/.sabia/toolkits pelo `skill://` de cada agente). */
+/** Baixa o toolkit para ~/.sabia/toolkits (sem as ferramentas): o primeiro passo do instalar e do atualizar. */
+export async function baixarToolkit(alvo, opcoes = {}) {
+  return gravarToolkit(buscarToolkit(alvo, opcoes));
+}
+
+/** Copia as skills do toolkit para as ferramentas (o Kiro lê de ~/.sabia/toolkits pelo `skill://` de cada agente). Sem
+ * perguntas, salvo as ferramentas quando não há --alvo nem Sabiá instalado; devolve a linha e as cópias mantidas. */
 export async function instalarToolkit(alvo, opcoes = {}) {
   const [nome] = separarRef(alvo);
   const baixado = fs.existsSync(sabia("toolkits", nome, "toolkit.json")) && !opcoes.atualizar ? nome : await baixarToolkit(alvo, opcoes);
-  if (!baixado) return;
   const pasta = sabia("toolkits", baixado);
   const m = JSON.parse(fs.readFileSync(path.join(pasta, "toolkit.json"), "utf8"));
   const inv = lerInventario();
@@ -570,59 +719,139 @@ export async function instalarToolkit(alvo, opcoes = {}) {
   if (rival) throw new Error(`${baixado} e ${rival} são versões do mesmo toolkit (base ${familia}); instale um só: sabia toolkits remover ${rival}`);
   const tk = (inv.toolkits[baixado] ||= { versao: m.versao, alvos: {} });
   const doInv = Object.keys(inv.alvos);
-  const alvos = opcoes.alvo || !doInv.length ? await escolherAlvos(opcoes) : doInv;
+  const alvos = opcoes.alvo || !doInv.length ? await escolherAlvos(opcoes, `sabia toolkits instalar ${baixado}`) : doInv;
+  const mantidos = [];
   try {
     for (const a of alvos.filter((x) => x !== "kiro")) {
       const reg = (tk.alvos[a] ||= { copias: {} });
       for (const s of m.skills) {
-        const dir = path.dirname(path.join(pasta, s.caminho));
-        await copiar(dir, path.join(PASTA_SKILLS[a](), path.basename(dir)), reg.copias, opcoes);
+        const dir = path.dirname(path.join(pasta, s.caminho)), destino = path.join(PASTA_SKILLS[a](), path.basename(dir));
+        if (copiar(dir, destino, reg.copias, opcoes) === "mantido") mantidos.push(curto(destino));
       }
     }
   } finally {
     gravarInventario(inv);
   }
-  if (alvos.includes("kiro")) ctx.log(`kiro: o gerador liga as skills de ~/.sabia/toolkits/${baixado} a cada agente (nada copiado para ~/.kiro)`);
-  ctx.log('No projeto, peça "atualizar os agentes do Sabiá" para ligar o toolkit.');
+  const onde = alvos.map((a) => (a === "kiro" ? `kiro (lê de ~/.sabia/toolkits/${baixado})` : a));
+  return { texto: `${baixado} ${m.versao}: ${onde.join(", ")}`, mantidos };
 }
 
-/** Sem argumento, dentro de um projeto: as versões que o `.sabia/config/agentes.json` dele usa. */
-export async function instalarDoProjeto(opcoes = {}) {
+const usaNoProjeto = (nome) => {
   const f = path.join(process.cwd(), ".sabia", "config", "agentes.json");
-  if (!fs.existsSync(f)) throw new Error("diga o toolkit, ou rode dentro de um projeto com .sabia/config/agentes.json");
+  return fs.existsSync(f) && !!JSON.parse(fs.readFileSync(f, "utf8")).toolkits?.[nome];
+};
+const ondeEsta = (t) => Object.keys(t.alvos || {}).join(", ") || "~/.sabia/toolkits";
+
+/** `sabia toolkits instalar [nome…]`: sem nome, no projeto, as versões dele; fora dele, a multisseleção do índice. */
+export async function instalarToolkits(nomes = [], opcoes = {}) {
+  ctx.tela.abrir("sabia toolkits instalar");
   const inv = lerInventario();
-  for (const [nome, t] of Object.entries(JSON.parse(fs.readFileSync(f, "utf8")).toolkits || {})) {
-    if (inv.toolkits[nome]?.versao === t.versao) { ctx.log(`toolkit ${nome} ${t.versao} já instalado`); continue; }
-    await instalarToolkit(`${nome}@${t.versao}`, { ...opcoes, atualizar: true });
+  let pedidos = nomes;
+  if (!pedidos.length) {
+    const f = path.join(process.cwd(), ".sabia", "config", "agentes.json");
+    if (fs.existsSync(f)) {
+      pedidos = Object.entries(JSON.parse(fs.readFileSync(f, "utf8")).toolkits || {}).map(([n, t]) => (t.versao ? `${n}@${t.versao}` : n));
+      ctx.tela.passo(`Este projeto usa: ${pedidos.join(", ") || "nenhum toolkit"}`);
+    } else {
+      if (opcoes.sim || !ctx.interativo) throw new Error("diga o toolkit — use: sabia toolkits instalar <nome> -y (os nomes: sabia toolkits)");
+      const todos = ctx.tela.esperar("lendo os índices de toolkits …", () => entradasDosIndices(opcoes), (l) => `${qt(l.length, "toolkit")} nos índices`);
+      if (!todos.length) throw new Error(SEM_INDICE);
+      const livres = todos.filter((e) => !inv.toolkits[e.nome]);
+      if (!livres.length) return ctx.tela.fechar("todos os toolkits dos índices já estão instalados");
+      pedidos = await ctx.escolher({ mensagem: "Quais toolkits?", multi: true, minimo: 1,
+        opcoes: livres.map((e) => ({ valor: e.nome, rotulo: e.nome, dica: [e.versao, e.descricao].filter(Boolean).join("  ") })) });
+    }
   }
+  // o que já está instalado na versão pedida não é baixado de novo (com --alvo, é copiado para as ferramentas novas)
+  const faltam = pedidos.filter((p) => {
+    const [n, v] = separarRef(p), t = inv.toolkits[n];
+    // sem ~/.sabia/toolkits/<nome>, o registro é só das cópias alteradas que o remover deixou
+    if (!t || (v && t.versao !== v) || opcoes.alvo || !fs.existsSync(sabia("toolkits", n, "toolkit.json"))) return true;
+    ctx.tela.ok(`${n} ${t.versao} já instalado (${ondeEsta(t)})`);
+    return false;
+  });
+  if (!faltam.length) return ctx.tela.fechar("Nada a instalar.");
+  const alvos = Object.keys(inv.alvos).length && !opcoes.alvo ? Object.keys(inv.alvos) : await escolherAlvos(opcoes, `sabia toolkits instalar ${faltam.join(" ")}`);
+  ctx.tela.nota(colunas([["toolkits", faltam.join(", ")], ["em", alvos.join(", ")]]), "Resumo");
+  await confirmar(opcoes, `Instalar ${qt(faltam.length, "toolkit")}?`, true, `sabia toolkits instalar ${faltam.join(" ")}`);
+  for (const p of faltam) {
+    const [n, v] = separarRef(p);
+    mostrar(await instalarToolkit(p, { ...opcoes, alvo: alvos.join(","), atualizar: !!(v && inv.toolkits[n] && inv.toolkits[n].versao !== v) }));
+  }
+  ctx.tela.fechar('Pronto.\n   → no projeto, peça "atualizar os agentes do Sabiá" para ligar o toolkit');
 }
 
-export async function removerToolkit(nome, opcoes = {}) {
+/** Apaga o toolkit das ferramentas e de ~/.sabia/toolkits; devolve as cópias mantidas (alteradas à mão), que ficam no
+ * inventário: sem o registro, reinstalar as recusaria como de outra pessoa. */
+export function removerToolkit(nome, opcoes = {}) {
   const inv = lerInventario();
-  const tk = inv.toolkits[nome];
+  const tk = inv.toolkits[nome], mantidos = [];
   try {
-    for (const reg of Object.values(tk?.alvos || {})) await apagar(reg.copias, opcoes);
+    for (const [a, reg] of Object.entries(tk?.alvos || {})) {
+      mantidos.push(...apagar(reg.copias, opcoes));
+      if (!Object.keys(reg.copias).length) delete tk.alvos[a];
+    }
     fs.rmSync(sabia("toolkits", nome), { recursive: true, force: true });
-    delete inv.toolkits[nome];
+    if (!Object.keys(tk?.alvos || {}).length) delete inv.toolkits[nome];
   } finally {
     gravarInventario(inv);
   }
-  ctx.log(`toolkit ${nome} removido`);
-  const f = path.join(process.cwd(), ".sabia", "config", "agentes.json");
-  if (fs.existsSync(f) && JSON.parse(fs.readFileSync(f, "utf8")).toolkits?.[nome])
-    ctx.log(`aviso: este projeto ainda usa o ${nome}; peça "atualizar os agentes do Sabiá" para desligá-lo`);
+  return mantidos;
 }
 
-export async function atualizarToolkits(nome, opcoes = {}) {
+/** `sabia toolkits remover [nome…]`: sem nome, a multisseleção dos instalados; o que sai aparece com ✗ antes do confirm. */
+export async function removerToolkits(nomes = [], opcoes = {}) {
+  ctx.tela.abrir("sabia toolkits remover");
   const inv = lerInventario();
-  for (const n of nome ? [nome] : Object.keys(inv.toolkits)) {
+  if (!nomes.length) {
+    if (!Object.keys(inv.toolkits).length) return ctx.tela.fechar("nenhum toolkit instalado");
+    if (opcoes.sim || !ctx.interativo) throw new Error("diga o toolkit — use: sabia toolkits remover <nome> -y");
+    nomes = await ctx.escolher({ mensagem: "Quais remover?", multi: true, minimo: 1,
+      opcoes: Object.entries(inv.toolkits).map(([n, t]) => ({ valor: n, rotulo: n, dica: `${t.versao}  ${ondeEsta(t)}` })) });
+  }
+  const sai = nomes.filter((n) => {
+    if (inv.toolkits[n] || fs.existsSync(sabia("toolkits", n))) return true;
+    ctx.tela.ok(`${n} não está instalado`);
+    return false;
+  });
+  if (!sai.length) return ctx.tela.fechar("Nada a remover.");
+  for (const n of sai) {
+    for (const reg of Object.values(inv.toolkits[n]?.alvos || {})) {
+      const fica = ficariam(reg.copias, opcoes);
+      for (const k of Object.keys(reg.copias)) fica.includes(k) ? ctx.tela.marca("✎", alterada(k, "apaga")) : ctx.tela.marca("✗", k);
+    }
+    ctx.tela.marca("✗", `~/.sabia/toolkits/${n}`);
+    if (usaNoProjeto(n)) ctx.tela.aviso(`este projeto usa o ${n}: depois peça "atualizar os agentes do Sabiá"`);
+  }
+  await confirmar(opcoes, `Remover ${qt(sai.length, "toolkit")}?`, false, `sabia toolkits remover ${sai.join(" ")}`);
+  const ficaram = sai.filter((n) => { const m = removerToolkit(n, opcoes); mostrar({ texto: `${n} removido`, mantidos: m }, "apaga"); return m.length; });
+  ctx.tela.fechar(ficaram.length ? `Pronto.\n   → para tirar as cópias alteradas: sabia toolkits remover ${ficaram.join(" ")} --forcar` : "Pronto.");
+}
+
+/** `sabia toolkits atualizar [nome…]`: busca todos (sem gravar), uma tabela de → para e um confirm. */
+export async function atualizarToolkits(nomes = [], opcoes = {}) {
+  ctx.tela.abrir("sabia toolkits atualizar");
+  const inv = lerInventario();
+  // sem nome: os baixados (o registro das cópias alteradas que o remover deixou não tem o que atualizar)
+  if (!nomes.length) nomes = Object.keys(inv.toolkits).filter((n) => fs.existsSync(sabia("toolkits", n, ".origem.json")));
+  if (!nomes.length) return ctx.tela.fechar("nenhum toolkit instalado — veja: sabia toolkits");
+  const buscados = ctx.tela.esperar("buscando as versões novas …", () => nomes.map((n) => {
     const fo = sabia("toolkits", n, ".origem.json");
-    if (!fs.existsSync(fo)) throw new Error(`toolkit ${n}: sem ~/.sabia/toolkits/${n}/.origem.json; baixe de novo: sabia toolkits baixar <nome|url>`);
+    if (!inv.toolkits[n] || !fs.existsSync(fo)) throw new Error(`${n} não está instalado pelo CLI — use: sabia toolkits instalar ${n}`);
     const origem = JSON.parse(fs.readFileSync(fo, "utf8"));
     const alvo = origem.indice ? n : `${origem.url}${origem.ref ? "@" + origem.ref : ""}${origem.subpasta ? "#" + origem.subpasta : ""}`;
-    await instalarToolkit(alvo, { ...opcoes, atualizar: true, indice: origem.indice || opcoes.indice,
-      alvo: Object.keys(inv.toolkits[n]?.alvos || {}).join(",") || "kiro" });
+    return { n, b: buscarToolkit(alvo, { ...opcoes, indice: origem.indice || opcoes.indice }) };
+  }), (l) => `${qt(l.length, "toolkit")} conferido${l.length === 1 ? "" : "s"}`);
+  for (const { n, b } of buscados) if (!b.mudou) ctx.tela.ok(`${n} já na última versão (${b.m.versao})`);
+  const novos = buscados.filter(({ b }) => b.mudou);
+  if (!novos.length) return ctx.tela.fechar("Nada a atualizar.");
+  ctx.tela.nota(colunas(novos.map(({ n, b }) => [n, `${b.de || "—"} → ${b.m.versao}`, linhasDif(b.dif).join("; ")])), "Atualizar");
+  await confirmar(opcoes, `Atualizar ${qt(novos.length, "toolkit")}?`, true, `sabia toolkits atualizar ${novos.map((x) => x.n).join(" ")}`);
+  for (const { n, b } of novos) {
+    gravarToolkit(b);
+    mostrar(await instalarToolkit(n, { ...opcoes, alvo: Object.keys(inv.toolkits[n]?.alvos || {}).join(",") || "kiro" }));
   }
+  ctx.tela.fechar('Pronto.\n   → em cada projeto, peça "atualizar os agentes do Sabiá"');
 }
 
 /** A base que o toolkit baixado customiza (do toolkit.json em ~/.sabia/toolkits), ou null. */
@@ -645,7 +874,7 @@ export function listarToolkits(opcoes = {}) {
         linhas.push([e.nome, "", e.versao || "—", inv.toolkits[e.nome]?.versao || "—", doProjeto[e.nome]?.versao || "—", e.descricao || ""]);
       }
     } catch (err) {
-      ctx.log(`índice ${i}: ${err.message}`);
+      console.error(`sabia: índice ${i}: ${err.message}`);  // no stderr: o stdout do --json fica um JSON só
     }
   }
   for (const [n, t] of Object.entries(inv.toolkits)) if (!linhas.some((l) => l[0] === n)) linhas.push([n, "", "—", t.versao, doProjeto[n]?.versao || "—", "(fora dos índices)"]);
@@ -663,6 +892,15 @@ export function listarToolkits(opcoes = {}) {
     l[5] = `customiza ${c.toolkit} ${c.versao}${c.mudancas?.length ? `: ${c.mudancas[0]}${c.mudancas.length > 1 ? "; …" : ""}` : ""}${l[5] ? " — " + l[5] : ""}`;
     l[0] = `↳ ${l[0]}`;
     linhas.splice(i < 0 ? linhas.length : i + 1, 0, l);
+  }
+  if (opcoes.json) {  // para o sa-status e para bots: um array só, sem cor; "—" vira null
+    const v = (x) => (x === "—" || x === "" ? null : x);
+    ctx.log(JSON.stringify(linhas.map(([rotulo, autor, indice, instalado, projeto, descricao]) => {
+      const nome = rotulo.replace(/^↳ /, "");
+      return { nome, autor: v(autor), indice: v(indice), instalado: v(instalado), projeto: v(projeto), descricao: v(descricao),
+        customiza: (manifesto(nome).customiza ?? doIndice[nome]?.customiza)?.toolkit ?? null };
+    }), null, 2));
+    return linhas;
   }
   // no terminal, a descrição é cortada na largura da tela; em pipe ou arquivo, sai inteira
   const largura = process.stdout.columns;
@@ -886,95 +1124,108 @@ export function rotaMapa(opcoes = {}) {
 
 // ---------- linha de comando ----------
 
+const FONTE = "[--versao X] [--fonte <pasta|url-git>[@ref]]";
+const TK = "<nome>[@versao] | <url-git|pasta>[@ref][#subpasta]";
+// [uso, o que faz, opções]: a ajuda geral mostra as duas primeiras; `<cmd> -h`, as linhas do comando com as opções
+const USO = [
+  ["sabia instalar", "instala o Sabiá (e toolkits) nas ferramentas", `[-a kiro,opencode] [-t <toolkit>,…] [-y] ${FONTE} [--forcar] [--sem-mcp]`],
+  ["sabia atualizar", "atualiza o Sabiá instalado", `[-y] ${FONTE} [--forcar]`],
+  ["sabia desinstalar", "tira o Sabiá das ferramentas", "[-a kiro,opencode] [-y] [--forcar]"],
+  ["sabia toolkits", "lista os toolkits (índice, instalados, projeto)", "[listar|ls] [--json] [--indice <url-git|pasta>]"],
+  ["sabia toolkits instalar", "escolhe e instala toolkits", `[${TK} …] [-a …] [-y] [--indice <url-git|pasta>] [--forcar]   (apelido i; sem nome, no projeto: as versões dele; fora: escolha no índice)`],
+  ["sabia toolkits atualizar", "atualiza os toolkits instalados", "[<nome> …] [-y] [--indice <url-git|pasta>] [--forcar]   (sem nome: todos)"],
+  ["sabia toolkits remover", "escolhe e remove toolkits", "[<nome> …] [-y] [--forcar]   (apelido rm; sem nome: escolha nos instalados)"],
+  ["sabia rota <arquivo>", "explica a rota de um arquivo", "o passo com desvio de toolkit, o dono, o toolkit, o motivo e as travas\n" +
+    "  sabia rota <tasks.md>#<tarefa>     o mesmo pelos arquivos que a tarefa (#2, #2.1) cita; sem casar, o texto dela\n" +
+    "  sabia rota --fluxo <skill.fluxo>   o fluxo resolvido no projeto (tabela, grafo ASCII e Mermaid)\n" +
+    "  sabia rota --mapa                  as arestas entre fluxos (chama e passagens), em Mermaid\n" +
+    "      [--projeto <pasta>] (padrão: a atual) [--framework <pasta>] (padrão: ~/.sabia/framework)"],
+];
+
+// [a flag como aparece no USO, a linha]: o `<cmd> -h` mostra só as que o comando aceita
+const OPCOES = [
+  ["[-a", "  -a, --alvo      as ferramentas (kiro, opencode); sem ela, as detectadas"],
+  ["[-t", "  -t, --toolkits  toolkits para instalar junto com o Sabiá"],
+  ["[-y]", "  -y, --sim       sem perguntas: as ferramentas detectadas e todo confirm vale como sim (sem terminal, é obrigatório)"],
+  ["[--forcar]", "  --forcar        sobrescreve ou apaga o que não foi instalado pelo Sabiá ou foi alterado à mão (sem ela, a cópia alterada fica: ✎)"],
+  ["[--sem-mcp]", "  --sem-mcp       não registra os MCPs"],
+];
+
 const AJUDA = `sabia ${VERSAO} — instala o Sabiá e os toolkits no Kiro e no opencode
 
-  sabia            (sem comando, no terminal) modo interativo: o banner uma vez e um prompt para vários comandos
+${USO.map(([u, o]) => `  ${u.padEnd(27)}${o}`).join("\n")}
+  -y sem perguntas · -h ajuda do comando · -v versão
 
-  sabia instalar   [--alvo kiro,opencode] [--versao X] [--fonte <pasta|url-git>[@ref]]
-  sabia atualizar  [--versao X] [--fonte <pasta|url-git>[@ref]]
-  sabia desinstalar [--alvo …]
-  sabia toolkits listar   [--indice <url-git|pasta>]
-  sabia toolkits baixar   <nome>[@versao] | <url-git|pasta>[@ref][#subpasta]  [--indice <url-git|pasta>]
-  sabia toolkits instalar <nome>[@versao] | <url-git|pasta>[@ref][#subpasta]  [--alvo …] [--indice <url-git|pasta>]   (sem argumento, no projeto: as versões dele)
-  sabia toolkits atualizar [<nome>]  [--indice <url-git|pasta>]
-  sabia toolkits remover  <nome>
-  sabia rota <arquivo>               o passo com desvio de toolkit, o dono, o toolkit, o motivo e as travas
-  sabia rota <tasks.md>#<tarefa>     o mesmo pelos arquivos que a tarefa (#2, #2.1) cita; sem casar, o texto dela
-  sabia rota --fluxo <skill.fluxo>   o fluxo resolvido no projeto (tabela, grafo ASCII e Mermaid)
-  sabia rota --mapa                  as arestas entre fluxos (chama e passagens), em Mermaid
-      [--projeto <pasta>] (padrão: a atual) [--framework <pasta>] (padrão: ~/.sabia/framework)
+Tudo fica em ~/.sabia/ (framework/, compilado/, toolkits/, inventario.json e indices.json).
 
-  --sim       responde "sim" às confirmações (cópia alterada à mão continua perguntando, salvo --forcar)
-  --forcar    sobrescreve o que não foi instalado pelo Sabiá ou foi alterado à mão
-  --sem-mcp   não registra os MCPs
+experimente: npx sabia instalar`;
 
-Tudo fica em ~/.sabia/ (framework/, compilado/, toolkits/, inventario.json e indices.json).`;
+/** `sabia <cmd> -h`: as linhas do comando (de `sabia toolkits`, todas as do grupo), com as opções; nunca executa nada. */
+function ajudaDe(prefixo) {
+  const doCmd = USO.filter(([u]) => u === prefixo || u.startsWith(prefixo + " "));
+  const linhas = doCmd.map(([u, o, op]) => `  ${u} — ${o}\n    ${op}`);
+  const opcoes = OPCOES.filter(([f]) => doCmd.some(([, , op]) => op.includes(f))).map(([, l]) => l);
+  return `uso:\n${linhas.join("\n")}\n\n${opcoes.join("\n")}`.trimEnd();
+}
+
+const CURTAS = { "-y": "--sim", "-h": "--ajuda", "-v": "--version", "-a": "--alvo", "-t": "--toolkits" };
+
+const BOOLEANAS = ["sim", "forcar", "semMcp", "mapa", "ajuda", "version", "json"];
+const COM_VALOR = ["alvo", "toolkits", "versao", "fonte", "indice", "fluxo", "projeto", "framework"];
 
 export function lerArgs(argv) {
   const posicionais = [];
   const opcoes = {};
   for (let i = 0; i < argv.length; i++) {
-    const a = argv[i];
-    if (!a.startsWith("--")) { posicionais.push(a); continue; }
-    const chave = a.slice(2).replace(/-(\w)/g, (_, c) => c.toUpperCase());
-    if (["sim", "forcar", "semMcp", "mapa", "ajuda", "help"].includes(chave)) opcoes[chave] = true;
-    else if (argv[i + 1] === undefined || argv[i + 1].startsWith("--")) throw new Error(`--${a.slice(2)} precisa de um valor`);
+    const a = CURTAS[argv[i]] ?? argv[i];
+    if (!a.startsWith("-") || a === "-") { posicionais.push(a); continue; }
+    const chave = a === "--help" ? "ajuda" : a.slice(2).replace(/-(\w)/g, (_, c) => c.toUpperCase());
+    // a desconhecida não vira posicional nem engole o nome seguinte (`--froce java`)
+    if (!a.startsWith("--") || ![...BOOLEANAS, ...COM_VALOR].includes(chave))
+      throw new Error(`opção desconhecida ${argv[i]} — veja: sabia ${posicionais[0] ? posicionais[0] + " " : ""}-h`);
+    if (BOOLEANAS.includes(chave)) opcoes[chave] = true;
+    else if (argv[i + 1] === undefined || argv[i + 1].startsWith("-")) throw new Error(`--${a.slice(2)} precisa de um valor`);
     else opcoes[chave] = argv[++i];
   }
   return { posicionais, opcoes };
 }
 
-/** `sabia` sem comando, no terminal: o banner uma vez e um prompt; cada linha é um comando, até "sair". */
-export async function interativo(entrada) {
-  ctx.log(BANNER + "\n\nDigite um comando (ex.: toolkits listar), ajuda ou sair.\n");
-  const rl = entrada ? null : readline.createInterface({ input: process.stdin, output: process.stdout });
-  const antes = ctx.perguntar;
-  // as confirmações dos comandos usam o mesmo prompt: dois readline no mesmo stdin brigam pela linha
-  if (rl) ctx.perguntar = async (texto, padrao) => { const r = (await rl.question(`${texto} `)).trim(); return r === "" ? padrao : r; };
-  const linhas = entrada ?? (async function* () { for (;;) { try { yield await rl.question("sabia › "); } catch { return; } } })();
-  try {
-    for await (const linha of linhas) {
-      const args = linha.trim().split(/\s+/).filter(Boolean);
-      if (args[0] === "sabia") args.shift();
-      if (!args.length) continue;
-      if (["sair", "exit", "quit"].includes(args[0])) break;
-      await main(args.length === 1 && args[0] === "ajuda" ? ["--ajuda"] : args, { dentro: true });
-    }
-  } finally {
-    ctx.perguntar = antes;
-    rl?.close();
-  }
-  return 0;
-}
+const APELIDOS = { ls: "listar", i: "instalar", rm: "remover" };
+const COMANDOS = {
+  instalar: (_, o) => instalar(o),
+  atualizar: (_, o) => atualizar(o),
+  desinstalar: (_, o) => desinstalar(o),
+  "toolkits listar": (_, o) => { listarToolkits(o); },
+  "toolkits instalar": instalarToolkits,
+  "toolkits atualizar": atualizarToolkits,
+  "toolkits remover": removerToolkits,
+  rota: ([arquivo], o) => {
+    if (!arquivo && !o.fluxo && !o.mapa) throw new Error("diga o arquivo, o --fluxo ou o --mapa — veja: sabia rota -h");
+    ctx.log(o.mapa ? rotaMapa(o) : o.fluxo ? rotaFluxo(o.fluxo, o) : rota(arquivo, o));
+  },
+};
 
-export async function main(argv = process.argv.slice(2), { dentro = false } = {}) {
+export async function main(argv = process.argv.slice(2)) {
   let args;
   try { args = lerArgs(argv); } catch (e) { console.error(`sabia: ${e.message}`); return 1; }
-  const { posicionais: [cmd, sub, arg], opcoes } = args;
-  if (!cmd && !opcoes.ajuda && !opcoes.help && !dentro && process.stdin.isTTY && process.stdout.isTTY) return interativo();
-  const perguntarAntes = ctx.perguntar;  // o --sim vale só para este comando (no modo interativo vêm outros)
-  if (opcoes.sim) {  // cópia alterada à mão continua perguntando: só o --forcar passa por cima
-    const antes = ctx.perguntar;
-    ctx.perguntar = async (texto, padrao) => (/alterado à mão/.test(texto) ? antes(texto, padrao) : /\[s\/N\]/.test(texto) ? "s" : padrao);
-  }
+  const { posicionais: [primeiro, ...resto], opcoes } = args;
+  if (opcoes.version) { ctx.log(VERSAO); return 0; }
+  if (!primeiro) { ctx.log((process.stdout.isTTY ? BANNER + "\n\n" : "") + AJUDA); return 0; }
+  const grupo = primeiro === "toolkit" || primeiro === "toolkits";
+  const sub = grupo ? resto.shift() : null;
+  const cmd = grupo ? `toolkits ${APELIDOS[sub] ?? sub ?? "listar"}` : primeiro;
+  if (!COMANDOS[cmd]) { console.error(`sabia: comando desconhecido "${grupo ? `toolkits ${sub}` : cmd}" — veja sabia -h`); return 1; }
+  if (opcoes.ajuda) { ctx.log(ajudaDe(grupo && !sub ? "sabia toolkits" : `sabia ${cmd === "toolkits listar" ? "toolkits" : cmd}`)); return 0; }
+  // o comando da pessoa, sem o -y, para a dica de quando falta o terminal
+  const linha = ["sabia", ...argv.filter((a) => a !== "-y" && a !== "--sim").map((a) => (/^[\w@%+=:,./~#-]+$/.test(a) ? a : `'${a.replace(/'/g, "'\\''")}'`))].join(" ");
   try {
-    if (cmd === "instalar") await instalar(opcoes);
-    else if (cmd === "atualizar") await atualizar(opcoes);
-    else if (cmd === "desinstalar") await desinstalar(opcoes);
-    else if (cmd === "toolkits" && sub === "listar") listarToolkits(opcoes);
-    else if (cmd === "toolkits" && sub === "baixar" && arg) await baixarToolkit(arg, opcoes);
-    else if (cmd === "toolkits" && sub === "instalar") await (arg ? instalarToolkit(arg, opcoes) : instalarDoProjeto(opcoes));
-    else if (cmd === "toolkits" && sub === "atualizar") await atualizarToolkits(arg, opcoes);
-    else if (cmd === "toolkits" && sub === "remover" && arg) await removerToolkit(arg, opcoes);
-    else if (cmd === "rota" && (sub || opcoes.fluxo || opcoes.mapa))
-      ctx.log(opcoes.mapa ? rotaMapa(opcoes) : opcoes.fluxo ? rotaFluxo(opcoes.fluxo, opcoes) : rota(sub, opcoes));
-    else { ctx.log((!dentro && process.stdout.isTTY ? BANNER + "\n\n" : "") + AJUDA); return cmd && !opcoes.ajuda && !opcoes.help ? 1 : 0; }
+    await COMANDOS[cmd](resto, { ...opcoes, linha });
     return 0;
   } catch (e) {
+    if (e instanceof Cancelado) { ctx.tela.cancelar("cancelado — nada foi alterado"); return 0; }
+    if (quadroAberto) ctx.tela.cancelar("falhou");
     console.error(`sabia: ${e.message}`);
     return 1;
-  } finally {
-    ctx.perguntar = perguntarAntes;
   }
 }
 
