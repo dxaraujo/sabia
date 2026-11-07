@@ -295,8 +295,17 @@ function temComando(cmd) {
   return !r.error && r.status === 0;
 }
 
+// o opencode desktop (macOS) traz o CLI dentro do app, fora do PATH
+export const OPENCODE_APP = "/Applications/OpenCode.app/Contents/Resources/opencode-cli";
+
+/** O comando do opencode: o do PATH ou o que vem no app desktop; null sem nenhum. */
+export function comandoOpencode() {
+  if (temComando("opencode")) return "opencode";
+  return fs.existsSync(OPENCODE_APP) && temComando(OPENCODE_APP) ? OPENCODE_APP : null;
+}
+
 export function detectarAlvos() {
-  return ALVOS.filter((a) => temComando({ kiro: "kiro-cli", opencode: "opencode" }[a]));
+  return ALVOS.filter((a) => (a === "kiro" ? temComando("kiro-cli") : comandoOpencode()));
 }
 
 const DICA_ALVO = { kiro: "power em ~/.kiro/powers/installed/sabia", opencode: "~/.config/opencode/skills e os MCPs" };
@@ -360,7 +369,7 @@ function registrarMcps(fw, reg) {
   for (const [nome, s] of Object.entries(servidoresMcp(fw))) {
     if (ja.includes(nome)) continue;
     const env = Object.entries(s.env || {}).map(([k, v]) => `${k}=${v}`);
-    const r = ctx.exec("opencode", ["mcp", "add", "--global", ...env.flatMap((e) => ["--env", e]), nome, "--", s.command, ...s.args]);
+    const r = ctx.exec(comandoOpencode() || "opencode", ["mcp", "add", "--global", ...env.flatMap((e) => ["--env", e]), nome, "--", s.command, ...s.args]);
     if (r.status !== 0) throw new Error(`MCP ${nome} no opencode: ${(r.stderr || r.error?.message || "").trim()}`);
     if (!reg.mcp.includes(nome)) reg.mcp.push(nome);
     n++;
@@ -416,8 +425,8 @@ function previa(alvo, inv, novo, opcoes) {
   }
   const mcps = opcoes.semMcp ? 0 : Object.keys(servidoresMcp(novo.pasta)).filter((n) => !mcpsDoOpencode().includes(n)).length;
   // os MCPs entram pelo `opencode mcp add`: sem o comando, a cópia das skills sairia sem eles
-  if (mcps && !temComando("opencode"))
-    throw new Error("o comando opencode não está no PATH: sem ele não registro os MCPs (opencode mcp add) — ponha o opencode no PATH ou use --sem-mcp");
+  if (mcps && !comandoOpencode())
+    throw new Error("não achei o comando opencode (nem no PATH, nem no app em /Applications): sem ele não registro os MCPs (opencode mcp add) — ponha o opencode no PATH ou use --sem-mcp");
   return [`${qt(skills.length, "skill")}${mcps ? ` · ${qt(mcps, "MCP")}` : ""}`,
     ...mantidas.map((k) => `✎ ${alterada(k)}`)];
 }

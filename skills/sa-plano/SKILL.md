@@ -4,7 +4,7 @@ description: "Plans a Sabiá slice or bug (FT-nnn) on the quick and complete rou
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.2"
+  version: "2.1.3"
 ---
 
 # sa-plano — Decidir o como antes de codar

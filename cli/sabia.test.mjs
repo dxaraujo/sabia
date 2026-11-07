@@ -339,12 +339,21 @@ test("instalar: com uma ferramenta detectada ainda pergunta; Esc ou não no conf
 });
 
 test("instalar no opencode sem o comando opencode: erro antes de gravar (os MCPs ficariam de fora)", async () => {
-  s.ctx.exec = (cmd, args) => { chamadas.push([cmd, ...args].join(" ")); return { status: cmd === "opencode" ? 1 : 0, stdout: "", stderr: "" }; };
+  const semOpencode = (cmd) => cmd === "opencode" || cmd === s.OPENCODE_APP;  // nem no PATH, nem no app
+  s.ctx.exec = (cmd, args) => { chamadas.push([cmd, ...args].join(" ")); return { status: semOpencode(cmd) ? 1 : 0, stdout: "", stderr: "" }; };
   respostas = [["opencode"]];
   const r = await rodar(["instalar", "--fonte", framework("fw", "1.1.0")]);
   assert.equal(r.codigo, 1);
-  assert.match(r.erro, /opencode não está no PATH.*--sem-mcp/);
+  assert.match(r.erro, /não achei o comando opencode.*--sem-mcp/);
   assert.ok(!fs.existsSync(path.join(home, ".sabia/framework")) && !fs.existsSync(skill("sa-setup")));
+});
+
+test("opencode desktop: sem o comando no PATH, usa o CLI que vem no app para registrar os MCPs", async () => {
+  const app = s.OPENCODE_APP;
+  if (!fs.existsSync(app)) return;  // só na máquina com o app
+  s.ctx.exec = (cmd, args) => { chamadas.push([cmd, ...args].join(" ")); return { status: cmd === "opencode" ? 1 : 0, stdout: "", stderr: "" }; };
+  assert.equal(s.comandoOpencode(), app);
+  assert.ok(s.detectarAlvos().includes("opencode"));
 });
 
 test("sem terminal: sem -y, a pergunta necessária vira saída 1 com a flag; com -y, as detectadas e sem perguntas", async () => {
