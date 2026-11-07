@@ -276,7 +276,7 @@ test("o repo real compila nos dois alvos e todo link da saída resolve", () => {
   }
 });
 
-test("desvio no repo: a tarefa da codificação por para e arquivos; HF, REG e EL no PRD e em elm/; ATA na reunião", () => {
+test("desvio no repo: a tarefa da codificação por para e arquivos; HF, REG e EL no PRD e em elm/; ATA na reunião; ET no as-built", () => {
   const m = carregar(REPO), p = (q) => { const [s, f, id] = q.split("."); return m.fluxos[`${s}.${f}`].passos.find((x) => x.id === id); };
   assert.equal(p("sa-desenvolver.codificar.tarefa").desvio, true);
   for (const q of ["sa-prd.prd.escrever", "sa-especificar.elm.editar"]) {
@@ -284,7 +284,8 @@ test("desvio no repo: a tarefa da codificação por para e arquivos; HF, REG e E
     assert.deepEqual(p(q).tipos, ["HF", "REG", "EL"], q);
   }
   assert.deepEqual(p("sa-especificar.reuniao.escrever").tipos, ["ATA"]);
-  for (const q of ["sa-desenvolver.codificar.as-built", "sa-verificar.verificar.casos", "sa-refinar.detalhar.cenarios"]) assert.ok(!p(q).tipos, q);
+  assert.deepEqual(p("sa-desenvolver.codificar.as-built").tipos, ["ET"]);
+  for (const q of ["sa-verificar.verificar.casos", "sa-refinar.detalhar.cenarios"]) assert.ok(!p(q).tipos, q);
   assert.match(grafoAscii(m.fluxos["sa-prd.prd"]), /│ \d+ escrever ⇢ +│──▶ ⇢ por tipo: HF, REG, EL\n/);
 });
 

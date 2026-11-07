@@ -62,7 +62,7 @@ class Base(unittest.TestCase):
         (self.projeto / ".sabia").mkdir(parents=True)
         (self.projeto / ".sabia/sabia.md").write_text(SABIA_MD)
         self.velho_home, os.environ["HOME"] = os.environ.get("HOME"), str(self.home)
-        self.cfg = {"alvos": ["kiro", "opencode"], "sabia": "2.1.0", "formato_spec": "kiro", "produto": ".sabia/planejamento",
+        self.cfg = {"alvos": ["kiro", "opencode"], "sabia": json.loads((REPO / "plugin.json").read_text())["version"], "formato_spec": "kiro", "produto": ".sabia/planejamento",
                     "base": "develop", "prefixo_branch": "feature/", "glossario": "docs/glossario.md", "adr": "docs/adr",
                     "elm": ELM, "toolkits": {}, "passos": [], "agentes": {}}
 
@@ -408,7 +408,7 @@ class Toolkits(Base):
                  (lambda: self.casa(rubricas=[{"id": "EX1", "verificacao": "a", "severidade": "BLOQUEANTE"}, {"id": "EX1", "verificacao": "b", "severidade": "BLOQUEANTE"}]),
                   "rubrica EX1 já é de toolkit casa"),
                  (lambda: self.casa(GL=sk), "tipo GL → skills/casa/SKILL.md: use {skill, fluxo, padrao} (fluxo e padrao opcionais); o tipo tem de ser desviável e não pendente"),
-                 (lambda: self.casa(ET=sk), "tipo ET → skills/casa/SKILL.md: use {skill, fluxo, padrao}"),
+                 (lambda: self.casa(CT=sk), "tipo CT → skills/casa/SKILL.md: use {skill, fluxo, padrao}"),
                  (lambda: self.casa(HF="casa.hf"), "tipo HF → casa.hf: use {skill, fluxo, padrao}"),
                  (lambda: self.casa(HF={**sk, "fluxo": "fluxo/nao.md"}), "o fluxo arquivos da pasta do toolkit"),
                  (lambda: self.casa(HF={**sk, "padrao": "padrao/nao.md"}), "o fluxo e o padrao arquivos da pasta do toolkit"),
