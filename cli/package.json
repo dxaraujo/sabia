@@ -29,5 +29,8 @@
     "opencode",
     "skills",
     "agentes"
-  ]
+  ],
+  "dependencies": {
+    "@clack/prompts": "1.0.1"
+  }
 }

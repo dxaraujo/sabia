@@ -7,7 +7,7 @@ import { spawnSync } from "node:child_process";
 import { afterEach, beforeEach, test } from "node:test";
 import * as s from "./sabia.mjs";
 
-let raiz, home, chamadas, respostas;
+let raiz, home, chamadas, respostas, saida, escolhas, logs;
 
 function escrever(base, arquivos) {
   for (const [f, conteudo] of Object.entries(arquivos)) {
@@ -31,9 +31,20 @@ beforeEach(() => {
   fs.mkdirSync(home);
   process.env.HOME = home;
   chamadas = [];
-  respostas = [];
-  s.ctx.log = () => {};
-  s.ctx.perguntar = async (texto, padrao) => (respostas.length ? respostas.shift() : padrao);
+  respostas = [];  // as respostas de escolher e confirmar, em ordem; sem resposta: o que vem marcado e o padrão
+  saida = [];
+  escolhas = [];
+  logs = [];
+  s.ctx.log = (x) => logs.push(String(x));
+  s.ctx.interativo = true;
+  s.ctx.escolher = async (p) => {
+    escolhas.push(p);
+    return respostas.length ? respostas.shift() : p.multi ? p.opcoes.filter((o) => o.marcado).map((o) => o.valor) : p.opcoes[0].valor;
+  };
+  s.ctx.confirmar = async (texto, padrao) => { saida.push(`? ${texto}`); return respostas.length ? respostas.shift() : padrao; };
+  s.ctx.tela = { ...Object.fromEntries(["abrir", "fechar", "passo", "ok", "aviso", "cancelar"].map((k) => [k, (t) => saida.push(String(t))])),
+    nota: (t, titulo) => saida.push(`[${titulo}]\n${t}`), marca: (simbolo, t) => saida.push(`${simbolo} ${t}`),
+    esperar: (t, fn, fim) => { const r = fn(); saida.push(fim(r)); return r; } };
   s.ctx.exec = (cmd, args) => {
     chamadas.push([cmd, ...args].join(" "));
     return { status: 0, stdout: "", stderr: "" };
@@ -74,19 +85,27 @@ test("skill que já existe e não é do Sabiá é recusada", async () => {
   assert.equal(fs.readFileSync(skill("sa-setup"), "utf8"), "de outra pessoa");
 });
 
-test("atualizar mostra a diferença, troca as cópias, tira a skill que saiu e pergunta pela alterada à mão", async () => {
+test("atualizar: resumo e um confirm (padrão S); a alterada à mão fica com ✎, salvo --forcar; sem mudança, já na última versão", async () => {
   await s.instalar({ fonte: framework("fw1", "1.1.0"), alvo: "opencode", semMcp: true });
   fs.writeFileSync(skill("sa-desenvolver"), "mexi");
-  respostas = ["s", "n"];  // atualizar? sim · sobrescrever a alterada à mão? não
   await s.atualizar({ fonte: framework("fw2", "1.2.0", ["sabia", "sa-setup", "sa-desenvolver"]) });
   assert.equal(fs.readFileSync(skill("sa-setup"), "utf8"), "sa-setup 1.2.0");
   assert.equal(fs.readFileSync(skill("sa-desenvolver"), "utf8"), "mexi");
+  assert.ok(saida.includes("✎ ~/.config/opencode/skills/sa-desenvolver alterada à mão — mantida (--forcar sobrescreve)"));
+  assert.ok(saida.includes("? Atualizar?"));
   assert.equal(s.lerInventario().framework.versao, "1.2.0");
 
-  await s.atualizar({ fonte: framework("fw3", "1.3.0", ["sabia", "sa-setup"]) });  // padrão das respostas: "n"
+  respostas = [false];  // "não" no confirm: nada muda
+  await assert.rejects(s.atualizar({ fonte: framework("fw3", "1.3.0", ["sabia", "sa-setup"]) }), s.Cancelado);
   assert.equal(s.lerInventario().framework.versao, "1.2.0");
-  respostas = ["s", "s"];
-  await s.atualizar({ fonte: framework("fw3b", "1.3.0", ["sabia", "sa-setup"]) });
+  // a skill que saiu do framework sai da ferramenta; a alterada à mão fica
+  await s.atualizar({ fonte: path.join(raiz, "fw3") });
+  assert.equal(fs.readFileSync(skill("sa-desenvolver"), "utf8"), "mexi");
+  assert.ok("~/.config/opencode/skills/sa-desenvolver" in s.lerInventario().alvos.opencode.copias);
+  saida = [];
+  await s.atualizar({ fonte: framework("fw3b", "1.3.0", ["sabia", "sa-setup"]) });  // o mesmo conteúdo
+  assert.ok(saida.includes("já na última versão (1.3.0)") && !saida.includes("? Atualizar?"));
+  await s.atualizar({ fonte: framework("fw4", "1.4.0", ["sabia", "sa-setup"]), forcar: true });
   assert.ok(!fs.existsSync(skill("sa-desenvolver")));
   assert.ok(!("~/.config/opencode/skills/sa-desenvolver" in s.lerInventario().alvos.opencode.copias));
 });
@@ -107,15 +126,17 @@ test("skill de fluxo é compilada: os passos gerados entram no inventário e o p
   assert.equal(s.lerInventario().framework.compilador, JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8")).version);
   fs.appendFileSync(path.join(dir, "references/codificar/tarefa.md"), "editado\n");
   escrever(fw, { "fluxo/sa-desenvolver/codificar/passos/tarefa.md": '---\n{"resumo": "Uma tarefa."}\n---\n## Entrada\n\n## Faça\n\nCiclo novo.\n\n## Saída\n\n## Pare se\n\n—\n' });
-  respostas = ["s", "n"];  // atualizar? sim · sobrescrever a alterada à mão? não
-  await s.atualizar({ fonte: fw });
+  await s.atualizar({ fonte: fw });  // confirm no padrão (S); o passo editado à mão fica
   assert.match(fs.readFileSync(path.join(dir, "references/codificar/tarefa.md"), "utf8"), /editado/);
 });
 
 test("desinstalar apaga só o que o inventário registrou", async () => {
   await s.instalar({ fonte: framework("fw", "1.1.0"), alvo: "opencode,kiro" });
   escrever(home, { ".config/opencode/skills/minha/SKILL.md": "minha", ".config/opencode/opencode.json": { mcp: { servers: { elm: {}, meu: {} } } } });
-  await s.desinstalar({});
+  await assert.rejects(s.desinstalar({}), s.Cancelado);  // destrutivo: o padrão do confirm é N
+  assert.ok(fs.existsSync(skill("sa-setup")));
+  assert.match(saida.find((x) => x.startsWith("[Sai]")), /✗ opencode: 3 skills · MCP elm\n✗ kiro: power sabia\n✗ ~\/\.sabia\/framework/);
+  await s.desinstalar({ sim: true });
   assert.ok(!fs.existsSync(skill("sa-setup")));
   assert.ok(fs.existsSync(skill("minha")));
   assert.deepEqual(JSON.parse(fs.readFileSync(path.join(home, ".config/opencode/opencode.json"), "utf8")).mcp.servers, { meu: {} });
@@ -206,17 +227,28 @@ test("toolkit pelo índice: baixa, instala nas ferramentas, atualiza e remove pe
   assert.deepEqual([linhas[0][0], linhas[0][2], linhas[0][3]], ["batch-alfa", "1.0.0", "1.0.0"]);
 
   fs.writeFileSync(path.join(indice, "batch-alfa/skills/batch/SKILL.md"), "batch 2");
-  respostas = ["s"];
-  await s.atualizarToolkits("batch-alfa", {});
+  await s.atualizarToolkits(["batch-alfa"], {});  // uma tabela e um confirm (padrão S)
   assert.equal(fs.readFileSync(skill("batch"), "utf8"), "batch 2");
+  assert.match(saida.find((x) => x.startsWith("[Atualizar]")), /batch-alfa {2}1\.0\.0 → 1\.0\.0 {2}alterados \(1\): skills\/batch\/SKILL\.md/);
+  saida = [];
+  await s.atualizarToolkits([], {});  // todos; nada mudou
+  assert.ok(saida.includes("batch-alfa já na última versão (1.0.0)") && !saida.some((x) => x.startsWith("?")));
 
   const projeto = escrever(path.join(raiz, "projeto"), { ".sabia/config/agentes.json": { toolkits: { "batch-alfa": { versao: "1.0.0" } } } });
   const cwd = process.cwd();
   process.chdir(projeto);
-  try { await s.instalarDoProjeto({ indice }); } finally { process.chdir(cwd); }  // a mesma versão: nada a fazer
-  assert.equal(fs.readFileSync(skill("batch"), "utf8"), "batch 2");
+  try {
+    await s.instalarToolkits([], { indice });  // sem nome, no projeto: as versões dele; a mesma versão: nada a fazer
+    assert.ok(saida.includes("batch-alfa 1.0.0 já instalado (opencode)"));
+    assert.equal(fs.readFileSync(skill("batch"), "utf8"), "batch 2");
+    await assert.rejects(s.removerToolkits(["batch-alfa"], {}), s.Cancelado);  // destrutivo: padrão N
+    assert.ok(fs.existsSync(skill("batch")));
+    assert.ok(saida.includes("✗ ~/.config/opencode/skills/batch") && saida.includes("✗ ~/.sabia/toolkits/batch-alfa"));
+    assert.ok(saida.includes('este projeto usa o batch-alfa: depois peça "atualizar os agentes do Sabiá"'));
+  } finally { process.chdir(cwd); }
 
-  await s.removerToolkit("batch-alfa", {});
+  respostas = [true];
+  await s.removerToolkits(["batch-alfa"], {});
   assert.ok(!fs.existsSync(skill("batch")));
   assert.ok(!fs.existsSync(path.join(home, ".sabia/toolkits/batch-alfa")));
   assert.deepEqual(s.lerInventario().toolkits, {});
@@ -251,7 +283,6 @@ test("toolkit numa subpasta de um repositório git: #subpasta, @ref lida do comm
   assert.equal(lido(), "batch");
   assert.equal(origem().subpasta, "batch-alfa");
   assert.match(origem().sha, /^[0-9a-f]{40}$/);
-  respostas = ["s"];
   await s.baixarToolkit(path.join(mono, "batch-alfa"), {});  // sem @ref: a árvore de trabalho, com o sha do HEAD
   assert.equal(lido(), "árvore suja");
   assert.match(origem().sha, /^[0-9a-f]{40}$/);
@@ -274,21 +305,120 @@ test("a versão do CLI é a do framework (o instalar baixa a tag sabia-<versão 
   assert.equal(ler("./package.json"), ler("../plugin.json"));
 });
 
-test("interativo: o banner uma vez, um comando por linha, até sair", async () => {
-  const logs = [];
-  s.ctx.log = (x) => logs.push(String(x));
-  async function* linhas() { yield ""; yield "ajuda"; yield "sabia voar"; yield "sair"; yield "ajuda"; }
-  try {
-    assert.equal(await s.interativo(linhas()), 0);
-  } finally { s.ctx.log = () => {}; }
-  assert.equal(logs.filter((l) => l.includes("███████╗ █████╗")).length, 1);  // o banner só na abertura
-  assert.equal(logs.filter((l) => l.includes("modo interativo")).length, 2);  // ajuda e o comando desconhecido; nada depois do sair
+/** main com o stderr capturado. */
+async function rodar(argv) {
+  const erros = [], antes = console.error;
+  console.error = (x) => erros.push(String(x));
+  try { return { codigo: await s.main(argv), erro: erros.join("\n") }; } finally { console.error = antes; }
+}
+
+test("instalar: as detectadas vêm marcadas na multisseleção, o resumo antes do confirm, e só então o disco muda", async () => {
+  respostas = [["opencode"], true];
+  await s.instalar({ fonte: framework("fw", "1.1.0"), semMcp: true });
+  const alvos = escolhas.find((p) => p.mensagem === "Em quais ferramentas?");
+  assert.deepEqual(alvos.opcoes.map((o) => [o.valor, o.marcado]), [["kiro", true], ["opencode", true]]);
+  assert.equal(alvos.minimo, 1);
+  assert.deepEqual(Object.keys(s.lerInventario().alvos), ["opencode"]);
+  const i = saida.findIndex((x) => x.startsWith("[Resumo]"));
+  assert.ok(i >= 0 && i < saida.indexOf("? Instalar?") && saida.indexOf("? Instalar?") < saida.indexOf("opencode: 3 skills"));
+  assert.match(saida[i], /framework +— → 1\.1\.0\nopencode +3 skills/);
 });
 
-test("--sim vale só para o comando que o recebeu", async () => {
-  const antes = s.ctx.perguntar;
-  await s.main(["voar", "--sim"]);
-  assert.equal(s.ctx.perguntar, antes);
+test("instalar: com uma ferramenta detectada não pergunta; Esc ou não no confirm: cancelado, nada gravado", async () => {
+  s.ctx.exec = (cmd, args) => { chamadas.push([cmd, ...args].join(" ")); return { status: cmd === "kiro-cli" ? 1 : 0, stdout: "", stderr: "" }; };
+  respostas = [false];
+  assert.equal((await rodar(["instalar", "--fonte", framework("fw", "1.1.0"), "--sem-mcp"])).codigo, 0);
+  assert.ok(saida.includes("Instalando em: opencode") && !escolhas.length);
+  assert.ok(saida.includes("cancelado — nada foi alterado"));
+  assert.ok(!fs.existsSync(path.join(home, ".sabia/framework")) && !fs.existsSync(skill("sa-setup")));
+  s.ctx.escolher = async () => { throw new s.Cancelado(); };  // Esc na multisseleção
+  s.ctx.exec = () => ({ status: 0, stdout: "", stderr: "" });
+  assert.equal((await rodar(["instalar", "--fonte", path.join(raiz, "fw")])).codigo, 0);
+  assert.ok(!fs.existsSync(path.join(home, ".sabia/framework")));
+});
+
+test("sem terminal: sem -y, a pergunta necessária vira saída 1 com a flag; com -y, as detectadas e sem perguntas", async () => {
+  s.ctx.interativo = false;
+  const fw = framework("fw", "1.1.0");
+  let r = await rodar(["instalar", "--fonte", fw]);
+  assert.equal(r.codigo, 1);
+  // a dica repete as flags da pessoa; o erro vem antes do download
+  assert.equal(r.erro, `sabia: preciso escolher as ferramentas e não há terminal — use: sabia instalar --fonte ${fw} -a opencode -y`);
+  assert.ok(!saida.some((x) => x.includes("baixado")));
+  r = await rodar(["instalar", "--fonte", fw, "-a", "opencode", "--sem-mcp"]);
+  assert.equal(r.codigo, 1);
+  assert.equal(r.erro, `sabia: preciso confirmar e não há terminal — use: sabia instalar --fonte ${fw} -a opencode --sem-mcp -y`);
+  assert.ok(!fs.existsSync(path.join(home, ".sabia/framework")));
+  assert.equal((await rodar(["instalar", "--fonte", fw, "-y", "--sem-mcp"])).codigo, 0);
+  assert.deepEqual(Object.keys(s.lerInventario().alvos).sort(), ["kiro", "opencode"]);
+  assert.ok(!escolhas.length && !saida.some((x) => x.startsWith("?")));
+  // escolher o toolkit sem terminal: erro com o comando; nada instalado: só o aviso
+  r = await rodar(["toolkits", "instalar"]);
+  assert.equal(r.codigo, 1);
+  assert.match(r.erro, /diga o toolkit — use: sabia toolkits instalar <nome> -y/);
+  assert.equal((await rodar(["toolkits", "remover"])).codigo, 0);
+  assert.ok(saida.includes("nenhum toolkit instalado"));
+});
+
+test("instalar: a skill alterada à mão aparece com ✎ no resumo e fica; --forcar sobrescreve", async () => {
+  const fw = framework("fw", "1.1.0");
+  await s.instalar({ fonte: fw, alvo: "opencode", semMcp: true });
+  fs.writeFileSync(skill("sa-setup"), "mexi");
+  saida = [];
+  await s.instalar({ fonte: fw, alvo: "opencode", semMcp: true });
+  assert.match(saida.find((x) => x.startsWith("[Resumo]")), /\n +✎ ~\/\.config\/opencode\/skills\/sa-setup alterada à mão — mantida \(--forcar sobrescreve\)/);
+  assert.ok(saida.includes("opencode: 2 skills"));
+  assert.equal(fs.readFileSync(skill("sa-setup"), "utf8"), "mexi");
+  await s.instalar({ fonte: fw, alvo: "opencode", semMcp: true, forcar: true });
+  assert.equal(fs.readFileSync(skill("sa-setup"), "utf8"), "sa-setup 1.1.0");
+});
+
+test("toolkits: sem subcomando lista; apelidos ls, i, rm e toolkit; idempotente; --json; o baixar saiu", async () => {
+  const indice = escrever(path.join(raiz, "indice"), {
+    ".claude-plugin/marketplace.json": { name: "idx", plugins: [{ name: "batch-alfa", version: "1.0.0", source: "./batch-alfa", description: "jobs" }] },
+  });
+  toolkit(path.join(indice, "batch-alfa"));
+  assert.equal((await rodar(["toolkits", "--indice", indice])).codigo, 0);
+  assert.match(logs.at(-1), /^TOOLKIT +AUTOR[\s\S]*\nbatch-alfa +— +1\.0\.0 +— +— +jobs$/);
+  assert.equal((await rodar(["toolkit", "ls", "--indice", indice])).codigo, 0);
+  assert.equal(logs.at(-1), logs.at(-2));
+  // sem nome, fora de projeto: a multisseleção do índice sem os instalados
+  respostas = [["batch-alfa"], true];
+  assert.equal((await rodar(["toolkits", "i", "--indice", indice, "-a", "opencode"])).codigo, 0);
+  assert.deepEqual(escolhas[0].opcoes.map((o) => [o.valor, o.dica]), [["batch-alfa", "1.0.0  jobs"]]);
+  assert.ok(fs.existsSync(skill("batch")));
+  saida = [];
+  assert.equal((await rodar(["toolkits", "instalar", "batch-alfa", "-y", "--indice", indice])).codigo, 0);
+  assert.ok(saida.includes("batch-alfa 1.0.0 já instalado (opencode)") && !saida.some((x) => x.startsWith("?")));
+  assert.equal((await rodar(["toolkits", "listar", "--json", "--indice", indice])).codigo, 0);
+  assert.deepEqual(JSON.parse(logs.at(-1)), [{ nome: "batch-alfa", autor: "Ana Exemplo (Equipe Alfa)", indice: "1.0.0", instalado: "1.0.0",
+    projeto: null, descricao: "jobs", customiza: null }]);
+  // remover sem nome: a multisseleção dos instalados e o confirm (padrão N)
+  respostas = [["batch-alfa"]];
+  assert.equal((await rodar(["toolkits", "rm"])).codigo, 0);
+  assert.ok(saida.includes("cancelado — nada foi alterado") && fs.existsSync(skill("batch")));
+  assert.equal((await rodar(["toolkits", "rm", "batch-alfa", "-y"])).codigo, 0);
+  assert.ok(!fs.existsSync(skill("batch")));
+  saida = [];
+  assert.equal((await rodar(["toolkits", "remover", "batch-alfa", "-y"])).codigo, 0);
+  assert.ok(saida.includes("batch-alfa não está instalado"));
+  const r = await rodar(["toolkits", "baixar", "batch-alfa"]);
+  assert.equal(r.codigo, 1);
+  assert.equal(r.erro, 'sabia: comando desconhecido "toolkits baixar" — veja sabia -h');
+});
+
+test("<cmd> -h mostra a ajuda do comando e nunca executa; -v a versão; as flags curtas", async () => {
+  assert.equal((await rodar(["instalar", "-h"])).codigo, 0);
+  assert.match(logs.at(-1), /^uso:\n {2}sabia instalar — instala o Sabiá[\s\S]*-y, --sim/);
+  assert.ok(!fs.existsSync(path.join(home, ".sabia")) && !chamadas.length);
+  assert.equal((await rodar(["toolkits", "-h"])).codigo, 0);
+  assert.equal(logs.at(-1).match(/^ {2}sabia toolkits/gm).length, 4);
+  assert.equal((await rodar(["-v"])).codigo, 0);
+  assert.equal(logs.at(-1), JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8")).version);
+  assert.equal((await rodar([])).codigo, 0);
+  assert.match(logs.at(-1), /experimente: npx sabia instalar$/);
+  assert.deepEqual(s.lerArgs(["instalar", "-a", "kiro", "-t", "x,y", "-y"]), { posicionais: ["instalar"], opcoes: { alvo: "kiro", toolkits: "x,y", sim: true } });
+  assert.throws(() => s.lerArgs(["instalar", "-a", "-y"]), /--alvo precisa de um valor/);
 });
 
 test("banner: o sabiá colorido ao lado do nome; sem cores, só o nome", () => {
@@ -519,4 +649,61 @@ test("rota --fluxo: o tipo → skill do toolkit no passo que cria o tipo", () =>
 test("opção com valor sem o valor é recusada sem engolir a seguinte", async () => {
   assert.throws(() => s.lerArgs(["rota", "--fluxo", "--framework", "x"]), /--fluxo precisa de um valor/);
   assert.equal(await s.main(["rota", "--fluxo"]), 1);
+});
+
+test("cópia de toolkit alterada à mão: ✎ na prévia, fica registrada e reinstalar não a recusa; --forcar apaga", async () => {
+  const indice = escrever(path.join(raiz, "indice"), {
+    ".claude-plugin/marketplace.json": { name: "idx", plugins: [{ name: "batch-alfa", version: "1.0.0", source: "./batch-alfa" }] },
+  });
+  toolkit(path.join(indice, "batch-alfa"));
+  await s.instalarToolkit("batch-alfa", { indice, alvo: "opencode" });
+  fs.writeFileSync(skill("batch"), "mexi");
+  await s.removerToolkits(["batch-alfa"], { sim: true });
+  assert.ok(saida.includes("✎ ~/.config/opencode/skills/batch alterada à mão — mantida (--forcar apaga)") && !saida.includes("✗ ~/.config/opencode/skills/batch"));
+  assert.match(saida.at(-1), /→ para tirar as cópias alteradas: sabia toolkits remover batch-alfa --forcar/);
+  assert.equal(fs.readFileSync(skill("batch"), "utf8"), "mexi");
+  assert.deepEqual(Object.keys(s.lerInventario().toolkits["batch-alfa"].alvos.opencode.copias), ["~/.config/opencode/skills/batch"]);
+  await s.atualizarToolkits([], {});  // o registro das cópias não tem o que atualizar
+  assert.ok(saida.includes("nenhum toolkit instalado — veja: sabia toolkits"));
+  await s.instalarToolkits(["batch-alfa"], { indice, sim: true });  // não é "de outra pessoa": a edição fica
+  assert.equal(fs.readFileSync(skill("batch"), "utf8"), "mexi");
+  assert.ok(fs.existsSync(path.join(home, ".sabia/toolkits/batch-alfa/toolkit.json")));
+  await s.removerToolkits(["batch-alfa"], { sim: true, forcar: true });
+  assert.ok(!fs.existsSync(skill("batch")));
+  assert.deepEqual(s.lerInventario().toolkits, {});
+});
+
+test("desinstalar: a alterada à mão sai do total com ✎, fica registrada e o fecho diz como apagá-la", async () => {
+  await s.instalar({ fonte: framework("fw", "1.1.0"), alvo: "opencode", semMcp: true });
+  fs.writeFileSync(skill("sa-setup"), "mexi");
+  await s.desinstalar({ sim: true });
+  assert.match(saida.find((x) => x.startsWith("[Sai]")), /✗ opencode: 2 skills\n✎ ~\/\.config\/opencode\/skills\/sa-setup alterada à mão — mantida \(--forcar apaga\)/);
+  assert.match(saida.at(-1), /→ para tirar as cópias alteradas: sabia desinstalar -a opencode --forcar/);
+  assert.ok(s.lerInventario().alvos.opencode);
+  await s.desinstalar({ sim: true, forcar: true });
+  assert.ok(!fs.existsSync(skill("sa-setup")) && !s.lerInventario().alvos.opencode);
+});
+
+test("instalar: -t fora do índice e -a desconhecido falham antes do resumo, sem gravar nada", async () => {
+  const indice = escrever(path.join(raiz, "indice"), { ".claude-plugin/marketplace.json": { name: "idx", plugins: [] } });
+  const fw = framework("fw", "1.1.0");
+  await assert.rejects(s.instalar({ fonte: fw, alvo: "opencode", toolkits: "jav", indice, sim: true }), /toolkit jav não está nos índices — veja: sabia toolkits/);
+  assert.ok(!fs.existsSync(path.join(home, ".sabia/framework")) && !saida.some((x) => x.startsWith("[Resumo]")));
+  saida = [];
+  await assert.rejects(s.instalar({ fonte: fw, alvo: "vim", sim: true }), /ferramenta desconhecida: vim/);
+  assert.ok(!saida.some((x) => x.includes("baixado")));
+});
+
+test("índice vazio ou inacessível: o toolkits instalar diz o que conferir e sai 1", async () => {
+  const r = await rodar(["toolkits", "instalar", "--indice", escrever(path.join(raiz, "vazio"), { ".claude-plugin/marketplace.json": { plugins: [] } })]);
+  assert.equal(r.codigo, 1);
+  assert.equal(r.erro, "sabia: nenhum toolkit nos índices — confira o --indice ou ~/.sabia/indices.json");
+});
+
+test("opção desconhecida é recusada; o toolkits -h só mostra as opções do grupo", async () => {
+  assert.throws(() => s.lerArgs(["toolkits", "instalar", "--froce", "java"]), /opção desconhecida --froce — veja: sabia toolkits -h/);
+  assert.throws(() => s.lerArgs(["instalar", "-x"]), /opção desconhecida -x — veja: sabia instalar -h/);
+  assert.equal((await rodar(["toolkits", "instalar", "--froce", "java"])).codigo, 1);
+  assert.equal((await rodar(["toolkits", "-h"])).codigo, 0);
+  assert.ok(!/-t, --toolkits|--sem-mcp/.test(logs.at(-1)) && /-y, --sim/.test(logs.at(-1)));
 });

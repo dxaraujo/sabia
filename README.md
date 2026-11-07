@@ -225,8 +225,8 @@ ficha; o `CT.csv` da verificação) e `ATA`. Artefato novo: id provisório `<sig
    `~/.sabia/compilado/<alvo>/` e as instala na pasta do usuário — no Kiro, o power (`kiro-cli powers install`); no
    opencode, as skills em `~/.config/opencode/skills/` e os MCPs do `mcp.json` —, registrando
    tudo em `~/.sabia/inventario.json`. Nada vai para o projeto. Depois: `sabia atualizar` (recompila), `sabia desinstalar` e `sabia toolkits
-   listar|baixar|instalar|atualizar|remover` (`npm i -g sabia` deixa o comando `sabia`; `npx sabia --ajuda` mostra
-   todos). Instale pelo CLI, não pelo painel **Powers** a partir deste repositório: as skills do repositório são a
+   [listar|instalar|atualizar|remover]` (`npm i -g sabia` deixa o comando `sabia`; `npx sabia` mostra todos; o que
+   falta na linha de comando vira pergunta no terminal, e `-y` responde sem perguntas, em script ou CI). Instale pelo CLI, não pelo painel **Powers** a partir deste repositório: as skills do repositório são a
    fonte, e o que roda é a compilação. Para ver por onde um arquivo passa (o passo com desvio, o dono, o toolkit e as
    travas): `sabia rota <arquivo>`, ou `sabia rota <spec>/tasks.md#2.1` (pelos arquivos que a tarefa cita; sem casar,
    mostra o texto dela e os `para` dos desvios); o fluxo resolvido no projeto (tabela, grafo ASCII e Mermaid):
