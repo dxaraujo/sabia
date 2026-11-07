@@ -1,20 +1,20 @@
 ---
-{"resumo": "Retrospectiva com dados pelo fluxo `sa-aprender.retrospectiva`; registra bom · melhorar · ações no sprint-<nn>.md."}
+{"resumo": "Bom · melhorar · ações, cada ação com dono."}
 ---
 ## Entrada
 
-A pré-condição cumprida (passo `precondicao`).
+Os dados do ciclo.
 
 ## Faça
 
-**Retrospectiva com dados** — fluxo `sa-aprender.retrospectiva` (vazão, lead time, rodadas de revisão,
-correções humanas por causa, AFK sem intervenção). Registre no `sprint-<nn>.md`: bom · melhorar ·
-ações (cada ação com dono).
+Conduza e registre para a `## Retro` do `sprint-<nn>.md`: **bom** · **melhorar** · **ações**, cada ação com dono
+(`usuario` do `equipe.json`). A ação que muda uma política vai ao `acordos.md` (passo `folga` para a folga; as outras
+chaves, com o "ok" de quem tem `produto`, no mesmo commit).
 
 ## Saída
 
-Bom · melhorar · ações no `sprint-<nn>.md` → passo `horas`.
+A Retro → passo `fechar`.
 
 ## Pare se
 
-Sem condição de parada própria.
+Sem condição própria.

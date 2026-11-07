@@ -1,96 +1,143 @@
 ---
-{"resumo": "Plano da fatia no formato de spec do Kiro: .config.kiro, requirements.md ou bugfix.md, design.md e tasks.md, com os títulos que o Kiro valida (passo `sa-plano.plano.escrever`)."}
+{"resumo": "Modelos do plano da fatia pela matriz rota × formato: .config.kiro, proposal.md, delta OpenSpec, requirements.md, bugfix.md, design.md e tasks.md."}
 ---
-# Templates do plano da fatia (formato de spec do Kiro)
+# Plano da fatia — modelos por formato
 
-Os arquivos ficam em `.kiro/specs/<ft>-<slug>/` no formato de spec do Kiro: o painel de specs reconhece a pasta e o
-`tasks.md` ganha **Start task** / **Run all tasks**. O texto é no idioma do projeto; os marcadores que o Kiro lê
-(`.config.kiro`, `- [ ]`, `- [ ]*`, `_Requirements: …_`, `**Validates: Requirements …**`) e **os títulos que o
-Kiro valida** ficam exatamente como abaixo, em inglês — traduzido, o Kiro acusa `Missing required section`:
+A pasta da spec é `.kiro/specs/ft-<nnn>-<slug>/` (Kiro) ou `openspec/changes/ft-<nnn>-<slug>/` (OpenSpec), pelo
+`formato_spec` do `agentes.json`. O texto é no idioma do projeto; os títulos que a ferramenta valida ficam
+exatamente como abaixo (em inglês, no Kiro e no OpenSpec). Seção fixa sem conteúdo leva `Não se aplica.`, nunca
+conteúdo inventado. Plano curto: quem aprova lê tudo numa sentada.
 
-| Arquivo | Títulos fixos (nesta ordem) |
-|---|---|
-| `requirements.md` | `# Requirements Document` · `## Introduction` · `## Glossary` · `## Requirements` · `### Requirement N: …` · `#### Acceptance Criteria` |
-| `bugfix.md` | `# Bugfix Requirements Document` · `## Introduction` · `## Bug Analysis` · `### Current Behavior (Defect)` · `### Expected Behavior (Correct)` · `### Unchanged Behavior (Regression Prevention)` · `### Bug Condition` · `### Fix Property` · `### Preservation Property` |
-| `design.md` | `# Design Document: …` · `## Overview` · `## Architecture` · `## Components and Interfaces` · `## Data Models` · `## Correctness Properties` · `## Error Handling` · `## Testing Strategy` |
-| `tasks.md` | `# Implementation Plan: …` · `## Overview` · `## Tasks` · `## Task Dependency Graph` · `## Notes` |
+## Matriz rota × formato
 
-Os demais subtítulos do Sabiá ("Padrões a seguir", "Decisões técnicas", "Riscos"…) vão no idioma do projeto. **Toda
-seção fixa aparece sempre**, nas duas trilhas; sem o que dizer, ela leva só `Sem mudança.` ou `Não se aplica.` —
-nunca conteúdo inventado para preenchê-la.
+| Rota | Kiro | OpenSpec |
+|---|---|---|
+| trivial | sem pasta: tudo no MR | sem pasta: tudo no MR |
+| quick fatia | Quick Spec: `requirements.md`, `design.md`, `tasks.md` numa passada, sem portões | `proposal.md`, `specs/<cap>/spec.md`, `tasks.md` |
+| quick bug | Bugfix Spec: `bugfix.md`, `design.md`, `tasks.md` | `proposal.md`, delta MODIFIED, `tasks.md` |
+| completo | `requirements.md` → `design.md` → `tasks.md`, com "quer revisar agora?" em cada parte | `proposal.md`, delta, `design.md`, `tasks.md` |
 
-Plano curto: quem aprova tem de ler tudo numa sentada — um plano de 1.000 linhas esconde decisões em vez
-de mostrá-las.
+Quick e completo têm também `research.md`, `status.md` e `CT.csv`; o Kiro tem `.config.kiro`; com ELM e Cobre,
+`elm/`. Cobre com inclui, altera ou exclui exige quick ou completo.
 
-## `.config.kiro`
+## `.config.kiro` (Kiro)
 
-Uma linha de JSON, criada pela `sa-desenvolver` junto com a pasta (a `sa-plano` cria se faltar; `specId` = um
-UUID novo: `uuidgen`, em minúsculas — é o comando que os agentes podem rodar):
+Uma linha de JSON, criada pela `sa-desenvolver.iniciar.pasta`:
 
 ```json
-{"specId": "<uuid>", "workflowType": "requirements-first", "specType": "feature"}
+{"specId": "<uuid v4>", "workflowType": "requirements-first", "specType": "feature"}
 ```
 
-`specType`: `feature` (trilha padrão) ou `bugfix` (trilha rápida, com `bugfix.md` no lugar do `requirements.md`).
+`specType`: `feature` (fatia) ou `bugfix` (bug). `specId`: um UUID novo (`uuidgen`, em minúsculas).
 
-## `requirements.md` (trilha padrão)
+## `proposal.md` (OpenSpec)
+
+```markdown
+**Fatia:** [FT-<nnn>](<caminho da ficha>) · **Rota:** <quick | completo>
+
+## Why
+<motivo, a partir da Entrada e do Objetivo da ficha>
+
+## What Changes
+- <o que muda>
+<!-- no bug: Atual · Esperado · Não muda -->
+
+## Capabilities
+### New Capabilities
+- `<cap>`: <o que ela cobre>
+### Modified Capabilities
+- `<cap>`: <o que muda nela>
+
+## Impact
+- <código, APIs e dados afetados>
+```
+
+Na quick, que não tem `design.md`, as Decisões técnicas vão numa seção `## Decisões técnicas` no fim.
+
+## Delta OpenSpec — `specs/<cap>/spec.md`
+
+```markdown
+## ADDED Requirements
+
+### Requirement: <sigla>-<id> <título>
+<texto completo do requisito, copiado do aprovado>
+<!-- versão lida: <data-hora ISO do DOORS | —> -->
+
+#### Scenario: CT-nn <título>
+- **WHEN** <gatilho>
+- **THEN** <resultado visível>
+
+## MODIFIED Requirements
+
+### Requirement: <sigla>-<id> <título>
+<o texto inteiro novo, não só o trecho que muda>
+
+## REMOVED Requirements
+
+### Requirement: <sigla>-<id> <título>
+**Reason**: <por que sai>
+**Migration**: <o que fazer com o que dependia dele>
+```
+
+- Operação pela ação do Cobre: `ADDED` = inclui · `MODIFIED` = altera · `REMOVED` = exclui. `RENAMED` não se usa:
+  renomear é altera.
+- `<sigla>` ∈ HF · REG · EL · GL; `<id>` = id do ELM, ou o provisório `<EP|FT>nn-nn` no requisito novo (sem ELM, o
+  provisório é o definitivo).
+- `<cap>` em kebab-case; um requisito vive numa só. Requisito existente na spec viva mantém a `<cap>` de lá; o novo
+  usa o slug do épico pai, ou o da fatia sem pai.
+- O texto é copiado, sem reescrever, do arquivo aprovado de `elm/` (com ELM) ou da spec viva com as regras
+  aprovadas da ficha (sem ELM).
+
+## `requirements.md` (Kiro, fatia)
 
 ```markdown
 # Requirements Document
 
 ## Introduction
-FT-<nnn> — <título>. <O comportamento que esta fatia entrega, em 2–3 frases.>
-Épico: <EP-<nn> | — (sem épico)> · PRD ou ficha: `<caminho>` · ELM: HF <id>, REG <id> · Fora de escopo: <lista curta>
+FT-<nnn> — <título>. <o comportamento que a fatia entrega, em 2–3 frases.> Ficha: `<caminho da ficha>`.
 
 ## Glossary
-- **Sistema_Login**: <o componente que responde pelos critérios — termo usado nos critérios EARS>
-- **<Termo do domínio>**: <definição do glossário do projeto> (só os termos usados aqui)
+- **<Sistema_X>**: <o componente que responde pelos critérios>
+<!-- só os termos usados aqui; nenhum → Não se aplica. -->
 
 ## Requirements
 
-### Requirement 1: <nome>
+### Requirement 1: <sigla>-<id> <título>
+**Ação:** <inclui | altera | exclui> · **Versão lida:** <data-hora ISO | —>
 **User Story:** Como <ator>, quero <…>, para <…>.
-**Origem:** HF-01 · cenários 1.1, 1.2 · REG-01
+<!-- HF: a User Story; REG, EL, GL: o corpo do tipo, completo. Requisito sem DOORS: só o título. -->
 
 #### Acceptance Criteria
-1. QUANDO o usuário errar a senha pela 3ª vez em 15 minutos, O Sistema_Login DEVE marcar a conta como **Bloqueada**.
-2. ENQUANTO a conta estiver **Bloqueada**, O Sistema_Login DEVE recusar a autenticação com a mensagem MSG 2005.
-3. SE a mesma falha for registrada duas vezes, ENTÃO O Sistema_Login DEVE contá-la uma vez só.
-
-**Falsificável na base:** <a observação que mostra os critérios falsos hoje — ex.: "a 4ª tentativa ainda autentica">
+1. QUANDO <gatilho>, ENTÃO o <Sistema_X> DEVE <resultado> (CT-01)
+2. ENQUANTO <estado>, o <Sistema_X> DEVE <resultado> (CT-02)
+3. SE <condição indesejada>, ENTÃO o <Sistema_X> DEVE <resultado> (CT-03)
 ```
 
-- Padrões EARS: `QUANDO <gatilho>, O <Sistema> DEVE …` · `ENQUANTO <estado>, O <Sistema> DEVE …` ·
-  `SE <condição indesejada>, ENTÃO O <Sistema> DEVE …` · `ONDE <variação opcional>, O <Sistema> DEVE …` ·
-  sem gatilho: `O <Sistema> DEVE …`. O `<Sistema>` é um termo do Glossary.
-- Um requisito por grupo de cenários da fatia; critérios numerados `N.M`, citados pelo `tasks.md`.
-- Só o que a fatia cobre (`cobre` no backlog, ou os `C<n>` da ficha). Nada de regra que não esteja no
-  PRD/ELM/`decisoes.md`/ficha ou nos conceitos aprovados em `elm/` da pasta da fatia (a `[ESP] FT`: valem sobre o
-  PRD e o bundle).
+Padrões EARS: `QUANDO … ENTÃO … DEVE` · `ENQUANTO … DEVE` · `SE … ENTÃO … DEVE` · `ONDE … DEVE`. Critérios
+numerados `N.M`, cada um com o `CT-nn` que o prova; o `tasks.md` cita `N.M`.
 
-## `bugfix.md` (trilha rápida — defeito)
+## `bugfix.md` (Kiro, bug na quick)
 
 ```markdown
 # Bugfix Requirements Document
 
 ## Introduction
-FT-<nnn> — <título> (DF <id>). Ficha: `<produto>/fatias/FT-<nnn>-<slug>.md`. Fonte do comportamento correto:
-<HF/REG do ELM | decisão D-nn | regra óbvia>.
+FT-<nnn> — <título>. Ficha: `<caminho da ficha>`. Fonte do comportamento correto: <sigla>-<id> | D-nn | regra óbvia.
 
 ## Bug Analysis
 
 ### Current Behavior (Defect)
-1.1 QUANDO <condição>, ENTÃO o sistema <faz o errado> — evidência: <log, consulta, passo a passo>
+1.1 QUANDO <condição>, ENTÃO o sistema <faz o errado> — evidência: <log, consulta, passo a passo> (CT-01)
 
 ### Expected Behavior (Correct)
-2.1 QUANDO <condição>, ENTÃO o sistema DEVE <o certo>
+2.1 QUANDO <condição>, ENTÃO o sistema DEVE <o certo> (CT-01)
 
 ### Unchanged Behavior (Regression Prevention)
-3.1 QUANDO <condição vizinha>, ENTÃO o sistema DEVE CONTINUAR A <comportamento correto de hoje>
+3.1 QUANDO <condição vizinha>, ENTÃO o sistema DEVE CONTINUAR A <comportamento de hoje> (CT-02)
 
 ### Bug Condition
     FUNÇÃO condicaoDoDefeito(entrada)
-      RETORNA <predicado que separa as entradas afetadas das não afetadas>
+      RETORNA <predicado que separa as entradas afetadas>
     FIM
 
 ### Fix Property
@@ -98,141 +145,130 @@ Para toda entrada com `condicaoDoDefeito`, o resultado é o de 2.x.
 
 ### Preservation Property
 Para toda entrada sem `condicaoDoDefeito`, o resultado é igual ao de antes da correção.
+
+## Requisitos tocados
+
+### <sigla>-<id> <título>
+**Ação:** <altera | exclui>
+<texto completo do requisito, copiado do aprovado>
 ```
 
-As primeiras tarefas do `tasks.md` de um bugfix são sempre: **1.** teste que reproduz a condição do defeito
-(vermelho) e **2.** testes de preservação (verdes antes e depois da correção). A tarefa 1 e a da correção fecham
-num **ciclo só** (um commit, verde — `sa-codificar.codificar.tarefa`).
-
-**Testes existentes que mudam** (qualquer trilha): a correção ou o comportamento novo contradiz o esperado de um
-teste que já existe → declare no `bugfix.md` (em Expected Behavior, um item `2.x` com o teste, o esperado de hoje
-e o novo) ou no `requirements.md` (critério com o teste citado), com a **fonte da decisão** (pessoa, `D-nn`) — e
-uma tarefa própria para mudar a expectativa. Aparece no resumo do GATE do plano (`sa-plano.plano.gate`): quem aprova
-lê isso primeiro, e o Pleno ouve a recomendação de pedir a aprovação. Sem decisão de uma pessoa → é lacuna de
-negócio: pergunte (ou, autônomo, `bloqueada`).
+Current, Expected e Unchanged vêm da Entrada e de Não muda da ficha. `## Requisitos tocados` só quando o Cobre tem
+requisito. As primeiras tarefas do bug são sempre o teste que reproduz o defeito e os testes de preservação.
 
 ## `design.md`
+
+Kiro (completo e Quick Spec):
 
 ```markdown
 # Design Document: FT-<nnn> <título>
 
 ## Overview
-<Abordagem em 3–6 linhas.>
+<abordagem em 3–6 linhas; no bug, a causa raiz com arquivo:linha do research.md>
 
 ## Architecture
-### Padrões a seguir (pattern grounding)
-| Referência real (research) | O que imitar |
-|---|---|
-| `<caminho>` | <estrutura, transação, teste> |
-
-### Forma do programa
-Árvore de arquivos:
-    src/…/LoginService.java          alterar  conta tentativas e consulta o bloqueio
-    src/…/BloqueioConta.java         criar    regra de bloqueio (módulo profundo: 1 método público)
-    test/…/BloqueioContaTest.java    criar
-
-Árvore de chamadas do caminho principal:
-    LoginController.autenticar → LoginService.autenticar → BloqueioConta.registrarFalha → TentativaRepository.contar
+<padrões a seguir (análogos do research.md) · árvore de arquivos (criar | alterar) · árvore de chamadas do caminho principal>
 
 ## Components and Interfaces
-    BloqueioConta.registrarFalha(login: String, instante: Instant): ResultadoBloqueio
+<assinaturas e contratos>
 
 ## Data Models
-<tabelas/colunas reais (research), queries, contratos de API/arquivo; DDL necessária → time de banco>
+<tabelas e colunas reais, contratos de API ou arquivo; DDL necessária → item BD>
 
 ## Correctness Properties
-*Uma propriedade é algo que deve valer em toda execução válida — vira teste baseado em propriedades quando o
-toolkit do projeto tiver a biblioteca; senão, testes de exemplo.*
-
 ### Property 1: <título>
-*Para qualquer* sequência de falhas de um mesmo login, a conta DEVE ficar **Bloqueada** se e só se houver 3 ou mais
-falhas numa janela de 15 minutos.
+*Para qualquer* <entrada válida>, <o que deve valer>.
 **Validates: Requirements 1.1, 1.3**
 
 ## Error Handling
 <o que é rejeitado, registrado, desfeito; transação; como repetir não duplica>
 
 ## Testing Strategy
-- **Pontos de teste (seams):** <o mais alto possível; ex.: `BloqueioConta` pela interface pública; `POST /login`>
-- **Contrato de pronto (verificação de aceite):**
+- Pontos de teste: <o mais alto possível, pela interface pública>
+- Contrato de pronto:
 
 | Cenário | Como executar | Esperado | Onde verificar |
 |---|---|---|---|
-| HF-01 · 1.2 | 4× `POST /login` com senha errada (massa: usuário `teste.bloqueio`) | 4ª resposta 423, conta **Bloqueada** | resposta + `SELECT situacao FROM conta WHERE login=…` |
-
-O Esperado repete o **"Então" do cenário** com os mesmos valores visíveis (texto, rótulo, mensagem, nome de
-arquivo) — palavra por palavra; o valor interno que o produz (enum, código) vai em Data Models, nunca no lugar dele.
+| CT-01 <título> | <chamada, tela ou job> | <o "Então" do cenário, com os mesmos valores visíveis> | <resposta · banco · log> |
 
 ## Decisões técnicas
-| Decisão | Alternativas | Motivo | Vira ADR? |
-|---|---|---|---|
-<!-- Vira ADR? sim = muda como o time vai construir daqui para a frente: o Dev escreve o ADR no PR, em `adr/` desta
-     pasta (passo `sa-codificar.codificar.pr`); o Dev Sênior o julga e a consolidação o leva para a pasta de ADRs. -->
+- <decisão> — <motivo> (<ADR NNNN | local>)
 
 ## Riscos
 <concorrência, volume, dependências, DDL pendente>
 ```
 
-Na trilha rápida, o `design.md` é curto, mas com todas as seções fixas: a causa raiz (com `arquivo:linha` da
-research) no Overview, a correção em Architecture/Components and Interfaces, e a Testing Strategy com exploração
-da condição do defeito, verificação da correção e da preservação. Seção que a correção não toca (ex.: Data Models)
-→ `Sem mudança.` / `Não se aplica.`.
+OpenSpec (só completo):
+
+```markdown
+## Context
+<estado atual, com arquivo:linha do research.md>
+
+## Goals / Non-Goals
+**Goals:** <…> · **Non-Goals:** <…>
+
+## Decisions
+- <decisão> — <motivo> (<ADR NNNN | local>)
+<!-- contratos e dados; o Contrato de pronto (Cenário CT-nn · Como executar · Esperado · Onde verificar) também aqui -->
+
+## Risks / Trade-offs
+- <risco> → <mitigação>
+```
+
+O Esperado do Contrato de pronto repete o "Então" do cenário palavra por palavra (texto, rótulo, mensagem); o valor
+interno que o produz vai em Data Models. A decisão que atravessa fatias vira ADR no MR; a local fica aqui. Onde o
+projeto mantém ET (`ET as-built: sim` na seção ELM do `sabia.md`), Components and Interfaces, Data Models e Decisões
+técnicas (OpenSpec: Decisions) formam a ET publicada; a codificação os ajusta ao que foi feito antes do MR.
 
 ## `tasks.md`
+
+Kiro:
 
 ````markdown
 # Implementation Plan: FT-<nnn> <título>
 
 ## Overview
-<1–2 linhas: ordem e estratégia (teste primeiro, do núcleo para a borda).>
+<1–2 linhas: ordem e estratégia (teste primeiro, do núcleo para a borda)>
 
 ## Tasks
 
-- [ ] 1. Bloqueio após a terceira falha (unidade)
-  - [ ] 1.1 Teste em `BloqueioContaTest`: 3 falhas em 15 min → **Bloqueada**; 2 falhas → **Ativa** (vermelho)
-  - [ ] 1.2 Implementar `BloqueioConta.registrarFalha` imitando `<análogo>` (verde)
-  - Pronto quando: `<comando de teste único> BloqueioContaTest` verde
-  - _Requirements: 1.1, 1.3_
-- [ ] 2. Login usa o bloqueio (integração)
-  - [ ] 2.1 Teste de `POST /login` 4× → 423 (vermelho)
-  - [ ] 2.2 `LoginService` consulta `BloqueioConta`; resposta 423 com a MSG 2005 (verde)
+- [ ] 1. <comportamento> (CT-01)
+  - [ ] 1.1 Teste em `<Teste>`: <cenário> (vermelho)
+  - [ ] 1.2 Implementar `<unidade>` imitando `<análogo>` (verde)
+  - Pronto quando: `<comando de teste único>` verde
+  - _Requirements: 1.1_
+- [ ]* 2. <tarefa opcional>
   - Pronto quando: `<comando>` verde
-  - _Requirements: 1.1, 1.2_
-- [ ]* 3. Teste de propriedade da Property 1
-  - Pronto quando: `<comando de teste> <teste de propriedade>` verde
-  - _Requirements: 1.1, 1.3_
-- [ ] 4. Checkpoint — validação completa (compilar, suíte inteira, lint, cobertura)
-  - A revisão não é tarefa daqui: é da `sa-revisar`, em outro contexto (quem implementou não se revisa)
+  - _Requirements: 1.2_
+- [ ] 3. Suíte completa (compilar, testes, lint, cobertura)
 
 ## Task Dependency Graph
 
 ```json
-{
-  "waves": [
-    { "id": 0, "tasks": ["1.1"] },
-    { "id": 1, "tasks": ["1.2"] },
-    { "id": 2, "tasks": ["2.1", "3"] },
-    { "id": 3, "tasks": ["2.2"] }
-  ]
-}
+{"waves": [{"id": 0, "tasks": ["1.1"]}, {"id": 1, "tasks": ["1.2", "2"]}]}
 ```
 
 ## Notes
-- Tarefas com `*` são opcionais.
-- 2.1 depende de 1.2 (usa `BloqueioConta`); 3 testa a Property 1, implementada em 1.2.
+- <por que uma tarefa depende da outra, se não for óbvio>
 ````
 
-- Uma tarefa = um comportamento, começando pelo teste que falha (corretiva: o teste que reproduz o defeito).
-- Toda tarefa, inclusive a opcional, diz o comando que prova que terminou; o do checkpoint é a validação do passo
-  `sa-codificar.codificar.validar`.
-- Ordem de dependência. O **Run all tasks** do Kiro roda as tarefas pelas *waves* do `## Task Dependency Graph`:
-  as de uma wave rodam ao mesmo tempo, e a wave N só começa quando 0..N-1 terminaram. O bloco ```` ```json ```` com
-  `waves` não vazio é obrigatório (sem ele o Kiro acusa `tasks/missing-dag-json`) — nunca `Não se aplica.` nem
-  lista de setas. Regras: toda tarefa folha não marcada (subtarefa `N.M`, ou `N` sem subtarefas) aparece em
-  exatamente uma wave, inclusive as opcionais `*`; checkpoint e tarefa-mãe ficam de fora; ids de wave contíguos a
-  partir de 0; dependente (ou que mexe no mesmo arquivo) vai numa wave posterior; sem dependência → uma wave só.
-  O porquê de cada dependência, se não for óbvio, vai em `## Notes`.
-- Mudança desta fatia em código compartilhado → primeiro a tarefa de **preparação** ("deixar a mudança fácil"),
-  depois a mudança; prefactoring de que várias fatias precisam e refatoração larga não são fatia nem plano: são um
-  épico técnico, pela `sa-triar`.
-- DDL não vira tarefa: vai para Riscos e para o campo Banco do `status.md`.
+OpenSpec:
+
+```markdown
+## 1. <grupo>
+- [ ] 1.1 Teste: <cenário> (CT-01) — pronto: `<comando>`
+- [ ] 1.2 <implementação> — pronto: `<comando>`
+
+## 2. Validação
+- [ ] 2.1 Suíte completa (compilar, testes, lint, cobertura)
+```
+
+- Uma tarefa = um comportamento, começando pelo teste que falha (no bug, o teste que reproduz o defeito).
+- Toda tarefa diz o comando que prova que terminou e o `CT-nn` que ela cobre.
+- Refatoração preparatória no trecho tocado entra como tarefa própria, antes da mudança, em commit separado.
+- A última tarefa é a suíte completa.
+- Achado aceito da autorrevisão ou do MR entra como tarefa `[R<n>]` (ex.: `- [ ] [R1] 4.1 <correção>`).
+- Kiro: o bloco ```` ```json ```` com `waves` não vazio é obrigatório; toda tarefa folha não marcada aparece em
+  exatamente uma wave, inclusive as opcionais `*`; ids de wave contíguos a partir de 0; dependente (ou que mexe no
+  mesmo arquivo) vai numa wave posterior.
+- DDL não vira tarefa: vai para Riscos e, pela captura, para um item BD.

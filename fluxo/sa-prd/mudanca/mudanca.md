@@ -1,29 +1,37 @@
 ---
 {"fluxo": "mudanca", "dono": "sa-especificador",
- "quando": ["mudar um PRD aprovado na base e ainda não fatiado (o intervalo GATE do PRD → fatiamento), pela regra da tarefa de especificação (a [ESP] aberta, reaberta na sprint corrente ou a [ESP] EP-nn Revisão n), numa versão nova do PRD; volta à revisão e ao GATE de sa-prd.prd; fatiado, o PRD não muda"],
+ "quando": ["mudar o prd.md aprovado, antes ou depois de fatiar: tira a aprovação, registra a versão em Mudanças, reescreve, o P.O. reaprova e a mudança chega às fatias atingidas; chamado pela sa-prd.prd, sa-refinar.fatiar, sa-refinar.ajustar, sa-especificar.reuniao, sa-especificar.prototipo ou direto", "mudar o PRD do EP-03"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa"],
  "passos": [
-   {"id": "mudanca", "saidas": {"transcrição nova sem ATA: a [ESP] aberta ou reaberta, a ATA primeiro": "→ sa-especificar.reuniao", "o que mudou, para a revisão e o GATE": "→ sa-prd.prd.revisao", "[ESP] concluída numa sprint fechada, com sprint aberta: a Revisão pelo encaixe, do P.O. ou do SM": "→ sa-planejamento.durante", "[ESP] concluída numa sprint fechada, sem sprint aberta: pendência do P.O. na [GB]": "→ sa-planejamento.sprint", "PRD ainda na pasta de trabalho (sem o GATE, ou aprovado sem ir à base)": "→ sa-especificar.especificar", "mudança desistida antes do GATE: a [ESP] conclui sem versão nova": "→ sa-especificar.especificar", "fatiado: alteração de artefato que uma fatia não terminal cobre": "→ sa-especificar.fatia", "fatiado: a fatia sem [ESP] FT, ou com ela concluída numa sprint fechada, com sprint aberta: o encaixe, do P.O. ou do SM": "→ sa-planejamento.durante", "fatiado: [ESP] FT concluída numa sprint fechada, sem sprint aberta: pendência do P.O. na [GB]": "→ sa-planejamento.sprint", "fatiado: escopo novo, ou a fatia já terminal": "→ sa-triar.triar"}}
+   {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao"},
+   {"id": "versao"},
+   {"id": "editar"},
+   {"id": "aprovar", "travas": ["aprovacao-no-documento"], "saidas": {"ajuste pedido": "editar"}},
+   {"id": "gravar", "de": "gravar-na-base"},
+   {"id": "fatias", "saidas": {"nenhuma fatia concluida atingida": "devolver"}},
+   {"id": "capturar", "de": "captura"},
+   {"id": "devolver", "saidas": {"fatia atingida e o pedido direto: seguir para o ajuste das fatias": "→ sa-refinar.ajustar"}}
  ]}
 ---
-# Mudança depois de aprovado — o PRD aprovado muda antes do fatiamento
+# Mudança — o PRD aprovado muda
 
-Entrada: épico com o PRD aprovado na base (`<produto>/epicos/<EP>-<slug>/`), na Fase `aprovado` (ainda não
-fatiado), e um pedido explícito de mudança: da pessoa ou da ATA de uma reunião (`sa-especificar.reuniao`). A mudança é
-trabalho da tarefa de especificação do épico, pela regra da
-[Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação): a `[ESP]`
-aberta, a reaberta na sprint corrente ou a `[ESP] EP-<nn> Revisão <n>`. O PRD ganha uma versão nova (`1.1`, `1.2`…),
-com a mudança registrada nele (seção Mudanças), e a conclusão da `[ESP]` publica a versão nova. Depois do
-fatiamento (Fase `fatiado`) o PRD não muda: o DOORS Next é a fonte, e o PRD fica como registro do épico. A alteração
-de artefato que uma fatia não terminal cobre é da `[ESP] FT` dela; escopo novo, ou a fatia já terminal, é épico ou
-fatia nova pela `sa-triar`.
+O `prd.md` aprovado muda no mesmo arquivo, antes ou depois de fatiar: a aprovação sai, a versão entra em Mudanças, o
+texto muda só no que muda, o P.O. reaprova no documento e a mudança chega às fatias atingidas
+(`sa-refinar.ajustar`, aviso ao responsável ou captura).
 
-Leia antes: `.sabia/sabia.md` (ELM, caminhos, papéis) e o steering de produto que ele aponta.
+Entrada: o `prd.md` aprovado e o épico `em-especificacao` ou `fatiado`.
 
-## Modo autônomo
+## Entrada: vizinhos
 
-O mesmo de `sa-prd.prd`: PRD é decisão de uma pessoa — chamada em modo autônomo → pare.
+- épico `a-moldar` → `sa-refinar.moldar`
+- épico `em-especificacao` sem o `prd.md` aprovado → `sa-prd.prd`
+- fatia ou bug → `sa-refinar.ajustar`
+- sustentação → "PRD é só do épico" ■
+- sem pessoa presente (subagente) → "mudar o PRD é decisão de pessoa" ■
 
 ## Regras
 
-As de `sa-prd.prd`.
+As do fluxo `sa-prd.prd`, e:
+
+- Os ids ficam estáveis. Requisito que sai é marcado exclui, e o id dele nunca é reaproveitado.
+- Enquanto o PRD estiver sem aprovação, a `sa-refinar.fatiar` não grava fatias novas.

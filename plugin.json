@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "sabia",
-  "version": "2.0.3",
-  "description": "Sabiá: framework de engenharia agêntica que leva cada demanda da ideia ao resultado aceito em sete etapas. Primeiro, a triagem registra no backlog épicos, fatias e sustentação. Depois, uma entrevista de alinhamento gera o PRD, que vira fatias verticais AFK ou HITL. Cada fatia tem um plano no formato de spec do Kiro, é implementada com TDD e backpressure, passa por revisão e verificação independentes e por um PR lido por uma pessoa. No fim, o as-built é consolidado no IBM ELM e os erros viram regras (aprendizado composto). O planejamento é ágil (Scrumban), com a situação de cada item gravada no backlog e na sprint por quem a muda. Inclui os MCPs mcp-elm (work items, horas, requisitos, casos de teste e sincronismo), mcp-gitlabpr (merge requests) e mcp-elk (logs) e uma setup que gera os agentes do projeto com permissões mínimas por papel e as skills de toolkit escolhidas (backend, batch, frontend).",
+  "version": "2.1.0",
+  "description": "Sabiá: framework de engenharia agêntica que leva cada demanda da ideia ao merge, em Kiro e opencode. Alinhar antes e verificar depois: a captura e a triagem registram épicos, fatias, bugs e Sustentação no backlog; o refinamento molda o épico (pitch e go/kill), detalha a fatia nos três amigos e fatia o épico; o ciclo é Scrumban, com WIP e virada. Cada fatia segue a rota trivial, quick ou completo, em IA supervisionada, IA autopilot ou manual, com TDD e backpressure, autorrevisão e verificação de contexto limpo e um MR revisado por outro desenvolvedor e lido por uma pessoa. O ELM (IBM) é utilitário e opcional, pela sa-elm. As skills: sabia, sa-setup, sa-status, sa-triar, sa-refinar, sa-planejamento, sa-prd, sa-especificar, sa-entrevistar, sa-desenvolver, sa-pesquisar, sa-plano, sa-revisar, sa-verificar, sa-atender, sa-elm, mais os arquivos comuns de fluxo (entrada, captura e gravação na base). Inclui os MCPs mcp-elm, mcp-gitlabpr (merge requests) e mcp-elk (logs) e uma setup que gera os 5 agentes do projeto (sa-desenvolvedor, sa-especificador, sa-pesquisador, sa-revisor e sa-verificador) com as skills de toolkit escolhidas.",
   "author": {
     "name": "Daniel Xavier Araújo",
     "email": "danielxaraujo@gmail.com"
@@ -17,9 +17,6 @@
     "spec-driven development",
     "engenharia agêntica",
     "agentic engineering",
-    "fatias verticais",
-    "tracer bullet",
-    "grill me",
     "me entreviste",
     "planejamento ágil",
     "planejar a sprint",
@@ -32,8 +29,6 @@
     "registrar a demanda",
     "registra o defeito",
     "coloca no backlog",
-    "importar do ewm",
-    "encaixe na sprint",
     "retomar a fatia",
     "demanda",
     "nova funcionalidade",
@@ -41,7 +36,6 @@
     "próxima fatia",
     "proxima fatia",
     "começar a fatia",
-    "pegar a task",
     "corrigir o defeito",
     "corrigir o bug",
     "ajuste rápido",
@@ -52,51 +46,44 @@
     "sustentação",
     "manutenção",
     "implantação",
-    "sincroniza a sprint",
-    "sincronizar com o ewm",
     "extrair dados",
     "escreve o prd",
     "prd",
     "épico",
     "epico",
     "fatiar",
-    "fatiar o prd",
     "refinar o backlog",
-    "gerar o backlog",
     "planeja a fatia",
     "gera a spec",
     "implementa a fatia",
-    "revisa o pr",
     "verifica a fatia",
-    "pr mergeado",
-    "fecha a fatia",
-    "consolidar",
-    "roda as fatias afk",
-    "modo afk",
     "retrospectiva",
-    "registra a lição",
     "status do Sabiá",
     "fechar a sessão",
     "atualizar a configuração do Sabiá",
-    "atualizar os agentes do Sabiá",
     "ewm",
     "doors next",
     "etm",
     "work item",
     "lançar horas",
     "timesheet",
-    "sincronizar o elm",
     "baixar os requisitos",
     "visualizar o bundle",
-    "explorar o bundle",
-    "configurar o elm"
+    "configurar o elm",
+    "regenerar os agentes",
+    "revisa o mr",
+    "autopilot",
+    "customizar o passo",
+    "importar do ewm",
+    "fatias verticais",
+    "pegar a task"
   ],
   "extensions": {
     "io.github.dxaraujo.sabia": {
       "requires": {
         "pypi:mcp-elm": ">=3.6.4"
       },
-      "note": "Projeto com ELM: a sa-setup grava .kiro/config/elm/pa_<nome>.json, que o MCP elm lê."
+      "note": "Projeto com ELM: a sa-elm.setup grava .sabia/config/elm/pa_<nome>.json, que o MCP elm lê."
     }
   }
 }

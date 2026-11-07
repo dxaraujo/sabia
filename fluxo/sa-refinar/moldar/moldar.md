@@ -1,0 +1,26 @@
+---
+{"fluxo": "moldar", "dono": "sa-especificador",
+ "quando": ["épico a-moldar: pitch.md de uma página (Shape Up) e go/kill de quem tem produto", "moldar o EP-04", "ideia nova grande", "pitch do épico", "go ou kill do EP-04"],
+ "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa", "aprovacao-no-documento", "aprovacao-do-cliente", "elm-pela-sa-elm"],
+ "passos": [
+   {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao", "saidas": {"ideia grande em texto, ainda não registrada: captura como épico": "captura"}},
+   {"id": "pitch", "chama": ["sa-entrevistar.entrevistar", "sa-especificar.prototipo", "sa-elm.baixar"]},
+   {"id": "decisao", "saidas": {"cabe em G: nasce a fatia": "captura"}},
+   {"id": "gravar-na-base", "de": "gravar-na-base", "saidas": {"gravou o épico capturado na entrada": "pitch"}},
+   {"id": "seguir", "saidas": {"go: seguir para o PRD": "→ sa-prd.prd", "cabe em G: seguir para o detalhar": "→ sa-refinar.detalhar", "kill: moldar o próximo épico a-moldar": "entrada", "sem decisão, ou não": "fim"}},
+   {"id": "captura", "de": "captura", "saidas": {"linha preparada": "gravar-na-base"}}
+ ]}
+---
+# Moldar — pitch e go/kill do épico
+
+Shape Up antes do PRD: o épico `a-moldar` ganha o `pitch.md` de uma página na pasta
+`.sabia/planejamento/epicos/EP-nn-<slug>/` (problema, apetite, solução em traços, riscos, não objetivos), e quem tem
+`produto` decide go ou kill. Go: `em-especificacao` e o PRD (`sa-prd.prd`). Kill: `cancelado`, e a pasta fica.
+Aceita épico em `a-moldar`.
+
+## Entrada: vizinhos
+
+- épico `em-especificacao` → `sa-prd.prd`
+- épico `fatiado` → `sa-refinar.ajustar`
+- fatia ou bug → `sa-refinar.detalhar`
+- sustentação → `sa-atender.atender` (agente `sa-desenvolvedor`)

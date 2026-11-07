@@ -1,33 +1,46 @@
 ---
 {"fluxo": "revisar", "dono": "sa-revisor",
- "quando": ["revisão de PRD (rubrica P), plano (L) ou código (C) sem a tarefa [REV]: como subagente de outro fluxo ou a pedido direto", "revisa", "revisa o PRD", "analisa o plano", "judge", "code review", "no fim da sa-prd, da sa-plano e da sa-codificar"],
- "travas_gerais": ["sim-da-pessoa"],
+ "quando": ["revisão independente do plano (rubrica L) ou do código (rubrica C), como subagente de quem chama ou a pedido direto", "revisa o plano da FT-031", "revisa o código da FT-031", "code review", "autorrevisão antes do MR"],
+ "travas_gerais": ["decisao-da-pessoa"],
  "passos": [
+   {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "fatia"},
    {"id": "escopo"},
+   {"id": "ci"},
    {"id": "evidencia"},
-   {"id": "calibrar"},
    {"id": "relatorio"}
  ]}
 ---
-# Revisar — Verificação independente
+# Revisar — revisão independente
 
-Entrada: o pedido de revisão — PRD de um épico ou artefatos de uma fatia (`[ESP] FT`) (rubrica **P**), plano de uma
-fatia (rubrica **L**) ou código de uma fatia (rubrica **C**) —, como subagente de outro fluxo (a rodada de revisão do
-plano, do PRD, dos artefatos ou do código) ou com a
-tarefa `[REV] FT-nnn` (fluxo `hitl`).
+Entra o pedido de quem chama: a rubrica (L ou C), o item e a parte do plano ou o diff. Quem chama:
 
-Quem gera não verifica o próprio trabalho: o revisor começa **sem** o contexto de quem escreveu. Prefira o agente
-**`sa-revisor`** (não edita artefato nem código). Sem ele, rode este fluxo numa sessão nova ou, no mínimo, ignore todo o
-raciocínio anterior da conversa e trabalhe só com os arquivos.
+| Quem chama | Rubrica | Quando |
+|---|---|---|
+| `sa-plano.plano` | L | a pessoa aceita "quer revisar agora?" ao fim de uma parte do plano |
+| `sa-plano.replanejar` | L | só a parte alterada |
+| `sa-desenvolver.codificar` | C | autorrevisão antes do MR, em qualquer modo |
+| `sa-revisar.mr` | C | apoio ao revisor humano |
 
-Você **não edita** artefato, código nem `tasks.md`, e não faz commit — escreve só o relatório da rodada (no
-HITL, fluxo `hitl`, o relatório e o `status.md` na branch do PR, com commit e push; na `[APR]`, o `status.md`:
-aprovação do plano, fluxo `aprovar-plano`; mudanças pedidas e volta à especificação no PR, fluxo `aprovar-pr`). Ignore justificativas de quem fez (mensagem de commit, comentário, texto do pedido): julgue os artefatos.
+O pedido direto também entra ("revisa o plano da FT-nnn", "revisa o código da FT-nnn"); nele, a sessão da pessoa
+troca para a branch `<id>` antes de chamar o subagente. A rota trivial não tem plano: só recebe a rubrica C.
+
+Roda no subagente `sa-revisor`, sem o contexto de quem escreveu: julgue os arquivos e ignore as justificativas
+(mensagem de commit, texto do pedido). Você só lê: não grava arquivo, não roda a suíte e não faz commit. O relatório
+volta a quem chamou, que tria e grava.
+
+Aceita: fatia ou bug `em-andamento`, com a branch `<id>` que tem o plano (rubrica L) ou diff contra `origin/<base>`
+(rubrica C). No autopilot, a branch está na worktree `.sabia/local/wt/<id>`.
+
+## Entrada: vizinhos
+
+- fatia ou bug sem plano na branch `<id>` (rubrica L) → nada a revisar: o plano é da `sa-plano.plano` (agente `sa-desenvolvedor`)
+- fatia ou bug sem diff contra `origin/<base>` (rubrica C) → nada a revisar: o código é da `sa-desenvolver.codificar` (agente `sa-desenvolvedor`)
+- épico ou item de Sustentação → nada a revisar: só fatia e bug têm plano e código ■
 
 ## Regras
 
 - Achado sem evidência não entra.
-- Não proponha reescrever o que funciona; a correção é a menor mudança que fecha o achado.
-- Não amplie o escopo: problema real fora da fatia vira **SUGESTÃO** com "fora do escopo — abrir item no backlog".
-- Não invoque nem simule outra skill do fluxo: termine com o veredito (e, com a tarefa, o aviso ao próximo papel) e
-  pare. Como subagente, devolva o relatório a quem chamou.
+- A correção é a menor mudança que fecha o achado; não proponha reescrever o que funciona.
+- Problema real fora do escopo da fatia vira SUGESTÃO com destino `adia`.
+- Só o BLOQUEANTE reprova. Os outros achados a pessoa tria (corrige · adia · volta-plano · volta-spec · descarta).
+- Banco só pelo MCP de consulta, em leitura.

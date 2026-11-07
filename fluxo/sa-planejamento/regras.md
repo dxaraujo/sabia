@@ -1,28 +1,27 @@
 ---
-{"resumo": "Regras comuns a todos os fluxos da sa-planejamento (arquivos, regra de ouro, capacidade, horas de gestão)."}
+{"resumo": "Regras comuns aos fluxos da sa-planejamento: arquivos, regra de ouro, quem decide, previsão pela vazão e ELM fora do rito."}
 ---
 # Regras comuns da `sa-planejamento`
 
 Valem em todos os fluxos da skill.
 
-Arquivos na raiz de `<produto>/` (formatos em [arquivos.md](~/.sabia/framework/skills/sa-planejamento/references/arquivos.md)):
-`equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<pai>/sprint-<nn>.md` (a sprint segue a iteração pai do EWM;
-chave `<pai>/Sprint <nn>`: `2026/Sprint 03`). Fatias: `<produto>/backlog.md`.
-
-Regra de ouro: cada etapa termina com a proposta na tela e "ok" antes de gravar.
-
-- Créditos do Kiro: toda sessão desta skill registra os créditos no Fechar a sessão ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4): um
-  comentário na `[GB]` — `elm_comentar(<id da [GB]>, "Créditos <atividade> <ids>: <créditos> (sessão <sessão>,
-  <login>, <AAAA-MM-DD>)")`, ex.: `Créditos planejamento 2026/Sprint 03: 2.40 (sessão 9ec1dcaa, ana.souza,
-  2026-10-29)` — e, com sprint aberta, no mesmo commit, a linha na seção **Créditos de gestão** do `sprint-<nn>.md`
-  (Atividade = a atividade da sessão, um destes valores: `inicial` · `planejamento` · `encaixe` · `sincronização` ·
-  `troca de modo` · `review` · `retrospectiva` · `virada`; `<ids>` do comentário = a chave da sprint, salvo no
-  `encaixe` e na `troca de modo`, o id do item).
-- Horas de gestão: só o SM lança, na `[GB]` (`elm_lancar_horas`); o P.O. nunca lança, nem quando é também o SM.
-- Nunca planeje acima da capacidade de revisão: trabalho que ninguém revisa não está entregue, só está parado.
-- Fatia nunca se espalha por sprints para caber; se não cabe, divide.
-- Tamanho é do time; o agente propõe P/M/G com justificativa, a pessoa decide. Nada de Planning Poker em pontos: a
-  previsão é pela vazão.
-- Pontos, se o time os usar no EWM, ficam só no IB (plan item), nunca nas tarefas, e não entram no planejamento.
-- O compromisso da sprint é a meta: fatia prevista que não entrou não é falha; meta não atingida vai para a retro.
-- Toda hora planejada tem tarefa: nada de especificação ou Sustentação fora da sprint.
+- **Arquivos** em `.sabia/planejamento/`, cada um pelo seu padrão:
+  - `equipe.json`, validado pelo [equipe.schema.json](~/.sabia/framework/skills/sa-planejamento/assets/equipe.schema.json): o padrão `sa-planejamento/equipe.md`;
+  - `acordos.md`: o padrão `sa-planejamento/acordos.md`;
+  - `roadmap.md` (opcional): o padrão `sa-planejamento/roadmap.md`;
+  - `sprints/<AAAA>/sprint-<nn>.md`: o padrão `sa-planejamento/sprint.md`;
+  - Regras aprendidas, no `.sabia/sabia.md`: o padrão `sa-planejamento/regras-aprendidas.md`.
+- **Sprint aberta** = o `sprint-<nn>.md` de maior chave (`<AAAA>/Sprint <nn>`). A sprint não tem campo de situação:
+  deixa de ser a aberta quando a próxima é gravada. O andamento de cada linha vem do status do `backlog.md`.
+- **Regra de ouro**: cada fluxo mostra a proposta na tela e só grava com o "ok". Ajuste → a proposta de novo.
+- **Quem decide**: qualquer pessoa conduz. A ordem do backlog, a seleção, a meta e o "ok" da sprint são de quem tem
+  `produto` no `equipe.json`. Sem a booleana: mostre a proposta, diga quem aprova (os nomes do `equipe.json`) e não
+  grave.
+- **Gravação**: todo estado e todo arquivo de planejamento vão direto na base, num commit pequeno, pela gravação comum
+  na base de cada fluxo. Nada daqui vai por MR.
+- **Previsão pela vazão**: itens de desenvolvimento concluídos por sprint, sem pontos. A meta é o compromisso; a
+  seleção é previsão. Item previsto que não terminou não é falha: volta na virada do próximo planejamento.
+- **Item maior que G** é épico: não entra como desenvolvimento; vai ao refinamento (`sa-refinar.moldar`).
+- **ELM fora do rito**: com a seção ELM no `.sabia/sabia.md`, a iteração (`sa-elm.iteracao`) e o cancelamento da
+  tarefa do item que sai da sprint (`sa-elm.finalizar`) são só oferecidos. A resposta nunca trava o fluxo. Sem ELM,
+  nenhuma oferta aparece.

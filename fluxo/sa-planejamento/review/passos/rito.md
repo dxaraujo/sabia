@@ -1,27 +1,24 @@
 ---
-{"resumo": "Rito da review: o resumo da coluna Status e, para cada fatia concluída, o cenário entregue e a evidência; o débito de especificação sem tarefa; o retorno do P.O. no sprint-<nn>.md."}
+{"resumo": "Mostra os concluídos com o link do MR e os abertos; registra o retorno por item; pedido novo vai à captura."}
 ---
 ## Entrada
 
-A pré-condição dos ritos de fechamento cumprida (passos `sincronizar` e `consolidacao`).
+A sprint e o `backlog.md` da base.
 
 ## Faça
 
-Abra pelo resumo da coluna Status das Fatias do `sprint-<nn>.md` — concluídas · prontas sem consolidar · iniciadas
-e planejadas que migram —: é o que foi feito na sprint. Para cada fatia concluída: o cenário entregue e a
-**evidência** do `verificacao.md` (resposta, contagem, screenshot). Depois das concluídas, o débito técnico de
-especificação: `Débito de especificação: <linhas com Tarefa —>` (seção Débito de especificação do `sprint-<nn>.md`;
-a consolidada sem sprint aberta, pela marca ` · débito de especificação (sem sprint)` no Drift de negócio do `status.md` da fatia, na base); a
-correção é decisão do P.O. Registre o retorno do P.O. na `## Review` do `sprint-<nn>.md`, uma linha por fatia concluída
-([arquivos.md](~/.sabia/framework/skills/sa-planejamento/references/arquivos.md#sprintspaisprint-nnmd)) (bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base),
-commit `<pai>/Sprint <nn>: review`; sem retorno, a linha
-`sem retorno (<P.O.>, <AAAA-MM-DD>)`: a retrospectiva confere que a review foi feita); pedido novo → fluxo
-`sa-triar.triar` (origem: review `<chave>`), depois volte aqui — não reabre fatia concluída.
+1. Mostre os itens concluídos no ciclo: linhas desenvolvimento e atendimento cujo item tem `concluida_em` dentro das
+   datas da sprint, cada um com o link do MR, onde está a prova. Depois, os abertos: vão para a virada do próximo
+   planejamento.
+2. Registre o retorno de quem está presente, uma linha por item concluído: `<id> · <retorno>`, ou `<id> · sem
+   retorno`. Vai na `## Review` do `sprint-<nn>.md` (passo `gravar`).
+3. Pedido novo vira item pelo passo `captura`, com `origem review <AAAA>/Sprint <nn>` na `obs`. Item concluído não
+   reabre: o pedido sobre ele também entra pela captura.
 
 ## Saída
 
-O retorno do P.O. registrado: o fluxo termina. A retrospectiva e a virada são o fluxo `sa-planejamento.retrospectiva`.
+Pedido novo → passo `captura`. Sem pedido novo → passo `regras-aprendidas`.
 
 ## Pare se
 
-Pedido para reabrir fatia concluída → não reabre: é pedido novo pela `sa-triar`.
+Sem condição própria: a review não trava.

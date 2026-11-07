@@ -1,66 +1,52 @@
 ---
-{"resumo": "Registro do item de Sustentação (AT-nnn e as demais categorias), em <produto>/sustentacao/<pasta>/<ID>-<slug>.md."}
+{"resumo": "Registro do item de Sustentação (AT · IM · BD · IN · OP · EX) em .sabia/planejamento/sustentacao/<ID>-<slug>.md: cabeçalho, Pedido, Critério de pronto, Atividade, Resposta, Horas e Lições, sem status e sem dado de cliente."}
 ---
-`<produto>/sustentacao/<pasta>/<ID>-<slug>.md` (pasta da categoria na tabela **Sustentação** do `sabia.md`) — o mesmo formato para toda categoria; fora do Atendimento, `## Consultas`,
-`## Pesquisa de código` e `## Resposta enviada` dão lugar a `## O que foi feito` (passos e evidência, sem dado de cliente).
+# Registro de Sustentação
+
+`.sabia/planejamento/sustentacao/<ID>-<slug>.md`, o mesmo formato para as seis categorias. Gravado direto na base,
+pela gravação comum. Não tem status: a situação está no `backlog.md`. Dado de cliente nunca entra: fica em
+`.sabia/local/sustentacao/<ID>/`, fora do git.
 
 ```markdown
 # AT-012 · Extração de contas bloqueadas em setembro
 
-**Categoria:** Atendimento · **Origem:** chamado 4521 · **Pedido por:** área de segurança · **Prazo:** 2026-10-16
-**Responsável:** joao.lima · **Situação:** aberto | em-andamento | concluido | cancelado (<motivo>)
-**Critério de pronto:** planilha com as contas bloqueadas por tentativas, por dia · **Estimativa:** 3 h
+**Categoria:** AT (Atendimento) · **Origem:** chamado 4521 · **Pedido por:** área de segurança · **Prazo:** 2026-10-16 · **Responsável:** joao.lima
 
 ## Pedido
-<o que o cliente precisa receber, nas palavras dele, sem dado pessoal>
+<o que o cliente precisa, sem dado pessoal>
 
-## Consultas
-| # | Consulta (SQL) | Resultado |
-|---|---|---|
-| 1 | `select count(*) from conta where situacao = 'B' and dt_bloqueio between …` | 1.284 contas |
+## Critério de pronto
+Planilha com as contas bloqueadas por tentativas, por dia.
 
-Arquivo: `.sabia/local/sustentacao/atendimento/AT-012/contas-bloqueadas-2026-09.csv` (fora do git)
+## Atividade
+- 2026-10-14 · `select count(*) from conta where situacao = 'B' and dt_bloqueio between …` → 1.284 contas; arquivo em `.sabia/local/sustentacao/AT-012/` · próximo: rascunho da resposta
+- 2026-10-14 · `BloqueioService.java:88` bloqueia na 3ª tentativa e grava `dt_bloqueio` · próximo: —
 
-## Pesquisa de código
-- `BloqueioService.java:88` — bloqueia na 3ª tentativa e grava `dt_bloqueio`
-
-## Resposta enviada
-<texto, sem dado que identifique pessoas>
+## Resposta
+<texto enviado, sem dado que identifique pessoas>
 
 ## Horas
 | Data | Horas |
 |---|---|
 | 2026-10-14 | 2 |
 
-## Créditos
-| Data | Papel | Login | Sessão Kiro | Power sabia | Créditos |
-|---|---|---|---|---|---|
-| 2026-10-14T16:20:05 | ATD | joao.lima | 5753e516 | 2.0.0 | 3.12 |
-
-**ELM:** —
-ELM pendente [IB AT-012 concluir]: concluir o IB [AT-012]
-**Saída:** —
+## Lições
+| Lição | Regra proposta |
+|---|---|
 ```
 
-`**Saída:**` `—` (1 · nada) · `triagem: <o que vai à sa-triar> (origem <ID>)` (2 · alteração ou regra) · `lição: <o que
-registrar> (sa-aprender)` (3, fora do Atendimento); mais de uma → separadas por ` · `. O id que nasce depois (FT-nnn, L-nnn) não volta ao
-registro.
+Seção sem conteúdo fica só com o título.
 
-`**ELM:** —` sem pendência; logo abaixo, uma linha por pendência: `ELM pendente [<chave>]: <o que falta>`. Resolvida,
-acrescente `ELM feito [<mesma chave>]: <o que foi feito> (<AAAA-MM-DD>)` sem apagar a pendência (chaves em
-[elm.md](~/.sabia/framework/skills/sabia/references/elm.md#pendências), Pendências).
-
-| Campo | Formato | Obrigatório | Quem grava |
+| Campo | Significado | Valores | Preenche |
 |---|---|---|---|
-| Categoria | o nome na tabela **Sustentação** do `sabia.md` | sim | `sa-triar` |
-| Origem | como a coluna `origem` da Sustentação no `backlog.md` | sim | `sa-triar` |
-| Pedido por | área ou papel, sem nome de pessoa | sim | `sa-triar` |
-| Prazo | `AAAA-MM-DD` ou `—` | não | `sa-triar` |
-| Critério de pronto | uma frase | sim | `sa-triar` |
-| Estimativa | `<n> h` (decimal com ponto) | sim | `sa-triar` |
-| Responsável | login ou `—` | sim | `sa-triar`, ou o passo `assumir` |
-| Situação | `aberto` · `em-andamento` · `concluido` · `cancelado`, com o significado em [backlog.md](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#situações), Situações (Item de Sustentação) | sim | quem causa |
-| Pesquisa de código | só com o `sa-pesquisar` (passo `sa-atender.atender.executar`): um resumo dos fatos, `arquivo:linha` — o fato, sem dado de cliente; sem pesquisa, a seção não entra | não | `sa-atender` |
-| Horas | uma linha por `elm_lancar_horas`: Data `AAAA-MM-DD`, Horas decimais | — | `sa-atender` · `sa-executar` |
-| Créditos | uma linha por sessão (item 4 do [Fechar a sessão](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão) da `sa-status`); Papel = a sigla da tarefa (`ATD`, `IMPL`, `BD`…) | — | quem fecha a sessão |
-| O que foi feito (outras categorias) | lista numerada `<n>. <o que foi executado> · <onde> · <resultado> · <link do chamado ou da mudança>` | — | `sa-executar` |
+| Categoria | Confirmada antes de gravar; define a série do id e não muda | AT (Atendimento) · IM (Implantação) · BD (Banco de dados) · IN (Infra) · OP (Operação) · EX (Apoio a outros times) | captura comum, pela `sa-atender.atender` ou pela `sa-triar.triar` |
+| Origem | De onde veio o pedido | `chamado <n>` · `EWM <n>` · `pedido` · `origem <id>` (desdobramento ou DDL de fatia) | captura comum |
+| Pedido por | Área ou papel, sem nome de pessoa | texto | captura comum |
+| Prazo | Data-limite | `AAAA-MM-DD` · `—` | captura comum · `sa-atender.atender` |
+| Responsável | Quem atende | `usuario` do `equipe.json` · `—` | `sa-atender.atender` |
+| Pedido | O que o cliente precisa, sem dado pessoal | texto | captura comum |
+| Critério de pronto | Quando se considera resolvido | uma frase | `sa-atender.atender` |
+| Atividade | O que foi feito: consultas, pesquisa de código (`arquivo:linha`), passos em ambiente (o que · onde · resultado), troca de responsável, regra em aberto ao P.O. | linhas `AAAA-MM-DD · feito · próximo` | `sa-atender.atender` · fechar a sessão da `sa-status` |
+| Resposta | Texto enviado, sem dado que identifique pessoas | texto | `sa-atender.atender` |
+| Horas | Horas informadas pela pessoa (opcional; nunca bloqueia) | tabela Data \| Horas (`AAAA-MM-DD` \| decimal) | `sa-atender.atender` |
+| Lições | Candidatas às Regras aprendidas, para a curadoria na review | tabela Lição \| Regra proposta | `sa-atender.atender` |

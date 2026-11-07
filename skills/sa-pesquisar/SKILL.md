@@ -1,10 +1,10 @@
 ---
 name: sa-pesquisar
-description: "Code research for a slice (fatia) of the Sabiá flow, before planning — read-only: finds where the behavior lives, the analogous features (pattern grounding), what can be reused, the neighboring tests, the real schema and the constraints; compacts it all into research.md with facts and file:line references, no opinion or solution. Keeps the planner's context clean (the researcher reads a lot and returns little). Use when the user says \"pesquisa o código para a FT-031\", \"onde isso está implementado\", \"research\", \"entender o código antes de planejar\", and as the first step of sa-plano."
+description: "Neutral, read-only research in the sa-pesquisador subagent of the Sabiá flow: receives scope, questions and hints from the caller (sa-plano, sa-prd, sa-refinar, sa-entrevistar, sa-atender), builds 3 to 7 questions when none come, investigates structure, current flow, analogous features, reuse, data (read-only, counts only), tests and documentation (the slice's spec folder, repository specs, the ELM bundle, live ELM in read mode), and returns only facts with file:line in the research.md sections, up to about 150 lines. Writes nothing: the caller keeps the result (research.md belongs to sa-plano). Never invents a file, class, column or route; what it did not find goes to Não encontrado. Use when the user says \"pesquisa o código da FT-031\", \"onde isso está implementado\", \"research\", \"entender o código antes de planejar\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.0.3"
+  version: "2.1.0"
 ---
 
-# sa-pesquisar — Entender antes de planejar
+# sa-pesquisar — Fatos antes de decidir

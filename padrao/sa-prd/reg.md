@@ -1,13 +1,22 @@
 ---
-{"resumo": "Corpo da regra (REG): um enunciado testável, com valores e a origem como nota de rodapé; com a política REG com dados técnicos = sim, a seção Dados (o envelope OKF fica no okf-elm.md da sa-prd)."}
+{"resumo": "Corpo da regra (REG): um enunciado testável, com valores e a fonte; com REG com dados técnicos = sim, a seção Dados."}
 ---
 # Regra (REG)
 
-**Regra (REG)** — um enunciado testável, com valores ("Após **3** tentativas inválidas em **15 minutos**, a conta
-fica **Bloqueada** por **30 minutos**."), a origem como nota de rodapé ligada ao `sources` (`[^d-02]`) e, se
-houver, `## Relações`.
+Um enunciado testável, com valores. O mesmo corpo serve ao bloco do `prd.md` e ao arquivo de `elm/`.
 
-Com a linha **REG com dados técnicos** = `sim` na seção ELM do `sabia.md`, a regra pode trazer
-`## Dados`: a tabela e o campo (na forma original) que ela lê ou grava, com a origem, na tabela da seção de mesmo
-nome da ET — `| Entidade · tabela | Campo | Leitura ou gravação | Origem |`. Só nessa seção a P9 não vale. Com
-`não` (ou sem a linha), a regra não tem a seção.
+```markdown
+Após **3** tentativas inválidas em **15 minutos**, a conta fica **Bloqueada** por **30 minutos**.
+
+**Fonte:** D-<nn> | ATA-<nn> [mm:ss] | <sigla>-<id>
+
+## Dados   <!-- só com REG com dados técnicos = sim no sabia.md -->
+
+| Entidade · tabela | Campo | Leitura ou gravação | Origem |
+|---|---|---|---|
+| <CONTA> | <SITUACAO> | gravação | D-<nn> |
+```
+
+- Uma regra por bloco, com a fonte. Sem fonte, a regra não entra: vai ao Em aberto.
+- A seção Dados só existe com a linha REG com dados técnicos = `sim` na seção Especificação do `.sabia/sabia.md`;
+  só nela os nomes técnicos entram, na forma original.

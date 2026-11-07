@@ -1,33 +1,43 @@
 ---
 {"fluxo": "verificar", "dono": "sa-verificador",
- "quando": ["verificação de aceite sem a tarefa [VER]: como subagente da sa-codificar ou do loop (AFK), ou chamada pela [VER] HITL (fluxo hitl)", "no fim da sa-codificar e na fase de verificação do sa-orquestrar"],
- "travas_gerais": ["sim-da-pessoa", "aceite-independente"],
+ "quando": ["aceite contra a spec: como subagente da sa-desenvolver.codificar antes do MR, da sa-verificar.uat ou a pedido direto", "verifica a FT-031", "testa a fatia", "executa os cenários", "teste de aceitação"],
+ "travas_gerais": ["aceite-independente", "decisao-da-pessoa"],
  "passos": [
+   {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "fatia"},
    {"id": "roteiro"},
-   {"id": "ambiente", "saidas": {"DDL do campo Banco ainda não aplicada: bloqueada, a aplicação é da Sustentação (item BD/Implantação)": "fim"}},
-   {"id": "executar", "saidas": {"algum cenário rejeitado ou ⚠️, ou 🔁 no HITL": "resultado"}},
+   {"id": "ambiente", "saidas": {"a aplicação não sobe por ambiente: todos os cenários ⚠️": "resultado"}},
+   {"id": "executar"},
+   {"id": "fora-dos-cenarios"},
    {"id": "casos"},
-   {"id": "resultado", "saidas": {"cenário errado na ficha sem épico, fora dos artefatos: bloqueada, é da triagem": "→ sa-triar.triar"}}
+   {"id": "resultado"}
  ]}
 ---
-# Verificar — O comportamento existe de verdade?
+# Verificar — o comportamento existe de verdade?
 
-Teste unitário verde prova que o código faz o que o teste diz; a verificação prova que o **sistema** faz o que o
-cenário do PRD diz. Prefira o agente **`sa-verificador`** (contexto limpo; não implementou a fatia).
+Teste verde prova que o código faz o que o teste diz; a verificação prova que o **sistema** faz o que o cenário diz.
+Você exercita a aplicação direto (curl, navegador, job) contra os cenários CT-nn, devolve o bloco 🔎 a quem chamou e
+grava o `CT.csv`, do qual é o único escritor. A asserção durável são os testes automatizados no CI: a prova vai no
+MR, sem arquivo de requisições nem de massa.
 
-Seja cético: quem implementou tende a achar que terminou, e funcionalidade pela metade costuma passar em teste de
-unidade. "Feito" é uma afirmação; a evidência é a prova.
+Quem chama: `sa-desenvolver.codificar` (autoverificação antes do MR, em qualquer modo), `sa-verificar.uat` (os
+cenários do UAT, com a pessoa acompanhando) ou a pessoa ("verifica a FT-nnn"; a sessão dela troca para a branch
+`<id>` antes de chamar o subagente). Roda no subagente `sa-verificador`, sem o contexto de quem implementou. Seja
+cético: "feito" é uma afirmação, a evidência é a prova.
 
-Entrada: pasta da fatia com revisão `APROVADO`, na branch da fatia, sem a tarefa — **AFK** (subagente do loop ou da
-`sa-codificar`) ou chamada pela tarefa `[VER]` do **HITL** (fluxo `hitl`, com `fase: em-verificacao`, na branch do
-PR; quem chamou é o dono da rodada). Tipo de projeto, como executar e onde ver o resultado: seção
-**Verificação de aceite** do `.sabia/sabia.md` (vem do toolkit, confirmado na setup).
+Leia antes a seção Verificação de aceite do `.sabia/sabia.md` (Executar · URL de teste · Onde verificar · Token).
+Sem essa seção, ofereça a `sa-setup.configurar` e pare.
+
+Aceita: fatia ou bug `em-andamento`, com a branch `<id>` que tem o código e a spec da rota. No autopilot, a branch
+está na worktree `.sabia/local/wt/<id>`.
+
+## Entrada: vizinhos
+
+- fatia ou bug sem código na branch `<id>` → a implementação é da `sa-desenvolver.codificar` (agente `sa-desenvolvedor`)
+- épico ou item de Sustentação → não há cenários de fatia a verificar ■
 
 ## Regras
 
-- Nunca marque aceito sem evidência. Nunca altere código de produção aqui — só massa, fixtures e evidências.
-- Nunca rode contra produção, nem com dado real de pessoa. Evidência ou trecho de resposta que traga dado real
-  (homologação com cópia de produção, por exemplo) vai para `.sabia/local/verificacao/<ft>/`, fora do git; no
-  `verificacao.md` ficam a consulta, a contagem, o caminho e um resumo sem identificar pessoas.
-- Não invoque nem simule outra skill do fluxo: termine com o resultado e pare. Como subagente, devolva o relatório a
-  quem chamou.
+- Nunca marque aceito sem evidência. Nunca altere código, `status.md` nem a base, e não faça commit: quem chamou
+  leva a prova ao MR e faz as capturas.
+- Nunca use produção nem dado real de pessoa. Banco só em consulta, pelo MCP de banco.
+- Evidência com dado real não sai da máquina: no relatório vai só um resumo, sem identificar pessoas.

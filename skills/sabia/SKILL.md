@@ -1,257 +1,200 @@
 ---
 name: sabia
-description: "Guide to the Sabiá flow — spec-driven agentic engineering, with IBM ELM as the official source of documentation and Scrumban agile planning: tracks by size (rápida, padrão, épico) and support (sustentação) tracks (Atendimento, Implantação, Banco de dados, Infra, Operação, Apoio a outros times), phases, human gates, artifacts and where they live, agents, principles, and which skill to use for each request. Use to understand or explain the flow, or to decide the next step when no other Sabiá skill fits. Use when the user says \"como funciona o Sabiá\", \"qual o fluxo\", \"o que eu faço agora com isso\", \"Sabiá\"."
+description: "Sabiá guide and router for the agent workflow (Kiro and opencode). Use when the person asks how the Sabiá flow works, which skill to use, or makes a request without naming a skill. Covers intake and triage, refinement (shaping with go/kill, three amigos, slicing), sprint planning with WIP limits, development routes (trivial, quick, complete) in supervised or autopilot mode, merge request review by a developer other than the author, verification, archive and optional publication to IBM ELM through sa-elm. Routes each request to the right sa-* skill. Use when the user says \"como funciona o Sabiá\", \"qual o fluxo\", \"qual skill eu uso\", \"o que eu faço agora com isso\", \"Sabiá\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.0.3"
+  version: "2.1.0"
 ---
 
-# Sabiá — Engenharia agêntica orientada a especificação
+# Sabiá — guia e roteador do fluxo
 
-O agente escreve muito código rápido; o que limita o resultado é o **alinhamento** antes e a **verificação**
-depois. O Sabiá põe as pessoas onde elas têm mais alavanca — decidir o quê, aprovar o como, ler o código — e
-deixa o resto com agentes de contexto limpo, presos a feedback automático. O IBM ELM é o registro oficial do que
-o sistema faz; o repositório guarda como cada mudança foi feita.
+Alinhar antes e verificar depois. O agente escreve muito código rápido; o que limita o resultado é o alinhamento antes
+e a verificação depois. O vigente fica no DOORS quando o projeto tem ELM; sem ELM, fica na spec viva do repositório
+(OpenSpec: `openspec/specs/`; Kiro: `.kiro/specs/`). Este guia não grava nada: explica e manda cada pedido para a
+skill certa (tabela [O que dizer](#o-que-dizer)).
 
-Configuração do projeto: `.sabia/sabia.md` (gerado pela **`sa-setup`**). Sem ele, comece por
-"configurar o Sabiá".
+Configuração do projeto: `.sabia/sabia.md` (gerado pela `sa-setup`). Sem ele, comece por "configurar o Sabiá".
 
-**As-built:** as skills `sa-*` que rodam são compiladas pelo `sabia instalar` (e `atualizar`) na pasta do usuário, a
-partir dos fluxos, dos padrões e das skills do framework (`~/.sabia/framework/`): no opencode, `~/.config/opencode/skills/`;
-no Kiro, o power (motor v3: `kiro-cli --agent-engine v3`). Os fluxos existem só no framework, e nada é copiado para o
-projeto; o que o projeto customiza fica em `.sabia/fluxo/` e `.sabia/padrao/` e chega pelo agente dono do fluxo.
-Ferramentas: **Kiro** (IDE ou CLI no motor v3) e **opencode**.
+**As-built:** as skills são compiladas na pasta do usuário na instalação (`sabia instalar`, no opencode e no Kiro), e
+nada é copiado para o projeto. O que o projeto customiza fica em `.sabia/fluxo/` e `.sabia/padrao/` e chega pelo
+agente dono do fluxo.
 
-## Trilhas (o tamanho decide a cerimônia)
-
-Toda demanda nova entra pela **`sa-triar`**: ela decide a trilha e registra o trabalho no backlog — inclusive a
-Sustentação —, sem começar, e pergunta se há mais algum item. O hub **`sa-iniciar`** recebe um item registrado e
-diz a skill do papel; cada skill de papel assume a própria tarefa no EWM (`elm_transicao`) e pode ser
-chamada direto:
-
-| Papel | Tarefa | Skill |
-|---|---|---|
-| Especificador | `[ESP]` | `sa-especificar` (entrevista → PRD → GATE do PRD → publicação no ELM, onde a `[ESP]` do épico termina; a ATA de cada reunião com o cliente e, com tela, o protótipo aprovado antes do PRD; a `[ESP] FT` de uma fatia: os artefatos do ELM que ela inclui, altera ou exclui, publicados na conclusão), no agente `sa-especificador` |
-| Dev | `[DEV]` | `sa-desenvolver` (compromisso, `iniciada` na base, branch) → pesquisar → plano → implementar → PR → merge (`pronta` na base; a fatia é dele de ponta a ponta) |
-| Revisor (Dev Sênior) | `[REV]` | `sa-revisar` |
-| Aprovador (Dev Sênior) | `[APR]` — só nos gates sem tarefa de papel; nasce quando a fatia chega ao gate | `[APR] … Aprovar plano` → `sa-revisar.aprovar-plano` · `[APR] … Aprovar PR` (AFK) → `sa-revisar.aprovar-pr` |
-| Verificador (QA) | `[VER]` | `sa-verificar` |
-| quem atende | `[ATD]` (Sustentação — Atendimento) | `sa-atender` |
-| quem faz o item de Sustentação | `[IMPL]` `[BD]` `[INF]` `[OPE]` `[EXT]` (demais categorias) | `sa-executar` (assumir no ELM, registrar o trabalho, lançar horas, concluir) |
-| P.O. ou SM (analista de negócio) | `[GB] Gerenciamento do backlog` (do SM; o P.O. nunca lança horas: os créditos de toda sessão vão num comentário na `[GB]`) | `sa-triar` (triagem) · `sa-fatiar` (fatiamento do PRD aprovado e GATE do backlog) · `sa-consolidar` (fatia `pronta`: processo de produto, no agente `sa-produto`) · `sa-planejamento` (sprint, ritos e sincronização) |
-
-| Trilha | Quando | Caminho |
-|---|---|---|
-| **rápida** | defeito ou ajuste ≤ 1 dia, comportamento certo já conhecido — inclusive o diff que cabe numa frase | `bugfix.md` + `tasks.md` → implementação → PR → revisão → verificação → consolidação (AFK: revisão e verificação antes do PR) |
-| **padrão** | uma fatia do backlog: de um épico, ou sem épico (Manutenção) com regra clara e ficha aprovada pelo P.O. | pesquisa → plano → **GATE do plano** → implementação (TDD) → PR → revisão → verificação → consolidação (AFK: revisão e verificação antes do PR) |
-| **épico** | funcionalidade com várias histórias ou decisão de produto em aberto | entrevista → PRD → **GATE do PRD** (o especificador) → ELM (a `[ESP]` termina) → fatias (P.O. ou SM, logo em seguida) → **GATE do backlog** → planejamento → cada fatia na trilha padrão |
-| **sustentação** | trabalho que não muda o repositório, numa categoria da tabela **Sustentação** do `sabia.md` — Atendimento (o cliente pede consulta, extração ou explicação), Implantação, Banco de dados, Infra, Operação, Apoio a outros times. Mudança no repositório sem épico é fatia (rápida ou padrão) da Manutenção | triagem: categoria e entrevista curta → item da categoria (`AT-nnn`, `IM-nnn`…) no backlog e o IB dele no EWM (`[AT-nnn] <pedido>`), filho do IB da categoria (nasce com o 1º item dela, filho da `Sustentação`); a tarefa (`[ATD]`, `[IMPL]`…) nasce quando o item entra numa sprint · Atendimento: `sa-atender` (assume → banco só leitura e bundle → resposta com "ok" → saldo de horas → desdobramentos) · demais: `sa-executar` (assumir → registrar (trabalho e horas) → encerrar com desdobramento) |
-
-Toda hora trabalhada cabe numa tarefa da sprint: `[ESP]` (especificação do épico), `[DEV]`, `[REV]`, `[VER]` (por
-fatia; no AFK só a `[DEV]`), `[APR]` (por gate com aprovação: plano, PR do AFK), as de Sustentação (`[ATD]`,
-`[IMPL]`… — uma por item, filha do IB dele) e `[GB]` (triagem, fatiamento, consolidação, planejamento e sincronização; horas só
-do SM; os créditos de toda sessão do P.O. ou do SM vão num comentário nela — [elm.md](references/elm.md)). **Lançar ≠
-concluir:** lançar horas é registro de empenho, a qualquer momento numa tarefa assumida (inclusive antes de um
-GATE); concluir é da skill do papel quando o trabalho dela termina, perguntando só o saldo —
-`[DEV]` no merge, `[REV]` ao aprovar (depois do push), `[VER]` ao aceitar (depois do push), `[APR]` na aprovação,
-`[ESP]` ao publicar o aprovado no ELM (a do épico, depois do GATE do PRD; a `[ESP] FT`, ao concluir a especificação da fatia), Sustentação ao finalizar (com o IB do item). **Entrega** (todo papel do HITL):
-commit → push → conferir no remoto (`git rev-parse HEAD` = `git rev-parse origin/<branch>`) → só então lançar horas
-ou concluir a tarefa e avisar o próximo — quem vem depois só acha no remoto o que foi publicado.
+## Fases e papéis
 
 ```
-ENTRADA       triar ─► backlog: EP novo · FT sem épico (padrão ou rápida, cada uma com a sua ficha) · Sustentação (AT-/IM-… + IB) ─► "mais algum?"
-                │
-HUB           iniciar <item> ─► especificar · desenvolver · revisar ([REV], [APR]) · verificar · atender · executar · planejamento (troca) · consolidar   (cada uma assume a sua tarefa)
-                │
-PRODUTO       especificar (ATA de cada reunião · protótipo aprovado, com tela) ─► entrevistar ─► PRD ─► GATE PRD (especificador) ─► ELM ─► fatiar (P.O./SM) ─► GATE backlog ─► sprint (EWM)
-                                                                                                                                             │
-FATIA         desenvolver (iniciada na base) ─► pesquisar ─► plano ─► GATE plano ─► implementar (TDD) ─► PR ─► revisar ─► verificar   (AFK: revisão e verificação antes do PR)
-                                                                                                                            │
-DEPOIS        merge (Dev, PR aprovado; remove a worktree do loop) ─► pronta na base
-                │
-PRODUTO       consolidar (P.O./SM, [GB]): débito de especificação (drift depois do merge) ─► ELM: ET as-built ligada à [DEV], CTs ─► ADRs do PR ─► concluida ─► aprender
+captura (qualquer pessoa ou skill) ─► triagem sa-triar.triar
+  ├─ épico ───────► sa-refinar.moldar (pitch, go/kill) ─► sa-prd.prd ─► sa-refinar.fatiar
+  ├─ fatia · bug ─► sa-refinar.detalhar (ficha: regras · CT-nn · Cobre [+ elm/]) ─► pronta ─► sa-refinar.ajustar
+  └─ sustentação ─► sa-atender.atender
+ciclo sa-planejamento (inicial · sprint · review · retrospectiva) · inspeção diária sa-status.painel
+desenvolvimento sa-desenvolver.iniciar ─► [sa-plano.plano] ─► sa-desenvolver.codificar ─► MR
+revisão e aceite sa-verificar.verificar · sa-revisar.mr · [sa-verificar.uat] ─► sa-desenvolver.encerrar (merge)
+  ─► sa-especificar.archive ─► "publicar no DOORS?" sa-elm.publicar
 ```
 
-**Scrumban:** a sprint é a cadência de inspeção (meta, review, retrospectiva, virada), não escopo congelado. O
-compromisso é a meta; a seleção é previsão, e dentro da sprint o fluxo é puxado, com WIP limitado (a `elegivel` do
-topo entra quando o WIP de revisão tem folga). A puxada é sempre o encaixe na `sa-planejamento` (agente
-`sa-produto`): o P.O., o SM ou quem puxa com a aprovação do P.O., registrada; o fluxo de quem executa só confere a
-linha viva na sprint e, sem ela, diz "fale com o P.O. ou o SM" e para. Previsão pela vazão e pelo lead time, sem
-pontos.
+Não existe consolidação: o fechamento é o merge, o archive e a publicação.
 
-## Gates — sempre de uma pessoa
+- **Papéis** são booleanas no `equipe.json`. `desenvolvedor`: puxa item para desenvolvimento e revisa o MR de outro
+  autor. `especificador`: aprova os arquivos de `elm/` e publica no ELM. `produto`: decide go/kill, ordena e aprova
+  pitch, PRD e ficha. Captura, triagem e UAT ficam abertos a qualquer pessoa. Não há regra por senioridade.
+- **Identidade** é o usuário do GitLab: o `usuario` do `equipe.json` é o autor do MR e o `@dono` no CODEOWNERS. O
+  `elm_login` é opcional e só a `sa-elm` o lê.
+- **Agentes.** A pessoa abre a sessão num dos dois primários: `sa-desenvolvedor` (desenvolvimento, plano, MR, UAT,
+  Sustentação e archive) ou `sa-especificador` (refinamento, PRD, especificação, entrevista e planejamento; inclui as
+  funções de produto). Triagem, status, este guia e as ofertas da `sa-elm` rodam nos dois. Pesquisa, autorrevisão e
+  verificação rodam nos subagentes `sa-pesquisador`, `sa-revisor` e `sa-verificador`, de contexto limpo. A
+  `sa-setup` e a `sa-elm.setup` rodam na sessão padrão. A booleana do `equipe.json` continua conferida na
+  pré-condição de cada skill.
+- **Tipos e ids.** `tipo` ∈ {`épico`, `fatia`, `bug`, `sustentação`}. Séries: épico → `EP-nn`; fatia e bug →
+  `FT-nnn`; sustentação → `<categoria>-nnn` (`AT` · `IM` · `BD` · `IN` · `OP` · `EX`). Fatia e bug têm `pai` `EP-nn`
+  ou vazio. O próximo id é o maior da série no `backlog.md` + 1, lido depois do pull, e nunca muda: "vira épico" cria
+  a linha `EP-nn` com a obs `veio de FT-nnn`, e a FT fica `cancelada · virou EP-nn`.
+- **Status.** Fatia e bug: `nova` → `aceita` → `pronta` → `em-andamento` → `concluida`, mais `cancelada` e `adiada
+  até <data>`; `em-revisao` não se grava, vem do MR aberto. Épico: `a-moldar` → `em-especificacao` (go) → `fatiado` →
+  `concluido` · `cancelado`; fecha no merge da última fatia aberta (`sa-desenvolver.encerrar`). Sustentação: `nova` →
+  `em-andamento` → `concluida` · `cancelada`.
+- **Prioridade e tamanho.** `prioridade` ∈ {`crítica`, vazio}: crítica é o expedite, pela política do `acordos.md`;
+  vazio segue a ordem das linhas. `tamanho` ∈ {`P`, `M`, `G`}: P = horas, M ≈ 1 dia, G = 2 a 3 dias. Maior que G é
+  épico, e só o épico vai ao pitch e ao go/kill.
+- **Rotas.** Quem desenvolve escolhe pelo código: `trivial` (sem arquivo de spec, tudo no MR), `quick` ou `completo`.
+  O formato da spec vem do `formato_spec` do `agentes.json` (Kiro ou OpenSpec). A pasta da spec é `ft-<nnn>-<slug>`.
+- **Sustentação.** A categoria é confirmada antes de gravar a triagem e não se recategoriza depois. Quem atende puxa
+  dentro da folga reservada. A IA auxilia, e a pessoa declara o item resolvido (`sa-atender.atender`).
+- **Estado na base.** As linhas do `backlog.md` e do `sprint-<nn>.md` vão num commit pequeno direto na base, pela
+  gravação comum na base. Os documentos de planejamento (`pitch.md`, `prd.md`, ficha, arquivos de `elm/`) também vão
+  direto na base. MR só existe para código.
 
-| Gate | Quem | O que se aprova |
+## Aprovações
+
+| Quem | Aprova | Onde fica |
 |---|---|---|
-| PRD | o especificador (`[ESP]`) | o quê e o porquê: histórias, cenários, regras, fora de escopo |
-| Backlog | P.O. ou SM, com o time | as fatias: granularidade, dependências, AFK/HITL |
-| Ficha | P.O. | a fatia padrão sem épico: regras e cenários |
-| Plano | um Dev Sênior, na `[APR] Aprovar plano` (de preferência quem vai revisar o PR), com a fatia em `aguardando-aprovacao-plano` | a forma do programa e o contrato de pronto — maior alavanca |
-| PR | HITL: revisor (`[REV]`) e verificador (`[VER]`) · AFK: um Dev Sênior, na `[APR] Aprovar PR`, com a fatia em `aguardando-aprovacao-pr` | o código, lido de verdade, com a evidência de aceite; aprovado, o merge é do Dev responsável |
+| `produto` (o P.O.) | go/kill, pitch, PRD e ficha | `Aprovado: <usuário> · <data>` no topo do documento; o que está em aberto bloqueia só o que depende dele |
+| `especificador` | o arquivo inteiro de cada artefato em `elm/`; publica depois do merge (`sa-elm.publicar`) | `Aprovado:` no topo do arquivo de `elm/` |
+| um `desenvolvedor` ≠ autor | o MR (o CODEOWNERS indica o dono), com o CI verde e a evidência do verificador | o MR |
+| qualquer pessoa | o UAT, conforme o risco (`sa-verificar.uat`) | o MR |
 
-GATE do plano pela **senioridade** de quem implementa (trilha e modo não entram): **Júnior** → sempre; **Pleno** → o
-fluxo pergunta se ele quer a aprovação de um Dev Sênior (no loop, a escolha vale para o lote); **Sênior** → nunca: ele
-aprova o próprio plano, inclusive quando muda a expectativa de um teste existente. Aprovação só vale na sessão de quem
-aprova (é ela que assume, lança e conclui a `[APR]`). PRD e backlog nunca são AFK. O PR e o merge nunca são
-dispensados.
+O autor faz o merge com a aprovação e o CI verde. Não há rebase: a branch se atualiza só por merge da base.
 
-## Modos — o `modo` da fatia vale para todos os papéis
+## Autonomia
 
-| | **HITL** — pessoas nos papéis, subfluxos assíncronos | **AFK** — a IA coordena, um fluxo só |
-|---|---|---|
-| Quem roda | cada pessoa, a skill do seu papel | `sa-orquestrar` (`sa-orquestrador` + subagentes) |
-| Desenvolvedor (Dev) | revisão automática (rubrica C, subagente) → PR, com a `[DEV]` em andamento → merge depois da REV e da VER → `pronta` na base e `[DEV]` concluída | o loop leva a fatia até o PR (`aguardando-aprovacao-pr`); quem disparou o loop faz o merge do PR aprovado, grava `pronta` na base e conclui a `[DEV]` |
-| Revisão | o revisor assume a `[REV]` e revisa o PR: aprova → VER; reprova → retrabalho | subagente, teto de 2 reprovações desde o último desbloqueio |
-| Verificação | o verificador assume a `[VER]` (só depois da REV): aceita → fase `aceita` (o Dev mergeia → `pronta` na base; `concluida` na consolidação); rejeita → retrabalho | subagente: aceita → `verificada`, e o PR abre em `aguardando-aprovacao-pr` |
-| Retrabalho | a `[DEV]`, ainda em andamento, recebe a correção no mesmo PR, que passa de novo pela REV | volta à implementação |
-| Tarefas no EWM | `[DEV]` `[REV]` `[VER]`, cada uma da sua pessoa; `[APR]` do plano, se houver GATE | a `[DEV]`, de quem disparou; as `[APR]` (plano com GATE, PR) do Dev Sênior que aprova |
+Modo de trabalho: IA supervisionada, IA autopilot ou manual, escolhido antes de começar e fixo até o fim daquele
+trabalho. Codificação e especificação têm modos independentes.
 
-O modo final sai da **senioridade** de quem implementa (o `responsavel` da fatia, no `equipe.json`), gravado quando a
-fatia ganha responsável — no planejamento, no encaixe ou, na fatia `—` não iniciada, por quem a assume (a primeira
-atribuição, que não é troca); antes disso, o `modo` da triagem ou do fatiamento é proposta:
-
-| Senioridade | Modo |
-|---|---|
-| Júnior | sempre HITL (não começa fatia AFK nem dispara o `sa-orquestrar`) |
-| Pleno | os critérios da fatia (`sa-fatiar`), propostos pelo Sabiá e confirmados pela pessoa |
-| Sênior | AFK por padrão; HITL só com motivo forte, registrado |
-
-A `[REV]` e a `[APR]` são sempre de um **Dev Sênior**: ele revisa os PRs do Pleno e do Júnior; o PR de um Sênior,
-outro Sênior — se ele é o único Sênior ativo, ele mesmo (`revisor único` na Observação do `sprint-<nn>.md`).
-
-**Troca de modo** — só pelo P.O. ou pelo SM, no agente `sa-produto` (`sa-planejamento`, troca de modo); o Dev não
-troca: o fluxo dele orienta a falar com eles e para. Ninguém aprova: a regra vem da senioridade do responsável.
-
-| Sentido | Janela | Regra |
-|---|---|---|
-| AFK → HITL | qualquer fase viva | sem aprovação; nascem a `[REV]` e a `[VER]` (PR aberto: cancela a `[APR] Aprovar PR`) |
-| HITL → AFK | só sem PR (campo PR do `status.md` = `—`) | Sênior: direto · Pleno: pergunta a ele e anota · Júnior: nunca; cancela no EWM a `[REV]` e a `[VER]` |
-
-A troca pergunta "quer seguir na trilha `<atual>` ou alterar para `<outra>`?" e registra a resposta na Observação
-da sprint. O plano de uma fatia AFK com risco (regra sensível, muitos cenários, integração externa, mudança de dado)
-para em `bloqueada` com `aguardando troca de modo`; no loop, a fatia para sozinha e o lote segue. Feita a troca, o Dev
-retoma pela skill da fase, que sincroniza o `status.md` pela base.
+- **Codificação** (ao assumir, na `sa-desenvolver.iniciar`; campo Autonomia do `status.md`): IA supervisionada (o
+  `sa-desenvolvedor` na sessão da pessoa), IA autopilot (o `sa-desenvolvedor` como subagente na worktree) ou manual
+  (só a geração do código-fonte é da pessoa; `status.md`, branch e plano seguem; no "terminei", o fluxo segue da
+  validação, com as mesmas validações).
+- **Especificação** (só com ELM, ao detalhar a fatia com Cobre, na `sa-refinar.detalhar`; campo Especificação da
+  ficha): IA supervisionada, IA autopilot ou manual (o especificador altera direto no DOORS e avisa "alterei"; a skill
+  sincroniza).
+- **Autopilot:** o `sa-desenvolvedor` roda como subagente na worktree `.sabia/local/wt/<id>` enquanto a pessoa segue na
+  base; várias tarefas podem correr em paralelo. Ficam liberados o push da própria branch (sem `--force`), o merge da
+  base nela e abrir ou atualizar o MR dela. Merge do MR, ELM e rede continuam bloqueados. O autopilot leva até o MR,
+  que passa pela mesma revisão humana. Não existe lote.
+- **Disjuntor:** dispara pelo teto do `acordos.md` ou por 2 reprovações seguidas, grava em `.sabia/local/loop-<id>.md`
+  e devolve o item à pessoa.
 
 ## Princípios
 
-1. **Alinhar antes de escrever** — entrevista em rodadas, com recomendação; fatos o agente busca, decisões a pessoa toma.
-2. **Cerimônia do tamanho do trabalho** — nada de 16 critérios para um ajuste de uma linha.
-3. **Fatias verticais** que cabem numa janela de contexto nova e provam algo demonstrável.
-4. **Verificação acima de geração** — teste primeiro, backpressure (compilar, testes, lint) a cada passo, aceite
-   com evidência, oráculo protegido (teste não se apaga nem se afrouxa).
-5. **Gerador ≠ avaliador** — revisão e verificação em contexto limpo, em eixos separados (spec × padrões).
-6. **Contexto limpo e estado em disco** — uma fatia por sessão; `status.md`, `research.md` e o plano carregam o fio.
-7. **Autonomia gradual** — HITL até o tipo de trabalho provar que anda sozinho; AFK limitado pela capacidade de
-   revisão humana.
-8. **Documentação ancorada no ELM** — PRD e plano são registros de decisão descartáveis; o ELM, o glossário e os
-   ADRs são o que dura; o aprovado na `[ESP]` sobe ao ELM na conclusão dela, e a divergência depois do merge vira débito técnico de especificação.
-9. **Aprendizado composto** — cada correção humana muda o ambiente (checagem, regra, skill, glossário), não só o código.
-10. **Leia o código** — PRs pequenos, com caminho de leitura e evidência; nada é mergeado sem uma pessoa.
+1. **Alinhar antes de escrever** — até 5 perguntas por rodada, cada uma com recomendação. O agente busca os fatos, e a
+   pessoa toma as decisões. Regra de negócio é decisão de uma pessoa.
+2. **Cerimônia do tamanho** — pelas rotas `trivial` · `quick` · `completo` e pelo tamanho P · M · G.
+3. **Fatias verticais** — cada fatia prova algo demonstrável e mantém o Cobre.
+4. **Verificação acima de geração** — backpressure em camadas: o trecho tocado a cada alteração e a suíte completa uma
+   vez antes do MR, com baseline do CI. A asserção que dura são os testes automatizados, marcados com o `CT-nn`.
+5. **Gerador ≠ avaliador** — a autorrevisão pelo `sa-revisor` tem três eixos: spec · padrões · segurança. O aceite é
+   do `sa-verificador`, de contexto limpo.
+6. **Estado em disco** — o estado vive no `status.md`, no `research.md` e no plano. Na mesma tarefa, segue na mesma
+   sessão; para outra tarefa, sugere sessão nova.
+7. **Autonomia gradual** — por item, escolhida por quem desenvolve, com disjuntor.
+8. **Rastreio leve** — o Cobre fica na ficha, e o texto completo dos requisitos fica no delta. Com ELM, a pasta `elm/`
+   da fatia é a fonte da publicação no DOORS depois do merge, conferindo a versão. Sem ELM, a spec viva fica no
+   repositório.
+9. **Aprendizado composto** — a lição nasce na seção Lições do `status.md` ou do registro de Sustentação. Na review do
+   ciclo, as escolhidas entram nas Regras aprendidas do `sabia.md`.
+10. **Leia o código** — o MR traz o quê, o porquê, a prova, o risco, o foco e o Cobre. Nada é mergeado sem uma
+    aprovação humana.
 
 ## O que dizer
 
+Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte qual é a intenção.
+
 | Quero… | Skill |
 |---|---|
-| configurar o fluxo, os agentes e os toolkits no projeto | `sa-setup` |
-| saber onde parei / o que fazer agora · fechar a sessão | `sa-status` |
-| registrar qualquer demanda nova — pedido, defeito, ajuste, pedido de cliente, item ou lote do EWM (triagem) | `sa-triar` |
-| começar um item registrado, ou "minha próxima tarefa" (o hub diz a skill do papel) | `sa-iniciar` |
-| especificar um épico (`[ESP]`) ou os artefatos de uma fatia (`[ESP] FT`) e registrar cada sessão na tarefa | `sa-especificar` |
-| a ata de uma reunião com o cliente (transcrição `.vtt` ou `.md`) · o protótipo de tela e a aprovação do cliente | `sa-especificar` (`sa-especificar.reuniao` · `sa-especificar.prototipo`) |
-| começar ou retomar o código de uma fatia (`[DEV]`), mergear o PR aprovado | `sa-desenvolver` |
-| alinhar decisões | `sa-entrevistar` |
-| escrever o PRD de um épico | `sa-prd` |
-| quebrar o PRD em fatias / refinar o backlog (P.O. ou SM, agente `sa-produto`) | `sa-fatiar` |
-| planejar sprint, roadmap, virada, review | `sa-planejamento` |
-| levar o Sabiá até onde o trabalho chegou por fora — tarefas no EWM, divergências das conhecidas, PR e merge ("sincroniza a sprint") | `sa-planejamento` |
-| executar um atendimento já triado (`AT-nnn`, `[ATD]`) | `sa-atender` |
-| assumir, registrar, lançar horas e concluir outro item de Sustentação (`[IMPL]`, `[BD]`, `[INF]`, `[OPE]`, `[EXT]`) | `sa-executar` |
-| lançar horas ou ver o relatório de horas | `sa-status` (fechar a sessão) · Sustentação: `sa-atender` ou `sa-executar` · relatório: `sa-planejamento` |
-| entender o código antes de planejar | `sa-pesquisar` |
-| planejar uma fatia (spec do Kiro) | `sa-plano` |
-| implementar e abrir o PR | `sa-codificar` |
-| revisar PRD, plano ou código | `sa-revisar` |
-| verificar o aceite de ponta a ponta | `sa-verificar` |
-| fechar a fatia depois do merge (P.O. ou SM, agente `sa-produto`) | `sa-consolidar` |
-| publicar no ELM (DOORS Next, EWM, ETM) | a skill do passo ([references/elm.md](references/elm.md)) · bundle: `sa-sync` |
-| levar várias fatias AFK até o PR | `sa-orquestrar` (com o agente `sa-orquestrador`) |
-| registrar uma lição / retrospectiva | `sa-aprender` |
+| instalar ou atualizar o Sabiá no projeto, os agentes, o formato da spec, "usa ELM?" · customizar ou descustomizar um passo ou padrão | `sa-setup` (`sa-setup.configurar` · `sa-setup.customizar`) |
+| onde parei · minha próxima · o estado de `<id>` · pendências (publicação pendente, travas de artefato) · lições para a review · fechar a sessão | `sa-status` (`sa-status.painel` · `sa-status.item` · `sa-status.minha-proxima` · `sa-status.pendencias` · `sa-status.licoes` · `sa-status.fechar-sessao`) |
+| registrar uma demanda sem triar · triar a fila das linhas `nova` | `sa-triar` (`sa-triar.capturar` · `sa-triar.triar`) |
+| ideia nova, pitch, go/kill · três amigos, ficha, Cobre e `elm/` da fatia · fatiar o épico · editar, dividir ou cancelar um item pronto | `sa-refinar` (`sa-refinar.moldar` · `sa-refinar.detalhar` · `sa-refinar.fatiar` · `sa-refinar.ajustar`) |
+| escrever o PRD do épico depois do go, ou mudar o PRD | `sa-prd` (`sa-prd.prd`) |
+| os arquivos de `elm/` da fatia · protótipo de tela e aprovação do cliente · ATA de reunião (transcrição em `.sabia/local/reunioes/`) · archive da spec depois do merge | `sa-especificar` (`sa-especificar.elm` · `sa-especificar.prototipo` · `sa-especificar.reuniao` · `sa-especificar.archive`) |
+| alinhar decisões em rodadas | `sa-entrevistar` (`sa-entrevistar.entrevistar`) |
+| planejamento inicial (`equipe.json`, `acordos.md`) · planejar a sprint, reabastecer, virada · review com curadoria das Regras aprendidas · retrospectiva | `sa-planejamento` (`sa-planejamento.inicial` · `sa-planejamento.sprint` · `sa-planejamento.review` · `sa-planejamento.retrospectiva`) |
+| puxar, começar ou retomar, com rota e autonomia · implementar e abrir o MR · mergear e fechar | `sa-desenvolver` (`sa-desenvolver.iniciar` · `sa-desenvolver.codificar` · `sa-desenvolver.encerrar`); autopilot é o modo da `sa-desenvolver` |
+| entender o código e devolver fatos, sem gravar | `sa-pesquisar` (`sa-pesquisar.pesquisar`) |
+| `research.md`, design e tasks da fatia, com o texto aprovado copiado para o delta · replanejar | `sa-plano` (`sa-plano.plano` · `sa-plano.replanejar`) |
+| autorrevisão ou revisão do plano · revisar o MR de outro autor | `sa-revisar` (`sa-revisar.revisar` · `sa-revisar.mr`) |
+| aceite de ponta a ponta, com a evidência no MR e o `CT.csv` · UAT | `sa-verificar` (`sa-verificar.verificar` · `sa-verificar.uat`) |
+| atender um item de Sustentação (`AT` · `IM` · `BD` · `IN` · `OP` · `EX`) | `sa-atender` (`sa-atender.atender`) |
+| criar o item ou a tarefa no ELM · finalizar ou cancelar a tarefa · lançar horas e relatórios · publicar no DOORS · bundle ou original de um requisito · visualização · "confere com o EWM" e "o DOORS mudou?" · importar do EWM · iteração · lint · configurar o ELM | `sa-elm` (`sa-elm.item` · `sa-elm.finalizar` · `sa-elm.horas` · `sa-elm.publicar` · `sa-elm.baixar` · `sa-elm.visualizar` · `sa-elm.conferir` · `sa-elm.importar-backlog` · `sa-elm.iteracao` · `sa-elm.lint` · `sa-elm.setup`) |
+| explicar o fluxo, as fases, os papéis e as regras | `sabia` (este guia) |
 
-## Onde as coisas moram (no projeto)
+## Onde as coisas moram
 
 | Caminho | O quê |
 |---|---|
-| `.sabia/sabia.md` | o único steering do fluxo: resumo, configuração do projeto e regras aprendidas (a setup grava o arquivo e preserva a seção Regras aprendidas, que é do `sa-produto`) |
-| `.sabia/config/agentes.json` | as escolhas do projeto para os agentes, com a versão do Sabiá (`"sabia"`: a setup avisa quando difere da instalada) |
-| `.kiro/agents/sa-*.json` · `.opencode/agents/sa-*.md` | agentes (criados pela setup, com as skills escolhidas por agente e o que o projeto customizou) |
-| `<produto>/` — a pasta escolhida na setup (padrão `.sabia/planejamento`), registrada no `sabia.md` | `backlog.md`, `epicos/<EP>-<slug>/` (PRDs), `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<pai>/sprint-<nn>.md` (a sprint segue a iteração pai do EWM; chave `2026/Sprint 03`), `sustentacao/<pasta>/` (a pasta de cada categoria na tabela **Sustentação** do `sabia.md`), `aprendizado/` (só na branch base) |
-| `.kiro/specs/<ft>-<slug>/` | uma pasta por fatia: `status.md`, `research.md`, spec do Kiro, revisões, verificação. `<ft>` = o id da fatia em minúsculas (`ft-031`); a pasta é sempre `.kiro/specs/<ft>-<slug>/`, com o `<slug>` da ficha (`fatias/FT-<nnn>-<slug>.md`) |
-| glossário · ADRs · bundle do ELM | caminhos na seção Projeto do `sabia.md` (padrão: `.sabia/glossario.md` e `.sabia/adr/`) |
-| `.sabia/fluxo/` · `.sabia/padrao/` | override esparso: só o passo, as operações do mestre ou o padrão que o projeto customizou, pela `sa-setup` ("customizar …"); nenhum agente escreve |
-| `.sabia/http.sh` | da setup: chamada HTTP do verificador (opcional); o backpressure antes de cada commit é o passo `sa-codificar.codificar.validar`, com os Comandos do `sabia.md` |
-| `.sabia/local/` (fora do git) | worktrees do loop, log dos lotes, dados de cliente (extrações, evidências com dado real), especificação em andamento (`especificacao/<EP>/`, até o GATE do PRD) |
+| `AGENTS.md` | `## Projeto` e `## Comandos` (o backpressure em camadas), mesclados pela `sa-setup` |
+| `.sabia/sabia.md` | Resumo do fluxo · Especificação · Verificação de aceite · Sustentação · ELM · Desvios de toolkit · Tipos com skill de toolkit · Regras aprendidas (gravadas pela curadoria da review) |
+| `.sabia/config/` | `agentes.json` (as escolhas do projeto e a entrada do gerador), `elm/pa_<nome>.json` (da `sa-elm.setup`) e `elk/elk-<ambiente>.json` |
+| `.kiro/agents/` · `.opencode/agents/` | os 5 agentes gerados (e os de toolkit) |
+| `.sabia/planejamento/` | `backlog.md` (id · título · tipo · status · prioridade · tamanho · responsável · pai · relator · ib · obs · aceita_em · iniciada_em · concluida_em), `acordos.md`, `equipe.json`, `roadmap.md`, `sprints/<AAAA>/sprint-<nn>.md` (Item · Trabalho · Responsável · Tarefas), `fatias/FT-<nnn>-<slug>.md`, `epicos/EP-nn-<slug>/` (`pitch.md`; `prd.md` a partir do go), `prototipos/`, `atas/`, `sustentacao/<pasta>/` |
+| spec da fatia | `.kiro/specs/ft-<nnn>-<slug>/` ou `openspec/changes/ft-<nnn>-<slug>/`: `status.md`, `research.md`, os arquivos da rota, `CT.csv` e, com ELM, `elm/`. No OpenSpec, a arquivada fica em `openspec/changes/archive/<AAAA-MM-DD>-ft-<nnn>-<slug>/` |
+| glossário · ADRs · bundle | GL no DOORS, onde há ELM; o `.sabia/glossario.md` é opcional. ADRs em `docs/adr/`, só para decisão que atravessa fatias. O bundle (chave `elm.bundle` do `agentes.json`, ex.: `docs/elm/<pa>/`) é cópia local e nunca é editado |
+| `.sabia/creditos/` | `<usuario>.csv` com os créditos do Kiro por sessão |
+| `.sabia/fluxo/` · `.sabia/padrao/` | override esparso do projeto, pela `sa-setup.customizar`; nenhum agente escreve |
+| `.sabia/local/` (fora do git) | worktrees do autopilot (`wt/<id>`), `loop-<id>.md`, `reunioes/` e dados de cliente |
 
 ## Tipos de artefato
 
-O catálogo é fechado ([references/tipos.md](references/tipos.md)): sigla, arquivo, passo que cria, padrão, tipo no
-ELM e ordem de publicação. Um toolkit não cria tipo; num tipo desviável (⇢), a skill dele escreve o artefato pelo
-fluxo e o padrão do tipo ([references/passos.md](references/passos.md#tipos-com-skill-de-toolkit)).
+O catálogo é fechado ([references/tipos.md](references/tipos.md)): HF · REG · EL · GL · ET · CT · ATA. Artefato
+existente: `<sigla>-<id do ELM>`. Novo: `<sigla>-<EP|FT>-nn`, provisório até a publicação; sem ELM, esse é o id
+definitivo.
 
-| Tipo | Nasce em | Quando |
-|---|---|---|
-| `GL` `REG` `HF` | `sa-prd.prd.escrever`; na fatia (sem épico, ou depois do fatiamento), a `[ESP] FT` (`sa-especificar.fatia.escrever`) | todo épico · fatia com artefato afetado |
-| `EL` | `sa-prd.prd.escrever`, uma por tela, lida do protótipo que o cliente aprovou (`sa-especificar.prototipo`); na fatia, a `[ESP] FT` | linha Telas = `sim` do `sabia.md` |
-| `ET` | inicial por épico no `sa-prd.prd.escrever`; as-built por fatia no `sa-codificar.codificar.pr`, ligada à inicial (com toolkit do tipo, ajustada por ele no `sa-consolidar.consolidar.elm`) | linha ET do `sabia.md` |
-| `CT` | planejado da HF no `sa-prd.prd.escrever` ou na `[ESP] FT` (no ETM, na conclusão da `[ESP]`); a evidência de cada um no `CT.csv` do `sa-verificar.verificar.casos` (CT novo da verificação, no ETM na consolidação) | linha Casos de teste do `sabia.md` |
-| `ATA` | `sa-especificar.reuniao`, da transcrição em `reunioes/` (que nunca sai da máquina), com a `[ESP]` aberta | cada reunião com o cliente |
+| Tipo | Onde nasce |
+|---|---|
+| HF · REG · EL · GL | o texto completo dos requisitos tocados vai no delta da spec; com ELM, também em `elm/` da fatia, um arquivo por artefato, criado no refinamento (`sa-refinar.detalhar`). EL só com Telas = sim |
+| ET | só as-built, publicada na finalização do desenvolvimento, nos projetos que mantêm ET |
+| CT | cenários `CT-nn` na ficha; o `CT.csv` é escrito só pela `sa-verificar.verificar`, e cada linha liga ao `CT-nn` marcado no teste automatizado |
+| ATA | opcional, pela `sa-especificar.reuniao`; a decisão vale com quem e quando |
+
+Um toolkit não cria tipo; num tipo desviável (⇢), a skill dele escreve o artefato
+([references/passos.md](references/passos.md#tipos-com-skill-de-toolkit)).
 
 ## Fronteiras de fase
 
-Ao terminar uma fase, nesta ordem: seguir na mesma sessão se o contexto ainda serve → sessão nova se o contexto
-anterior não importa mais (o estado está nos arquivos) → mandar para um agente se a próxima fase pode correr AFK.
-Nunca compacte no meio de uma fase. Quem segue é a pessoa (ou o orquestrador, no loop): toda skill termina dizendo
-a próxima e para — nunca invoca nem simula a do passo seguinte.
+- Toda skill termina oferecendo "seguir para a próxima?" na mesma sessão, quando é a mesma tarefa. Para outra tarefa,
+  sugere sessão nova.
+- Nunca compactar no meio de uma fase.
+- Mandar um item para o autopilot é decisão de quem desenvolve, ao assumir a tarefa (`sa-desenvolver.iniciar`), e vale
+  até o fim dela.
 
 ## Regras de ouro
 
-- **Falha de escrita:** pasta inexistente → crie; permissão negada ou confirmação recusada → `fase: bloqueada (de:
-  <fase>)` com o caminho e o que faltou (fora de fatia: diga e pare); gravação parcial → o próximo passo retoma pelo
-  que está no disco. Nunca siga como se tivesse gravado.
-- Nada inventado: tabela, coluna, regra, id de work item — confirme no código, no banco (somente leitura) ou no ELM.
-- Toda escrita no ELM, troca de branch, push e alteração de work item só com "sim" de uma pessoa; na base, o agente
-  só dá push dos registros de situação, com a conferência dos arquivos
-  ([Gravar na base](../sa-fatiar/references/backlog.md#gravar-na-base)). Merge só do PR aprovado, pelo **Dev
-  responsável** (`gitlab_mesclar_mr`, com confirmação); nunca `--force`.
-- **ELM pelo MCP `elm` do power:** a skill do passo chama a tool (`elm_*`) com `projeto` e os ids; o MCP lê o
-  `.kiro/config/elm/pa_<nome>.json`. Regras de escrita, pendências e tarefas: [references/elm.md](references/elm.md).
-  Sem o MCP ou com falha, a escrita vira `ELM pendente` registrada — o ELM nunca trava o fluxo.
-- **Bundle do ELM e PR, só pelos MCPs do power:** a documentação baixada pela `sa-sync` (`<rm.download>`) —
-  cópia local, em Markdown, dos artefatos do ELM, válida até o último sincronismo (o ELM ao vivo é pelo `elm_buscar_req`/`elm_ler_req`) — é
-  consultada pelo **`elm`** — `elm_buscar_req_local` para achar, `elm_ler_req_local` para ler um artefato, `elm_listar_req_local`
-  para listar uma pasta (o MCP acha a pasta pelo `pa` e reindexa o que mudou; sem nada baixado → ELM remoto, ver
-  [elm.md](references/elm.md#bundle-local)) —, nunca
-  lendo ou buscando os arquivos (os agentes nem têm leitura nessa pasta). PR é o merge request do GitLab, pelo
-  **`gitlabpr`**: `gitlab_listar_mrs`, `gitlab_obter_mr`, `gitlab_criar_mr` e `gitlab_mesclar_mr` (com o "sim" da pessoa; `origem` e
-  `destino` sempre explícitos, porque o MCP roda no checkout principal, não na worktree) — nunca `gh` nem `glab`.
-  MCP indisponível → diga e siga sem ele: bundle → o ELM ao vivo (`elm_buscar_req`); PR → título e descrição entregues.
-- Dado de cliente (resultado de consulta, extração, tela com dado real) nunca vai para o git: fica em
-  `.sabia/local/` (`sustentacao/<pasta>/<ID>/`, `verificacao/`…); o registro versionado guarda consulta, contagem,
-  caminho e resumo sem identificar pessoas.
-- **Skill sem agente:** a `sa-setup` roda na **sessão padrão** (com o power carregado): grava onde nenhum agente
-  pode (steering, agentes). A **`sa-aprender`** é do `sa-produto`, que escreve só a seção Regras aprendidas do
-  `.sabia/sabia.md`. A **`sa-consolidar`** é do P.O. ou do SM, no `sa-produto`. **Push pelo agente:** orquestrador (no loop), desenvolvedor, revisor e verificador,
-  com `ask` (o Kiro pergunta sempre), só a branch da fatia — e, no desenvolvedor e no orquestrador, a base com os
-  registros de situação (`iniciada`, `pronta`; o orquestrador, só a `iniciada` do lote); push da branch negado pela
-  regra (permissão do agente) → a skill entrega o comando pronto e espera a pessoa dizer que publicou; a pessoa
-  recusa ("não") → nada publicado e o fluxo para (sa-codificar e sa-verificar: em "aguardando o PR"); o da base recusado pelo
-  remoto → desfaz só o commit de registro, com "sim", e para; produto, especificador e pesquisador não
-  fazem push. Subagente do AFK não faz push (quem conduz commita). Com a branch no remoto, o PR é aberto pela
-  `gitlab_criar_mr`, que o Kiro confirma (`ask` no desenvolvedor e no orquestrador; negada aos demais).
-  **O que os agentes não fazem:** merge (exceto a `gitlab_mesclar_mr` no desenvolvedor, com `ask`: o Dev mergeia o
-  PR aprovado), `--force`, `worktree remove` — nunca. O hub `sa-iniciar` está em todos os agentes de papel, e a `sa-status`
-  em todos os agentes, menos o `sa-pesquisador`; os dois também funcionam na sessão padrão. Nenhuma skill depende de um agente para operar: o agente apenas recebe a skill
-  pré-carregada para conveniência.
-- **Nenhuma skill cria branch ou `.kiro/specs/<ft>-<slug>/status.md`** sem passar pelos passos `sa-desenvolver.desenvolver.compromisso` e `sa-desenvolver.desenvolver.iniciar`
-  (DoR, sprint, WIP, `iniciada` na base, branch, commit). O `sa-orquestrar` é a única exceção (opera em worktree como
-  orquestrador e grava a `iniciada` do lote na base).
+- **Falha de escrita:** nunca seguir como se tivesse gravado. Se a gravação falhar, diga o caminho e o que faltou e
+  pare a fase.
+- **Nada inventado:** tabela, coluna, regra e id se confirmam no código, no banco (só leitura) ou no ELM. Regra de
+  negócio é decisão de uma pessoa, registrada com quem e quando.
+- **Sim da pessoa:** push, merge, `curl`, `wget`, escrita no GitLab e escrita no ELM passam pelo ask dos primários
+  `sa-desenvolvedor` e `sa-especificador`; nos subagentes e no autopilot, o que não é liberado é deny. `rebase`,
+  `--force`, `--force-with-lease`, `reset --hard` e `--no-verify` ficam em deny.
+- **Gravar na base:** estado e documentos de planejamento vão pela gravação comum na base. O código vai por MR, na
+  branch `<id>`, atualizada só por merge da base.
+- **MCPs:** o MR só pelo `gitlabpr`, nunca pelo `gh` nem pelo `glab`. O ELM só pelo MCP `elm`, e toda escrita no ELM
+  passa pela `sa-elm`. Busca do vigente: specs arquivadas → bundle → ELM ao vivo.
+- **Dado de cliente** nunca vai para o git: fica em `.sabia/local/`. O agente não executa em ambiente de cliente nem
+  responde ao cliente.
+
+## Desvios de toolkit
+
+Toolkit de apoio, de passo e de tipo, lidos do `agentes.json` e aplicados pelo gerador no prompt do agente dono do
+passo: [references/passos.md](references/passos.md).

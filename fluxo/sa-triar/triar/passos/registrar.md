@@ -1,138 +1,42 @@
 ---
-{"resumo": "Grava na base a linha do épico, da fatia sem épico (com ficha) ou do item de Sustentação (com registro), o IB no EWM com \"sim\" e o commit único da sessão."}
+{"resumo": "Prepara a linha e o corpo do item com a triagem aplicada; o item novo nasce pela captura comum, e tudo vai num commit por item na base."}
 ---
 ## Entrada
 
-A trilha decidida no passo `triagem` (ou a ação do passo `chegou` para o item que já existe), na base conferida no
-passo `chegou`.
+O destino do passo `decidir` e, no aceito, a classificação do passo `classificar`.
 
 ## Faça
 
-Grava-se na base, conferida no passo `chegou`. Ids do EWM na coluna `elm` com o tipo antes de cada um (`IB [612010](…)`,
-`DF [4567](…)` — formato do backlog).
+**Status gravado:**
 
-Com ELM, **todo item triado tem o seu IB na iteração de backlog, no estado inicial** — épico, fatia, defeito ou IB de
-origem e item de Sustentação (o de Sustentação que já entra na sprint vai na iteração dela). O que nasce já nasce
-assim; o item de origem em outro estado volta a ele com `elm_transicao(<id>, "reabrir")`, na mesma confirmação. O IB
-`Sustentação` e a `[GB]` já existem desde o fluxo `sa-planejamento.inicial`
-([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §2).
+| Caso | Status | Datas |
+|---|---|---|
+| fatia ou bug aceito | `aceita` | `aceita_em` |
+| épico aceito | `a-moldar` | `aceita_em` |
+| sustentação aceita, ou qualquer item com `falta:` | `nova` | — |
+| duplicado ou recusa | `cancelada` | — |
+| agora não | `adiada até <AAAA-MM-DD>` (fatia ou bug) | — |
 
-- **Épico:** próximo `EP-nn` de "Próximos ids"; linha em `## Épicos` com prioridade `—` (quem
-  prioriza é o planejamento), `sprint` e `prd` `—` e `po` = o P.O. ativo do `equipe.json` (outro, se a pessoa disser).
-  Descrição mínima (a que a [Definition of Ready](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#definition-of-ready-o-que-faz-uma-fatia-elegivel)
-  do épico confere): o problema, quem pede e o resultado esperado — falta algum → pergunte numa rodada. Completa →
-  `status` `elegivel`; sem resposta, `novo` com `obs` `falta: <o quê>`. Com ELM:
-  o épico nasce agora no backlog do EWM ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §3, `iteracao = backlog`, com "sim"; `pa` sem
-  backlog (erro `precondicao` ao criar no backlog) → peça "atualizar a configuração do Sabiá" (a `sa-setup`, na
-  sessão padrão, roda o §0 do elm-sprint.md); o item fica `pendente` na coluna `elm` e a triagem segue) e o id vai para a coluna `elm`; sem o MCP `elm` → `pendente`. Veio
-  de um item do EWM: no EWM o épico é um IB (o ELM não permite criar o tipo Épico). IB sem pai `[EP-…]` → a pessoa
-  decide caso a caso: `O IB <id> vira o épico EP-<nn>? (sim: ele é o épico · não: fica filho do épico novo)`; "sim" →
-  ele é o épico (grave o id na coluna `elm` e leve-o para o backlog: `elm_atualizar_wi(id, iteracao = backlog)`);
-  "não", ou outro item
-  (DF, IB com pai `[EP-…]`) → `obs` `origem: <id>`, cria o épico e põe o item sob ele, no backlog (§3).
+**Colunas:** id · título · tipo · status · prioridade · tamanho · responsável (vazio) · pai · relator (`usuario` do
+`equipe.json` ou `externo: <área ou nome>`) · `ib` (só o número, quando veio do EWM) · `obs` · `aceita_em` ·
+`iniciada_em` · `concluida_em` (AAAA-MM-DD).
 
-  **Pasta antecipada**, sempre: `<produto>/epicos/<EP>-<slug>/` (`<slug>` pela regra do
-  [backlog](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#formato)), com:
-  - `rascunho.md`: o padrão [`sa-especificar/rascunho.md`](~/.sabia/framework/padrao/sa-especificar/rascunho.md), com
-    a seção Pedido preenchida (as demais só com o título): o pedido original (nas palavras de quem pediu, sem dado inventado) e a Origem (EWM id,
-    chamado, texto livre);
-  - `decisoes.md`: o formato do padrão [`sa-entrevistar/decisoes.md`](~/.sabia/framework/padrao/sa-entrevistar/decisoes.md) (título `# Decisões — <EP-nn> <título>` e a tabela vazia);
-  - `status.md`: o modelo do padrão [`sa-especificar/status-epico.md`](~/.sabia/framework/padrao/sa-especificar/status-epico.md),
-    com `Fase` `rascunho` e `[ESP]`, Responsável e Início `—` (a especificação os preenche).
-  A pasta só é criada aqui; o `sa-prd` completa com `prd.md`, `elm/` e os demais artefatos.
-  Inclua o caminho relativo da pasta na coluna `pasta` do `backlog.md`: `[pasta](epicos/<EP>-<slug>/)`.
-- **Fatia sem épico** (padrão, rápida — a fatia de Manutenção): próximo `FT-nnn`; linha em `## Fatias` com:
-  - `origem` `Manutenção`; `trilha`; `ficha` (`[ficha](fatias/FT-<nnn>-<slug>.md)`, sempre);
-  - `tamanho` (padrão `P`/`M`/`G`; rápida `P`/`M`); `modo` proposto pelos critérios de Autonomia
-    declarada do passo `sa-fatiar.fatiar.rascunho` (os do backlog.md, coluna `modo`) (a fatia ainda não tem responsável: o modo final é gravado pela
-    `sa-planejamento` quando ela ganha um, pela senioridade de quem implementa — Júnior → `HITL` · Pleno → esses
-    critérios · Sênior → `AFK` por padrão); prioridade, `sprint` e `responsavel` `—`;
-  - `bloqueada-por`: a `FT-<mmm>` que já tem o artefato na ficha (passo `triagem`), somada às dependências que a
-    pessoa disser; sem nenhuma, `—`;
-  - `status` `elegivel` se passa na Definition of Ready da trilha (formato do backlog — a ficha da trilha completa),
-    senão `nova` com `obs` `falta: <o quê>` — linha em Artefatos afetados com Especificado `—` →
-    `falta: especificação` (a `[ESP] FT` nasce quando ela entrar na sprint, no planejamento ou no encaixe; a fatia que já tem `ESP` na
-    coluna `elm` → a tabela da [Volta à especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação),
-    nunca uma `[ESP] FT` nova); lista sem
-    a confirmação → `falta: artefatos afetados`;
-  - de onde veio: o item do EWM (DF, IB) vai na `elm` como o item da fatia (`DF [4567](…)`; sem o MCP `elm`,
-    `DF 4567` — o id já é conhecido, nunca `pendente`) e no `**Origem:**` da ficha; o chamado, no `**Origem:**`
-    (`chamado <n>`); pedido em texto, sem os dois → `**Origem:** —`;
-    desdobramento de um item de Sustentação (origem `AT-012`, `IM-003`…) → `obs`
-    `vinculada a [<ID>](sustentacao/<pasta>/<ID>-<slug>.md)`; correção de débito de especificação (origem
-    `FT-<nnn> (débito de especificação)`) → `obs` `origem FT-<nnn> (débito de especificação)` e, com a linha da
-    `FT-<nnn>` na seção Débito de especificação do `sprint-<nn>.md` aberto, o `FT` novo na coluna Tarefa dela.
-  - **Ficha** (`<produto>/fatias/FT-<nnn>-<slug>.md`, formato da trilha no padrão `sa-triar/ficha.md`;
-    crie a pasta se não existir): sempre.
-  - EWM (com ELM, com "sim"), pelo §3 do [elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) ("Fatia sem
-    épico"; a Sustentação faltando → §2 antes): a primeira fatia de Manutenção (a linha da `## Sustentação` sem
-    `Manutenção`) cria antes o IB `Manutenção`, com o id na linha. Item de origem → é o item da fatia, sem IB novo:
-    `elm_atualizar_wi(origem, iteracao = backlog)`, com `pai` = a Manutenção se ele não tem pai (outro pai: mantenha e
-    avise) e `dono` = o P.O. se não tem dono, e o título ganha o `[FT-<nnn>]` pelas opções do §9 (renomear · só incluir o prefixo · manter). Sem item de origem → o IB `[FT-nnn]` nasce agora sob a Manutenção, no
-    backlog. Vinculada → `elm_ligar(wi = item da fatia, wi_destino = IB do <ID>, tipo relacionado)`. Sem o MCP
-    `elm` → `pendente` (com item de origem, o id sem link).
-- **Sustentação** (categorias sem mudança no repositório):
-  - **Categoria:** proponha a da tabela **Sustentação** do `sabia.md` pelo pedido (consulta ou extração para o cliente →
-    Atendimento; subida de versão → Implantação; script ou carga de dados → Banco de dados; ambiente, acesso →
-    Infra; rotina de produção → Operação; ajuda a outra equipe → Apoio a outros times; aplicação de baseline de
-    banco (DDL) → Banco de dados, ou Implantação junto com a subida de versão) e confirme. Muda o
-    repositório → é fatia (de Manutenção): volte ao passo `triagem`.
-  - **Entrevista curta:** Atendimento → `sa-entrevistar.atendimento` (uma rodada: o que o cliente precisa
-    receber, origem, prazo, quem atende, critério de pronto, estimativa e quem pediu). Demais categorias → sem
-    entrevista: pergunte numa mensagem o pedido, a origem, quem pediu, o prazo, quem faz, o critério de pronto e a
-    estimativa. Regra de negócio em aberto →
-    não é item de categoria: volte ao passo `triagem`.
-  - Próximo id da série da categoria em "Próximos ids" (`AT-`, `IM-`…; série que falta → começa em `001`).
-  - **Sprint sugerida:** a aberta (`sprint-<nn>.md` com `**Situação:** aberta`), pela regra da reserva — a reserva
-    (Sustentação + retrabalho) está na `## Sustentação` do `sprint-<nn>.md`; o consumido é o retrabalho migrado mais a
-    soma das estimativas dos itens das `### <Categoria>` dela, sem as linhas com `saiu da sprint` (o item
-    saiu da sprint e não consome a reserva); cabe com a estimativa deste (A-6) → quem triou
-    confirma; estourou → fica fora da sprint (`sprint` `—`), e a decisão é do P.O. pelo
-    passo `sa-planejamento.durante.encaixe` (a Sustentação não tira fatia sozinha). Sem sprint aberta → `sprint` `—` e o aviso "sem sprint
-    aberta: o item entra no próximo planejamento". Responsável sugerido: o membro ativo com
-    `atende: true` no `equipe.json`; vários → liste-os e pergunte; nenhum → `—` e pergunte.
-  - Linha na `### <Categoria>` da `## Sustentação` (a seção nasce com o primeiro item da categoria, aberta pelo IB
-    dela), com `status` `aberto`, na sprint ou fora dela; `<produto>/sustentacao/<pasta>/<ID>-<slug>.md` (`<pasta>`
-    da tabela **Sustentação** do `sabia.md`) no formato do padrão `sa-atender/registro.md`, com a
-    categoria e as respostas no cabeçalho (estimativa em `**Estimativa:**`) e `**Situação:** aberto`; na sprint, a
-    linha na `### <Categoria>` da `## Sustentação` do `sprint-<nn>.md` (criada se faltar).
-  - EWM (com ELM, com "sim"): [elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §6 — o IB do item,
-    `[<ID>] <pedido>` (dono = o P.O.), filho do IB da categoria; se o item já entra na sprint, na iteração dela e com
-    a tarefa `<prefixo> <ID> <pedido>` (dono = quem faz); senão, só o IB, no backlog (a tarefa nasce quando o item
-    entrar numa sprint). Veio de um IB ou DF do EWM → ele é o IB do item (sem IB novo), e a tarefa que já está sob ele
-    (`elm_listar_wi(pai = <id>)`) é a do item, sem tarefa nova: sem pai, sob o IB da
-    categoria (outro pai: mantenha e avise), e o título ganha o `[<ID>]` pelas opções do §9 (renomear · só incluir o
-    prefixo · manter). Primeiro item da categoria → o IB `<Categoria>` nasce junto, na mesma confirmação, e o id dele
-    abre a `### <Categoria>` (§6; §2 antes, se faltar a Sustentação). Sem o MCP `elm` → `pendente` (veio do EWM: o
-    id sem link); a `sa-atender` ou a `sa-executar` criam o que faltar antes de assumir.
+**Corpo:**
+- fatia e bug: a ficha curta `.sabia/planejamento/fatias/FT-nnn-<slug>.md`, só com a seção Entrada do tipo, pelo
+  padrão `sa-refinar/ficha.md`;
+- sustentação: o registro `.sabia/planejamento/sustentacao/<ID>-<slug>.md`, pelo padrão `sa-atender/registro.md`;
+- épico: só a linha (o pitch nasce na `sa-refinar.moldar`).
 
-Atualize "Próximos ids". O commit é **um só, no fim da sessão de triagem** (passo `encaminhar`, resposta "não"; ou
-o fechamento do passo `chegou`, quando a sessão sai por outro caminho), com o
-`backlog.md` (também os ids do espelhamento do passo `chegou`), as fichas, as pastas dos épicos, os registros de Sustentação, o glossário (termos do passo `sa-entrevistar.entrevistar.linguagem`) e, no `sprint-<nn>.md` aberto, as linhas
-da Sustentação, a coluna Tarefa do Débito de especificação e a de créditos da sessão na seção **Créditos de gestão** (Atividade `triagem`;
-([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4); sem sprint aberta, não há onde gravar) (padrão de
-commit do `sabia.md`). A triagem não tem tarefa própria: o padrão é a tarefa **`[GB] Gerenciamento do backlog`** (o
-`GB` da linha da `## Sustentação` do `backlog.md`): mostre-a e confirme (a pessoa pode indicar outra). Sem `GB` →
-indique o fluxo `sa-planejamento.inicial` (ou crie-a pelo
-[elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §2, com "sim") ou pergunte a tarefa. **Créditos e
-horas**, antes do commit: os créditos da sessão (item 4 do Fechar a sessão) vão também num comentário na `[GB]`,
-com "sim" — `elm_comentar(<id da [GB]>, "Créditos triagem <ids>: <créditos> (sessão <sessão>, <login>,
-<AAAA-MM-DD>)")`, ex.: `Créditos triagem FT-040, AT-013: 2.40 (sessão 9ec1dcaa, ana.souza, 2026-10-29)`. Horas da
-triagem, só o SM lança, na `[GB]` (`elm_lancar_horas`, com "sim"); o P.O. nunca lança — nem quando também é o SM:
-o registro dele é o comentário. Sem tarefa, não commite: deixe os arquivos e o comando pronto; push direto na base
-com o "sim" da pessoa (no agente `sa-produto`, que não faz push, entregue o comando pronto — a pessoa executa). **Conflito de id**
-no push: a regra das [Regras](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#regras) do backlog — também
-no push que a pessoa fez pelo comando pronto, depois do fim da triagem: ela volta ao agente `sa-produto` ("conflito de
-id no push da triagem"), e a `sa-triar` retoma aqui pelo passo `chegou`; **antes de renumerar**,
-confira de novo de onde o item veio (DF, IB, AT, chamado, pedido — colunas `origem`, `elm` e `obs`, `**Origem:**` da
-ficha ou do registro): já está numa linha do remoto → pare (abaixo).
+**Item novo** (pedido em texto ou EWM) **ou troca de série**: a linha nasce pelo passo `captura`, com a triagem já
+aplicada na mesma gravação (status, tamanho, prioridade, pai e, na troca, a linha antiga `cancelada` com `virou <novo
+id>`). **Item que já está no `backlog.md`**: só a linha dele muda.
+
+Mensagem do commit: `backlog: triagem <id>`. Não toque no ELM nem no `sprint-<nn>.md`.
 
 ## Saída
 
-A linha (e a ficha, a pasta do épico ou o registro) gravada na base, sem commit ainda → passo `encaminhar`. Muda o
-repositório ou tem regra de negócio em aberto (Sustentação) → passo `triagem`.
+Item novo ou troca de série → passo `captura`. Item que já está no `backlog.md` → passo `gravar-na-base`.
 
 ## Pare se
 
-- Conflito de id no push com o item já numa linha do remoto → a outra pessoa triou o mesmo item; descarte o que você registrou dele, mostre a
-  que existe e pare.
+Nenhuma condição própria: as paradas da gravação são as do passo `gravar-na-base`.

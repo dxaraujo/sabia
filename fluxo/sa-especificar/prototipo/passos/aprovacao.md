@@ -1,48 +1,35 @@
 ---
-{"resumo": "Grava a resposta do cliente à versão vN do protótipo: aprovado → um D-nn com quem, data, versão e evidência (ATA ou e-mail); ajuste → versão nova; sem resposta ou sem a versão do ajuste, a sessão fecha aguardando."}
+{"resumo": "Pergunta a resposta do cliente: aprovado (com quem, data, versão e evidência) vira um D-nn em Decisões; ajuste e aguardando ficam no Em aberto."}
 ---
 ## Entrada
 
-A última versão registrada do protótipo (passo `registrar`) e o `decisoes.md` da pasta de trabalho.
+A versão `v<N>` aguardando o cliente e o documento do item (Decisões, Em aberto).
 
 ## Faça
 
 Pergunte:
 
 ```
-✅ Protótipo v<N> — EP-<nn>: qual a resposta do cliente?
-aprovado: <nome (papel)> · <AAAA-MM-DD> · <ATA-<nn> | e-mail <AAAA-MM-DD> "<assunto>">
+Protótipo v<N> — <id>: qual a resposta do cliente?
+aprovado: <nome (papel)> · <AAAA-MM-DD> · <ATA-<nn> | e-mail>
 ajuste: <o que o cliente pediu>
 aguardando
 ```
 
-- **Aprovado** — só com quem, data, versão e evidência; faltando uma delas, é `aguardando`.
-  - **ATA:** a `ATA-<nn>` aprovada que registra a aprovação; o `D-nn` dela (passo `sa-especificar.reuniao.decisoes`) é o da
-    aprovação, se diz a versão: a Pergunta e a Decisão dele passam ao texto abaixo, com a ATA na Fonte (é por esse
-    texto que o encaminhar e o `sa-prd.prd.escrever` acham a aprovação); a ATA sem essa decisão → `D-nn` novo, com a
-    ATA na fonte.
-  - **E-mail:** `D-nn` novo. O e-mail fica com quem o recebeu (não sobe: pode ter dado do cliente).
+- **Aprovado.** Só com quem, data, versão e evidência; faltando uma, é aguardando. Linha nova em Decisões:
+  `D-nn | Protótipo v<N> aprovado | <nome> (<papel>) | <AAAA-MM-DD> | <ATA-nn | e-mail>`, com o próximo D-nn do
+  documento. A linha `aprovação do cliente da v<N>` sai do Em aberto. O e-mail fica com quem o recebeu.
+- **Ajuste.** A linha do Em aberto vira `ajuste da v<N>: <pedido> · aguardando a v<N+1>`. A versão nova já está na
+  pasta → passo `registrar`.
+- **Aguardando.** Nada muda.
 
-  O `D-nn` (padrão `sa-entrevistar/decisoes.md`): Pergunta `Protótipo aprovado pelo cliente?`, Decisão
-  `Protótipo v<N> aprovado (<arquivos da versão>)`, Fonte / quem decidiu
-  `<nome> (<papel>) · <ATA-<nn> [mm:ss] | e-mail <AAAA-MM-DD> "<assunto>">`, a data da aprovação, Situação
-  `decidida` (a de uma versão aprovada antes: `decidida — substitui D-nn`). Na seção Protótipo do `rascunho.md`, a linha
-  da versão passa a `aprovado — D-<nn>`.
-- **Ajuste** — na seção Levantamento do `rascunho.md`, o que o cliente pediu, com a data e a fonte; a linha da
-  versão passa a `ajuste`.
-  A versão nova já está em `prototipo/` → passo `registrar`; senão, a linha passa a `ajuste — aguardando a v<N+1>`
-  e a sessão fecha (o encaminhar seguinte, com o arquivo novo, traz o `registrar`).
-- **Aguardando** — a linha da versão segue `aguardando o cliente`; o próximo encaminhar traz de volta a este passo.
+A gravação é a do passo `gravar`.
 
 ## Saída
 
-- Aprovado → volte a quem chamou: o encaminhar segue para o PRD; do `sa-prd.prd.escrever`, o lote segue. Com o
-  `prd.md` já escrito, a versão nova muda os leiautes: as EL citam a versão antiga, e o encaminhar leva o `sa-prd.prd`
-  ao passo `sa-prd.prd.escrever`.
-- Ajuste com a versão nova → passo `registrar`.
-- Ajuste sem a versão nova, ou aguardando o cliente → passo `sa-especificar.especificar.fechar-sessao`.
+Aprovado, ajuste sem a versão nova ou aguardando → passo `gravar`. Ajuste com a versão nova na pasta → passo
+`registrar`.
 
 ## Pare se
 
-- Aguardando o cliente ou a versão do ajuste → feche a sessão (`sa-especificar.especificar.fechar-sessao`); ali a
-  sessão termina.
+Nenhum caso próprio deste passo: sem resposta, a espera fica no Em aberto e bloqueia só as EL.

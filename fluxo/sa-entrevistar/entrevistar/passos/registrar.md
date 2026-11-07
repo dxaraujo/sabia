@@ -1,24 +1,24 @@
 ---
-{"resumo": "Registra cada decisão no decisoes.md (padrão sa-entrevistar/decisoes.md), só por acréscimo."}
+{"resumo": "Só por acréscimo no documento do item: uma linha D-nn em Decisões por decisão ou suposição e o Em aberto com para quem e o que bloqueia."}
 ---
 ## Entrada
 
-As decisões das rodadas (decididas, confirmadas e em aberto) e onde registrar (entrada do fluxo).
+As respostas das rodadas, os fatos com fonte e as suposições.
 
 ## Faça
 
-No destino da entrada do fluxo, no formato do padrão `sa-entrevistar/decisoes.md` (o formato único: triagem,
-especificação e PRD criam por este): o `decisoes.md` do épico ou a seção `## Decisões` da ficha (fatia sem épico;
-nunca um `decisoes.md` ao lado dela). Cria na primeira; só acréscimo (a única exceção é a linha reservada por uma ATA `draft`, passo `sa-especificar.reuniao.escrever`) — decisão revista ganha nova linha que
-**substitui** a antiga.
-
-Situações: `decidida` (uma pessoa respondeu) · `confirmada` (fonte encontrada) · `em aberto` (sem resposta) ·
-`em aberto — ATA-<nn> draft` · `decidida — substitui D-nn` (a linha antiga não muda). Em aberto → o `bloqueia: sim`
-ou `bloqueia: não` na Decisão (padrão).
+1. **Decisões.** Uma linha por decisão na tabela `D-nn | Decisão | Quem | Quando | Fonte`, com o próximo D-nn do
+   documento: Quem = `<nome> (<papel>)` ou `suposição`; Quando = `AAAA-MM-DD`; Fonte ∈ conversa · `ATA-nn` · e-mail ·
+   `protótipo v<N>` (fato encontrado: o `arquivo:linha` ou o id do requisito).
+2. **Em aberto.** Uma linha `Pergunta | Para quem | Bloqueia`, com Bloqueia = ids de requisito, de fatia ou de
+   cenário, ou `nada`.
+3. **Respondido.** O em aberto respondido sai do Em aberto e entra em Decisões.
+4. **Gravar.** Chamada por outra skill → ela grava junto com o documento dela. Chamada direta → o commit é o do passo
+   `gravar` (`<id> decisões`).
 
 ## Saída
 
-`decisoes.md` (ou a seção Decisões da ficha) atualizado → passo `linguagem`.
+O documento com Decisões e Em aberto → passo `linguagem`.
 
 ## Pare se
 

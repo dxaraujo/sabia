@@ -1,87 +1,65 @@
 ---
-{"resumo": "Entrada comum de quem pega um item: existe, é deste fluxo, está na sprint, a branch certa; e a regra comum de assumir."}
+{"resumo": "Entrada comum de quem pega um item: existe, terminal, adiada, é deste fluxo, papel pelo equipe.json, dono e a branch <id>."}
 ---
 ## Entrada
 
-Um id (`FT-031`, `EP-04`, `AT-012`, número do EWM), uma tarefa (`[DEV]`, `[REV]`, `[VER]`, `[APR]`, `[ESP]`, `[ATD]`…)
-ou um pedido em texto. O que muda de um fluxo para outro vem de Sprint e de Branch deste fluxo (acima) e da seção
-Entrada: vizinhos do fluxo.
+Um id do Sabiá (`EP-nn`, `FT-nnn`, `AT-nnn`, `IM-nnn`, `BD-nnn`, `IN-nnn`, `OP-nnn`, `EX-nnn`), um número do EWM, uma
+tarefa do EWM (`DEV`, `ESP` ou `ATD` com o número) ou um pedido em texto. O que muda de um fluxo para outro vem de
+Papel e de Branch deste fluxo (acima) e da seção Entrada: vizinhos do fluxo:
+
+- **Papel**: a booleana do `equipe.json` que o fluxo exige: `desenvolvedor`, `especificador`, `produto` ou `nenhuma`.
+- **Branch**: `fatia` (o trabalho é na branch `<id>` do item) ou `nao`.
+- **Vizinhos**: uma linha por estado que é de outro fluxo, com a dona.
+
+A sprint nunca é pré-condição. Cada fluxo grava o próprio responsável, e o ELM é só oferecido (`sa-elm.item`).
 
 ## Faça
 
-**Chamado por outro fluxo** (⇄ em linha, subagente, `AUTONOMO=true`) → pule este passo inteiro: quem chamou já entrou.
-Passagem (⇒, a saída `→ sa-x.f` de outro fluxo) não é chamada: a entrada roda. Em qualquer caso, uma saída do passo
-`entrada` no mestre que casa com o estado vence a frase do caso (ex.: `→ sa-triar.triar` no lugar de "use `sa-triar`" e
-pare).
+**Chamado por outro fluxo** (em linha, como subagente ou pelo autopilot) → pule este passo inteiro: quem chamou já
+entrou. A passagem (a saída `→ skill.fluxo` de outro fluxo, que a pessoa aceita) não é chamada: a entrada roda. Uma
+saída do passo `entrada` no mestre que casa com o estado vence a frase do caso.
 
 Senão, nesta ordem; o primeiro caso que casar decide:
 
-1. **Existe?** Leia o item pela regra A base prevalece do padrão `sa-desenvolver/status.md`: o `status.md` da fatia
-   nas branches (as refs: `git for-each-ref --format='%(refname:short)' refs/heads refs/remotes`, que já cobre as
-   branches das worktrees; em cada ref,
-   `git ls-tree -r --name-only <ref> -- .kiro/specs/ | grep '^.kiro/specs/<id em minúsculas>-[^/]*/status.md$'`, e
-   leia o achado com `git show <ref>:<caminho>`) e na base; depois o `backlog.md` da base (ids locais e a coluna
-   `elm`). Épico (`EP-nn` ou `[ESP] EP-nn`): a Fase do `status.md` do épico (padrão `sa-especificar/status-epico.md`),
-   na pasta da coluna `pasta` do `backlog.md`, na base; sem ele na base (antes do GATE do PRD), o da pasta de trabalho
-   `.sabia/local/especificacao/<EP>-<slug>/` (Fase `rascunho` ou `em-revisao`). Número do EWM → a linha com esse
-   número na coluna `elm`, depois do rótulo (`DF [4567](…)`, `IB [612010](…)`; registrado sem o MCP: `DF 4567`); IB de um épico →
-   a linha do épico; IB de estrutura (`Sustentação`, `Manutenção`, de categoria) → liste os itens não terminais
-   abaixo dele e pergunte qual; tarefa `[<papel>] <id>` → o item do pai. O EWM (`elm_ler_wi`) e a pessoa só completam dados;
-   nunca se inventa dado de work item. Pedido em texto, ou id que não está no `status.md` nem no `backlog.md` → não
-   está registrado: "use `sa-triar`" e pare. Terminal (`concluida`, `concluido`, `cancelada`, `cancelado`,
-   `dividida`) → mostre a situação e a `obs` (a substituta, quando há) e pare; reabrir é item novo pela `sa-triar`.
-   Uma linha dos vizinhos que qualifica o terminal vence esta regra.
-2. **É deste fluxo?** O estado do item (fase, tipo, tarefa e o que a linha qualifica) casa com uma linha dos
-   vizinhos → linha com a dona: "<id> em <estado>: entre pela <dona>" (com o agente dela, quando é outro) e pare;
-   linha terminada em ■: diga a frase entre aspas da linha, como está, e pare; a linha com
-   qualificador vence a fase pura. O estado que segue num passo deste fluxo que não é o próximo vem nas saídas do
-   passo `entrada` no mestre: siga por ele, sem parar. Nem deste fluxo nem dos vizinhos → "não é deste papel: use `sa-iniciar <id>`"
-   e pare.
-3. **Sprint**, pelo modo da linha Sprint deste fluxo:
-   - `exige`: o item tem linha viva no `sprint-<nn>.md` aberto
-     ([Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base), Linha viva), na seção do
-     papel: Especificação para a `[ESP]`; Fatias ou Sustentação para os demais (a linha da fatia na seção Especificação
-     não põe a fatia na sprint do Dev). Sem sprint aberta, sem linha ou só a linha com `saiu da sprint` → "fale com o P.O. ou o SM (agente `sa-produto`)" e
-     pare. A puxada é sempre do encaixe (`sa-planejamento.durante.encaixe`): o P.O., o SM ou quem puxa com a
-     aprovação do P.O., registrada (quem aprovou e quando).
-   - `nao`: pule; o item chega já dentro da sprint (a tarefa dele só nasce com ela).
-4. **Branch da fatia**, pela linha Branch deste fluxo: `nao` → pule. `fatia`: fatia em branch diferente da atual →
-   pergunte se troca (nunca ofereça descartar, `stash` ou `reset`); sem o "sim" → pare; com alterações locais não
-   commitadas → avise e pare. **Branch
-   aberta numa worktree** (`git worktree list` mostra `.sabia/local/wt/<ft>` com ela — fatia do `sa-orquestrar`):
-   não troque, o `git switch` falha; trabalhe na worktree — comandos com `cd .sabia/local/wt/<ft> && <comando>`,
-   arquivos pelo caminho `.sabia/local/wt/<ft>/<caminho>` — e passe isso à próxima skill.
+1. **Existe?** Rode `git fetch` e leia o `backlog.md` da base (com a base local atrás do remoto, o de
+   `origin/<base>`; sem rede, o local). Id do Sabiá → a linha dele. Número do EWM → a linha com esse número na
+   coluna `ib`. Tarefa do EWM → a linha do `sprint-<nn>.md` que a tem em Tarefas e, por ela, o item. Fatia ou bug
+   com branch `<id>`: o `status.md` dela (Fase) completa o estado, mas o status vem da linha da base. Pedido em
+   texto ou id fora do `backlog.md` → pergunte "não está registrado: capturo agora?". Com o "sim", rode a captura
+   comum (a linha nasce `nova`; épico, `a-moldar`) e siga só se os vizinhos deste fluxo aceitam esse status; senão
+   diga "capturado `<id>`; a triagem é pela `sa-triar.triar`" e pare. Nunca invente dado de work item: o EWM (pela
+   `sa-elm.item`) e a pessoa só completam.
+2. **Terminal?** Status `concluida`, `concluido`, `cancelada` ou `cancelado` → mostre o status e a `obs` e pare. Com
+   `virou <id>` na `obs`, diga "o item seguiu como `<id>`". Pedido novo sobre item terminal não reabre nada: é item
+   novo pela captura comum, com `origem <id>` na `obs`.
+3. **Adiada?** Só fatia e bug. `adiada até <data>` com a data no futuro → avise ("adiada até `<data>`: `<motivo da
+   obs>`") e pergunte "seguir mesmo assim?". Sim: acrescente na `obs` `adiamento ignorado (<usuario>, AAAA-MM-DD)`, e
+   o status volta a `aceita`. Não: pare. Data já passada: o status volta a `aceita` sem perguntar. A correção grava
+   pela gravação comum na base junto com a próxima gravação do fluxo (ou logo, se o fluxo não grava estado).
+4. **É deste fluxo?** O estado do item (tipo, status da linha e, na fatia em andamento, a Fase do `status.md` ou o MR
+   aberto, que dá o `em-revisao` derivado) casa com uma linha dos vizinhos → linha com a dona: "`<id>` está
+   `<estado>`: entre pela `<skill.fluxo>`" (com o agente dela, quando é outro) e pare; linha terminada em ■: diga a
+   frase da linha, como está, e pare. Uma linha dos vizinhos vence os casos terminal e adiada. Estado aceito por
+   este fluxo: siga. Nem deste fluxo nem dos vizinhos → "não é deste fluxo: veja `sa-status.item`" e pare.
+5. **Papel.** O usuário da sessão é o usuário do GitLab (o MCP `gitlabpr` informa; sem o MCP, pergunte uma vez na
+   sessão), procurado no campo `usuario` do `equipe.json`. Papel `nenhuma`: siga mesmo fora do `equipe.json`, e o
+   relator vira `externo: <nome>`. Outro papel: fora do `equipe.json` → "peça a inclusão na equipe
+   (`sa-planejamento.inicial`)" e pare; sem a booleana → "isso é de quem tem `<booleana>`: `<nomes>`" e pare.
+6. **Dono.** Item com responsável diferente do usuário da sessão, num fluxo que grava o responsável → mostre de
+   quem é e só siga com o "sim". O fluxo grava o novo responsável na linha.
+7. **Branch.** Branch `nao`: pule. Branch `fatia`, com a branch `<id>` do item diferente da atual → pergunte "troco
+   para `<id>`?" (nunca ofereça descartar, `stash` nem `reset`). Sem o "sim": pare. Árvore suja: avise e pare. Branch
+   aberta numa worktree do autopilot (`git worktree list` mostra `.sabia/local/wt/<id>`) → "`<id>` está no
+   autopilot: espere a devolução" e pare. Sem branch `<id>`, o fluxo decide pelos vizinhos.
 
 ## Saída
 
-Item registrado, deste fluxo, na sprint (modo `exige`) e na branch certa (branch `fatia`) → o próximo da lista, ou o passo que uma
-saída do passo `entrada` no mestre indica; ele assume pela seção Assumir abaixo.
+Item registrado, deste fluxo, com a pessoa certa e na branch certa → o próximo da lista, ou o passo que uma saída do
+passo `entrada` no mestre indica para aquele estado.
 
 ## Pare se
 
-- Não registrado, terminal, vizinho ou de outro papel (casos 1 e 2) → a frase do caso e pare.
-- Modo `exige` sem linha viva na sprint aberta → "fale com o P.O. ou o SM (agente `sa-produto`)" e pare.
-- Branch `fatia` diferente da atual: sem o "sim" à troca, ou com alterações locais não commitadas → avise e pare.
-
-## Assumir
-
-Não roda aqui: o fluxo assume no próprio passo, e as travas do papel (quem pode pegar a tarefa) vêm antes de
-tocar no EWM. Quem executa = o login de quem está na sessão (item 8 da
-[Coleta](~/.sabia/framework/skills/sa-status/SKILL.md#coleta) da `sa-status`). Passadas as travas, pela tarefa do item
-(`elm_transicao(<id>, "assumir")`): o retorno do EWM decide, e o `responsavel` da linha que diverge dele se corrige
-na sincronização da sprint.
-
-- Assumida (sem `ja_estava`) → quem executa vira o responsável. Na `[ESP]` (épico ou fatia), o responsável é o
-  Responsável da linha dela na seção Especificação da sprint: o `backlog.md` não muda (o `responsavel` da fatia é
-  de quem implementa). Fora da `[ESP]`, na fatia com `responsavel` `—` e não iniciada é a primeira atribuição: o
-  modo sai agora pela senioridade de quem assume (não é troca). Grava na base só o fluxo que
-  tem os registros do `backlog.md` e dos `sprints/`; os demais deixam a coluna para a sincronização da sprint.
-- Já é de quem executa (`ja_estava`) → nada a fazer.
-- De outra pessoa (`conflito`): item de Sustentação → pergunte e, com "sim", repita com `forcar: true`; nos demais
-  → "é de <login>; trocar é do P.O. ou do SM" e pare.
-- Tarefa fechada (`precondicao`) → mostre o estado e, com "sim", `elm_transicao(<id>, "reabrir")` e de novo o
-  `assumir`; sem o "sim" → "sincroniza a sprint (P.O. ou SM, agente `sa-produto`)" e pare.
-- Sem o MCP `elm` → com `responsavel` `—`, como na assumida; e `ELM pendente [<tipo> <id do item> assumir]: assumir a <tarefa>` (ex.: `[DEV FT-031 assumir]`,
-  `[ESP EP-05 assumir]`, `[ATD AT-012 assumir]`) no lugar das pendências do item
-  ([Pendências](~/.sabia/framework/skills/sabia/references/elm.md#pendências)), e siga.
-- Fluxo sem tarefa própria no EWM → pule esta seção.
+- Não registrado sem o "sim" à captura, terminal, adiada sem o "sim", vizinho ou fora deste fluxo → a frase do caso,
+  com a `skill.fluxo` seguinte quando há uma, e pare.
+- Fora do `equipe.json` ou sem a booleana do papel → a frase do caso e pare.
+- Branch `fatia`: sem o "sim" à troca, árvore suja ou branch no autopilot → avise e pare.

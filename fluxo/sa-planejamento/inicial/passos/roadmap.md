@@ -1,19 +1,22 @@
 ---
-{"resumo": "Roadmap (roadmap.md): épicos do backlog em ordem de valor e risco, agrupados em releases com um objetivo cada."}
+{"resumo": "Roadmap opcional: releases com objetivo, épicos em ordem de valor e risco e previsão pela vazão."}
 ---
 ## Entrada
 
-O `backlog.md` (épicos) e os acordos gravados.
+Equipe e acordos gravados, ou sem mudança (passo `inicio`).
 
 ## Faça
 
-**Roadmap** (`roadmap.md`): épicos do `backlog.md` em ordem de valor e risco (maior incerteza mais cedo),
-agrupados em releases com um objetivo cada; épico sem PRD aparece como "a descobrir" (`sa-prd`).
+Pergunte "usa roadmap?". Não → siga. Sim → proponha `.sabia/planejamento/roadmap.md` pelo padrão `sa-planejamento/roadmap.md`: a tabela `Release | Objetivo | Épicos | Previsão`, com os épicos do `backlog.md` em
+ordem de valor e risco (a maior incerteza mais cedo). Épico `a-moldar` aparece como `a moldar (sa-refinar.moldar)`.
+A previsão vem da vazão (itens de desenvolvimento concluídos por sprint, pela `concluida_em` do `backlog.md`). Com o
+"ok", grave pelo passo `gravar-na-base`, commit `planejamento: roadmap`. O roadmap só muda por este fluxo, a pedido, e
+pela previsão que o planejamento da sprint atualiza.
 
 ## Saída
 
-`roadmap.md` com "ok" → commit `planejamento: roadmap` → passo `base-ewm`.
+Roadmap com o "ok" → passo `gravar-na-base`. Sem roadmap ou sem o "ok" → passo `seguir`.
 
 ## Pare se
 
-Sem condição de parada própria: sem o "ok" da pessoa, nada é gravado (regra de ouro).
+Sem condição própria.

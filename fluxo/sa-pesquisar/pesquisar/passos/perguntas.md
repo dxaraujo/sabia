@@ -1,22 +1,20 @@
 ---
-{"resumo": "Antes de abrir o código, de 3 a 7 perguntas que o plano vai precisar responder."}
+{"resumo": "Sem perguntas de quem chamou, monta de 3 a 7 a partir do escopo, antes de abrir o código."}
 ---
 ## Entrada
 
-A fatia e as fontes da entrada do fluxo (PRD, ficha ou defeito/pedido), antes de abrir o código.
+O escopo e as perguntas recebidas.
 
 ## Faça
 
-Antes de abrir o código, escreva de 3 a 7 perguntas que o plano vai precisar responder. Exemplos:
-- Onde o login é validado hoje e onde a falha é registrada?
-- Qual funcionalidade existente faz algo parecido (bloqueio, contador, janela de tempo)?
-- Que tabela guarda as tentativas? Há coluna de situação?
-- Como os testes de serviço desta camada são escritos (base, fixtures, banco de teste)?
+1. Vieram perguntas → use-as.
+2. Não vieram → monte de 3 a 7 a partir do escopo, antes de abrir o código: onde o comportamento mora, qual o
+   análogo, o que reaproveitar, quais dados, quais testes, o que a documentação diz.
 
 ## Saída
 
-As perguntas da pesquisa → passo `investigar`.
+Lista de perguntas → passo `investigar`.
 
 ## Pare se
 
-Nenhum caso próprio deste passo.
+Nunca.

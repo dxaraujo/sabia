@@ -1,24 +1,26 @@
 ---
-{"resumo": "Coleta a evidência de cada verificação da rubrica: cruza item a item (P/L) ou lê o diff inteiro, executa o backpressure e caça testes enfraquecidos (C), cada eixo separado."}
+{"resumo": "Junta a evidência de cada item: na L, cruza cenário → critério → tarefa e confere o texto copiado; na C, lê o diff inteiro, avalia os eixos spec · padrões · segurança em separado e caça teste enfraquecido."}
 ---
 ## Entrada
 
-A rubrica do pedido e a entrada dela (passo `escopo`).
+A rubrica, a entrada dela (passo `escopo`) e, na C, o C3 (passo `ci`).
 
 ## Faça
 
-- **P/L:** cruze item a item (cenário → critério → tarefa; regra → origem). Para L4 abra os caminhos citados.
-- **C:** comece por `git diff --stat`; leia o diff inteiro dos arquivos de produção e de teste. **Execute** os
-  comandos de backpressure (C3) — não confie em "os testes passaram" de ninguém. Procure no diff por testes
-  removidos ou enfraquecidos (`git diff --diff-filter=D --name-only`, `@Disabled`, `@Ignore`, `skip`, `xit`,
-  `assertTrue(true)`, asserts apagados, `catch` vazio) — C4. Avalie os dois eixos separadamente; com subagentes
-  disponíveis, um revisor por eixo, em paralelo.
-- Banco só por MCP de consulta, somente leitura (`SELECT`/`WITH`).
+- **L:** cruze item a item: cenário CT-nn → critério → tarefa; regra → origem. Confira que o texto dos requisitos no
+  delta é igual ao texto aprovado da ficha, do `prd.md` ou de `elm/`, sem reescrita. Abra os caminhos citados (L4).
+- **C:** comece por `git diff --stat` e leia o diff inteiro, de produção e de teste. Avalie os três eixos em
+  separado (spec · padrões · segurança); um não compensa o outro. Com subagentes disponíveis, um por eixo. Procure
+  teste removido ou enfraquecido (C4): `git diff --diff-filter=D --name-only`, `@Disabled`, `@Ignore`, `skip`,
+  `xit`, assert apagado, `assertTrue(true)`, `catch` vazio.
+- Banco só pelo MCP de consulta, em leitura (`SELECT`, `WITH`).
+- Vale como evidência `arquivo:linha`, um comando com a saída ou "procurado em X, não encontrado".
+- O que diverge da spec é achado com destino `volta-spec`. Problema fora do escopo da fatia é SUGESTÃO com destino
+  `adia`.
 
 ## Saída
 
-Os achados, cada um com evidência (`arquivo:linha`, comando + saída, ou "procurado em X, não encontrado") → passo
-`calibrar`.
+Os achados, cada um com evidência, e o resultado de cada item da rubrica → passo `relatorio`.
 
 ## Pare se
 

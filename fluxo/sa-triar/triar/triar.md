@@ -1,27 +1,32 @@
 ---
-{"fluxo": "triar", "dono": "sa-produto",
- "quando": ["toda demanda nova, item a item: pedido em texto, número do EWM (DF, IB), Sustentação, ficha a aprovar, item que voltou", "nova demanda", "o cliente pediu", "registra o defeito 4567", "coloca no backlog", "aprova a ficha da FT-040", "conflito de id no push da triagem"],
- "travas_gerais": ["sim-da-pessoa"],
+{"fluxo": "triar", "dono": "sa-especificador",
+ "quando": ["triagem item a item: pedido em texto, número do EWM, id do backlog.md ou a fila de itens nova", "triagem", "triar a fila", "nova demanda", "chegou um pedido", "o cliente pediu", "registra o defeito 4567 e tria", "triar a FT-031"],
+ "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa", "elm-pela-sa-elm"],
  "passos": [
-   {"id": "chegou", "saidas": {"lote do EWM": "→ sa-triar.lote-ewm", "conflito de id no push de uma triagem já encerrada": "registrar", "épico novo que voltou, registro completo": "encaminhar", "fatia sem épico que vira épico, se divide ou é cancelada; item de Sustentação cancelado": "registrar", "item de Sustentação devolvido por categoria errada": "triagem", "fatia nova no backlog com só falta: especificação (entra na sprint como especificação)": "→ sa-planejamento.durante.encaixe", "fatia com a [ESP] FT aberta na sprint": "→ sa-especificar.fatia", "fatia nova de épico completada (Completar uma fatia nova)": "encaminhar", "cancelar fatia de épico (ou o épico)": "→ sa-fatiar.refinamento", "o resto (começar ou retomar: hub sa-iniciar)": "fim"}},
-   {"id": "triagem", "chama": "sa-entrevistar.entrevistar", "saidas": {"não fazer": "encaminhar"}},
-   {"id": "registrar", "chama": "sa-entrevistar.atendimento", "saidas": {"Sustentação que muda o repositório ou com regra de negócio em aberto": "triagem"}},
-   {"id": "encaminhar", "saidas": {"sim: mais um item": "chegou", "não": "fim"}}
+   {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao", "saidas": {"sem .sabia/planejamento/backlog.md na base: diga 'rode a sa-setup'": "fim", "pedido em texto, número do EWM ou nada informado (não é o caso 'não registrado' da entrada comum)": "ler", "fatia ou bug em adiada até <data> (retriagem: o adiamento se trata no decidir)": "ler"}},
+   {"id": "ler", "chama": "sa-elm.item"},
+   {"id": "duplicado", "saidas": {"o mesmo de um item aberto, e a entrada é pedido em texto ou EWM": "encaminhar"}},
+   {"id": "decidir", "saidas": {"duplicado, recusa, falta informação ou agora não": "registrar"}},
+   {"id": "classificar"},
+   {"id": "registrar", "saidas": {"item novo (pedido em texto ou EWM) ou troca de série": "captura"}},
+   {"id": "gravar-na-base", "de": "gravar-na-base"},
+   {"id": "encaminhar", "saidas": {"mais um item": "ler", "não": "fim"}},
+   {"id": "captura", "de": "captura", "saidas": {"linha preparada, com a triagem aplicada": "gravar-na-base"}}
  ]}
 ---
-# Triar — triagem e registro
+# Triar — decidir se o item entra
 
-Toda demanda nova entra por aqui. Triar é decidir **se** ela entra, **em que trilha** e **com que informação** —
-sem começar nada. O que sai é uma linha no `backlog.md` (e, em toda fatia sem épico, a ficha; na Sustentação, o
-registro do item e o IB dele no EWM), que o planejamento puxa para a sprint. Começar é pelo hub **`sa-iniciar`**, que
-encaminha o item para a skill do papel. O lote do EWM ("importar do EWM", "triar os defeitos do time") é o fluxo
-`sa-triar.lote-ewm`.
+Qualquer pessoa tria, item a item, direto na base (na prática, P.O. e SM; o Dev pode triar o que achou). A triagem
+decide se o item entra (aceita, cancelada, falta informação ou adiada) e, no aceito, o tipo, o tamanho, a prioridade
+e o pai. Todo ramo grava, um commit por item. O próximo passo do item é só sugestão de sessão nova. Aceita qualquer
+tipo em `nova` e fatia ou bug em `aceita` ou `adiada até <data>` (retriagem). Item já registrado em outro estado é
+de outro fluxo:
 
-## Regras
+## Entrada: vizinhos
 
-- Toda fatia sem épico sai com a seção Artefatos afetados (padrão `sa-triar/ficha.md`): quem tria autoriza a
-  alteração e se compromete com a lista, registrados no fecho dela. Com linha `inclui`, `altera` ou `exclui`, a
-  fatia espera a `[ESP] FT` (`sa-especificar.fatia`) com `falta: especificação`.
-- Ficha aprovada só muda por pedido explícito: volta a `rascunho` (e a fatia, pela Volta das
-  [Situações](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#situações)), mostre a diferença e peça a aprovação de novo; fatia
-  `iniciada` ou adiante que dependa da mudança → avise quem a conduz.
+- fatia ou bug `pronta` → `sa-refinar.ajustar`
+- fatia ou bug `em-andamento` → `sa-desenvolver.codificar` (agente `sa-desenvolvedor`)
+- épico `a-moldar` → `sa-refinar.moldar`
+- épico `em-especificacao` → `sa-prd.prd`
+- épico `fatiado` → `sa-refinar.ajustar`
+- sustentação `em-andamento` → `sa-atender.atender` (agente `sa-desenvolvedor`)

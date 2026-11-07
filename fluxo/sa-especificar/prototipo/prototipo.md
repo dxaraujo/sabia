@@ -1,31 +1,29 @@
 ---
 {"fluxo": "prototipo", "dono": "sa-especificador",
- "quando": ["protótipo de tela de um épico com a linha Telas = sim do sabia.md, antes do PRD: registrar a versão que o cliente vê e a aprovação dele; chamado pelo encaminhar da especificação (versão nova ou aguardando o cliente) e pelo sa-prd.prd.escrever (sem protótipo aprovado), e volta (o pedido direto, \"tenho o protótipo\" ou \"o cliente aprovou o protótipo\", entra pelo sa-especificar.especificar)"],
+ "quando": ["opcional, para dúvida grande de tela no shaping, no refinamento ou no PRD: registrar a versão vN do protótipo que o cliente vê (só dado fictício) e a resposta dele no documento do item; chamado pela sa-refinar.moldar, pela sa-refinar.detalhar, pela sa-prd.prd e pela sa-prd.mudanca, ou direto", "tenho o protótipo do EP-03", "o cliente respondeu a v2", "o cliente aprovou o protótipo"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa"],
  "passos": [
-   {"id": "registrar", "saidas": {"épico sem tela: D-nn e volta a quem chamou": "fim", "épico com tela sem arquivo em prototipo/, ou ajuste sem a versão nova": "→ sa-especificar.especificar.fechar-sessao"}},
-   {"id": "aprovacao", "travas": ["aprovacao-do-cliente"], "saidas": {"ajuste pedido pelo cliente (versão nova)": "registrar", "aguardando o cliente ou a versão nova": "→ sa-especificar.especificar.fechar-sessao"}}
+   {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao", "saidas": {"resposta do cliente a uma versão já registrada": "aprovacao"}},
+   {"id": "registrar", "saidas": {"nenhum arquivo novo e nenhuma versão aguardando o cliente": "devolver"}},
+   {"id": "aprovacao", "travas": ["aprovacao-do-cliente"], "saidas": {"ajuste com a versão nova já na pasta": "registrar"}},
+   {"id": "gravar", "de": "gravar-na-base"},
+   {"id": "devolver", "saidas": {"aprovado e a EL muda num prd.md já aprovado": "→ sa-prd.mudanca"}}
  ]}
 ---
-# Protótipo — a versão que o cliente aprova antes do PRD
+# Protótipo — a versão que o cliente vê
 
-Num projeto com tela (linha **Telas** = `sim` na seção ELM do `.sabia/sabia.md`), o PRD só começa com um protótipo
-aprovado pelo cliente: é dele que o lote do PRD tira os leiautes (EL, no passo `sa-prd.prd.escrever`). O protótipo é
-**entrada**, não requisito: feito fora do Sabiá, entra como anexo da `[ESP]`, numa versão `v<N>`, e a aprovação do
-cliente vira um `D-nn` no `decisoes.md`; com o PRD aprovado, as versões registradas vão com a pasta do épico para a
-base. O fluxo volta a quem chamou; enquanto o protótipo não chega, o cliente não
-responde ou a versão do ajuste não vem, a sessão fecha. Épico sem tela num projeto com tela → um `D-nn` da pessoa, e
-o lote do PRD não cria EL.
+Opcional. Registra a versão `v<N>` do protótipo que o cliente vê, um conjunto de arquivos só com dado fictício, em
+`.sabia/planejamento/prototipos/<id>-<slug>/v<N>/`, e grava a resposta do cliente no documento do item: o `pitch.md`
+(épico em `a-moldar`), o `prd.md` (épico depois do go) ou a ficha (fatia ou bug). Não condiciona o PRD: só a EL
+depende dele.
 
-Entrada: o épico com a `[ESP]` aberta e a pasta de trabalho com `prototipo/`.
+## Entrada: vizinhos
 
-Leia antes: `.sabia/sabia.md` (seções ELM e Projeto) e `<produto>/equipe.json` (papéis).
+- sustentação → "o protótipo é de épico, fatia ou bug" ■
+- sem pessoa presente (subagente) → "a resposta do cliente é com uma pessoa" ■
 
 ## Regras
 
-- Só dado fictício no protótipo: nome, documento, conta ou valor de cliente real → não registra (o anexo sobe ao EWM).
-- O que se aprova é um arquivo (PDF, imagens, HTML exportado), nunca um link que muda: link de ferramenta de
-  protótipo → peça a exportação da versão.
-- Aprovação é do cliente, com evidência: nunca a deduza de silêncio, de "parece bom" de quem especifica ou de versão
-  anterior.
-- Não invoque outra skill por conta própria: volte a quem chamou, ou diga a próxima e pare.
+- Só dado fictício. Nome, documento, conta ou valor de cliente real → não registra.
+- Só arquivo (PDF, imagens, HTML exportado), nunca link: o link muda depois da aprovação.
+- A aprovação é do cliente, com evidência; nunca deduzida de silêncio nem dada por quem especifica.

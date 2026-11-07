@@ -1,5 +1,5 @@
 ---
-{"resumo": "Capacidade da sprint: revisão humana (o limite principal), HITL, vazão e lead time, especificação e a reserva (Sustentação + retrabalho)."}
+{"resumo": "Capacidade pela vazão das últimas 3 sprints, ajustada pelas horas disponíveis; a folga em itens fica para o atendimento."}
 ---
 ## Entrada
 
@@ -7,26 +7,20 @@ O `equipe.json`, o `acordos.md`, o `backlog.md` e as sprints anteriores.
 
 ## Faça
 
-**Capacidade**, da `equipe.json` (horas da sprint menos ausências):
-- **revisão humana** (horas de revisão e verificação) — o limite principal;
-- **HITL**: fatias HITL consomem horas de dev acompanhando — a soma das horas da `[DEV]` das fatias HITL da sprint
-  (as da proposta, passo `proposta`);
-- **vazão**: média de fatias concluídas nas últimas 3 sprints, incluídas as puxadas (primeira sprint: comece
-  com 1 fatia por dev por semana e ajuste na virada), e o lead time médio por fatia;
-- **especificação**: horas de especificação da sprint (`horas-especificacao-semana`); zero no time inteiro e
-  épico a especificar no topo → avise antes de seguir (sem horas não há `[ESP]`: alguém ganha horas de
-  especificação no `equipe.json`, ou o épico fica para depois);
-- **reserva (Sustentação + retrabalho)**: o percentual do `acordos.md` sobre as **horas da sprint do time
-  inteiro** (todos os ativos, menos ausências), descontado antes de selecionar fatias. Dentro dela entram primeiro
-  as **fatias migradas** da sprint anterior (horas que faltam, pela estimativa da `[DEV]` restante); o resto fica
-  para a Sustentação da sprint, a começar pelos itens `aberto` com `sprint` `—` do `backlog.md` (triados sem
-  sprint aberta, fora da reserva ou que saíram de uma sprint). Migradas que passam da reserva consomem a
-  capacidade das fatias novas.
+1. **Vazão**: a média de itens de desenvolvimento concluídos nas últimas 3 sprints fechadas: as linhas Trabalho =
+   desenvolvimento cujo item tem `concluida_em` dentro das datas da sprint. Na primeira sprint, 1 item por
+   desenvolvedor ativo por semana. Especificação não entra na vazão.
+2. **Capacidade**: a vazão ajustada pela proporção das horas disponíveis (`horas_semana` × semanas do Timebox, menos
+   as `ausencias` que caem no período) sobre as horas sem ausências.
+3. **Folga**: o % do `acordos.md` aplicado à capacidade, em itens, reservado ao atendimento.
+4. **Sobra** para o desenvolvimento = capacidade − folga. Os migrados da virada consomem a sobra primeiro.
+
+No reabastecimento, a capacidade é a da sprint aberta menos as linhas de desenvolvimento que ela já tem.
 
 ## Saída
 
-As capacidades da sprint → passo `especificacao`.
+Vazão, capacidade, folga e sobra → passo `especificacao`.
 
 ## Pare se
 
-Sem condição de parada própria: a falta de horas de especificação é aviso.
+Sem condição própria.

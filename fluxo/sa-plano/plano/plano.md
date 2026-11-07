@@ -1,62 +1,37 @@
 ---
 {"fluxo": "plano", "dono": "sa-desenvolvedor",
- "quando": ["planejar a fatia: pesquisa, decisões, spec do Kiro, análise independente e GATE do plano", "planeja a FT-031", "gera a spec", "cria as tasks"],
- "travas_gerais": ["sim-da-pessoa"],
+ "quando": ["planejar a fatia nas rotas quick e completo: pesquisa (research.md), decisões técnicas, delta com o texto aprovado copiado e design e tasks pela matriz rota × formato (Kiro ou OpenSpec)", "planeja a FT-031", "gera a spec", "cria as tasks"],
+ "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa"],
  "passos": [
-   {"id": "entrada", "de": "entrada", "sprint": "nao", "branch": "fatia", "saidas": {"aguardando-aprovacao-plano sem a [APR], ou bloqueada \"aguardando troca de modo\"": "gate", "planejando com o ajuste pedido no GATE do plano, ou bloqueada \"plano acima do limite\" com a obs de seguir do P.O.": "escrever"}},
+   {"id": "entrada", "de": "entrada", "papel": "desenvolvedor", "branch": "fatia"},
+   {"id": "ler"},
+   {"id": "texto-aprovado", "travas": ["aprovacao-no-documento"], "saidas": {"falta a aprovação: Em aberto registrado (no autopilot, devolvido)": "fim"}},
    {"id": "pesquisa", "chama": "sa-pesquisar.pesquisar"},
-   {"id": "decisoes", "saidas": {"lacuna de negócio na ficha sem épico: é do P.O.": "fim", "artefato que precisa mudar, [ESP] FT aberta ou reaberta: bloqueada, a [ESP] é do especificador": "→ sa-especificar.fatia", "artefato que precisa mudar, [ESP] concluída numa sprint fechada ou sem [ESP]: bloqueada, o encaixe é do P.O. ou do SM": "→ sa-planejamento.durante", "artefato que precisa mudar, sem sprint aberta: bloqueada, pendência do P.O. na [GB]": "→ sa-planejamento.sprint"}},
-   {"id": "escrever", "saidas": {"plano grande demais: bloqueada (de: planejando), o P.O. decide (de épico: seguir ou cancelar e registrar as partes pela sa-triar; sem épico: dividir pela sa-triar)": "fim"}},
-   {"id": "analise", "chama": "sa-revisar.revisar", "travas": ["revisao-independente"], "saidas": {"ANALISE: AJUSTAR, falta do plano": "escrever", "ANALISE: AJUSTAR, falta do PRD ou da ficha": "decisoes", "2ª rodada em ANALISE: AJUSTAR: uma pessoa decide (HITL: achado a achado; AFK: GATE obrigatório)": "gate"}},
-   {"id": "gate", "saidas": {"com GATE: aprovador avisado": "→ sa-revisar.aprovar-plano", "sem GATE: fase implementando": "→ sa-codificar.codificar", "AFK com risco: bloqueada, a troca é do P.O. ou do SM": "fim"}}
+   {"id": "decisoes", "saidas": {"arquitetural ou irreversível sem a decisão da pessoa (no autopilot, devolvido)": "fim"}},
+   {"id": "delta"},
+   {"id": "escrever", "saidas": {"o plano mostra que passa de G: vira épico": "→ sa-refinar.moldar"}},
+   {"id": "revisar", "chama": "sa-revisar.revisar", "saidas": {"completo com parte por escrever, ou achado corrige": "escrever", "autopilot, 2ª reprovação seguida": "→ sa-desenvolver.codificar.disjuntor"}},
+   {"id": "aprovar", "saidas": {"ajuste pedido por quem desenvolve": "escrever"}},
+   {"id": "seguir", "saidas": {"IA supervisionada ou IA autopilot": "→ sa-desenvolver.codificar", "manual: Retomar gravado, sessão encerrada até o 'terminei'": "fim"}},
+   {"id": "captura", "de": "captura"},
+   {"id": "gravar", "de": "gravar-na-base"}
  ]}
 ---
 # Plano — decidir o como antes de codar
 
-O plano existe para que as decisões de desenho sejam tomadas **com** uma pessoa, não descobertas por ela no
-code review. Ele é curto, concreto e descartável: depois do merge, o que vale é o código, o ELM, o glossário e os
-ADRs. Templates: o padrão `sa-plano/plano.md`.
+O plano da fatia nas rotas quick e completo; o trivial não passa por aqui. Junta os fatos pela `sa-pesquisar` e
+grava o `research.md`, toma as decisões técnicas, copia o texto aprovado para o delta (sem reescrever) e escreve
+design e tasks pela matriz rota × formato. Quem desenvolve aprova o próprio plano; no autopilot, o subagente aprova
+e registra. Modelos: o padrão `sa-plano/plano.md` e o padrão `sa-plano/research.md`.
 
-Deste fluxo: a pasta `.kiro/specs/<ft>-<slug>/` (`<ft>` = `ft-<nnn>` em minúsculas) criada pela `sa-desenvolver`, na branch da fatia, em `pesquisando`,
-`planejando`, `bloqueada (de: pesquisando | planejando)` ou `aguardando-aprovacao-plano` sem a `[APR]` (passo `gate`).
-Bloqueada `aguardando especificação [ESP] FT-<nnn>` com a linha da Especificação `concluida` na base e o motivo do
-Bloqueio na Observação ([De quem é a Volta](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação);
-sem ele, é do especificador) → traga a base para
-a branch (`git merge origin/<base>`, com "sim": os conceitos aprovados chegam em `elm/`), `Bloqueio: —`, a fase de
-origem e siga. A ficha com linha de Especificado `—` e a `[ESP] FT` aberta (pedido de fora da fatia, [Volta à
-especificação](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação)) → `bloqueada (de: <fase>)` com o
-Bloqueio `aguardando especificação [ESP] FT-<nnn>: …`, commit `<FT> registrar bloqueio`, e pare. Bloqueada `plano acima do limite` → a `obs` da linha
-da fatia no `backlog.md` de `origin/<base>` (`git show`): com `plano acima do limite: seguir (<P.O.>, <data>)` →
-`Bloqueio: —`, `fase: planejando` e o passo `escrever`, sem o limite; sem ela → "a decisão do plano grande é do P.O.
-(agente `sa-produto`)" e pare. `planejando` com Achado aberto de origem `GATE do plano` (o ajuste pedido na `[APR]
-Aprovar plano`) → o passo `escrever`. Bloqueada por outro motivo → mostre o motivo e a pergunta; resolvido, `Bloqueio: —`, a fase de origem e siga.
-Quem retoma é o `responsavel` da linha viva da fatia na sprint (base): outra pessoa → "é de <login>; trocar é do P.O.
-ou do SM" e pare. A `[DEV]`, na retomada, pela seção Assumir do passo `sa-plano.plano.entrada` (já é dele → nada;
-fechada → reabrir com "sim"). No loop (`AUTONOMO`), o lote já assumiu.
+Deste fluxo: item `em-andamento`, branch `<id>`, pasta da spec com `status.md`, rota quick ou completo e Fase `—`.
+O manual segue as regras da IA supervisionada: a pessoa está presente.
 
-Leia: `status.md`, a fatia no `backlog.md`, a ficha da fatia (toda fatia; na base: `git fetch` e `git show
-origin/<base>:<produto>/<caminho da coluna ficha>`, com a seção Artefatos afetados), o PRD do épico (histórias e regras
-cobertas) ou o defeito, os conceitos aprovados em `elm/` da pasta da fatia, `.sabia/sabia.md` (com as regras
-aprendidas) e o steering de tecnologia/estrutura.
+Os passos `captura` e `gravar` são a captura comum e a gravação comum na base: outros passos os incluem e voltam.
 
 ## Entrada: vizinhos
 
-- sem `status.md` em nenhuma branch (fatia não iniciada) → `sa-desenvolver.desenvolver`
-- `bloqueada (de: pesquisando | planejando)` com Bloqueio `aguardando especificação [ESP] FT-<nnn>` que é de quem especifica ([De quem é a Volta](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#volta-à-especificação)) → `sa-especificar.fatia` (agente `sa-especificador`)
-- `aguardando-aprovacao-plano` com a `[APR] Aprovar plano` criada → `sa-revisar.aprovar-plano` (agente `sa-revisor`)
-- `implementando`, `revisando`, `verificando`, `verificada` ou `retrabalho (de: …)` → `sa-codificar.codificar`
-
-## Modo autônomo
-
-`AUTONOMO=true`: sem perguntas; decisão técnica com alternativas → escolha a recomendada e registre; lacuna de
-negócio na ficha → `fase: bloqueada (de: planejando)` com a pergunta para o P.O.; artefato que precisa mudar → o bloco
-Volta à especificação (passo `decisoes`). Passo `gate` sem pessoa: fatia AFK com risco →
-`fase: bloqueada (de: planejando)`, Bloqueio `aguardando troca de modo · motivo: <risco>` (a troca é do P.O. ou do SM); GATE → Sênior
-segue para `implementando`; Pleno → a escolha do lote que quem chamou passou (sem ela: `aguardando-aprovacao-plano`,
-e a pergunta fica para a sessão dele); 2ª rodada em `ANALISE: AJUSTAR` → com GATE, em qualquer senioridade; nada de ELM (as pendências com a chave do passo: `[DEV FT-<nnn> horas]`, `[APR FT-<nnn> criar]`).
-
-## Regras
-
-- Não invoque nem simule outra skill do fluxo: termine dizendo a próxima (`sa-codificar`, o Dev Sênior da `[APR]`,
-  o P.O. ou o SM na troca de modo, o P.O. no plano grande demais, quem o `Próximo:` do bloco diz na volta à especificação) e pare. A `sa-pesquisar` e o subagente revisor, que os passos mandam
-  chamar, fazem parte deste fluxo.
+- rota trivial → `sa-desenvolver.codificar`
+- sem branch `<id>` ou sem pasta da spec → `sa-desenvolver.iniciar`
+- Fase diferente de — (plano já aprovado) → `sa-desenvolver.codificar`
+- mudança pedida num plano já aprovado → `sa-plano.replanejar`

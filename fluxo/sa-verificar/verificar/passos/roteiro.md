@@ -1,26 +1,31 @@
 ---
-{"resumo": "Fase de verificação no status.md e o roteiro de cada cenário no verificacao.md, a partir do contrato de pronto do design.md, antes de executar."}
+{"resumo": "Escreve, antes de executar, o roteiro de cada cenário CT-nn da ficha e da spec, conforme a rota e o formato: pré-condição · passos · esperado · CT-nn, com a repetição e o erro em um item."}
 ---
 ## Entrada
 
-O contrato de pronto do `design.md` e os cenários que a fatia cobre (trilha rápida: o `bugfix.md`).
+A branch `<id>`, a ficha `.sabia/planejamento/fatias/FT-<nnn>-<slug>.md` e a pasta da spec pelo `formato_spec` do
+`agentes.json`. Quem chama a `sa-verificar.uat` passa os cenários escolhidos pela pessoa.
 
 ## Faça
 
-`status.md`: AFK → `fase: verificando`; HITL (chamada pelo `sa-verificar.hitl`) → a fase continua `em-verificacao`;
-linha no Histórico.
+1. Os cenários vêm da ficha e da spec, conforme a rota (no `status.md`; sem ele, trivial) e o formato:
 
-O roteiro parte do **contrato de pronto** do `design.md` (acordado no GATE do plano, antes do código) — não o
-afrouxe agora. Cada rodada é uma seção acrescentada no fim do `verificacao.md`, sem apagar as anteriores, com os cenários
-da rodada (padrão `sa-verificar/verificacao.md`, Rodada). Para cada cenário da rodada, escreva-o **antes** de executar
-(trilha rápida: os comportamentos esperado e que não muda do `bugfix.md`), no padrão `sa-verificar/verificacao.md`
-(roteiro). HF alterada na `[ESP] FT` → o cenário é o da cópia aprovada em `elm/` da pasta da fatia, não o do PRD nem
-o do bundle.
+| Rota | Kiro | OpenSpec |
+|---|---|---|
+| trivial | os cenários da ficha e o teste que acompanha a mudança | o mesmo |
+| quick fatia | `requirements.md` da Quick Spec | o delta |
+| quick bug | `bugfix.md` | o delta MODIFIED |
+| completo | `requirements.md` e `design.md` | o delta e o `design.md` |
+
+2. O delta já traz o texto aprovado dos requisitos: não leia o ELM.
+3. Para cada cenário: pré-condição · passos · esperado (o "Então", com valores) · CT-nn. Não afrouxe o "Então".
+   Entram também a repetição (rodar duas vezes) e o erro em um item, quando se aplicam.
+4. Cenário sem CT-nn recebe o próximo CT-nn livre da fatia, citado no 🔎 para o autor levar à spec e ao teste.
 
 ## Saída
 
-O roteiro de todos os cenários no `verificacao.md` → passo `ambiente`.
+O roteiro de todos os cenários → passo `ambiente`.
 
 ## Pare se
 
-—
+- Sem cenário na ficha nem na spec → devolva "sem cenários: a ficha é da `sa-refinar.detalhar`" e pare.

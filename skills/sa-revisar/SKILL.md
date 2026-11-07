@@ -1,10 +1,10 @@
 ---
 name: sa-revisar
-description: "Independent review in the Sabiá flow, with clean context and without changing any artifact (it writes only the report) — judges against the source, never against the author's explanation: PRD (rubric P, PRONTO/AJUSTAR), slice (fatia) plan (rubric L, OK/AJUSTAR) or code (rubric C on two axes, spec and standards, APROVADO/REVISAR), with severity calibrated by the team's lessons. Also the Dev Sênior skill for the [REV] task (claims it in EWM and reviews the PR), [APR] Aprovar plano (reads the plan and approves or asks for adjustments) and [APR] Aprovar PR da fatia AFK (reads the PR and approves or requests changes). Use when the user says \"revisa\", \"pegar a [REV] da FT-031\", \"[APR] Aprovar plano\", \"aprovo o plano da FT-031\", \"[APR] Aprovar PR\", \"aprovar o PR da FT-031\", \"judge\", \"revisa o PRD\", \"analisa o plano\", \"revisa a FT-031\", \"code review\", and at the end of sa-prd, sa-plano and sa-codificar."
+description: "Plan and code review in the Sabiá flow. The revisar flow is the independent reviewer: it runs in the read-only sa-revisor subagent with clean context, judges the files against their source (never the author's explanation) with rubric L (slice plan) or C (code, on the spec, standards and security axes), plus the toolkit rubrics and the learned rules, and returns the report to the caller without writing files or committing; only a BLOQUEANTE finding fails it. Called by sa-plano.plano, sa-plano.replanejar, sa-desenvolver.codificar and sa-revisar.mr. The mr flow is the official human review of a code MR by any developer who is not the author: reads the MR and its CI, gets the rubric C report, triages each finding in the MR (corrige, adia, volta-plano, volta-spec, descarta) and approves or requests changes; the merge stays with the author. Use when the user says \"revisa o plano da FT-031\", \"revisa o código da FT-031\", \"code review\", \"revisa o MR da FT-031\", \"aprovar o MR !42\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.0.3"
+  version: "2.1.0"
 ---
 
-# sa-revisar — Verificação independente
+# sa-revisar — Revisão de plano e de código

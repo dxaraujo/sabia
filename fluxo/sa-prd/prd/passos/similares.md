@@ -1,51 +1,31 @@
 ---
-{"resumo": "Antes de criar qualquer arquivo em elm/: busca similares no ELM para cada artefato proposto, de todo tipo, e registra a decisão da pessoa (reutilizar, alterar, excluir, criar novo) e o impacto de cada alteração e exclusão."}
+{"resumo": "Para cada requisito proposto, o vigente da busca define a ação (inclui, altera, exclui) e o id; registra o impacto de cada altera e exclui."}
 ---
 ## Entrada
 
-O `decisoes.md` da entrevista e a lista dos artefatos que o PRD vai propor. Obrigatório, antes de criar qualquer
-arquivo em `elm/`.
+Os requisitos que o PRD vai propor (das decisões e do pitch) e o vigente do passo `entender`.
 
 ## Faça
 
-Projeto com ELM: liste os artefatos que o PRD vai propor, de todo tipo do catálogo (tipo, título provisório,
-palavras-chave da entrevista e do glossário), e rode [similares](~/.sabia/framework/skills/sa-prd/references/similares.md). Mostre
-a tabela à pessoa e peça uma decisão por artefato com acerto:
+Para cada requisito proposto (tipo, título provisório, palavras-chave), procure o vigente parecido e mostre à pessoa
+a ação recomendada:
 
-| Relação encontrada | Decisões possíveis (recomendada primeiro) |
-|---|---|
-| igual | **reutilizar** o existente (não cria conceito) · criar novo só com o motivo da diferença registrado |
-| sobrepõe | **alterar** o existente (caminho "Alteração" do passo `escrever`) · **excluir** o existente que o novo substitui · criar novo com o motivo registrado |
-| relacionado | **criar novo**, citando o existente em `## Relações` |
-| nenhum | criar novo |
+| Vigente | Ação | Id |
+|---|---|---|
+| nenhum | inclui | provisório `<sigla>-EP<nn>-<nn>` (ex.: `REG-EP03-01`), sequencial no `prd.md` |
+| o mesmo, e muda | altera | `<sigla>-<id do ELM>` (sem ELM, o id da spec viva) |
+| deixa de valer | exclui | `<sigla>-<id do ELM>` (sem ELM, o id da spec viva) |
+| o mesmo, sem mudar | — (só citado) | `<sigla>-<id do ELM>` |
 
-Depois, pergunte se algum comportamento documentado deixa de valer com o épico: cada um é **excluir** (caminho
-"Exclusão" do passo `escrever`), com o motivo e o substituto, quando há.
-
-**Impacto** — por artefato alterado ou excluído, quem o cita no ELM (`elm_ler_req_local(id).links.entrada`: a HF que
-embute a REG, o CT da HF, a EL que a usa…), revisto com a pessoa: muda → também alterar (ou excluir), linha própria;
-não muda → só a coluna Impacto.
-
-Registre no `decisoes.md` uma linha por decisão: D = `D-nn` · Pergunta = `<sigla> <título provisório>: <igual |
-sobrepõe | relacionado> a <id> <título no ELM>?` (a exclusão sem proposta: `<id> <título no ELM>: deixa de valer?`) ·
-Decisão = `<reutilizar | alterar | excluir | criar novo> <id> — <motivo>` · Fonte / quem decidiu = `<login> (<papel>)`
-· Data = `<AAAA-MM-DD>` · Situação = `decidida`. Na tabela de artefatos do PRD, a coluna **No ELM** — `reusa <id>` ·
-`altera <id>` · `exclui <id>` · `novo (verificado <AAAA-MM-DD>)` · `novo (não verificado)` · `novo` (o CT planejado
-novo) — e a coluna **Impacto** (`<id> (<sigla>) <rel>`,
-com `rel` = o campo `rel` de `links.entrada` do `elm_ler_req_local`, como veio; vários separados por ` · `; sem
-impacto, `—`).
-Sem o MCP `elm` ou sem o bundle → o aviso de risco do [similares](~/.sabia/framework/skills/sa-prd/references/similares.md)
-e `novo (não verificado)`; o passo segue.
-Artefato que surgir depois (na escrita, na revisão ou numa mudança antes do fatiamento) passa por aqui antes de
-virar arquivo. Projeto sem ELM → pule (No ELM `—`, Impacto `—`).
+- **Impacto.** Para cada altera e exclui, quem cita o requisito (a HF que embute a REG, a EL da tela) e se muda
+  também: muda → linha própria; não muda → só citado no texto.
+- A decisão da pessoa vai à tabela Decisões do `prd.md`.
+- A versão lida não fica no PRD: entra no Cobre da ficha, no detalhar.
 
 ## Saída
 
-Uma decisão registrada por artefato com acerto, e o impacto de cada alteração e exclusão (ou o passo pulado, sem
-ELM) → passo `escrever`.
+A ação e o id de cada requisito → passo `escrever`.
 
 ## Pare se
 
-Nenhuma condição própria deste passo: projeto sem ELM pula o passo (acima).
-
-Ao parar aqui (na sessão da `[ESP]`, feche-a: `sa-especificar.especificar.fechar-sessao`).
+Nenhum caso próprio deste passo: requisito que surgir depois volta aqui antes de virar bloco.

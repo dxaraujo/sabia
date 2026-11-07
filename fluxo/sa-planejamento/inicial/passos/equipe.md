@@ -1,33 +1,30 @@
 ---
-{"resumo": "Equipe: pessoas, papéis, senioridade, horas (revisão, especificação), Sustentação e ausências; grava o equipe.json depois dos acordos."}
+{"resumo": "Propõe o equipe.json: membros com usuario do GitLab, booleanas, horas, ausências e ativo; valida contra o schema."}
 ---
 ## Entrada
 
-`<produto>/equipe.json`, se existir.
+O `equipe.json` atual, se existe, e o que a pessoa disse que mudou.
 
 ## Faça
 
-**Equipe** (`equipe.json` existe → mostre e pergunte só o que mudou): nome do projeto, data de
-início da sprint 1, pessoas (todas `ativo: true`; quem sai fica
-`false`, nunca é apagado), papéis (um ou mais por
-pessoa: `P.O.`, `Especificador`, `Dev`, `QA`, `SM`; exatamente um P.O. e um SM ativos — a mesma pessoa pode ter
-os dois —; o SM é o dono da `[GB]`), **senioridade** de quem é Dev
-(`Júnior`, `Pleno` ou `Sênior` — decide o modo das fatias da pessoa e quem revisa PR: Modo pela
-senioridade, `sa-planejamento.sprint.modo`; arquivo existente com Dev sem ela → pergunte só isso, para cada um; nenhum Dev
-Sênior ativo → avise: nenhum PR teria quem o revise), login do ELM, horas por
-semana, ausências. Pergunte também, por pessoa, quantas horas por semana vão para **revisar** (planos, PRs) e
-**verificar** — somadas em `horas-revisao-semana` —, para **especificar** (entrevista, PRD, especificação de fatia:
-`horas-especificacao-semana`; P.O. e Especificador) e quem faz **Sustentação** (`atende`). Grave o `equipe.json`
-(commit `planejamento: equipe`) — **só depois dos acordos (passo `acordos`)**, que dão `duracao-sprint-semanas` (antes deles o JSON não
-valida), com `atualizado` = hoje, `historico: []` e `ausencias: []` em quem não tem; confirme que há
-**exatamente um** P.O. e **exatamente um** SM ativos — e valide contra
-`~/.sabia/framework/skills/sa-planejamento/assets/equipe.schema.json` (formato:
-[arquivos.md](~/.sabia/framework/skills/sa-planejamento/references/arquivos.md#equipejson)).
+Proponha `.sabia/planejamento/equipe.json` (exemplo no padrão `sa-planejamento/equipe.md`) com
+`membros[]` = `{nome, usuario, elm_login, desenvolvedor, especificador, produto, horas_semana, ausencias, ativo}`:
+
+- `usuario` = o usuário do GitLab: o autor do MR, o `@dono` no CODEOWNERS e o nome do CSV de créditos.
+- `elm_login` só se o `.sabia/sabia.md` tem a seção ELM (opcional; só a `sa-elm` lê).
+- `desenvolvedor`: puxa item para desenvolvimento e revisa MR de outro autor. `especificador`: aprova os arquivos de
+  `elm/` e publica no ELM. `produto`: go/kill, ordena o backlog e aprova pitch, PRD e ficha.
+- `horas_semana` no time; `ausencias` = `[{"inicio": "AAAA-MM-DD", "fim": "AAAA-MM-DD"}]` (vazio: `[]`).
+- Quem sai do time fica `ativo: false` e nunca é apagado.
+
+Valide contra o [equipe.schema.json](~/.sabia/framework/skills/sa-planejamento/assets/equipe.schema.json). Avise se
+nenhum membro ativo tem `produto` (ninguém aprovaria go/kill, PRD e ficha) ou se só um tem `desenvolvedor` (o revisor
+do MR precisa ser outro desenvolvedor). O aviso não trava.
 
 ## Saída
 
-A equipe confirmada → passo `acordos`; a gravação dela vem com os acordos (passo `acordos`).
+A equipe proposta → passo `acordos`. A gravação vem junto com os acordos.
 
 ## Pare se
 
-Sem condição de parada própria: sem o "ok" da pessoa, nada é gravado (regra de ouro).
+Sem condição própria: nada é gravado aqui.

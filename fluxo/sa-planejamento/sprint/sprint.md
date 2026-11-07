@@ -1,36 +1,24 @@
 ---
-{"fluxo": "sprint", "dono": "sa-produto",
- "quando": ["planejar a próxima sprint: capacidade, previsão, responsáveis, meta e publicação no EWM; também o replanejamento da próxima na virada", "planejar a sprint"],
- "travas_gerais": ["sim-da-pessoa"],
+{"fluxo": "sprint", "dono": "sa-especificador",
+ "quando": ["seleção do ciclo, no início (com a virada) ou no reabastecimento: capacidade, folga, especificação, previsão, responsáveis, meta e o sprint-<nn>.md", "planejar a sprint", "reabastecer a sprint", "virada de sprint"],
+ "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa", "elm-pela-sa-elm"],
  "passos": [
-   {"id": "senioridade", "saidas": {"pedido direto com sprint aberta: a próxima é na virada": "fim"}},
+   {"id": "inicio", "saidas": {"sem equipe.json ou acordos.md": "→ sa-planejamento.inicial", "reabastecimento": "capacidade"}},
+   {"id": "virada", "chama": ["sa-elm.finalizar", "sa-elm.iteracao"]},
    {"id": "capacidade"},
    {"id": "especificacao"},
    {"id": "previsao"},
    {"id": "responsaveis"},
-   {"id": "modo"},
    {"id": "meta"},
-   {"id": "iteracao"},
-   {"id": "proposta"},
-   {"id": "gravar"}
+   {"id": "proposta", "saidas": {"ajuste": "proposta", "sem o ok, ou sem a booleana produto": "fim"}},
+   {"id": "gravar"},
+   {"id": "gravar-na-base", "de": "gravar-na-base"},
+   {"id": "seguir", "chama": "sa-elm.iteracao", "saidas": {"sim": "→ sa-desenvolver.iniciar"}}
  ]}
 ---
-# Modo sprint — planejar a próxima
+# Planejamento da sprint
 
-Entrada: "planejar a sprint", ou o replanejamento da próxima na virada (passo `sa-planejamento.retrospectiva.recalcular`).
-O passo `modo` (Modo pela senioridade) também vale fora deste fluxo: no encaixe (`sa-planejamento.durante.encaixe`),
-na Troca de modo (fluxo `sa-planejamento.troca-modo`) e quando alguém assume uma fatia que entrou sem responsável.
-
-Com agentes escrevendo código, o que limita a entrega é a **atenção humana**: decidir (P.O.), revisar planos e
-PRs, verificar e aceitar. O planejamento do Sabiá mede e protege essa capacidade, trabalha com fatias pequenas e de
-tamanho parecido e prevê pela **vazão** (fatias concluídas por sprint) e pelo **lead time** por fatia — sem pontos
-(opcionais só no IB do EWM, para quem usa o relatório de velocidade de lá).
-
-**A sprint é cadência, não contêiner de escopo:** o time se compromete com a **meta**; a seleção do planejamento é
-uma **previsão**. Dentro da sprint o fluxo é **puxado** — terminou uma fatia, a `elegivel` do topo entra enquanto o
-WIP de revisão humana tiver folga —, e a puxada é sempre o Encaixe (passo `sa-planejamento.durante.encaixe`), pelo
-P.O., pelo SM ou por quem puxa com a aprovação do P.O., registrada.
-Toda hora do time cabe numa tarefa da sprint, em seis frentes: entrega `[DEV]`, revisão `[REV]`, aprovação `[APR]`
-(do Dev Sênior, nos gates sem tarefa de papel: plano e PR do AFK), verificação `[VER]`, especificação `[ESP]` e
-Sustentação (`[ATD]`, `[IMPL]`, `[BD]`, `[INF]`, `[OPE]`, `[EXT]` — tabela **Sustentação** do `sabia.md`; as fatias
-de Manutenção, sem épico, usam as tarefas de papel, como as de épico).
+Seleção do ciclo, no início ou no reabastecimento: virada (só no início) → capacidade e folga → especificação →
+previsão pela ordem das linhas → responsáveis → meta → proposta → grava o `sprint-<nn>.md` (e o `backlog.md` dos
+itens que a virada tirou) → "seguir para puxar o topo?". Dentro do ciclo, o trabalho é puxado com sinal de WIP: item
+fora da seleção (expedite, captura puxada na hora, especificação que fechou) ganha a linha pela skill que o puxa.

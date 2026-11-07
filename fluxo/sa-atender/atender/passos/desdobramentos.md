@@ -1,26 +1,26 @@
 ---
-{"resumo": "Pergunta o desdobramento (nada, alteração ou regra), grava a Saída no registro e faz o commit único; só instrui e para."}
+{"resumo": "Pergunta 'algum desdobramento?': cada um vira captura com 'origem <ID>'; a lição vai em Lições do registro; um commit '<ID> concluir' leva o registro, o backlog e as capturas."}
 ---
 ## Entrada
 
-O AT `concluido` no passo `finalizar`, sem commit ainda.
+O item `concluida` ou `cancelada`, sem commit ainda (passo `finalizar`).
 
 ## Faça
 
-Pergunte o que mais sai do atendimento e registre a resposta em **Saída** no registro:
-
-```
-✅ AT-<nnn> concluído. Algum desdobramento?
-  1. nada — arquivar
-  2. alteração (defeito ou mudança) ou regra que ninguém decidiu → use `sa-triar` com origem AT-<nnn>
-```
-
-Grave a resposta em **Saída** e faça agora o commit único do passo `finalizar` (registro, backlog e sprint).
+1. Pergunte "algum desdobramento?".
+   - Nada → siga para o commit.
+   - Defeito, mudança ou outro item de Sustentação → captura comum (passo `captura`) com `origem <ID>` na `obs`.
+2. Lição, se houver, numa linha da seção Lições do registro: lição · regra proposta. A resposta que se repete também
+   vira lição. As lições vão para a curadoria na `sa-planejamento.review` (agente `sa-especificador`).
+3. O commit `<ID> concluir` pela gravação comum (passo `gravar-na-base`) leva o registro, o `backlog.md` e as
+   capturas.
+4. Ofereça "seguir para a próxima?".
 
 ## Saída
 
-O commit único do atendimento e a instrução do desdobramento escolhido. Aqui o fluxo termina.
+Desdobramento → passo `captura`, um por item; depois, o commit no passo `gravar-na-base`. Nada → passo
+`gravar-na-base`. Depois do commit, o fluxo termina.
 
 ## Pare se
 
-Só instrui e para: **nunca invoque nem simule outra skill**.
+—

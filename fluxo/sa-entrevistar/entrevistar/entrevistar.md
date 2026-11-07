@@ -1,32 +1,33 @@
 ---
 {"fluxo": "entrevistar", "dono": "sa-especificador",
- "quando": ["alinhar uma demanda, PRD ou fatia em rodadas até o entendimento confirmado, chamado direto ou pela sa-prd, a sa-fatiar e a sa-triar diante de uma decisão em aberto", "me entreviste", "grill me", "vamos alinhar", "quais decisões estão em aberto", "o que falta definir"],
+ "quando": ["esclarecimento proporcional do trecho tocado: árvore de decisões, rodadas de até 5 perguntas com recomendação e registro nas seções Decisões e Em aberto do documento do item (pitch.md, prd.md ou ficha); chamado pela sa-refinar.moldar, sa-refinar.detalhar, sa-prd.prd, sa-prd.mudanca, sa-desenvolver.codificar ou direto", "vamos alinhar o FT-031", "responder o em aberto do EP-03", "me entreviste", "o que falta definir"],
  "travas_gerais": ["decisao-da-pessoa"],
  "passos": [
-   {"id": "arvore"},
-   {"id": "rodadas", "chama": "sa-pesquisar.pesquisar", "saidas": {"resposta abriu ramos novos ou a fronteira não está vazia": "rodadas"}},
+   {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao"},
+   {"id": "arvore", "chama": "sa-pesquisar.pesquisar"},
+   {"id": "rodadas", "saidas": {"resposta abriu ramos, ou a fronteira não está vazia": "rodadas"}},
    {"id": "registrar"},
-   {"id": "linguagem", "travas": ["sim-da-pessoa"]}
+   {"id": "linguagem", "saidas": {"chamada por outra skill (ela grava junto com o documento dela)": "devolver"}},
+   {"id": "gravar", "de": "gravar-na-base"},
+   {"id": "devolver"}
  ]}
 ---
 # Entrevistar — alinhar antes de escrever
 
-O erro mais caro de um fluxo com agentes é escrever bem a coisa errada. Antes de qualquer PRD ou fatia, feche
-as decisões que as fontes não respondem — o agente **não** preenche lacuna com suposição plausível.
+O esclarecer do Sabiá: a árvore de decisões só do trecho tocado, o que tem fonte respondido pela
+`sa-pesquisar.pesquisar` e, para a pessoa, só a regra de negócio, em rodadas de até 5 perguntas, cada uma com a
+recomendação. Grava nas seções Decisões e Em aberto do documento do item. Vale a decisão de uma pessoa, com quem e
+quando; a lacuna de rotina vira suposição; o que fica em aberto bloqueia só o que depende dele.
 
-## Entrada
+Entrada: o item e o documento, de quem chama. Na chamada direta, o documento sai do id: `pitch.md` (épico em
+`a-moldar`), `prd.md` (épico depois do go) ou a ficha (fatia ou bug).
 
-- **O que está sendo alinhado:** demanda (texto, work item do EWM), PRD ou fatia.
-- **Onde registrar:** a pasta do épico — até o GATE do PRD, a pasta de trabalho da `sa-especificar`
-  (`.sabia/local/especificacao/<EP>-<slug>/decisoes.md`, fora do git); depois, `<produto>/epicos/<EP>-<slug>/` — ou, na triagem de uma fatia sem épico, a seção Decisões da ficha
-  (`<produto>/fatias/FT-<nnn>-<slug>.md`). Quem chamou informa; chamada direta → pergunte uma vez.
-- **Glossário:** o caminho está no `.sabia/sabia.md` (seção Projeto; padrão `.sabia/glossario.md`).
+## Entrada: vizinhos
+
+- sustentação → "a Sustentação não passa pela entrevista: `sa-atender.atender` (agente `sa-desenvolvedor`)" ■
 
 ## Regras
 
-- Nunca invente resposta para destravar a entrevista. Sem fonte e sem pessoa → `em aberto`.
-- Decisão de negócio é de uma pessoa (P.O. ou quem ela delegou); decisão técnica entre alternativas equivalentes é
-  do desenvolvedor e vai para o `design.md`, não para cá.
-- Modo autônomo (`AUTONOMO=true`, chamado por um agente sem pessoa na conversa): não pergunte — monte a árvore,
-  resolva o que tem fonte e registre o resto como `em aberto` com a opção recomendada na coluna Decisão entre
-  parênteses (`(recomendada: …)`). Quem chamou não pode tratar recomendação como decisão.
+- Sem pessoa presente (autopilot): não pergunte. Tudo sem fonte vai ao Em aberto com a recomendação, e quem chamou não
+  trata recomendação como decisão.
+- Decisão técnica entre alternativas equivalentes é do Dev e vai ao `design.md`, não aqui.

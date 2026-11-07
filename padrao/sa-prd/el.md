@@ -1,54 +1,47 @@
 ---
-{"resumo": "Corpo do leiaute (EL): uma tela do protótipo aprovado, com campos, ações, mensagens e estados no texto visível, e as histórias que a usam (o envelope OKF fica no okf-elm.md da sa-prd)."}
+{"resumo": "Corpo do leiaute (EL): uma tela do protótipo aprovado, com campos, ações, mensagens e estados no texto visível, e as histórias que a usam."}
 ---
 # Leiaute (EL)
 
-**Leiaute (EL)** — uma tela, como o cliente a aprovou no protótipo, só com a linha **Telas** = `sim` na seção ELM do
-`sabia.md`. Uma EL por tela que as histórias usam, no lote do PRD (`sa-prd.prd.escrever`), escrita da versão
-aprovada do protótipo (o `D-nn` cuja Decisão começa por `Protótipo v<N> aprovado`, da última versão registrada) e
-das decisões. Com o `D-nn` cuja Decisão começa por `Épico sem tela`, nenhuma EL. Na `[ESP] FT` (`sa-especificar.fatia.escrever`), a EL que a fatia altera ou
-inclui parte da cópia aprovada e da ficha (o comportamento esperado e as decisões); o texto visível novo vem de uma
-fonte da ficha, senão é `em aberto`.
+Uma tela, como o cliente a aprovou no protótipo. Só com a linha Telas = `sim` na seção Especificação do
+`.sabia/sabia.md`, e escrita da versão aprovada (o D-nn `Protótipo v<N> aprovado`). Sem protótipo aprovado, a EL fica
+no Em aberto.
 
 ```markdown
-**Tela:** <nome da tela, como o usuário a vê> · **Objetivo:** <o que o ator faz nela> · **Atores:** <…> ·
-**Protótipo:** `<o arquivo da tela: prototipo-v<N>-<slug>.<ext> | prototipo-v<N>-<slug>-<nn>.<ext>>` (em `prototipo/` da pasta do épico e anexo da [ESP] <id>), aprovado em D-<nn>
+**Tela:** <nome, como o usuário a vê> · **Objetivo:** <o que o ator faz nela> · **Atores:** <…> ·
+**Protótipo:** prototipos/<id>-<slug>/v<N>/<arquivo> · aprovado em D-<nn>
 
 ## Campos
-| Campo (rótulo) | Tipo | Obrigatório | Formato e exemplo fictício | Regra · origem |
+
+| Campo (rótulo) | Tipo | Obrigatório | Formato e exemplo fictício | Regra |
 |---|---|---|---|---|
-| <Data de vencimento> | <data> | <sim> | <dd/mm/aaaa · 15/03/2026> | <[REG-02 <nome>](REG-02-<slug>.md) · D-nn> |
+| <Data de vencimento> | data | sim | <dd/mm/aaaa · 15/03/2026> | REG-<id> |
 
 ## Ações
+
 | Ação (rótulo) | Quando habilitada | Efeito | História |
 |---|---|---|---|
-| <Confirmar> | <todos os obrigatórios preenchidos> | <grava e volta à lista> | <[HF-01 <nome>](HF-01-<slug>.md)> |
+| <Confirmar> | <obrigatórios preenchidos> | <grava e volta à lista> | HF-<id> |
 
 ## Mensagens
+
 | Situação | Texto (igual ao visível) | Tipo |
 |---|---|---|
-| <data no passado> | <"A data de vencimento não pode ser anterior a hoje."> | <erro · aviso · sucesso> |
+| <data no passado> | <"A data de vencimento não pode ser anterior a hoje."> | erro \| aviso \| sucesso |
 
 ## Estados e navegação
+
 - <vazio · carregando · sem permissão · erro de comunicação: o que a tela mostra>
-- <de onde se chega e para onde vai: [EL-02 <tela>](EL-02-<slug>.md)>
+- <de onde se chega e para onde vai: EL-<id>>
 
 ## Histórias
-- [HF-01 <nome>](HF-01-<slug>.md)
 
-## Relações
-- <restringe / satisfaz, com link — só local>
+- HF-<id> <título>
 ```
 
-- **Texto visível igual ao do protótipo** (rótulo, mensagem, ação): é o que a verificação compara, palavra por
-  palavra. Divergência entre o protótipo e uma decisão → `em aberto`, nunca escolhida na escrita.
-- **Tipo** do campo, lista fechada: `texto` · `número` · `data` · `moeda` · `lista` · `sim/não` · `arquivo`; outro →
-  `em aberto` no `decisoes.md`.
-- **Nada inventado:** campo, regra ou mensagem que o protótipo mostra sem história, regra ou `D-nn` que o sustente
-  → `em aberto` no `decisoes.md`.
-- **Só dado fictício** nos exemplos; nenhuma imagem no corpo: o protótipo é citado pelo anexo.
-- **HF ↔ EL nos dois sentidos:** a EL lista em `## Histórias` as HFs que usam a tela; a HF cita a EL na linha
-  `**Telas:**`. A P9 vale: rótulo é texto do usuário, nome técnico de campo não entra.
-- **Envelope:** `type` e `tags` pela sigla `EL` em `rm.artefatos`; `title: EL - <nome da tela>`; `sources` com o
-  PRD, o `decisoes.md` (o `D-nn` da aprovação) e o protótipo só pelo nome do anexo.
-- Seção sem conteúdo → `não se aplica` (não apague a seção).
+- **Texto visível igual ao do protótipo** (rótulo, mensagem, ação). Divergência entre o protótipo e uma decisão → Em
+  aberto.
+- **Tipo do campo**, lista fechada: texto · número · data · moeda · lista · sim/não · arquivo.
+- Campo, regra ou mensagem sem história, regra ou D-nn que a sustente → Em aberto.
+- HF e EL nos dois sentidos: a HF cita a EL em Telas; a EL lista as HF em Histórias.
+- Só dado fictício; nenhuma imagem no corpo.

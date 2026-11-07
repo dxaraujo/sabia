@@ -150,7 +150,7 @@ function toolkit(base, mudar = {}) {
     "agentes/job.md": "job",
     "toolkit.json": { nome: "batch-alfa", versao: "1.0.0", descricao: "toolkit fictício", autor: { nome: "Ana Exemplo", area: "Equipe Alfa" },
       "tipos-de-projeto": ["batch"],
-      skills: [{ caminho: "skills/batch/SKILL.md", papeis: ["desenvolvedor"], passo: { passo: "sa-codificar.codificar.tarefa", para: "job", agente: "batch-job" } }],
+      skills: [{ caminho: "skills/batch/SKILL.md", papeis: ["desenvolvedor"], passo: { passo: "sa-desenvolver.codificar.tarefa", para: "job", agente: "batch-job" } }],
       agentes: [{ nome: "batch-job", descricao: "codifica um job", prompt: "agentes/job.md", skills: ["skills/batch/SKILL.md"] }], ...mudar },
   });
 }
@@ -222,13 +222,17 @@ test("toolkit pelo índice: baixa, instala nas ferramentas, atualiza e remove pe
   assert.deepEqual(s.lerInventario().toolkits, {});
 });
 
-test("o passo do toolkit pelo id: só em passo do Sabiá com gancho de desvio", () => {
-  const repo = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
+test("o passo do toolkit pelo id: só em passo do Sabiá com gancho de desvio; o id antigo da tarefa vale como alias", () => {
+  const fm = (d) => `---\n${JSON.stringify(d)}\n---\n`;
+  const repo = escrever(path.join(raiz, "fw-gancho"), {
+    "fluxo/sa-desenvolver/codificar/codificar.md": fm({ fluxo: "codificar", dono: "sa-desenvolvedor", passos: [{ id: "tarefa", desvio: true }, { id: "validar" }] }) + "# Codificar\n",
+    "fluxo/sa-desenvolver/codificar/passos/tarefa.md": fm({ resumo: "t" }), "fluxo/sa-desenvolver/codificar/passos/validar.md": fm({ resumo: "v" }) });
   const comPasso = (passo) => ({ skills: [{ caminho: "skills/batch/SKILL.md", papeis: ["desenvolvedor"], passo: { passo, para: "job de batch", agente: "batch-job" } }] });
-  assert.deepEqual(s.validarToolkit(toolkit(path.join(raiz, "ok"), comPasso("sa-codificar.codificar.tarefa")), "batch-alfa", repo), []);
-  assert.match(s.validarToolkit(toolkit(path.join(raiz, "a"), comPasso("sa-codificar.codificar.validar")), null, repo).join(), /não aceita desvio/);
-  assert.match(s.validarToolkit(toolkit(path.join(raiz, "b"), comPasso("sa-codificar.codificar.nada")), null, repo).join(), /não existe/);
-  assert.deepEqual(s.validarToolkit(toolkit(path.join(raiz, "c"), comPasso("sa-codificar.codificar.nada"))), []);  // sem framework: fica para a setup
+  assert.deepEqual(s.validarToolkit(toolkit(path.join(raiz, "ok"), comPasso("sa-desenvolver.codificar.tarefa")), "batch-alfa", repo), []);
+  assert.deepEqual(s.validarToolkit(toolkit(path.join(raiz, "alias"), comPasso("sa-codificar.codificar.tarefa")), "batch-alfa", repo), []);
+  assert.match(s.validarToolkit(toolkit(path.join(raiz, "a"), comPasso("sa-desenvolver.codificar.validar")), null, repo).join(), /não aceita desvio/);
+  assert.match(s.validarToolkit(toolkit(path.join(raiz, "b"), comPasso("sa-desenvolver.codificar.nada")), null, repo).join(), /não existe/);
+  assert.deepEqual(s.validarToolkit(toolkit(path.join(raiz, "c"), comPasso("sa-desenvolver.codificar.nada"))), []);  // sem framework: fica para a setup
   // passo sem o id (passo.papel) é recusado, com ou sem o framework
   const semId = { skills: [{ caminho: "skills/batch/SKILL.md", papeis: ["desenvolvedor"], passo: { papel: "desenvolvedor", para: "job de batch" } }] };
   for (const fw of [repo, null]) assert.match(s.validarToolkit(toolkit(path.join(raiz, `p-${!!fw}`), semId), null, fw).join(), /passo de skills\/batch\/SKILL\.md: use o id do passo \(passo\.passo\)/);
@@ -474,13 +478,14 @@ test("toolkit com tipo → skill: instalar copia a skill como veio (nada compila
   const hf = { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md" };
   await assert.rejects(s.baixarToolkit(casa(path.join(raiz, "tk-ruim"), { tipos: { GL: hf } }), {}), /tipo GL: não é desviável/);
   await assert.rejects(s.baixarToolkit(casa(path.join(raiz, "tk-str"), { tipos: { HF: "casa.hf" } }), {}), /tipo HF: use \{"skill", "fluxo", "padrao"\}/);
-  // a skill do tipo sem o papel dono de um passo de desvio (a ET também desvia na consolidação, do produto)
-  await assert.rejects(s.baixarToolkit(casa(path.join(raiz, "tk-papel"), { tipos: { ET: hf } }), {}), /tipo ET: a skill skills\/casa\/SKILL\.md não traz o papel produto em papeis/);
+  // a skill do tipo sem o papel do agente dono de um passo de desvio (HF desvia em passos do sa-especificador)
+  await assert.rejects(s.baixarToolkit(casa(path.join(raiz, "tk-papel"), { tipos: { HF: hf }, skills: [{ caminho: hf.skill, papeis: ["revisor"] }] }), {}),
+    /tipo HF: a skill skills\/casa\/SKILL\.md não traz o papel especificador ou produto em papeis/);
   assert.ok(!fs.existsSync(path.join(home, ".sabia/toolkits/casa")));
   // o passo que só cria um tipo não aceita desvio por para: o tipo vai por `tipos`
   const porPasso = casa(path.join(raiz, "tk-passo"), { tipos: undefined, skills: [{ caminho: "skills/casa/SKILL.md", papeis: ["especificador"],
     passo: { passo: "sa-prd.prd.escrever", para: "épico de exemplo" } }] });
-  assert.match(s.validarToolkit(porPasso, null, REPO).join(), /sa-prd\.prd\.escrever não aceita desvio de toolkit \(o tipo HF, REG, EL, ET, CT vai por `tipos`\)/);
+  assert.match(s.validarToolkit(porPasso, null, REPO).join(), /sa-prd\.prd\.escrever não aceita desvio de toolkit \(o tipo HF, REG, EL vai por `tipos`\)/);
 });
 
 test("toolkit: skill com nome do Sabiá (sa-* ou sabia) é recusada", () => {
@@ -502,7 +507,7 @@ test("rota --fluxo: o tipo → skill do toolkit no passo que cria o tipo", () =>
   // a ATA desvia em outro passo: no sa-especificar.reuniao.escrever
   const tkAta = casa(path.join(raiz, "tk-rota-ata"), { tipos: { ATA: { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md" } } });
   const pAta = escrever(path.join(raiz, "proj-ata"), { ".sabia/config/agentes.json": { toolkits: { casa: { pasta: tkAta, versao: "1.0.0" } } } });
-  assert.match(s.rotaFluxo("sa-especificar.reuniao", { framework: REPO, projeto: pAta }), /│ 2 escrever ⇢ +│──▶ ⇢ tipo ATA → skill casa/);
+  assert.match(s.rotaFluxo("sa-especificar.reuniao", { framework: REPO, projeto: pAta }), /│ \d+ escrever ⇢ +│──▶ ⇢ tipo ATA → skill casa/);
   // só a skill (references dentro) e a forma antiga "<tk>.<fluxo>": a rota não cai
   const tkSo = casa(path.join(raiz, "tk-rota-so"), { tipos: { HF: { skill: "skills/casa/SKILL.md" }, REG: "casa.reg" } });
   const pSo = escrever(path.join(raiz, "proj-so"), { ".sabia/config/agentes.json": { toolkits: { casa: { pasta: tkSo, versao: "1.0.0" } } } });

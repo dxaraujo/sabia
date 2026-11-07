@@ -1,28 +1,30 @@
 ---
-{"resumo": "Escolhe a rubrica pelo pedido (P, L ou C), com a entrada de cada uma, e lê a rubrica inteira, o sabia.md, o steering e as regras aprendidas."}
+{"resumo": "Escolhe a rubrica (L ou C) no padrão, lê a rubrica inteira e depois a entrada dela: a pasta da spec pelo formato, a ficha, o diff e o MR, o AGENTS.md, o sabia.md e as Regras aprendidas."}
 ---
 ## Entrada
 
-O pedido: PRD de um épico, artefatos de uma fatia (`[ESP] FT`), plano de uma fatia ou código de uma fatia.
+O pedido de quem chamou: a rubrica, o item `FT-nnn` e a parte do plano (L) ou o diff (C).
 
 ## Faça
 
-| Pedido | Rubrica | Entrada |
-|---|---|---|
-| PRD de um épico | **P** | `prd.md`, os conceitos de `elm/`, `decisoes.md`, glossário, bundle do ELM pelo `elm_buscar_req_local` (para P6); com a linha Telas = `sim` do `sabia.md`, ela e o arquivo do protótipo aprovado em `prototipo/` (o da última versão registrada, com o `D-nn` `Protótipo v<N> aprovado`) (para P12) |
-| artefatos de uma fatia (`[ESP] FT`) | **P** | os conceitos de `.sabia/local/especificacao/FT-<nnn>-<slug>/elm/`, a ficha (seção Artefatos afetados), glossário, bundle do ELM pelo `elm_buscar_req_local` (para P6) |
-| plano de uma fatia | **L** | `.kiro/specs/<ft>-<slug>/`: `research.md`, `requirements.md` ou `bugfix.md`, `design.md`, `tasks.md` e os conceitos aprovados em `elm/`; o PRD e o `decisoes.md` do épico (fatia de épico) ou a ficha `<produto>/fatias/FT-<nnn>-<slug>.md` (sem épico: `C<n>`, Regras, Decisões; rápida: Comportamento); `backlog.md` (`cobre`) |
-| código de uma fatia | **C** | diff `git diff origin/<base>...HEAD` (worktree: `cd <worktree> && git diff origin/<base>...HEAD`), a pasta da fatia (com os conceitos aprovados em `elm/`), o PRD ou a ficha (seção Artefatos afetados) |
-| código de uma fatia, pré-PR | **C** | a mesma entrada do código; saída só na conversa |
+1. Leia inteira a rubrica do pedido, no padrão `sa-revisar/rubricas.md`, com os itens de rubrica do toolkit que o
+   seu prompt traz. As Regras aprendidas do `.sabia/sabia.md` entram como itens da rubrica.
+2. Leia a entrada da rubrica. A pasta da spec sai do `formato_spec` do `agentes.json`: `.kiro/specs/ft-<nnn>-<slug>/`
+   (Kiro) ou `openspec/changes/ft-<nnn>-<slug>/` (OpenSpec).
 
-Rubricas no padrão `sa-revisar/rubricas.md` — leia a do pedido inteira antes de começar.
-Sempre: `.sabia/sabia.md` (comandos, regras críticas), o steering de tecnologia e estrutura que ele
-aponta e as regras aprendidas (última seção do `sabia.md`).
+| Rubrica | Entrada |
+|---|---|
+| L | Kiro: `requirements.md` (no bug, `bugfix.md`), `design.md` e `tasks.md`. OpenSpec: `proposal.md`, o delta `specs/<cap>/spec.md`, `tasks.md` e, no completo, `design.md`. Nos dois: `research.md`, a ficha `.sabia/planejamento/fatias/FT-<nnn>-<slug>.md` (Regras, Cenários CT-nn, Não muda, Cobre, Decisões), o `prd.md` do épico na fatia com pai e, com ELM, os arquivos aprovados de `elm/` da pasta da spec |
+| C | `git diff origin/<base>...HEAD` (no autopilot, `cd .sabia/local/wt/<id> && git diff origin/<base>...HEAD`; no apoio ao `sa-revisar.mr`, `git diff origin/<base>...origin/<id>`), a mesma pasta da spec e a ficha. Com o MR aberto, os campos O quê · Porquê · Prova · Risco · Foco · Cobre. Na trivial, só o diff, a ficha e o MR |
+
+3. Sempre: o `AGENTS.md` (Comandos) e o `.sabia/sabia.md`. O delta já traz o texto completo dos requisitos
+   tocados: não leia o ELM.
 
 ## Saída
 
-A rubrica do pedido e a entrada dela lidas → passo `evidencia`.
+A rubrica e a entrada dela lidas → passo `ci`.
 
 ## Pare se
 
-—
+- A pasta da spec não existe numa rota quick ou completo (rubrica L) → devolva "nada a revisar: o plano é da
+  `sa-plano.plano`" e pare.

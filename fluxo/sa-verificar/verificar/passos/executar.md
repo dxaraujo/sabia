@@ -1,30 +1,32 @@
 ---
-{"resumo": "Executa cenário por cenário como um usuário real (API, job, browser, carga), com repetição e erro em um item, e registra resultado, obtido e evidência."}
+{"resumo": "Roda cenário por cenário como usuário real, pelo tipo de projeto, e marca cada um ✅ aceito · ❌ rejeitado · ⚠️ ambiente · 🔁 possível alteração, com esperado × obtido e a evidência."}
 ---
 ## Entrada
 
-A aplicação no ar e a massa criada (passo `ambiente`).
+A aplicação no ar e os dados prontos (passo `ambiente`).
 
 ## Faça
 
-Execute cenário por cenário e registre logo abaixo do roteiro, no padrão `sa-verificar/verificacao.md` (resultado).
+1. Rode cenário por cenário como um usuário real:
 
-- Por tipo de projeto: **backend** → chamada HTTP (pelo `sh .sabia/http.sh <MÉTODO> <caminho> [corpo]`, se o
-  `sabia.md` o registra — o corpo vem da pasta `massa/`; senão `curl`, que pede confirmação) e estado no
-  banco; **batch** → execução do job com a massa, status da execução e contagens; **frontend** → navegação real
-  no browser (Playwright ou MCP de browser ligado ao agente), screenshot em `evidencias/`; **dados** → carga e
-  consultas de verificação; **mobile** → emulador ou dispositivo, quando houver; senão roteiro manual com a pessoa,
-  evidência em `evidencias/`; **biblioteca** → testes de contrato públicos da API da biblioteca; **infra** →
-  `plan`/`lint`/`dry-run` e a saída como evidência — **nunca `apply`**.
-- Rode também os cenários de **repetição** (execute duas vezes; conte de novo) e de **erro em um item**.
-- Falha por ambiente (serviço fora do ar, credencial de teste) → `⚠️ ambiente`, não rejeição; diga o que faltou.
-- Cenário que você atribui a um artefato (o artefato parece errado, não o código) → `🔁 possível alteração` (padrão
-  `sa-verificar/verificacao.md`; quem decide: passo `resultado`, Drift de negócio).
+| Tipo de projeto | Como |
+|---|---|
+| backend | chamada HTTP com `curl` na URL de teste e o estado no banco, em leitura |
+| batch | o job, o status da execução e as contagens |
+| frontend | navegador (Playwright ou MCP de browser) |
+| dados | a carga e as consultas |
+| mobile | emulador, ou roteiro com a pessoa |
+| biblioteca | testes de contrato públicos |
+| infra | `plan`, `lint` ou `dry-run`, nunca `apply` |
+
+2. Resultado por cenário: ✅ aceito · ❌ rejeitado · ⚠️ ambiente (falha do ambiente, não do código; diga o que
+   faltou) · 🔁 possível alteração (a spec parece errada, não o código). Sempre com esperado × obtido e a evidência
+   (comando com a saída, contagem ou captura de tela).
+3. Evidência com dado real fica na máquina; no resultado vai só um resumo, sem identificar pessoas.
 
 ## Saída
 
-O resultado de cada cenário no `verificacao.md` → passo `casos` (algum rejeitado ou ⚠️, ou 🔁 no HITL: passo
-`resultado`).
+O resultado de cada cenário → passo `fora-dos-cenarios`.
 
 ## Pare se
 

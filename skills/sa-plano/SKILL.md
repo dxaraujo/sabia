@@ -1,10 +1,10 @@
 ---
 name: sa-plano
-description: "Plans a slice (fatia) of the Sabiá flow in Kiro's spec format — researches the code first (sa-pesquisar), then writes requirements.md (falsifiable EARS criteria, only what the slice covers) or bugfix.md (fast track), design.md (pattern grounding, program shape: file tree, signatures and call tree, test points, the verification's definition-of-done contract) and tasks.md (one task per behavior, test first, done command); goes through the independent analysis (rubric L), the mode-switch request when an AFK plan shows risk (the switch belongs to the P.O. or the SM, sa-produto agent), and the plan GATE by the implementer's seniority (Júnior always, Pleno on request, Sênior never), approved by a Dev Sênior in the [APR] task, via sa-revisar. Use when the user says \"planeja a FT-031\", \"gera a spec\", \"cria as tasks\", \"replaneja\"."
+description: "Plans a Sabiá slice or bug (FT-nnn) on the quick and complete routes (trivial skips it), in the sa-desenvolvedor agent. Gathers facts through sa-pesquisar (sa-pesquisador subagent) and writes research.md, takes the technical decisions with the recommended option, copies the approved requirement text into the spec delta without rewriting it (OpenSpec ADDED/MODIFIED/REMOVED or Kiro requirements.md/bugfix.md with the full block of each touched requirement), and writes design and tasks by the route x format matrix: Kiro Quick Spec, Bugfix Spec or requirements -> design -> tasks; OpenSpec proposal + delta (+ design) + tasks. Offers 'quer revisar agora?' with rubric L in the sa-revisor subagent; the developer approves the plan (in autopilot, the subagent approves and records). replanejar changes only what changed when the approved plan no longer fits. Use when the user says \"planeja a FT-031\", \"gera a spec\", \"cria as tasks\", \"replaneja\", \"o plano não serve\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.0.3"
+  version: "2.1.0"
 ---
 
 # sa-plano — Decidir o como antes de codar

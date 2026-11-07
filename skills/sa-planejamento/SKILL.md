@@ -1,10 +1,10 @@
 ---
 name: sa-planejamento
-description: "Agile project planning in the Sabiá flow, tuned for teams that work with agents — roadmap and releases built from the epics (épicos), team agreements (Scrumban: sprint length, Definition of Ready and Done, WIP limits including human review capacity, which is the bottleneck), sprint planning as a cadence — commitment to the goal, forecast by priority, dependencies and capacity (slice (fatia) throughput and lead time, specification, and a reserve for Sustentação and rework), pull flow within the sprint, where every pull goes through the encaixe (by the P.O., the SM or someone with the P.O.'s recorded approval) — review with the acceptance evidence, data-driven retrospective and sprint rollover, mode switch in both directions (AFK ↔ HITL, only by the P.O. or the SM) and hours report; publishes and syncs the sprint with EWM through the elm MCP. Use when the user says \"monta o planejamento\", \"planejar a sprint\", \"roadmap\", \"virada de sprint\", \"fechar a sprint\", \"review da sprint\", \"capacidade do time\", \"acordos do time\", \"encaixe na sprint\", \"puxar a FT-031 para a sprint\", \"trocar o modo da FT-031\", \"sincroniza a sprint\", \"sincronizar com o EWM\"."
+description: "Cycle rituals of the Sabiá flow with written policies (Kanban with WIP, forecast by throughput, no story points). Sets up the team (equipe.json: GitLab user, developer/specifier/product permissions, hours, absences), the team agreements (acordos.md: timebox, WIP per status, SLE, DoD, expedite class, support slack, sizes, autopilot circuit breaker, task id in commit, scenario mark in tests) and an optional roadmap. Plans the sprint (rollover of open items, capacity from throughput minus slack, specification, development and support lines, goal) or refills it mid-cycle; runs the review (delivered items with MR evidence, feedback, new requests through capture, curation of learned rules) and the data-driven retrospective. State goes straight to the base branch; ELM is only offered. Use when the user says \"monta o planejamento\", \"acordos do time\", \"rever a equipe\", \"roadmap\", \"planejar a sprint\", \"reabastecer a sprint\", \"virada de sprint\", \"review da sprint\", \"retrospectiva\", \"fechar a sprint\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.0.3"
+  version: "2.1.0"
 ---
 
-# sa-planejamento — Planejar o fluxo, não só o calendário
+# sa-planejamento — Os ritos do ciclo

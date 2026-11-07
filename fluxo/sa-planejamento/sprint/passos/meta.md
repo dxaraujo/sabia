@@ -1,19 +1,19 @@
 ---
-{"resumo": "Meta da sprint: uma frase de resultado de negócio e o nome curto dela, que vai no nome do plano no EWM."}
+{"resumo": "A meta: uma frase de resultado de negócio que os itens entregam juntos; no reabastecimento, fica a mesma."}
 ---
 ## Entrada
 
-As fatias previstas e as especificações.
+As linhas propostas.
 
 ## Faça
 
-**Meta da sprint:** uma frase de resultado de negócio que as fatias entregam juntas, e o **nome curto** dela
-(até ~6 palavras: `Exportar o relatório de contas`), que vai no nome do plano no EWM.
+Proponha uma frase de resultado de negócio que os itens entregam juntos. É o compromisso do ciclo; a seleção é
+previsão. Quem tem `produto` decide. No reabastecimento, a meta fica a mesma.
 
 ## Saída
 
-A meta e o nome curto → passo `iteracao`.
+A meta → passo `proposta`.
 
 ## Pare se
 
-Sem condição de parada própria.
+Sem condição própria.

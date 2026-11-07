@@ -1,0 +1,99 @@
+{
+  "$comment": "Fonte única dos 5 agentes do Sabiá. O gerador da sa-setup junta isto com o .sabia/config/agentes.json do projeto e grava .kiro/agents/sa-<nome>.json e .opencode/agents/sa-<nome>.md, com o prompt de assets/agents/sa-<nome>.md. harness: nenhum agente edita. segredos: nenhum agente lê nem edita. modelos: as regras de permissão (padrao vale para o que nenhuma lista casa; deny vence ask, e ask vence allow). agentes.<nome>.permissao escolhe o modelo; liberacoes soma regras a ele; autopilot vale quando o sa-desenvolvedor roda como subagente na worktree (sem pessoa, o ask que sobra vira deny). As regras do ELM vêm da chave elm do agentes.json (sa-elm.setup). No Kiro, só os nomes de capability; os limites por caminho e URL vão no prompt. Marcadores: {{BASE}}, {{PREFIXO_BRANCH}}, {{EXECUTAR}} (cada comando Executar da seção Verificação de aceite do sabia.md), {{URL_TESTE}}; o padrão com marcador sem valor no projeto sai da saída.",
+  "harness": [".kiro/agents/**", ".kiro/settings/**", ".kiro/steering/sabia.md", ".opencode/**", "opencode.json",
+      ".sabia/config/**", ".sabia/fluxo/**", ".sabia/padrao/**"],
+  "segredos": ["**/.env", "**/.env.*", "**/*.pem", "**/*.key", "**/id_rsa*", "**/elm.properties", "~/.ssh/**",
+      "~/.aws/**", "~/.config/mcp-*/**"],
+  "modelos": {
+    "build": {
+      "ler": {"padrao": "allow"},
+      "editar": {"padrao": "allow"},
+      "comandos": {
+        "padrao": "allow",
+        "ask": ["git push *", "git merge *", "curl *", "wget *"],
+        "deny": ["git push *--force*", "git push * -f*", "git push * +*", "git push *--mirror*", "git push *--delete*",
+            "git push * :*", "git rebase*", "git pull *--rebase*", "git reset --hard*", "git clean -f*", "git clean *-f*",
+            "git stash*", "git checkout -- *", "git restore *", "git branch -D *", "git -c *", "*--no-verify*",
+            "rm -rf *", "rm -fr *", "sudo *", "kubectl *", "helm *", "terraform apply*"]
+      },
+      "mcp": {
+        "padrao": "ask",
+        "allow": ["gitlabpr/gitlab_listar_mrs", "gitlabpr/gitlab_obter_mr", "elk/*"],
+        "ask": ["gitlabpr/gitlab_criar_mr", "gitlabpr/gitlab_mesclar_mr"]
+      }
+    },
+    "leitura": {
+      "ler": {"padrao": "allow"},
+      "editar": {"padrao": "deny"},
+      "comandos": {
+        "padrao": "deny",
+        "allow": ["git status*", "git diff*", "git log*", "git show*", "git grep*", "git ls-files*", "git ls-tree*",
+            "git rev-parse*", "git branch --show-current", "git branch --list*", "git worktree list*",
+            "git for-each-ref*", "grep *", "ls *", "cd .sabia/local/wt/* && git status*",
+            "cd .sabia/local/wt/* && git diff*", "cd .sabia/local/wt/* && git log*", "cd .sabia/local/wt/* && git show*"],
+        "deny": ["git -C *", "git -c *", "*--output*", "*--no-index*", "* -O*", "*--open-files-in-pager*",
+            "*--ext-diff*", "cd *..*", "*>*", "*|*", "*;*", "*`*", "*$(*", "* && * && *"]
+      },
+      "mcp": {
+        "padrao": "deny",
+        "allow": ["gitlabpr/gitlab_listar_mrs", "gitlabpr/gitlab_obter_mr", "elk/*"]
+      }
+    }
+  },
+  "agentes": {
+    "sa-desenvolvedor": {
+      "descricao": "Sabiá developer — takes a slice (fatia) or bug from pronta to merge: assumes it in one step (size, route trivial · quick · completo, and mode: supervised AI, AI autopilot or manual), writes the plan when the route has one, codes it with TDD and backpressure, gets a self-review from sa-revisor and a self-verification from sa-verificador, and opens the MR with the proof. Also reviews other people's MRs (sa-revisar.mr), runs the UAT (sa-verificar.uat), handles Sustentação (sa-atender) and archives the spec after the merge. In autopilot it runs as its own subagent in the worktree .sabia/local/wt/<id>.",
+      "mode": "primary",
+      "permissao": "build",
+      "skills": ["sa-desenvolver", "sa-plano", "sa-revisar", "sa-verificar", "sa-atender", "sa-especificar", "sa-triar",
+          "sa-status", "sabia", "sa-elm"],
+      "subagentes": ["sa-pesquisador", "sa-revisor", "sa-verificador", "sa-desenvolvedor"],
+      "autopilot": {
+        "comandos": {
+          "allow": ["cd .sabia/local/wt/*", "git push origin {{PREFIXO_BRANCH}}*", "git push -u origin {{PREFIXO_BRANCH}}*",
+              "git merge origin/{{BASE}}"],
+          "deny": ["git push * {{BASE}}", "git push *:{{BASE}}*", "git merge *--squash*", "curl *", "wget *"]
+        },
+        "mcp": {
+          "allow": ["gitlabpr/gitlab_criar_mr"],
+          "deny": ["gitlabpr/gitlab_mesclar_mr", "elm/*"]
+        }
+      }
+    },
+    "sa-especificador": {
+      "descricao": "Sabiá specifier and product owner — shapes epics (pitch, go/kill), writes and approves the PRD, slices epics into vertical slices (fatias), details a slice into its card (rules, CT-nn scenarios, Cobre) with the elm/ files when the project uses ELM, keeps the backlog ordered, runs the alignment interview, prototypes and meeting minutes, and the sprint rituals (planning, review, retrospective). Facts come from the sa-pesquisador subagent; decisions come from people. Never writes code.",
+      "mode": "primary",
+      "permissao": "build",
+      "skills": ["sa-refinar", "sa-prd", "sa-especificar", "sa-entrevistar", "sa-planejamento", "sa-triar", "sa-status",
+          "sabia", "sa-elm"],
+      "subagentes": ["sa-pesquisador", "sa-revisor", "sa-verificador", "sa-especificador"]
+    },
+    "sa-pesquisador": {
+      "descricao": "Sabiá researcher, read-only, clean context — reads the code, the specs in the repository, the ELM bundle and the database (queries only) and returns facts with file:line to the caller, without opinions, plans or solutions. Writes nothing.",
+      "mode": "subagent",
+      "permissao": "leitura",
+      "skills": ["sa-pesquisar"],
+      "subagentes": []
+    },
+    "sa-revisor": {
+      "descricao": "Sabiá independent reviewer, read-only, clean context — reviews a plan (rubric L) or a diff (rubric C: spec, standards and security axes kept apart) with the toolkit rubrics and the learned rules, gathers evidence for every item and returns the report to the caller. Writes nothing and never commits.",
+      "mode": "subagent",
+      "permissao": "leitura",
+      "skills": ["sa-revisar"],
+      "subagentes": []
+    },
+    "sa-verificador": {
+      "descricao": "Sabiá acceptance verifier, clean context — starts the application with the project's Executar commands, exercises every CT-nn scenario against the test URL like a real user, writes CT.csv in the spec folder and returns the 🔎 block (ACEITO, REJEITADO or AMBIENTE). Never touches production code, production data or the base branch.",
+      "mode": "subagent",
+      "permissao": "leitura",
+      "skills": ["sa-verificar"],
+      "subagentes": [],
+      "liberacoes": {
+        "comandos": {"allow": ["{{EXECUTAR}}", "curl {{URL_TESTE}}*", "curl * {{URL_TESTE}}*", "wget {{URL_TESTE}}*",
+            "wget * {{URL_TESTE}}*"]},
+        "editar": {"allow": [".kiro/specs/*/CT.csv", "openspec/changes/*/CT.csv", ".sabia/local/wt/*/.kiro/specs/*/CT.csv",
+            ".sabia/local/wt/*/openspec/changes/*/CT.csv"]}
+      }
+    }
+  }
+}

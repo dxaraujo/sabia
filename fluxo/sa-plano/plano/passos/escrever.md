@@ -1,46 +1,34 @@
 ---
-{"resumo": "Escreve .config.kiro, requirements.md ou bugfix.md, design.md e tasks.md pelo padrão sa-plano/plano.md, dentro do limite de tamanho; fase planejando."}
+{"resumo": "Escreve pela matriz rota × formato: Quick Spec, Bugfix Spec ou spec completa no Kiro; proposal, delta, design e tasks no OpenSpec."}
 ---
 ## Entrada
 
-`research.md` e as decisões do passo `decisoes`; na volta do ajuste pedido no GATE (passo `entrada`), o plano atual e os
-Achados abertos de origem `GATE do plano` com Situação `aberto` no `status.md`. Formato: o padrão `sa-plano/plano.md`.
+O delta, o `research.md`, as decisões, a rota (`status.md`), o tipo (fatia ou bug) e o `formato_spec`.
 
 ## Faça
 
-0. **`.config.kiro`** (se não existe ou o `specType` não bate com a trilha): `specType` `feature` (padrão) ou `bugfix` (rápida) — é o que faz o painel
-   de specs do Kiro reconhecer a pasta.
-1. **`requirements.md`** (padrão) ou **`bugfix.md`** (trilha rápida). Cada critério EARS é **falsificável na
-   base**: diga a observação que hoje mostra que ele é falso — se ela não existe, o critério já passa e não serve
-   como teste.
-2. **`design.md`**: pattern grounding (da research), **forma do programa** (árvore de arquivos com ação, assinaturas,
-   árvore de chamadas — cada uma é uma decisão que, sem isso, seria tomada implicitamente no code review),
-   pontos de teste (o mais alto possível), erros/transação/reexecução, **contrato de pronto** (como cada cenário
-   será verificado de ponta a ponta) e decisões técnicas.
-3. **`tasks.md`**: uma tarefa por comportamento, teste primeiro, comando de pronto, `_Requirements: N.M_`; a
-   última é o checkpoint de validação completa (compilar, suíte inteira, lint, cobertura); a revisão não é tarefa do
-   `tasks.md`: é da `sa-revisar`. Não marque toolkit na tarefa: quem o usa é o
-   desenvolvedor, pela configuração dele (os desvios do prompt).
-4. Skills do toolkit ligadas ao agente: consulte a da stack para a forma do programa (camadas, nomes, testes).
-5. Limite: mais de 200 linhas somando `requirements.md` (ou `bugfix.md`), `design.md` e `tasks.md`, ou mais de 8
-   tarefas de primeiro nível (`- [ ] N.` e `- [ ]* N.`) no `tasks.md`, sem contar o checkpoint → a fatia está grande:
-   em vez de escrever um plano maior, `fase: bloqueada (de: planejando)` com o Bloqueio `plano acima do limite: <n>
-   linhas, <m> tarefas · proposta: <seguir | dividir em …>`, e a sessão fecha como no pedido de
-   troca de modo (passo `gate`). Ela já está `iniciada`, e quem decide é o P.O., pelas
-   [Situações](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#situações): fatia de épico → seguir com ela (plano acima do
-   limite) ou cancelá-la pela `sa-fatiar.refinamento` e registrar as partes como fatia nova pela `sa-triar`
-   (`origem EP-<nn>`); fatia sem épico → a divisão pela `sa-triar`. A `obs` `plano acima do limite: seguir (<P.O.>,
-   <data>)` na linha da fatia no `backlog.md` da base → escreva o plano sem o limite.
-6. Ajuste pedido no GATE → corrija no plano só o que cada achado de origem `GATE do plano` pede e grave a Situação dele
-   `resolvido — plano`.
+1. Escreva pela matriz (modelos no padrão `sa-plano/plano.md`):
 
-`status.md`: fase `planejando` (vale também durante a análise do passo `analise`).
+   | Rota | Kiro | OpenSpec |
+   |---|---|---|
+   | quick fatia | Quick Spec: `requirements.md`, `design.md` e `tasks.md` numa passada, sem portões | `proposal.md` + delta + `tasks.md` |
+   | quick bug | Bugfix Spec: `bugfix.md`, `design.md`, `tasks.md` | `proposal.md` + delta MODIFIED + `tasks.md` |
+   | completo | `requirements.md` → `design.md` → `tasks.md` | `proposal.md` + delta + `design.md` + `tasks.md` |
+
+2. Completo: uma parte por vez, com o passo `revisar` entre elas.
+3. `design.md`: os títulos fixos do formato, Decisões técnicas e o Contrato de pronto (Cenário `CT-nn` · Como
+   executar · Esperado · Onde verificar).
+4. `tasks.md`: uma tarefa por comportamento, teste primeiro, comando de pronto e o `CT-nn`; no Kiro com
+   `_Requirements: N.M_`, no OpenSpec com `- [ ] 1.1`. Refatoração preparatória entra como tarefa. A última tarefa é
+   a suíte completa.
+5. Aplique as Regras aprendidas do `.sabia/sabia.md`.
+6. O plano mostra que a fatia passa de G → pare e ofereça "vira épico", como no `sa-desenvolver.iniciar.assumir`:
+   pelo passo `gravar`, a linha `EP-nn` (`a-moldar`, `obs` `veio de FT-nnn`) e a FT `cancelada` com `virou EP-nn`.
 
 ## Saída
 
-Os artefatos do plano na pasta da fatia, `fase: planejando` → passo `analise`.
+Parte escrita (ou o plano inteiro, na quick) → passo `revisar`.
 
 ## Pare se
 
-Plano acima do limite (item 5) → `fase: bloqueada (de: planejando)` com a proposta para o P.O.; a sessão fecha como
-na troca de modo e para.
+- Passa de G: vira épico (a saída passa ao pitch).

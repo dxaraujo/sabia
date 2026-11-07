@@ -1,40 +1,36 @@
 ---
-{"resumo": "Consulta banco (só leitura) e bundle do ELM, código só em escopo fechado; dado real fora do git; rascunho da resposta para o \"ok\" da pessoa; horas e créditos."}
+{"resumo": "A pessoa faz o trabalho e a IA ajuda a pedido: regras vigentes, pesquisa de código pela sa-pesquisar, banco só em leitura, logs, rascunho de resposta; dado real fora do git; Atividade no registro."}
 ---
 ## Entrada
 
-O AT assumido no passo `assumir`, já `em-andamento`.
+O item `em-andamento` com a pessoa (passo `assumir`).
 
 ## Faça
 
-1. **Fontes, nesta ordem** — subagente `sa-pesquisador`, se houver: banco pelo MCP de consulta (**somente
-   leitura**) e bundle do ELM pelo `elm_buscar_req_local`/`elm_ler_req_local` ([sem bundle → ELM remoto](~/.sabia/framework/skills/sabia/references/elm.md#bundle-local)). Código só se necessário e em escopo fechado:
-   termos ou arquivos indicados e um limite de leitura, para não gastar tokens. Se a demanda envolver lógica de
-   negócio complexa (regras de cálculo, fluxos condicionais, comportamentos do sistema) — e não for uma extração
-   simples de dados — considere acionar o **`sa-pesquisar`** antes das consultas SQL para entender o contexto
-   do código, passando só o `AT-<nnn>`, o pedido do registro e o escopo fechado (termos ou arquivos e o limite de
-   leitura); ele devolve os fatos na resposta e não grava nada; grave um resumo, sem dado de cliente, na seção
-   `## Pesquisa de código` do registro; nesse caso, registre no AT: `"análise baseada em pesquisa de código"`. Sem tempo para pesquisa:
-   registre `"resposta baseada apenas no bundle do ELM e no banco"` na seção Consultas do AT. Sem MCP de banco
-   (`não há` no `sabia.md`) → escreva a consulta (SQL); a pessoa a roda e informa o resultado.
-2. **Resultado com dado real** (linhas, telas, planilhas) → `.sabia/local/sustentacao/atendimento/AT-<nnn>/`. No registro
-   ficam só a consulta (SQL), a contagem, o caminho do arquivo e um resumo **sem identificar pessoas**.
-3. **Rascunho da resposta** → "ok" da pessoa antes de enviar. Quem envia é a pessoa; o agente não manda e-mail
-   nem responde chamado.
-4. **Horas** podem ser lançadas a qualquer momento (`elm_lancar_horas(<id da [ATD]>, <h>)`, com "sim", e uma linha
-   `| <AAAA-MM-DD> | <h> |` na tabela Horas do registro): lançar não conclui a `[ATD]`. Ao fechar cada sessão do atendimento, os **créditos** dela na seção Créditos do registro ([`sa-status`](~/.sabia/framework/skills/sa-status/SKILL.md#fechar-a-sessão), item 4)
-   — a sessão que não conclui o AT fecha com o commit `AT-<nnn> registrar sessão` (o registro), pelos itens 3 e 4 do
-   bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base); a que conclui, no
-   commit do passo `desdobramentos`.
+A pessoa faz o trabalho; a IA ajuda quando ela pede.
+
+1. **Regras vigentes**, em leitura local: specs arquivadas → spec viva → bundle do ELM. Com ELM, sem bundle ou com
+   bundle desatualizado (`sincronizado_em` anterior à última publicação; mostre a data) → ofereça a `sa-elm.baixar`.
+   Sem ELM, não ofereça.
+2. **Código:** pela `sa-pesquisar.pesquisar` (subagente `sa-pesquisador`), com o pedido e um escopo fechado (termos
+   ou arquivos e um limite de leitura). Ela devolve fatos com `arquivo:linha`; o resumo vai na Atividade.
+3. **Banco** só pelo MCP de consulta, em leitura. Sem o MCP, escreva a SQL e a pessoa roda.
+4. **Logs** pelo MCP `elk`, se configurado.
+5. **Resposta:** rascunho só se a pessoa pedir. Quem envia é a pessoa.
+6. **Em ambiente:** script, deploy, DDL e comando são da pessoa. A Atividade registra o que foi feito · onde ·
+   resultado.
+7. **Dado de cliente** fica em `.sabia/local/sustentacao/<ID>/`, fora do git. No registro ficam só a consulta, a
+   contagem, o caminho e um resumo anônimo.
+8. Regra que ninguém decidiu fica em aberto ao P.O., na Atividade, e para só o que depende dela. Especificador, P.O.
+   ou o time entram quando a pessoa chama.
+9. Cada avanço vira uma linha da Atividade: `AAAA-MM-DD · feito · próximo`.
 
 ## Saída
 
-Consultas no registro, dado real em `.sabia/local/`, a resposta aprovada pela pessoa → passo `finalizar` quando ela
-disser "enviei" ou "conclui o AT-<nnn>". A sessão que termina antes disso fecha aqui, com o commit `AT-<nnn>
-registrar sessão` (item 4).
+A pessoa declara resolvido, ou o pedido foi retirado → passo `finalizar`. Pedido que muda o código, ou categoria
+errada → passo `fora-do-escopo`. A sessão termina antes de resolver → commit `<ID> registrar sessão` do registro pela
+gravação comum (passo `gravar-na-base`), e o fluxo termina.
 
 ## Pare se
 
-- Sem o "ok" da pessoa no rascunho da resposta → não envie: quem envia é a pessoa.
-- Não é atendimento (pedido que exige escrita na base, que muda o comportamento do sistema ou regra que ninguém
-  decidiu) → nada a enviar: "devolva à `sa-triar` (categoria errada, origem AT-<nnn>)" e pare.
+—

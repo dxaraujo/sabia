@@ -1,12 +1,13 @@
 ---
-{"resumo": "Formato da linha do glossário do projeto (passo linguagem da sa-entrevistar)."}
+{"resumo": "Linha do glossario.md do projeto, usado só sem GL no DOORS: Termo, Definição, Evitar e Fonte."}
 ---
 ```markdown
-| Termo | Definição | Evitar | Fonte | ELM |
-|---|---|---|---|---|
-| Tentativa de login | Envio de credenciais pelo usuário, válido ou não | acesso, tentativa de acesso | D-02 | GL 3120 |
+| Termo | Definição | Evitar | Fonte |
+|---|---|---|---|
+| Tentativa de login | Envio de credenciais pelo usuário, válido ou não | acesso, tentativa de acesso | D-02 |
 ```
 
-Colunas: Termo (canônico, no singular) · Definição (uma frase) · Evitar (sinônimos, separados por vírgula; `—` sem
-sinônimo) · Fonte (`D-nn` | `ATA-nn [mm:ss]` | `<tipo> <id>` do ELM | `código: <arquivo:linha>`) · ELM (`GL <id>` do
-bundle | `—` termo novo). Uma linha por termo; termo alterado → edite a linha dele e cite a nova Fonte.
+- **Termo:** canônico, no singular. **Definição:** uma frase. **Evitar:** sinônimos, separados por vírgula, ou `—`.
+  **Fonte:** `D-nn` · `ATA-nn` · `arquivo:linha`.
+- Uma linha por termo; termo alterado → edite a linha e cite a nova Fonte.
+- Caminho: a chave `glossario` do `agentes.json` (padrão `.sabia/glossario.md`); `null` = o projeto não usa.

@@ -1,41 +1,36 @@
 ---
-{"resumo": "Acordos do time (acordos.md): cadência Scrumban, WIP, DoR e DoD, tamanho, horas por tamanho, limites da especificação, reserva e cadência de horas; depois deles, grava a equipe."}
+{"resumo": "Propõe o acordos.md (timebox, WIP, SLE, DoD, classes de serviço, folga, tamanhos, disjuntor, id no commit, CT no teste) e grava com a equipe."}
 ---
 ## Entrada
 
-A equipe confirmada (passo `equipe`), ainda não gravada.
+O `acordos.md` atual, se existe, e a equipe proposta (passo `equipe`).
 
 ## Faça
 
-**Acordos** (`acordos.md`) — proponha e ajuste:
-- cadência **Scrumban**: sprints de N semanas (planejamento, review, retrospectiva, virada) com fluxo puxado e
-  WIP limitado dentro da sprint; pergunte só a duração (padrão 2 semanas);
-- **WIP:** uma fatia por sessão de agente; fatias esperando pessoa (`aguardando-aprovacao-plano`, `pr-aberto`,
-  `em-revisao`, `em-verificacao`, `aceita`, `verificada`, `aguardando-aprovacao-pr`) ≤ capacidade de revisão
-  (ex.: 2 por revisor, contadas pela linha WIP do
-  [arquivos.md](~/.sabia/framework/skills/sa-planejamento/references/arquivos.md#acordosmd)); PR parado (o
-  `atualizado_em` do PR) há mais de 1 dia → recomendar destravá-lo antes de começar fatia nova (seguir mesmo assim fica registrado: `WIP excedido`);
-- **Definition of Ready** e **Definition of Done** (padrão no `arquivos.md`);
-- tamanho: `P`/`M`/`G` — só para a Definition of Ready e para saber quando dividir (maior que G → dividir);
-  pontos por tamanho, só se o time os quiser no EWM;
-- **horas por tamanho** (linha `Horas por tamanho`): as horas de cada papel — `[DEV]`, `[REV]`, `[VER]` — em `P`, `M`
-  e `G`, perguntadas ao time (sem padrão: o número é dele); são a estimativa das tarefas de papel da fatia na
-  publicação ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §4), ajustável
-  por fatia na proposta (passo `sa-planejamento.sprint.proposta`);
-- **especificação** (linha `Especificação`, lida no passo `sa-prd.prd.escrever`): o limite do épico (padrão até
-  **8 histórias**, toda história conta, inclusive as desdobradas de outra, e um objetivo de negócio; passou →
-  propor dividir em dois épicos);
-- **reserva (Sustentação + retrabalho)** (padrão **20% das horas da sprint do time**) — cobre a
-  **Sustentação** sem mudança no repositório (toda categoria: `[ATD]`, `[IMPL]`…; a Manutenção não: as fatias
-  dela entram pela vazão, como as de épico) e o **retrabalho da sprint anterior** (o que falta das fatias
-  migradas); e a **cadência de lançamento de horas** (padrão: ao fechar cada sessão; lançar ≠ concluir; na `[GB]`,
-  só o SM lança, e o P.O. nunca — nem quando é também o SM).
+Proponha `.sabia/planejamento/acordos.md` pelo padrão `sa-planejamento/acordos.md`: a tabela `Item | Acordo`, com as
+chaves nesta ordem e estes padrões quando o time não diz outro valor:
+
+- **Timebox**: `<n> semanas` (padrão 2).
+- **WIP**: `<status>: <n>`, com status de fatia e bug (`aceita` · `pronta` · `em-andamento` · `em-revisao`); padrão
+  `em-andamento` e `em-revisao`.
+- **SLE** (opcional): `<p>% em até <n> dias`.
+- **DoD**: CI verde · 1 aprovação de desenvolvedor ≠ autor · Prova no MR · Cobre no MR · Lições no `status.md`.
+- **Classes de serviço**: expedite = prioridade `crítica` (vai ao topo, é puxada sem aprovação e pode passar o WIP em
+  1) · padrão = ordem das linhas.
+- **Folga**: `<n>%` da capacidade em itens, reservada ao atendimento (padrão 20%).
+- **Tamanhos**: P = horas · M ≈ 1 dia · G = 2–3 dias; maior que G é épico.
+- **Disjuntor**: teto do autopilot por item, `tentativas <n> · tempo <n> h · custo <n> créditos`; 2 reprovações
+  seguidas disparam sempre.
+- **Id no commit**: `sim` ou `não` (o id da tarefa do EWM na mensagem do commit).
+- **CT no teste**: `sim` ou `não` (a marca `<FT-nnn> CT-nn` do cenário no teste automatizado).
+
+Mostre o `equipe.json` e o `acordos.md` juntos. Com o "ok", grave os dois pelo passo `gravar-na-base`, commit
+`planejamento: equipe e acordos`.
 
 ## Saída
 
-`acordos.md` com "ok" → commit `planejamento: acordos`; grave a equipe, como no passo `equipe` (agora com `duracao-sprint-semanas`), e siga para o
-passo `roadmap`; rever a equipe e os acordos → o fluxo termina aqui.
+Com o "ok" → passo `gravar-na-base`. Ajuste → a proposta de novo.
 
 ## Pare se
 
-Sem condição de parada própria: sem o "ok" da pessoa, nada é gravado (regra de ouro).
+Sem o "ok" → nada é gravado; o fluxo termina.

@@ -1,10 +1,10 @@
 ---
 name: sa-entrevistar
-description: "Alignment interview of the Sabiá flow (the \"grill me\" technique): walks the decision tree of a demand, PRD or slice (fatia) in rounds (only the frontier decisions, numbered, each with the recommended answer) until shared understanding is confirmed; answers on its own whatever the code, the ELM documentation (OKF bundle) or the glossary already answers; records each decision in decisoes.md and each new domain term in the glossary (ubiquitous language). Use when the user says \"me entreviste\", \"grill me\", \"vamos alinhar\", \"quais decisões estão em aberto\", \"o que falta definir\", and whenever sa-prd, sa-fatiar or sa-plano hit an open decision. Atendimento mode: one short round to register an AT during triage (sa-triar)."
+description: "Clarifying interview of the Sabiá flow (the \"grill me\" technique), proportional to the touched scope: builds the decision tree, answers on its own whatever has a source (specs, ELM bundle, code, ADRs, glossary, through sa-pesquisar) and asks the person only business rules, in rounds of up to 5 numbered questions, each with a recommendation (\"sim\" accepts all). Records by appending to the Decisions table (D-nn | Decisão | Quem | Quando | Fonte) and the open questions (with what each blocks) of the item's document: pitch.md, prd.md or the slice card. Routine gaps become recorded assumptions; with no person present it asks nothing and leaves recommendations open. Without ELM, keeps the optional glossary. Called by sa-refinar, sa-prd and sa-desenvolver, or directly. Use when the user says \"vamos alinhar o FT-031\", \"responder o em aberto do EP-03\", \"me entreviste\", \"grill me\", \"o que falta definir\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.0.3"
+  version: "2.1.0"
 ---
 
-# sa-entrevistar — Alinhar antes de escrever
+# sa-entrevistar — alinhar antes de escrever

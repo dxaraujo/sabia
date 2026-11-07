@@ -1,32 +1,33 @@
 ---
 {"fluxo": "reuniao", "dono": "sa-especificador",
- "quando": ["ata de reunião com o cliente durante a [ESP] aberta: transcrição (.vtt ou .md) em reunioes/ da pasta de trabalho sem ATA aprovada, ou ATA aprovada não registrada; só chamado pelo encaminhar da especificação, pela entrevista do PRD ou pela sa-prd.mudanca, e volta (o pedido direto entra pelo sa-especificar.especificar)"],
+ "quando": ["opcional: a transcrição de uma reunião (.vtt ou .md em .sabia/local/reunioes/) vira ATA aprovada em .sabia/planejamento/atas/, e as decisões vão à seção Decisões do documento do item; pedido direto de quem conduziu a reunião ou oferta da sa-prd.prd, da sa-prd.mudanca, da sa-refinar.moldar e da sa-refinar.detalhar", "tenho a transcrição da reunião do EP-03", "registrar a ata da reunião"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa"],
  "passos": [
-   {"id": "transcricao", "saidas": {"sem a pasta de trabalho do épico": "→ sa-especificar.especificar", "ATA draft já escrita para a transcrição": "aprovar", "ATA aprovada sem publicar": "publicar", "ATA aprovada com os D-nn só reservados": "decisoes"}},
+   {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao", "saidas": {"ATA em rascunho para a mesma transcrição": "aprovar"}},
+   {"id": "transcricao"},
    {"id": "escrever"},
-   {"id": "aprovar", "saidas": {"ajuste pedido pela pessoa": "escrever", "sem o \"sim\" (a ATA fica draft)": "fim"}},
-   {"id": "publicar"},
-   {"id": "decisoes", "saidas": {"outra transcrição sem ATA aprovada": "transcricao", "aprovado: decisão que muda o PRD, pela regra da tarefa de especificação": "→ sa-prd.mudanca"}}
+   {"id": "aprovar", "saidas": {"ajuste pedido": "escrever", "sem o \"sim\" (o rascunho fica em .sabia/local/reunioes/)": "devolver"}},
+   {"id": "decisoes"},
+   {"id": "gravar", "de": "gravar-na-base"},
+   {"id": "devolver", "saidas": {"outra transcrição sem ATA": "transcricao", "decisão muda um prd.md aprovado": "→ sa-prd.mudanca", "decisão muda o texto do elm/ de uma fatia": "→ sa-especificar.elm"}}
  ]}
 ---
-# Reunião — ata da reunião com o cliente
+# Reunião — a ATA da transcrição
 
-Cada reunião com o cliente durante a `[ESP]` aberta vira uma **ATA**, a fonte da especificação ao lado do
-`decisoes.md`. A ATA nasce da transcrição, é aprovada por uma pessoa e sobe sozinha ao DOORS Next, sem esperar o GATE
-do PRD; a transcrição fica nesta máquina. Não há comando de conversão: o gatilho é a transcrição sem ATA aprovada
-(ou a ATA aprovada ainda não registrada), no encaminhar da especificação ou no meio da entrevista do PRD; o pedido
-direto ("tenho a transcrição da reunião") entra pelo `sa-especificar.especificar`. O fluxo volta a quem chamou.
+Opcional. A transcrição de uma reunião vira uma ATA aprovada em `.sabia/planejamento/atas/`, e as decisões dela vão à
+seção Decisões do documento do item: o `pitch.md` (antes do go), o `prd.md` ou a ficha. A transcrição nunca sai da
+máquina. Nada vai ao ELM aqui: a ATA sobe junto da publicação, se a `sa-elm.publicar` perguntar.
 
-Entrada: o épico com a `[ESP]` aberta (a linha dele na seção Especificação do `sprint-<nn>.md` aberto, `iniciada`) e a
-pasta de trabalho com a transcrição em `reunioes/`.
+Entrada: o item (`EP-nn` ou `FT-nnn`) não terminal e a transcrição em
+`.sabia/local/reunioes/<id>-<AAAA-MM-DD>.<vtt|md>`.
 
-Leia antes: `.sabia/sabia.md` (seções ELM e Projeto) e `<produto>/equipe.json` (papéis).
+## Entrada: vizinhos
+
+- sustentação → "a ATA é de épico, fatia ou bug" ■
+- sem transcrição em `.sabia/local/reunioes/` → "ponha a transcrição em `.sabia/local/reunioes/<id>-<AAAA-MM-DD>.<vtt|md>`" ■
 
 ## Regras
 
-- Só enquanto a `[ESP]` está aberta: reunião fora dela (antes da triagem, depois da conclusão, de vários épicos) não
-  tem ATA por este fluxo.
-- A transcrição (o arquivo da reunião e o `.transcricao.md`) nunca vai para anexo, base nem ELM.
+- A transcrição e o `.transcricao.md` ficam em `.sabia/local/reunioes/`: nunca vão ao git nem ao ELM.
 - Nunca invente fala, decisão ou participante: o que a transcrição não diz não entra na ATA.
-- Não invoque outra skill por conta própria: volte a quem chamou, ou diga a próxima e pare.
+- Aprovada, a ATA não muda.

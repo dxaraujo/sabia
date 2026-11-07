@@ -1,123 +1,122 @@
 ---
-{"resumo": "Rubricas de revisão P (PRD), L (plano) e C (código, eixos Spec e Padrões), com severidades, fechos e o formato do relatório."}
+{"resumo": "Rubricas de revisão L (plano da fatia) e C (código, eixos spec · padrões · segurança), com severidades, destinos, fechos e o formato do relatório."}
 ---
 # Rubricas de revisão do Sabiá
 
-Cada verificação tem severidade. **BLOQUEANTE** reprova; **IMPORTANTE** reprova (barato de corrigir agora, caro
-depois); **SUGESTÃO** não reprova nem reabre ciclo. Todo achado tem **evidência** (`arquivo:linha`, comando +
-saída, ou "procurado em X, não encontrado") e a **correção** esperada. Achado sem evidência não é achado.
+Cada item tem severidade. Só o **BLOQUEANTE** reprova. **IMPORTANTE** e **SUGESTÃO** não reprovam: a pessoa tria
+cada um. Todo achado tem **evidência** (`arquivo:linha`, comando com a saída ou "procurado em X, não encontrado"), a
+**correção** esperada e o **destino** sugerido. Achado sem evidência não é achado.
 
-Regras promovidas (seção Regras aprendidas do `.sabia/sabia.md`) valem como itens extras da rubrica do artefato a que se
-referem, com a severidade registrada nelas. Os itens de rubrica de um toolkit (no prompt do revisor e na seção Tipos com
-skill de toolkit do `sabia.md`) também só se somam: nenhum troca, afrouxa ou dispensa um item daqui — P5, P8 e P11
-valem igual no artefato que a skill de um toolkit escreve.
+As Regras aprendidas do `.sabia/sabia.md` valem como itens extras da rubrica a que se referem. Os itens de rubrica de
+um toolkit (no prompt do revisor e na seção Tipos com skill de toolkit do `sabia.md`) também só se somam: nenhum
+troca, afrouxa ou dispensa um item daqui.
 
-## P — PRD (`prd.md` + `decisoes.md`)
+Item que não se aplica à rota (a trivial não tem plano; o quick do OpenSpec não tem `design.md`) fica `N/A`.
 
-Também nos artefatos de uma fatia (`[ESP] FT`: os conceitos da pasta de trabalho e a seção Artefatos afetados da
-ficha): P1, P10 e P13 não se aplicam, e P6 lê a seção Artefatos afetados no lugar da coluna "No ELM".
+## Destinos
 
-| # | Verificação | Severidade |
-|---|---|---|
-| P1 | Problema e solução descritos do ponto de vista do usuário, sem tecnologia | IMPORTANTE |
-| P2 | Toda história tem cenários, e todo "Então" é verificável (valor, resposta, mensagem, contagem) | BLOQUEANTE |
-| P3 | Cada história cobre: caminho feliz, o que não deve ser aceito, repetição/reexecução e erro em um item — ou diz por que não se aplica | BLOQUEANTE |
-| P4 | Toda regra é testável, tem valores e cita a origem (`D-nn`, artefato do ELM ou fonte) | BLOQUEANTE |
-| P5 | Nada inventado: regra, ator, valor ou integração sem fonte e sem decisão de uma pessoa | BLOQUEANTE |
-| P6 | Comportamento já documentado no ELM é **alterado**, **reutilizado** ou **excluído**, não duplicado: todo artefato tem a coluna "No ELM" preenchida (`novo (verificado <AAAA-MM-DD>)` · `novo (não verificado)` (sem o MCP `elm` ou sem o bundle) · `novo` (o CT planejado novo) · `altera <id>` · `reusa <id>` · `exclui <id>`) com a decisão no `decisoes.md`; conceito novo sem verificação (`novo (não verificado)` não é achado), ou com acerto `igual`/`sobrepõe` sem motivo registrado — conferir também no bundle (pelo `elm_buscar_req_local`). Impacto: quem cita o artefato alterado ou excluído (a HF que embute a REG, o CT da HF; `links.entrada`) foi revisto — muda → artefato próprio; não muda → na coluna `Impacto` (na ficha, no Motivo) | BLOQUEANTE |
-| P7 | Termos canônicos do glossário em todo o texto; nenhum sinônimo listado em "Evitar" | IMPORTANTE |
-| P8 | Nenhuma decisão `em aberto` que mude comportamento | BLOQUEANTE |
-| P9 | Sem caminho de arquivo, classe, SQL ou código — fora da ET (P13) e, com a linha REG com dados técnicos = `sim` do `sabia.md`, da seção `## Dados` da REG | SUGESTÃO |
-| P10 | Fora de escopo explícito | SUGESTÃO |
-| P11 | Conceitos OKF v0.2 em `elm/` conformes (checklist "Conformidade" de `okf-elm.md` da `sa-prd`): frontmatter que faz parse, `type` e `tags` do mapeamento do projeto (o CT planejado, tipo com ELM `ETM`: `type` da coluna Tipo da linha `CT.csv` do `sabia.md`, sem `tags`), só chaves do OKF v0.2 (+ `id`), `status: draft` antes do GATE (fora a ATA aprovada e o `exclui`, `deprecated`), HF ligando as suas REGs, links que resolvem | BLOQUEANTE |
-| P12 | Com a linha Telas do `sabia.md` = `sim`: uma EL em `elm/` (padrão `sa-prd/el.md`) por tela que as histórias usam, escrita da versão aprovada do protótipo (anexo `v<N>` e o `D-nn` da aprovação do cliente no `decisoes.md`); rótulos, ações e mensagens com o texto visível igual ao do protótipo e sustentados por história, regra ou `D-nn`; HF e EL ligadas nos dois sentidos (`**Telas:**` na HF, `## Histórias` na EL); só dado fictício e nenhuma imagem no corpo. Com `não` (ou sem a linha) ou com o `D-nn` `Épico sem tela`, nenhuma EL | BLOQUEANTE |
-| P13 | Com a linha ET do `sabia.md` = `inicial no PRD + as-built`: uma ET inicial do épico em `elm/` (padrão `sa-prd/et.md`), que cobre as Decisões de implementação do `prd.md` (módulos, contratos, dados, integrações), liga as histórias que atende e cita a origem de cada item (`D-nn`, PRD, artefato do ELM ou fonte); nada que o PRD e as decisões não sustentem. Com outro valor, nenhuma ET no PRD | BLOQUEANTE |
+| Destino | Quando |
+|---|---|
+| corrige | o autor corrige nesta fatia |
+| adia | problema real fora do escopo da fatia: vira item novo pela captura comum |
+| volta-plano | o plano não serve mais: `sa-plano.replanejar` |
+| volta-spec | o comportamento diverge da spec ou a spec parece errada: decide o especificador |
+| descarta | não procede; o motivo fica registrado |
 
-Fecho: `RESULTADO: PRONTO` ou `RESULTADO: AJUSTAR`.
+## L — Plano da fatia
 
-## L — Plano da fatia (`research.md`, `requirements.md`, `design.md`, `tasks.md`)
+Entrada: a pasta da spec (Kiro: `requirements.md` ou `bugfix.md`, `design.md`, `tasks.md`; OpenSpec: `proposal.md`,
+o delta, `tasks.md` e, no completo, `design.md`), `research.md`, a ficha, o `prd.md` do épico e, com ELM, os
+arquivos aprovados de `elm/`.
 
 | # | Verificação | Severidade |
 |---|---|---|
-| L1 | Todo cenário que a fatia cobre (backlog `cobre`, ou os `C<n>` da ficha da fatia sem épico) tem critério de aceite em `requirements.md`, e nenhum critério sai do que a fatia cobre. Trilha rápida: o `bugfix.md` tem o comportamento atual com evidência, o esperado com fonte e o que não muda, como na ficha. **Todo valor visível ao usuário no "Então" do cenário** (texto, rótulo, mensagem, nome de arquivo, formato) aparece **igual, palavra por palavra**, no critério e no Esperado do contrato de pronto do `design.md` — nome de enum, código interno ou tradução não servem | BLOQUEANTE |
-| L2 | Todo critério (ou item 2.x/3.x do `bugfix.md`) tem ao menos uma tarefa no `tasks.md` (`_Requirements: N.M_`); bugfix começa pelo teste da condição do defeito e pelos testes de preservação | BLOQUEANTE |
-| L3 | Nenhuma regra de negócio que não esteja no PRD/ELM, no `decisoes.md`, na ficha da fatia sem épico (Regras e Decisões) ou nos conceitos aprovados em `elm/` da pasta da fatia. O plano muda a expectativa de um **teste existente** → está na seção "Testes existentes que mudam", com a fonte da decisão (pessoa, `D-nn`); o GATE segue a senioridade (passo `sa-plano.plano.gate`) | BLOQUEANTE |
-| L4 | Os caminhos, classes e análogos citados existem (conferir com `glob`/`read`) — ou estão marcados "a criar" | BLOQUEANTE |
-| L5 | O design segue o steering de tecnologia/estrutura, as regras críticas do `sabia.md` e as lições promovidas | BLOQUEANTE |
-| L6 | Tarefas em ciclo de teste: cada comportamento começa por um teste que falha; corretiva começa pelo teste que reproduz o defeito | IMPORTANTE |
-| L7 | Tarefas pequenas, na ordem de dependência, cada uma com o comando que prova que terminou | IMPORTANTE |
-| L8 | Reexecução segura, transação e concorrência tratadas quando há escrita | BLOQUEANTE |
-| L9 | Todo componente do design aparece em alguma tarefa, e vice-versa | IMPORTANTE |
-| L10 | Nada fora do escopo da fatia (arquivos, refatorações oportunistas) | IMPORTANTE |
+| L1 | Todo cenário CT-nn da ficha tem critério de aceite na spec, com o mesmo CT-nn, e nenhum critério sai da ficha. Todo valor visível ao usuário no "Então" (texto, rótulo, mensagem, formato) aparece igual, palavra por palavra. No bug, o `bugfix.md` (ou o delta MODIFIED) tem o atual com evidência, o esperado com fonte e o Não muda da ficha | BLOQUEANTE |
+| L2 | O delta traz o texto completo de cada requisito do Cobre (OpenSpec: ADDED para inclui, MODIFIED para altera, REMOVED para exclui; Kiro: o bloco completo de cada requisito), copiado do texto aprovado da ficha, do `prd.md` ou de `elm/`, sem reescrita | BLOQUEANTE |
+| L3 | Todo critério tem ao menos uma tarefa no `tasks.md`; o bug começa pelo teste que reproduz o defeito e pelos testes do Não muda | BLOQUEANTE |
+| L4 | Os caminhos, classes e análogos citados existem, ou estão marcados "a criar" | BLOQUEANTE |
+| L5 | Nenhuma regra de negócio sem fonte (Regras e Decisões da ficha, `prd.md`, `elm/` aprovado). Expectativa de teste existente que muda está listada no plano com a decisão de uma pessoa | BLOQUEANTE |
+| L6 | O design segue o `AGENTS.md`, o steering de tecnologia e estrutura e as Regras aprendidas do `sabia.md` | BLOQUEANTE |
+| L7 | Reexecução segura, transação e concorrência tratadas quando há escrita | BLOQUEANTE |
+| L8 | TDD: cada comportamento começa por um teste que falha, ligado ao CT-nn do cenário | IMPORTANTE |
+| L9 | Tarefas pequenas, na ordem de dependência, cada uma com o comando que prova que terminou | IMPORTANTE |
+| L10 | Todo componente do design aparece em alguma tarefa, e vice-versa | IMPORTANTE |
+| L11 | Nada fora do escopo da fatia; refatoração preparatória só no trecho tocado e como tarefa do plano | IMPORTANTE |
+| L12 | `research.md` com fatos e `arquivo:linha`, sem opinião; o plano não contradiz os fatos | SUGESTÃO |
 
-Fecho: `ANALISE: OK` ou `ANALISE: AJUSTAR`. Em cada achado diga se a falta é **do plano** (o desenvolvedor corrige)
-ou **do PRD ou da ficha** (cenário ausente, regra contraditória: o passo `sa-plano.plano.decisoes` decide — artefato
-que precisa mudar → volta à especificação, a `[ESP] FT`; lacuna da ficha sem épico → o P.O., pela `sa-triar`).
+Origem de cada achado: `plano` (quem desenvolve corrige), `ficha` ou `PRD` (cenário ausente, regra contraditória:
+destino `volta-spec`).
 
-## C — Código da fatia (diff contra a branch base)
+Fecho: `ANALISE: OK` ou `ANALISE: AJUSTAR` (algum BLOQUEANTE).
 
-Dois eixos, avaliados **separadamente** e relatados em seções próprias — um não compensa nem esconde o outro.
-Reprovação em qualquer eixo é `REVISAR`.
+## C — Código da fatia
 
-**Eixo Spec** — o diff faz o que a fatia promete, e só isso:
+Entrada: o diff contra `origin/<base>`, a pasta da spec, a ficha e, com o MR aberto, os campos dele. Três eixos,
+avaliados em separado e relatados em tabelas próprias: um não compensa nem esconde o outro.
+
+**Eixo spec** — o diff faz o que a fatia promete, e só isso:
 
 | # | Verificação | Severidade |
 |---|---|---|
-| C1 | Cada critério de `requirements.md`/`bugfix.md` tem implementação (`critério → arquivo:linha`), citando a linha do critério | BLOQUEANTE |
-| C2 | Cada cenário da fatia tem teste automatizado que o exercita pelo ponto de teste do `design.md` (`cenário → teste`), e o esperado do teste usa o valor visível do "Então" do cenário, igual | BLOQUEANTE |
-| C3 | O passo `sa-codificar.codificar.validar` passa: os comandos de backpressure do `sabia.md` (compilar, testes, lint, cobertura se houver gate, medida no que o diff criou ou alterou — falta pré-existente fora do diff não reprova) — **executar** | BLOQUEANTE |
-| C4 | Oráculo protegido: nenhum teste removido, desabilitado, ignorado, com assert vazio, enfraquecido ou tautológico (esperado recalculado como o código calcula); nenhuma exceção engolida. Expectativa de teste existente alterada só se está em "Testes existentes que mudam" do plano, com a decisão registrada | BLOQUEANTE |
+| C1 | Cada critério da spec (na trivial, cada cenário da ficha) tem implementação (`critério → arquivo:linha`) | BLOQUEANTE |
+| C2 | Cada cenário CT-nn tem teste automatizado que o exercita, com o esperado igual ao "Então"; com `CT no teste = sim` no `acordos.md`, o teste traz a marca `<FT-nnn> CT-nn` | BLOQUEANTE |
+| C3 | CI verde no último commit da branch, sem teste verde no baseline (último pipeline da base) que ficou vermelho. Fonte: MCP do Jenkins, a saída do validar de quem chamou ou o resultado informado pela pessoa; nunca "os testes passaram" sem a saída | BLOQUEANTE |
+| C4 | Oráculo protegido: nenhum teste removido, desabilitado, ignorado, com assert vazio, enfraquecido ou tautológico; nenhuma exceção engolida. Expectativa de teste existente alterada só com a decisão registrada no plano | BLOQUEANTE |
 | C5 | Reexecução segura: rodar de novo não duplica nem corrompe (chave, situação gravada, transação) | BLOQUEANTE |
-| C6 | Tarefas `[x]` do `tasks.md` têm código correspondente no diff | BLOQUEANTE |
-| C7 | Escopo: nada além da fatia — funcionalidade não pedida, arquivos fora do `design.md` (exceto testes e a pasta da fatia), refatoração oportunista | IMPORTANTE |
+| C6 | As tarefas `[x]` do `tasks.md` têm código no diff | BLOQUEANTE |
+| C7 | O Cobre do MR é o da ficha, e o diff não muda comportamento de requisito fora dele (diverge: destino `volta-spec`) | IMPORTANTE |
+| C8 | Escopo: nada além da fatia (funcionalidade não pedida, arquivo fora do design, refatoração oportunista) | IMPORTANTE |
 
-**Eixo Padrões** — o diff deixa o código pior para quem vem depois?
+**Eixo padrões** — o diff deixa o código pior para quem vem depois?
 
 | # | Verificação | Severidade |
 |---|---|---|
-| C8 | Regras críticas do `sabia.md`, steering de tecnologia e regras aprendidas (mesmo arquivo) | BLOQUEANTE |
-| C9 | Segurança: sem segredo no código ou em log, sem injeção (SQL, comando, HTML), dado sensível protegido | BLOQUEANTE |
-| C10 | Modelo/entidade bate com o schema real (MCP de banco, somente leitura; sem o MCP de banco → `N/A`) | BLOQUEANTE |
-| C11 | Segue o análogo e a forma do programa do `design.md`; nada de padrão novo sem decisão registrada | IMPORTANTE |
-| C12 | Nomes do domínio = termos canônicos do glossário; nomes técnicos no padrão dos vizinhos | IMPORTANTE |
+| C9 | `AGENTS.md`, steering de tecnologia e estrutura e Regras aprendidas do `sabia.md` | BLOQUEANTE |
+| C10 | Modelo e entidade batem com o schema real (MCP de banco, em leitura; sem o MCP, `N/A`). DDL nova tem o item BD citado no Risco do MR | BLOQUEANTE |
+| C11 | Segue o análogo e a forma do design; nada de padrão novo sem decisão registrada. Decisão que atravessa fatias (banco, framework, padrão de integração) tem ADR no MR | IMPORTANTE |
+| C12 | Nomes do domínio = termos do glossário (GL ou `glossario.md`); nomes técnicos no padrão dos vizinhos | IMPORTANTE |
 | C13 | Módulos profundos: interface pequena para o que esconde; sem abstração especulativa, camada a mais ou duplicação evitável | IMPORTANTE |
-| C14 | Sem `TODO`/`FIXME`, print/log de depuração ou código comentado; registros obrigatórios da estrutura (rotas, menus, agendamentos, migrações) presentes | IMPORTANTE |
-| C15 | Cada decisão do `design.md` com "Vira ADR? sim" tem o ADR no PR, em `.kiro/specs/<ft>-<slug>/adr/` (contexto · decisão · consequências · origem FT-nnn), e ele descreve o que o código faz; com a linha ET do `sabia.md` = `só as-built` ou `inicial no PRD + as-built`, a ET em `elm/ET-<slug>.md` também está no PR, no padrão `sa-prd/et.md`, descreve o que o diff faz (interfaces, contratos, dados), nada além, e, na fatia de épico com ET inicial, a liga no Elabora | IMPORTANTE |
+| C14 | Sem `TODO`, `FIXME`, print ou log de depuração e código comentado; registros obrigatórios da estrutura (rotas, menus, agendamentos, migrações) presentes | IMPORTANTE |
+| C15 | Onde o projeto mantém ET (`ET as-built: sim` na seção ELM do `sabia.md`), as seções as-built do `design.md` descrevem o que o diff faz, e nada além | IMPORTANTE |
 
-Calibragem: seja cético (o autor tende a achar que terminou), mas aponte só o que afeta **correção, requisito,
-segurança ou manutenção real**. Gosto pessoal e "eu faria diferente" são SUGESTÃO, quando muito — perseguir cada
-achado leva a excesso de engenharia.
+**Eixo segurança** — o diff abre risco?
 
-C3 falhando por ambiente (banco, rede, dependência fora do ar) → `AMBIENTE`, não conta como achado; diga o que
-falhou. Sem o C3, a revisão não aprova: o fecho é `VEREDITO: AMBIENTE` (quem chamou para, sem contar reprovação).
+| # | Verificação | Severidade |
+|---|---|---|
+| C16 | Sem segredo no código, em configuração versionada, em teste ou em log | BLOQUEANTE |
+| C17 | Sem injeção (SQL, comando, HTML, caminho); a entrada externa é validada na borda | BLOQUEANTE |
+| C18 | Dado pessoal ou sensível protegido: fora de log e de resposta indevida, sem dado real em teste; autorização conferida em cada operação nova | BLOQUEANTE |
+| C19 | Dependência nova com versão fixa e origem conhecida | IMPORTANTE |
 
-**Drift de negócio** (não reprova; o revisor **indica** a possível alteração, a pessoa decide: volta à especificação
-ou código errado — passos `sa-revisar.hitl.veredito` e `sa-revisar.aprovar-pr.decidir`): na penúltima linha,
-`Drift de negócio: possível alteração — <motivo> · artefatos: <id|rótulo> (<tipo>)` quando um achado aceito ou uma decisão técnica
-do `design.md` muda o comportamento visível ao usuário em relação ao cenário ou à regra do PRD, da ficha ou do
-artefato aprovado (`elm/` da pasta da fatia); senão `Drift de negócio: não`. Fecho: `VEREDITO: APROVADO`,
-`VEREDITO: REVISAR` ou `VEREDITO: AMBIENTE` (só o C3 sem rodar por ambiente, acima).
+Calibragem: seja cético (o autor tende a achar que terminou), mas aponte só o que afeta correção, requisito,
+segurança ou manutenção real. Gosto pessoal é SUGESTÃO, quando muito.
+
+C3 falhando por ambiente (serviço fora do ar, credencial, dependência externa) → `AMBIENTE`, não conta como
+achado; diga o que falhou. Sem o C3, a revisão não aprova.
+
+Origem de cada achado: `código` ou `ambiente`.
+
+Fecho: `VEREDITO: APROVADO`, `VEREDITO: REVISAR` (algum BLOQUEANTE) ou `VEREDITO: AMBIENTE` (C3 sem rodar por
+ambiente, sem BLOQUEANTE).
 
 ## Formato do relatório
 
 ```markdown
-# Revisão <P | L | C> — <EP-xx | FT-xxx> · rodada <N>
+# Revisão <L | C> — FT-<nnn>
 
 ## Resumo
 <1–2 frases: o que foi revisado e a impressão geral>
 
 ## Achados
-<!-- Rubrica C: uma tabela por eixo (Spec, Padrões). -->
-<!-- Origem — L: `plano` · `PRD` · `ficha`; C: `código` · `ambiente`; P: `PRD` (épico) · `artefato` ([ESP] FT). -->
-| # | Severidade | Achado | Evidência | Correção | Origem |
-|---|---|---|---|---|---|
+<!-- Rubrica C: uma tabela por eixo (spec, padrões, segurança). -->
+| # | Severidade | Achado | Evidência | Correção | Origem | Destino |
+|---|---|---|---|---|---|---|
 
 ## Verificações
 | # | Resultado (✅ ❌ N/A AMBIENTE) | Observação |
 |---|---|---|
 
-<rubrica C, penúltima linha: Drift de negócio: não | possível alteração — <motivo> · artefatos: <id|rótulo> (<tipo>)>
-<última linha: RESULTADO: … | ANALISE: … | VEREDITO: …>
+<última linha: ANALISE: OK | ANALISE: AJUSTAR | VEREDITO: APROVADO | VEREDITO: REVISAR | VEREDITO: AMBIENTE>
 ```
 
-A **última linha** é exatamente uma das linhas de fecho — quem chamou lê só ela para decidir.
+A **última linha** é exatamente um dos fechos: quem chamou lê só ela para decidir.

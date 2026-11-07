@@ -1,46 +1,50 @@
 ---
-{"fluxo": "atender", "dono": "sa-produto",
- "travas_gerais": ["sim-da-pessoa"],
+{"fluxo": "atender", "dono": "sa-desenvolvedor",
+ "quando": ["Sustentação das seis categorias (AT · IM · BD · IN · OP · EX): registrar o pedido, puxar, atender com a IA como auxílio e concluir", "atender o AT-012", "registra um pedido de sustentação", "aplicar o BD-004", "conclui o IM-007"],
+ "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa", "elm-pela-sa-elm"],
  "passos": [
-   {"id": "entrada", "de": "entrada", "sprint": "exige", "branch": "nao", "saidas": {"pedido novo ou AT fora do backlog": "→ sa-triar.triar", "AT terminal, ou fora da sprint aberta (P.O. ou SM)": "fim"}},
+   {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao", "saidas": {"id de Sustentação já registrado, nova ou em-andamento": "puxar"}},
+   {"id": "registrar", "saidas": {"só registrar, sem atender agora": "fim"}},
+   {"id": "puxar", "saidas": {"reserva estourada, sem quem tem produto na sessão ou com a decisão de esperar": "fim"}},
    {"id": "assumir"},
-   {"id": "executar", "chama": "sa-pesquisar.pesquisar", "saidas": {"não é atendimento (categoria errada)": "→ sa-triar.triar"}},
+   {"id": "executar", "chama": "sa-pesquisar.pesquisar", "saidas": {"a sessão termina antes de resolver (commit '<ID> registrar sessão')": "fim", "resolvido ou retirado, nada fora do escopo": "finalizar"}},
+   {"id": "fora-do-escopo", "saidas": {"categoria errada: o item ficou 'cancelada · virou <novo id>'": "gravar-na-base"}},
    {"id": "finalizar"},
-   {"id": "desdobramentos", "saidas": {"alteração (defeito ou mudança) ou regra que ninguém decidiu": "→ sa-triar.triar", "nada": "fim"}}
+   {"id": "desdobramentos", "saidas": {"nenhum desdobramento": "gravar-na-base"}},
+   {"id": "captura", "de": "captura"},
+   {"id": "gravar-na-base", "de": "gravar-na-base"}
  ]}
 ---
-# Atender — atender sem perder o rastro
+# Atender — Sustentação sem perder o rastro
 
-Atendimento é trabalho real que não vira código: alguém pergunta (chamado, e-mail, pedido), o time consulta, responde
-e segue. É a categoria **Atendimento** da **Sustentação** — a única categoria com fluxo próprio; as demais
-(Implantação, Banco de dados, Infra, Operação, Apoio a outros times) usam a [`sa-executar`](~/.sabia/framework/skills/sa-executar/SKILL.md).
-A **`sa-triar`** registra a demanda (`AT-nnn`, linha na `### Atendimento` da `## Sustentação` do `backlog.md`, IB
-`[AT-nnn]` no EWM; a tarefa `[ATD]` nasce quando o AT entra numa sprint); este fluxo é o de quem **atende**: assume
-a `[ATD]`, executa e finaliza, deixando um registro versionado **sem dado de cliente**. Entra o `AT-nnn`, a `[ATD]
-AT-nnn` ou o número do EWM do IB `[AT-nnn]` ou da `[ATD]`.
+Um fluxo só para as seis categorias da Sustentação: AT (Atendimento) · IM (Implantação) · BD (Banco de dados) · IN
+(Infra) · OP (Operação) · EX (Apoio a outros times). A categoria só muda o registro. Qualquer pessoa registra o
+pedido aqui; quem atende puxa dentro da reserva, faz o trabalho com a IA só como auxílio e declara resolvido.
 
-Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configurar o Sabiá") e pare.
+Entra um id (`AT-`, `IM-`, `BD-`, `IN-`, `OP-` ou `EX-nnn`) ou um pedido em texto. Pedido em texto, ou id que não
+existe, vai para o passo `registrar`. O estado vai na base pela gravação comum (passo `gravar-na-base`).
+
+Leia antes o `.sabia/sabia.md` (seção Sustentação: Categoria · Descrição · Exemplo). Sem ele, ofereça a
+`sa-setup.configurar` e pare.
+
+Aceita: item de Sustentação `nova` ou `em-andamento`.
 
 ## Entrada: vizinhos
 
-- `IM-`, `BD-`, `IN-`, `OP-`, `EX-nnn` ou a tarefa `[IMPL]` `[BD]` `[INF]` `[OPE]` `[EXT]` (outra categoria da Sustentação) → `sa-executar.executar`
+- `EP-nn` ou `FT-nnn` → não é Sustentação: veja `sa-status <id>` ■
 
 ## Arquivos
 
-- `<produto>/sustentacao/atendimento/AT-<nnn>-<slug>.md` — o registro (formato no padrão `sa-atender/registro.md`), criado pela triagem.
-- Linha do AT na `### Atendimento` da `## Sustentação` do `backlog.md` e do `sprints/<pai>/sprint-<nn>.md`.
-- `.sabia/local/sustentacao/atendimento/AT-<nnn>/` — extrações, telas e respostas com dado real. Fora do git.
+- `.sabia/planejamento/sustentacao/<ID>-<slug>.md` — o registro, no padrão `sa-atender/registro.md`. Gravado direto
+  na base.
+- A linha do item no `backlog.md` e a linha `atendimento` no `sprint-<nn>.md` aberto.
+- `.sabia/local/sustentacao/<ID>/` — extrações, telas e respostas com dado real. Fora do git.
 
 ## Regras
 
-- **Dado de cliente nunca vai para o git**: resultado de consulta, extração ou tela com dado real fica em
-  `.sabia/local/sustentacao/atendimento/AT-<nnn>/`. O registro guarda consulta, contagem, caminho e resumo anônimo.
-- Banco só em leitura. Pedido que exige escrita na base não é atendimento: vira Banco de dados (`[BD]`, a pessoa
-  executa o script fora; pela `sa-executar`) ou, se muda o repositório, fatia de Manutenção.
-- Um IB `[AT-nnn]` e uma `[ATD]` por demanda, sem balde. Registrar o AT é da `sa-triar`; este fluxo nunca numera
-  nem abre AT (só cria no EWM o IB e a tarefa que faltam a um AT registrado).
-- Lançar horas é registro de empenho, a qualquer momento na `[ATD]` assumida; concluir é o passo `finalizar`, com o saldo.
-- Toda escrita no EWM e todo envio de resposta pedem confirmação da pessoa.
-- Sem o MCP `elm` ou com falha → uma linha por chave no campo `**ELM:**` do registro, e siga: `ELM pendente [ATD
-  AT-<nnn> assumir]: assumir a tarefa` · `ELM pendente [ATD AT-<nnn> horas]: lançar <h>h (<AAAA-MM-DD>)` · `ELM
-  pendente [ATD AT-<nnn> concluir]: concluir a tarefa` · `ELM pendente [IB AT-<nnn> concluir]: concluir o IB`.
+- O atendimento é da pessoa. O agente não roda script, deploy, DDL nem comando em ambiente e não responde ao cliente.
+- Quem declara resolvido é sempre a pessoa que atende, nunca a IA.
+- Dado de cliente nunca vai ao git. No registro ficam só a consulta, a contagem, o caminho e um resumo anônimo.
+- Banco só em leitura.
+- A categoria é confirmada antes de gravar e não muda depois.
+- O ELM aparece só como oferta da `sa-elm`, e a resposta nunca trava o fluxo.

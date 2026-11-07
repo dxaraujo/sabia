@@ -1,33 +1,34 @@
 ---
-{"resumo": "Corpo da história (HF): Como/quero/para, gatilho, telas (EL), cenários Dado/Quando/Então com a regra que conforma, regras e relações (o envelope OKF fica no okf-elm.md da sa-prd)."}
+{"resumo": "Corpo da história (HF): como/quero/para, gatilho, telas, cenários Dado/Quando/Então com a regra que conforma e as regras que embute."}
 ---
 # História (HF)
 
-**História (HF)** — um comportamento observável:
+Um comportamento observável. O mesmo corpo serve ao bloco do `prd.md` e ao arquivo de `elm/`.
 
 ```markdown
 **Como** <ator>, **quero** <capacidade>, **para** <benefício>.
 
 **Gatilho:** <ação na tela | chamada de API | agendamento | evento> · **Entradas:** <…> · **Pré-condições:** <…>
-**Telas:** [EL-01 <tela>](EL-01-<slug>.md)   <!-- só com a linha Telas = sim do sabia.md; sem tela na história, a linha sai -->
+**Telas:** EL-<id> <tela>   <!-- só com Telas = sim; sem tela na história, a linha sai -->
 
 ## Cenários
-1.1 <caminho feliz>
+
+**<h>.1 · <caminho feliz>**
 **Dado que** <estado antes>
 **Quando** <o ator faz X>
 **Então** <efeito verificável: valor gravado, resposta, mensagem, contagem>
-**Conforme** a regra [REG-01 <nome>](REG-01-<slug>.md)
+**Conforme** REG-<id>
 
-1.2 <o que NÃO deve ser aceito/processado>
-1.3 <repetição / reexecução: rodar de novo não duplica nem corrompe>
-1.4 <erro em um item: a operação continua? o que fica registrado?>
+**<h>.2 · <o que não deve ser aceito>**
+**<h>.3 · <repetição: rodar de novo não duplica nem corrompe>**
+**<h>.4 · <erro em um item: a operação continua? o que fica registrado?>**
 
 ## Regras
-- [REG-01 <nome>](REG-01-<slug>.md)
 
-## Relações
-- <restringe / satisfaz / elabora, com link — só local>
+- REG-<id> <título>
 ```
 
-Cenários `<h>.<c>`: `<h>` = o número da HF (HF-02 → 2.1, 2.2…), `<c>` sequencial na HF; é o `c.c` do `cobre`
-(`HF-02#2.1`).
+- **Então verificável**, com valores; nada de "corretamente".
+- Os cenários não têm CT-nn: o CT-nn nasce na ficha da fatia, que diz qual cenário cobre.
+- A HF cita as REG pelo id; na publicação, a REG entra em embed.
+- Sem caminho de arquivo, classe nem SQL. Só dado fictício nos exemplos.

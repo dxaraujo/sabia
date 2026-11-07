@@ -1,30 +1,31 @@
 ---
-{"resumo": "Mostra a ATA à pessoa; com o \"sim\", grava status stable e o verified humano, sem esperar o GATE do PRD; ajuste volta à escrita."}
+{"resumo": "Quem conduziu a reunião aprova a ATA; com o sim, ela ganha o número e vai para .sabia/planejamento/atas/."}
 ---
 ## Entrada
 
-A ATA `draft` em `elm/` (passo `escrever`, ou uma `draft` de outra sessão achada pelo passo `transcricao`).
+O rascunho da ATA em `.sabia/local/reunioes/`.
 
 ## Faça
 
-Antes, confira cada `D-nn` da ATA no `decisoes.md`: tem de estar reservado para ela (`em aberto — ATA-<nn> draft`).
-Número tomado por outra decisão → renumere na ATA para o próximo livre, reserve-o, `generated.at` novo. Depois de
-aprovada, a ATA não muda mais. Mostre a ATA inteira e pergunte:
+Confira que cada D-nn do rascunho ainda é o próximo livre no documento do item; tomado por outra decisão, renumere.
+Mostre a ATA inteira e pergunte a quem conduziu a reunião:
 
 ```
-📝 ATA-<nn> — <AAAA-MM-DD> <assunto> · EP-<nn> · [ESP] <id>
+ATA — <AAAA-MM-DD> <assunto> · <id>
 Participantes: <n> · Decisões: D-<nn>…D-<nn> · Em aberto: <n>
 Aprovar? (sim | ajuste: <o quê>)
 ```
 
-Com "sim": na ATA, `status: stable` e um `verified` com `{ by: human:<login de quem disse o sim>, at: <agora> }`.
-Ajuste → passo `escrever`, com o que a pessoa pediu.
+- **Sim.** `**Aprovado:** <usuario> · <AAAA-MM-DD>` no cabeçalho, `<nn>` = a maior ATA de `.sabia/planejamento/atas/`
+  + 1, o `ATA-nn` nas Fontes, e o arquivo vai para `.sabia/planejamento/atas/ATA-<nn>-<AAAA-MM-DD>-<assunto>.md`
+  (`<assunto>` em kebab-case, sem acento, até 5 palavras).
+- **Ajuste** → passo `escrever`, com o pedido.
 
 ## Saída
 
-A ATA `stable` e verificada → passo `publicar`. Sem o "sim", a ATA fica `draft` e o próximo encaminhar a traz de
-volta a este passo.
+ATA aprovada em `.sabia/planejamento/atas/` → passo `decisoes`. Ajuste → passo `escrever`. Sem o "sim" → passo
+`devolver`, com o rascunho em `.sabia/local/reunioes/`.
 
 ## Pare se
 
-- Sem o "sim" → a ATA fica `draft`, com os `D-nn` reservados; volte a quem chamou.
+Nenhum caso próprio deste passo: sem o "sim", o rascunho fica e a próxima entrada volta aqui.

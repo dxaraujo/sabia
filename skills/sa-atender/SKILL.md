@@ -1,10 +1,10 @@
 ---
 name: sa-atender
-description: "Skill for whoever handles support in the Sabiá flow — carries out an atendimento (a ticket or customer request; the Atendimento category of Sustentação) already registered by sa-triar (AT-nnn: IB [AT-nnn] and task [ATD]): claims the [ATD] in EWM (creating any missing IB and task) and records the AT as em-andamento on the base branch, queries the database (read-only) and the ELM bundle, touches code only within a closed scope, keeps extractions out of git (.sabia/local/sustentacao/atendimento/), drafts the reply for the person's \"ok\" and wraps up — records the reply, logs the remaining hours, closes the [ATD] and the AT's IB, and asks about follow-ups (nothing · change or undecided rule via sa-triar). A new request does not start here: it goes through sa-triar. Use when the user says \"atender o AT-012\", \"pegar a [ATD] 669380\", \"extrai os dados do AT-012\", \"enviei a resposta\", \"conclui o AT-012\"."
+description: "Sustentação in the Sabiá flow, one flow for the six categories: AT (support), IM (deployment), BD (database), IN (infrastructure), OP (operations) and EX (help to other teams). Anyone registers a request here: the category is confirmed before saving, because the id comes from its series and never changes (no recategorizing). Whoever handles it pulls it within the sprint slack (over it, the product person decides), takes it on the base branch, does the work with the AI only as an aid (code facts from sa-pesquisar, database read-only, a reply draft on request; customer data stays out of git) and declares it resolved; the agent never runs scripts, deploys or commands in an environment and never answers the customer. A request that changes the code becomes a bug or slice through the common capture; follow-ups and lessons are recorded on closing. Use when the user says \"atender o AT-012\", \"registra um pedido de sustentação\", \"aplicar o BD-004\", \"conclui o IM-007\", \"enviei a resposta\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.0.3"
+  version: "2.1.0"
 ---
 
-# sa-atender — Atender sem perder o rastro
+# sa-atender — Sustentação sem perder o rastro

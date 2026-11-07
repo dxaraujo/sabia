@@ -1,0 +1,21 @@
+---
+{"resumo": "Commit de base só com os originais baixados, antes de qualquer edição: a diferença e a versão lida se conferem contra ele."}
+---
+## Entrada
+
+Os arquivos de altera e exclui que o passo `baixar` gravou agora.
+
+## Faça
+
+Grave só esses arquivos e a versão lida no Cobre da ficha, sem nenhuma edição, pela gravação comum na base (passo
+`gravar`, commit `FT-nnn elm: original <ids>`), e volte aqui. O arquivo novo (inclui) não tem commit de base. Daqui em
+diante, `git diff <commit de base> -- <arquivo>` mostra a edição, e a Versão lida desse commit é a que o passo
+`conferir` compara.
+
+## Saída
+
+O commit de base na base → passo `editar`.
+
+## Pare se
+
+- A gravação na base parou → os originais ficam sem commit; a próxima sessão retoma do passo `baixar`.

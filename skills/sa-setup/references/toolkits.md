@@ -25,7 +25,7 @@ e quais verificações a `sa-verificar` usa para executar os cenários de aceite
 | Tipo | Sinais no repositório | Como a aceitação é verificada (padrão) |
 |---|---|---|
 | `backend` | controladores/rotas HTTP, OpenAPI, `spring-boot-starter-web`, `express`, `fastapi`, `*.csproj` web | chamada à API (HTTP), resposta e estado no banco |
-| `batch` | `spring-batch-core`, `@EnableBatchProcessing`, `Job`/`Step`, `*.jcl`, agendadores, `cron` | execução do job com massa de teste; contagens e estado no banco; log de execução |
+| `batch` | `spring-batch-core`, `@EnableBatchProcessing`, `Job`/`Step`, `*.jcl`, agendadores, `cron` | execução do job com os dados do cenário; contagens e estado no banco; log de execução |
 | `frontend` | `package.json` com `@angular/core`, `react`, `vue`, `svelte`; `src/app`, `pages/` | navegação no browser (Playwright/MCP de browser), screenshot como evidência |
 | `mobile` | `android/`, `ios/`, `pubspec.yaml`, `react-native` | emulador/dispositivo, quando houver; senão roteiro manual |
 | `dados` | dbt, Airflow, notebooks, SQL de carga, Spark | execução da carga em ambiente de teste; consultas de verificação |
@@ -72,7 +72,7 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
   },
   "skills": [
     { "caminho": "skills/spring-batch-job/SKILL.md", "papeis": ["desenvolvedor", "revisor"], "stack": ["spring-batch 5"],
-      "passo": { "passo": "sa-codificar.codificar.tarefa", "para": "tarefa que cria ou altera um job ou step",
+      "passo": { "passo": "sa-desenvolver.codificar.tarefa", "para": "tarefa que cria ou altera um job ou step",
                  "arquivos": ["**/*JobConfig.java", "**/batch/**/*Step*.java"], "agente": "batch-job" } },
     { "caminho": "skills/spring-batch-teste/SKILL.md", "papeis": ["desenvolvedor", "verificador"] },
     { "caminho": "skills/java/SKILL.md", "papeis": ["desenvolvedor", "revisor", "pesquisador"] }
@@ -87,7 +87,7 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
     "cobertura": "mvn -q verify",
     "lint": "mvn -q checkstyle:check"
   },
-  "verificacao": "Executar o job pelo teste de integração (JobLauncherTestUtils) ou pela linha de comando do projeto com a massa de teste; conferir BATCH_JOB_EXECUTION e as contagens nas tabelas de destino",
+  "verificacao": "Executar o job pelo teste de integração (JobLauncherTestUtils) ou pela linha de comando do projeto com os dados do cenário; conferir BATCH_JOB_EXECUTION e as contagens nas tabelas de destino",
   "agentes": [
     { "nome": "batch-job", "descricao": "Codifica um job Spring Batch e dispara um batch-step por step independente",
       "prompt": "agentes/batch-job.md", "skills": ["skills/spring-batch-job/SKILL.md"], "subagentes": ["batch-step"] },
@@ -101,10 +101,10 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
 |---|---|
 | `tipos-de-projeto` | casa com o tipo detectado → o toolkit vira **sugestão** (nunca é ligado sem a pessoa dizer sim) |
 | `deteccao` | `arquivos` existe na raiz (ou em módulos) **e** algum `contem` aparece nele → toolkit "detectado" |
-| `skills[].papeis` | **quem:** pré-seleciona a skill na proposta de cada agente (`produto`, `especificador`, `pesquisador`, `desenvolvedor`, `revisor`, `verificador`, `orquestrador`) — uma skill pode servir a vários |
+| `skills[].papeis` | **quem:** pré-seleciona a skill na proposta de cada agente (`desenvolvedor` → `sa-desenvolvedor`, `especificador` e `produto` → `sa-especificador`, `pesquisador` → `sa-pesquisador`, `revisor` → `sa-revisor`, `verificador` → `sa-verificador`, 1:1) — uma skill pode servir a vários |
 | `skills[].stack`, `skills[].deteccao` | **onde:** a stack da skill (ex.: `java 17`, `react`); com `deteccao`, a setup só a pré-marca se o repositório casar |
-| `skills[].passo` | **em que passo:** opcional — a skill assume o passo de um agente do Sabiá, pelo id (`passo`: `sa-codificar.codificar.tarefa`, o único com `"desvio": true` no mestre), com o `para` e, opcionais, os `arquivos` (globs) e o `agente` a quem delegar — ver [Passos](#passos) |
-| `tipos` | opcional — `{"HF": {"skill": "skills/<skill>/SKILL.md", "fluxo": "<arquivo>", "padrao": "<arquivo>"}}` (a skill do toolkit, com o fluxo e o padrão do tipo, relativos à pasta do toolkit; o padrão é opcional): o toolkit escreve um tipo desviável do catálogo (`HF`, `REG`, `EL` e `CT` no `sa-prd.prd.escrever` e no `sa-especificar.fatia.escrever`; `ET` no `sa-prd.prd.escrever` e no `sa-consolidar.consolidar.elm`; `ATA` no `sa-especificar.reuniao.escrever`; `GL` não desvia — a fonte é a coluna Desviável do catálogo) — ver [Tipos](#tipos) |
+| `skills[].passo` | **em que passo:** opcional — a skill assume o passo de um agente do Sabiá, pelo id (`passo`: `sa-desenvolver.codificar.tarefa`, o único com `"desvio": true` no mestre), com o `para` e, opcionais, os `arquivos` (globs) e o `agente` a quem delegar — ver [Passos](#passos) |
+| `tipos` | opcional — `{"HF": {"skill": "skills/<skill>/SKILL.md", "fluxo": "<arquivo>", "padrao": "<arquivo>"}}` (a skill do toolkit, com o fluxo e o padrão do tipo, relativos à pasta do toolkit; o padrão é opcional): o toolkit escreve um tipo desviável do catálogo (`HF`, `REG` e `EL` no `sa-prd.prd.escrever` e no `sa-especificar.elm.editar`; `ATA` no `sa-especificar.reuniao.escrever`; `GL`, `ET` e `CT` não desviam — a fonte é a coluna Desviável do catálogo) — ver [Tipos](#tipos) |
 | `rubricas` | opcional — itens que o toolkit **acrescenta** à revisão: `id` (maiúsculas e número, ex.: `EX1`), `verificacao`, `severidade` (`BLOQUEANTE`, `IMPORTANTE` ou `SUGESTÃO`) e, opcional, o `tipo`; vão no prompt do revisor |
 | `requer` | opcional — `{"sabia": "<versão mínima>"}`: o toolkit usa o catálogo de tipos e ids de passo do Sabiá; abaixo dela, o CLI recusa o toolkit |
 | `autor` | **obrigatório:** `nome` e `area` de quem fez e responde pelo toolkit (`email` opcional). Aparece no W5 e no `sabia toolkits listar`; toolkit sem autor é recusado |
@@ -121,14 +121,14 @@ um passo definido de um agente do Sabiá, e a configuração do agente decide qu
 no passo `<id>`** que o gerador põe no prompt do dono; nada é marcado no `status.md` nem no `tasks.md`); os passos, o briefing e o contrato de cada um
 estão em [passos.md](../../sabia/references/passos.md).
 
-- **Pelo id do passo:** `passo.passo` é o id qualificado (`sa-codificar.codificar.tarefa`); o dono do fluxo no mestre é
+- **Pelo id do passo:** `passo.passo` é o id qualificado (`sa-desenvolver.codificar.tarefa`); o dono do fluxo no mestre é
   quem recebe o desvio. Só vale em passo com `"desvio": true` no mestre; passo inexistente, ou sem `desvio` → o gerador
   recusa e não grava nada. `arquivos` (globs) e `para` vão juntos na linha do prompt: casou um ou o outro → toolkit.
 - **Fora da compilação:** o Sabiá não compila conteúdo de toolkit, e o toolkit não entra nas skills `sa-*` compiladas. A skill compilada leva só o gancho (⇢ na
   tabela do fluxo) no passo com desvio; o desvio vem do projeto: `agentes.json` → prompt do dono, e a tabela **Desvios de
   toolkit** do `sabia.md`, que vale também na sessão sem agente.
 
-- A setup lista os passos no W5 e os oferece no W6 do agente dono (`sa-desenvolvedor`, dono do `sa-codificar.codificar.tarefa`, o único passo com `"desvio": true`). Ligado,
+- A setup lista os passos no W5 e os oferece no W6 do agente dono (`sa-desenvolvedor`, dono do `sa-desenvolver.codificar.tarefa`, o único passo com `"desvio": true`). Ligado,
   vai no `agentes.json` (`toolkits`: pasta, versão e sha usados; `passos`: toolkit, skill e se usa o agente) e na
   tabela **Desvios de toolkit** do `sabia.md`.
 - **Agente neutro:** o toolkit traz só a definição (`agentes[]`) e o prompt em `.md`. O gerador cria o agente com
@@ -157,19 +157,19 @@ padrao/padrao-hf.md                padrão do tipo HF, idem
   "skills": [{ "caminho": "skills/exemplo/SKILL.md", "papeis": ["especificador"] }],
   "tipos": { "HF": { "skill": "skills/exemplo/SKILL.md", "fluxo": "fluxo/fluxo-hf.md", "padrao": "padrao/padrao-hf.md" } },
   "rubricas": [{ "id": "EX1", "tipo": "HF", "verificacao": "Toda HF cita o campo de origem", "severidade": "IMPORTANTE" }],
-  "requer": { "sabia": "2.0.0" }
+  "requer": { "sabia": "2.1.0" }
 }
 ```
 
 - **Tipo → skill:** a sigla é do catálogo (o toolkit não cria tipo), desviável e não pendente; a skill é uma das
   `skills[]`; o fluxo e o padrão, opcionais, são arquivos da pasta do toolkit (sem eles, `{"skill": …}` só, a skill segue as references dela). A skill vai ao dono de cada passo de desvio
-  (coluna Desviável do catálogo) e traz em `papeis` o papel de cada um (`ET`: `especificador` e `produto`); sem ele, o
+  (coluna Desviável do catálogo) e traz em `papeis` o papel de cada um (HF, REG, EL e ATA: `especificador` ou `produto`); sem ele, o
   CLI e o gerador recusam o toolkit, dizendo o papel que falta. O gerador põe no prompt de cada dono a linha **Tipos com skill de toolkit**: no passo, o
   tipo sai pela skill, que segue o fluxo com o padrão, quando há, pelo caminho na pasta instalada (`~/.sabia/toolkits/<toolkit>/`,
   de leitura para todos os agentes), escrevendo no padrão OKF do Sabiá, e volta ao passo. O gerador imprime a seção
   que a setup grava no `sabia.md`: o fluxo, o padrão e a skill de cada tipo, e os itens de rubrica.
 - **Padrão do núcleo:** o toolkit não troca padrão do Sabiá. O tipo que não vai por `tipos`, e o tipo fora do passo de
-  desvio (a ET as-built escrita no PR, `sa-codificar.codificar.pr`), usam o padrão do Sabiá; o `.sabia/padrao/` do projeto vale só
+  desvio (a ET as-built escrita no MR, `sa-desenvolver.codificar.as-built`), usam o padrão do Sabiá; o `.sabia/padrao/` do projeto vale só
   sobre um padrão do Sabiá.
 - **Links:** nos arquivos do toolkit, o link para o Sabiá segue o estilo do repositório
   (`~/.sabia/framework/skills/<sa-x>/references/...`). O Sabiá não confere esses links: um quebrado só aparece quando o
@@ -184,7 +184,7 @@ padrao/padrao-hf.md                padrão do tipo HF, idem
 ## Proposta por agente
 
 A setup nunca liga uma skill sem a confirmação da pessoa — mas confirma a proposta inteira do agente de uma vez
-(skills, MCPs, modelo e subagentes; ver o Passo 6 da `SKILL.md`). Para cada agente, mostra o inventário **agrupado por toolkit**. Vêm
+(skills, MCPs, modelo e subagentes; passo `perfis`). Para cada agente, mostra o inventário **agrupado por toolkit**. Vêm
 pré-marcadas só as skills de toolkits **detectados** cujo `papeis` inclui o papel do agente; toolkit não
 detectado, skill do projeto e skill do usuário aparecem desmarcadas; toolkit sugerido (o `tipos-de-projeto` casa, o
 `deteccao` não) → skills desmarcadas, com "recomendo `pôr <n>`":
@@ -204,7 +204,7 @@ de frontend — mas quem decide é a pessoa.
 Nenhum toolkit encontrado para o tipo detectado → diga isso uma vez, siga com as skills avulsas e registre no
 `sabia.md` (`Toolkits: nenhum — <tipo>`). Os agentes passam a depender do steering de tecnologia e do
 código vizinho (pattern grounding) — funciona, mas com mais revisão. Sugira à pessoa criar as skills da stack em
-`.kiro/skills/` (ou um toolkit em `.sabia/toolkits/<nome>/`) e rodar a setup em modo atualização depois.
+`.kiro/skills/` (ou um toolkit em `.sabia/toolkits/<nome>/`) e rodar a `sa-setup.configurar` em atualização depois.
 
 ## Customização
 
@@ -222,6 +222,6 @@ só aparece no campo `customiza`, para mostrar de onde veio e o que mudou.
 
 ## Atualização
 
-Toolkit novo ou atualizado → "atualizar os agentes do Sabiá" (`sa-setup`, modo atualização): a setup compara o
+Toolkit novo ou atualizado → "regenerar os agentes" (`sa-setup.configurar`, em atualização): a setup compara o
 inventário atual com o `sabia.md` e pergunta só sobre as skills **novas** de cada agente; skill que sumiu
 sai dos agentes com aviso.

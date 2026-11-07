@@ -23,8 +23,13 @@ export const slug = (titulo) => titulo.trim().toLowerCase().replace(/`/g, "").re
 const ancoras = (texto) => new Set([...texto.matchAll(/^#+ (.+)$/gm)].map((m) => slug(m[1])));
 
 export const VIZINHOS = "## Entrada: vizinhos";
-export const SPRINT = ["exige", "nao"];
+export const PAPEL = ["desenvolvedor", "especificador", "produto", "nenhuma"];
 export const BRANCH = ["fatia", "nao"];
+/** Papéis do toolkit.json (skills[].papeis) que cada agente dono de passo aceita. */
+export const PAPEIS_DO_AGENTE = { "sa-desenvolvedor": ["desenvolvedor"], "sa-especificador": ["especificador", "produto"],
+  "sa-pesquisador": ["pesquisador"], "sa-revisor": ["revisor"], "sa-verificador": ["verificador"] };
+/** Id antigo de passo com desvio → o id que vale (o toolkit pode ainda trazer o antigo). */
+export const ALIAS_PASSO = { "sa-codificar.codificar.tarefa": "sa-desenvolver.codificar.tarefa" };
 
 /** As linhas "- <estado> → <destino>" da seção Entrada: vizinhos do corpo do mestre (null sem a seção). */
 function vizinhos(corpo, pulo) {
@@ -39,17 +44,17 @@ function vizinhos(corpo, pulo) {
   return out;
 }
 
-/** Lê a fonte inteira: fluxos, passos, regras, padrões, travas, tipos e papéis. */
+/** Lê a fonte inteira: fluxos, passos, regras, padrões, travas, tipos e agentes (perfis.json). */
 export function carregar(fw) {
   const m = { fw, fluxos: {}, regras: {}, padroes: {}, travas: {}, tipos: {}, subag: {}, skillsAgente: {} };
   const dirFluxo = path.join(fw, "fluxo");
   if (fs.existsSync(path.join(dirFluxo, "travas.json"))) m.travas = json(path.join(dirFluxo, "travas.json")).travas;
   if (fs.existsSync(path.join(dirFluxo, "tipos.json"))) m.tipos = json(path.join(dirFluxo, "tipos.json")).tipos || {};
-  const papeis = path.join(fw, "skills/sa-setup/assets/agents/papeis.json");
-  if (fs.existsSync(papeis))
-    for (const [k, v] of Object.entries(json(papeis).papeis)) {
-      m.subag[`sa-${k}`] = new Set(v.subagentes || []);
-      m.skillsAgente[`sa-${k}`] = new Set(v.skills || []);
+  const perfis = path.join(fw, "skills/sa-setup/assets/agents/perfis.json");
+  if (fs.existsSync(perfis))
+    for (const [k, v] of Object.entries(json(perfis).agentes || {})) {
+      m.subag[k] = new Set(v.subagentes || []);
+      m.skillsAgente[k] = new Set(v.skills || []);
     }
   for (const s of fs.existsSync(dirFluxo) ? fs.readdirSync(dirFluxo).sort() : []) {
     const ds = path.join(dirFluxo, s);
@@ -107,8 +112,8 @@ export function validarToolkitFonte(fw, tk) {
     if (!sk) erros.push(`tipo ${sg}: a skill ${q.skill} não está em skills`);
     // o gerador liga a skill ao dono de cada passo de desvio: sem o papel em "papeis", o toolkit não declara esse uso
     else if (t?.desviavel) for (const c of t.desviavel) {
-      const papel = resolverId(m, c)?.fl.d.dono?.replace(/^sa-/, "");
-      if (papel && !(sk.papeis || []).includes(papel)) erros.push(`tipo ${sg}: a skill ${q.skill} não traz o papel ${papel} em papeis (dono do passo de desvio ${c})`);
+      const aceitos = PAPEIS_DO_AGENTE[resolverId(m, c)?.fl.d.dono];
+      if (aceitos && !aceitos.some((p) => (sk.papeis || []).includes(p))) erros.push(`tipo ${sg}: a skill ${q.skill} não traz o papel ${aceitos.join(" ou ")} em papeis (dono do passo de desvio ${c})`);
     }
     for (const k of ["fluxo", "padrao"].filter((k) => k in q))
       if (!relativo(q[k]) || !sob(tk, path.join(tk, q[k])) || !fs.statSync(path.join(tk, q[k]), { throwIfNoEntry: false })?.isFile()) erros.push(`tipo ${sg}: falta o ${k} ${q[k]} na pasta do toolkit`);
@@ -151,8 +156,10 @@ function resolverId(m, q) {
 
 /** Como o agente roda um fluxo chamado: "em linha" (mesmo dono ou skill do agente), "subagente", ou null (não pode). */
 function modoChamada(m, dono, alvo) {
-  if (alvo.d.dono === dono || m.skillsAgente[dono]?.has(alvo.skill)) return "em linha";
+  if (alvo.d.dono === dono) return "em linha";
+  // o fluxo de um subagente (sa-revisor, sa-verificador…) roda nele, mesmo que o agente tenha a skill
   if (m.subag[dono]?.has(alvo.d.dono)) return "subagente";
+  if (m.skillsAgente[dono]?.has(alvo.skill)) return "em linha";
   return null;
 }
 
@@ -169,6 +176,7 @@ export function validar(m) {
   for (const [q, fl] of Object.entries(m.fluxos)) {
     const { d } = fl;
     if (!d.passos?.length || d.fluxo !== fl.fluxo || !d.dono) e(fl.arq, 2, "mestre sem fluxo/dono/passos (ou fluxo ≠ nome da pasta)");
+    else if (Object.keys(m.subag).length && !m.subag[d.dono]) e(fl.arq, 2, `dono ${d.dono} não é agente do perfis.json (${Object.keys(m.subag).join(", ")})`);
     if (porSkill[fl.skill].length > 1 && !(Array.isArray(d.quando) ? d.quando.length : String(d.quando || "").trim()))
       e(fl.arq, 2, `falta "quando" (a skill ${fl.skill} tem ${porSkill[fl.skill].length} fluxos)`);
     const ids = fl.passos.map((x) => x.id);
@@ -176,7 +184,7 @@ export function validar(m) {
       ? mds(path.join(path.dirname(fl.arq), "passos")).map((f) => f.slice(0, -3)).filter((x) => !ids.includes(x)) : [];
     for (const o of orfaos) e(fl.arq, 2, `passo ${o} órfão (tem arquivo, não está no mestre)`);
     for (const t of d.travas_gerais || []) if (!m.travas[t]) e(fl.arq, 2, `trava ${t} fora do catálogo`);
-    if (fl.passos.some((x) => x.de) && !fl.vizinhos?.length)
+    if (fl.passos.some((x) => x.de === "entrada") && !fl.vizinhos?.length)
       e(fl.arq, 2, `passo entrada sem a seção "${VIZINHOS}" no corpo do mestre (uma linha "- <estado> → <dona>" por vizinho)`);
     for (const v of fl.vizinhos || []) {
       const alvos = v.destino ? [...v.destino.matchAll(ID)].map((r) => r[1]) : [];
@@ -185,17 +193,20 @@ export function validar(m) {
         const r = resolverId(m, q2);
         if (!r) continue;  // o id inexistente já sai na varredura do texto
         if (r.fl === fl) e(fl.arq, v.n, `vizinho → ${q2}: é deste fluxo → declare como saída do passo entrada ("saidas" no mestre)`);
-        else if (!m.subag[r.fl.d.dono]) e(fl.arq, v.n, `vizinho → ${q2}: o dono ${r.fl.d.dono} não é agente do papeis.json`);
+        else if (!m.subag[r.fl.d.dono]) e(fl.arq, v.n, `vizinho → ${q2}: o dono ${r.fl.d.dono} não é agente do perfis.json`);
         else if (r.passo && r.fl.d.dono !== d.dono) e(fl.arq, v.n, `vizinho → ${q2}: passo de outro agente (${r.fl.d.dono}) → use o fluxo (${r.fl.skill}.${r.fl.fluxo})`);
         else if (r.fl.d.dono !== d.dono && !(v.estado + " → " + v.destino).includes("agente `" + r.fl.d.dono + "`")) e(fl.arq, v.n, `vizinho → ${q2}: dono ${r.fl.d.dono} é outro agente → acrescente "(agente \`${r.fl.d.dono}\`)" na linha`);
       }
     }
     for (const x of fl.passos) {
       if (x.id === "grafo") e(fl.arq, 2, "passo grafo: id reservado (o compilador gera references/<fluxo>/grafo.md)");
-      if (x.id === "entrada" && !x.de) e(fl.arq, 2, 'passo entrada: id reservado ao passo compartilhado → {"id": "entrada", "de": "entrada", "sprint": "exige|nao", "branch": "fatia|nao"}');
-      if (x.de) {
-        if (!SPRINT.includes(x.sprint)) e(fl.arq, 2, `passo ${x.id}: sprint "${x.sprint ?? ""}" (use ${SPRINT.join(" ou ")})`);
+      if (x.id === "entrada" && !x.de) e(fl.arq, 2, `passo entrada: id reservado ao passo compartilhado → {"id": "entrada", "de": "entrada", "papel": "${PAPEL.join("|")}", "branch": "fatia|nao"}`);
+      if (x.de === "entrada") {
+        if (!PAPEL.includes(x.papel)) e(fl.arq, 2, `passo ${x.id}: papel "${x.papel ?? ""}" (use ${PAPEL.join(", ")})`);
         if (!BRANCH.includes(x.branch)) e(fl.arq, 2, `passo ${x.id}: branch "${x.branch ?? ""}" (use ${BRANCH.join(" ou ")})`);
+        if ("sprint" in x) e(fl.arq, 2, `passo ${x.id}: o campo sprint não existe (a sprint nunca é pré-condição)`);
+      }
+      if (x.de) {
         if (fs.existsSync(path.join(path.dirname(fl.arq), "passos", `${x.id}.md`))) e(fl.arq, 2, `passo ${x.id}: vem de fluxo/${x.de}.md; apague passos/${x.id}.md`);
         if (!fs.existsSync(x.arq)) { e(fl.arq, 2, `passo ${x.id}: de "${x.de}" sem fluxo/${x.de}.md`); continue; }
       }
@@ -219,23 +230,21 @@ export function validar(m) {
   }
 
   const arqTipos = path.join(m.fw, "fluxo", "tipos.json");
-  const rubrica = new Set([...(m.padroes["sa-revisar"]?.find((p) => p.nome === "rubricas.md")?.corpo || "").matchAll(/^\| ([A-Z]\d+) \|/gm)].map((r) => r[1]));
   let forma = true;
   for (const [sg, t] of Object.entries(m.tipos)) {
-    const naoLista = ["cria", "desviavel", "depois", "embute", "rubrica"].filter((k) => t[k] != null && !Array.isArray(t[k]));
+    const naoLista = ["cria", "desviavel", "depois", "embute"].filter((k) => t[k] != null && !Array.isArray(t[k]));
     for (const k of naoLista) e(arqTipos, 1, `tipo ${sg}: ${k} tem de ser lista`);
     if (naoLista.length) { forma = false; continue; }
     if (!/^[A-Z]{2,4}$/.test(sg) || !t.nome) e(arqTipos, 1, `tipo ${sg}: sigla de 2 a 4 maiúsculas e nome`);
     // sigla única: o JSON.parse junta chaves repetidas; a conferência é no texto
     else if ((ler(arqTipos).match(new RegExp(`"${sg}"\\s*:\\s*\\{`, "g")) || []).length > 1) e(arqTipos, 1, `tipo ${sg}: sigla repetida`);
-    if (!["DOORS", "ETM"].includes(t.elm)) e(arqTipos, 1, `tipo ${sg}: elm "${t.elm ?? ""}" (use DOORS ou ETM)`);
+    if (!["DOORS", null].includes(t.elm)) e(arqTipos, 1, `tipo ${sg}: elm "${t.elm ?? ""}" (use DOORS ou null)`);
     if (!t.cria?.length) e(arqTipos, 1, `tipo ${sg}: sem cria`);
     for (const c of t.desviavel || []) if (!t.cria?.includes(c)) e(arqTipos, 1, `tipo ${sg}: desviavel ${c} fora de cria`);
     // tipo pendente: declarado antes do padrão e do fluxo que o escrevem
     for (const c of t.pendente ? [] : t.cria || []) if (!resolverId(m, c)?.passo) e(arqTipos, 1, `tipo ${sg}: cria ${c} não é passo de fluxo`);
     if (t.padrao && !t.pendente && !padraoExiste(m, t.padrao)) e(arqTipos, 1, `tipo ${sg}: padrão ${t.padrao} inexistente`);
     for (const d of [...(t.depois || []), ...(t.embute || [])]) if (!m.tipos[d]) e(arqTipos, 1, `tipo ${sg}: ${d} fora do catálogo`);
-    for (const r of t.pendente ? [] : t.rubrica || []) if (!rubrica.has(r)) e(arqTipos, 1, `tipo ${sg}: rubrica ${r} fora de rubricas.md`);
     if (t.pendente && t.cria?.length && t.cria.every((c) => resolverId(m, c)?.passo) && (!t.padrao || padraoExiste(m, t.padrao)))
       e(arqTipos, 1, `tipo ${sg}: cria e padrão já existem; tire o "pendente"`);
   }
@@ -375,7 +384,7 @@ export const temDesvio = (x) => !!(x.desvio || x.tipos?.length);
  */
 export function grafoAscii(fl, passos = fl.passos, { notas = () => [] } = {}) {
   const ids = passos.map((x) => x.id), out = [];
-  const rot = (x, i) => `${i + 1} ${x.id}${x.sprint ? ` [${x.sprint}]` : ""}${temDesvio(x) ? " ⇢" : ""}`;
+  const rot = (x, i) => `${i + 1} ${x.id}${x.de === "entrada" && x.papel ? ` [${x.papel}]` : ""}${temDesvio(x) ? " ⇢" : ""}`;
   // 26 colunas cabem os ids do Sabiá; um id longo inserido pelo projeto alarga a caixa (par, por causa do ┬ central)
   const W = 2 * Math.ceil(Math.max(26, ...passos.map((x, i) => rot(x, i).length + 4)) / 2);
   const cond = (c) => (c.length > 60 ? c.slice(0, 57) + "…" : c);
@@ -383,7 +392,7 @@ export function grafoAscii(fl, passos = fl.passos, { notas = () => [] } = {}) {
   passos.forEach((x, i) => {
     const lado = [...notas(x)];
     // os vizinhos numa linha só: a entrada diz a dona e para, não é passagem de trabalho (⇒)
-    const viz = x.de ? (fl.vizinhos || []).filter((v) => v.destino).map((v) => [...v.destino.matchAll(ID)][0]?.[1] || `■ ${cond(v.estado.replace(/`/g, ""))}`) : [];
+    const viz = x.de === "entrada" ? (fl.vizinhos || []).filter((v) => v.destino).map((v) => [...v.destino.matchAll(ID)][0]?.[1] || `■ ${cond(v.estado.replace(/`/g, ""))}`) : [];
     if (viz.length) lado.push(`↪ vizinhos (diga e pare): ${[...new Set(viz)].join(" · ")}`);
     if (x.tipos?.length) lado.push(`⇢ por tipo: ${x.tipos.join(", ")}`);
     if (x.chama) lado.push(`⇄ chama ${[].concat(x.chama).join(", ")}`);
@@ -484,14 +493,16 @@ function tiposMd(m, ctx) {
   const out = ["# Tipos de artefato", "",
     "Catálogo fechado: todo artefato da especificação e do ELM é de um destes tipos, e um toolkit não cria tipo. A coluna",
     "Desviável diz os passos de Cria que são o ponto de desvio (⇢): neles, o toolkit que traz uma skill com o fluxo e o",
-    "padrão do tipo (`tipos` no `toolkit.json`) escreve esse artefato; nos outros passos de Cria, o tipo é sempre do Sabiá. O envelope OKF de todos",
-    `é o do [\`okf-elm.md\`](${base}/sa-prd/references/okf-elm.md) da \`sa-prd\`; o corpo é o do padrão do tipo. Tipo **pendente** está declarado, mas ainda não tem padrão nem fluxo: não é criado nem publicado.`,
-    `Na coluna Arquivo, \`nn\` = 2 dígitos a partir de \`01\`, por tipo, em cada pasta \`elm/\`; na fatia, segue a numeração do épico (a cópia de um conceito do épico fica com o mesmo nome, e o novo continua a série); \`<slug>\` pela regra do \`backlog.md\` da \`sa-fatiar\` (seção Formato).`, "",
-    "| Sigla | Nome | Arquivo | Cria | Padrão | ELM | Requisito | Desviável | Publica depois de | Embute | Rubrica |",
-    "|---|---|---|---|---|---|---|---|---|---|---|"];
+    "padrão do tipo (`tipos` no `toolkit.json`) escreve esse artefato; nos outros passos de Cria, o tipo é sempre do Sabiá. O corpo é o do",
+    "padrão do tipo. Tipo **pendente** está declarado, mas ainda não tem padrão nem fluxo: não é criado nem publicado.",
+    "Em `elm/` (dentro da pasta da spec da fatia) vai um arquivo inteiro por artefato: `<id>` é o id do ELM no existente; no novo, o id provisório",
+    "`<EPnn | FTnnn>-nn`, renomeado para o id do ELM pela publicação, com o título igual. Sem ELM, o id provisório é o definitivo. `<slug>`: o",
+    "título em kebab-case, sem acento, até 5 palavras.", "",
+    "| Sigla | Nome | Arquivo | Cria | Padrão | ELM | Requisito | Desviável | Publica depois de | Embute |",
+    "|---|---|---|---|---|---|---|---|---|---|"];
   for (const sg of Object.keys(m.tipos)) {
     const t = m.tipos[sg];
-    out.push(`| \`${sg}\`${t.pendente ? " (pendente)" : ""} | ${cel(t.nome)} | \`${cel(t.arquivo || "—")}\` | ${t.cria.map((c) => `\`${c}\``).join("<br>")} | ${padrao(t)} | ${t.elm} | ${sim(t.requisito)} | ${t.desviavel?.length ? t.desviavel.map((c) => `\`${c}\``).join("<br>") : "não"} | ${lista(t.depois)} | ${lista(t.embute)} | ${lista(t.rubrica)} |`);
+    out.push(`| \`${sg}\`${t.pendente ? " (pendente)" : ""} | ${cel(t.nome)} | \`${cel(t.arquivo || "—")}\` | ${t.cria.map((c) => `\`${c}\``).join("<br>")} | ${padrao(t)} | ${t.elm || "—"} | ${sim(t.requisito)} | ${t.desviavel?.length ? t.desviavel.map((c) => `\`${c}\``).join("<br>") : "não"} | ${lista(t.depois)} | ${lista(t.embute)} |`);
   }
   const pub = ord.filter((sg) => m.tipos[sg].requisito && !m.tipos[sg].pendente);
   out.push("", `**Ordem de publicação dos requisitos** (coluna Requisito, de baixo para cima, para cada um nascer com os ids que cita): ${pub.map((sg) => `\`${sg}\``).join(" → ")}.`,
@@ -547,9 +558,9 @@ function escreverSkill(m, s, out, ctx, versao = null) {
     for (const fl of fluxosDa(m, s)) {
       fs.mkdirSync(path.join(out, "references", fl.fluxo), { recursive: true });
       fs.writeFileSync(path.join(out, "references", fl.fluxo, "grafo.md"), grafoMd(fl));
-      const linhaSprint = (x) => (x.de ? `Sprint deste fluxo: \`${x.sprint}\`. Branch deste fluxo: \`${x.branch}\`. Vizinhos: a seção Entrada: vizinhos do [Fluxo ${fl.fluxo}](${base}/${s}/SKILL.md#${slug(`Fluxo ${fl.fluxo}`)}).\n\n` : "");
+      const linhaEntrada = (x) => (x.de === "entrada" ? `Papel deste fluxo: \`${x.papel}\`. Branch deste fluxo: \`${x.branch}\`. Vizinhos: a seção Entrada: vizinhos do [Fluxo ${fl.fluxo}](${base}/${s}/SKILL.md#${slug(`Fluxo ${fl.fluxo}`)}).\n\n` : "");
       for (const x of fl.passos)
-        fs.writeFileSync(path.join(out, "references", fl.fluxo, `${x.id}.md`), italico(x.dados.resumo) + linhaSprint(x) + reescrever(x.corpo, x.arq, ctx).replace(/^\n+/, ""));
+        fs.writeFileSync(path.join(out, "references", fl.fluxo, `${x.id}.md`), italico(x.dados.resumo) + linhaEntrada(x) + reescrever(x.corpo, x.arq, ctx).replace(/^\n+/, ""));
     }
   } else if (fmYaml) {
     fs.writeFileSync(path.join(out, "SKILL.md"), comVersao(fmYaml, versao) + reescrever(fonte.slice(fmYaml.length), path.join(dir, "SKILL.md"), ctx));

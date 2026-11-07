@@ -1,51 +1,25 @@
 ---
-{"resumo": "Com o ok: grava o sprint-<nn>.md e o backlog.md na base, publica sempre no EWM (§1–4 e §6) e sincroniza (§9)."}
+{"resumo": "Monta o sprint-<nn>.md (ou só as linhas novas), o backlog.md dos itens que a virada tirou e a previsão do roadmap."}
 ---
 ## Entrada
 
-A proposta com "ok" (passo `proposta`).
+A proposta com o "ok".
 
 ## Faça
 
-**Chamado pelo `sa-planejamento.retrospectiva.recalcular` (virada):** o `sprint-<nn>.md` já existe (passo
-`sa-planejamento.retrospectiva.fechar`): complete o cabeçalho do modelo e acrescente as linhas novas — as com
-`migrada de` ficam como estão, e o `**Publicação no EWM:** pendente` também — e grave o `backlog.md` (itens 1 e 2),
-sem commit próprio (o da virada, no passo `sa-planejamento.retrospectiva.recalcular`); não publique nem sincronize
-(é o passo `sa-planejamento.retrospectiva.virada`, na ordem do §5) e volte a quem chamou.
-
-"ok" →
-
-1. **Arquivo:** grave `sprints/<pai>/sprint-<nn>.md`, com `**Power sabia:**` = o `metadata.version` da
-   `sa-planejamento`, em `~/.sabia/framework/skills/sa-planejamento/SKILL.md`; a fatia com as horas ajustadas na
-   proposta leva a Observação `horas: DEV <h> · REV <h> · VER <h>` (AFK: `horas: DEV <h>`).
-2. **`backlog.md`**, pelo bloco [Gravar na base](~/.sabia/framework/skills/sa-fatiar/references/backlog.md#gravar-na-base):
-   em todas as linhas novas, `sprint` = a chave, `responsavel` (o definido, ou `—`) e, na fatia, o `modo` final (sem
-   responsável, o do backlog); o `status`, pela tabela:
-
-   | Linha nova | `status` no backlog | Situação na sprint |
-   |---|---|---|
-   | fatia em Fatias | `planejada` | `planejada` |
-   | fatia `nova` como especificação | segue `nova`, `obs` `em especificação` | `planejada` (Especificação) |
-   | épico `novo`/`elegivel` com a `[ESP]` | `planejado` | `planejada` |
-   | Revisão (`[ESP] <id> Revisão <n>`) de épico ou fatia | não muda | `planejada`, Observação `revisão <n>: <motivo>` |
-   | Sustentação | não muda (`aberto`) | `aberto` |
-
-3. **Publique sempre no EWM** (projeto sem ELM: não há publicação nem sincronização com o EWM — o cabeçalho e a Tarefa
-   ELM pelo [arquivos.md](~/.sabia/framework/skills/sa-planejamento/references/arquivos.md#sprintspaisprint-nnmd)) ([elm-sprint.md](~/.sabia/framework/skills/sa-planejamento/references/elm-sprint.md) §1–4 e §6),
-   para a sprint e o EWM ficarem iguais — **também sem responsáveis**: os IBs com o P.O. como dono e todas as tarefas
-   de cada item, sem dono onde não há responsável.
-4. **Sem o MCP `elm` ou com falha:** a coluna "Tarefa ELM" fica `pendente` e é publicada depois. O `sprint-<nn>.md`
-   gravado antes do §1 — sem o MCP, com falha ou sessão parada antes da publicação; e o da próxima, na virada —
-   leva no cabeçalho `**Publicação no EWM:** pendente`, que o §1 tira no commit da publicação.
-5. **Publicada, sincronize** (Sincronizar com o EWM: `sa-planejamento.durante.sincronizar`): as tarefas por fora
-   entram na sprint, e os itens que os arquivos já conhecem são comparados (estado, iteração, dono, estimativa); o
-   resultado é a tabela ou a linha `🔄 <chave> × EWM: iguais — <n> itens conferidos`.
+1. **`sprint-<nn>.md`** em `.sabia/planejamento/sprints/<AAAA>/`, pelo padrão `sa-planejamento/sprint.md`: cabeçalho
+   `# <AAAA>/Sprint <nn> · AAAA-MM-DD → AAAA-MM-DD`, `**Meta:**`, `**Folga:** <n> itens (<p>%)`, a tabela `## Itens`
+   (Item · Trabalho · Responsável · Tarefas) e as seções vazias `## Review` e `## Retro`. No reabastecimento, só
+   acrescente as linhas. A coluna Tarefas fica vazia: quem puxa preenche pela `sa-elm.item`.
+2. **`backlog.md`**: os itens que a virada tirou da sprint (`em-andamento` → `pronta`).
+3. **`roadmap.md`**, só se existe: pergunte "atualizar o roadmap?" e, com o sim, atualize a Previsão pela vazão.
+4. Mensagem: `<AAAA>/Sprint <nn>: planejamento` (ou `: reabastecimento`). Grave tudo num commit só, pelo passo
+   `gravar-na-base`.
 
 ## Saída
 
-A sprint gravada, publicada e sincronizada (ou com `**Publicação no EWM:** pendente`): o fluxo termina; chamado pela
-virada, volte ao passo `sa-planejamento.retrospectiva.recalcular`.
+Os arquivos e a mensagem → passo `gravar-na-base`.
 
 ## Pare se
 
-Sem o "ok", nada é gravado nem publicado (regra de ouro).
+Sem condição própria.

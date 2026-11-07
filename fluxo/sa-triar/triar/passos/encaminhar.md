@@ -1,36 +1,30 @@
 ---
-{"resumo": "Mostra o item registrado e o caminho para começá-lo pelo sa-iniciar e pergunta se há mais item; no \"não\", resumo, créditos e o commit único."}
+{"resumo": "Mostra a linha gravada e o próximo passo do item, só como sugestão de sessão nova, e pergunta se há mais item para triar."}
 ---
 ## Entrada
 
-O item registrado no passo `registrar` (ou o épico `novo` ou a fatia `nova` de épico completados no passo `chegou`; ou o não fazer do passo
-`triagem`).
+A linha gravada no passo `gravar-na-base`, ou o id existente do passo `duplicado`.
 
 ## Faça
 
-```
-📥 <FT-nnn | EP-nn | AT-nnn | IM-nnn…> — <título> · trilha <…> (sustentação: · <categoria>) · <elegivel | nova: falta … | novo: falta … | aberto | aberto na sprint <pai>/Sprint <nn>> · modo <AFK | HITL> (só fatia)
-Origem: <DF 4567 | IB 611 | AT-012 | chamado | pedido> · Ficha: <caminho | —> · EWM: <DF 4567 | criado IB <id> (· ATD <id>) | pendente | sem ELM>
-Artefatos afetados: <n> (<inclui · altera · exclui>) | nenhum | a confirmar | sem ELM · bloqueada-por: <FT-mmm | —> (só fatia)
-Registrado. Para começar: use `sa-iniciar <id>` (o hub encaminha para a skill do papel). Item fora da sprint
-(fatia, épico ou Sustentação) → entra antes pelo encaixe (`sa-planejamento.durante.encaixe`, P.O. ou SM) ou pelo
-próximo planejamento (`sa-planejamento.sprint.previsao`). Fatia `nova` com só `falta: especificação` → entra na
-sprint como especificação, com a `[ESP] FT` (`sa-planejamento.sprint.previsao` ou `sa-planejamento.durante.encaixe`),
-e o especificador começa pela `sa-iniciar FT-<nnn>`.
-Mais algum item para triar?
-```
+Mostre a linha (`<id> · <título> · <tipo> · <status>`) e o próximo passo, como sugestão de sessão nova (é outra
+tarefa):
 
-- **"sim"** → volte ao passo `chegou` com o novo item, na mesma sessão e na base (sem novo `switch` nem `pull`).
-- **"não"** → mostre o resumo da sessão (ids, trilhas, os itens espelhados no passo `chegou`, pendências `falta:`, `bloqueada-por` e `ELM
-  pendente`), registre os créditos
-  (o comentário na `[GB]`; as horas, só se é o SM e não é o P.O.), faça o commit único do passo `registrar` e encerre; se a
-  triagem trocou de branch no passo `chegou`, ofereça voltar à anterior.
+| Item | Próximo |
+|---|---|
+| fatia ou bug `aceita` | `sa-refinar.detalhar` |
+| épico `a-moldar` | `sa-refinar.moldar` |
+| sustentação `nova` | `sa-atender.atender` |
+| prioridade `crítica` | avise que é expedite e diga quem puxa pela política do `acordos.md` |
+| falta, adiada ou cancelada | nada a seguir |
+
+Pergunte "mais algum item para triar?".
 
 ## Saída
 
-"sim" → passo `chegou`. "não" → o commit único e o fim do fluxo.
+"sim" → passo `ler`, na mesma sessão (na fila, o próximo da ordem). "não" → fim (a gravação já voltou à branch
+anterior).
 
 ## Pare se
 
-A triagem termina aqui. **Nunca invoque nem simule outra skill** (nem `sa-iniciar`, nem a do papel): responda com
-a instrução acima e pare. Recomeçar a própria triagem com o próximo item não é invocar outra skill.
+Não invoque a skill sugerida: é sugestão de sessão nova.

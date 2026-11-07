@@ -1,15 +1,17 @@
 ---
-{"fluxo": "inicial", "dono": "sa-produto",
- "quando": ["começo do projeto, antes da primeira triagem e da primeira sprint: equipe, acordos, roadmap e a base no EWM; ou rever a equipe e os acordos", "monta o planejamento", "acordos do time", "capacidade do time", "roadmap"],
- "travas_gerais": ["sim-da-pessoa"],
+{"fluxo": "inicial", "dono": "sa-especificador",
+ "quando": ["começo do projeto, ou rever a equipe e os acordos: equipe, acordos, roadmap opcional", "monta o planejamento", "acordos do time", "rever a equipe", "roadmap"],
+ "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa"],
  "passos": [
+   {"id": "inicio", "saidas": {"equipe e acordos existem e nada mudou": "roadmap"}},
    {"id": "equipe"},
-   {"id": "acordos", "saidas": {"rever a equipe e os acordos": "fim"}},
-   {"id": "roadmap"},
-   {"id": "base-ewm"}
+   {"id": "acordos"},
+   {"id": "gravar-na-base", "de": "gravar-na-base", "saidas": {"pedido de rever a equipe e os acordos": "seguir", "gravou o roadmap": "seguir"}},
+   {"id": "roadmap", "saidas": {"roadmap com o ok": "gravar-na-base"}},
+   {"id": "seguir", "saidas": {"sim": "→ sa-planejamento.sprint"}}
  ]}
 ---
-# Modo inicial — acordos e roadmap
+# Equipe, acordos e roadmap
 
-Entrada: o começo do planejamento do projeto ("monta o planejamento", "acordos do time", "capacidade do time"),
-antes da primeira triagem e da primeira sprint; ou a equipe e os acordos para rever.
+Começo do projeto, ou rever a equipe e os acordos: equipe → acordos → gravação → roadmap (opcional) → "seguir para o
+planejamento da sprint?".

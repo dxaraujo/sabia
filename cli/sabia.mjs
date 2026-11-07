@@ -10,7 +10,7 @@ import os from "node:os";
 import path from "node:path";
 import readline from "node:readline/promises";
 import { fileURLToPath } from "node:url";
-import { carregar, compilar, grafoAscii, LEGENDA, partes, temDesvio, validarToolkitFonte } from "./compilar.mjs";
+import { ALIAS_PASSO, carregar, compilar, grafoAscii, LEGENDA, partes, temDesvio, validarToolkitFonte } from "./compilar.mjs";
 
 const VERSAO = JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8")).version;
 const REPO = "https://github.com/dxaraujo/sabia.git";
@@ -438,10 +438,12 @@ export async function desinstalar(opcoes = {}) {
 
 // ---------- toolkits ----------
 
-/** O passo do framework (`m` do carregar) que o `passo` de um toolkit assume, pelo id — a mesma regra do gancho() do
- * gerar_agentes.py. */
-const ganchoDe = (m, ext) => Object.entries(m.fluxos).flatMap(([q, fl]) => fl.passos.map((x) => ({ id: `${q}.${x.id}`, x })))
-  .find(({ id }) => id === ext.passo);
+/** O passo do framework (`m` do carregar) que o `passo` de um toolkit assume, pelo id (ou pelo id antigo do ALIAS_PASSO)
+ * — a mesma regra do gancho() do gerar_agentes.py. */
+const ganchoDe = (m, ext) => {
+  const passos = Object.entries(m.fluxos).flatMap(([q, fl]) => fl.passos.map((x) => ({ id: `${q}.${x.id}`, x })));
+  return passos.find(({ id }) => id === ext.passo) || passos.find(({ id }) => id === ALIAS_PASSO[ext.passo]);
+};
 
 /** Erros do toolkit.json: campos, nome, caminhos presos à pasta e arquivos que existem (o schema completo é o da setup). */
 export function validarToolkit(pasta, nomeEsperado = null, fw = null) {

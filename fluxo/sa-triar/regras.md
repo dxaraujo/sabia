@@ -1,16 +1,18 @@
 ---
-{"resumo": "Leitura de entrada e regras comuns aos fluxos da sa-triar (base, ids, EWM, nada inventado)."}
+{"resumo": "Regras comuns aos fluxos da sa-triar: base, ids, nada inventado, sem ELM nem sprint."}
 ---
 # Regras comuns da `sa-triar`
 
 Valem em todos os fluxos da skill.
 
-Leia antes: `.sabia/sabia.md`. Sem ele → ofereça a **`sa-setup`** ("configurar o Sabiá") e pare. Formato do
-backlog e quem escreve cada coluna: [backlog.md](~/.sabia/framework/skills/sa-fatiar/references/backlog.md).
-Ficha da fatia (toda trilha): o padrão `sa-triar/ficha.md`.
+Leia antes o `.sabia/sabia.md`. Sem ele, ofereça a `sa-setup` ("configurar o Sabiá") e pare. Formato do
+`backlog.md`, status por tipo e convenções da `obs`: [backlog.md](~/.sabia/framework/skills/sa-triar/references/backlog.md).
+Corpo da fatia e do bug: o padrão `sa-refinar/ficha.md` (só a seção Entrada). Corpo da sustentação: o padrão
+`sa-atender/registro.md`.
 
-- Triar não começa: nunca cria branch, pasta de spec nem o `status.md` da fatia (o do épico nasce aqui, na pasta
-  antecipada), e nunca assume tarefa no EWM.
-- O `backlog.md` e as fichas só são escritos na base; ids nunca são reaproveitados ("Próximos ids" só cresce).
+- Triar não começa nada: não cria branch, pasta de spec nem `status.md`, não grava no `sprint-<nn>.md` e não fala
+  com o ELM (só oferece ler o WI pela `sa-elm.item`).
+- O `backlog.md` e os corpos só mudam na base, pela gravação comum. O id nunca muda nem se reaproveita.
 - Nunca invente dado de work item, regra ou comportamento esperado: sem fonte e sem pessoa, fica `falta: …`.
-- Toda escrita no EWM só com "sim"; sem o MCP `elm` ou com falha → `pendente` ([pendências](~/.sabia/framework/skills/sabia/references/elm.md#pendências)), e o fluxo segue.
+- Rota (trivial · quick · completo) e modo (IA supervisionada · IA autopilot · manual) não são da triagem: são de
+  quem puxa.

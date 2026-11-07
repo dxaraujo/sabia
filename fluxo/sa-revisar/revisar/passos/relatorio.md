@@ -1,26 +1,26 @@
 ---
-{"resumo": "Grava o relatório da rodada (revisao-prd, revisao-esp, analise-plano ou revisao-codigo -<N>.md) no formato do padrão, com o fecho da rubrica na última linha."}
+{"resumo": "Devolve o relatório a quem chamou, sem gravar arquivo nem commit: uma linha por achado com severidade e destino sugerido, uma tabela por eixo na C, e o fecho exato na última linha."}
 ---
 ## Entrada
 
-Os achados calibrados (passo `calibrar`) e a rodada `<N>` que quem chamou passou.
+Os achados e as verificações (passo `evidencia`).
 
 ## Faça
 
-Pedido `pré-PR` (passo `sa-codificar.codificar.revisar`, HITL) → não grave arquivo: devolva o relatório na
-conversa, no mesmo formato, sem número de rodada.
-
-No formato do fim do padrão `sa-revisar/rubricas.md`. A **última linha** é exatamente o fecho
-da rubrica. Grave o relatório na pasta do artefato — `revisao-prd-<N>.md` (épico), `revisao-esp-<N>.md` (artefatos de uma
-fatia, `[ESP] FT`, em `.sabia/local/especificacao/FT-<nnn>-<slug>/`), `analise-plano-<N>.md` ou
-`revisao-codigo-<N>.md` (fatia), `<N>` = a rodada que quem chamou passou (sem ela: 1 + o maior `<N>` já existente na pasta; HITL: a sua). É o **único** arquivo que você escreve (no `pré-PR`, nenhum).
-
-Zero BLOQUEANTE e zero IMPORTANTE → aprovado. Sugestões nunca reprovam. Rubrica C com o C3 sem rodar por ambiente →
-`VEREDITO: AMBIENTE`, nunca `APROVADO` (padrão `sa-revisar/rubricas.md`).
+1. Monte o relatório no formato do padrão `sa-revisar/rubricas.md`: uma linha por achado, com # · severidade
+   (BLOQUEANTE · IMPORTANTE · SUGESTÃO) · achado · evidência · correção · origem (L: plano · ficha · PRD; C:
+   código · ambiente) · destino sugerido (corrige · adia · volta-plano · volta-spec · descarta). Na rubrica C, uma
+   tabela por eixo.
+2. A última linha é exata. L: `ANALISE: OK` ou `ANALISE: AJUSTAR`. C: `VEREDITO: APROVADO`, `VEREDITO: REVISAR` ou
+   `VEREDITO: AMBIENTE`. Só o BLOQUEANTE reprova. C3 sem rodar por ambiente → `VEREDITO: AMBIENTE`, nunca
+   `APROVADO`.
+3. Devolva o relatório a quem chamou. Não grave arquivo e não faça commit. Quem chamou tria e grava: a
+   `sa-plano.plano` corrige o plano; a `sa-desenvolver.codificar` transforma cada `corrige` em tarefa `[R<n>]` e
+   leva o resumo à Prova do MR; a `sa-revisar.mr` abre as threads no MR.
 
 ## Saída
 
-O relatório gravado, com o veredito na última linha; como subagente, devolva-o a quem chamou. Aqui o fluxo termina.
+O relatório, com o fecho na última linha, devolvido a quem chamou. Aqui o fluxo termina.
 
 ## Pare se
 

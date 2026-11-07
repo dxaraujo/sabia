@@ -1,15 +1,19 @@
 ---
-{"fluxo": "review", "dono": "sa-produto",
- "quando": ["fim da sprint, antes da retrospectiva: a pré-condição dos ritos de fechamento e a review com a evidência de cada fatia concluída", "review da sprint"],
- "travas_gerais": ["sim-da-pessoa"],
+{"fluxo": "review", "dono": "sa-especificador",
+ "quando": ["fim do ciclo, com os stakeholders quando disponíveis: o entregue com a prova do MR, o retorno, pedidos novos pela captura e a curadoria das Regras aprendidas", "review da sprint"],
+ "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa"],
  "passos": [
-   {"id": "sincronizar"},
-   {"id": "consolidacao", "travas": ["po-decide-fechamento"], "saidas": {"P.O. disse não": "fim"}},
-   {"id": "rito", "chama": "sa-triar.triar", "removivel": true}
+   {"id": "inicio"},
+   {"id": "rito", "saidas": {"sem pedido novo": "regras-aprendidas"}},
+   {"id": "captura", "de": "captura", "saidas": {"mais um pedido novo": "captura"}},
+   {"id": "regras-aprendidas", "chama": "sa-status.licoes"},
+   {"id": "gravar"},
+   {"id": "gravar-na-base", "de": "gravar-na-base"},
+   {"id": "seguir", "saidas": {"sim": "→ sa-planejamento.retrospectiva"}}
  ]}
 ---
-# Review
+# Review da sprint
 
-Entrada: o fim da sprint ("review da sprint"). Os passos `sincronizar` e `consolidacao` são a **pré-condição dos
-ritos de fechamento**: valem antes da review, da retrospectiva da sprint e da virada — em cada um (passo
-`sa-planejamento.retrospectiva.precondicao`).
+Fim do ciclo, com os stakeholders presentes e sem travar: o que foi entregue, com a prova do MR → retorno no
+`sprint-<nn>.md` → pedido novo pela captura → Regras aprendidas (curadoria das Lições) → grava → "seguir para a
+retrospectiva?". Não há consolidação nem pré-condição de rito.

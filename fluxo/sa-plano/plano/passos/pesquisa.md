@@ -1,26 +1,24 @@
 ---
-{"resumo": "Sem research.md, roda a sa-pesquisar (de preferência pelo sa-pesquisador) e grava o conteúdo na pasta da fatia; trabalha a partir do arquivo; divergência entre o ELM e o código: fora do Cobre, Histórico e sa-triar; dentro, possível alteração."}
+{"resumo": "Pede pistas, chama sa-pesquisar.pesquisar no sa-pesquisador e grava os fatos no research.md."}
 ---
 ## Entrada
 
-A pasta `.kiro/specs/<ft>-<slug>/` da fatia, com ou sem `research.md`.
+A ficha, o Cobre, o `elm/` e a rota.
 
 ## Faça
 
-Sem `research.md` → **`sa-pesquisar`** (de preferência pelo agente `sa-pesquisador`, que devolve o conteúdo: grave-o
-como veio na pasta da fatia). Pelo agente `sa-pesquisador`: `status.md` com `fase: planejando` e, no Histórico,
-`pesquisa registrada (research.md)`; commit do `research.md` com o `status.md` (`FT-<nnn> registrar pesquisa`).
-Trabalhe a partir do arquivo, não da memória da leitura.
-
-Divergência entre o ELM e o código apontada na pesquisa (seção Documentação × código do `research.md`), sem
-pergunta: **fora do Cobre** da fatia → linha no Histórico (`divergência fora do Cobre: <comportamento> — item novo
-pela sa-triar`; o item novo é do P.O., agente `sa-produto`) e siga; **dentro do Cobre** → o Drift de negócio
-`possível alteração — <motivo> · artefatos: <id|rótulo> (<tipo>)` (padrão `sa-desenvolver/status.md`) e siga.
+1. Fora do autopilot, antes pergunte à pessoa se tem pistas de onde olhar (módulo, classe, tela, tabela).
+2. Chame a `sa-pesquisar.pesquisar` no subagente `sa-pesquisador` com o escopo (ficha, Cobre, `elm/`), as pistas e
+   3 a 7 perguntas: pesquisa curta na quick, factual na completo.
+3. Grave os fatos no `research.md` pelo padrão `sa-plano/research.md`, como vieram, e faça commit.
+4. Divergência entre documento e código: fora do Cobre → passo `captura` (`obs` `origem FT-nnn`); dentro do Cobre →
+   Em aberto ao especificador, porque o texto aprovado pode precisar mudar.
 
 ## Saída
 
-`research.md` na pasta da fatia → passo `decisoes`.
+`research.md` gravado → passo `decisoes`.
 
 ## Pare se
 
-—
+- A pesquisa não achou o ponto de entrada do comportamento → mostre o Não encontrado e pergunte à pessoa; no
+  autopilot, devolve.

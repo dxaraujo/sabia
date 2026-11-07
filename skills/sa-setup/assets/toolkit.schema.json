@@ -139,12 +139,12 @@
               "para"
             ],
             "additionalProperties": false,
-            "description": "Opcional: a skill assume um passo de um agente do Sabiá (sem isso, é de apoio). O Sabiá continua dono da revisão, do GATE, do passo validar e do commit (skills/sabia/references/passos.md).",
+            "description": "Opcional: a skill assume um passo de um agente do Sabiá (sem isso, é de apoio). O Sabiá continua dono da revisão, do backpressure e do commit (skills/sabia/references/passos.md).",
             "properties": {
               "passo": {
                 "type": "string",
                 "pattern": "^sa-[a-z]+\\.[a-z][a-z-]*\\.[a-z][a-z-]*$",
-                "description": "O id do passo do Sabiá que aceita desvio (\"desvio\": true no mestre), ex.: sa-codificar.codificar.tarefa. O dono do fluxo é o agente que recebe o desvio. Um tipo do catálogo (HF, REG…) vai por tipos, não por aqui."
+                "description": "O id do passo do Sabiá que aceita desvio (\"desvio\": true no mestre), ex.: sa-desenvolver.codificar.tarefa. O dono do fluxo é o agente que recebe o desvio. Um tipo do catálogo (HF, REG…) vai por tipos, não por aqui."
               },
               "para": {
                 "type": "string",
@@ -342,8 +342,7 @@
           "pesquisador",
           "desenvolvedor",
           "revisor",
-          "verificador",
-          "orquestrador"
+          "verificador"
         ]
       }
     },
