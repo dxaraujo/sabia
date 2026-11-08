@@ -5,9 +5,9 @@ const LINES={
  epico:{nome:"Épico",c:"--l-epico",sub:"pitch → go/kill → PRD → fatias",
   quando:"Demanda maior que G. Quem tem produto decide go ou kill sobre o pitch de uma página (Shape Up). No go, quem especifica escreve o PRD, que o produto aprova no próprio documento. Logo depois, o especificador propõe as fatias com o Dev, e o produto aprova e ordena; cada fatia segue pelo detalhar. O épico fecha no merge da última fatia aberta."},
  hitl:{nome:"Fatia · IA supervisionada",c:"--l-hitl",sub:"a IA na sessão da pessoa; ou manual",
-  quando:"Fatia ou bug que cabe em G. O refinamento faz a ficha (regras, cenários CT-nn e artefatos afetados) e, com ELM, os arquivos de elm/; o produto aprova e a fatia fica pronta. Quem puxa escolhe tamanho, rota e modo. Na IA supervisionada o sa-desenvolvedor trabalha na sessão da pessoa; no manual, só a geração do código-fonte é dela. Revisão do agente e verificação por subagente antes do MR; um desenvolvedor que não é o autor revisa; o autor faz o merge."},
+  quando:"Fatia ou bug que cabe em G. O refinamento faz a ficha (regras, cenários CT-nn e artefatos afetados) e, com ELM, os arquivos de elm/; o produto aprova e a fatia fica pronta. Quem puxa escolhe tamanho, rota e modo. Na IA supervisionada o sa-desenvolvedor trabalha na sessão da pessoa; no manual, só a geração do código-fonte é dela. Revisão e verificação do agente, em subagente antes do MR; um desenvolvedor que não é o autor revisa; o autor faz o merge."},
  afk:{nome:"Fatia · IA autopilot",c:"--l-afk",dash:true,sub:"subagente na worktree até o MR",
-  quando:"Escolhido por quem desenvolve ao assumir, e fixo até o fim da tarefa. O sa-desenvolvedor roda como subagente na worktree .sabia/local/wt/<id>: plano, codificação, revisão do agente, verificação e o MR. A pessoa segue livre na base. O disjuntor devolve o item à pessoa no teto do acordos.md ou em 2 reprovações seguidas. O MR passa pela mesma revisão humana, e o merge nunca é do autopilot."},
+  quando:"Escolhido por quem desenvolve ao assumir, e fixo até o fim da tarefa. O sa-desenvolvedor roda como subagente na worktree .sabia/local/wt/<id>: plano, codificação, revisão e verificação do agente e o MR. A pessoa segue livre na base. O disjuntor devolve o item à pessoa no teto do acordos.md ou em 2 reprovações seguidas. O MR passa pela mesma revisão humana, e o merge nunca é do autopilot."},
  atd:{nome:"Sustentação",c:"--l-atd",sub:"sa-atender · seis categorias",
   quando:"Atendimento, Implantação, Banco de dados, Infra, Operação e Apoio a outros times (AT · IM · BD · IN · OP · EX), num fluxo só. Qualquer pessoa registra; quem atende puxa dentro da folga, faz o trabalho com a IA só como auxílio e declara resolvido. O que muda o código vira fatia ou bug pela triagem."},
  sprint:{nome:"Ciclo da sprint",c:"--l-sprint",sub:"sa-planejamento",
@@ -135,7 +135,7 @@ const S={
   papel:"subagente sa-revisor",agente:"sa-revisor, chamado pela sa-desenvolver.codificar",tarefa:"DEV",fase:"revisando",
   faz:["Contexto limpo: rubrica C nos eixos spec · padrões · segurança, mais as rubricas do toolkit e as Regras aprendidas","Lê o diff inteiro e caça teste enfraquecido; o C3 vem do pipeline da branch ou do validar","Cada achado com severidade BLOQUEANTE, IMPORTANTE ou SUGESTÃO e o destino sugerido","Quem desenvolve tria: corrige (tarefa [R<n>]) · adia (captura) · volta-plano (sa-plano.replanejar) · volta-spec (Em aberto ao especificador) · descarta (o motivo vai no MR)","É revisão do agente: não vale como a revisão do MR"],
   arq:["nenhum arquivo: o resumo vai à Prova do MR"],elm:["—"]},
- verif:{x:1050,y:298,lab:"above",dy:-26,nome:"Verificação",sk:"sa-verificar.verificar",
+ verif:{x:1050,y:298,lab:"above",dy:-26,nome:"Verificação do agente",sk:"sa-verificar.verificar",
   papel:"subagente sa-verificador",agente:"sa-verificador, chamado pela sa-desenvolver.codificar",tarefa:"DEV",fase:"verificando",
   faz:["Roteiro de cada CT-nn antes de executar: pré-condição · passos · esperado, com a repetição e o erro em um item","Sobe a aplicação pelo Executar do sabia.md, local ou na URL de teste, nunca em produção","Exercita como usuário real (curl, navegador) e marca ✅ aceito · ❌ rejeitado · ⚠️ ambiente · 🔁 possível alteração","Fora dos cenários: defeito ou DDL pendente vão ao 🔎, para quem chamou capturar","Rápida e completo: reescreve o CT.csv, uma linha por cenário ✅","❌ vira tarefa; 🔁 se decide antes do MR (código errado vira ❌; a spec que muda vai ao especificador)"],
   arq:["<pasta da spec>/CT.csv: Tipo;Resumo;Responsável;Descrição","a evidência no bloco 🔎, que vai à Prova do MR"],elm:["—"],
@@ -155,7 +155,7 @@ const S={
   papel:"subagente sa-revisor",agente:"sa-revisor, chamado pelo autopilot",tarefa:"DEV",fase:"revisando",
   faz:["Rubrica C nos eixos spec · padrões · segurança, em contexto limpo","Os achados seguem a recomendação do revisor, registrados em Desvios","Reprovado: conta no disjuntor e volta à codificação"],
   arq:["status.md: Desvios"],elm:["—"]},
- ver_a:{x:1100,y:190,lab:"below",nome:"Verificação",sk:"sa-verificador",
+ ver_a:{x:1100,y:190,lab:"below",dx:28,nome:"Verificação do agente",sk:"sa-verificador",
   papel:"subagente sa-verificador",agente:"sa-verificador, chamado pelo autopilot",tarefa:"DEV",fase:"verificando",
   faz:["Os CT-nn exercitados como na sessão, nunca em produção","CT.csv na rápida e no completo; o Responsável é quem desenvolve","REJEITADO ou AMBIENTE: conta no disjuntor","ACEITO: Lições, as-built e o MR, aberto pelo subagente"],
   arq:["<pasta da spec>/CT.csv"],elm:["—"]},
@@ -331,7 +331,7 @@ const ROLES=[
  {nome:"Especificador",who:"booleana especificador",tarefa:"ESP",c:"--teal",agente:"sa-especificador",st:"elm",line:"hitl",
   faz:["Conduz o refinamento com o Dev: ficha, CT-nn e artefatos afetados","Escreve o PRD do épico e propõe as fatias","Com ELM, monta e aprova os arquivos de elm/ (status: stable e verified)","Publica no DOORS depois do merge (sa-elm.publicar)"]},
  {nome:"Desenvolvedor",who:"booleana desenvolvedor",tarefa:"DEV",c:"--blue",agente:"sa-desenvolvedor",st:"iniciar",line:"hitl",
-  faz:["Puxa com sinal de WIP e escolhe tamanho, rota e modo","Plano, TDD, revisão do agente e verificação por subagente, e o MR","Revisa o MR de outro autor","Merge do próprio MR, com a aprovação e o CI verde"]},
+  faz:["Puxa com sinal de WIP e escolhe tamanho, rota e modo","Plano, TDD, revisão e verificação do agente, em subagente, e o MR","Revisa o MR de outro autor","Merge do próprio MR, com a aprovação e o CI verde"]},
  {nome:"Revisor do MR",who:"um desenvolvedor que não é o autor; o CODEOWNERS indica o dono",tarefa:"MR",c:"--cyan",agente:"sa-desenvolvedor",st:"revmr",line:"hitl",
   faz:["Lê o MR de verdade, com a rubrica C do sa-revisor como apoio","Tria cada achado: corrige · adia · volta-plano · volta-spec · descarta","Aprova sem BLOQUEANTE aberto, ou pede mudanças","Oferece a revisão humana quando o risco pede"]},
  {nome:"Qualquer pessoa",who:"sem booleana",tarefa:"—",c:"--green",agente:"sa-desenvolvedor ou sa-especificador",st:"triar",line:"hitl",
@@ -349,7 +349,7 @@ const AGENTS=[
   obs:"Só leitura. Devolve fatos com arquivo:linha, em até ~150 linhas; quem grava o research.md é a sa-plano"},
  {id:"sa-revisor",quem:"subagente: revisão do agente e apoio à revisão do MR",skills:["revisar"],sub:"—",push:"não faz",pk:"no",
   obs:"Só leitura. Rubrica L (plano) e C (código: spec · padrões · segurança), mais as rubricas do toolkit e as Regras aprendidas; devolve o relatório sem gravar"},
- {id:"sa-verificador",quem:"subagente do aceite",skills:["verificar"],sub:"—",push:"não faz",pk:"no",
+ {id:"sa-verificador",quem:"subagente da verificação do agente",skills:["verificar"],sub:"—",push:"não faz",pk:"no",
   obs:"Só leitura, mais o Executar do sabia.md, curl na URL de teste e a escrita do CT.csv. Nunca produção nem a base. Recebe o texto de verificação do toolkit e o desvio do tipo CT"}
 ];
 
@@ -421,7 +421,7 @@ const PHASES={
   {f:"—",sub:"plano (rápida e completo)",st:"plano",skip:c=>c.tr==="trivial"?"trivial: sem plano":null},
   {f:"implementando",sub:"TDD e backpressure",st:"codificar"},
   {f:"revisando",sub:"revisão do agente (sa-revisor)",st:"autorrev"},
-  {f:"verificando",sub:"aceite (sa-verificador)",st:"verif"},
+  {f:"verificando",sub:"verificação do agente (sa-verificador)",st:"verif"},
   {f:"pr-aberto",sub:"MR; em-revisao é derivado",st:"mr"},
   {f:"concluida",sub:"merge pelo autor",st:"merge"}],
  afk:[
@@ -430,7 +430,7 @@ const PHASES={
   {f:"—",sub:"plano no subagente",st:"pl_a",skip:c=>c.tr==="trivial"?"trivial: sem plano":null},
   {f:"implementando",sub:"TDD na worktree",st:"cod_a"},
   {f:"revisando",sub:"revisão do agente (sa-revisor)",st:"rev_a"},
-  {f:"verificando",sub:"aceite (sa-verificador)",st:"ver_a"},
+  {f:"verificando",sub:"verificação do agente (sa-verificador)",st:"ver_a"},
   {f:"pr-aberto",sub:"MR aberto pelo subagente",st:"mr"},
   {f:"concluida",sub:"merge pelo autor",st:"merge"}]
 };
@@ -470,13 +470,13 @@ const ELM_HTML=`
 <p style="font-size:13px;margin-top:10px"><b style="color:var(--title)">ELM utilitário.</b> Tudo o que fala com o ELM é da <code>sa-elm</code>; as outras skills só oferecem, e a resposta nunca para o fluxo. No autopilot, o MCP <code>elm</code> é negado: o que ficou do ELM volta no resumo e é perguntado quando a pessoa retoma. Lançar horas é uma ajuda, não uma obrigação.</p>`;
 
 const MODOS=`
-<div data-line="hitl"><b>IA supervisionada</b><div class="m"><span class="pill">na sessão da pessoa</span><span class="pill">a pessoa tria</span></div><p>O sa-desenvolvedor trabalha na sessão; quem desenvolve aprova o plano e tria os achados da revisão do agente e da verificação.</p></div>
+<div data-line="hitl"><b>IA supervisionada</b><div class="m"><span class="pill">na sessão da pessoa</span><span class="pill">a pessoa tria</span></div><p>O sa-desenvolvedor trabalha na sessão; quem desenvolve aprova o plano e tria os achados da revisão e da verificação do agente.</p></div>
 <div data-line="afk"><b>IA autopilot</b><div class="m"><span class="pill">subagente na worktree</span><span class="pill">disjuntor</span></div><p>O sa-desenvolvedor roda em .sabia/local/wt/&lt;id&gt; até o MR, e a pessoa segue na base. O MR passa pela mesma revisão humana.</p></div>
 <div data-line="hitl"><b>Manual</b><div class="m"><span class="pill">só o código-fonte</span><span class="pill">“terminei”</span></div><p>Status.md, branch e plano seguem como sempre; no “terminei”, o fluxo continua do validar, com as mesmas validações.</p></div>`;
 
 const GOLDEN=`
 <div><b>Alinhar antes de escrever</b>Até 5 perguntas por rodada, cada uma com recomendação. Fatos o agente busca; regra de negócio é decisão de uma pessoa.</div>
-<div><b>Gerador ≠ avaliador</b>Revisão do agente e verificação em subagentes de contexto limpo, e o MR aprovado por um desenvolvedor que não é o autor.</div>
+<div><b>Gerador ≠ avaliador</b>Revisão e verificação do agente em subagentes de contexto limpo, e o MR aprovado por um desenvolvedor que não é o autor.</div>
 <div><b>Verificação acima de geração</b>TDD, backpressure em camadas e o teste automatizado marcado com o CT-nn.</div>
 <div><b>Estado em disco</b>O status.md, o research.md e o plano carregam o fio; o estado vai à base num commit pequeno.</div>
 <div><b>Autonomia gradual</b>Por item, escolhida por quem desenvolve, com disjuntor; o merge é sempre de uma pessoa.</div>
