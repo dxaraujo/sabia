@@ -78,8 +78,8 @@ quando você confere tudo numa tela só.
 
 | # | Etapa | O que decide |
 |---|---|---|
-| 1 | Projeto | tipo, stack, módulos e regras críticas (`## Projeto` do `AGENTS.md`) |
-| 2 | Comandos | compilar, testar, lint e cobertura, rodados uma vez (`## Comandos` do `AGENTS.md`) |
+| 1 | Projeto | tipo, stack, módulos e regras críticas (`## Projeto` do `.sabia/sabia.md`) |
+| 2 | Comandos | compilar, testar, lint e cobertura, rodados uma vez (`## Comandos` do `.sabia/sabia.md`) |
 | 3 | Git, GitLab e banco | branch base, MR, consulta ao banco |
 | 4 | Especificação e ELM | formato da spec, pasta do produto, ELM, glossário, Sustentação |
 | 5 | Skills | o que o projeto já sabe fazer (toolkits) |
@@ -141,6 +141,7 @@ No lugar da tabela de etapas do W0 (a pré-checagem continua):
 | 6 | Steering de tecnologia (Kiro) | <✅ `.kiro/steering/tech.md` | ❌ não há> | 🔍 |
 | 7 | Steering de estrutura (Kiro) | <✅ `.kiro/steering/structure.md` | ❌ não há> | 🔍 |
 | 8 | Regras críticas | <1. … 2. … | nenhuma além do steering> | 🔍 <tech.md> |
+| 9 | IA já configurada | <✅ `AGENTS.md` · `.kiro/steering/*.md` · <outros arquivos de instrução de agente> | ❌ não há> — o que houver é lido como fonte e continua valendo como steering de base; o Sabiá não o altera | 🔍 |
 
 > ❓ **Está certo?**
 > `ok` aceita tudo · `<n>: <novo valor>` muda a linha <n> · steering ❌ → `<n>: <arquivo>`, `<n>: gerar` (você roda o "Generate Steering Docs" do Kiro e eu releio) ou `<n>: nenhum`
@@ -373,7 +374,6 @@ primeiro. Depois de um ajuste, mostre o cartão de novo antes de pedir o "ok" do
 ### Arquivos
 | Arquivo | Ação |
 |---|---|
-| `AGENTS.md` (`## Projeto`, `## Comandos`) | <criar | mesclar — diff abaixo | manter> |
 | `.sabia/sabia.md` | <criar | alterar — diff abaixo (Regras aprendidas preservadas) | manter> |
 | `.sabia/config/agentes.json` | <criar | alterar> · `"sabia": "<versão instalada>"` |
 | `.kiro/agents/sa-*.json`, os 5 e os dos toolkits (Kiro) | <criar | alterar — diff abaixo> |
@@ -405,7 +405,7 @@ por engano, diga `regravar <arquivo>`.
 | 2 | `kiro-cli agent validate` e `agent list`: os 5 e os de toolkit (Kiro) | <✅ | ❌ <agente: campo> | ➖ sem kiro-cli> |
 | 3 | Agente de toolkit com as permissões do dono do passo (Kiro) | <✅ | ❌ <agente> | ➖ sem toolkit> |
 | 4 | `opencode debug agents` lista os `sa-*` (opencode) | <✅ | ❌ <agente que falta>> |
-| 5 | Comandos do `AGENTS.md`, um a um | <✅ <comando> <tempo> · … | ❌ <primeiro que falhou: erro em uma linha> | ⏸️ não rodado> |
+| 5 | Comandos do `.sabia/sabia.md`, um a um | <✅ <comando> <tempo> · … | ❌ <primeiro que falhou: erro em uma linha> | ⏸️ não rodado> |
 | 6 | GitLab responde (`gitlab_listar_mrs`) | <✅ | ⏸️ <motivo> | ➖> |
 | 7 | `pa` do ELM válido (`elm_status`) | <✅ | ❌ <faltando> | ➖ sem ELM> |
 | 8 | Caminhos citados no `sabia.md` e no `agentes.json` existem | <✅ | ❌ <caminho>> |

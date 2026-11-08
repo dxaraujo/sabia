@@ -5,7 +5,7 @@ inclusion: always
 # Sabiá — <nome do projeto>
 
 > Gerado pela `sa-setup` (Sabiá <x.y.z>) em <AAAA-MM-DD>. Para mudar: "atualizar a configuração do Sabiá".
-> O projeto e os comandos ficam no `AGENTS.md`; as escolhas dos agentes, no `.sabia/config/agentes.json`.
+> As escolhas dos agentes ficam no `.sabia/config/agentes.json`.
 
 ## Resumo do fluxo
 
@@ -24,6 +24,15 @@ desenvolvedor que não é o autor e lido por uma pessoa antes do merge.
 - Nada inventado: sem fonte e sem a decisão de uma pessoa, fica em aberto. Nunca apague nem afrouxe teste.
 - Dado de cliente nunca vai para o git: fica em `.sabia/local/`.
 
+## Projeto
+
+| Item | Valor | Fonte |
+|---|---|---|
+| Tipos | `<backend · batch · frontend · mobile · dados>` | `<arquivo>` |
+| Stack | `<linguagem e versão, frameworks>` | `<arquivo>` |
+| Módulos | `<módulo: o que faz>` | `<pasta>` |
+| Regras críticas | `<o que, violado, causa perda de dado, duplicidade ou falha em produção>` | `<fonte>` |
+
 ## Especificação
 
 | Item | Valor |
@@ -33,6 +42,18 @@ desenvolvedor que não é o autor e lido por uma pessoa antes do merge.
 | Telas | `<não | sim>` — sim: o protótipo só vale aprovado pelo cliente |
 | Casos de uso | `<não | sim>` — sim: UC para o que o projeto já descreve em casos de uso; o novo, em HF |
 | Glossário · ADRs | `<GL do DOORS | .sabia/glossario.md | não há>` · `<docs/adr/ | não há>` |
+
+## Comandos
+
+Base do backpressure em camadas: o trecho tocado a cada alteração, a suíte completa antes do MR e o CI do MR.
+
+| Ação | `<módulo>` |
+|---|---|
+| Compilar | `<comando>` |
+| Testes | `<comando>` |
+| Teste do trecho (`{alvo}`) | `<comando com {alvo}>` |
+| Lint | `<comando | —>` |
+| Cobertura (gate) | `<comando · mínimo>` |
 
 ## Verificação de aceite
 

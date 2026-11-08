@@ -1,5 +1,5 @@
 ---
-{"resumo": "Confere caminhos, GitLab, os Comandos do AGENTS.md e os agentes gerados."}
+{"resumo": "Confere caminhos, GitLab, os Comandos do sabia.md e os agentes gerados."}
 ---
 ## Entrada
 
@@ -11,7 +11,7 @@ Rode e mostre o cartão W9 com o status de cada um:
 
 1. Todo caminho que o `sabia.md` e o `agentes.json` citam existe, ou é `null`.
 2. O GitLab que ficou ⏸️ no passo `gitlab`: teste de novo.
-3. Os Comandos do `AGENTS.md`, um a um: o status e o tempo; o primeiro que falha → ❌ com o erro em uma linha.
+3. Os Comandos do `.sabia/sabia.md`, um a um: o status e o tempo; o primeiro que falha → ❌ com o erro em uma linha.
 4. opencode nos alvos → `opencode debug agents` lista os `sa-*` (a primeira chamada pode voltar vazia: rode de
    novo).
 5. Kiro nos alvos e `kiro-cli` disponível → `kiro-cli agent validate --path .kiro/agents/<agente>.json` para cada um

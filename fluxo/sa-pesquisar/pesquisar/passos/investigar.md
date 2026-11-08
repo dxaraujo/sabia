@@ -14,7 +14,7 @@ Nesta ordem:
 3. **Análogos**: 1 ou 2, lidos de ponta a ponta com os testes.
 4. **Reaproveitamento**: o que já existe e serve.
 5. **Dados**: MCP de banco só em leitura; guarde só a consulta e a contagem, nunca dado real.
-6. **Testes**: como rodar os da área (pelo `AGENTS.md`) e o que eles já cobrem.
+6. **Testes**: como rodar os da área (pelos Comandos do `.sabia/sabia.md`) e o que eles já cobrem.
 7. **Documentação**: a pasta da spec da fatia (delta e `elm/`), se houver; depois as specs do repositório
    (`openspec/specs` e `openspec/changes/archive`, ou `.kiro/specs`); depois o bundle (`elm_buscar_req_local`, só com
    ELM); por fim, o ELM ao vivo, em leitura. Sem bundle, registre em Não encontrado e siga.

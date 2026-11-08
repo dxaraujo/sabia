@@ -22,7 +22,7 @@
 <tabelas e colunas reais, índices e chaves; só a consulta e a contagem, nunca dado real>
 
 ## Testes
-<onde estão, como rodar só eles (AGENTS.md), o que já cobrem, fixtures a usar>
+<onde estão, como rodar só eles (Comandos do sabia.md), o que já cobrem, fixtures a usar>
 
 ## Documentação × código
 - <sigla>-<id> × `arquivo:linha` — <divergência>

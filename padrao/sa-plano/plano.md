@@ -81,7 +81,7 @@ Na quick, que não tem `design.md`, as Decisões técnicas vão numa seção `##
 
 - Operação pela ação do Cobre: `ADDED` = inclui · `MODIFIED` = altera · `REMOVED` = exclui. `RENAMED` não se usa:
   renomear é altera.
-- `<sigla>` ∈ HF · REG · EL · GL; `<id>` = id do ELM, ou o provisório `<EP|FT>nn-nn` no requisito novo (sem ELM, o
+- `<sigla>` ∈ HF · UC · REG · MSG · EL · GL; `<id>` = id do ELM, ou o provisório `<EP|FT>nn-nn` no requisito novo (sem ELM, o
   provisório é o definitivo).
 - `<cap>` em kebab-case; um requisito vive numa só. Requisito existente na spec viva mantém a `<cap>` de lá; o novo
   usa o slug do épico pai, ou o da fatia sem pai.

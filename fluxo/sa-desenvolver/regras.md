@@ -5,8 +5,8 @@
 
 Valem em todos os fluxos da skill.
 
-Leia antes: `.sabia/sabia.md` (Especificação, Verificação de aceite, ELM, Regras aprendidas), o `AGENTS.md` (Comandos)
-e o `.sabia/config/agentes.json` (`base`, `prefixo_branch`, `formato_spec`, `elm`). Sem o `.sabia/sabia.md` →
+Leia antes: `.sabia/sabia.md` (Projeto, Especificação, Comandos, Verificação de aceite, ELM, Regras aprendidas) e o
+`.sabia/config/agentes.json` (`base`, `prefixo_branch`, `formato_spec`, `elm`). Sem o `.sabia/sabia.md` →
 ofereça a `sa-setup.configurar` e pare.
 
 - **Modo da codificação** (Autonomia do `status.md`): IA supervisionada, IA autopilot ou manual, escolhido ao assumir

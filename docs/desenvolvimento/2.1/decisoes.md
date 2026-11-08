@@ -79,3 +79,7 @@
 - Os padrões dos tipos do catálogo ficam em padrao/requisitos/padrao-<tipo>.md (HF, UC, REG, MSG, EL, GL, ET, CT, ATA); a ET sai do plano.md para padrao-et.md. O elm-arquivo.md fica em sa-elm/. Compilados, moram na skill sabia (references/padrao/requisitos/).
 - A cópia do projeto em .sabia/padrao/requisitos/padrao-<tipo>.md vale sobre o padrão em vigor do tipo: o do toolkit que o desvia (base = sha do padrão do toolkit; a linha Tipos com skill de toolkit aponta para a cópia) ou o do Sabiá.
 - O toolkit segue o mesmo nome: padrao/requisitos/padrao-<tipo>.md (iara 0.4.1).
+
+- Comandos (08/11): a tabela ## Comandos (backpressure em camadas) mora no .sabia/sabia.md, o steering que o Kiro sempre carrega (o Kiro não lê o AGENTS.md); o AGENTS.md fica com ## Projeto.
+- requer do toolkit: semver exato = versão mínima (o CLI recusa abaixo dela); sem faixa (>=).
+- Projeto (08/11): a seção ## Projeto também mora no .sabia/sabia.md; o Sabiá não escreve no AGENTS.md, que, se existir, é só fonte de leitura para montar o sabia.md.

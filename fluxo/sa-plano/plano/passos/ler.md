@@ -1,5 +1,5 @@
 ---
-{"resumo": "Lê status.md, ficha, elm/, prd.md do épico pai, AGENTS.md, Regras aprendidas e o steering de tecnologia e estrutura."}
+{"resumo": "Lê status.md, ficha, elm/, prd.md do épico pai, Projeto e Regras aprendidas do sabia.md e o steering de tecnologia e estrutura."}
 ---
 ## Entrada
 
@@ -14,7 +14,7 @@ Leia:
    Cenários `CT-nn`, Cobre com a versão lida, linha Aprovado, Não muda, Decisões;
 3. com ELM, os arquivos de `elm/` da pasta da spec;
 4. o `prd.md` do épico pai, na fatia de épico;
-5. o `AGENTS.md`, as Regras aprendidas do `.sabia/sabia.md` e o steering de tecnologia e estrutura.
+5. o Projeto e as Regras aprendidas do `.sabia/sabia.md` e o steering de tecnologia e estrutura.
 
 ## Saída
 

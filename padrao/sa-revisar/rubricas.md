@@ -36,7 +36,7 @@ arquivos aprovados de `elm/`.
 | L3 | Todo critério tem ao menos uma tarefa no `tasks.md`; o bug começa pelo teste que reproduz o defeito e pelos testes do Não muda | BLOQUEANTE |
 | L4 | Os caminhos, classes e análogos citados existem, ou estão marcados "a criar" | BLOQUEANTE |
 | L5 | Nenhuma regra de negócio sem fonte (Regras e Decisões da ficha, `prd.md`, `elm/` aprovado). Expectativa de teste existente que muda está listada no plano com a decisão de uma pessoa | BLOQUEANTE |
-| L6 | O design segue o `AGENTS.md`, o steering de tecnologia e estrutura e as Regras aprendidas do `sabia.md` | BLOQUEANTE |
+| L6 | O design segue o Projeto e as Regras aprendidas do `sabia.md` e o steering de tecnologia e estrutura | BLOQUEANTE |
 | L7 | Reexecução segura, transação e concorrência tratadas quando há escrita | BLOQUEANTE |
 | L8 | TDD: cada comportamento começa por um teste que falha, ligado ao CT-nn do cenário | IMPORTANTE |
 | L9 | Tarefas pequenas, na ordem de dependência, cada uma com o comando que prova que terminou | IMPORTANTE |
@@ -72,7 +72,7 @@ avaliados em separado e relatados em tabelas próprias: um não compensa nem esc
 
 | # | Verificação | Severidade |
 |---|---|---|
-| C9 | `AGENTS.md`, steering de tecnologia e estrutura e Regras aprendidas do `sabia.md` | BLOQUEANTE |
+| C9 | Projeto e Regras aprendidas do `sabia.md` e steering de tecnologia e estrutura | BLOQUEANTE |
 | C10 | Modelo e entidade batem com o schema real (MCP de banco, em leitura; sem o MCP, `N/A`). DDL nova tem o item BD citado no Risco do MR | BLOQUEANTE |
 | C11 | Segue o análogo e a forma do design; nada de padrão novo sem decisão registrada. Decisão que atravessa fatias (banco, framework, padrão de integração) tem ADR no MR | IMPORTANTE |
 | C12 | Nomes do domínio = termos do glossário (GL ou `glossario.md`); nomes técnicos no padrão dos vizinhos | IMPORTANTE |

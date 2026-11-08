@@ -20,7 +20,7 @@ Roda na **sessão padrão** da ferramenta (Kiro ou opencode, sem agente `sa-*`):
 - **Shell da pessoa** (`echo $SHELL`): em `fish`, comando composto vai em `bash -c '<comando>'`.
 - **Caminhos nos arquivos gerados**, sempre relativos: do projeto, à raiz; do usuário, ao home (`~/…`); separador `/`.
 - Nunca leia nem mostre credencial (conferir se o arquivo existe é permitido).
-- **Onde escreve:** `AGENTS.md` (por mescla), `.sabia/sabia.md`, `.sabia/config/agentes.json`, `.sabia/fluxo/`,
+- **Onde escreve:** `.sabia/sabia.md`, `.sabia/config/agentes.json`, `.sabia/fluxo/`,
   `.sabia/padrao/`, `.sabia/planejamento/` (as pastas e o `backlog.md`), `.kiro/steering/sabia.md`, `.kiro/agents/`,
   `.opencode/agents/`, as `instructions` do `opencode.json`, `.gitlab/merge_request_templates/Default.md` (só se não
   existir), `.gitignore` e `.gitattributes`.

@@ -150,8 +150,7 @@ power são ignorados. Por isso a `sa-setup` grava no projeto, a partir de `skill
 
 | Arquivo | O quê |
 |---|---|
-| `.sabia/sabia.md` (e o ponteiro `.kiro/steering/sabia.md` ou a entrada no `opencode.json`) | o steering do fluxo: resumo, Especificação, Verificação de aceite, Sustentação, ELM, Desvios de toolkit, Tipos com skill de toolkit e Regras aprendidas |
-| `AGENTS.md` | `## Projeto` e `## Comandos` (o backpressure em camadas), mesclados, não reescritos |
+| `.sabia/sabia.md` (e o ponteiro `.kiro/steering/sabia.md` ou a entrada no `opencode.json`) | o steering do fluxo: resumo, Projeto, Especificação, Comandos, Verificação de aceite, Sustentação, ELM, Desvios de toolkit, Tipos com skill de toolkit e Regras aprendidas |
 | `.sabia/config/agentes.json` | as escolhas do projeto (alvos, `formato_spec`, pasta do produto, base, prefixo da branch, ELM, toolkits, desvios e extras por agente) — a entrada do gerador |
 | `.sabia/config/elm/pa_<nome>.json` · `.sabia/config/elk/elk-<ambiente>.json` | a project area do ELM (da `sa-elm.setup`) e a configuração do ELK |
 | `.kiro/agents/sa-*.json` · `.opencode/agents/sa-*.md` | os 5 agentes (e os de toolkit), gerados pelo `gerar_agentes.py` |
@@ -171,7 +170,7 @@ detecta o tipo do projeto e **propõe, agente por agente**, as skills a ligar.
 |---|---|
 | `skills[].papeis` · `steering[].papeis` | 1:1: `desenvolvedor` → `sa-desenvolvedor` · `especificador` e `produto` → `sa-especificador` · `pesquisador` → `sa-pesquisador` · `revisor` → `sa-revisor` · `verificador` → `sa-verificador` |
 | `skills[].passo` | desvio de um passo do Sabiá pelo id; hoje a tarefa da codificação, `sa-desenvolver.codificar.tarefa`, no prompt do agente dono |
-| `tipos` | a skill que escreve um tipo desviável do catálogo: `HF`, `REG`, `EL` e `GL` → `sa-especificador`; `ET` as-built → `sa-desenvolvedor` |
+| `tipos` | a skill que escreve um tipo desviável do catálogo: `HF`, `UC`, `REG`, `MSG`, `EL` e `ATA` → `sa-especificador`; `ET` as-built → `sa-desenvolvedor`; `CT` (linhas do `CT.csv`) → `sa-verificador` |
 | `rubricas` | itens que se somam à revisão do `sa-revisor` |
 | `verificacao` | texto de apoio ao `sa-verificador` |
 | `agentes[]` | subagente do dono do passo, com as permissões dele |

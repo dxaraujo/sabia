@@ -4,7 +4,7 @@ description: "Sabiá guide and router for the agent workflow (Kiro and opencode)
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.6"
+  version: "2.1.7"
 ---
 
 # Sabiá — guia e roteador do fluxo
@@ -70,7 +70,7 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
 | Quem | Aprova | Onde fica |
 |---|---|---|
 | `produto` (o P.O.) | go/kill, pitch, PRD e ficha | `Aprovado: <usuário> · <data>` no topo do documento; o que está em aberto bloqueia só o que depende dele |
-| `especificador` | o arquivo inteiro de cada artefato em `elm/`; publica depois do merge (`sa-elm.publicar`) | `Aprovado:` no topo do arquivo de `elm/` |
+| `especificador` | o arquivo inteiro de cada artefato em `elm/`; publica depois do merge (`sa-elm.publicar`) | `status: stable` e `verified` no frontmatter do arquivo de `elm/` |
 | um `desenvolvedor` ≠ autor | o MR (o CODEOWNERS indica o dono), com o CI verde e a evidência do verificador | o MR |
 | qualquer pessoa | o UAT, conforme o risco (`sa-verificar.uat`) | o MR |
 
@@ -143,8 +143,7 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 
 | Caminho | O quê |
 |---|---|
-| `AGENTS.md` | `## Projeto` e `## Comandos` (o backpressure em camadas), mesclados pela `sa-setup` |
-| `.sabia/sabia.md` | Resumo do fluxo · Especificação · Verificação de aceite · Sustentação · ELM · Desvios de toolkit · Tipos com skill de toolkit · Regras aprendidas (gravadas pela curadoria da review) |
+| `.sabia/sabia.md` | Resumo do fluxo · Projeto · Especificação · Comandos · Verificação de aceite · Sustentação · ELM · Desvios de toolkit · Tipos com skill de toolkit · Regras aprendidas (gravadas pela curadoria da review) |
 | `.sabia/config/` | `agentes.json` (as escolhas do projeto e a entrada do gerador), `elm/pa_<nome>.json` (da `sa-elm.setup`) e `elk/elk-<ambiente>.json` |
 | `.kiro/agents/` · `.opencode/agents/` | os 5 agentes gerados (e os de toolkit) |
 | `.sabia/planejamento/` | `backlog.md` (id · título · tipo · status · prioridade · tamanho · responsável · pai · relator · ib · obs · aceita_em · iniciada_em · concluida_em), `acordos.md`, `equipe.json`, `roadmap.md`, `sprints/<AAAA>/sprint-<nn>.md` (Item · Trabalho · Responsável · Tarefas), `fatias/FT-<nnn>-<slug>.md`, `epicos/EP-nn-<slug>/` (`pitch.md`; `prd.md` a partir do go), `prototipos/`, `atas/`, `sustentacao/<pasta>/` |
@@ -156,15 +155,16 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 
 ## Tipos de artefato
 
-O catálogo é fechado ([references/tipos.md](references/tipos.md)): HF · REG · EL · GL · ET · CT · ATA. Artefato
+O catálogo é fechado ([references/tipos.md](references/tipos.md)): HF · UC · REG · MSG · EL · GL · ET · CT · ATA. O
+padrão de cada tipo é `requisitos/padrao-<tipo>.md`; a cópia do projeto em `.sabia/padrao/requisitos/` vale sobre ele. Artefato
 existente: `<sigla>-<id do ELM>`. Novo: `<sigla>-<EP|FT>-nn`, provisório até a publicação; sem ELM, esse é o id
 definitivo.
 
 | Tipo | Onde nasce |
 |---|---|
-| HF · REG · EL · GL | o texto completo dos requisitos tocados vai no delta da spec; com ELM, também em `elm/` da fatia, um arquivo por artefato, criado no refinamento (`sa-refinar.detalhar`). EL só com Telas = sim |
+| HF · UC · REG · MSG · EL · GL | o texto completo dos requisitos tocados vai no delta da spec; com ELM, também em `elm/` da fatia, um arquivo por artefato, criado no refinamento (`sa-refinar.detalhar`). EL só com Telas = sim; UC só com Casos de uso = sim |
 | ET | só as-built, publicada na finalização do desenvolvimento, nos projetos que mantêm ET |
-| CT | cenários `CT-nn` na ficha; o `CT.csv` é escrito só pela `sa-verificar.verificar`, e cada linha liga ao `CT-nn` marcado no teste automatizado |
+| CT | cenários `CT-nn` na ficha; o `CT.csv` é escrito só pela `sa-verificar.verificar` (pela skill do toolkit, quando o CT desvia), e cada linha liga ao `CT-nn` marcado no teste automatizado |
 | ATA | opcional, pela `sa-especificar.reuniao`; a decisão vale com quem e quando |
 
 Um toolkit não cria tipo; num tipo desviável (⇢), a skill dele escreve o artefato

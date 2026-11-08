@@ -42,7 +42,7 @@ No `toolkit.json`, `passo.passo` é o id do passo no formato `skill.fluxo.passo`
   contexto.
 - **Com agente:** o dono delega e confere.
   1. Manda um briefing curto, com o contrato do passo: a tarefa, o `design.md`, o `research.md`, os pontos de teste e
-     os comandos do `AGENTS.md`.
+     os Comandos do `.sabia/sabia.md`.
   2. O subagente trabalha em contexto limpo e devolve o que fez (arquivos e resumo).
   3. O dono confere o contrato e segue o fluxo. Fora do contrato → devolve uma vez com o que falta; de novo fora →
      registra em Desvios do `status.md`.
@@ -58,7 +58,7 @@ toolkit que declara `tipos` (`{"HF": {"skill": "skills/<skill>/SKILL.md", "fluxo
 "<arquivo>"}}`, fluxo e padrão opcionais) escreve o artefato pela skill dele, que o dono carrega e que segue o fluxo
 com o padrão do tipo, lidos pelo caminho na pasta do toolkit, ou, sem eles, as references dela; depois, volta ao passo.
 
-- **Quem escreve:** HF, UC, REG, MSG, EL e GL saem pelo `sa-especificador`, com a aprovação gravada no documento; a ET as-built,
+- **Quem escreve:** HF, UC, REG, MSG e EL saem pelo `sa-especificador`, com a aprovação gravada no documento; a ET as-built,
   pelo `sa-desenvolvedor`, com a aprovação do MR.
 - **Como o agente sabe:** a linha **Tipos com skill de toolkit** do prompt do dono de cada passo de desvio (gerada do
   `agentes.json`), com a skill do toolkit ligada a ele — a skill traz em `papeis` o papel de cada dono, senão o CLI e o

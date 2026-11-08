@@ -1,6 +1,6 @@
 ---
 {"fluxo": "configurar", "dono": "sa-especificador",
- "quando": ["instalar ou atualizar o Sabiá no projeto: AGENTS.md, sabia.md, agentes.json, formato da spec, \"usa ELM?\", pasta do produto e os 5 agentes", "configurar o Sabiá", "atualizar a configuração do Sabiá", "regenerar os agentes", "ligar o toolkit", "aplicar os dados da sa-elm.setup"],
+ "quando": ["instalar ou atualizar o Sabiá no projeto: sabia.md, agentes.json, formato da spec, \"usa ELM?\", pasta do produto e os 5 agentes", "configurar o Sabiá", "atualizar a configuração do Sabiá", "regenerar os agentes", "ligar o toolkit", "aplicar os dados da sa-elm.setup"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa"],
  "passos": [
    {"id": "inicio", "saidas": {"dentro de um agente sa-*": "fim"}},
@@ -37,7 +37,7 @@
 
 Instalação e atualização numa sequência só: com `.sabia/config/agentes.json` no projeto, cada passo mostra o que
 está gravado e só pergunta o que muda. Pergunta "usa ELM?" e, com sim, chama a `sa-elm.setup` e aplica os dados que
-ela devolve. Decide o `formato_spec`, mescla o `AGENTS.md`, grava o `.sabia/sabia.md` com seções fechadas e gera os
+ela devolve. Decide o `formato_spec`, grava o `.sabia/sabia.md` com seções fechadas (Projeto e Comandos por mescla) e gera os
 5 agentes (primários `sa-desenvolvedor` e `sa-especificador`; subagentes `sa-pesquisador`, `sa-revisor` e
 `sa-verificador`) nos formatos do opencode e do Kiro.
 

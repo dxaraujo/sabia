@@ -15,8 +15,8 @@ Tudo o que os passos anteriores montaram.
    até a próxima `## `): ela é da `sa-planejamento.review`.
 3. Monte o `agentes.json` do passo `agentes` e rode o gerador sem `--gravar`: ele imprime a tabela dos agentes.
 4. Mostre o cartão W8 com tudo o que vai ser gravado (a tabela do gerador colada como saiu; em atualização, o diff de
-   cada arquivo). Com o "ok", grave o `sabia.md` e as seções `## Projeto` e `## Comandos` do `AGENTS.md` (por
-   mescla); os passos seguintes gravam o resto com o mesmo "ok".
+   cada arquivo). Com o "ok", grave o `sabia.md` (com as seções `## Projeto`
+   e `## Comandos`, por mescla); os passos seguintes gravam o resto com o mesmo "ok".
 
 ## Saída
 

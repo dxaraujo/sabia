@@ -8,7 +8,7 @@ A branch `<id>` (ou a worktree do autopilot).
 ## Faça
 
 1. Confira a branch `<id>` (no autopilot, a worktree), a árvore limpa e `git pull --ff-only` da própria branch.
-2. **Baseline**: o último pipeline da base; sem CI, a suíte local rodada antes de mexer (comandos do `AGENTS.md`).
+2. **Baseline**: o último pipeline da base; sem CI, a suíte local rodada antes de mexer (Comandos do `.sabia/sabia.md`).
    Teste vermelho herdado entra no baseline e não bloqueia. A regra é que nenhum teste verde fique vermelho.
 
 ## Saída

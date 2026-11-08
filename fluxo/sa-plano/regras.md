@@ -3,7 +3,7 @@
 ---
 # Regras comuns da `sa-plano`
 
-Leia antes: `.sabia/sabia.md` (Especificação, Regras aprendidas), o `AGENTS.md` e o `.sabia/config/agentes.json`
+Leia antes: `.sabia/sabia.md` (Projeto, Especificação, Comandos, Regras aprendidas) e o `.sabia/config/agentes.json`
 (`formato_spec`, `elm`). Sem o `.sabia/sabia.md` → ofereça a `sa-setup.configurar` e pare.
 
 - O texto do requisito é do refinamento: o plano copia o aprovado para o delta e nunca o reescreve. Texto que precisa
