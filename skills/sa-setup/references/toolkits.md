@@ -170,8 +170,10 @@ padrao/padrao-hf.md                padrão do tipo HF, idem
   sem frontmatter; o corpo nunca tem título Markdown), e volta ao passo. O gerador imprime a seção
   que a setup grava no `sabia.md`: o fluxo, o padrão e a skill de cada tipo, e os itens de rubrica.
 - **Padrão do núcleo:** o toolkit não troca padrão do Sabiá. O tipo que não vai por `tipos`, e o tipo fora do passo de
-  desvio, usam o padrão do Sabiá; o `.sabia/padrao/` do projeto vale só
-  sobre um padrão do Sabiá.
+  desvio, usam o padrão do Sabiá.
+- **Padrão no projeto:** `.sabia/padrao/requisitos/padrao-<tipo>.md` vale sobre o padrão em vigor do tipo: o do toolkit
+  que o desvia (a `base` é o sha do padrão do toolkit, e a linha Tipos com skill de toolkit aponta para a cópia) ou o do
+  Sabiá. O padrão do toolkit segue o mesmo nome, `padrao/requisitos/padrao-<tipo>.md`.
 - **Links:** nos arquivos do toolkit, o link para o Sabiá segue o estilo do repositório
   (`~/.sabia/framework/skills/<sa-x>/references/...`). O Sabiá não confere esses links: um quebrado só aparece quando o
   agente o lê.

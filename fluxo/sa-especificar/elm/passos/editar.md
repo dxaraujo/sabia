@@ -10,8 +10,8 @@ Especificação da ficha.
 
 Tipo com skill de toolkit no seu prompt (sem agente: a seção Tipos com skill de toolkit do `.sabia/sabia.md`) → o
 arquivo desse tipo sai pela skill, com o fluxo e o padrão do tipo; na volta, confira o arquivo pelo padrão
-`sa-elm/elm-arquivo.md`. Os outros tipos seguem o padrão do tipo (`sa-prd/hf.md`, `sa-prd/uc.md`, `sa-prd/reg.md`,
-`sa-prd/msg.md`, `sa-prd/el.md`, `sa-prd/gl.md`).
+`sa-elm/elm-arquivo.md`. Os outros tipos seguem o padrão do tipo (`requisitos/padrao-hf.md`, `requisitos/padrao-uc.md`, `requisitos/padrao-reg.md`,
+`requisitos/padrao-msg.md`, `requisitos/padrao-el.md`, `requisitos/padrao-gl.md`).
 
 - **IA supervisionada.** O especificador edita, com o Dev, o arquivo inteiro no estado depois da mudança. Regra sem
   fonte vai à `sa-entrevistar.entrevistar`, nunca ao texto.

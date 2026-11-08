@@ -1,5 +1,5 @@
 ---
-{"resumo": "Escreve o rascunho da ATA ao lado da transcrição pelo padrão sa-especificar/ata.md, ou pela skill de toolkit da ATA, só com o que a transcrição diz."}
+{"resumo": "Escreve o rascunho da ATA ao lado da transcrição pelo padrão requisitos/padrao-ata.md, ou pela skill de toolkit da ATA, só com o que a transcrição diz."}
 ---
 ## Entrada
 
@@ -8,9 +8,9 @@ O `.transcricao.md` (passo `transcricao`), o documento do item (para o próximo 
 ## Faça
 
 Tipo `ATA` com skill de toolkit no seu prompt (sem agente: a seção Tipos com skill de toolkit do `.sabia/sabia.md`) →
-a ATA sai pela skill, com o fluxo e o padrão do tipo; na volta, confira as seções do padrão `sa-especificar/ata.md`.
+a ATA sai pela skill, com o fluxo e o padrão do tipo; na volta, confira as seções do padrão `requisitos/padrao-ata.md`.
 
-Senão, escreva `.sabia/local/reunioes/<id>-<AAAA-MM-DD>.ata.md` pelo padrão `sa-especificar/ata.md`:
+Senão, escreva `.sabia/local/reunioes/<id>-<AAAA-MM-DD>.ata.md` pelo padrão `requisitos/padrao-ata.md`:
 
 - Frontmatter com `status: draft`; Reunião (`AAAA-MM-DD · <h>h<mm> · <assunto>`, a duração pelo último `[mm:ss]`) e Item.
 - Participantes por nome e papel, com os papéis do passo `transcricao`.

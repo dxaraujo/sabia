@@ -74,3 +74,8 @@
 - Referência só para baixo (HF → EL/REG/MSG/GL/UC; REG → REG/MSG/GL; EL → REG/MSG/GL/EL); existente no ELM com link para o arquivo, novo só com o id provisório. A ET cita as HF e os UC do Cobre na linha Atende, com link normal.
 - Tipos novos: MSG (o texto da mensagem) e UC (opcional, com Casos de uso = sim; o novo vai em HF). CT desviável no sa-verificar.verificar.casos.
 - Revisão contra 29148, INVEST/Gherkin, Business Rules Manifesto, IREB, NN/g, ADR e 29119-3: termos vagos no checklist, um Quando por cenário, REG declarativa e atômica, estados e acessibilidade na EL, checklist da MSG, sigla e homônimo no GL, encaminhamento com dono e prazo, Por quê nas Decisões, consequência nas Decisões técnicas, rubrica C20 do CT.csv.
+
+## Padrões de artefato numa pasta (2.1.6, 08/11)
+- Os padrões dos tipos do catálogo ficam em padrao/requisitos/padrao-<tipo>.md (HF, UC, REG, MSG, EL, GL, ET, CT, ATA); a ET sai do plano.md para padrao-et.md. O elm-arquivo.md fica em sa-elm/. Compilados, moram na skill sabia (references/padrao/requisitos/).
+- A cópia do projeto em .sabia/padrao/requisitos/padrao-<tipo>.md vale sobre o padrão em vigor do tipo: o do toolkit que o desvia (base = sha do padrão do toolkit; a linha Tipos com skill de toolkit aponta para a cópia) ou o do Sabiá.
+- O toolkit segue o mesmo nome: padrao/requisitos/padrao-<tipo>.md (iara 0.4.1).

@@ -357,6 +357,23 @@ class Toolkits(Base):
             with self.assertRaises(ValueError, msg=mudar):
                 g.gerar(self.projeto, {**self.cfg, **cfg}, REPO)
 
+    def test_copia_do_projeto_vale_sobre_o_padrao_do_toolkit(self):
+        tk = self.casa()
+        orig = self.home / ".sabia/toolkits/casa/padrao/padrao-hf.md"
+        self.escrever({".sabia/padrao/requisitos/padrao-hf.md": f'---\n{{"base": "{g.sha12(orig)}"}}\n---\nHF do projeto\n'})
+        agentes = self.gerar(toolkits=tk)
+        self.assertIn("com o padrão `.sabia/padrao/requisitos/padrao-hf.md` (cópia do projeto sobre `~/.sabia/toolkits/casa/padrao/padrao-hf.md`)",
+                      agentes["sa-especificador"]["prompt"])
+        self.assertFalse([a for a in g.gerar.avisos if "padrao-hf" in a])
+        orig.write_text("# x mudou\n")  # o toolkit mudou o padrão: a base da cópia ficou velha
+        self.gerar(toolkits=tk)
+        self.assertTrue([a for a in g.gerar.avisos if "padrao-hf.md: a base mudou" in a])
+
+    def test_copia_do_projeto_sem_toolkit_vale_sobre_o_padrao_do_sabia(self):
+        rel = "padrao/requisitos/padrao-hf.md"
+        self.escrever({".sabia/" + rel: f'---\n{{"base": "{self.base(rel)}"}}\n---\nHF do projeto\n'})
+        self.assertIn("`.sabia/padrao/requisitos/padrao-hf.md` (no lugar do da skill)", self.gerar()["sa-especificador"]["prompt"])
+
     def test_toolkit_nao_instalado_e_recusado(self):
         cfg = {**self.cfg, "toolkits": {"fantasma": {"pasta": "~/.sabia/toolkits/fantasma", "versao": "1.0.0"}}}
         with self.assertRaisesRegex(ValueError, "toolkit fantasma: ~/.sabia/toolkits/fantasma/toolkit.json não encontrado"):

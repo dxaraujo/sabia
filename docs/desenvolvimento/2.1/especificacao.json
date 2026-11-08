@@ -923,7 +923,7 @@
       },
       {
        "passo": "escrever",
-       "texto": "Escreve o rascunho em .sabia/local/reunioes/, ao lado da transcrição, pelo padrão sa-especificar/ata.md ou pela skill de toolkit da ATA. Cabeçalho: Reunião (AAAA-MM-DD · duração · assunto) · Item · Aprovado (—). Seções: Participantes (nome · papel) · Pauta · Discussão (com [mm:ss]) · Decisões (tabela D-nn | Decisão | Quem | Quando | Fonte, com Quem = <nome> (<papel>) e Fonte = [mm:ss]) · Em aberto · Encaminhamentos (o quê · quem · até). Só entra o que a transcrição diz. Termo novo vai aos Encaminhamentos, não ao glossário.",
+       "texto": "Escreve o rascunho em .sabia/local/reunioes/, ao lado da transcrição, pelo padrão requisitos/padrao-ata.md ou pela skill de toolkit da ATA. Cabeçalho: Reunião (AAAA-MM-DD · duração · assunto) · Item · Aprovado (—). Seções: Participantes (nome · papel) · Pauta · Discussão (com [mm:ss]) · Decisões (tabela D-nn | Decisão | Quem | Quando | Fonte, com Quem = <nome> (<papel>) e Fonte = [mm:ss]) · Em aberto · Encaminhamentos (o quê · quem · até). Só entra o que a transcrição diz. Termo novo vai aos Encaminhamentos, não ao glossário.",
        "destino": "muda"
       },
       {
@@ -1603,7 +1603,7 @@
       },
       {
        "passo": "casos",
-       "texto": "Na quick e no completo, reescreve o CT.csv da pasta da spec com uma linha por cenário ✅. Os cenários ❌, ⚠️ e 🔁 não entram. Segue o padrão sa-verificar/ct-csv.md (UTF-8 com BOM, ';', LF): Tipo ('Caso de Teste') · Resumo ('<FT-nnn> CT-nn - <título do cenário>') · Responsável (usuario de quem disparou a verificação) · Descrição (objetivo, pré-condições, passos, esperado, evidência). Não há Status nem 'Planejado para'. O '<FT-nnn> CT-nn' é a mesma marca do teste automatizado. Na trivial não há CT.csv: a prova fica no MR. Quando quem chama é a sa-verificar.uat, o CT.csv não é reescrito, porque o arquivo é do autor.",
+       "texto": "Na quick e no completo, reescreve o CT.csv da pasta da spec com uma linha por cenário ✅. Os cenários ❌, ⚠️ e 🔁 não entram. Segue o padrão requisitos/padrao-ct.md (UTF-8 com BOM, ';', LF): Tipo ('Caso de Teste') · Resumo ('<FT-nnn> CT-nn - <título do cenário>') · Responsável (usuario de quem disparou a verificação) · Descrição (objetivo, pré-condições, passos, esperado, evidência). Não há Status nem 'Planejado para'. O '<FT-nnn> CT-nn' é a mesma marca do teste automatizado. Na trivial não há CT.csv: a prova fica no MR. Quando quem chama é a sa-verificar.uat, o CT.csv não é reescrito, porque o arquivo é do autor.",
        "destino": "muda"
       },
       {
@@ -3510,22 +3510,22 @@
       },
       {
        "passo": "HF",
-       "texto": "História. cria: sa-prd.prd.escrever (requisito no PRD) e sa-especificar.elm.editar (arquivo em elm/). padrao: sa-prd/hf.md. elm: DOORS. requisito: true. desviavel: os dois passos de cria. depois: REG, EL. embute: REG.",
+       "texto": "História. cria: sa-prd.prd.escrever (requisito no PRD) e sa-especificar.elm.editar (arquivo em elm/). padrao: requisitos/padrao-hf.md. elm: DOORS. requisito: true. desviavel: os dois passos de cria. depois: REG, EL. embute: REG.",
        "destino": "muda"
       },
       {
        "passo": "REG",
-       "texto": "Regra. cria: sa-prd.prd.escrever e sa-especificar.elm.editar. padrao: sa-prd/reg.md. elm: DOORS. requisito: true. desviavel: os dois passos de cria. depois: GL. embute: nenhum.",
+       "texto": "Regra. cria: sa-prd.prd.escrever e sa-especificar.elm.editar. padrao: requisitos/padrao-reg.md. elm: DOORS. requisito: true. desviavel: os dois passos de cria. depois: GL. embute: nenhum.",
        "destino": "muda"
       },
       {
        "passo": "GL",
-       "texto": "Termo de glossário (o slug é o termo em kebab-case). cria: sa-prd.prd.escrever e sa-especificar.elm.editar. padrao: sa-prd/gl.md. elm: DOORS. requisito: true. desviavel: nenhum. depois: nenhum. embute: nenhum.",
+       "texto": "Termo de glossário (o slug é o termo em kebab-case). cria: sa-prd.prd.escrever e sa-especificar.elm.editar. padrao: requisitos/padrao-gl.md. elm: DOORS. requisito: true. desviavel: nenhum. depois: nenhum. embute: nenhum.",
        "destino": "muda"
       },
       {
        "passo": "EL",
-       "texto": "Leiaute (só com Telas = sim). cria: sa-prd.prd.escrever e sa-especificar.elm.editar. padrao: sa-prd/el.md. elm: DOORS. requisito: true. desviavel: os dois passos de cria. depois: REG. embute: nenhum.",
+       "texto": "Leiaute (só com Telas = sim). cria: sa-prd.prd.escrever e sa-especificar.elm.editar. padrao: requisitos/padrao-el.md. elm: DOORS. requisito: true. desviavel: os dois passos de cria. depois: REG. embute: nenhum.",
        "destino": "muda"
       },
       {
@@ -3535,12 +3535,12 @@
       },
       {
        "passo": "CT",
-       "texto": "Caso de teste. Não tem arquivo em elm/: o cenário CT-nn mora na ficha e na spec, e a evidência no CT.csv. cria: sa-refinar.detalhar.cenarios (o CT-nn) e sa-verificar.verificar.casos (o CT.csv, escrito só pela sa-verificar). padrao: sa-verificar/ct-csv.md. elm: null (o ETM sai). requisito: false. desviavel: nenhum. O PRD não grava CT.csv.",
+       "texto": "Caso de teste. Não tem arquivo em elm/: o cenário CT-nn mora na ficha e na spec, e a evidência no CT.csv. cria: sa-refinar.detalhar.cenarios (o CT-nn) e sa-verificar.verificar.casos (o CT.csv, escrito só pela sa-verificar). padrao: requisitos/padrao-ct.md. elm: null (o ETM sai). requisito: false. desviavel: nenhum. O PRD não grava CT.csv.",
        "destino": "muda"
       },
       {
        "passo": "ATA",
-       "texto": "Ata de reunião. arquivo: ATA-<nn>-<AAAA-MM-DD>-<assunto>.md. cria: sa-especificar.reuniao.escrever. padrao: sa-especificar/ata.md. elm: DOORS (sobe sob pergunta da sa-elm.publicar). requisito: false. desviavel: sa-especificar.reuniao.escrever.",
+       "texto": "Ata de reunião. arquivo: ATA-<nn>-<AAAA-MM-DD>-<assunto>.md. cria: sa-especificar.reuniao.escrever. padrao: requisitos/padrao-ata.md. elm: DOORS (sobe sob pergunta da sa-elm.publicar). requisito: false. desviavel: sa-especificar.reuniao.escrever.",
        "destino": "muda"
       }
      ]
@@ -6095,7 +6095,7 @@
      "nome": "padrao",
      "significado": "Modelo do corpo",
      "preenche": "framework",
-     "valores": "sa-prd/hf.md · sa-prd/reg.md · sa-prd/el.md · sa-prd/gl.md · sa-plano/plano.md (ET) · sa-especificar/ata.md · sa-verificar/ct-csv.md"
+     "valores": "requisitos/padrao-hf.md · requisitos/padrao-reg.md · requisitos/padrao-el.md · requisitos/padrao-gl.md · sa-plano/plano.md (ET) · requisitos/padrao-ata.md · requisitos/padrao-ct.md"
     },
     {
      "nome": "elm",
@@ -6167,7 +6167,7 @@
      "nome": "padrões da 2.1",
      "significado": "Nomes válidos para override",
      "preenche": "framework",
-     "valores": "sa-refinar/pitch.md · sa-refinar/ficha.md · sa-prd/prd.md · sa-prd/hf.md · sa-prd/reg.md · sa-prd/el.md · sa-prd/gl.md · sa-especificar/ata.md · sa-elm/elm-arquivo.md · sa-atender/registro.md · sa-desenvolver/status.md · sa-desenvolver/pr.md · sa-desenvolver/loop.md · sa-plano/plano.md · sa-plano/research.md · sa-verificar/ct-csv.md · sa-revisar/rubricas.md (L e C) · sa-entrevistar/glossario.md"
+     "valores": "sa-refinar/pitch.md · sa-refinar/ficha.md · sa-prd/prd.md · requisitos/padrao-hf.md · requisitos/padrao-reg.md · requisitos/padrao-el.md · requisitos/padrao-gl.md · requisitos/padrao-ata.md · sa-elm/elm-arquivo.md · sa-atender/registro.md · sa-desenvolver/status.md · sa-desenvolver/pr.md · sa-desenvolver/loop.md · sa-plano/plano.md · sa-plano/research.md · requisitos/padrao-ct.md · sa-revisar/rubricas.md (L e C) · sa-entrevistar/glossario.md"
     }
    ]
   },

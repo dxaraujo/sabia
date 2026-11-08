@@ -67,8 +67,8 @@ com o padrão do tipo, lidos pelo caminho na pasta do toolkit, ou, sem eles, as 
   `elm/`: o frontmatter `type` · `title` · `status` · `sources` e o corpo pelo padrão do tipo; no bloco do `prd.md`,
   o mesmo corpo, sem frontmatter). Fora dele → o dono completa no próprio passo e registra em Desvios do
   `status.md`.
-- **Padrão do núcleo:** o toolkit não troca padrão do Sabiá; o `.sabia/padrao/` do projeto vale só sobre um padrão do
-  Sabiá.
+- **Padrão do núcleo:** o toolkit não troca padrão do Sabiá. A cópia do projeto em
+  `.sabia/padrao/requisitos/padrao-<tipo>.md` vale sobre o padrão em vigor do tipo, do Sabiá ou do toolkit.
 - **Continua do Sabiá:** o catálogo (sigla, arquivo, ELM), a revisão (o toolkit só acrescenta itens de rubrica), a
   aprovação e a publicação (`sa-elm.publicar`).
 - **Colisão:** dois toolkits do projeto no mesmo tipo ou no mesmo id de rubrica → o gerador recusa e não grava nada.

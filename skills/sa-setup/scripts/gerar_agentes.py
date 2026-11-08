@@ -121,9 +121,11 @@ def gancho(ext, fluxos, toolkit):
 ID = re.compile(r"[a-z][a-z0-9-]*")
 
 
-def override(projeto, fw, fluxos):
+def override(projeto, fw, fluxos, originais=None):
     """O que o projeto mudou: ({"sa-x.f": [linhas do delta]}, [linhas dos padrões], avisos). Recusa (ValueError) o
-    override que o compilador e o agente não entenderiam: arquivo órfão, operação desconhecida, trava liberada."""
+    override que o compilador e o agente não entenderiam: arquivo órfão, operação desconhecida, trava liberada.
+    `originais`: {nome do padrão em requisitos/: o padrão do toolkit que desvia o tipo}, a base da cópia do projeto."""
+    originais = originais or {}
     delta, padroes, avisos, erros = {}, [], [], []
     ler = lambda f: _fm(f.read_text(encoding="utf-8"), f.relative_to(projeto))
 
@@ -141,12 +143,15 @@ def override(projeto, fw, fluxos):
         if f.suffix != ".md":
             erros.append(f"{f.relative_to(projeto)}: só arquivos .md")
         elif rel[0] == "padrao":
-            original = fw / "padrao" / Path(*rel[1:])
+            # requisitos/padrao-<tipo>.md vale sobre o padrão em vigor do tipo: o do toolkit que o desvia, ou o do Sabiá
+            do_tk = rel[1:2] == ("requisitos",) and len(rel) == 3 and rel[2] in originais
+            original = originais[rel[2]] if do_tk else fw / "padrao" / Path(*rel[1:])
             if len(rel) != 3 or not original.exists():
                 erros.append(f"{f.relative_to(projeto)}: não é padrão do Sabiá")
             else:
                 com_base(f, original, f"padrão {rel[1]}/{rel[2]}")
-                padroes.append(f"- padrão `{rel[1]}/{rel[2]}`: `.sabia/padrao/{rel[1]}/{rel[2]}` (no lugar do da skill)")
+                if not do_tk:  # a do toolkit chega pela linha Tipos com skill de toolkit
+                    padroes.append(f"- padrão `{rel[1]}/{rel[2]}`: `.sabia/padrao/{rel[1]}/{rel[2]}` (no lugar do da skill)")
         elif (q := ".".join(rel[1:3]) if len(rel) >= 4 else None) not in fluxos:
             erros.append(f"{f.relative_to(projeto)}: não é de um fluxo do Sabiá")
         else:
@@ -234,6 +239,7 @@ def fonte_toolkits(projeto, cfg, fw, fluxos):
     rub = fw / "padrao/sa-revisar/rubricas.md"
     de = {f"rubrica {r}": "Sabiá" for r in (re.findall(r"^\| ([A-Z]\d+) \|", rub.read_text(encoding="utf-8"), re.M) if rub.is_file() else [])}
     erros, por_agente, por_passo, extras, rubricas, tab_tipos, tab_rubricas = [], {}, {}, {}, [], [], []
+    fonte_toolkits.originais = {}  # padrao-<tipo>.md → o padrão do toolkit, para a base da cópia do projeto
     dono = lambda c: fluxos[".".join(c.split(".")[:2])]["dono"]
 
     def meu(chave, nome):  # a primeira dona fica; a segunda é colisão
@@ -271,7 +277,12 @@ def fonte_toolkits(projeto, cfg, fw, fluxos):
                 continue
             sk = Path(q["skill"]).parent.name
             fl = f"`{pasta}/{q['fluxo']}`" if q.get("fluxo") else ""
-            pd = f"o padrão `{pasta}/{q['padrao']}`" if q.get("padrao") else ""
+            copia = f".sabia/padrao/requisitos/padrao-{sg.lower()}.md"
+            if q.get("padrao") and (projeto / copia).is_file():  # a cópia do projeto vale sobre o padrão do toolkit
+                fonte_toolkits.originais[f"padrao-{sg.lower()}.md"] = real / dentro(q["padrao"], nome)
+                pd = f"o padrão `{copia}` (cópia do projeto sobre `{pasta}/{q['padrao']}`)"
+            else:
+                pd = f"o padrão `{pasta}/{q['padrao']}`" if q.get("padrao") else ""
             segue = (f" e siga {fl}" if fl else "") + (f" com {pd}" if pd else "") or " e siga as references dela"
             for c in criam:  # a skill vai ao dono do passo de desvio
                 por_passo.setdefault(dono(c), {}).setdefault(c, []).append(f"{sg} → carregue a skill `{sk}`{segue}")
@@ -655,7 +666,7 @@ def gerar(projeto: Path, cfg: dict, framework=None) -> dict:
         raise ValueError(f"{fw} não tem os fluxos (fluxo/ ausente ou sem mestres): rode `sabia instalar` ou passe --framework")
     gerar.avisos, gerar.tabela_tipos = [], []
     tk, gerar.tabela_tipos = fonte_toolkits(projeto, cfg, fw, fluxos)
-    delta, padroes, gerar.avisos = override(projeto, fw, fluxos)
+    delta, padroes, gerar.avisos = override(projeto, fw, fluxos, fonte_toolkits.originais)
     if cfg.get("sabia") and (fw / "plugin.json").exists():
         instalado = json.loads((fw / "plugin.json").read_text(encoding="utf-8")).get("version")
         if instalado != cfg["sabia"]:
@@ -689,7 +700,7 @@ def main(argv=None):
     ap.add_argument("--config", type=Path, help="padrão: <projeto>/.sabia/config/agentes.json")
     ap.add_argument("--alvo", help="kiro,opencode (padrão: `alvos` do agentes.json, ou kiro)")
     ap.add_argument("--framework", type=Path, help="o framework instalado (padrão: ~/.sabia/framework)")
-    ap.add_argument("--base", help="imprime a `base` de uma cópia: o id do passo (sa-x.f.p) ou o padrão (sa-x/nome.md)")
+    ap.add_argument("--base", help="imprime a `base` de uma cópia: o id do passo (sa-x.f.p), o padrão (sa-x/nome.md ou requisitos/padrao-<tipo>.md) ou o caminho do padrão de um toolkit (~/.sabia/toolkits/...)")
     # gravar é opt-in: rodar sem flag nunca grava nada antes do "ok" da pessoa
     ap.add_argument("--gravar", action="store_true", help="grava os agentes (sem ela, só mostra o diff)")
     ap.add_argument("--diff", action="store_true", help="o padrão: mostra o diff e não grava")
@@ -698,7 +709,9 @@ def main(argv=None):
         fw = (args.framework or Path("~/.sabia/framework")).expanduser()
         partes = args.base.split(".")
         fl = ler_fluxos(fw).get(".".join(partes[:2])) if len(partes) == 3 else None
-        f = arq_passo(fl, partes[2]) if fl else fw / "padrao" / args.base
+        # o padrão de um toolkit (cópia em requisitos/ sobre ele) vem pelo caminho do arquivo instalado
+        tk = Path(args.base).expanduser()
+        f = arq_passo(fl, partes[2]) if fl else tk if tk.is_absolute() else fw / "padrao" / args.base
         if not f.is_file():
             print(f"não existe no framework: {args.base} ({f})", file=sys.stderr)
             return 1

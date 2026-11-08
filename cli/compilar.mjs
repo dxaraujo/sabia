@@ -141,6 +141,9 @@ export function ordemTipos(tipos) {
 }
 
 const padraoExiste = (m, ref) => { const [s, n] = ref.split("/"); return !!m.padroes[s]?.some((p) => p.nome === n); };
+/** Pasta compilada de um padrão: os de `padrao/requisitos/` (um por tipo do catálogo) moram na skill sabia, sempre instalada. */
+const PASTA_REQUISITOS = "requisitos";
+const padraoDir = (s) => (s === PASTA_REQUISITOS ? "sabia/references/padrao/requisitos" : `${s}/references/padrao`);
 
 const fluxosDa = (m, s) => Object.values(m.fluxos).filter((f) => f.skill === s);
 
@@ -310,7 +313,7 @@ export function validar(m) {
 export function mapear(fw, src) {
   const r = path.relative(fw, src).split(path.sep);
   if (r[0] === "skills" && r.length >= 2) return r.slice(1).join("/");
-  if (r[0] === "padrao" && r.length === 3) return `${r[1]}/references/padrao/${r[2]}`;
+  if (r[0] === "padrao" && r.length === 3) return `${padraoDir(r[1])}/${r[2]}`;
   if (r[0] === "fluxo" && r.length === 3 && r[2] === "regras.md") return `${r[1]}/SKILL.md`;
   if (r[0] === "fluxo" && r.length === 4 && r[3] === `${r[2]}.md`) return `${r[1]}/SKILL.md`;
   if (r[0] === "fluxo" && r.length === 5 && r[3] === "passos") return `${r[1]}/references/${r[2]}/${r[4]}`;
@@ -348,7 +351,7 @@ export function reescrever(texto, origem, ctx) {
       return `[\`${q}\`](${alvo})`;
     });
     return linha.replace(/o padrão `([a-z-]+)\/([a-z0-9.-]+\.md)`(?!\])/g, (todo, s, n) =>
-      m.padroes[s]?.some((p) => p.nome === n) ? `o padrão [\`${s}/${n}\`](${base}/${s}/references/padrao/${n})` : todo);
+      m.padroes[s]?.some((p) => p.nome === n) ? `o padrão [\`${s}/${n}\`](${base}/${padraoDir(s)}/${n})` : todo);
   }).join("\n");
 }
 
@@ -418,7 +421,8 @@ const NO_PROJETO = `## No projeto
 
 Antes de ler o arquivo de um passo (\`…/skills/<skill>/references/<fluxo>/<passo>.md\`, de qualquer skill), tente abrir
 direto \`.sabia/fluxo/<skill>/<fluxo>/passos/<passo>.md\` na raiz do projeto: se existir, vale ele; senão, o da skill.
-O mesmo para um padrão: \`.sabia/padrao/<skill>/<nome>.md\` no lugar de \`…/references/padrao/<nome>.md\`. Abra pelo
+O mesmo para um padrão: \`.sabia/padrao/<skill>/<nome>.md\` no lugar de \`…/references/padrao/<nome>.md\`; o padrão de um tipo
+de artefato, \`.sabia/padrao/requisitos/padrao-<tipo>.md\`, no lugar do padrão em vigor do tipo (o do Sabiá ou o do toolkit). Abra pelo
 caminho; não liste a pasta (a busca não vê pastas ocultas). Com agente do Sabiá, o prompt lista também os passos inseridos
 e removidos nos fluxos de que ele é dono. Num passo ⇢, o desvio de toolkit sai pela skill dele: o agente dono a tem no
 prompt; sem agente, valem a seção **Desvios de toolkit** (desvio por passo) e a **Tipos com skill de toolkit** (desvio por
@@ -473,11 +477,11 @@ function skillMd(m, s, fmYaml, h1, ctx) {
   }
   const ordem = Object.keys(m.travas).filter((t) => usadas.has(t));
   if (ordem.length) out.push("## Travas", "", "Valem sobre o corpo de qualquer passo.", "", ...ordem.map((t) => `- **${t}** — ${m.travas[t].texto}`), "");
-  const padroes = m.padroes[s] || [];
+  const padroes = [...(m.padroes[s] || []).map((p) => [s, p]), ...(s === "sabia" ? (m.padroes[PASTA_REQUISITOS] || []).map((p) => [PASTA_REQUISITOS, p]) : [])];
   const refs = mds(path.join(m.fw, "skills", s, "references"));
   if (padroes.length || refs.length) {
     out.push("## Arquivos", "");
-    for (const p of padroes) out.push(`- padrão [\`${s}/${p.nome}\`](${base}/${s}/references/padrao/${p.nome})${p.dados?.resumo ? ` — ${p.dados.resumo}` : ""}`);
+    for (const [ps, p] of padroes) out.push(`- padrão [\`${ps}/${p.nome}\`](${base}/${padraoDir(ps)}/${p.nome})${p.dados?.resumo ? ` — ${p.dados.resumo}` : ""}`);
     for (const r of refs) out.push(`- [\`references/${r}\`](${base}/${s}/references/${r})`);
     out.push("");
   }
@@ -489,7 +493,7 @@ function skillMd(m, s, fmYaml, h1, ctx) {
 function tiposMd(m, ctx) {
   const { base } = ctx;
   const ord = ordemTipos(m.tipos), sim = (b) => (b ? "sim" : "não"), lista = (xs) => (xs?.length ? xs.join(", ") : "—");
-  const padrao = (t) => !t.padrao ? "— (corpo no passo que cria)" : t.pendente ? `\`${t.padrao}\`` : `[\`${t.padrao}\`](${base}/${t.padrao.replace("/", "/references/padrao/")})`;
+  const padrao = (t) => !t.padrao ? "— (corpo no passo que cria)" : t.pendente ? `\`${t.padrao}\`` : `[\`${t.padrao}\`](${base}/${padraoDir(t.padrao.split("/")[0])}/${t.padrao.split("/")[1]})`;
   const out = ["# Tipos de artefato", "",
     "Catálogo fechado: todo artefato da especificação e do ELM é de um destes tipos, e um toolkit não cria tipo. A coluna",
     "Desviável diz os passos de Cria que são o ponto de desvio (⇢): neles, o toolkit que traz uma skill com o fluxo e o",
@@ -565,10 +569,11 @@ function escreverSkill(m, s, out, ctx, versao = null) {
   } else if (fmYaml) {
     fs.writeFileSync(path.join(out, "SKILL.md"), comVersao(fmYaml, versao) + reescrever(fonte.slice(fmYaml.length), path.join(dir, "SKILL.md"), ctx));
   }
-  for (const p of m.padroes[s] || []) {
-    fs.mkdirSync(path.join(out, "references", "padrao"), { recursive: true });
-    fs.writeFileSync(path.join(out, "references", "padrao", p.nome), italico(p.dados?.resumo) + reescrever(p.corpo, p.arq, ctx).replace(/^\n+/, ""));
-  }
+  for (const [sub, ps] of [["", m.padroes[s] || []], ...(s === "sabia" ? [[PASTA_REQUISITOS, m.padroes[PASTA_REQUISITOS] || []]] : [])])
+    for (const p of ps) {
+      fs.mkdirSync(path.join(out, "references", "padrao", sub), { recursive: true });
+      fs.writeFileSync(path.join(out, "references", "padrao", sub, p.nome), italico(p.dados?.resumo) + reescrever(p.corpo, p.arq, ctx).replace(/^\n+/, ""));
+    }
 }
 
 /**
