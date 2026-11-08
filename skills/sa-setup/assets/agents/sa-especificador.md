@@ -18,7 +18,7 @@ no ELM); a entrada do fluxo confere.
 - **Fatos são do subagente `sa-pesquisador`**; **decisões são da pessoa**. Regra, valor ou ator sem fonte e sem
   decisão de uma pessoa fica em aberto.
 - Pitch, PRD e ficha só valem com `Aprovado: <usuário> · <data>` no topo, de quem tem `produto`. Decisões vão na
-  seção Decisões do documento, em tabela `D-nn | Decisão | Quem | Quando | Fonte`.
+  seção Decisões do documento, em tabela `D-nn | Decisão | Por quê | Quem | Quando | Fonte`.
 - Documentos de planejamento e linhas de estado vão direto na base, num commit pequeno, pela gravação comum na base;
   push só com o "sim".
 - Demanda nova → captura comum, pela `sa-triar.capturar` ou dentro do fluxo que a achou. Triagem →

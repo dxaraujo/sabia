@@ -31,9 +31,9 @@ Clientes com parcelas atrasadas ligam para a central para renegociar: 3.000 liga
 - Renegociação de contratos de empresa.
 
 ## Decisões
-| D-nn | Decisão | Quem | Quando | Fonte |
-|---|---|---|---|---|
-| D-01 | Só contratos de pessoa física | ana.souza (P.O.) | 2026-10-20 | conversa |
+| D-nn | Decisão | Por quê | Quem | Quando | Fonte |
+|---|---|---|---|---|---|
+| D-01 | Só contratos de pessoa física | <por quê, numa frase \| —> | ana.souza (P.O.) | 2026-10-20 | conversa |
 
 ## Em aberto
 | Pergunta | Para quem | Bloqueia |

@@ -105,8 +105,8 @@ test("prova: o framework compilado nos dois alvos tem o catálogo e o grafo de c
       assert.ok(fs.readFileSync(path.join(skills, sk, "references", fl, "grafo.md"), "utf8").includes(grafoAscii(m.fluxos[q])), `${alvo} ${q}`);
     }
     const tipos = fs.readFileSync(path.join(skills, "sabia/references/tipos.md"), "utf8");
-    for (const sg of ["HF", "REG", "GL", "EL", "ET", "CT", "ATA"]) assert.match(tipos, new RegExp(`^\\| \`${sg}\` \\|`, "m"), `${alvo} ${sg}`);
-    assert.match(tipos, /`GL` → `REG` → `EL` → `HF` → `ET`/);
+    for (const sg of ["HF", "UC", "REG", "MSG", "GL", "EL", "ET", "CT", "ATA"]) assert.match(tipos, new RegExp(`^\\| \`${sg}\` \\|`, "m"), `${alvo} ${sg}`);
+    assert.match(tipos, /`MSG` → `GL` → `REG` → `UC` → `EL` → `HF` → `ET`/);
     assert.ok(!tipos.includes("(pendente)"), alvo);
   }
 });
@@ -132,7 +132,7 @@ test("prova front+back: o toolkit casa (HF ⇢ skill casa) com o override do pro
   const o = { projeto: proj };
   const prd = s.rotaFluxo("sa-prd.prd", o);
   assert.match(prd, /^tipo ⇢ +escrever: HF +→ skill casa \(fluxo\/fluxo-hf\.md\) +toolkit casa 1\.0\.0$/m);
-  assert.match(prd, /│ \d+ escrever ⇢ +│──▶ ⇢ tipo HF → skill casa \(fluxo\/fluxo-hf\.md\) \(toolkit casa 1\.0\.0\)\n.*┘ {4}⇢ por tipo: HF, REG, EL\n/);
+  assert.match(prd, /│ \d+ escrever ⇢ +│──▶ ⇢ tipo HF → skill casa \(fluxo\/fluxo-hf\.md\) \(toolkit casa 1\.0\.0\)\n.*┘ {4}⇢ por tipo: HF, UC, REG, MSG, EL\n/);
   assert.match(prd, new RegExp(`│ \\d+ entender +│──▶ origem: projeto \\(base ${base}\\)`));
   assert.match(s.rotaFluxo("sa-especificar.elm", o), /│ \d+ editar ⇢ +│──▶ ⇢ tipo HF → skill casa/);
   assert.match(s.rotaFluxo("sa-especificar.reuniao", o), /│ \d+ escrever ⇢ +│──▶ ⇢ por tipo: ATA\n/);

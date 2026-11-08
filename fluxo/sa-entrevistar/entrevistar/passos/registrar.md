@@ -7,7 +7,7 @@ As respostas das rodadas, os fatos com fonte e as suposições.
 
 ## Faça
 
-1. **Decisões.** Uma linha por decisão na tabela `D-nn | Decisão | Quem | Quando | Fonte`, com o próximo D-nn do
+1. **Decisões.** Uma linha por decisão na tabela `D-nn | Decisão | Por quê | Quem | Quando | Fonte`, com o próximo D-nn do
    documento: Quem = `<nome> (<papel>)` ou `suposição`; Quando = `AAAA-MM-DD`; Fonte ∈ conversa · `ATA-nn` · e-mail ·
    `protótipo v<N>` (fato encontrado: o `arquivo:linha` ou o id do requisito).
 2. **Em aberto.** Uma linha `Pergunta | Para quem | Bloqueia`, com Bloqueia = ids de requisito, de fatia ou de

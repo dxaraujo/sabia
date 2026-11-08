@@ -31,6 +31,7 @@ desenvolvedor que não é o autor e lido por uma pessoa antes do merge.
 | Formato da spec | `<kiro — .kiro/specs/ft-<nnn>-<slug>/ | openspec — openspec/changes/ft-<nnn>-<slug>/>` |
 | REG com dados técnicos | `<não | sim>` |
 | Telas | `<não | sim>` — sim: o protótipo só vale aprovado pelo cliente |
+| Casos de uso | `<não | sim>` — sim: UC para o que o projeto já descreve em casos de uso; o novo, em HF |
 | Glossário · ADRs | `<GL do DOORS | .sabia/glossario.md | não há>` · `<docs/adr/ | não há>` |
 
 ## Verificação de aceite

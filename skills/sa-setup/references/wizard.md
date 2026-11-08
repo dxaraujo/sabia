@@ -211,6 +211,7 @@ Duas mensagens: a proposta (Status `⏸️ ainda não rodado`) e, depois do `ok`
 | 5 | ADRs | <`docs/adr/` | não há> | <🔍 | 🙋> |
 | 6 | REG com dados técnicos | <não ⭐ | sim> | 📐 |
 | 7 | Telas | <sim ⭐ (projeto `frontend`; o protótipo só vale aprovado pelo cliente) | não ⭐> | <🔍 tipos da etapa 1 | 📐> |
+| 8 | Casos de uso | <não ⭐ | sim (o que o projeto já descreve em UC; o novo, em HF)> | 📐 |
 
 ### Sustentação
 | # | Categoria | Descrição | Exemplo |

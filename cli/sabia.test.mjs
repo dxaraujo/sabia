@@ -634,7 +634,7 @@ test("toolkit com tipo → skill: instalar copia a skill como veio (nada compila
   // o passo que só cria um tipo não aceita desvio por para: o tipo vai por `tipos`
   const porPasso = casa(path.join(raiz, "tk-passo"), { tipos: undefined, skills: [{ caminho: "skills/casa/SKILL.md", papeis: ["especificador"],
     passo: { passo: "sa-prd.prd.escrever", para: "épico de exemplo" } }] });
-  assert.match(s.validarToolkit(porPasso, null, REPO).join(), /sa-prd\.prd\.escrever não aceita desvio de toolkit \(o tipo HF, REG, EL vai por `tipos`\)/);
+  assert.match(s.validarToolkit(porPasso, null, REPO).join(), /sa-prd\.prd\.escrever não aceita desvio de toolkit \(o tipo HF, UC, REG, MSG, EL vai por `tipos`\)/);
 });
 
 test("toolkit: skill com nome do Sabiá (sa-* ou sabia) é recusada", () => {

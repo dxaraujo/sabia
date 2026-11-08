@@ -12,7 +12,7 @@ A linha e a ficha da fatia ou do bug (Entrada, e Objetivo e Cobre na fatia de é
    ela busca pela `sa-pesquisar`.
 2. Bug ou P: uma rodada curta (a regra e os exemplos). M ou G: Example Mapping (regras, exemplos e perguntas).
 3. Cada regra vira uma linha `R<n> · <texto> · fonte: <D-nn | <sigla>-<id>>`. A decisão de uma pessoa vai para a
-   tabela Decisões da ficha (`D-nn | Decisão | Quem | Quando | Fonte`); sem fonte e sem decisão, a pergunta fica
+   tabela Decisões da ficha (`D-nn | Decisão | Por quê | Quem | Quando | Fonte`); sem fonte e sem decisão, a pergunta fica
    para o passo `duvidas`.
 4. O que não pode mudar vai para Não muda.
 

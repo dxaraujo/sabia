@@ -7,7 +7,7 @@ A ATA aprovada e o documento do item: `pitch.md` antes do go, `prd.md` depois, o
 
 ## Faça
 
-1. **Decisões.** Cada decisão vira uma linha `D-nn | Decisão | Quem | Quando | Fonte` na tabela Decisões do documento,
+1. **Decisões.** Cada decisão vira uma linha `D-nn | Decisão | Por quê | Quem | Quando | Fonte` na tabela Decisões do documento,
    com o mesmo D-nn da ATA e Fonte `ATA-<nn> [mm:ss]`.
 2. **Em aberto.** O que ficou sem decisão vai ao Em aberto do documento (`Pergunta | Para quem | Bloqueia`).
 3. **Gravar.** Um commit leva a ATA e o documento: o do passo `gravar` (`<id> registrar ATA-<nn>`).

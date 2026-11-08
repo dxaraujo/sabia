@@ -22,7 +22,7 @@
 ## Requisitos
 
 ### <sigla>-<id> · <título>
-**Tipo:** HF | REG | EL | GL · **Ação:** inclui | altera | exclui
+**Tipo:** HF | UC | REG | MSG | EL | GL · **Ação:** inclui | altera | exclui
 
 <corpo pelo padrão do tipo>
 
@@ -32,9 +32,9 @@
 
 ## Decisões
 
-| D-nn | Decisão | Quem | Quando | Fonte |
-|---|---|---|---|---|
-| D-04 | <decisão> | <nome> (<papel>) \| suposição | <AAAA-MM-DD> | conversa \| ATA-nn \| e-mail \| protótipo v<N> |
+| D-nn | Decisão | Por quê | Quem | Quando | Fonte |
+|---|---|---|---|---|---|
+| D-04 | <decisão> | <por quê, numa frase \| —> | <nome> (<papel>) \| suposição | <AAAA-MM-DD> | conversa \| ATA-nn \| e-mail \| protótipo v<N> |
 
 ## Em aberto
 
@@ -66,4 +66,6 @@
 - [ ] Todo requisito com id, Tipo e Ação.
 - [ ] Nenhuma regra, valor ou ator sem fonte (D-nn, ATA, requisito vigente ou código).
 - [ ] Todo Em aberto com Para quem e Bloqueia.
-- [ ] EL só com Telas = `sim` e com o protótipo aprovado (D-nn `Protótipo v<N> aprovado`).
+- [ ] EL só com Telas = `sim` e com o protótipo aprovado (D-nn `Protótipo v<N> aprovado`); UC só com Casos de uso = `sim`.
+- [ ] Cada requisito confere com o Checklist do padrão do tipo (o do Sabiá, ou o do toolkit que desvia o tipo).
+- [ ] Sem termo vago: superlativo, linguagem subjetiva, pronome sem referente, "etc.", "entre outros", "se possível", "quando for o caso".

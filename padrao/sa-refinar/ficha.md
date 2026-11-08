@@ -49,10 +49,10 @@ Então o desconto aplicado é de R$ 50,00
 | O teto vale para contratos renegociados? | ana.souza | CT-02 |
 
 ## Decisões
-| D-nn | Decisão | Quem | Quando | Fonte |
-|---|---|---|---|---|
-| D-01 | Teto de 10% do valor da parcela | ana.souza (P.O.) | 2026-10-15 | conversa |
-| D-02 | O teto vale por parcela | ana.souza (P.O.) | 2026-10-15 | ATA-03 |
+| D-nn | Decisão | Por quê | Quem | Quando | Fonte |
+|---|---|---|---|---|---|
+| D-01 | Teto de 10% do valor da parcela | acima disso o desconto exige renegociação do contrato | ana.souza (P.O.) | 2026-10-15 | conversa |
+| D-02 | O teto vale por parcela | — | ana.souza (P.O.) | 2026-10-15 | ATA-03 |
 
 ## DoR
 - [x] entrada mínima do tipo

@@ -192,7 +192,7 @@ Kiro (completo e Quick Spec):
 | CT-01 <título> | <chamada, tela ou job> | <o "Então" do cenário, com os mesmos valores visíveis> | <resposta · banco · log> |
 
 ## Decisões técnicas
-- <decisão> — <motivo> (<ADR NNNN | local>)
+- <decisão> — <motivo>; <consequência: o que fica mais fácil ou mais difícil> (<ADR NNNN | local>)
 
 ## Riscos
 <concorrência, volume, dependências, DDL pendente>
@@ -208,7 +208,7 @@ OpenSpec (só completo):
 **Goals:** <…> · **Non-Goals:** <…>
 
 ## Decisions
-- <decisão> — <motivo> (<ADR NNNN | local>)
+- <decisão> — <motivo>; <consequência> (<ADR NNNN | local>)
 <!-- contratos e dados; o Contrato de pronto (Cenário CT-nn · Como executar · Esperado · Onde verificar) também aqui -->
 
 ## Risks / Trade-offs
@@ -219,6 +219,61 @@ O Esperado do Contrato de pronto repete o "Então" do cenário palavra por palav
 interno que o produz vai em Data Models. A decisão que atravessa fatias vira ADR no MR; a local fica aqui. Onde o
 projeto mantém ET (`ET as-built: sim` na seção ELM do `sabia.md`), Components and Interfaces, Data Models e Decisões
 técnicas (OpenSpec: Decisions) formam a ET publicada; a codificação os ajusta ao que foi feito antes do MR.
+
+### ET as-built
+
+Onde o projeto mantém ET, o as-built escreve essas seções a partir do código, nesta forma (no OpenSpec, tudo dentro
+de Decisions, cada parte num `###`). Na divergência com o plano, vale o código.
+
+````markdown
+## Components and Interfaces
+**Módulo:** <módulo> · **Schema:** <schema> · **Tipo:** Consulta | Cadastro | Processamento | Integração
+`<Componente.operacao(parâmetros)>`: <o que faz>
+
+### Q01 - <consulta>
+**Objetivo:** <o que retorna> · **Usada em:** <componente> · **Parâmetros:** <…>
+```sql
+SELECT …
+```
+**Filtros por perfil:** <perfil>: `AND <condição>`
+
+### <INSERT | UPDATE | DELETE> - <operação>
+| Campo | Tipo | Valor vem de | Observação |
+|---|---|---|---|
+| <ID_INSCRICAO> | NUMBER | Sequence | <SQ_INSCRICAO.NEXTVAL> |
+**Conforme** REG-<id>
+
+### Validações
+| V-nn | Validação | Lógica | Mensagem | Regra |
+|---|---|---|---|---|
+| V01 | <o que confere> | <consulta ou expressão> | MSG-<id> | REG-<id> |
+
+### Integrações   <!-- só se houver -->
+**<sistema>:** <síncrona | assíncrona | lote> · <REST | fila | arquivo | tabela de comunicação> · <campos e valores>
+
+### JOBs   <!-- só se houver -->
+**<job>:** <gatilho e frequência> · <tabela de controle> · <situações e valores>
+
+## Data Models
+| Tabela | Alias | Descrição | Operação |
+|---|---|---|---|
+| <TB_TURMA> | t | <turma do evento> | SELECT |
+Relacionamentos: <TB_INSCRICAO> → <TB_TURMA> · N:1 · <ID_TURMA>
+
+### Campos da tela → colunas   <!-- só com tela -->
+| Campo da tela | Coluna | Informações adicionais |
+|---|---|---|
+| <Vagas> | <QT_VAGAS> | <livres = QT_VAGAS − inscritos> |
+
+## Decisões técnicas
+- <decisão> — <motivo>; <consequência> (<ADR NNNN | local>)
+````
+
+- A ET não cita HF nem EL; a publicação liga a ET às HF do Cobre no DOORS. Cita REG e MSG pelo id; a validação cita
+  a REG que aplica.
+- Permissão e abrangência ficam na HF e na REG, não aqui. A DDL nova é um item BD do `tasks.md`; aqui entra a tabela
+  como ficou.
+- Nomes de tabela e coluna na forma original, com a convenção do steering do projeto.
 
 ## `tasks.md`
 

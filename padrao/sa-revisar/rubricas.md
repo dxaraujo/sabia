@@ -66,6 +66,7 @@ avaliados em separado e relatados em tabelas próprias: um não compensa nem esc
 | C6 | As tarefas `[x]` do `tasks.md` têm código no diff | BLOQUEANTE |
 | C7 | O Cobre do MR é o da ficha, e o diff não muda comportamento de requisito fora dele (diverge: destino `volta-spec`) | IMPORTANTE |
 | C8 | Escopo: nada além da fatia (funcionalidade não pedida, arquivo fora do design, refatoração oportunista) | IMPORTANTE |
+| C20 | Onde há `CT.csv` (quick e completo, no MR), ele segue o padrão do CT em vigor (o do Sabiá, ou o do toolkit que desvia o CT): uma linha por cenário ✅, os blocos da Descrição na ordem e o RESULTADO ESPERADO igual ao "Então" | IMPORTANTE |
 
 **Eixo padrões** — o diff deixa o código pior para quem vem depois?
 
