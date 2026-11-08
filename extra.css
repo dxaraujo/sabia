@@ -40,3 +40,119 @@ details.fluxo summary{cursor:pointer;padding:12px 14px;display:flex;flex-wrap:wr
 details.fluxo summary span{font-size:12.5px;color:var(--muted)}
 details.fluxo summary small{flex-basis:100%;color:var(--ink);font-size:13.5px}
 details.fluxo pre.grafo{margin:0 12px 12px;font-size:12.3px;line-height:1.22}
+/* página Como funciona: o caminho de um pedido, como conversa sobre um trilho central */
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.jornada{--trilha-col:44px}
+.e-tri{--c:var(--cyan);--on:#022338}.e-ref{--c:var(--lime);--on:#022338}.e-pla{--c:var(--navy);--on:#fff}.e-dev{--c:var(--brand);--on:#022338}.e-rev{--c:var(--orange);--on:#022338}.e-sus{--c:var(--teal);--on:#fff}
+[data-modo="escuro"] .jornada .e-pla{--c:var(--acento);--on:#022338}
+.estagios{position:sticky;top:calc(env(safe-area-inset-top,0px) + 52px);z-index:15;display:flex;gap:4px;overflow-x:auto;background:var(--bg);padding-block:8px;margin-top:16px;border-bottom:1px solid var(--line)}
+.estagios a{flex:1 0 auto;text-align:center;text-decoration:none;color:var(--ink);font:500 13px/1 var(--body);padding:10px 12px;border-radius:var(--r-sm);box-shadow:inset 0 -3px 0 var(--c)}
+.estagios a:hover{background:var(--soft);color:var(--title)}
+.estagios a[aria-current]{background:var(--c);color:var(--on);box-shadow:none}
+#mapa-geral{padding-block:18px 0}
+.mapa-fluxo .nc rect{fill:var(--c);stroke:none}
+.mapa-fluxo .nc.ncx rect{fill:var(--card);stroke:var(--line)}
+.mapa-fluxo .nc text{fill:var(--on)}
+.mapa-fluxo .nc.ncx text{fill:var(--title)}
+.mapa-fluxo .nt{font:600 14px var(--display)}
+.mapa-fluxo .ns{font:400 11.5px var(--body)}
+.mapa-fluxo a:hover rect{filter:brightness(1.08)}
+.mapa-fluxo a:focus-visible{outline:none}
+.mapa-fluxo a:focus-visible rect{stroke:var(--title);stroke-width:2.5}
+.ler{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px 40px;align-items:center;margin-top:26px}
+.ler h2{font-size:clamp(22px,2.4vw,28px);margin-bottom:8px}
+.ler p{font-size:16px;line-height:24px;max-width:58ch}
+.ler-b{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 20px;font-size:13.5px;color:var(--title)}
+.ler-b li{display:flex;align-items:center;gap:10px}
+.fala.amostra{display:inline-block;font-size:13px;line-height:18px;padding:5px 9px;flex:none}
+.exemplo{margin:30px auto 0;width:fit-content;max-width:100%;text-align:center;color:var(--muted);font-size:14px}
+section.etapa{position:relative;padding-block:0 26px;scroll-margin-top:112px}
+.etapa::before{content:"";position:absolute;inset-block:0;left:calc(50% - 2px);width:4px;background:var(--c)}
+.e-cab{position:relative;width:fit-content;max-width:min(620px,100%);margin:0 auto 24px;padding:26px 24px 12px;background:var(--bg);text-align:center}
+.e-cab .n{display:inline-grid;place-items:center;width:34px;height:34px;margin-bottom:8px;border-radius:50%;background:var(--c);color:var(--on);font:600 16px/1 var(--display)}
+.e-cab h2{font-size:clamp(24px,3vw,32px);margin-bottom:6px}
+.e-cab p{color:var(--muted)}
+.trilha{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:20px}
+.t-p{display:grid;grid-template-columns:minmax(0,1fr) var(--trilha-col) minmax(0,1fr);align-items:start}
+.voce{display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:0}
+.quem{font:600 12.5px/16px var(--display);color:var(--muted)}
+.fala{max-width:46ch;margin:0;padding:12px 15px;background:var(--soft);color:var(--title);font-size:16px;line-height:24px;border-radius:14px 14px 3px 14px;box-shadow:var(--raised)}
+.t-d .fala{background:color-mix(in srgb,var(--yellow) 26%,var(--card))}
+mark{background:linear-gradient(transparent 56%,color-mix(in srgb,var(--yellow) 70%,transparent) 0);color:inherit;font-weight:600;padding-inline:1px}
+.alt{max-width:46ch;margin:0;font-size:12.5px;line-height:17px;color:var(--muted);text-align:right}
+.ponto{position:relative;z-index:1;justify-self:center;display:block;flex:none;width:16px;height:16px;margin-top:15px;border-radius:50%;background:var(--bg);border:3.5px solid var(--c,var(--brand))}
+.ler-b .ponto{margin:0}
+.t-d>.ponto,.ponto.dec{border-radius:2px;transform:rotate(45deg);background:var(--yellow);border-color:var(--title)}
+.t-p>.voce>.quem+.fala{margin-top:0}
+.t-p:has(.quem)>.ponto{margin-top:37px}
+.faz{min-width:0;padding-top:8px;display:flex;flex-direction:column;gap:5px;align-items:flex-start}
+.t-p:has(.quem)>.faz{padding-top:30px}
+.faz p{max-width:58ch}
+.fl{text-decoration:none}
+.fl code{font-size:12.5px;color:var(--acento)}
+.fl:hover code{text-decoration:underline}
+.sai{font-size:13px;color:var(--muted)}
+.t-s{position:relative;z-index:1;align-self:center;display:flex;flex-direction:column;align-items:center;gap:5px;padding:6px 14px;background:var(--bg)}
+.loz{display:inline-block;font:700 11px/18px var(--display);text-transform:uppercase;letter-spacing:.02em;padding:0 7px;border-radius:3px;background:var(--c,var(--navy));color:var(--on,#fff);flex:none}
+.ler-b .loz{--c:var(--navy)}
+[data-modo="escuro"] .ler-b .loz{--c:var(--acento);--on:#022338}
+.t-s .leg{font-size:12.5px;line-height:1;color:var(--muted)}
+.garfo{position:relative;z-index:1;background:var(--bg);padding:18px 0 6px;margin-top:6px;text-align:center;color:var(--muted)}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px;text-align:left}
+.g3 a{display:flex;flex-direction:column;gap:3px;padding:12px 14px;text-decoration:none;background:var(--card);box-shadow:var(--raised),inset 0 3px 0 var(--c);border-radius:var(--r);color:var(--ink)}
+.g3 a:hover{box-shadow:var(--overlay),inset 0 3px 0 var(--c)}
+.g3 b{font:600 15px/20px var(--display);color:var(--title)}
+.desvio{position:relative;z-index:1;margin-top:24px;padding:18px 20px 20px;background:var(--grey);border:1.5px dashed var(--line);border-radius:var(--r);scroll-margin-top:112px}
+#epico{scroll-margin-top:112px}
+.desvio h3,.rotas-bloco h3,.modos-bloco h3{font-size:18px;margin-bottom:6px}
+.d-txt{max-width:92ch}
+.desvio .trilha{margin-top:14px;position:relative}
+.desvio .trilha::before{content:"";position:absolute;inset-block:0;left:calc(50% - 1.5px);width:3px;background:repeating-linear-gradient(180deg,var(--c) 0 7px,transparent 7px 12px)}
+.desvio .t-s,.desvio .ponto{background:var(--grey)}
+.desvio .t-d>.ponto{background:var(--yellow)}
+.desvio .t-p{position:relative}
+.modos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:12px 0 0}
+.modos>div{padding:2px 18px;border-left:3px solid var(--c)}
+.modos dt{font:600 14px/20px var(--display);color:var(--title)}
+.modos dd{margin:3px 0 0;font-size:14px}
+.rotas-bloco,.modos-bloco{position:relative;z-index:1;margin-block:24px;padding:18px 0;background:var(--bg)}
+.modos-bloco{padding-top:0;margin-top:-8px}
+.t-rotas{min-width:760px}
+.t-rotas thead th{width:27%;padding:14px 14px 12px;background:var(--grey);color:var(--muted);font:500 13px/18px var(--body);letter-spacing:0;text-transform:none;border-bottom:2px solid var(--c)}
+.t-rotas thead th b{display:block;font:600 21px/26px var(--display);color:var(--title)}
+.t-rotas thead td{background:var(--grey);border-bottom:2px solid var(--c)}
+.t-rotas tbody th{width:19%;background:none;color:var(--title);font:600 13px/20px var(--display);letter-spacing:0;text-transform:none}
+.t-rotas tbody tr:not(:last-child) th{border-bottom:1px solid var(--grey2)}
+.t-rotas td{color:var(--ink);line-height:22px}
+.rodape{margin-top:10px;color:var(--muted);font-size:13.5px}
+section.sempre{padding-block:36px 8px}
+.sempre h2{font-size:clamp(22px,2.4vw,28px);margin-bottom:14px}
+.sempre .fr{color:var(--title);font-size:15px;white-space:nowrap}
+.sempre td:last-child{white-space:nowrap}
+.mais{margin-top:18px;font-size:15px}
+.mais a{color:var(--acento)}
+@media (max-width:820px){
+ .ler,.g3,.modos{grid-template-columns:minmax(0,1fr)}
+ .modos{gap:12px}
+ section.etapa::before{left:13px}
+ .e-cab{margin:0 0 18px;padding:22px 0 10px 40px;text-align:left}
+ .e-cab .n{position:absolute;left:-2px;top:22px;margin:0}
+ .t-p{grid-template-columns:30px minmax(0,1fr)}
+ .voce{grid-column:2;grid-row:1;align-items:flex-start}
+ .ponto,.t-p:has(.quem)>.ponto{grid-column:1;grid-row:1;justify-self:start;margin:14px 0 0 7px}
+ .t-p:has(.quem)>.ponto{margin-top:36px}
+ .faz,.t-p:has(.quem)>.faz{grid-column:2;grid-row:2;padding-top:10px}
+ .alt{text-align:left}
+ .fala{border-radius:14px 14px 14px 3px}
+ .t-s{align-self:flex-start;align-items:flex-start;margin-left:30px;padding-inline:0}
+ .garfo{text-align:left}
+ .desvio{padding:14px}
+ .desvio .trilha::before{left:7px}
+ .desvio .t-p{grid-template-columns:26px minmax(0,1fr)}
+ .desvio .ponto,.desvio .t-p:has(.quem)>.ponto{margin-left:0}
+ .desvio .t-s{margin-left:26px}
+ .sempre .fr,.sempre td:last-child{white-space:normal}
+}
+.t-rotas tbody tr:last-child th{border-bottom:0}
+[data-modo="escuro"] mark{background:linear-gradient(transparent 86%,var(--yellow) 0)}
+@media (max-width:820px){.ler-b{grid-template-columns:minmax(0,1fr)}}

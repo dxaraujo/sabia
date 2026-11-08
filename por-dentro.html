@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="pt-BR" data-sobria="sobria-sabia">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Por dentro · Sabiá</title>
+<meta name="description" content="Por dentro do Sabiá: fluxos e passos na fonte, o catálogo de tipos, a compilação as-built das skills para o Kiro e o opencode, os 5 agentes gerados e a execução.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="sabia.css">
+<link rel="stylesheet" href="extra.css">
+<link rel="stylesheet" href="tema.css">
+<script src="tema.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá</span></a>
+    <span class="ver">2.1.10 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
+    <span class="autor">Desenvolvido por <b>Daniel Xavier Araújo</b></span>
+    <a class="gh" href="https://github.com/dxaraujo/sabia">GitHub</a>
+  </div>
+  <nav class="tabs" aria-label="Páginas">
+    <a href="index.html">Início</a><a href="como-funciona.html">Como funciona</a><a href="fluxos.html">Fluxos</a><a href="papeis.html">Papéis e agentes</a><a href="arquivos.html">Arquivos</a><a href="ciclo.html">Ciclo da fatia</a><a href="toolkits.html">Toolkits</a><a href="elm.html">IBM ELM</a><a href="aprovacoes.html">Aprovações e travas</a><a href="glossario.html">Termos e glossário</a><a href="por-dentro.html" aria-current="page">Por dentro</a>
+  </nav>
+  <header class="sign page"><h1>Por dentro do Sabiá</h1><p class="lead">O Sabiá é escrito como <b>fluxos</b>: cada passo num arquivo, com id, travas e saídas. Na instalação, o CLI <b>compila</b> os fluxos em skills para o Kiro e o opencode, na pasta do usuário. No projeto ficam a configuração, os 5 agentes gerados e o que o projeto customizou.</p>
+  <nav class="indice" aria-label="Nesta página"><a href="#camadas">As três camadas</a><a href="#fonte">A fonte: fluxos e passos</a><a href="#ids">Ids, chamadas e passagens</a><a href="#travas">Travas</a><a href="#tipos">Tipos de artefato</a><a href="#compilar">A compilação</a><a href="#agentes">Os agentes gerados</a><a href="#execucao">Em execução</a><a href="#rota">sabia rota</a></nav>
+  <div class="bands" aria-hidden="true"><i></i><i></i><i></i></div></header>
+
+<section id="camadas">
+  <div class="lead-sec"><h2>As três camadas</h2><p>A fonte fica no framework, a compilação na pasta do usuário e as decisões no projeto. O projeto nunca recebe uma cópia das skills.</p></div>
+  <figure class="diag">
+   <svg viewBox="0 0 1070 470" role="img" aria-labelledby="d1t"><title id="d1t">Framework, usuário e projeto: o que o sabia instalar e a sa-setup gravam em cada camada</title>
+    <defs>
+     <marker id="ponta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--title)"/></marker>
+     <marker id="ponta-l" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--orange)"/></marker>
+     <marker id="ponta-t" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--teal)"/></marker>
+    </defs>
+    <rect x="10" y="10" width="300" height="450" rx="16" style="fill:var(--soft)"/>
+    <text class="t" x="28" y="40">1 · Framework (a fonte)</text><text class="s" x="28" y="60">baixado em ~/.sabia/framework/</text>
+    <rect class="cx" x="26" y="78" width="268" height="74" rx="10"/>
+    <text class="m" x="40" y="102">fluxo/&lt;skill&gt;/&lt;fluxo&gt;/</text>
+    <text class="s" x="40" y="121">mestre: passos, travas, saídas</text>
+    <text class="s" x="40" y="140">passos/&lt;passo&gt;.md, um por passo</text>
+    <rect class="cx" x="26" y="164" width="268" height="56" rx="10"/>
+    <text class="m" x="40" y="188">padrao/&lt;skill&gt;/ · requisitos/</text>
+    <text class="s" x="40" y="207">formato dos artefatos e dos tipos</text>
+    <rect class="cx" x="26" y="232" width="268" height="56" rx="10"/>
+    <text class="m" x="40" y="256">skills/&lt;skill&gt;/SKILL.md</text>
+    <text class="s" x="40" y="275">front-matter, H1 e references</text>
+    <rect class="cx" x="26" y="300" width="268" height="56" rx="10"/>
+    <text class="m" x="40" y="324">fluxo/travas.json · tipos.json</text>
+    <text class="s" x="40" y="343">travas e catálogo de tipos</text>
+    <rect class="cx" x="26" y="368" width="268" height="74" rx="10"/>
+    <text class="m" x="40" y="392">skills/sa-setup/</text>
+    <text class="s" x="40" y="411">perfis.json: 5 agentes, 2 permissões</text>
+    <text class="s" x="40" y="430">gerar_agentes.py: o gerador</text>
+    <rect x="385" y="10" width="300" height="450" rx="16" style="fill:var(--grey)"/>
+    <text class="t" x="403" y="40">2 · Usuário (a compilação)</text><text class="s" x="403" y="60">uma vez por máquina, por alvo</text>
+    <rect class="cx" x="401" y="78" width="268" height="74" rx="10"/>
+    <text class="m" x="415" y="102">~/.sabia/compilado/&lt;alvo&gt;/</text>
+    <text class="s" x="415" y="121">uma skill por sa-*: SKILL.md</text>
+    <text class="s" x="415" y="140">com a tabela dos fluxos</text>
+    <rect style="fill:var(--brand)" x="401" y="176" width="268" height="56" rx="10"/>
+    <text style="fill:var(--on-brand)" class="m w" x="415" y="200">opencode</text>
+    <text style="fill:var(--on-brand)" class="s w" x="415" y="219">~/.config/opencode/skills/</text>
+    <rect style="fill:var(--navy)" x="401" y="244" width="268" height="56" rx="10"/>
+    <text style="fill:var(--on-navy)" class="m w" x="415" y="268">Kiro (motor v3)</text>
+    <text style="fill:var(--on-navy)" class="s w" x="415" y="287">power em ~/.kiro/powers/installed/sabia/</text>
+    <rect class="cx" x="401" y="324" width="268" height="56" rx="10"/>
+    <text class="m" x="415" y="348">~/.sabia/toolkits/&lt;nome&gt;/</text>
+    <text class="s" x="415" y="367">fora da compilação</text>
+    <rect class="cx" x="401" y="392" width="268" height="56" rx="10"/>
+    <text class="m" x="415" y="416">~/.sabia/inventario.json</text>
+    <text class="s" x="415" y="435">o que foi instalado, com sha</text>
+    <rect x="760" y="10" width="300" height="450" rx="16" style="fill:var(--soft)"/>
+    <text class="t" x="778" y="40">3 · Projeto (as decisões)</text><text class="s" x="778" y="60">versionado no git do projeto</text>
+    <rect class="cx" x="776" y="78" width="268" height="56" rx="10"/>
+    <text class="m" x="790" y="102">.sabia/sabia.md</text>
+    <text class="s" x="790" y="121">steering + Regras aprendidas</text>
+    <rect class="cx" x="776" y="146" width="268" height="56" rx="10"/>
+    <text class="m" x="790" y="170">.sabia/config/agentes.json</text>
+    <text class="s" x="790" y="189">escolhas do projeto, entrada do gerador</text>
+    <rect class="cx" x="776" y="214" width="268" height="74" rx="10"/>
+    <text class="m" x="790" y="238">.kiro/agents/sa-*.json</text>
+    <text class="s" x="790" y="257">.opencode/agents/sa-*.md</text>
+    <text class="s" x="790" y="276">5 agentes gerados</text>
+    <rect style="fill:var(--nota);stroke:var(--yellow)" x="776" y="300" width="268" height="74" rx="10"/>
+    <text class="m" x="790" y="324">.sabia/fluxo/ · padrao/</text>
+    <text class="s" x="790" y="343">só o que o projeto customizou</text>
+    <text class="s" x="790" y="362">(override esparso, harness)</text>
+    <rect class="cx" x="776" y="386" width="268" height="56" rx="10"/>
+    <text class="m" x="790" y="410">.sabia/planejamento/</text>
+    <text class="s" x="790" y="429">backlog, equipe, sprints, épicos, fatias</text>
+    <path class="seta" d="M310 140H383"/><text class="m" x="347" y="112" text-anchor="middle">sabia</text><text class="m" x="347" y="128" text-anchor="middle">instalar</text>
+    <path class="seta" d="M535 152V174"/>
+    <path class="seta" d="M685 140H758"/><text class="m" x="722" y="128" text-anchor="middle">sa-setup</text>
+    <path class="seta ret" d="M685 352 C722 352 730 330 774 330"/><text class="s lb" x="722" y="372" text-anchor="middle">toolkit</text>
+   </svg>
+   <figcaption>O <code>sabia instalar</code> compila o framework em skills para cada alvo. A <code>sa-setup</code>, na sessão padrão, grava no projeto a configuração e os agentes. A seta tracejada mostra o toolkit, que entra pelos agentes, não pela compilação.</figcaption>
+  </figure>
+  <div class="duas">
+   <div class="bloco"><h3>Por que compilar</h3><p>A fonte é escrita para pessoas: um passo por arquivo, sem repetir regras, com ids no lugar de caminhos. O que o agente lê tem outra forma: uma skill com o índice dos fluxos e os links já no caminho da ferramenta. O compilador faz essa ponte uma vez por instalação e confere o resultado antes de instalar.</p></div>
+   <div class="bloco"><h3>Por que nada vai para o projeto</h3><p>As skills são as mesmas para todos os projetos da máquina. O projeto guarda só o que é dele: o <code>sabia.md</code>, o <code>agentes.json</code>, os agentes gerados e, quando houver, o passo ou o padrão que ele mudou. <code>sabia atualizar</code> recompila sem tocar em nenhum repositório; no projeto, "atualizar os agentes do Sabiá" regenera os agentes.</p></div>
+  </div>
+</section>
+
+<section id="fonte">
+  <div class="lead-sec"><h2>A fonte: fluxos e passos</h2><p>Uma skill tem um ou mais fluxos: são 48 fluxos em 15 skills, mais a skill <code>sabia</code>, o guia, que não tem fluxo. Cada fluxo tem um <b>mestre</b>, que diz os passos e as arestas, e um arquivo por passo, que diz o que fazer.</p></div>
+  <div class="duas">
+   <div class="bloco"><h3>O mestre</h3><p><code>fluxo/sa-desenvolver/codificar/codificar.md</code>: um JSON no front-matter e, no corpo, o propósito, os vizinhos e as regras do fluxo.</p>
+<pre class="cod">---
+{<span class="k">"fluxo"</span>: <span class="v">"codificar"</span>, <span class="k">"dono"</span>: <span class="v">"sa-desenvolvedor"</span>,
+ <span class="k">"quando"</span>: [<span class="v">"codificar a fatia com TDD e backpressure…"</span>,
+   <span class="v">"implementa a FT-031"</span>, <span class="v">"terminei"</span>, <span class="v">"abre o MR"</span>, …],
+ <span class="k">"travas_gerais"</span>: [<span class="v">"sim-da-pessoa"</span>, <span class="v">"backpressure"</span>, <span class="v">"sem-force"</span>,
+   <span class="v">"elm-pela-sa-elm"</span>],
+ <span class="k">"passos"</span>: [
+   {<span class="k">"id"</span>: <span class="v">"entrada"</span>, <span class="k">"de"</span>: <span class="v">"entrada"</span>, <span class="k">"papel"</span>: <span class="v">"desenvolvedor"</span>, <span class="k">"branch"</span>: <span class="v">"fatia"</span>},
+   {<span class="k">"id"</span>: <span class="v">"ler"</span>, <span class="k">"saidas"</span>: {<span class="v">"volta da codificação manual ('terminei')"</span>: <span class="v">"validar"</span>}},
+   …
+   {<span class="k">"id"</span>: <span class="v">"tarefa"</span>, <span class="k">"desvio"</span>: true, <span class="k">"travas"</span>: [<span class="v">"toolkit-sem-commit"</span>],
+    <span class="k">"saidas"</span>: {<span class="v">"ainda há tarefa"</span>: <span class="v">"tarefa"</span>, <span class="v">"a tarefa precisa de DDL"</span>: <span class="v">"banco"</span>, …}},
+   …
+   {<span class="k">"id"</span>: <span class="v">"revisar"</span>, <span class="k">"chama"</span>: <span class="v">"sa-revisar.revisar"</span>,
+    <span class="k">"saidas"</span>: {<span class="v">"corrige: tarefas [R&lt;n&gt;]"</span>: <span class="v">"tarefa"</span>, <span class="v">"volta-plano"</span>: <span class="v">"→ sa-plano.replanejar"</span>, …}},
+   {<span class="k">"id"</span>: <span class="v">"verificar"</span>, <span class="k">"chama"</span>: <span class="v">"sa-verificar.verificar"</span>,
+    <span class="k">"travas"</span>: [<span class="v">"aceite-independente"</span>], …},
+   …
+   {<span class="k">"id"</span>: <span class="v">"avisar"</span>, <span class="k">"chama"</span>: <span class="v">"sa-elm.horas"</span>, <span class="k">"travas"</span>: [<span class="v">"revisao-independente"</span>],
+    <span class="k">"saidas"</span>: {<span class="v">"MR já aprovado e CI verde"</span>: <span class="v">"→ sa-desenvolver.encerrar"</span>, …}},
+   {<span class="k">"id"</span>: <span class="v">"captura"</span>, <span class="k">"de"</span>: <span class="v">"captura"</span>},
+   {<span class="k">"id"</span>: <span class="v">"gravar"</span>, <span class="k">"de"</span>: <span class="v">"gravar-na-base"</span>}
+ ]}
+---
+# Codificar — TDD, backpressure e MR
+Do plano aprovado (ou da rota trivial) ao MR aberto…
+
+## Entrada: vizinhos
+- sem branch `&lt;id&gt;` → `sa-desenvolver.iniciar`
+- rota rápida ou completo com Fase — (plano não aprovado) → `sa-plano.plano`
+- MR aprovado com CI verde, ou MR já mergeado → `sa-desenvolver.encerrar`</pre>
+   <ul><li><code>dono</code>: um dos 5 agentes; roda o fluxo e recebe no prompt o que o projeto mudou nele.</li><li><code>quando</code>: obrigatório quando a skill tem dois fluxos ou mais. A descrição e as frases de exemplo decidem o fluxo certo para o pedido.</li><li><code>de</code>: o passo vem de um arquivo comum de <code>fluxo/</code>: <code>entrada.md</code>, <code>captura.md</code> (a única captura, que grava o tipo) ou <code>gravar-na-base.md</code> (commit pequeno de estado direto na base).</li><li><code>papel</code> e <code>branch</code>: o passo <code>entrada</code> confere, nesta ordem, se o item existe, se é terminal, se está adiado, se é deste fluxo, o papel (a booleana <code>desenvolvedor</code>, <code>especificador</code> ou <code>produto</code> do <code>equipe.json</code>, ou <code>nenhuma</code>), o dono e, com <code>branch</code> <code>fatia</code>, a branch <code>&lt;id&gt;</code> do item. A sprint nunca é pré-condição. A seção <b>Entrada: vizinhos</b> diz a dona de cada estado que não é deste fluxo.</li><li><code>desvio</code>: o passo aceita um toolkit pelo <code>para</code> e pelos arquivos. Só <code>sa-desenvolver.codificar.tarefa</code> tem. O desvio <b>por tipo</b> vem do catálogo, nos passos que escrevem um tipo desviável.</li><li><code>removivel</code>: o projeto só remove passo com essa marca e sem trava. Nenhum passo do Sabiá a tem.</li></ul></div>
+   <div class="bloco"><h3>Um passo</h3><p><code>fluxo/sa-desenvolver/codificar/passos/tarefa.md</code>: o resumo no front-matter e quatro seções, sempre as mesmas.</p>
+<pre class="cod">---
+{<span class="k">"resumo"</span>: <span class="v">"Uma tarefa por vez em TDD: teste pelo ponto de teste,
+ vermelho, verde, arrumar; backpressure do trecho tocado,
+ marca e commit pequeno."</span>}
+---
+<span class="k">## Entrada</span>
+A primeira tarefa não marcada do tasks.md; no trivial, a
+mudança pedida é a tarefa única.
+
+<span class="k">## Faça</span>
+2. Vermelho: o teste pelo ponto de teste do design.md…
+   O teste de um cenário leva o CT-nn no nome.
+3. Verde: a menor mudança de produção…
+5. Backpressure: compile e rode os testes do trecho tocado…
+6. Marque - [x] no tasks.md… e faça um commit pequeno.
+8. No manual: este passo é da pessoa; o fluxo espera o "terminei".
+
+<span class="k">## Saída</span>
+…
+
+<span class="k">## Pare se</span>
+…</pre>
+   <p>As travas não aparecem no corpo do passo. O compilador escreve as travas de cada passo na tabela do fluxo e o texto delas na seção Travas do <code>SKILL.md</code>. Assim a regra fica num só lugar.</p>
+   <h3>Padrões e regras</h3><ul><li><code>padrao/&lt;skill&gt;/*.md</code>: o formato dos documentos da skill: o <code>status.md</code>, o MR e o <code>loop-&lt;id&gt;.md</code> da <code>sa-desenvolver</code>; o pitch e a ficha da <code>sa-refinar</code>; o PRD; o plano e o <code>research.md</code>; as rubricas L e C; o registro da Sustentação; o arquivo de <code>elm/</code> da <code>sa-elm</code>.</li><li><code>padrao/requisitos/padrao-&lt;tipo&gt;.md</code>: o corpo de cada tipo do catálogo, compilado na skill <code>sabia</code>.</li><li><code>fluxo/&lt;skill&gt;/regras.md</code>: as regras que valem para todos os fluxos da skill.</li></ul><p>Os três entram na skill compilada.</p></div>
+  </div>
+</section>
+
+<section id="ids">
+  <div class="lead-sec"><h2>Ids, chamadas e passagens</h2><p>Todo passo tem um id <code>skill.fluxo.passo</code>, como <code>sa-desenvolver.codificar.tarefa</code>. Os fluxos se ligam de dois jeitos: <b>chama</b>, que volta ao passo, e <b>passa a</b>, que termina o fluxo.</p></div>
+  <figure class="diag">
+   <svg viewBox="0 0 1000 330" role="img" aria-labelledby="d2t"><title id="d2t">O fluxo sa-desenvolver.codificar resumido em nove passos: os vizinhos da entrada, a volta da codificação manual, as chamadas à revisão e à verificação, as voltas à tarefa e a passagem ao encerrar</title>
+    <rect class="cx" x="6" y="150" width="100" height="58" rx="12"/><text class="m" x="56" y="176" text-anchor="middle">entrada</text><text class="s" x="56" y="195" text-anchor="middle">papel e branch</text>
+    <rect x="117" y="150" width="100" height="58" rx="12" style="fill:var(--navy)"/><text style="fill:var(--on-navy)" class="m w" x="167" y="176" text-anchor="middle">ler</text><text style="fill:var(--on-navy)" class="s w" x="167" y="195" text-anchor="middle">status.md</text>
+    <rect x="228" y="150" width="100" height="58" rx="12" style="fill:var(--brand)"/><text style="fill:var(--on-brand)" class="m w" x="278" y="176" text-anchor="middle">tarefa ⇢</text><text style="fill:var(--on-brand)" class="s w" x="278" y="195" text-anchor="middle">TDD, toolkit</text>
+    <rect x="339" y="150" width="100" height="58" rx="12" style="fill:var(--green)"/><text style="fill:var(--on-green)" class="m w" x="389" y="176" text-anchor="middle">validar</text><text style="fill:var(--on-green)" class="s w" x="389" y="195" text-anchor="middle">backpressure</text>
+    <rect x="450" y="150" width="100" height="58" rx="12" style="fill:var(--cyan)"/><text style="fill:var(--on-cyan)" class="m w" x="500" y="176" text-anchor="middle">revisar</text><text style="fill:var(--on-cyan)" class="s w" x="500" y="195" text-anchor="middle">sa-revisor</text>
+    <rect x="561" y="150" width="100" height="58" rx="12" style="fill:var(--teal)"/><text style="fill:var(--on-teal)" class="m w" x="611" y="176" text-anchor="middle">verificar</text><text style="fill:var(--on-teal)" class="s w" x="611" y="195" text-anchor="middle">sa-verificador</text>
+    <rect x="672" y="150" width="100" height="58" rx="12" style="fill:var(--brand)"/><text style="fill:var(--on-brand)" class="m w" x="722" y="176" text-anchor="middle">as-built ⇢</text><text style="fill:var(--on-brand)" class="s w" x="722" y="195" text-anchor="middle">ET no design</text>
+    <rect x="783" y="150" width="100" height="58" rx="12" style="fill:var(--orange)"/><text style="fill:var(--on-orange)" class="m w" x="833" y="176" text-anchor="middle">mr</text><text style="fill:var(--on-orange)" class="s w" x="833" y="195" text-anchor="middle">abre o MR</text>
+    <rect x="894" y="150" width="100" height="58" rx="12" style="fill:var(--orange)"/><text style="fill:var(--on-orange)" class="m w" x="944" y="176" text-anchor="middle">avisar</text><text style="fill:var(--on-orange)" class="s w" x="944" y="195" text-anchor="middle">espera revisão</text>
+    <path class="seta" d="M106 179H115"/><path class="seta" d="M217 179H226"/><path class="seta" d="M328 179H337"/><path class="seta" d="M439 179H448"/><path class="seta" d="M550 179H559"/><path class="seta" d="M661 179H670"/><path class="seta" d="M772 179H781"/><path class="seta" d="M883 179H892"/>
+    <path class="seta" d="M167 150 C167 60 389 60 389 148"/><text class="s lb" x="278" y="68" text-anchor="middle">volta do manual ("terminei") → validar</text>
+    <path class="seta ret" d="M262 150 C252 112 302 112 294 148"/><text class="s lb" x="278" y="108" text-anchor="middle">ainda há tarefa</text>
+    <text class="m lb" x="500" y="140" text-anchor="middle">sa-revisar.revisar</text><text class="m lb" x="611" y="124" text-anchor="middle">sa-verificar.verificar</text><text class="m lb" x="944" y="140" text-anchor="middle">sa-elm.horas</text>
+    <path class="seta ret" d="M500 208 C500 256 290 256 284 211"/><path class="seta ret" d="M611 208 C611 284 276 284 270 211"/>
+    <text class="s lb" x="450" y="300" text-anchor="middle">corrige [R&lt;n&gt;] · REJEITADO → volta à tarefa</text>
+    <path class="seta sai" d="M56 208V268"/><text class="m" x="6" y="288">↪ sa-desenvolver.iniciar · …</text><text class="s" x="6" y="306">vizinhos: diz a dona e para</text>
+    <path class="seta sai" d="M944 208V268"/><text class="m" x="994" y="288" text-anchor="end">→ sa-desenvolver.encerrar</text><text class="s" x="994" y="306" text-anchor="end">passa a: o fluxo termina</text>
+   </svg>
+   <figcaption>Nove dos 19 passos do fluxo; os outros (<code>preparar</code>, <code>retrabalho</code>, <code>desvio</code>, <code>banco</code>, <code>sem-progresso</code>, <code>atualizar</code>, <code>disjuntor</code>, <code>licoes</code>, <code>captura</code>, <code>gravar</code>) ficam no <code>grafo.md</code>. Sem Saídas, o passo segue para o próximo da lista. A saída <code>"→ id"</code> é uma passagem: o fluxo termina e diz a próxima; <code>volta-plano</code> no <code>revisar</code> passa a <code>sa-plano.replanejar</code>. Na entrada, o estado que é de outro fluxo casa uma linha dos vizinhos: o agente diz a dona e para. O <code>⇢</code> marca o passo que um toolkit pode assumir: <code>tarefa</code> pelo <code>para</code> e pelos arquivos, <code>as-built</code> pelo tipo <code>ET</code>.</figcaption>
+  </figure>
+  <div class="scroll"><table><thead><tr><th>Ligação</th><th>No mestre</th><th>O que o agente faz</th></tr></thead><tbody>
+   <tr><td><b>chama, em linha</b></td><td><code>"chama": "sa-entrevistar.entrevistar"</code> no <code>sa-refinar.detalhar</code>: mesmo dono, ou o agente tem a skill no <code>perfis.json</code> (<code>sa-elm.horas</code> no <code>sa-desenvolvedor</code>)</td><td>Roda o fluxo chamado ele mesmo e volta ao passo.</td></tr>
+   <tr><td><b>chama, subagente</b></td><td><code>"chama": "sa-revisar.revisar"</code>: o dono do fluxo chamado é subagente de quem chama, mesmo que este tenha a skill</td><td>Chama o agente e segue com a resposta. Sem a ferramenta de subagente, faz o que o passo manda para esse caso; a revisão e a verificação do que ele fez nunca são dele.</td></tr>
+   <tr><td><b>passa a</b></td><td>saída <code>"→ sa-desenvolver.encerrar"</code></td><td>Termina o fluxo e diz a próxima, com o agente dono dela. Na mesma tarefa, oferece seguir na mesma sessão; aceita, a próxima começa pela própria entrada.</td></tr>
+   <tr><td><b>fim</b></td><td>saída <code>"fim"</code></td><td>Termina o fluxo sem próxima: espera da revisão, bloqueio, "não" da pessoa, autopilot devolvido.</td></tr>
+   <tr><td><b>vizinho</b></td><td>linha <code>- &lt;estado&gt; → `sa-x.f`</code> (com <code>(agente `sa-…`)</code> quando o dono é outro) ou <code>- &lt;estado&gt; → &lt;frase&gt; ■</code>, na seção Entrada: vizinhos do mestre</td><td>No passo <code>entrada</code>: diz a dona do estado, ou a frase, e para.</td></tr>
+  </tbody></table></div>
+  <p style="margin-top:10px;max-width:90ch">O compilador confere todas as arestas: id que não existe, chamada a um agente que não pode ser chamado (aí, só a passagem), passagem ou vizinho para um passo de outro agente (vai ao fluxo), saída para um passo que não é do fluxo, vizinho fora do formato ou sem o agente dono. Com erro, nada é instalado. Todo agente recebe no prompt a mesma regra curta de como seguir essas ligações.</p>
+  <div class="duas" style="margin-top:16px">
+   <div class="bloco"><h3>Exemplo: o épico</h3><p><code>sa-refinar.moldar</code> → <code>sa-prd.prd</code> → <code>sa-refinar.fatiar</code>, os três do <code>sa-especificador</code>.</p><ul><li><code>moldar</code>: <code>pitch</code> chama em linha <code>sa-entrevistar.entrevistar</code>, <code>sa-especificar.prototipo</code> e <code>sa-elm.baixar</code> → <code>decisao</code>: go ou kill de quem tem <code>produto</code> → <code>gravar-na-base</code> → <code>seguir</code>: go passa a <code>sa-prd.prd</code>; cabe em G passa a <code>sa-refinar.detalhar</code>.</li><li><code>prd</code>: <code>assumir</code> (<code>sa-elm.item</code>) → <code>abrir</code> → <code>entender</code> (<code>sa-pesquisar.pesquisar</code>, no subagente <code>sa-pesquisador</code>) → <code>esclarecer</code> → <code>similares</code> → <code>escrever</code> ⇢ (HF, UC, REG, MSG, EL), um bloco por requisito no <code>prd.md</code> → <code>validar</code> → <code>aprovar</code>: <code>Aprovado: &lt;usuário&gt; · &lt;data&gt;</code> no topo, de quem tem <code>produto</code> → <code>gravar</code> → <code>concluir</code> passa a <code>sa-refinar.fatiar</code>.</li><li><code>fatiar</code>: <code>rascunho</code> (<code>sa-pesquisar.pesquisar</code>) → <code>perguntar</code>: quem tem <code>produto</code> aprova e ordena; conceito do PRD que muda passa a <code>sa-prd.mudanca</code> → <code>gravar</code> → <code>proximos</code> passa a <code>sa-refinar.detalhar</code>.</li></ul><p>Tudo direto na base, sem MR e sem publicar: os requisitos sobem ao DOORS pelas fatias.</p></div>
+   <div class="bloco"><h3>Exemplo: a fatia</h3><p><code>sa-refinar.detalhar</code>, do <code>sa-especificador</code>: três amigos na fatia ou no bug <code>aceita</code> ou <code>pronta</code>.</p><ul><li><code>regras</code> (<code>sa-entrevistar.entrevistar</code>) → <code>cenarios</code>: cada exemplo aceito vira um <code>CT-nn</code> Dado · Quando · Então → <code>cobre</code>: <code>&lt;sigla&gt;-&lt;id&gt; · inclui | altera | exclui · versão lida</code> (<code>sa-elm.baixar</code>).</li><li><code>elm</code> chama <code>sa-especificar.elm</code>, só com ELM: trava <code>artefato-exclusivo</code> → o original do DOORS em <code>elm/</code>, num commit de base → <code>editar</code> ⇢ (HF, UC, REG, MSG, EL) pelo modo da ficha → <code>aprovar</code>: <code>status: stable</code> com <code>verified</code>, de quem tem <code>especificador</code>.</li><li><code>duvidas</code> (<code>sa-pesquisar</code>, <code>sa-especificar.prototipo</code>, <code>sa-especificar.reuniao</code>): mais que G com corte passa a <code>sa-refinar.ajustar</code>; sem corte, vira épico pela captura.</li><li><code>ficha</code>: DoR completa e ficha aprovada por quem tem <code>produto</code> → <code>pronta</code> → <code>gravar-na-base</code> → <code>seguir</code>.</li></ul><p>Depois do merge do código, <code>sa-especificar.archive</code> chama <code>sa-elm.publicar</code>: o especificador sobe os arquivos de <code>elm/</code> ao DOORS, conferindo a versão lida.</p></div>
+  </div>
+</section>
+
+<section id="travas">
+  <div class="lead-sec"><h2>Travas</h2><p>Travas são as regras que nenhum projeto desliga. Valem para o fluxo inteiro (<code>travas_gerais</code>) ou para um passo, aparecem na coluna Travas da tabela e seguram o passo contra a remoção. O catálogo é fechado (<code>fluxo/travas.json</code>) e nenhuma trava pode ser liberada.</p></div>
+  <div class="scroll"><table><thead><tr><th>Trava</th><th>O que garante</th></tr></thead><tbody>
+   <tr><td><code>sim-da-pessoa</code></td><td>Push, merge e escrita no ELM e no GitLab só com o "sim" da pessoa. No autopilot, só o push da própria branch (sem <code>--force</code>), o merge da base nela e abrir ou atualizar o MR dela dispensam o sim.</td></tr>
+   <tr><td><code>backpressure</code></td><td>Nada é dado como pronto nem vai ao MR sem o <code>validar</code> verde: o trecho tocado a cada alteração, a suíte completa antes do MR e o CI do MR.</td></tr>
+   <tr><td><code>revisao-independente</code></td><td>O MR é revisado e aprovado por um desenvolvedor que não é o autor; o <code>CODEOWNERS</code> indica o dono da área.</td></tr>
+   <tr><td><code>aceite-independente</code></td><td>Quem implementou não verifica: a verificação roda no subagente <code>sa-verificador</code>, de contexto limpo.</td></tr>
+   <tr><td><code>pr-lido-por-pessoa</code></td><td>Merge só com o MR aprovado por uma pessoa e o CI verde; o autopilot nunca faz merge.</td></tr>
+   <tr><td><code>toolkit-sem-commit</code></td><td>O toolkit devolve código e testes, sem commit, push nem MR.</td></tr>
+   <tr><td><code>sem-force</code></td><td>Nunca <code>--force</code> nem <code>--force-with-lease</code>; a branch se atualiza só por merge da base, nunca por rebase.</td></tr>
+   <tr><td><code>decisao-da-pessoa</code></td><td>Nunca invente regra, valor ou ator: sem fonte e sem a decisão de uma pessoa, fica em aberto.</td></tr>
+   <tr><td><code>aprovacao-do-cliente</code></td><td>O protótipo só vale aprovado pelo cliente, numa linha de Decisões do <code>pitch.md</code>, do <code>prd.md</code> ou da ficha, com quem (nome e papel), data, versão vN e evidência (ATA ou e-mail); nunca deduzida nem dada por quem especifica.</td></tr>
+   <tr><td><code>aprovacao-no-documento</code></td><td>Pitch, PRD e ficha só valem com <code>Aprovado: &lt;usuário&gt; · &lt;data&gt;</code> de quem tem <code>produto</code>, no topo do documento; arquivo de <code>elm/</code> só vale aprovado por quem tem <code>especificador</code>.</td></tr>
+   <tr><td><code>artefato-exclusivo</code></td><td>Duas fatias não alteram o mesmo artefato do ELM ao mesmo tempo: a segunda fica bloqueada até a primeira ficar cancelada ou com <code>Publicação: publicada</code> (sem ELM: concluída). A <code>sa-status</code> mostra o bloqueio.</td></tr>
+   <tr><td><code>elm-pela-sa-elm</code></td><td>Só a <code>sa-elm</code> fala com o ELM; as outras skills só oferecem, e a resposta nunca trava o fluxo.</td></tr>
+  </tbody></table></div>
+</section>
+
+<section id="tipos">
+  <div class="lead-sec"><h2>Tipos de artefato</h2><p><code>fluxo/tipos.json</code> é fechado: todo artefato de requisito é de um destes tipos, e um toolkit não cria tipo. O compilador valida o catálogo (sigla única, passos de <code>cria</code> e <code>desviavel</code> que existem, padrão que existe, <code>depois</code> sem ciclo) e gera o <code>references/tipos.md</code> da skill <code>sabia</code>.</p></div>
+  <div class="scroll"><table><thead><tr><th>Sigla</th><th>Tipo</th><th>Onde mora</th><th>Cria</th><th>Desviável (⇢)</th><th>ELM</th></tr></thead><tbody>
+   <tr><td><code>HF</code></td><td>História</td><td><code>elm/&lt;id&gt;-HF-&lt;slug&gt;.md</code> · bloco do <code>prd.md</code></td><td rowspan="5"><code>sa-prd.prd.escrever</code><br><code>sa-especificar.elm.editar</code></td><td rowspan="5">os dois passos</td><td rowspan="6">DOORS</td></tr>
+   <tr><td><code>UC</code></td><td>Caso de uso (com Casos de uso = sim)</td><td><code>elm/&lt;id&gt;-UC-&lt;slug&gt;.md</code> · bloco do <code>prd.md</code></td></tr>
+   <tr><td><code>REG</code></td><td>Regra</td><td><code>elm/&lt;id&gt;-REG-&lt;slug&gt;.md</code> · bloco do <code>prd.md</code></td></tr>
+   <tr><td><code>MSG</code></td><td>Mensagem</td><td><code>elm/&lt;id&gt;-MSG-&lt;slug&gt;.md</code> · bloco do <code>prd.md</code></td></tr>
+   <tr><td><code>EL</code></td><td>Leiaute (com Telas = sim)</td><td><code>elm/&lt;id&gt;-EL-&lt;slug&gt;.md</code> · bloco do <code>prd.md</code></td></tr>
+   <tr><td><code>GL</code></td><td>Termo de glossário</td><td><code>elm/&lt;id&gt;-GL-&lt;termo&gt;.md</code> · bloco do <code>prd.md</code></td><td>os mesmos</td><td>não</td></tr>
+   <tr><td><code>ET</code></td><td>Especificação técnica, as-built</td><td>seções Components and Interfaces · Data Models · Decisões técnicas do <code>design.md</code></td><td><code>sa-desenvolver.codificar.as-built</code></td><td>sim</td><td>DOORS</td></tr>
+   <tr><td><code>CT</code></td><td>Caso de teste</td><td>cenário <code>CT-nn</code> na ficha e na spec · linha do <code>CT.csv</code></td><td><code>sa-refinar.detalhar.cenarios</code><br><code>sa-verificar.verificar.casos</code></td><td><code>casos</code></td><td>— (fora do ELM)</td></tr>
+   <tr><td><code>ATA</code></td><td>Ata de reunião</td><td><code>atas/ATA-&lt;nn&gt;-&lt;AAAA-MM-DD&gt;-&lt;assunto&gt;.md</code></td><td><code>sa-especificar.reuniao.escrever</code></td><td>sim</td><td>DOORS (não é requisito)</td></tr>
+  </tbody></table></div>
+  <p style="margin-top:10px;max-width:90ch">Ordem de publicação dos requisitos, de baixo para cima, para cada um nascer com os ids que cita: <code>MSG</code> → <code>GL</code> → <code>REG</code> → <code>UC</code> → <code>EL</code> → <code>HF</code> → <code>ET</code>. A <code>REG</code> entra em embed no texto da <code>HF</code>; os demais links ficam hyperlink. Artefato novo tem id provisório (<code>REG-FT031-01</code>) até a publicação, que o troca pelo id do ELM; sem ELM, o provisório é o definitivo.</p>
+  <div class="duas" style="margin-top:16px">
+   <div class="bloco"><h3>O arquivo de <code>elm/</code></h3><p>Um arquivo inteiro por artefato do Cobre, em <code>&lt;pasta da spec&gt;/elm/</code>, só com ELM. O id mora no nome: <code>2101-REG-limite-inscricoes.md</code> é a <code>REG-2101</code>.</p>
+<pre class="cod">---
+<span class="k">type</span>: <span class="v">Regra</span>
+<span class="k">title</span>: <span class="v">Limite de inscrições por turma</span>
+<span class="k">status</span>: <span class="v">stable</span>
+<span class="k">verified</span>: {by: human:ana.lima, at: 2026-11-04}
+<span class="k">sources</span>: [{id: D-03}, {id: ATA-02 [12:40]}]
+---
+**Módulo:** Inscrições · **Categoria:** Validação
+**Fonte:** D-03
+
+**Descrição:**
+
+Uma turma tem no máximo **40** inscrições **Confirmadas**.
+…
+**Referências:**
+
+- MSG-2140 Turma lotada · GL-2011 Inscrição</pre>
+   <ul><li><code>status</code>: <code>draft</code> na escrita; <code>stable</code> com <code>verified</code> na aprovação de quem tem <code>especificador</code>. Editado depois, volta a <code>draft</code>.</li><li>Ação e versão lida moram no Cobre da ficha. Ao DOORS sobe só o corpo.</li><li>Corpo sem título Markdown, só rótulos em negrito: o mesmo texto serve ao <code>elm/</code>, ao bloco do <code>prd.md</code>, ao delta e ao DOORS.</li></ul></div>
+   <div class="bloco"><h3>Padrões dos tipos</h3><p><code>padrao/requisitos/padrao-&lt;tipo&gt;.md</code>, um por tipo (HF, UC, REG, MSG, EL, GL, ET, CT, ATA), compilados em <code>sabia/references/padrao/requisitos/</code>. Cada um traz o corpo e as regras do tipo; nos requisitos, o Checklist do padrão é conferido antes de aprovar.</p>
+<pre class="cod">.sabia/padrao/requisitos/padrao-reg.md   <span class="c">cópia do projeto, com base</span>
+        ▼ vale sobre
+o padrão em vigor do tipo                 <span class="c">o do toolkit que desvia o tipo,</span>
+                                          <span class="c">ou o do Sabiá</span></pre>
+   <ul><li>A cópia nasce na <code>sa-setup.customizar</code>, com a <code>base</code> pelo <code>--base</code> do gerador: <code>requisitos/padrao-&lt;tipo&gt;.md</code>, ou o caminho do padrão do toolkit quando ele desvia o tipo.</li><li><b>Referência só para baixo:</b> HF → REG, EL, MSG, GL, UC; UC → REG, MSG, GL, UC incluído; EL → REG, MSG, GL, outra EL; REG → REG, MSG, GL. Nunca para cima, nunca a ET. Existente no ELM leva link para o arquivo; novo, só o id provisório.</li><li>A ET cita as HF e os UC do Cobre na linha Atende.</li></ul></div>
+  </div>
+</section>
+
+<section id="compilar">
+  <div class="lead-sec"><h2>A compilação (as-built)</h2><p><code>npx sabia instalar</code> (ou <code>sabia instalar</code>, com o CLI instalado) e <code>sabia atualizar</code> rodam o compilador para cada alvo. Ele lê a fonte inteira, valida, monta uma skill por <code>sa-*</code>, confere a saída e só então instala. Conteúdo de toolkit não entra na compilação.</p></div>
+  <ol class="etapas">
+   <li style="--c:var(--navy)"><b>Carregar</b><span>mestres, passos, padrões (com os dos tipos), regras, os catálogos de travas e de tipos e os agentes do perfis.json</span><code>carregar</code></li>
+   <li style="--c:var(--blue)"><b>Validar</b><span>ids, arestas, donos, travas, "quando", papel e branch da entrada, vizinhos, tipos e as seções dos passos</span><code>validar</code></li>
+   <li style="--c:var(--cyan)"><b>Mapear</b><span>cada arquivo da fonte para o seu lugar na skill do alvo</span><code>mapear</code></li>
+   <li style="--c:var(--green)"><b>Reescrever</b><span>ids e caminhos viram links no caminho da ferramenta</span><code>reescrever</code></li>
+   <li style="--c:var(--lime)"><b>Montar</b><span>SKILL.md com Regras, Fluxos, a tabela de cada fluxo, Travas, Arquivos e "No projeto"; o grafo.md de cada fluxo; o tipos.md</span><code>compilar</code></li>
+   <li class="claro" style="--c:var(--orange)"><b>Conferir</b><span>links, âncoras e nenhum caminho da fonte sobrando</span><code>conferirSaida</code></li>
+   <li style="--c:var(--teal)"><b>Instalar</b><span>opencode: copiar com os MCPs; Kiro: kiro-cli powers install</span><code>sabia instalar</code></li>
+  </ol>
+  <div class="duas" style="margin-top:16px">
+   <div class="bloco"><h3>O que sai: a skill compilada</h3>
+<pre class="cod">~/.config/opencode/skills/sa-planejamento/
+├── SKILL.md                <span class="c">índice: Regras, Fluxos, um bloco por fluxo,</span>
+│                           <span class="c">Travas, Arquivos, No projeto</span>
+├── assets/equipe.schema.json
+└── references/
+    ├── review/             <span class="c">um arquivo por passo do fluxo review</span>
+    │   ├── inicio.md · rito.md · captura.md
+    │   ├── regras-aprendidas.md · gravar.md
+    │   ├── gravar-na-base.md   <span class="c">passo comum, em cada fluxo</span>
+    │   ├── seguir.md
+    │   └── grafo.md        <span class="c">gerado do mestre</span>
+    ├── sprint/ · inicial/ · retrospectiva/
+    └── padrao/             <span class="c">acordos · equipe · roadmap · sprint · …</span></pre><p>A skill <code>sabia</code> leva o <code>references/tipos.md</code>, o <code>references/passos.md</code> (os desvios de toolkit) e o <code>references/padrao/requisitos/</code>.</p></div>
+   <div class="bloco"><h3>O bloco de um fluxo no SKILL.md</h3>
+<pre class="cod"><span class="k">## Fluxo review</span>
+**Review da sprint**
+
+Agente: `sa-especificador`. Sem ele, sugira à pessoa usá-lo; …
+
+| Passo             | Chama                       | Saídas              |
+|-------------------|-----------------------------|---------------------|
+| inicio            | —                           | —                   |
+| rito              | —                           | sem pedido novo →   |
+|                   |                             | regras-aprendidas   |
+| captura           | —                           | mais um pedido novo |
+|                   |                             | → captura           |
+| regras-aprendidas | sa-status.licoes (em linha) | —                   |
+| …                 |                             |                     |
+| seguir            | —                           | sim → passa a       |
+|                   |                             | sa-planejamento.    |
+|                   |                             | retrospectiva       |
+
+Grafo: grafo.md
+
+Ao começar um passo, leia o arquivo dele (não os dos outros
+passos) e o que ele mandar ler. Nenhuma Saída casou → o
+próximo da lista. Travas do fluxo: sim-da-pessoa,
+decisao-da-pessoa.</pre><p>Recorte: a tabela real tem também as colunas # (a ordem), Arquivo (o link do passo) e Travas.</p></div>
+  </div>
+  <div class="bloco"><p>Com dois fluxos ou mais, o <code>SKILL.md</code> abre com a tabela <b>Fluxos</b> (fluxo e quando usar), e o agente escolhe por ela. O agente lê só o índice e, em cada passo, o arquivo desse passo, o que poupa contexto. O passo com desvio leva o <code>⇢</code> na tabela e, no desvio por tipo, as siglas: <code>escrever ⇢ (HF, UC, REG, MSG, EL)</code> na <code>sa-prd</code>. A seção <b>Travas</b> traz o texto de cada trava usada na skill. A seção <b>No projeto</b>, no fim, manda abrir antes <code>.sabia/fluxo/&lt;skill&gt;/&lt;fluxo&gt;/passos/&lt;passo&gt;.md</code>, <code>.sabia/padrao/&lt;skill&gt;/&lt;nome&gt;.md</code> e <code>.sabia/padrao/requisitos/padrao-&lt;tipo&gt;.md</code>: se o projeto trocou, vale o dele. Sem agente, os desvios valem pelas seções <b>Desvios de toolkit</b> e <b>Tipos com skill de toolkit</b> do <code>.sabia/sabia.md</code>. Cada fluxo ganha também um <code>references/&lt;fluxo&gt;/grafo.md</code>, gerado do mestre, com o link logo abaixo da tabela; a página <a href="fluxos.html">Fluxos</a> mostra todos.</p></div>
+</section>
+
+<section id="agentes">
+  <div class="lead-sec"><h2>Os agentes gerados</h2><p>A <code>sa-setup</code> grava as escolhas do projeto no <code>agentes.json</code>. O <code>gerar_agentes.py</code> junta essas escolhas ao <code>perfis.json</code> (os 2 modelos de permissão e os 5 agentes) e ao prompt de cada agente (<code>sa-&lt;nome&gt;.md</code>), aos fluxos, ao catálogo de tipos e ao override do projeto, e escreve os 5 agentes nos dois formatos, mais os agentes dos toolkits ligados. Nenhum agente se edita à mão.</p></div>
+<pre class="cod">primários <span class="c">(a pessoa escolhe ao abrir a sessão; o passo entrada confere a booleana do equipe.json)</span>
+├─ sa-desenvolvedor   build · sa-desenvolver · sa-plano · sa-revisar.mr · sa-verificar.revisao-humana · sa-atender
+│                     · sa-especificar.archive
+└─ sa-especificador   build · sa-refinar · sa-prd · sa-especificar · sa-entrevistar · sa-planejamento
+   nos dois: sa-triar · sa-status · sabia · ofertas da sa-elm · eles mesmos como subagente no autopilot
+subagentes <span class="c">(contexto limpo)</span>
+├─ sa-pesquisador     leitura ── sa-pesquisar
+├─ sa-revisor         leitura ── sa-revisar.revisar + rubricas dos toolkits
+└─ sa-verificador     leitura + Executar, curl à URL de teste e o CT.csv ── sa-verificar.verificar
+sessão padrão: sa-setup e sa-elm.setup <span class="c">(as únicas que gravam o harness)</span></pre>
+  <figure class="diag">
+   <svg viewBox="0 0 1000 330" role="img" aria-labelledby="d3t"><title id="d3t">Entradas do gerador e as partes do prompt de um agente</title>
+    <rect class="cx" x="20" y="20" width="250" height="56" rx="10"/><text class="m" x="34" y="44">perfis.json · sa-&lt;nome&gt;.md</text><text class="s" x="34" y="63">2 modelos, 5 agentes e os prompts</text>
+    <rect class="cx" x="20" y="88" width="250" height="56" rx="10"/><text class="m" x="34" y="112">.sabia/config/agentes.json</text><text class="s" x="34" y="131">escolhas do projeto, toolkits, passos</text>
+    <rect class="cx" x="20" y="156" width="250" height="56" rx="10"/><text class="m" x="34" y="180">fluxo/ e tipos.json</text><text class="s" x="34" y="199">donos, desvios e quem cria cada tipo</text>
+    <rect x="20" y="224" width="250" height="56" rx="10" style="fill:var(--nota);stroke:var(--yellow)"/><text class="m" x="34" y="248">.sabia/fluxo/ · padrao/</text><text class="s" x="34" y="267">o override do projeto</text>
+    <path class="seta" d="M270 48 C320 48 320 150 362 150"/><path class="seta" d="M270 116 C310 116 320 150 362 150"/><path class="seta" d="M270 184 C310 184 320 150 362 150"/><path class="seta" d="M270 252 C320 252 320 150 362 150"/>
+    <rect x="365" y="118" width="170" height="64" rx="12" style="fill:var(--navy)"/><text style="fill:var(--on-navy)" class="m w" x="450" y="146" text-anchor="middle">gerar_agentes.py</text><text style="fill:var(--on-navy)" class="s w" x="450" y="166" text-anchor="middle">valida e recusa</text>
+    <path class="seta" d="M535 150 H588"/>
+    <rect x="590" y="12" width="390" height="306" rx="16" style="fill:var(--soft)"/>
+    <text class="t" x="608" y="40">sa-desenvolvedor (prompt gerado)</text>
+    <text class="s" x="608" y="68">• o prompt do agente e as skills de toolkit ligadas</text>
+    <text class="s" x="608" y="94">• Desvios de toolkit no passo &lt;id&gt; → skill ou subagente</text>
+    <text class="s" x="608" y="120">• Tipos com skill de toolkit no passo ⇢ do tipo</text>
+    <text class="s" x="608" y="146">• O que este projeto mudou: só nos fluxos de que é dono</text>
+    <text class="s" x="608" y="172">• padrões trocados: para todos os agentes</text>
+    <text class="s" x="608" y="198">• a regra de chamada (em linha, subagente, passa a)</text>
+    <text class="s" x="608" y="224">• Limites deste agente e o bloco do autopilot</text>
+    <text class="s" x="608" y="250">• subagentes: pesquisador, revisor, verificador,</text>
+    <text class="s" x="620" y="276">ele mesmo no autopilot e os de toolkit do dono</text>
+    <text class="m" x="608" y="304">.kiro/agents/*.json · .opencode/agents/*.md</text>
+   </svg>
+   <figcaption>O gerador recusa e não grava nada quando o override está órfão ou sem <code>base</code>, quando tenta remover passo sem a marca <code>removivel</code> ou com trava, ou liberar uma trava; quando um toolkit traz um tipo que não é desviável, ou a skill de tipo sem o papel do dono do passo; e quando dois toolkits disputam o mesmo tipo ou item de rubrica. Os itens de rubrica dos toolkits vão ao prompt do <code>sa-revisor</code> e o texto <code>verificacao</code> ao do <code>sa-verificador</code>. Para cada alvo, ele lista o que a ferramenta não consegue traduzir.</figcaption>
+  </figure>
+  <div class="duas">
+   <div class="bloco"><h3>Papéis e permissões</h3><ul><li><b>Papel é permissão:</b> as booleanas <code>desenvolvedor</code>, <code>especificador</code> e <code>produto</code> do <code>equipe.json</code>, conferidas pelo passo <code>entrada</code>; o usuário da sessão é o do GitLab. Nenhuma regra depende de senioridade. Captura, triagem e revisão humana: qualquer pessoa.</li><li><b>build</b> (<code>sa-desenvolvedor</code>, <code>sa-especificador</code>): ler e editar sem restrição por pasta, menos os segredos (<code>.env*</code>, <code>*.pem</code>, <code>*.key</code>, <code>~/.ssh</code>, <code>~/.aws</code>, <code>~/.config/mcp-*</code>) e o harness. Push, merge, <code>curl</code> e <code>wget</code> perguntam; rebase, <code>--force</code>, <code>--force-with-lease</code>, <code>reset --hard</code>, <code>--no-verify</code> e destrutivos são negados.</li><li><b>Harness:</b> <code>.kiro/agents</code>, <code>.kiro/settings</code>, <code>.kiro/steering/sabia.md</code>, <code>.opencode</code>, <code>opencode.json</code>, <code>.sabia/config</code>, <code>.sabia/fluxo</code>, <code>.sabia/padrao</code>. Nenhum dos 5 agentes edita.</li><li><b>leitura</b> (<code>sa-pesquisador</code>, <code>sa-revisor</code>): ler, sem editar; comandos e MCP só de leitura. O <code>sa-verificador</code> é leitura mais o Executar do <code>sabia.md</code>, <code>curl</code> só à URL de teste e o <code>CT.csv</code>.</li><li><b>Autopilot</b> (o <code>sa-desenvolvedor</code> como subagente na worktree <code>.sabia/local/wt/&lt;id&gt;</code>): liberados o push da própria branch, o merge da base nela e o MR dela; merge do MR, ELM e rede, bloqueados.</li><li>No Kiro, o agente leva só os nomes de capability; os limites por caminho e URL vão no prompt.</li></ul></div>
+   <div class="bloco"><h3>O delta, não a cópia</h3><p>O agente não recebe a skill inteira de novo quando o projeto muda um passo. Recebe só o que mudou, e só no agente dono do fluxo; padrão trocado vai a todos. Exemplo, do <code>sa-especificador</code> de um projeto que inseriu um passo de métricas na review, trocou o rito e o padrão da regra:</p>
+<pre class="cod">O que este projeto mudou (vale sobre o SKILL.md):
+Fluxo `sa-planejamento.review`:
+- passo `metricas` (inserido depois de `rito`):
+  `.sabia/fluxo/sa-planejamento/review/passos/metricas.md`
+- passo `rito`: leia `.sabia/fluxo/sa-planejamento/review/
+  passos/rito.md` (no lugar do da skill)
+- padrão `requisitos/padrao-reg.md`:
+  `.sabia/padrao/requisitos/padrao-reg.md` (no lugar do da skill)</pre></div>
+  </div>
+</section>
+
+<section id="execucao">
+  <div class="lead-sec"><h2>Em execução</h2><p>Um pedido como "codificar a FT-031" no <code>sa-desenvolvedor</code>, em IA supervisionada, do começo ao MR.</p></div>
+  <figure class="diag">
+   <svg viewBox="0 0 1000 470" role="img" aria-labelledby="d4t"><title id="d4t">Sequência: pessoa, agente, skill compilada, projeto e subagentes durante o fluxo codificar</title>
+    <g text-anchor="middle">
+     <rect x="20" y="10" width="140" height="40" rx="10" style="fill:var(--navy)"/><text style="fill:var(--on-navy)" class="m w" x="90" y="35">Pessoa</text>
+     <rect x="215" y="10" width="170" height="40" rx="10" style="fill:var(--brand)"/><text style="fill:var(--on-brand)" class="m w" x="300" y="35">sa-desenvolvedor</text>
+     <rect x="440" y="10" width="170" height="40" rx="10" style="fill:var(--green)"/><text style="fill:var(--on-green)" class="m w" x="525" y="35">skill sa-desenvolver</text>
+     <rect x="665" y="10" width="140" height="40" rx="10" style="fill:var(--orange)"/><text style="fill:var(--on-orange)" class="m w" x="735" y="35">projeto</text>
+     <rect x="850" y="10" width="140" height="40" rx="10" style="fill:var(--cyan)"/><text style="fill:var(--on-cyan)" class="m w" x="920" y="35">subagentes</text>
+    </g>
+    <path class="vida" d="M90 50V460M300 50V460M525 50V460M735 50V460M920 50V460"/>
+    <path class="seta" d="M90 80H296"/><text class="s lb" x="100" y="74">"codificar a FT-031"</text>
+    <path class="seta" d="M300 112H521"/><text class="s lb" x="310" y="106">carrega a skill: tabela do fluxo codificar</text>
+    <path class="seta" d="M300 144H731"/><text class="s lb" x="310" y="138">entrada: linha do backlog.md, booleana desenvolvedor, branch da fatia</text>
+    <path class="seta" d="M300 176H731"/><text class="s lb" x="310" y="170">.sabia/fluxo/sa-desenvolver/codificar/passos/tarefa.md?</text>
+    <path class="seta ret" d="M731 202H304"/><text class="s lb" x="560" y="196">não existe → vale references/codificar/tarefa.md</text>
+    <path class="seta" d="M300 234H916"/><text class="s lb" x="560" y="228">tarefa casa o desvio ⇢ → subagente do toolkit (sem commit)</text>
+    <path class="seta ret" d="M916 260H304"/><text class="s lb" x="700" y="254">código e testes</text>
+    <path class="seta" d="M300 292H731"/><text class="s lb" x="310" y="286">backpressure do trecho tocado → marca e commit pequeno; suíte completa no validar</text>
+    <path class="seta" d="M300 324H916"/><text class="s lb" x="560" y="318">revisar (sa-revisor) · verificar (sa-verificador)</text>
+    <path class="seta ret" d="M916 350H304"/><text class="s lb" x="700" y="344">sem BLOQUEANTE · ACEITO</text>
+    <path class="seta" d="M300 384H94"/><text class="s lb" x="110" y="378">push e MR? (sim-da-pessoa)</text>
+    <path class="seta ret" d="M90 410H296"/><text class="s lb" x="110" y="404">"sim"</text>
+    <path class="seta sai" d="M300 444H94"/><text class="s lb" x="110" y="438">MR aberto → espera a sa-revisar.mr de outro desenvolvedor. Fim.</text>
+   </svg>
+   <figcaption>Cada passo lê só o próprio arquivo. O override do projeto é conferido passo a passo, e o desvio de toolkit vem do prompt do agente. A revisão oficial do MR é de outro desenvolvedor, e o merge é da <code>sa-desenvolver.encerrar</code>. Cada fluxo termina dizendo o próximo e, na mesma tarefa, oferece seguir na mesma sessão.</figcaption>
+  </figure>
+  <p style="margin-top:10px;max-width:90ch">O modo é escolhido antes de começar e vale até o fim daquele trabalho. Especificação e codificação têm modos independentes.</p>
+  <div class="scroll"><table><thead><tr><th>Modo</th><th>Codificação (<code>sa-desenvolver.iniciar</code>; Autonomia do <code>status.md</code>)</th><th>Especificação (só com ELM; <code>sa-refinar.detalhar</code>; Especificação da ficha)</th></tr></thead><tbody>
+   <tr><td><b>IA supervisionada</b></td><td>O <code>sa-desenvolvedor</code> na sessão da pessoa; push e MR com o "sim".</td><td>O <code>sa-especificador</code> edita o arquivo inteiro de <code>elm/</code> com o especificador.</td></tr>
+   <tr><td><b>IA autopilot</b></td><td>O <code>sa-desenvolvedor</code> como subagente na worktree <code>.sabia/local/wt/&lt;id&gt;</code>, sem perguntas; a pessoa segue na base. O disjuntor (teto do <code>acordos.md</code> ou 2 reprovações seguidas) grava <code>.sabia/local/loop-&lt;id&gt;.md</code> e devolve o item à pessoa.</td><td>O <code>sa-especificador</code> como subagente edita sem perguntas; o que não tem fonte vai ao Em aberto, e o especificador aprova.</td></tr>
+   <tr><td><b>manual</b></td><td>Só a geração do código-fonte é da pessoa; no "terminei", o fluxo segue do <code>validar</code> com as mesmas checagens.</td><td>O especificador altera direto no DOORS e avisa "alterei"; a skill sincroniza <code>elm/</code>, o Cobre e o delta.</td></tr>
+  </tbody></table></div>
+</section>
+
+<section id="rota">
+  <div class="lead-sec"><h2>sabia rota: ver o fluxo resolvido</h2><p>O CLI mostra o fluxo como ele vale <b>neste projeto</b>, com o override e os desvios de toolkit.</p></div>
+  <div class="duas">
+   <div class="bloco"><h3><code>sabia rota --fluxo sa-desenvolver.codificar</code></h3>
+<pre class="cod">fluxo     sa-desenvolver.codificar  dono sa-desenvolvedor  Sabiá 2.1.10
+travas    sim-da-pessoa, backpressure, sem-force, elm-pela-sa-elm
+desvio ⇢  tarefa: "tarefa que cria ou altera um job ou step"
+          → skill spring-batch-job  toolkit spring-batch 1.0.0
+
+#   passo       origem  chama                   travas                saídas
+1   entrada     Sabiá   —                       —                     —
+2   ler         Sabiá   —                       —                     volta da codificação manual ('terminei') → validar
+…
+5   tarefa ⇢    Sabiá   —                       toolkit-sem-commit    ainda há tarefa → tarefa; …
+10  validar     Sabiá   —                       —                     vermelho novo: tarefa nova → tarefa; …
+11  revisar     Sabiá   sa-revisar.revisar      —                     …; volta-plano → passa a sa-plano.replanejar; …
+12  verificar   Sabiá   sa-verificar.verificar  aceite-independente   ACEITO → licoes; …
+15  as-built ⇢  Sabiá   —                       —                     —
+17  avisar      Sabiá   sa-elm.horas            revisao-independente  MR já aprovado e CI verde → passa a sa-desenvolver.encerrar; …
+…
+
+  ┌────────────────────────────┐
+  │ 1 entrada [desenvolvedor]  │──▶ ↪ vizinhos (diga e pare): sa-desenvolver.iniciar · sa-plano.plano · …
+  └─────────────┬──────────────┘
+  …
+
+```mermaid
+stateDiagram-v2
+  [*] --> entrada
+  entrada --> ler
+  ler --> validar: volta da codificação manual ('terminei')
+  …</pre></div>
+   <div class="bloco"><h3><code>sabia rota --fluxo sa-planejamento.review</code></h3>
+<pre class="cod">fluxo   sa-planejamento.review  dono sa-especificador  Sabiá 2.1.10
+travas  sim-da-pessoa, decisao-da-pessoa
+
+#  passo              origem                            chama
+1  inicio             Sabiá                             —
+2  rito               projeto (base 01a888f0593d)       —
+3  metricas           projeto, inserido depois de rito  —
+4  captura            Sabiá                             —
+5  regras-aprendidas  Sabiá                             sa-status.licoes
+6  gravar             Sabiá                             —
+7  gravar-na-base     Sabiá                             —
+8  seguir             Sabiá                             —</pre>
+   <ul><li>A tabela vem com as colunas travas e saídas, o grafo ASCII do fluxo e o Mermaid. Com um toolkit que escreve um tipo, a linha <code>tipo ⇢</code> diz o passo, a sigla, o fluxo do toolkit e a versão.</li><li><code>sabia rota &lt;arquivo&gt;</code>: por qual passo com desvio o arquivo passa, quem é o dono, qual toolkit, o motivo e as travas. <code>sabia rota &lt;tasks.md&gt;#&lt;tarefa&gt;</code> faz o mesmo pelos arquivos que a tarefa cita; sem casar, mostra o texto dela e os <code>para</code> dos desvios.</li><li><code>sabia rota --mapa</code>: todas as arestas entre fluxos (chamadas e passagens), em Mermaid.</li></ul></div>
+  </div>
+  <div class="proxima"><a href="index.html">Voltar ao início</a></div>
+</section>
+  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.10, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
+</div>
+</body>
+</html>
