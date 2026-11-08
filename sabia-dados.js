@@ -63,7 +63,7 @@ const S={
   faz:["Recebe <id> (EP, FT, AT…), o número do IB ou a tarefa do EWM; texto sem id vai à triagem","Junta status, obs, linha da sprint, branch e dono, status.md, MR, loop do autopilot, publicação e trava","Mostra o estado e a skill.fluxo dona; quem tem a booleana segue na mesma sessão (“seguir agora?”)","“minha próxima” (sa-status.minha-proxima): posse, revisões, sprint, Sustentação e aprovações pelas booleanas, crítica primeiro"],
   arq:["só leitura"],elm:["Acha o item também pelo ib ou pela tarefa do EWM"],
   ctx:{epico:{faz:["a-moldar → sa-refinar.moldar","em-especificacao sem prd.md aprovado → sa-prd.prd; aprovado → sa-refinar.fatiar","fatiado → as fatias com o próximo passo de cada uma; ajuste → sa-refinar.ajustar"]},
-   hitl:{faz:["nova → sa-triar.triar · aceita → sa-refinar.detalhar · pronta → sa-desenvolver.iniciar","em-andamento sem MR → sa-desenvolver.codificar, pelo Retomar; retrabalho também","MR esperando revisão → qualquer desenvolvedor ≠ autor (sa-revisar.mr); aprovado com CI verde → o autor (sa-desenvolver.encerrar)","Homologação pedida → qualquer pessoa (sa-verificar.homologacao)","Trava de artefato: mostra quem tem a precedência e para"]},
+   hitl:{faz:["nova → sa-triar.triar · aceita → sa-refinar.detalhar · pronta → sa-desenvolver.iniciar","em-andamento sem MR → sa-desenvolver.codificar, pelo Retomar; retrabalho também","MR esperando revisão → qualquer desenvolvedor ≠ autor (sa-revisar.mr); aprovado com CI verde → o autor (sa-desenvolver.encerrar)","Revisão humana pedida → qualquer pessoa (sa-verificar.revisao-humana)","Trava de artefato: mostra quem tem a precedência e para"]},
    afk:{faz:["pronta → sa-desenvolver.iniciar, onde se escolhe o autopilot","Autopilot devolvido pelo disjuntor → sa-desenvolver.codificar, com o motivo do loop-<id>.md","MR esperando revisão → qualquer desenvolvedor ≠ autor (sa-revisar.mr); aprovado com CI verde → o autor (sa-desenvolver.encerrar)","Trava de artefato: mostra quem tem a precedência e para"]},
    atd:{faz:["Sustentação nova ou em-andamento → sa-atender.atender"]}}},
 
@@ -163,18 +163,18 @@ const S={
 /* ---------- MR e revisão humana ---------- */
  mr:{x:1160,y1:290,y2:298,g:"pill",lab:"above",nome:"MR",sk:"gitlabpr",
   papel:"quem desenvolve (o autor)",agente:"sa-desenvolvedor",tarefa:"DEV",fase:"pr-aberto",
-  faz:["Lições da fatia na seção Lições do status.md (no trivial, no MR)","As-built: decisão que atravessa fatias vira ADR em docs/adr/; onde o projeto mantém ET, o design.md fica as-built (Components and Interfaces · Data Models · Decisões técnicas)","Texto pelo template: O quê · Porquê · Prova (CI, autorrevisão, 🔎) · Risco · Foco · Cobre","Commit, push com o sim, conferência no remoto e gitlab_criar_mr, com remover a branch de origem","Avisa que o MR espera um desenvolvedor ≠ autor e sugere homologação no risco alto"],
+  faz:["Lições da fatia na seção Lições do status.md (no trivial, no MR)","As-built: decisão que atravessa fatias vira ADR em docs/adr/; onde o projeto mantém ET, o design.md fica as-built (Components and Interfaces · Data Models · Decisões técnicas)","Texto pelo template: O quê · Porquê · Prova (CI, autorrevisão, 🔎) · Risco · Foco · Cobre","Commit, push com o sim, conferência no remoto e gitlab_criar_mr, com remover a branch de origem","Avisa que o MR espera um desenvolvedor ≠ autor e sugere revisão humana no risco alto"],
   arq:["status.md: Fase pr-aberto e o MR","docs/adr/NNNN-<titulo>.md · design.md (ET as-built)",".gitlab/merge_request_templates/Default.md"],
   elm:["Nada vai ao ELM no MR: a ET as-built sobe depois do merge","Com ELM, oferece lançar horas (sa-elm.horas)"],
   ctx:{afk:{faz:["O subagente grava as Lições e o as-built e abre ou atualiza o MR da própria branch","Devolve à pessoa o resumo: o MR, os Desvios, o Em aberto e o que ficou do ELM","Daqui em diante, tudo é igual à IA supervisionada: revisão humana e merge do autor"]}}},
  revmr:{x:1240,y1:290,y2:298,g:"pill",lab:"above",dy:-26,nome:"Revisar o MR",sk:"sa-revisar.mr",
   papel:"um desenvolvedor ≠ autor (o CODEOWNERS indica o dono)",agente:"sa-desenvolvedor, com o subagente sa-revisor",tarefa:"—",fase:"em-revisao, derivado do MR aberto",
-  faz:["Confere a booleana desenvolvedor e o usuario ≠ autor do MR","Lê o MR (O quê · Porquê · Prova · Risco · Foco · Cobre), as threads e o CI do último commit; git fetch, sem checkout nem commit","Apoio: rubrica C no sa-revisor sobre o diff; o relatório não substitui a leitura da pessoa","Tria cada achado em thread: corrige (suggested change no ajuste pequeno) · adia (captura) · volta-plano · volta-spec · descarta","Sem BLOQUEANTE aberto: aprova no MR; com BLOQUEANTE: pede mudanças","O Risco pede homologação: oferece a sa-verificar.homologacao antes de aprovar"],
+  faz:["Confere a booleana desenvolvedor e o usuario ≠ autor do MR","Lê o MR (O quê · Porquê · Prova · Risco · Foco · Cobre), as threads e o CI do último commit; git fetch, sem checkout nem commit","Apoio: rubrica C no sa-revisor sobre o diff; o relatório não substitui a leitura da pessoa","Tria cada achado em thread: corrige (suggested change no ajuste pequeno) · adia (captura) · volta-plano · volta-spec · descarta","Sem BLOQUEANTE aberto: aprova no MR; com BLOQUEANTE: pede mudanças","O Risco pede revisão humana: oferece a sa-verificar.revisao-humana antes de aprovar"],
   arq:["tudo fica no MR"],elm:["Com ELM, oferece as horas (sa-elm.horas)"]},
- homol:{x:1320,y1:290,y2:298,g:"pill",lab:"above",nome:"Homologação",sk:"por risco",
+ revhum:{x:1320,y1:290,y2:298,g:"pill",lab:"above",nome:"Revisão humana",sk:"por risco",
   papel:"qualquer pessoa",agente:"sa-desenvolvedor, com o subagente sa-verificador",tarefa:"—",
   aviso:"Só quando o risco pede: o Risco do MR, o revisor ou o P.O.",
-  faz:["Traz a branch do MR (fetch, checkout, pull --ff-only); árvore suja para; sem commit na branch","A pessoa escolhe os CT-nn do risco; a sa-verificar.verificar roda com ela, que exercita e confirma cada resultado","❌ corrige, adia ou descarta; 🔁 se decide com o autor; ⚠️ vira thread sem contar como falha","Comenta o 🔎 da homologação no MR e abre as threads, com o sim"],
+  faz:["Traz a branch do MR (fetch, checkout, pull --ff-only); árvore suja para; sem commit na branch","A pessoa escolhe os CT-nn do risco; a sa-verificar.verificar roda com ela, que exercita e confirma cada resultado","❌ corrige, adia ou descarta; 🔁 se decide com o autor; ⚠️ vira thread sem contar como falha","Comenta o 🔎 da revisão humana no MR e abre as threads, com o sim"],
   arq:["o MR"],elm:["Com ELM, oferece as horas (sa-elm.horas)"]},
 
 /* ---------- depois do merge ---------- */
@@ -245,8 +245,8 @@ S.planejar.ctx.afk=S.planejar.ctx.hitl;
 
 const ALL={
  epico:["triar","backlog","planejar","item","moldar","gogk","entrevistar","prd","gprd","fatiar","backlog@fim"],
- hitl:["triar","backlog","planejar","item","detalhar","elm","gficha","iniciar","plano","codificar","autorrev","verif","mr","revmr","homol","merge","archive","publicar"],
- afk:["triar","backlog","planejar","item","detalhar","elm","gficha","iniciar","pl_a","cod_a","rev_a","ver_a","mr","revmr","homol","merge","archive","publicar"],
+ hitl:["triar","backlog","planejar","item","detalhar","elm","gficha","iniciar","plano","codificar","autorrev","verif","mr","revmr","revhum","merge","archive","publicar"],
+ afk:["triar","backlog","planejar","item","detalhar","elm","gficha","iniciar","pl_a","cod_a","rev_a","ver_a","mr","revmr","revhum","merge","archive","publicar"],
  atd:["triar","backlog","planejar","item","atd1","atd2","atd3","atd4","atd5"],
  sprint:["planejar","durante","inspecao","review","retro","virada","planejar@fim"]
 };
@@ -267,7 +267,7 @@ const VIA={
  "item>detalhar":"aceita → sa-refinar.detalhar","detalhar>elm":"com ELM e Cobre: sa-especificar.elm","detalhar>gficha":"sem elm/: a ficha basta","elm>gficha":"arquivos de elm/ aprovados","gficha>iniciar":"pronta: puxada com sinal de WIP",
  "iniciar>plano":"quick ou completo: sa-plano.plano","plano>codificar":"plano aprovado: Fase implementando","codificar>autorrev":"tarefas marcadas, validar verde","autorrev>verif":"achados triados","verif>mr":"ACEITO: Lições, as-built e MR",
  "iniciar>pl_a":"IA autopilot: subagente na worktree","iniciar>cod_a":"trivial: direto à codificação","pl_a>cod_a":"plano aprovado pelo subagente","cod_a>rev_a":"validar verde","rev_a>ver_a":"achados pela recomendação do revisor","ver_a>mr":"ACEITO: o subagente abre o MR",
- "mr>revmr":"um desenvolvedor ≠ autor","revmr>homol":"o Risco pede: homologação","homol>merge":"aprovado e CI verde","merge>archive":"concluida na base","archive>publicar":"com ELM: publicar no DOORS?",
+ "mr>revmr":"um desenvolvedor ≠ autor","revmr>revhum":"o Risco pede: revisão humana","revhum>merge":"aprovado e CI verde","merge>archive":"concluida na base","archive>publicar":"com ELM: publicar no DOORS?",
  "item>atd1":"nova ou em-andamento → sa-atender.atender","atd1>atd2":"dentro da folga ou crítica","atd2>atd3":"em-andamento (<ID> iniciar)","atd3>atd4":"resolvido ou retirado","atd4>atd5":"concluida",
  "planejar>durante":"sprint-<nn>.md gravado","durante>inspecao":"todo dia","inspecao>review":"fim do timebox","review>retro":"Regras aprendidas gravadas","retro>virada":"o próximo sa-planejamento.sprint","virada>planejar":"migrados primeiro na capacidade"
 };
@@ -299,7 +299,7 @@ const EXTRA=[
  {id:"mr_cod",f:"revmr",t:"codificar",kind:"loop",lines:["hitl"],bend:-1,lab:"pede mudanças: Fase retrabalho; o autor corrige no mesmo MR",short:"pede mudanças ↺"},
  {id:"mr_coda",f:"revmr",t:"cod_a",kind:"loop",lines:["afk"],bend:1,lab:"pede mudanças: Fase retrabalho; a correção sai no mesmo MR",short:"pede mudanças ↺"},
  {id:"mr_spec",f:"revmr",t:"elm",kind:"loop",lines:["hitl","afk"],bend:-1,lab:"volta-spec: o especificador decide (com ELM, ajusta o elm/); a sa-plano.replanejar recopia o texto para o delta",short:"volta-spec ↺"},
- {id:"uat_cod",f:"homol",t:"codificar",kind:"loop",lines:["hitl"],bend:-1,lab:"❌ corrige: thread no MR, e o autor ajusta",short:"❌ corrige ↺"},
+ {id:"uat_cod",f:"revhum",t:"codificar",kind:"loop",lines:["hitl"],bend:-1,lab:"❌ corrige: thread no MR, e o autor ajusta",short:"❌ corrige ↺"},
  {id:"merge_conf",f:"merge",t:"codificar",kind:"loop",lines:["hitl"],bend:1,lab:"conflito com a base: retrabalho, por merge da base (nunca rebase)",short:"conflito ↺"},
  {id:"atd_fora",f:"atd3",t:"triar",kind:"xfer",lines:["atd"],toLine:"hitl",tname:"Triagem",lab:"muda o código: vira bug ou fatia pela captura, com origem <ID>",short:"muda o código: triagem"},
  {id:"atd_desd",f:"atd5",t:"triar",kind:"xfer",lines:["atd"],toLine:"hitl",tname:"Triagem",lab:"desdobramento: captura com origem <ID>, segue pela triagem",short:"desdobramento: triagem"},
@@ -333,16 +333,16 @@ const ROLES=[
  {nome:"Desenvolvedor",who:"booleana desenvolvedor",tarefa:"DEV",c:"--blue",agente:"sa-desenvolvedor",st:"iniciar",line:"hitl",
   faz:["Puxa com sinal de WIP e escolhe tamanho, rota e modo","Plano, TDD, autorrevisão e verificação por subagente, e o MR","Revisa o MR de outro autor","Merge do próprio MR, com a aprovação e o CI verde"]},
  {nome:"Revisor do MR",who:"um desenvolvedor que não é o autor; o CODEOWNERS indica o dono",tarefa:"MR",c:"--cyan",agente:"sa-desenvolvedor",st:"revmr",line:"hitl",
-  faz:["Lê o MR de verdade, com a rubrica C do sa-revisor como apoio","Tria cada achado: corrige · adia · volta-plano · volta-spec · descarta","Aprova sem BLOQUEANTE aberto, ou pede mudanças","Oferece a homologação quando o risco pede"]},
+  faz:["Lê o MR de verdade, com a rubrica C do sa-revisor como apoio","Tria cada achado: corrige · adia · volta-plano · volta-spec · descarta","Aprova sem BLOQUEANTE aberto, ou pede mudanças","Oferece a revisão humana quando o risco pede"]},
  {nome:"Qualquer pessoa",who:"sem booleana",tarefa:"—",c:"--green",agente:"sa-desenvolvedor ou sa-especificador",st:"triar",line:"hitl",
-  faz:["Captura e triagem","Homologação, quando o risco pede","Atende a Sustentação dentro da folga e declara resolvido","Consulta o painel e a porta do item"]},
+  faz:["Captura e triagem","Revisão humana, quando o risco pede","Atende a Sustentação dentro da folga e declara resolvido","Consulta o painel e a porta do item"]},
  {nome:"Subagentes",who:"contexto limpo, só leitura",tarefa:"—",c:"--orange",agente:"sa-pesquisador · sa-revisor · sa-verificador",st:"autorrev",line:"hitl",
   faz:["sa-pesquisador: fatos com arquivo:linha, sem gravar","sa-revisor: rubrica L do plano e C do código (spec · padrões · segurança)","sa-verificador: sobe a aplicação, exercita os CT-nn e grava só o CT.csv","Gerador ≠ avaliador: quem implementou não verifica"]}
 ];
 
 const AGENTS=[
  {id:"sa-desenvolvedor",quem:"quem desenvolve e quem atende; também o autopilot, como subagente",skills:["desenvolver","plano","revisar","verificar","atender","especificar","triar","status","sabia","elm"],sub:"pesquisador · revisor · verificador · desenvolvedor (autopilot)",push:"pergunta",pk:"ask",
-  obs:"Primário, permissão build. Desenvolvimento, plano, MR, revisão do MR de outro autor, homologação, Sustentação e archive. No autopilot, na worktree: push da própria branch, merge da base nela e o MR dela liberados; merge do MR, ELM e rede bloqueados. Recebe o desvio de toolkit da sa-desenvolver.codificar.tarefa e o tipo ET"},
+  obs:"Primário, permissão build. Desenvolvimento, plano, MR, revisão do MR de outro autor, revisão humana, Sustentação e archive. No autopilot, na worktree: push da própria branch, merge da base nela e o MR dela liberados; merge do MR, ELM e rede bloqueados. Recebe o desvio de toolkit da sa-desenvolver.codificar.tarefa e o tipo ET"},
  {id:"sa-especificador",quem:"quem especifica e quem tem produto",skills:["refinar","prd","especificar","entrevistar","planejamento","triar","status","sabia","elm"],sub:"pesquisador · revisor · verificador · especificador",push:"pergunta",pk:"ask",
   obs:"Primário, permissão build. Refinamento, PRD, especificação, entrevista e planejamento; inclui as funções de produto. Recebe as skills de toolkit dos tipos desviáveis da especificação (HF, UC, REG, MSG, EL) e da ATA"},
  {id:"sa-pesquisador",quem:"subagente de quem planeja, especifica, fatia ou atende",skills:["pesquisar"],sub:"—",push:"não faz",pk:"no",
@@ -411,7 +411,7 @@ const GATES=[
  {n:"Arquivos de elm/",q:"especificador",o:"Cada artefato do Cobre, arquivo inteiro, contra o commit de base e pelo checklist do padrão do tipo. Aprovado: status: stable com verified. Editado depois, volta a draft.",st:"elm",line:"hitl"},
  {n:"Ficha",q:"produto",o:"Regras, cenários CT-nn e Cobre, com a DoR do padrão. Aprovada e com a DoR completa, a fatia fica pronta. Bug sem Cobre dispensa a aprovação.",st:"gficha",line:"hitl"},
  {n:"MR",q:"um desenvolvedor ≠ autor",o:"O código lido por uma pessoa, com a Prova (CI, autorrevisão e 🔎) e o Cobre; sem BLOQUEANTE aberto, aprova. O merge é do autor, com a aprovação e o CI verde; o autopilot nunca faz merge.",st:"revmr",line:"hitl"},
- {n:"Homologação",q:"qualquer pessoa, por risco",o:"Só quando o risco pede: os CT-nn escolhidos, exercitados pela pessoa sobre a branch do MR, com o 🔎 no MR.",st:"homol",line:"hitl"}
+ {n:"Revisão humana",q:"qualquer pessoa, por risco",o:"Só quando o risco pede: os CT-nn escolhidos, exercitados pela pessoa sobre a branch do MR, com o 🔎 no MR.",st:"revhum",line:"hitl"}
 ];
 
 const PHASES={
