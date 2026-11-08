@@ -66,3 +66,11 @@
 - Especificação manual (com ELM): o especificador escolhe alterar os artefatos direto no DOORS. A skill registra o modo na ficha e encerra; na volta ("alterei", nesta ou em outra sessão), sincroniza: baixa do DOORS os artefatos do Cobre para o elm/ da fatia (o diff contra o commit de base mostra o que mudou), atualiza a versão lida no Cobre, grava o delta com o texto completo na pasta da spec e marca esses artefatos como já publicados (a sa-elm.publicar não os reenvia). Depois segue o fluxo normal (aprovação, pronta). Sem ELM, manual = o especificador edita os arquivos da spec à mão.
 - status.md.Autonomia ∈ {IA supervisionada, IA autopilot, manual} (codificação); ficha.Especificação ∈ {IA supervisionada, IA autopilot, manual} (especificação).
 - Modo da especificação só existe com ELM (manual = alterar direto no DOORS); sem ELM não há pergunta nem campo Especificação na ficha (07/11).
+
+## Padrões de artefato (2.1.5, 08/11)
+- O padrão sugerido na revisão do IARA vira o padrão do Sabiá; o IARA fica com os padrões dele, só com o frontmatter, as referências e os nomes do 2.1.
+- Arquivo de elm/ e ATA: frontmatter type · title · status · sources (verified na aprovação, publicado só no manual); o id no nome do arquivo; ação e versão lida no Cobre; ao DOORS sobe só o corpo.
+- Corpo de requisito sem título Markdown, só rótulos em negrito (como o PAB no DOORS): o mesmo texto serve a elm/, ao bloco do prd.md, ao delta e ao DOORS.
+- Referência só para baixo (HF → EL/REG/MSG/GL/UC; REG → REG/MSG/GL; EL → REG/MSG/GL/EL); existente no ELM com link para o arquivo, novo só com o id provisório. A ET cita as HF e os UC do Cobre na linha Atende, com link normal.
+- Tipos novos: MSG (o texto da mensagem) e UC (opcional, com Casos de uso = sim; o novo vai em HF). CT desviável no sa-verificar.verificar.casos.
+- Revisão contra 29148, INVEST/Gherkin, Business Rules Manifesto, IREB, NN/g, ADR e 29119-3: termos vagos no checklist, um Quando por cenário, REG declarativa e atômica, estados e acessibilidade na EL, checklist da MSG, sigla e homônimo no GL, encaminhamento com dono e prazo, Por quê nas Decisões, consequência nas Decisões técnicas, rubrica C20 do CT.csv.
