@@ -1,5 +1,5 @@
 ---
-{"resumo": "Formato do research.md da fatia, escrito pela sa-plano com os fatos devolvidos pela sa-pesquisar (curto na quick)."}
+{"resumo": "Formato do research.md da fatia, escrito pela sa-plano com os fatos devolvidos pela sa-pesquisar (curto na rápida)."}
 ---
 ```markdown
 # Pesquisa — FT-<nnn> <título>
@@ -34,5 +34,5 @@
 <o que foi procurado e não existe — evita que o plano invente>
 ```
 
-Seção sem conteúdo leva `Não se aplica.`. Na quick, curto: só as seções que a fatia usa têm conteúdo. Nada de
+Seção sem conteúdo leva `Não se aplica.`. Na rápida, curto: só as seções que a fatia usa têm conteúdo. Nada de
 opinião nem solução: só fatos com `arquivo:linha`, como a pesquisa devolveu.

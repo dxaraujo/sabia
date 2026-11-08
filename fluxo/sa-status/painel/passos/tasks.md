@@ -1,5 +1,5 @@
 ---
-{"resumo": "Progresso do tasks.md na quick e na completa."}
+{"resumo": "Progresso do tasks.md na rápida e na completa."}
 ---
 ## Entrada
 
@@ -7,7 +7,7 @@ A pasta da spec de cada item em andamento.
 
 ## Faça
 
-Na rota quick e na completa, leia do `tasks.md` o `[x]`/total e o primeiro pendente. Na trivial não há.
+Na rota rápida e na completa, leia do `tasks.md` o `[x]`/total e o primeiro pendente. Na trivial não há.
 
 ## Saída
 

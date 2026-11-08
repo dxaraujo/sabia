@@ -21,7 +21,7 @@ demanda ─► captura (fluxo/captura.md; entrada direta sa-triar.capturar)   ti
 
 PLANEJAMENTO ─────── sa-planejamento.inicial · .sprint · .review · .retrospectiva · inspeção diária sa-status.painel
 DESENVOLVIMENTO ──── sa-desenvolver.iniciar ─► [sa-plano.plano] ─► sa-desenvolver.codificar ─► MR
-                     rota: trivial · quick · completo       modo: IA supervisionada · IA autopilot · manual
+                     rota: trivial · rápida · completo       modo: IA supervisionada · IA autopilot · manual
 REVISÃO E ACEITE ─── sa-verificar.verificar · sa-revisar.mr (desenvolvedor ≠ autor) · [sa-verificar.revisao-humana]
                      └─► sa-desenvolver.encerrar (merge) ─► sa-especificar.archive ─► [sa-elm.publicar]
 
@@ -133,11 +133,11 @@ OpenSpec. Fica em `formato_spec` no `agentes.json` e na seção Especificação 
 | Rota | Kiro | OpenSpec |
 |---|---|---|
 | `trivial` | nenhum arquivo de spec; tudo no MR | idem |
-| `quick` fatia | Quick Spec: `requirements.md`, `design.md`, `tasks.md` | `proposal.md` + delta + `tasks.md` |
-| `quick` bug | Bugfix Spec: `bugfix.md`, `design.md`, `tasks.md` | `proposal.md` + delta MODIFIED + `tasks.md` |
+| `rapida` fatia | Quick Spec: `requirements.md`, `design.md`, `tasks.md` | `proposal.md` + delta + `tasks.md` |
+| `rapida` bug | Bugfix Spec: `bugfix.md`, `design.md`, `tasks.md` | `proposal.md` + delta MODIFIED + `tasks.md` |
 | `completo` | `requirements.md` → `design.md` → `tasks.md`, com "quer revisar agora?" | `proposal.md` + delta + `design.md` + `tasks.md` |
 
-Quick e completo têm também `research.md`, `status.md` e `CT.csv`. O delta traz sempre o texto completo dos
+Rápida e completo têm também `research.md`, `status.md` e `CT.csv`. O delta traz sempre o texto completo dos
 requisitos tocados (OpenSpec: ADDED/MODIFIED/REMOVED; Kiro: o bloco completo de cada requisito). Depois do merge, o
 archive: sem ELM, o OpenSpec funde o delta na spec viva (`openspec/specs/`) e, no Kiro, o vigente são as specs em
 `.kiro/specs/`; com ELM, a `sa-elm.publicar` sobe os arquivos de `elm/` ao DOORS conferindo a versão lida, ou o

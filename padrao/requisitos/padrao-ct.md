@@ -3,7 +3,7 @@
 ---
 # `CT.csv` — casos de teste da fatia
 
-Escrito só pela `sa-verificar.verificar`, na quick e no completo (a trivial não tem: a prova fica no MR). Uma linha
+Escrito só pela `sa-verificar.verificar`, na rápida e no completo (a trivial não tem: a prova fica no MR). Uma linha
 por cenário ✅ aceito na verificação; o rejeitado, o de ambiente e o de possível alteração não entram. Cada linha
 liga ao CT-nn da ficha e da spec, que é o id marcado no teste automatizado. Serve à leitura do revisor, à conferência
 "CT sem teste" da `sa-status` e à importação manual numa ferramenta de teste.

@@ -11,7 +11,7 @@
    {"id": "pasta"},
    {"id": "push"},
    {"id": "elm", "chama": "sa-elm.item"},
-   {"id": "seguir", "saidas": {"IA supervisionada ou manual, rota quick ou completo": "→ sa-plano.plano", "IA supervisionada, rota trivial": "→ sa-desenvolver.codificar", "manual, rota trivial: sessão encerrada até o 'terminei'": "fim", "IA autopilot": "autopilot"}},
+   {"id": "seguir", "saidas": {"IA supervisionada ou manual, rota rápida ou completo": "→ sa-plano.plano", "IA supervisionada, rota trivial": "→ sa-desenvolver.codificar", "manual, rota trivial: sessão encerrada até o 'terminei'": "fim", "IA autopilot": "autopilot"}},
    {"id": "autopilot", "saidas": {"subagente lançado: a devolução vem no fim do codificar ou no disjuntor": "fim"}},
    {"id": "captura", "de": "captura", "saidas": {"capturado: a triagem vem antes do desenvolvimento": "→ sa-triar.triar"}},
    {"id": "gravar", "de": "gravar-na-base"}

@@ -47,5 +47,5 @@ Os passos `captura` e `gravar` são a captura comum e a gravação comum na base
 
 - sem branch `<id>` → `sa-desenvolver.iniciar`
 - `pronta` com branch `<id>` (voltou na virada) → `sa-desenvolver.iniciar`
-- rota quick ou completo com Fase — (plano não aprovado) → `sa-plano.plano`
+- rota rápida ou completo com Fase — (plano não aprovado) → `sa-plano.plano`
 - MR aprovado com CI verde, ou MR já mergeado → `sa-desenvolver.encerrar`

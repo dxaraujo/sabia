@@ -11,7 +11,7 @@ As Regras aprendidas do `.sabia/sabia.md` valem como itens extras da rubrica a q
 um toolkit (no prompt do revisor e na seção Tipos com skill de toolkit do `sabia.md`) também só se somam: nenhum
 troca, afrouxa ou dispensa um item daqui.
 
-Item que não se aplica à rota (a trivial não tem plano; o quick do OpenSpec não tem `design.md`) fica `N/A`.
+Item que não se aplica à rota (a trivial não tem plano; a rápida do OpenSpec não tem `design.md`) fica `N/A`.
 
 ## Destinos
 
@@ -66,7 +66,7 @@ avaliados em separado e relatados em tabelas próprias: um não compensa nem esc
 | C6 | As tarefas `[x]` do `tasks.md` têm código no diff | BLOQUEANTE |
 | C7 | O Cobre do MR é o da ficha, e o diff não muda comportamento de requisito fora dele (diverge: destino `volta-spec`) | IMPORTANTE |
 | C8 | Escopo: nada além da fatia (funcionalidade não pedida, arquivo fora do design, refatoração oportunista) | IMPORTANTE |
-| C20 | Onde há `CT.csv` (quick e completo, no MR), ele segue o padrão do CT em vigor (o do Sabiá, ou o do toolkit que desvia o CT): uma linha por cenário ✅, os blocos da Descrição na ordem e o RESULTADO ESPERADO igual ao "Então" | IMPORTANTE |
+| C20 | Onde há `CT.csv` (rápida e completo, no MR), ele segue o padrão do CT em vigor (o do Sabiá, ou o do toolkit que desvia o CT): uma linha por cenário ✅, os blocos da Descrição na ordem e o RESULTADO ESPERADO igual ao "Então" | IMPORTANTE |
 
 **Eixo padrões** — o diff deixa o código pior para quem vem depois?
 

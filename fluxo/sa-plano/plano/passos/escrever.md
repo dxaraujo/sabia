@@ -11,8 +11,8 @@ O delta, o `research.md`, as decisões, a rota (`status.md`), o tipo (fatia ou b
 
    | Rota | Kiro | OpenSpec |
    |---|---|---|
-   | quick fatia | Quick Spec: `requirements.md`, `design.md` e `tasks.md` numa passada, sem portões | `proposal.md` + delta + `tasks.md` |
-   | quick bug | Bugfix Spec: `bugfix.md`, `design.md`, `tasks.md` | `proposal.md` + delta MODIFIED + `tasks.md` |
+   | rápida fatia | Quick Spec: `requirements.md`, `design.md` e `tasks.md` numa passada, sem portões | `proposal.md` + delta + `tasks.md` |
+   | rápida bug | Bugfix Spec: `bugfix.md`, `design.md`, `tasks.md` | `proposal.md` + delta MODIFIED + `tasks.md` |
    | completo | `requirements.md` → `design.md` → `tasks.md` | `proposal.md` + delta + `design.md` + `tasks.md` |
 
 2. Completo: uma parte por vez, com o passo `revisar` entre elas.
@@ -27,7 +27,7 @@ O delta, o `research.md`, as decisões, a rota (`status.md`), o tipo (fatia ou b
 
 ## Saída
 
-Parte escrita (ou o plano inteiro, na quick) → passo `revisar`.
+Parte escrita (ou o plano inteiro, na rápida) → passo `revisar`.
 
 ## Pare se
 

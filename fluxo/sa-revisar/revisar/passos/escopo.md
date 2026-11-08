@@ -26,5 +26,5 @@ A rubrica e a entrada dela lidas → passo `ci`.
 
 ## Pare se
 
-- A pasta da spec não existe numa rota quick ou completo (rubrica L) → devolva "nada a revisar: o plano é da
+- A pasta da spec não existe numa rota rápida ou completo (rubrica L) → devolva "nada a revisar: o plano é da
   `sa-plano.plano`" e pare.

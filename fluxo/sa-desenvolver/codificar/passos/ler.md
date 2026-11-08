@@ -7,7 +7,7 @@ A branch `<id>` (no autopilot, a worktree), o `status.md` (Rota, Autonomia, Fase
 
 ## Faça
 
-1. Quick e completo: leia o `tasks.md` (no Kiro, o da Quick Spec, da Bugfix Spec ou da spec completa), o
+1. Rápida e completo: leia o `tasks.md` (no Kiro, o da Quick Spec, da Bugfix Spec ou da spec completa), o
    `design.md` onde existe, o delta com o texto completo dos requisitos tocados (OpenSpec: `specs/<cap>/spec.md`;
    Kiro: `requirements.md` ou `bugfix.md`), o `proposal.md` (OpenSpec) e o `research.md`.
 2. Sempre: a ficha (Cenários `CT-nn`, Cobre), os Comandos de build e teste e as Regras aprendidas do
@@ -21,4 +21,4 @@ Contexto lido → passo `preparar`; volta da codificação manual → passo `val
 
 ## Pare se
 
-- Quick ou completo sem `tasks.md` → "o plano é da `sa-plano.plano`" e pare.
+- Rápida ou completo sem `tasks.md` → "o plano é da `sa-plano.plano`" e pare.

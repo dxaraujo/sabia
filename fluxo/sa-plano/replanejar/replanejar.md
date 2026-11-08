@@ -15,7 +15,7 @@ Chamada pela `sa-desenvolver.codificar` com o plano já aprovado, quando há div
 `volta-plano` ou texto novo aprovado pelo especificador. Muda só o que mudou, sem desmarcar o que foi feito, e
 devolve à codificação.
 
-Deste fluxo: rota quick ou completo, Fase diferente de `—`, e o motivo de quem chamou (esperado × encontrado, o
+Deste fluxo: rota rápida ou completo, Fase diferente de `—`, e o motivo de quem chamou (esperado × encontrado, o
 achado ou o texto novo).
 
 ## Entrada: vizinhos

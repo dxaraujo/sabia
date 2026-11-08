@@ -20,7 +20,7 @@ corrige:
      ofereça cancelar a tarefa (`sa-elm.finalizar`). Ofereça "seguir para o pitch?" e termine.
 2. **Rota**:
    - `trivial` — mudança pequena com Cobre vazio: nenhum arquivo de spec, tudo no MR;
-   - `quick` — mudança média, ou com Cobre;
+   - `rapida` — mudança média, ou com Cobre;
    - `completo` — desenho novo ou risco.
    Com Cobre não vazio a rota nunca é `trivial`: o delta é obrigatório.
 3. **Modo** (quem codifica), gravado em Autonomia com o mesmo nome:

@@ -1,5 +1,5 @@
 ---
-{"resumo": "Só quick e completo: pasta da spec pelo formato_spec, status.md pelo padrão e, no Kiro, o .config.kiro."}
+{"resumo": "Só rápida e completo: pasta da spec pelo formato_spec, status.md pelo padrão e, no Kiro, o .config.kiro."}
 ---
 ## Entrada
 

@@ -9,7 +9,7 @@ O item com modo IA autopilot, a worktree `.sabia/local/wt/<id>` e a linha Disjun
 
 1. Lance o `sa-desenvolvedor` como subagente com: o id, a rota, a worktree e o teto do disjuntor (tentativas,
    tempo, custo; 2 reprovações seguidas disparam sempre).
-2. O subagente roda a `sa-plano.plano` (quick e completo) e depois a `sa-desenvolver.codificar`, até o MR aberto.
+2. O subagente roda a `sa-plano.plano` (rápida e completo) e depois a `sa-desenvolver.codificar`, até o MR aberto.
    Os comandos rodam sempre como `cd .sabia/local/wt/<id> && <comando>`, e os arquivos são acessados pelo caminho da
    worktree.
 3. Liberado ao subagente: push da própria branch (sem `--force`), `git merge origin/<base>` nela e abrir ou

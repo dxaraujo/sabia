@@ -1,5 +1,5 @@
 ---
-{"resumo": "Quick e completo: sa-especificar.archive na base (archive e oferta de publicação); trivial não tem spec."}
+{"resumo": "Rápida e completo: sa-especificar.archive na base (archive e oferta de publicação); trivial não tem spec."}
 ---
 ## Entrada
 
@@ -8,7 +8,7 @@ O item concluído na base e a pasta da spec (`formato_spec` do `agentes.json`).
 ## Faça
 
 1. Trivial (sem pasta da spec) → nada a arquivar; siga.
-2. Quick e completo: chame a `sa-especificar.archive` na base; ela volta para cá. Ela faz:
+2. Rápida e completo: chame a `sa-especificar.archive` na base; ela volta para cá. Ela faz:
    - sem ELM: no OpenSpec, `openspec archive ft-<nnn>-<slug> --yes` funde o delta na spec viva; no Kiro, as specs
      em `.kiro/specs/` continuam sendo o vigente;
    - com ELM: no OpenSpec, `openspec archive ft-<nnn>-<slug> --skip-specs --yes`, e a pergunta "publicar no DOORS?".

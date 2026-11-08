@@ -14,7 +14,7 @@ ELM) ou a spec viva com as regras aprovadas da ficha (sem ELM).
    sem mudar o sentido.
 2. OpenSpec: `specs/<cap>/spec.md` com `## ADDED Requirements` (inclui), `## MODIFIED Requirements` (altera) e
    `## REMOVED Requirements` (exclui, com Reason e Migration).
-3. Kiro: `requirements.md` (no bug da quick, `bugfix.md`, seção Requisitos tocados) com o bloco completo de cada
+3. Kiro: `requirements.md` (no bug da rápida, `bugfix.md`, seção Requisitos tocados) com o bloco completo de cada
    requisito e a linha `**Ação:**`.
 4. O formato de cada um está no padrão `sa-plano/plano.md`.
 5. Delta já existe (sincronização da especificação manual) → mantenha o texto e só o ponha no arquivo da rota.

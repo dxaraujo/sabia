@@ -1,10 +1,10 @@
 ---
 name: sabia
-description: "Sabiá guide and router for the agent workflow (Kiro and opencode). Use when the person asks how the Sabiá flow works, which skill to use, or makes a request without naming a skill. Covers intake and triage, refinement (shaping with go/kill, three amigos, slicing), sprint planning with WIP limits, development routes (trivial, quick, complete) with AI supervised, AI autopilot or manual coding, merge request review by a developer other than the author, verification, archive and optional publication to IBM ELM through sa-elm. Routes each request to the right sa-* skill. Use when the user says \"como funciona o Sabiá\", \"qual o fluxo\", \"qual skill eu uso\", \"o que eu faço agora com isso\", \"Sabiá\"."
+description: "Sabiá guide and router for the agent workflow (Kiro and opencode). Use when the person asks how the Sabiá flow works, which skill to use, or makes a request without naming a skill. Covers intake and triage, refinement (shaping with go/kill, three amigos, slicing), sprint planning with WIP limits, development routes (trivial, rápida, complete) with AI supervised, AI autopilot or manual coding, merge request review by a developer other than the author, verification, archive and optional publication to IBM ELM through sa-elm. Routes each request to the right sa-* skill. Use when the user says \"como funciona o Sabiá\", \"qual o fluxo\", \"qual skill eu uso\", \"o que eu faço agora com isso\", \"Sabiá\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.9"
+  version: "2.1.10"
 ---
 
 # Sabiá — guia e roteador do fluxo
@@ -57,7 +57,7 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
 - **Prioridade e tamanho.** `prioridade` ∈ {`crítica`, vazio}: crítica é o expedite, pela política do `acordos.md`;
   vazio segue a ordem das linhas. `tamanho` ∈ {`P`, `M`, `G`}: P = horas, M ≈ 1 dia, G = 2 a 3 dias. Maior que G é
   épico, e só o épico vai ao pitch e ao go/kill.
-- **Rotas.** Quem desenvolve escolhe pelo código: `trivial` (sem arquivo de spec, tudo no MR), `quick` ou `completo`.
+- **Rotas.** Quem desenvolve escolhe pelo código: `trivial` (sem arquivo de spec, tudo no MR), `rapida` ou `completo`.
   O formato da spec vem do `formato_spec` do `agentes.json` (Kiro ou OpenSpec). A pasta da spec é `ft-<nnn>-<slug>`.
 - **Sustentação.** A categoria é confirmada antes de gravar a triagem e não se recategoriza depois. Quem atende puxa
   dentro da folga reservada. A IA auxilia, e a pessoa declara o item resolvido (`sa-atender.atender`).
@@ -99,7 +99,7 @@ trabalho. Codificação e especificação têm modos independentes.
 
 1. **Alinhar antes de escrever** — até 5 perguntas por rodada, cada uma com recomendação. O agente busca os fatos, e a
    pessoa toma as decisões. Regra de negócio é decisão de uma pessoa.
-2. **Cerimônia do tamanho** — pelas rotas `trivial` · `quick` · `completo` e pelo tamanho P · M · G.
+2. **Cerimônia do tamanho** — pelas rotas `trivial` · `rapida` · `completo` e pelo tamanho P · M · G.
 3. **Fatias verticais** — cada fatia prova algo demonstrável e mantém o Cobre.
 4. **Verificação acima de geração** — backpressure em camadas: o trecho tocado a cada alteração e a suíte completa uma
    vez antes do MR, com baseline do CI. A asserção que dura são os testes automatizados, marcados com o `CT-nn`.

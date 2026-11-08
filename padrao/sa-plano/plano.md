@@ -13,12 +13,12 @@ conteúdo inventado. Plano curto: quem aprova lê tudo numa sentada.
 | Rota | Kiro | OpenSpec |
 |---|---|---|
 | trivial | sem pasta: tudo no MR | sem pasta: tudo no MR |
-| quick fatia | Quick Spec: `requirements.md`, `design.md`, `tasks.md` numa passada, sem portões | `proposal.md`, `specs/<cap>/spec.md`, `tasks.md` |
-| quick bug | Bugfix Spec: `bugfix.md`, `design.md`, `tasks.md` | `proposal.md`, delta MODIFIED, `tasks.md` |
+| rápida fatia | Quick Spec: `requirements.md`, `design.md`, `tasks.md` numa passada, sem portões | `proposal.md`, `specs/<cap>/spec.md`, `tasks.md` |
+| rápida bug | Bugfix Spec: `bugfix.md`, `design.md`, `tasks.md` | `proposal.md`, delta MODIFIED, `tasks.md` |
 | completo | `requirements.md` → `design.md` → `tasks.md`, com "quer revisar agora?" em cada parte | `proposal.md`, delta, `design.md`, `tasks.md` |
 
-Quick e completo têm também `research.md`, `status.md` e `CT.csv`; o Kiro tem `.config.kiro`; com ELM e Cobre,
-`elm/`. Cobre com inclui, altera ou exclui exige quick ou completo.
+Rápida e completo têm também `research.md`, `status.md` e `CT.csv`; o Kiro tem `.config.kiro`; com ELM e Cobre,
+`elm/`. Cobre com inclui, altera ou exclui exige rápida ou completo.
 
 ## `.config.kiro` (Kiro)
 
@@ -33,7 +33,7 @@ Uma linha de JSON, criada pela `sa-desenvolver.iniciar.pasta`:
 ## `proposal.md` (OpenSpec)
 
 ```markdown
-**Fatia:** [FT-<nnn>](<caminho da ficha>) · **Rota:** <quick | completo>
+**Fatia:** [FT-<nnn>](<caminho da ficha>) · **Rota:** <rapida | completo>
 
 ## Why
 <motivo, a partir da Entrada e do Objetivo da ficha>
@@ -52,7 +52,7 @@ Uma linha de JSON, criada pela `sa-desenvolver.iniciar.pasta`:
 - <código, APIs e dados afetados>
 ```
 
-Na quick, que não tem `design.md`, as Decisões técnicas vão numa seção `## Decisões técnicas` no fim.
+Na rápida, que não tem `design.md`, as Decisões técnicas vão numa seção `## Decisões técnicas` no fim.
 
 ## Delta OpenSpec — `specs/<cap>/spec.md`
 
@@ -116,7 +116,7 @@ FT-<nnn> — <título>. <o comportamento que a fatia entrega, em 2–3 frases.> 
 Padrões EARS: `QUANDO … ENTÃO … DEVE` · `ENQUANTO … DEVE` · `SE … ENTÃO … DEVE` · `ONDE … DEVE`. Critérios
 numerados `N.M`, cada um com o `CT-nn` que o prova; o `tasks.md` cita `N.M`.
 
-## `bugfix.md` (Kiro, bug na quick)
+## `bugfix.md` (Kiro, bug na rápida)
 
 ```markdown
 # Bugfix Requirements Document

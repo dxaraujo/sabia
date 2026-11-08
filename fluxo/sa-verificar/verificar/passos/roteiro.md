@@ -13,8 +13,8 @@ A branch `<id>`, a ficha `.sabia/planejamento/fatias/FT-<nnn>-<slug>.md` e a pas
 | Rota | Kiro | OpenSpec |
 |---|---|---|
 | trivial | os cenários da ficha e o teste que acompanha a mudança | o mesmo |
-| quick fatia | `requirements.md` da Quick Spec | o delta |
-| quick bug | `bugfix.md` | o delta MODIFIED |
+| rápida fatia | `requirements.md` da Quick Spec | o delta |
+| rápida bug | `bugfix.md` | o delta MODIFIED |
 | completo | `requirements.md` e `design.md` | o delta e o `design.md` |
 
 2. O delta já traz o texto aprovado dos requisitos: não leia o ELM.

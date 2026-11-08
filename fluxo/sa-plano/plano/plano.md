@@ -1,6 +1,6 @@
 ---
 {"fluxo": "plano", "dono": "sa-desenvolvedor",
- "quando": ["planejar a fatia nas rotas quick e completo: pesquisa (research.md), decisões técnicas, delta com o texto aprovado copiado e design e tasks pela matriz rota × formato (Kiro ou OpenSpec)", "planeja a FT-031", "gera a spec", "cria as tasks"],
+ "quando": ["planejar a fatia nas rotas rápida e completo: pesquisa (research.md), decisões técnicas, delta com o texto aprovado copiado e design e tasks pela matriz rota × formato (Kiro ou OpenSpec)", "planeja a FT-031", "gera a spec", "cria as tasks"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa"],
  "passos": [
    {"id": "entrada", "de": "entrada", "papel": "desenvolvedor", "branch": "fatia"},
@@ -19,12 +19,12 @@
 ---
 # Plano — decidir o como antes de codar
 
-O plano da fatia nas rotas quick e completo; o trivial não passa por aqui. Junta os fatos pela `sa-pesquisar` e
+O plano da fatia nas rotas rápida e completo; o trivial não passa por aqui. Junta os fatos pela `sa-pesquisar` e
 grava o `research.md`, toma as decisões técnicas, copia o texto aprovado para o delta (sem reescrever) e escreve
 design e tasks pela matriz rota × formato. Quem desenvolve aprova o próprio plano; no autopilot, o subagente aprova
 e registra. Modelos: o padrão `sa-plano/plano.md` e o padrão `sa-plano/research.md`.
 
-Deste fluxo: item `em-andamento`, branch `<id>`, pasta da spec com `status.md`, rota quick ou completo e Fase `—`.
+Deste fluxo: item `em-andamento`, branch `<id>`, pasta da spec com `status.md`, rota rápida ou completo e Fase `—`.
 O manual segue as regras da IA supervisionada: a pessoa está presente.
 
 Os passos `captura` e `gravar` são a captura comum e a gravação comum na base: outros passos os incluem e voltam.

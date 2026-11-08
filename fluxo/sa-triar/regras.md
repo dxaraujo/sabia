@@ -14,5 +14,5 @@ Corpo da fatia e do bug: o padrão `sa-refinar/ficha.md` (só a seção Entrada)
   com o ELM (só oferece ler o WI pela `sa-elm.item`).
 - O `backlog.md` e os corpos só mudam na base, pela gravação comum. O id nunca muda nem se reaproveita.
 - Nunca invente dado de work item, regra ou comportamento esperado: sem fonte e sem pessoa, fica `falta: …`.
-- Rota (trivial · quick · completo) e modo (IA supervisionada · IA autopilot · manual) não são da triagem: são de
+- Rota (trivial · rápida · completo) e modo (IA supervisionada · IA autopilot · manual) não são da triagem: são de
   quem puxa.

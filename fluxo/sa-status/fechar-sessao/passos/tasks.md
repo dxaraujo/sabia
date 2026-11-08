@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O `tasks.md` da pasta da spec (quick e completa).
+O `tasks.md` da pasta da spec (rápida e completa).
 
 ## Faça
 

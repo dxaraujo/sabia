@@ -1,11 +1,11 @@
 ---
-{"resumo": "Formato do status.md da fatia (quick e completo): Rota, Autonomia, Fase, MR, Publicação e as seções Desvios, Em aberto, Lições e Retomar."}
+{"resumo": "Formato do status.md da fatia (rápida e completo): Rota, Autonomia, Fase, MR, Publicação e as seções Desvios, Em aberto, Lições e Retomar."}
 ---
 # FT-<nnn> — <título>
 
 | Campo | Valor |
 |---|---|
-| Rota | <quick \| completo> |
+| Rota | <rapida \| completo> |
 | Autonomia | <IA supervisionada \| IA autopilot \| manual> |
 | Fase | <— \| implementando \| revisando \| verificando \| pr-aberto \| retrabalho> |
 | MR | <— \| !<iid> <url>> |
