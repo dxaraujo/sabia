@@ -4,7 +4,7 @@
 ## Entrada
 
 A branch `<id>`, a ficha `.sabia/planejamento/fatias/FT-<nnn>-<slug>.md` e a pasta da spec pelo `formato_spec` do
-`agentes.json`. Quem chama a `sa-verificar.uat` passa os cenários escolhidos pela pessoa.
+`agentes.json`. Quem chama a `sa-verificar.homologacao` passa os cenários escolhidos pela pessoa.
 
 ## Faça
 

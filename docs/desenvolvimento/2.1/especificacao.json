@@ -1,5 +1,5 @@
 {
- "geral": "Sabiá 2.1 · 7 disciplinas · 5 agentes (primários sa-desenvolvedor · sa-especificador; subagentes sa-pesquisador · sa-revisor · sa-verificador) · alvos Kiro e opencode\npapéis = booleanas no equipe.json · identidade = usuário do GitLab\n   qualquer pessoa ── captura · triagem · UAT\n   desenvolvedor ──── puxa para desenvolvimento · revisa MR de outro autor\n   especificador ──── aprova os arquivos de elm/ · publica no ELM\n   produto ────────── go/kill · ordena · aprova pitch, PRD e ficha\n\ndemanda ─► fluxo/captura.md (toda skill que captura · entrada direta: sa-triar.capturar)\n   │        tipo ∈ épico · fatia · bug · sustentação        id: EP-nn · FT-nnn · <categoria>-nnn\n   └─► 1 TRIAGEM ─────────── sa-triar.triar                       (qualquer pessoa)\n        ├─ épico ──────────► 2 REFINAMENTO   sa-refinar.moldar: pitch.md ─► go/kill (produto)\n        │                      └─ go ─► 4 ESPECIFICAÇÃO   sa-prd.prd: prd.md aprovado (produto)\n        │                               └─► sa-refinar.fatiar ─► fatias FT-nnn (pai EP-nn)\n        ├─ fatia · bug ────► 2 REFINAMENTO   sa-refinar.detalhar: ficha (regras · CT-nn · Cobre) [+ elm/] ─► pronta\n        │                      └─ sa-refinar.ajustar até alguém puxar\n        └─ sustentação ────► 7 SUSTENTAÇÃO   sa-atender.atender (quem atende puxa, dentro da folga)\n\n3 PLANEJAMENTO ────── sa-planejamento.inicial · .sprint (virada) · .review · .retrospectiva\n                      inspeção diária: sa-status.painel (WIP · vazão · idade · lead time · pendências de rastreio)\n5 DESENVOLVIMENTO ─── sa-desenvolver.iniciar ─► [sa-plano.plano: quick · completo] ─► sa-desenvolver.codificar ─► MR\n                      quem codifica, ao assumir: IA supervisionada · IA autopilot (sa-desenvolvedor como subagente na worktree .sabia/local/wt/<id>) · manual\n6 REVISÃO E ACEITE ── sa-verificar.verificar · sa-revisar.mr (desenvolvedor ≠ autor) · [sa-verificar.uat, por risco]\n                      └─► sa-desenvolver.encerrar (merge) ─► sa-especificar.archive ─► Lições ─► curadoria na review\n\nestado (linhas do backlog.md e do sprint-<nn>.md): commit pequeno direto na base · fluxo/gravar-na-base.md\ndocumentos (pitch.md · prd.md · ficha · elm/): direto na base, com 'Aprovado: <usuário> · <data>'\nMR: só para código (com o delta da spec, design e tasks)\n\n══════════════════ borda ══════════════════\nELM = sa-elm (DOORS + EWM). Só com ELM configurado; a skill do trabalho oferece e nunca trava.\n   assumir ──────────► sa-elm.item (tarefa DEV · ESP · ATD)\n   horas ────────────► sa-elm.horas (só por pergunta ou pedido)\n   concluir ─────────► sa-elm.finalizar\n   refinamento ──────► sa-elm.baixar (original do DOORS em elm/)\n   depois do merge ──► sa-elm.publicar (especificador; sem a booleana: 'Publicação: pendente')\nsem ELM: nenhuma oferta aparece · spec viva no repositório (OpenSpec: archive funde o delta · Kiro: .kiro/specs/)",
+ "geral": "Sabiá 2.1 · 7 disciplinas · 5 agentes (primários sa-desenvolvedor · sa-especificador; subagentes sa-pesquisador · sa-revisor · sa-verificador) · alvos Kiro e opencode\npapéis = booleanas no equipe.json · identidade = usuário do GitLab\n   qualquer pessoa ── captura · triagem · homologação\n   desenvolvedor ──── puxa para desenvolvimento · revisa MR de outro autor\n   especificador ──── aprova os arquivos de elm/ · publica no ELM\n   produto ────────── go/kill · ordena · aprova pitch, PRD e ficha\n\ndemanda ─► fluxo/captura.md (toda skill que captura · entrada direta: sa-triar.capturar)\n   │        tipo ∈ épico · fatia · bug · sustentação        id: EP-nn · FT-nnn · <categoria>-nnn\n   └─► 1 TRIAGEM ─────────── sa-triar.triar                       (qualquer pessoa)\n        ├─ épico ──────────► 2 REFINAMENTO   sa-refinar.moldar: pitch.md ─► go/kill (produto)\n        │                      └─ go ─► 4 ESPECIFICAÇÃO   sa-prd.prd: prd.md aprovado (produto)\n        │                               └─► sa-refinar.fatiar ─► fatias FT-nnn (pai EP-nn)\n        ├─ fatia · bug ────► 2 REFINAMENTO   sa-refinar.detalhar: ficha (regras · CT-nn · Cobre) [+ elm/] ─► pronta\n        │                      └─ sa-refinar.ajustar até alguém puxar\n        └─ sustentação ────► 7 SUSTENTAÇÃO   sa-atender.atender (quem atende puxa, dentro da folga)\n\n3 PLANEJAMENTO ────── sa-planejamento.inicial · .sprint (virada) · .review · .retrospectiva\n                      inspeção diária: sa-status.painel (WIP · vazão · idade · lead time · pendências de rastreio)\n5 DESENVOLVIMENTO ─── sa-desenvolver.iniciar ─► [sa-plano.plano: quick · completo] ─► sa-desenvolver.codificar ─► MR\n                      quem codifica, ao assumir: IA supervisionada · IA autopilot (sa-desenvolvedor como subagente na worktree .sabia/local/wt/<id>) · manual\n6 REVISÃO E ACEITE ── sa-verificar.verificar · sa-revisar.mr (desenvolvedor ≠ autor) · [sa-verificar.homologacao, por risco]\n                      └─► sa-desenvolver.encerrar (merge) ─► sa-especificar.archive ─► Lições ─► curadoria na review\n\nestado (linhas do backlog.md e do sprint-<nn>.md): commit pequeno direto na base · fluxo/gravar-na-base.md\ndocumentos (pitch.md · prd.md · ficha · elm/): direto na base, com 'Aprovado: <usuário> · <data>'\nMR: só para código (com o delta da spec, design e tasks)\n\n══════════════════ borda ══════════════════\nELM = sa-elm (DOORS + EWM). Só com ELM configurado; a skill do trabalho oferece e nunca trava.\n   assumir ──────────► sa-elm.item (tarefa DEV · ESP · ATD)\n   horas ────────────► sa-elm.horas (só por pergunta ou pedido)\n   concluir ─────────► sa-elm.finalizar\n   refinamento ──────► sa-elm.baixar (original do DOORS em elm/)\n   depois do merge ──► sa-elm.publicar (especificador; sem a booleana: 'Publicação: pendente')\nsem ELM: nenhuma oferta aparece · spec viva no repositório (OpenSpec: archive funde o delta · Kiro: .kiro/specs/)",
  "principios": [
   [
    "O mercado é o padrão",
@@ -7,7 +7,7 @@
   ],
   [
    "Papéis são permissões",
-   "equipe.json com booleanas. desenvolvedor: puxa item para desenvolvimento e revisa MR de outro autor. especificador: aprova os arquivos de elm/ e publica no ELM. produto: go/kill, ordena, aprova pitch, PRD e ficha. Captura, triagem e UAT: qualquer pessoa. Nenhuma regra depende de senioridade."
+   "equipe.json com booleanas. desenvolvedor: puxa item para desenvolvimento e revisa MR de outro autor. especificador: aprova os arquivos de elm/ e publica no ELM. produto: go/kill, ordena, aprova pitch, PRD e ficha. Captura, triagem e homologação: qualquer pessoa. Nenhuma regra depende de senioridade."
   ],
   [
    "Identidade = GitLab",
@@ -314,8 +314,8 @@
   {
    "k": "revisao",
    "nome": "Revisão e aceite",
-   "resumo": "Todo MR de código passa pela autorrevisão, pelo verificador e por um desenvolvedor que não é o autor. O UAT só entra por risco. O autor faz o merge com aprovação e CI verde. Depois do merge vêm o status final, o archive da spec, a oferta de finalizar a tarefa no ELM e as lições para a curadoria.",
-   "arvore": "MR aberto pela sa-desenvolver.codificar, com autorrevisão feita (rubrica C)\n ├─ sa-verificar.verificar   (subagente sa-verificador; o autor chama antes do merge · Fase verificando)\n │     roteiro pelos CT-nn da ficha e da spec ─► exercita a aplicação direto (curl · navegador)\n │     grava CT.csv (uma linha por CT-nn) · evidência no MR\n │     asserção durável: testes automatizados no CI, marcados com o CT-nn\n │     achou demanda ─► fluxo/captura.md\n ├─ sa-revisar.mr   (qualquer desenvolvedor ≠ autor; CODEOWNERS indica o dono · Fase revisando)\n │     apoio: sa-revisar.revisar no subagente sa-revisor (rubrica C)\n │     pendente (MCP do Jenkins): ler o resultado e os logs do último commit da branch\n │     achados nas threads do MR\n │     ├─ corrige ─► o autor ajusta (suggested change no ajuste pequeno)\n │     ├─ adia ───► fluxo/captura.md\n │     ├─ volta ao plano ─► sa-plano.replanejar\n │     ├─ volta à spec ───► especificador (sa-refinar.detalhar)\n │     └─ descarta\n │     reprovado ─► Fase retrabalho ─► sa-desenvolver.codificar · só o bloqueante trava o merge\n ├─ sa-verificar.uat   (qualquer pessoa; só quando o risco pede; sobre a branch do MR)\n └─► sa-desenvolver.encerrar   (autor)\n       aprovação + CI verde ─► merge (ou auto-merge)\n       backlog: concluida · concluida_em (fluxo/gravar-na-base.md)\n          última fatia aberta do épico ─► épico concluido\n       ─► sa-especificar.archive (archive e publicação: Especificação)\n       ─► com ELM: 'finalizar a tarefa?' ─► sa-elm.finalizar · 'lançar horas?' ─► sa-elm.horas\n       ─► Lições do status.md ─► curadoria na sa-planejamento.review ─► fim: oferece puxar o próximo\n conhecimento\n   ADR: só decisão que atravessa fatias (banco, framework, padrão de integração); o resto no design e no MR\n   glossário: GL no DOORS onde já existe; sem ELM, glossario.md opcional",
+   "resumo": "Todo MR de código passa pela autorrevisão, pelo verificador e por um desenvolvedor que não é o autor. A homologação só entra por risco. O autor faz o merge com aprovação e CI verde. Depois do merge vêm o status final, o archive da spec, a oferta de finalizar a tarefa no ELM e as lições para a curadoria.",
+   "arvore": "MR aberto pela sa-desenvolver.codificar, com autorrevisão feita (rubrica C)\n ├─ sa-verificar.verificar   (subagente sa-verificador; o autor chama antes do merge · Fase verificando)\n │     roteiro pelos CT-nn da ficha e da spec ─► exercita a aplicação direto (curl · navegador)\n │     grava CT.csv (uma linha por CT-nn) · evidência no MR\n │     asserção durável: testes automatizados no CI, marcados com o CT-nn\n │     achou demanda ─► fluxo/captura.md\n ├─ sa-revisar.mr   (qualquer desenvolvedor ≠ autor; CODEOWNERS indica o dono · Fase revisando)\n │     apoio: sa-revisar.revisar no subagente sa-revisor (rubrica C)\n │     pendente (MCP do Jenkins): ler o resultado e os logs do último commit da branch\n │     achados nas threads do MR\n │     ├─ corrige ─► o autor ajusta (suggested change no ajuste pequeno)\n │     ├─ adia ───► fluxo/captura.md\n │     ├─ volta ao plano ─► sa-plano.replanejar\n │     ├─ volta à spec ───► especificador (sa-refinar.detalhar)\n │     └─ descarta\n │     reprovado ─► Fase retrabalho ─► sa-desenvolver.codificar · só o bloqueante trava o merge\n ├─ sa-verificar.homologacao   (qualquer pessoa; só quando o risco pede; sobre a branch do MR)\n └─► sa-desenvolver.encerrar   (autor)\n       aprovação + CI verde ─► merge (ou auto-merge)\n       backlog: concluida · concluida_em (fluxo/gravar-na-base.md)\n          última fatia aberta do épico ─► épico concluido\n       ─► sa-especificar.archive (archive e publicação: Especificação)\n       ─► com ELM: 'finalizar a tarefa?' ─► sa-elm.finalizar · 'lançar horas?' ─► sa-elm.horas\n       ─► Lições do status.md ─► curadoria na sa-planejamento.review ─► fim: oferece puxar o próximo\n conhecimento\n   ADR: só decisão que atravessa fatias (banco, framework, padrão de integração); o resto no design e no MR\n   glossário: GL no DOORS onde já existe; sem ELM, glossario.md opcional",
    "regras": [
     [
      "Faixa de revisão",
@@ -327,7 +327,7 @@
     ],
     [
      "Aceite",
-     "Pipeline de CI + subagente sa-verificador. Ele exercita a aplicação direto e põe a evidência no MR. Sem http.sh, massa/ nem verificacao.md. UAT humano só por risco."
+     "Pipeline de CI + subagente sa-verificador. Ele exercita a aplicação direto e põe a evidência no MR. Sem http.sh, massa/ nem verificacao.md. homologação humana só por risco."
     ],
     [
      "CT.csv",
@@ -1296,7 +1296,7 @@
       },
       {
        "passo": "avisar e seguir",
-       "texto": "Avisa que o MR espera a revisão de qualquer desenvolvedor ≠ autor pela sa-revisar.mr, com o dono por área no CODEOWNERS. Com risco alto, sugere o UAT humano (sa-verificar.uat). Fora do autopilot, com ELM: pergunta 'deseja lançar horas?' e, com sim, chama sa-elm.horas. Fora do autopilot: se o MR já está aprovado com CI verde, oferece 'seguir para o merge?' (sa-desenvolver.encerrar); senão, o fluxo termina esperando a revisão. Autopilot: devolve à pessoa o link do MR, os Desvios e os Em aberto; as perguntas do ELM ficam para o encerrar.",
+       "texto": "Avisa que o MR espera a revisão de qualquer desenvolvedor ≠ autor pela sa-revisar.mr, com o dono por área no CODEOWNERS. Com risco alto, sugere a homologação humana (sa-verificar.homologacao). Fora do autopilot, com ELM: pergunta 'deseja lançar horas?' e, com sim, chama sa-elm.horas. Fora do autopilot: se o MR já está aprovado com CI verde, oferece 'seguir para o merge?' (sa-desenvolver.encerrar); senão, o fluxo termina esperando a revisão. Autopilot: devolve à pessoa o link do MR, os Desvios e os Em aberto; as perguntas do ELM ficam para o encerrar.",
        "destino": "muda"
       }
      ]
@@ -1554,7 +1554,7 @@
       },
       {
        "passo": "veredito",
-       "texto": "A pessoa tria cada achado. corrige: abre thread no MR. adia: captura pelo fluxo/captura.md (tipo bug ou fatia, obs 'origem FT-nnn'), gravada pelo fluxo/gravar-na-base.md. volta-plano: thread para o autor, que segue pela sa-plano.replanejar. volta-spec: thread; o autor registra Em aberto ao especificador no status.md, o especificador decide (com ELM, ajusta o elm/ pela sa-especificar.elm; sem ELM, a decisão entra nas Decisões da ficha) e a sa-plano.replanejar recopia o texto para o delta. descarta: o motivo vai na thread. BLOQUEANTE só sai por corrige ou por descarta com motivo. Ajuste pequeno vai como suggested change, que o autor aplica. Se o Risco do MR pede, oferece UAT pela sa-verificar.uat antes de aprovar. Sem BLOQUEANTE aberto, aprova no MR (em ask). Com BLOQUEANTE aberto, pede mudanças.",
+       "texto": "A pessoa tria cada achado. corrige: abre thread no MR. adia: captura pelo fluxo/captura.md (tipo bug ou fatia, obs 'origem FT-nnn'), gravada pelo fluxo/gravar-na-base.md. volta-plano: thread para o autor, que segue pela sa-plano.replanejar. volta-spec: thread; o autor registra Em aberto ao especificador no status.md, o especificador decide (com ELM, ajusta o elm/ pela sa-especificar.elm; sem ELM, a decisão entra nas Decisões da ficha) e a sa-plano.replanejar recopia o texto para o delta. descarta: o motivo vai na thread. BLOQUEANTE só sai por corrige ou por descarta com motivo. Ajuste pequeno vai como suggested change, que o autor aplica. Se o Risco do MR pede, oferece homologação pela sa-verificar.homologacao antes de aprovar. Sem BLOQUEANTE aberto, aprova no MR (em ask). Com BLOQUEANTE aberto, pede mudanças.",
        "destino": "muda"
       },
       {
@@ -1569,7 +1569,7 @@
   {
    "skill": "sa-verificar",
    "destino_skill": "muda",
-   "papel": "Aceite contra a spec. O fluxo verificar é o verificador, o subagente sa-verificador, com contexto limpo e o texto verificacao do toolkit. Ele exercita a aplicação direto (curl, navegador, job) contra os cenários CT-nn, devolve o bloco 🔎 a quem chamou e grava o CT.csv, do qual é o único escritor. Quem chama: sa-desenvolver.codificar, antes do MR, e sa-verificar.uat. O fluxo uat é o UAT humano, feito só quando o risco pede, por qualquer pessoa, sobre o MR aberto. A asserção durável são os testes automatizados no CI. Não existem http.sh, massa/, arquivo de requisições nem verificacao.md: a prova vai no MR.",
+   "papel": "Aceite contra a spec. O fluxo verificar é o verificador, o subagente sa-verificador, com contexto limpo e o texto verificacao do toolkit. Ele exercita a aplicação direto (curl, navegador, job) contra os cenários CT-nn, devolve o bloco 🔎 a quem chamou e grava o CT.csv, do qual é o único escritor. Quem chama: sa-desenvolver.codificar, antes do MR, e sa-verificar.homologacao. O fluxo homologacao é a homologação humana, feita só quando o risco pede, por qualquer pessoa, sobre o MR aberto. A asserção durável são os testes automatizados no CI. Não existem http.sh, massa/, arquivo de requisições nem verificacao.md: a prova vai no MR.",
    "fluxos": [
     {
      "fluxo": "verificar",
@@ -1578,7 +1578,7 @@
      "passos": [
       {
        "passo": "entrada",
-       "texto": "Quem chama: sa-desenvolver.codificar (autoverificação antes do MR, em qualquer modo), sa-verificar.uat (os cenários do UAT) ou a pessoa ('verifica a FT-nnn'). Roda no subagente sa-verificador, sem o contexto de quem implementou. Pré-condição: branch <id> com o código e a spec da rota. Sem código, devolve 'a implementação é da sa-desenvolver.codificar'. Lê a seção Verificação de aceite do sabia.md (Executar · URL de teste). Sem essa seção, oferece a sa-setup e para.",
+       "texto": "Quem chama: sa-desenvolver.codificar (autoverificação antes do MR, em qualquer modo), sa-verificar.homologacao (os cenários da homologação) ou a pessoa ('verifica a FT-nnn'). Roda no subagente sa-verificador, sem o contexto de quem implementou. Pré-condição: branch <id> com o código e a spec da rota. Sem código, devolve 'a implementação é da sa-desenvolver.codificar'. Lê a seção Verificação de aceite do sabia.md (Executar · URL de teste). Sem essa seção, oferece a sa-setup e para.",
        "destino": "novo"
       },
       {
@@ -1603,7 +1603,7 @@
       },
       {
        "passo": "casos",
-       "texto": "Na quick e no completo, reescreve o CT.csv da pasta da spec com uma linha por cenário ✅. Os cenários ❌, ⚠️ e 🔁 não entram. Segue o padrão requisitos/padrao-ct.md (UTF-8 com BOM, ';', LF): Tipo ('Caso de Teste') · Resumo ('<FT-nnn> CT-nn - <título do cenário>') · Responsável (usuario de quem disparou a verificação) · Descrição (objetivo, pré-condições, passos, esperado, evidência). Não há Status nem 'Planejado para'. O '<FT-nnn> CT-nn' é a mesma marca do teste automatizado. Na trivial não há CT.csv: a prova fica no MR. Quando quem chama é a sa-verificar.uat, o CT.csv não é reescrito, porque o arquivo é do autor.",
+       "texto": "Na quick e no completo, reescreve o CT.csv da pasta da spec com uma linha por cenário ✅. Os cenários ❌, ⚠️ e 🔁 não entram. Segue o padrão requisitos/padrao-ct.md (UTF-8 com BOM, ';', LF): Tipo ('Caso de Teste') · Resumo ('<FT-nnn> CT-nn - <título do cenário>') · Responsável (usuario de quem disparou a verificação) · Descrição (objetivo, pré-condições, passos, esperado, evidência). Não há Status nem 'Planejado para'. O '<FT-nnn> CT-nn' é a mesma marca do teste automatizado. Na trivial não há CT.csv: a prova fica no MR. Quando quem chama é a sa-verificar.homologacao, o CT.csv não é reescrito, porque o arquivo é do autor.",
        "destino": "muda"
       },
       {
@@ -1614,18 +1614,18 @@
      ]
     },
     {
-     "fluxo": "uat",
+     "fluxo": "homologacao",
      "destino": "muda",
-     "resumo": "UAT humano, feito só quando o risco pede (o Risco do MR, o revisor ou o P.O.), por qualquer pessoa, sobre a branch do MR aberto. A pessoa escolhe os cenários e o verificar os roda com ela. Os achados são triados no MR, e só o corrige segura o merge. O UAT não grava arquivo na branch do autor nem oferece ELM além das horas.",
+     "resumo": "homologação humana, feito só quando o risco pede (o Risco do MR, o revisor ou o P.O.), por qualquer pessoa, sobre a branch do MR aberto. A pessoa escolhe os cenários e o verificar os roda com ela. Os achados são triados no MR, e só o corrige segura o merge. A homologação não grava arquivo na branch do autor nem oferece ELM além das horas.",
      "passos": [
       {
        "passo": "entrada",
-       "texto": "Quem chama: a pessoa ('UAT da FT-nnn') ou a oferta da sa-revisar.mr.veredito. Pela entrada comum (fluxo/entrada.md): o item existe e não é terminal. Não há sprint nem booleana: qualquer pessoa faz UAT, e quem ela é sai do equipe.json pelo usuario. Vizinhos: sem MR aberto da branch <id>, diz 'a autoverificação é da sa-desenvolver.codificar' e para. MR mergeado: diz que o UAT é antes do merge e para. Qualquer outro caso: 'use sa-status <id>' e para.",
+       "texto": "Quem chama: a pessoa ('homologação da FT-nnn') ou a oferta da sa-revisar.mr.veredito. Pela entrada comum (fluxo/entrada.md): o item existe e não é terminal. Não há sprint nem booleana: qualquer pessoa faz homologação, e quem ela é sai do equipe.json pelo usuario. Vizinhos: sem MR aberto da branch <id>, diz 'a autoverificação é da sa-desenvolver.codificar' e para. MR mergeado: diz que a homologação é antes do merge e para. Qualquer outro caso: 'use sa-status <id>' e para.",
        "destino": "muda"
       },
       {
        "passo": "branch",
-       "texto": "Traz a branch <id> com git fetch, checkout e git pull --ff-only. Com a árvore suja, avisa e para (nunca reset, stash ou rebase). O UAT não faz commit nessa branch.",
+       "texto": "Traz a branch <id> com git fetch, checkout e git pull --ff-only. Com a árvore suja, avisa e para (nunca reset, stash ou rebase). A homologação não faz commit nessa branch.",
        "destino": "muda"
       },
       {
@@ -1640,7 +1640,7 @@
       },
       {
        "passo": "entrega",
-       "texto": "Comenta no MR o bloco 🔎 do UAT (cenários, resultado e evidência sem dado real) e abre as threads da decisão, em ask. Sem o MCP gitlabpr, entrega o texto para a pessoa colar. Não há commit na branch: o CT.csv e o status.md são do autor, e o CT.csv volta a ser escrito quando a sa-desenvolver.codificar reverifica depois da correção. Volta a pessoa à branch anterior. Com ELM configurado, 'deseja lançar horas?' leva à sa-elm.horas. Oferece 'seguir para a próxima?'.",
+       "texto": "Comenta no MR o bloco 🔎 da homologação (cenários, resultado e evidência sem dado real) e abre as threads da decisão, em ask. Sem o MCP gitlabpr, entrega o texto para a pessoa colar. Não há commit na branch: o CT.csv e o status.md são do autor, e o CT.csv volta a ser escrito quando a sa-desenvolver.codificar reverifica depois da correção. Volta a pessoa à branch anterior. Com ELM configurado, 'deseja lançar horas?' leva à sa-elm.horas. Oferece 'seguir para a próxima?'.",
        "destino": "muda"
       }
      ]
@@ -1936,7 +1936,7 @@
       },
       {
        "passo": "perguntar",
-       "texto": "Pergunta as horas, os dias e a tarefa, e sugere as tarefas da pessoa no sprint.md aberto. Horas de revisão e de UAT vão para uma tarefa da própria pessoa, sem criar tarefa nova.",
+       "texto": "Pergunta as horas, os dias e a tarefa, e sugere as tarefas da pessoa no sprint.md aberto. Horas de revisão e de homologação vão para uma tarefa da própria pessoa, sem criar tarefa nova.",
        "destino": "novo"
       },
       {
@@ -2356,7 +2356,7 @@
       },
       {
        "passo": "desenvolvimento",
-       "texto": "pronta sem branch → sa-desenvolver.iniciar. pronta com branch (voltou na virada) ou em-andamento sem MR → sa-desenvolver.codificar, pelo Retomar. em-andamento sem branch publicada (a sessão parou antes do push) → só o responsável retoma (sa-desenvolver.iniciar). Retrabalho ou autopilot devolvido → sa-desenvolver.codificar. MR esperando revisão → qualquer desenvolvedor ≠ autor (sa-revisar.mr); ao autor, diz que espera. MR aprovado com CI verde, ou mergeado sem o item concluída → o autor (sa-desenvolver.encerrar). MR fechado sem merge → mostra e aponta sa-desenvolver.codificar. Aceite humano (UAT) pedido → qualquer pessoa (sa-verificar.uat). Trava de artefato → mostra quem tem a precedência e para.",
+       "texto": "pronta sem branch → sa-desenvolver.iniciar. pronta com branch (voltou na virada) ou em-andamento sem MR → sa-desenvolver.codificar, pelo Retomar. em-andamento sem branch publicada (a sessão parou antes do push) → só o responsável retoma (sa-desenvolver.iniciar). Retrabalho ou autopilot devolvido → sa-desenvolver.codificar. MR esperando revisão → qualquer desenvolvedor ≠ autor (sa-revisar.mr); ao autor, diz que espera. MR aprovado com CI verde, ou mergeado sem o item concluída → o autor (sa-desenvolver.encerrar). MR fechado sem merge → mostra e aponta sa-desenvolver.codificar. Aceite humano (homologação) pedido → qualquer pessoa (sa-verificar.homologacao). Trava de artefato → mostra quem tem a precedência e para.",
        "destino": "muda"
       },
       {
@@ -2376,7 +2376,7 @@
       },
       {
        "passo": "mostrar e seguir",
-       "texto": "Mostra '🔀 <id> — <título> · <tipo> · <status> · branch de <usuario> · MR <estado> · <Fase>' e 'Próximo: <skill.fluxo> (<quem pode>)'. Quem pode sai das booleanas: desenvolvedor para sa-desenvolver.* e sa-revisar.mr; produto para go/kill e aprovações; especificador para sa-elm.publicar e elm/; triagem, captura e UAT são de qualquer pessoa. Se a pessoa não tem a booleana, diz quem tem (equipe.json) e para. Se tem, pergunta 'seguir agora?': com o sim, segue pela skill.fluxo na mesma sessão; sem o sim, termina.",
+       "texto": "Mostra '🔀 <id> — <título> · <tipo> · <status> · branch de <usuario> · MR <estado> · <Fase>' e 'Próximo: <skill.fluxo> (<quem pode>)'. Quem pode sai das booleanas: desenvolvedor para sa-desenvolver.* e sa-revisar.mr; produto para go/kill e aprovações; especificador para sa-elm.publicar e elm/; triagem, captura e homologação são de qualquer pessoa. Se a pessoa não tem a booleana, diz quem tem (equipe.json) e para. Se tem, pergunta 'seguir agora?': com o sim, segue pela skill.fluxo na mesma sessão; sem o sim, termina.",
        "destino": "muda"
       }
      ]
@@ -2648,7 +2648,7 @@
       },
       {
        "passo": "perfis",
-       "texto": "Mostra o cartão dos 5 agentes fixos. Primários, escolhidos pela pessoa ao abrir a sessão: sa-desenvolvedor (sa-desenvolver, sa-plano, sa-revisar.mr, sa-verificar.uat, sa-atender e a sa-especificar.archive que a sa-desenvolver.encerrar chama) e sa-especificador (sa-refinar, sa-prd, sa-especificar, sa-entrevistar, sa-planejamento; inclui as funções de produto). Nos dois: sa-triar, sa-status, sabia e as ofertas da sa-elm. Subagentes: sa-pesquisador (sa-pesquisar), sa-revisor (sa-revisar.revisar, com as rubricas do toolkit) e sa-verificador (sa-verificar.verificar, com o texto verificacao do toolkit). sa-setup e sa-elm.setup ficam na sessão padrão. A pessoa só marca os extras por agente: skills de toolkit, a tool de banco e os agentes do projeto, que vêm desmarcados e com o 'para quê'.",
+       "texto": "Mostra o cartão dos 5 agentes fixos. Primários, escolhidos pela pessoa ao abrir a sessão: sa-desenvolvedor (sa-desenvolver, sa-plano, sa-revisar.mr, sa-verificar.homologacao, sa-atender e a sa-especificar.archive que a sa-desenvolver.encerrar chama) e sa-especificador (sa-refinar, sa-prd, sa-especificar, sa-entrevistar, sa-planejamento; inclui as funções de produto). Nos dois: sa-triar, sa-status, sabia e as ofertas da sa-elm. Subagentes: sa-pesquisador (sa-pesquisar), sa-revisor (sa-revisar.revisar, com as rubricas do toolkit) e sa-verificador (sa-verificar.verificar, com o texto verificacao do toolkit). sa-setup e sa-elm.setup ficam na sessão padrão. A pessoa só marca os extras por agente: skills de toolkit, a tool de banco e os agentes do projeto, que vêm desmarcados e com o 'para quê'.",
        "destino": "muda"
       },
       {
@@ -2855,7 +2855,7 @@
       },
       {
        "passo": "papéis",
-       "texto": "São booleanas no equipe.json. desenvolvedor: puxa item para desenvolvimento e revisa o MR de outro autor. especificador: aprova os arquivos de elm/ e publica no ELM. produto: decide go/kill, ordena e aprova pitch, PRD e ficha. Captura, triagem e UAT ficam abertos a qualquer pessoa. Não há regra por senioridade.",
+       "texto": "São booleanas no equipe.json. desenvolvedor: puxa item para desenvolvimento e revisa o MR de outro autor. especificador: aprova os arquivos de elm/ e publica no ELM. produto: decide go/kill, ordena e aprova pitch, PRD e ficha. Captura, triagem e homologação ficam abertos a qualquer pessoa. Não há regra por senioridade.",
        "destino": "muda"
       },
       {
@@ -2865,7 +2865,7 @@
       },
       {
        "passo": "agentes",
-       "texto": "A pessoa abre a sessão num dos dois agentes primários: sa-desenvolvedor (desenvolvimento, plano, MR, UAT e Sustentação) ou sa-especificador (refinamento, PRD, especificação, entrevista e planejamento; inclui as funções de produto). Triagem, status, o guia e as ofertas da sa-elm rodam nos dois. Pesquisa, autorrevisão e verificação rodam nos subagentes sa-pesquisador, sa-revisor e sa-verificador, de contexto limpo. A booleana do equipe.json continua conferida na pré-condição de cada skill.",
+       "texto": "A pessoa abre a sessão num dos dois agentes primários: sa-desenvolvedor (desenvolvimento, plano, MR, homologação e Sustentação) ou sa-especificador (refinamento, PRD, especificação, entrevista e planejamento; inclui as funções de produto). Triagem, status, o guia e as ofertas da sa-elm rodam nos dois. Pesquisa, autorrevisão e verificação rodam nos subagentes sa-pesquisador, sa-revisor e sa-verificador, de contexto limpo. A booleana do equipe.json continua conferida na pré-condição de cada skill.",
        "destino": "novo"
       },
       {
@@ -2917,7 +2917,7 @@
       },
       {
        "passo": "MR",
-       "texto": "Precisa de uma aprovação, de um desenvolvedor diferente do autor (o CODEOWNERS indica o dono), com o CI verde e a evidência do verificador no MR. O UAT é feito por qualquer pessoa, conforme o risco.",
+       "texto": "Precisa de uma aprovação, de um desenvolvedor diferente do autor (o CODEOWNERS indica o dono), com o CI verde e a evidência do verificador no MR. A homologação é feita por qualquer pessoa, conforme o risco.",
        "destino": "muda"
       },
       {
@@ -3073,7 +3073,7 @@
       },
       {
        "passo": "verificar → sa-verificar",
-       "texto": "Aceite de ponta a ponta, com a evidência no MR e o CT.csv: sa-verificar.verificar. UAT: sa-verificar.uat.",
+       "texto": "Aceite de ponta a ponta, com a evidência no MR e o CT.csv: sa-verificar.verificar. homologação: sa-verificar.homologacao.",
        "destino": "muda"
       },
       {
@@ -5409,8 +5409,8 @@
     },
     {
      "nome": "Prova",
-     "significado": "CI (pipeline), verificação por cenário com evidência, UAT quando houve",
-     "preenche": "sa-desenvolver.codificar · sa-verificar.verificar · sa-verificar.uat",
+     "significado": "CI (pipeline), verificação por cenário com evidência, homologação quando houve",
+     "preenche": "sa-desenvolver.codificar · sa-verificar.verificar · sa-verificar.homologacao",
      "valores": "por CT-nn: ✅ aceito · ❌ rejeitado · ⚠️ ambiente · 🔁 possível alteração (volta ao especificador)"
     },
     {
@@ -5612,7 +5612,7 @@
      "nome": "agentes.<nome>",
      "significado": "Os 5 agentes",
      "preenche": "framework",
-     "valores": "{descricao (inglês), permissao: build | leitura, mode: primary | subagent, skills: [], subagentes: []}; sa-desenvolvedor {build, primary, sa-desenvolver · sa-plano · sa-revisar.mr · sa-verificar.uat · sa-atender · sa-especificar.archive, chama sa-pesquisador · sa-revisor · sa-verificador} · sa-especificador {build, primary, sa-refinar · sa-prd · sa-especificar · sa-entrevistar · sa-planejamento, chama sa-pesquisador} · sa-pesquisador {leitura, subagent, sa-pesquisar} · sa-revisor {leitura, subagent, sa-revisar.revisar} · sa-verificador {leitura, subagent, sa-verificar.verificar}; nos dois primários também sa-triar · sa-status · sabia · sa-elm (menos setup)"
+     "valores": "{descricao (inglês), permissao: build | leitura, mode: primary | subagent, skills: [], subagentes: []}; sa-desenvolvedor {build, primary, sa-desenvolver · sa-plano · sa-revisar.mr · sa-verificar.homologacao · sa-atender · sa-especificar.archive, chama sa-pesquisador · sa-revisor · sa-verificador} · sa-especificador {build, primary, sa-refinar · sa-prd · sa-especificar · sa-entrevistar · sa-planejamento, chama sa-pesquisador} · sa-pesquisador {leitura, subagent, sa-pesquisar} · sa-revisor {leitura, subagent, sa-revisar.revisar} · sa-verificador {leitura, subagent, sa-verificar.verificar}; nos dois primários também sa-triar · sa-status · sabia · sa-elm (menos setup)"
     },
     {
      "nome": "agentes.sa-verificador.liberacoes",
@@ -6193,7 +6193,7 @@
    ]
   }
  ],
- "agentes": "5 agentes · fonte: perfis.json (2 modelos de permissão + 5 agentes) + agentes.json do projeto\n   ─► gerador da sa-setup ─► .kiro/agents/sa-<nome>.json e .opencode/agents/sa-<nome>.md\nprimários (a pessoa escolhe ao abrir a sessão; a pré-condição da skill confere a booleana)\n├─ sa-desenvolvedor   (mode primary · build)\n│    skills: sa-desenvolver · sa-plano · sa-revisar.mr · sa-verificar.uat · sa-atender · sa-especificar.archive\n│    chama: sa-pesquisador · sa-revisor · sa-verificador\n│    └─ autopilot (o próprio sa-desenvolvedor como subagente na worktree .sabia/local/wt/<id>, sem a pessoa)\n│          allow: push da própria branch (sem --force) · merge da base nela · abrir/atualizar o MR dela\n│          deny: merge do MR · ELM · rede (curl, wget) · todo o resto que era ask\n├─ sa-especificador   (mode primary · build · inclui as funções de produto)\n│    skills: sa-refinar · sa-prd · sa-especificar · sa-entrevistar · sa-planejamento\n│    chama: sa-pesquisador\n└─ nos dois: sa-triar · sa-status · sabia · ofertas da sa-elm\nsubagentes (contexto limpo, chamados por um primário)\n├─ sa-pesquisador   (só leitura) ── sa-pesquisar.pesquisar\n├─ sa-revisor       (só leitura) ── sa-revisar.revisar + rubricas do toolkit\n└─ sa-verificador   (só leitura + liberações) ── sa-verificar.verificar + verificacao do toolkit\n      allow: comandos Executar do sabia.md (sobe a aplicação) · curl/wget só à URL de teste\n             · editar só <pasta da spec>/CT.csv\nagente de toolkit (agentes[], ligado em passos[].agente) ─► subagente do dono do passo, com as permissões dele\n\n2 modelos de permissão\n├─ build   (sa-desenvolvedor · sa-especificador; sem restrição por pasta)\n│    ler ──────── allow\n│                 deny: segredos (**/.env*, **/*.pem, **/*.key, ~/.ssh, ~/.aws, ~/.config/mcp-*)\n│    editar ───── allow: workspace (código, .kiro/specs/**, openspec/**, .sabia/planejamento/**,\n│                        .sabia/sabia.md, .sabia/creditos/**)\n│                 deny (harness): .kiro/agents · .kiro/settings · .kiro/steering/sabia.md · .opencode\n│                        · opencode.json · .sabia/config · .sabia/fluxo · .sabia/padrao\n│    comandos ─── allow\n│                 ask: git push · git merge · curl · wget\n│                 deny: git rebase · push --force / --force-with-lease · reset --hard · clean -f\n│                       · --no-verify · sudo · kubectl · helm · terraform apply\n│    MCP ──────── GitLab: leitura allow · escrita ask (abrir MR, comentar, merge)\n│                 ELM (regras da sa-elm.setup, só com ELM): leitura allow · escrita ask\n│                 elk (logs) · banco (só a tool de consulta): leitura allow\n└─ só leitura   (sa-pesquisador · sa-revisor; base do sa-verificador)\n     ler ──────── allow · segredos deny\n     editar ───── deny\n     comandos ─── só leitura (git status · diff · log · show · grep · ls-files) · resto deny\n     MCP ──────── só leitura (GitLab · ELM · elk · banco) · escrita deny\nquem a pessoa é: usuario do equipe.json = usuário do GitLab; a pré-condição da skill confere a booleana\nquem grava o harness: sa-setup.configurar e sa-elm.setup, na sessão padrão, fora dos 5 agentes\n   sa-elm.setup só produz dados (pa em .sabia/config/elm/pa_<nome>.json, chave elm do agentes.json,\n   seção ELM do sabia.md, regras ELM dos agentes); a sa-setup aplica e regenera os agentes\nKiro: só nomes de capability em tools (sem toolsSettings); limites por caminho e URL no prompt",
+ "agentes": "5 agentes · fonte: perfis.json (2 modelos de permissão + 5 agentes) + agentes.json do projeto\n   ─► gerador da sa-setup ─► .kiro/agents/sa-<nome>.json e .opencode/agents/sa-<nome>.md\nprimários (a pessoa escolhe ao abrir a sessão; a pré-condição da skill confere a booleana)\n├─ sa-desenvolvedor   (mode primary · build)\n│    skills: sa-desenvolver · sa-plano · sa-revisar.mr · sa-verificar.homologacao · sa-atender · sa-especificar.archive\n│    chama: sa-pesquisador · sa-revisor · sa-verificador\n│    └─ autopilot (o próprio sa-desenvolvedor como subagente na worktree .sabia/local/wt/<id>, sem a pessoa)\n│          allow: push da própria branch (sem --force) · merge da base nela · abrir/atualizar o MR dela\n│          deny: merge do MR · ELM · rede (curl, wget) · todo o resto que era ask\n├─ sa-especificador   (mode primary · build · inclui as funções de produto)\n│    skills: sa-refinar · sa-prd · sa-especificar · sa-entrevistar · sa-planejamento\n│    chama: sa-pesquisador\n└─ nos dois: sa-triar · sa-status · sabia · ofertas da sa-elm\nsubagentes (contexto limpo, chamados por um primário)\n├─ sa-pesquisador   (só leitura) ── sa-pesquisar.pesquisar\n├─ sa-revisor       (só leitura) ── sa-revisar.revisar + rubricas do toolkit\n└─ sa-verificador   (só leitura + liberações) ── sa-verificar.verificar + verificacao do toolkit\n      allow: comandos Executar do sabia.md (sobe a aplicação) · curl/wget só à URL de teste\n             · editar só <pasta da spec>/CT.csv\nagente de toolkit (agentes[], ligado em passos[].agente) ─► subagente do dono do passo, com as permissões dele\n\n2 modelos de permissão\n├─ build   (sa-desenvolvedor · sa-especificador; sem restrição por pasta)\n│    ler ──────── allow\n│                 deny: segredos (**/.env*, **/*.pem, **/*.key, ~/.ssh, ~/.aws, ~/.config/mcp-*)\n│    editar ───── allow: workspace (código, .kiro/specs/**, openspec/**, .sabia/planejamento/**,\n│                        .sabia/sabia.md, .sabia/creditos/**)\n│                 deny (harness): .kiro/agents · .kiro/settings · .kiro/steering/sabia.md · .opencode\n│                        · opencode.json · .sabia/config · .sabia/fluxo · .sabia/padrao\n│    comandos ─── allow\n│                 ask: git push · git merge · curl · wget\n│                 deny: git rebase · push --force / --force-with-lease · reset --hard · clean -f\n│                       · --no-verify · sudo · kubectl · helm · terraform apply\n│    MCP ──────── GitLab: leitura allow · escrita ask (abrir MR, comentar, merge)\n│                 ELM (regras da sa-elm.setup, só com ELM): leitura allow · escrita ask\n│                 elk (logs) · banco (só a tool de consulta): leitura allow\n└─ só leitura   (sa-pesquisador · sa-revisor; base do sa-verificador)\n     ler ──────── allow · segredos deny\n     editar ───── deny\n     comandos ─── só leitura (git status · diff · log · show · grep · ls-files) · resto deny\n     MCP ──────── só leitura (GitLab · ELM · elk · banco) · escrita deny\nquem a pessoa é: usuario do equipe.json = usuário do GitLab; a pré-condição da skill confere a booleana\nquem grava o harness: sa-setup.configurar e sa-elm.setup, na sessão padrão, fora dos 5 agentes\n   sa-elm.setup só produz dados (pa em .sabia/config/elm/pa_<nome>.json, chave elm do agentes.json,\n   seção ELM do sabia.md, regras ELM dos agentes); a sa-setup aplica e regenera os agentes\nKiro: só nomes de capability em tools (sem toolsSettings); limites por caminho e URL no prompt",
  "pendencias": [
   [
    "MCP do Jenkins (CI/CD)",

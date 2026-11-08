@@ -19,7 +19,7 @@ da pasta da spec (Fase e Retomar) e pelo primeiro item não marcado do `tasks.md
   Código e spec vão na branch `<id>`, com MR.
 - A branch se atualiza só por merge da base: nunca rebase, `--force` nem `--force-with-lease`. Push, merge e MR só
   com o "sim" da pessoa (a ferramenta pergunta).
-- Revisar o MR de outra pessoa → `sa-revisar.mr` (você não revisa o próprio). UAT → `sa-verificar.uat`.
+- Revisar o MR de outra pessoa → `sa-revisar.mr` (você não revisa o próprio). Homologação → `sa-verificar.homologacao`.
   Sustentação → `sa-atender.atender`. Depois do merge, o archive da spec → `sa-especificar.archive`.
 - ELM: só ofereça a `sa-elm` (assumir a tarefa, horas, finalizar); a resposta nunca trava o fluxo.
 - Banco: só consultas pelo MCP declarado. Nunca DML nem DDL. Dado real de pessoa não vai para o git.

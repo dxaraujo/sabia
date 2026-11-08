@@ -17,7 +17,7 @@ FT-<nnn> — <título>
   | CT-nn | Resultado | Esperado × obtido | Evidência |
   |---|---|---|---|
   <a ✅ · r ❌ · e ⚠️ · p 🔁> · VERIFICACAO: <ACEITO | REJEITADO | AMBIENTE>
-- UAT: <— | 🔎 do UAT, quando houve>
+- homologação: <— | 🔎 da homologação, quando houve>
 
 ## Risco
 - Reversível: <sim | não — <o que fazer>>

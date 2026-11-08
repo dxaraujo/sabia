@@ -1,5 +1,5 @@
 ---
-{"resumo": "Pronta, em andamento, retrabalho, MR em revisão, aprovado ou fechado, UAT e trava."}
+{"resumo": "Pronta, em andamento, retrabalho, MR em revisão, aprovado ou fechado, homologação e trava."}
 ---
 ## Entrada
 
@@ -16,7 +16,7 @@ O estado.
 - MR esperando revisão → qualquer desenvolvedor ≠ autor (`sa-revisar.mr`); ao autor, diga que espera.
 - MR aprovado com CI verde, ou mergeado sem o item `concluida` → o autor (`sa-desenvolver.encerrar`).
 - MR fechado sem merge → mostre e aponte `sa-desenvolver.codificar`.
-- Aceite humano (UAT) pedido → qualquer pessoa (`sa-verificar.uat`).
+- Aceite humano (homologação) pedido → qualquer pessoa (`sa-verificar.homologacao`).
 - Trava de artefato → mostre quem tem a precedência e pare.
 
 ## Saída

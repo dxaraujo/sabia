@@ -14,7 +14,7 @@ pequenas, teste primeiro com backpressure, autorrevisão e verificação de cont
 desenvolvedor que não é o autor e lido por uma pessoa antes do merge.
 
 - Como funciona e qual skill usar: `sabia`. Demanda nova: `sa-triar`. Onde parei ou minha próxima: `sa-status`.
-- Agentes primários: `sa-desenvolvedor` (desenvolvimento, plano, MR, UAT e Sustentação) e `sa-especificador`
+- Agentes primários: `sa-desenvolvedor` (desenvolvimento, plano, MR, homologação e Sustentação) e `sa-especificador`
   (refinamento, PRD, especificação, entrevista e planejamento). Subagentes: `sa-pesquisador`, `sa-revisor` e
   `sa-verificador`. A `sa-setup` e a `sa-elm.setup` rodam na sessão padrão.
 - Papéis são booleanas no `.sabia/planejamento/equipe.json` (`desenvolvedor` · `especificador` · `produto`). A

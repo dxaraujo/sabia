@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O 🔎 do UAT (passo `cenarios`).
+O 🔎 da homologação (passo `cenarios`).
 
 ## Faça
 

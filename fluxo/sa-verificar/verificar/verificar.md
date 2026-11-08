@@ -1,6 +1,6 @@
 ---
 {"fluxo": "verificar", "dono": "sa-verificador",
- "quando": ["aceite contra a spec: como subagente da sa-desenvolver.codificar antes do MR, da sa-verificar.uat ou a pedido direto", "verifica a FT-031", "testa a fatia", "executa os cenários", "teste de aceitação"],
+ "quando": ["aceite contra a spec: como subagente da sa-desenvolver.codificar antes do MR, da sa-verificar.homologacao ou a pedido direto", "verifica a FT-031", "testa a fatia", "executa os cenários", "teste de aceitação"],
  "travas_gerais": ["aceite-independente", "decisao-da-pessoa"],
  "passos": [
    {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "fatia"},
@@ -19,8 +19,8 @@ Você exercita a aplicação direto (curl, navegador, job) contra os cenários C
 grava o `CT.csv`, do qual é o único escritor. A asserção durável são os testes automatizados no CI: a prova vai no
 MR, sem arquivo de requisições nem de massa.
 
-Quem chama: `sa-desenvolver.codificar` (autoverificação antes do MR, em qualquer modo), `sa-verificar.uat` (os
-cenários do UAT, com a pessoa acompanhando) ou a pessoa ("verifica a FT-nnn"; a sessão dela troca para a branch
+Quem chama: `sa-desenvolver.codificar` (autoverificação antes do MR, em qualquer modo), `sa-verificar.homologacao` (os
+cenários da homologação, com a pessoa acompanhando) ou a pessoa ("verifica a FT-nnn"; a sessão dela troca para a branch
 `<id>` antes de chamar o subagente). Roda no subagente `sa-verificador`, sem o contexto de quem implementou. Seja
 cético: "feito" é uma afirmação, a evidência é a prova.
 

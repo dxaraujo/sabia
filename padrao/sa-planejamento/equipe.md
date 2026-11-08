@@ -17,5 +17,5 @@
   responsável, relator e `Aprovado:`.
 - `elm_login` é opcional e só a `sa-elm` lê.
 - Booleanas: `desenvolvedor` (puxa para desenvolvimento, revisa MR de outro autor) · `especificador` (aprova `elm/`,
-  publica no ELM) · `produto` (go/kill, ordena, aprova pitch, PRD e ficha). Captura, triagem e UAT: qualquer pessoa.
+  publica no ELM) · `produto` (go/kill, ordena, aprova pitch, PRD e ficha). Captura, triagem e homologação: qualquer pessoa.
 - `ativo: false` = saiu do time; a pessoa nunca é apagada.

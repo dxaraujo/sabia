@@ -1,5 +1,5 @@
 ---
-{"resumo": "A pessoa tria cada achado (corrige · adia · volta-plano · volta-spec · descarta), oferece UAT quando o Risco pede e aprova no MR sem BLOQUEANTE aberto, ou pede mudanças."}
+{"resumo": "A pessoa tria cada achado (corrige · adia · volta-plano · volta-spec · descarta), oferece homologação quando o Risco pede e aprova no MR sem BLOQUEANTE aberto, ou pede mudanças."}
 ---
 ## Entrada
 
@@ -18,7 +18,7 @@ Os achados (passo `rubrica`).
 | descarta | o motivo vai na thread |
 
 2. BLOQUEANTE só sai por `corrige` ou por `descarta` com o motivo.
-3. Risco do MR pede UAT → ofereça a `sa-verificar.uat` antes de aprovar.
+3. Risco do MR pede homologação → ofereça a `sa-verificar.homologacao` antes de aprovar.
 4. Sem BLOQUEANTE aberto → aprove no MR (com o "sim"). Com BLOQUEANTE aberto → peça mudanças no MR.
 
 ## Saída

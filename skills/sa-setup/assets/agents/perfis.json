@@ -42,7 +42,7 @@
   },
   "agentes": {
     "sa-desenvolvedor": {
-      "descricao": "Sabiá developer — takes a slice (fatia) or bug from pronta to merge: assumes it in one step (size, route trivial · quick · completo, and mode: supervised AI, AI autopilot or manual), writes the plan when the route has one, codes it with TDD and backpressure, gets a self-review from sa-revisor and a self-verification from sa-verificador, and opens the MR with the proof. Also reviews other people's MRs (sa-revisar.mr), runs the UAT (sa-verificar.uat), handles Sustentação (sa-atender) and archives the spec after the merge. In autopilot it runs as its own subagent in the worktree .sabia/local/wt/<id>.",
+      "descricao": "Sabiá developer — takes a slice (fatia) or bug from pronta to merge: assumes it in one step (size, route trivial · quick · completo, and mode: supervised AI, AI autopilot or manual), writes the plan when the route has one, codes it with TDD and backpressure, gets a self-review from sa-revisor and a self-verification from sa-verificador, and opens the MR with the proof. Also reviews other people's MRs (sa-revisar.mr), runs the homologação (sa-verificar.homologacao), handles Sustentação (sa-atender) and archives the spec after the merge. In autopilot it runs as its own subagent in the worktree .sabia/local/wt/<id>.",
       "mode": "primary",
       "permissao": "build",
       "skills": ["sa-desenvolver", "sa-plano", "sa-revisar", "sa-verificar", "sa-atender", "sa-especificar", "sa-triar",

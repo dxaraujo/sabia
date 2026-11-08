@@ -4,7 +4,7 @@ description: "Specifier tools of the Sabiá flow outside the PRD, written straig
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.7"
+  version: "2.1.8"
 ---
 
 # sa-especificar — elm/, protótipo, reunião e archive
