@@ -22,7 +22,7 @@ demanda ─► captura (fluxo/captura.md; entrada direta sa-triar.capturar)   ti
 PLANEJAMENTO ─────── sa-planejamento.inicial · .sprint · .review · .retrospectiva · inspeção diária sa-status.painel
 DESENVOLVIMENTO ──── sa-desenvolver.iniciar ─► [sa-plano.plano] ─► sa-desenvolver.codificar ─► MR
                      rota: trivial · quick · completo       modo: IA supervisionada · IA autopilot · manual
-REVISÃO E ACEITE ─── sa-verificar.verificar · sa-revisar.mr (desenvolvedor ≠ autor) · [sa-verificar.homologacao]
+REVISÃO E ACEITE ─── sa-verificar.verificar · sa-revisar.mr (desenvolvedor ≠ autor) · [sa-verificar.revisao-humana]
                      └─► sa-desenvolver.encerrar (merge) ─► sa-especificar.archive ─► [sa-elm.publicar]
 
 estado (backlog.md · sprint-<nn>.md) e documentos (pitch · prd · ficha · elm/): commit pequeno direto na base
@@ -74,7 +74,7 @@ Fontes no fim deste arquivo.
 | `sa-plano` | `plano` · `replanejar` | `research.md`, design e tasks; copia o texto aprovado para o delta sem reescrever |
 | `sa-pesquisar` | `pesquisar` | pesquisa neutra e só leitura no `sa-pesquisador`; devolve fatos com arquivo:linha |
 | `sa-revisar` | `revisar` · `mr` | autorrevisão independente (rubrica L do plano, C do código) e revisão do MR de outro autor |
-| `sa-verificar` | `verificar` · `homologacao` | aceite de ponta a ponta com a evidência no MR e o `CT.csv`; homologação por risco |
+| `sa-verificar` | `verificar` · `revisao-humana` | aceite de ponta a ponta com a evidência no MR e o `CT.csv`; revisão humana por risco |
 | `sa-atender` | `atender` | Sustentação: um fluxo para as seis categorias |
 | `sa-elm` | `regras` · `setup` · `item` · `finalizar` · `horas` · `importar-backlog` · `publicar` · `iteracao` · `conferir` · `lint` · `baixar` · `visualizar` | tudo o que fala com o IBM ELM (DOORS Next e EWM) |
 
@@ -90,7 +90,7 @@ Cinco agentes por função, gerados pela `sa-setup` a partir do
 
 ```
 primários (a pessoa escolhe ao abrir a sessão; a pré-condição de cada skill confere a booleana do equipe.json)
-├─ sa-desenvolvedor   build · sa-desenvolver · sa-plano · sa-revisar.mr · sa-verificar.homologacao · sa-atender · sa-especificar.archive
+├─ sa-desenvolvedor   build · sa-desenvolver · sa-plano · sa-revisar.mr · sa-verificar.revisao-humana · sa-atender · sa-especificar.archive
 │    chama sa-pesquisador · sa-revisor · sa-verificador · ele mesmo no autopilot
 ├─ sa-especificador   build · sa-refinar · sa-prd · sa-especificar · sa-entrevistar · sa-planejamento (inclui o produto)
 │    chama sa-pesquisador

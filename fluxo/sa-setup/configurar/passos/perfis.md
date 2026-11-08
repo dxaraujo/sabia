@@ -11,7 +11,7 @@ Um cartão por agente (W6), nesta ordem, com o que vem do `perfis.json`:
 
 | Agente | Modo | Skills |
 |---|---|---|
-| `sa-desenvolvedor` | primário | `sa-desenvolver`, `sa-plano`, `sa-revisar.mr`, `sa-verificar.homologacao`, `sa-atender` e a `sa-especificar.archive` que a `sa-desenvolver.encerrar` chama |
+| `sa-desenvolvedor` | primário | `sa-desenvolver`, `sa-plano`, `sa-revisar.mr`, `sa-verificar.revisao-humana`, `sa-atender` e a `sa-especificar.archive` que a `sa-desenvolver.encerrar` chama |
 | `sa-especificador` | primário | `sa-refinar`, `sa-prd`, `sa-especificar`, `sa-entrevistar`, `sa-planejamento` (inclui as funções de produto) |
 | `sa-pesquisador` | subagente | `sa-pesquisar` |
 | `sa-revisor` | subagente | `sa-revisar.revisar`, com as rubricas do toolkit |

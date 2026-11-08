@@ -4,7 +4,7 @@ description: "PRD of an epic (épico) in the Sabiá flow. After the P.O.'s go in
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.8"
+  version: "2.1.9"
 ---
 
 # sa-prd — o quê e por quê do épico

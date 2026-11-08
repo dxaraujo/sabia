@@ -1,5 +1,5 @@
 ---
-{"resumo": "Na quick e no completo, reescreve o CT.csv da pasta da spec com uma linha por cenário ✅, pelo padrão requisitos/padrao-ct.md; na trivial e quando quem chama é a homologação, não há CT.csv."}
+{"resumo": "Na quick e no completo, reescreve o CT.csv da pasta da spec com uma linha por cenário ✅, pelo padrão requisitos/padrao-ct.md; na trivial e quando quem chama é a revisão humana, não há CT.csv."}
 ---
 ## Entrada
 
@@ -7,7 +7,7 @@ Os resultados por cenário (passo `executar`) e a rota da fatia.
 
 ## Faça
 
-1. Na trivial não há `CT.csv`: a prova fica no MR. Quando quem chama é a `sa-verificar.homologacao`, o `CT.csv` não é
+1. Na trivial não há `CT.csv`: a prova fica no MR. Quando quem chama é a `sa-verificar.revisao-humana`, o `CT.csv` não é
    reescrito, porque o arquivo é do autor. Nos dois casos, pule este passo.
 2. Na quick e no completo, reescreva o `CT.csv` da pasta da spec (`<pasta da spec>/CT.csv`; no autopilot, dentro
    da worktree) com uma linha por cenário ✅, no padrão `requisitos/padrao-ct.md`. Tipo `CT` com skill de toolkit no seu
@@ -18,7 +18,7 @@ Os resultados por cenário (passo `executar`) e a rota da fatia.
 
 ## Saída
 
-O `CT.csv` reescrito (ou nada, na trivial e na homologação) → passo `resultado`. O commit é de quem chamou.
+O `CT.csv` reescrito (ou nada, na trivial e na revisão humana) → passo `resultado`. O commit é de quem chamou.
 
 ## Pare se
 

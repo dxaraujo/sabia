@@ -1,5 +1,5 @@
 ---
-{"resumo": "Avisa que o MR espera a revisão de um desenvolvedor ≠ autor, sugere a homologação no risco alto, oferece as horas e o merge."}
+{"resumo": "Avisa que o MR espera a revisão de um desenvolvedor ≠ autor, sugere a revisão humana no risco alto, oferece as horas e o merge."}
 ---
 ## Entrada
 
@@ -9,7 +9,7 @@ O MR aberto e o `status.md`.
 
 1. Avise que o MR espera a revisão de qualquer desenvolvedor ≠ autor pela `sa-revisar.mr`, com o dono da área no
    `CODEOWNERS`.
-2. Risco alto → sugira a homologação humana (`sa-verificar.homologacao`).
+2. Risco alto → sugira a revisão humana (`sa-verificar.revisao-humana`).
 3. Fora do autopilot, com ELM: pergunte "deseja lançar horas?"; sim → `sa-elm.horas`.
 4. Fora do autopilot: MR já aprovado com CI verde → ofereça "seguir para o merge?"; senão, o fluxo termina esperando
    a revisão.

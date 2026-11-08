@@ -4,7 +4,7 @@ description: "Sabiá guide and router for the agent workflow (Kiro and opencode)
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.8"
+  version: "2.1.9"
 ---
 
 # Sabiá — guia e roteador do fluxo
@@ -29,7 +29,7 @@ captura (qualquer pessoa ou skill) ─► triagem sa-triar.triar
   └─ sustentação ─► sa-atender.atender
 ciclo sa-planejamento (inicial · sprint · review · retrospectiva) · inspeção diária sa-status.painel
 desenvolvimento sa-desenvolver.iniciar ─► [sa-plano.plano] ─► sa-desenvolver.codificar ─► MR
-revisão e aceite sa-verificar.verificar · sa-revisar.mr · [sa-verificar.homologacao] ─► sa-desenvolver.encerrar (merge)
+revisão e aceite sa-verificar.verificar · sa-revisar.mr · [sa-verificar.revisao-humana] ─► sa-desenvolver.encerrar (merge)
   ─► sa-especificar.archive ─► "publicar no DOORS?" sa-elm.publicar
 ```
 
@@ -37,10 +37,10 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
 
 - **Papéis** são booleanas no `equipe.json`. `desenvolvedor`: puxa item para desenvolvimento e revisa o MR de outro
   autor. `especificador`: aprova os arquivos de `elm/` e publica no ELM. `produto`: decide go/kill, ordena e aprova
-  pitch, PRD e ficha. Captura, triagem e homologação ficam abertos a qualquer pessoa.
+  pitch, PRD e ficha. Captura, triagem e revisão humana ficam abertos a qualquer pessoa.
 - **Identidade** é o usuário do GitLab: o `usuario` do `equipe.json` é o autor do MR e o `@dono` no CODEOWNERS. O
   `elm_login` é opcional e só a `sa-elm` o lê.
-- **Agentes.** A pessoa abre a sessão num dos dois primários: `sa-desenvolvedor` (desenvolvimento, plano, MR, homologação,
+- **Agentes.** A pessoa abre a sessão num dos dois primários: `sa-desenvolvedor` (desenvolvimento, plano, MR, revisão humana,
   Sustentação e archive) ou `sa-especificador` (refinamento, PRD, especificação, entrevista e planejamento; inclui as
   funções de produto). Triagem, status, este guia e as ofertas da `sa-elm` rodam nos dois. Pesquisa, autorrevisão e
   verificação rodam nos subagentes `sa-pesquisador`, `sa-revisor` e `sa-verificador`, de contexto limpo. A
@@ -72,7 +72,7 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
 | `produto` (o P.O.) | go/kill, pitch, PRD e ficha | `Aprovado: <usuário> · <data>` no topo do documento; o que está em aberto bloqueia só o que depende dele |
 | `especificador` | o arquivo inteiro de cada artefato em `elm/`; publica depois do merge (`sa-elm.publicar`) | `status: stable` e `verified` no frontmatter do arquivo de `elm/` |
 | um `desenvolvedor` ≠ autor | o MR (o CODEOWNERS indica o dono), com o CI verde e a evidência do verificador | o MR |
-| qualquer pessoa | a homologação, conforme o risco (`sa-verificar.homologacao`) | o MR |
+| qualquer pessoa | a revisão humana, conforme o risco (`sa-verificar.revisao-humana`) | o MR |
 
 O autor faz o merge com a aprovação e o CI verde. Não há rebase: a branch se atualiza só por merge da base.
 
@@ -134,7 +134,7 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 | entender o código e devolver fatos, sem gravar | `sa-pesquisar` (`sa-pesquisar.pesquisar`) |
 | `research.md`, design e tasks da fatia, com o texto aprovado copiado para o delta · replanejar | `sa-plano` (`sa-plano.plano` · `sa-plano.replanejar`) |
 | autorrevisão ou revisão do plano · revisar o MR de outro autor | `sa-revisar` (`sa-revisar.revisar` · `sa-revisar.mr`) |
-| aceite de ponta a ponta, com a evidência no MR e o `CT.csv` · homologação | `sa-verificar` (`sa-verificar.verificar` · `sa-verificar.homologacao`) |
+| aceite de ponta a ponta, com a evidência no MR e o `CT.csv` · revisão humana | `sa-verificar` (`sa-verificar.verificar` · `sa-verificar.revisao-humana`) |
 | atender um item de Sustentação (`AT` · `IM` · `BD` · `IN` · `OP` · `EX`) | `sa-atender` (`sa-atender.atender`) |
 | criar o item ou a tarefa no ELM · finalizar ou cancelar a tarefa · lançar horas e relatórios · publicar no DOORS · bundle ou original de um requisito · visualização · "confere com o EWM" e "o DOORS mudou?" · importar do EWM · iteração · lint · configurar o ELM | `sa-elm` (`sa-elm.item` · `sa-elm.finalizar` · `sa-elm.horas` · `sa-elm.publicar` · `sa-elm.baixar` · `sa-elm.visualizar` · `sa-elm.conferir` · `sa-elm.importar-backlog` · `sa-elm.iteracao` · `sa-elm.lint` · `sa-elm.setup`) |
 | explicar o fluxo, as fases, os papéis e as regras | `sabia` (este guia) |

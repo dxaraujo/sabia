@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O 🔎 da homologação (passo `cenarios`).
+O 🔎 da revisão humana (passo `cenarios`).
 
 ## Faça
 
