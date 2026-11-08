@@ -7,11 +7,11 @@ const cv=v=>`var(${v})`;
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const RX=/(\[[A-Z]+\]|\.(?:kiro|sabia|opencode)\/(?:[\w.\/*-]|&lt;|&gt;)*|(?:[\w.\/*-]|&lt;|&gt;)+\.(?:md|json|csv|sh|py)\b|\bsa-[a-z]+(?:\.[a-z-]+){0,2}|elm_[a-z_]+|gitlab_[a-z_]+)/g;
 const fmt=t=>esc(t).replace(RX,"<code>$1</code>");
-const PICK=(id,L)=>window.SABIA_PICK?PICK(id,L):(location.href="index.html#"+encodeURIComponent((L||"x")+"."+id));
-const SEN=(k)=>window.SABIA_SEN?SEN(k):(location.href="index.html#sen-"+k);
+const PICK=(id,L)=>window.SABIA_PICK?window.SABIA_PICK(id,L):(location.href="index.html#"+encodeURIComponent((L||"x")+"."+id));
+const LINE=(L)=>window.SABIA_LINE?window.SABIA_LINE(L):(location.href="index.html#"+L);
 const set=(s,h)=>{const e=$(s);if(e)e.innerHTML=h};
 
-set("#statuses",D.STATUSES);set("#elmbody",D.ELM_HTML);set("#sencards",D.SENCARDS);set("#golden",D.GOLDEN);
+set("#statuses",D.STATUSES);set("#elmbody",D.ELM_HTML);set("#sencards",D.MODOS);set("#golden",D.GOLDEN);
 
 /* papéis */
 const rolesEl=$("#roles");
@@ -45,7 +45,7 @@ const gc=$("#gatecards");
 if(gc)for(const g of D.GATES){const b=document.createElement("button");b.className="gt";
   b.innerHTML=`<div class="dia"><span>GATE</span></div><h3>${esc(g.n)}</h3><div class="q">${esc(g.q)}</div><p>${esc(g.o)}</p>`;
   b.addEventListener("click",()=>PICK(g.st,g.line));gc.appendChild(b)}
-document.querySelectorAll(".sen>div[data-sen]").forEach(d=>d.addEventListener("click",()=>SEN(d.dataset.sen)));
+document.querySelectorAll(".sen>div[data-line]").forEach(d=>d.addEventListener("click",()=>LINE(d.dataset.line)));
 })();
 
 
@@ -55,16 +55,17 @@ const D=window.SABIA,$=(s)=>document.querySelector(s),phEl=$("#phases");if(!phEl
 const cv=v=>`var(${v})`,esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const RX=/(\[[A-Z]+\]|\.(?:kiro|sabia|opencode)\/(?:[\w.\/*-]|&lt;|&gt;)*|(?:[\w.\/*-]|&lt;|&gt;)+\.(?:md|json|csv|sh|py)\b|\bsa-[a-z]+(?:\.[a-z-]+){0,2}|elm_[a-z_]+|gitlab_[a-z_]+)/g;
 const fmt=t=>esc(t).replace(RX,"<code>$1</code>");
-const ST={sen:null,tr:"padrao"},val=v=>typeof v==="function"?v(ST):v;let PM="hitl";
+const ST={sen:null,tr:D.ROTA0||"padrao"},val=v=>typeof v==="function"?v(ST):v;let PM="hitl";
 const chips=(el,opts,get,set,color)=>{el.innerHTML="";for(const [k,n] of opts){const b=document.createElement("button");b.className="chip";b.dataset.k=k;if(color)b.style.setProperty("--c",color(k));b.innerHTML=n;b.addEventListener("click",()=>{set(k);draw()});el.appendChild(b)}};
 function draw(){
-  for(const [sel,cur] of [["#modeChips",PM],["#cSen",ST.sen||"all"],["#cTr",ST.tr]])$(sel).querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",String(c.dataset.k===cur)));
+  for(const [sel,cur] of [["#modeChips",PM],["#cTr",ST.tr]])$(sel).querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",String(c.dataset.k===cur)));
   const ctx={mode:PM,sen:ST.sen,tr:ST.tr};
   phEl.innerHTML=D.PHASES[PM].map(p=>{const sk=p.skip?p.skip(ctx):null;return `<a class="ph-step${sk?" skip":""}" style="--c:${cv(D.LINES[PM].c)}" href="index.html#${PM}.${val(p.st)}" title="${esc(sk||p.sub)}"><b>${esc(p.f)}</b><small>${esc(sk||p.sub)}</small></a>`}).join("");
   $("#phnote").innerHTML=fmt(D.PHNOTE(ctx));
 }
-chips($("#modeChips"),[["hitl",'<span class="sw"></span>HITL'],["afk",'<span class="sw dash"></span>AFK']],0,k=>PM=k,k=>cv(D.LINES[k].c));
-chips($("#cSen"),[["all","Todas"],["jr","Júnior"],["pl","Pleno"],["sr","Sênior"]],0,k=>ST.sen=k==="all"?null:k);
-chips($("#cTr"),[["padrao","Padrão"],["rapida","Rápida"]],0,k=>ST.tr=k,k=>cv(k==="rapida"?"--l-rapida":"--blue"));
+chips($("#modeChips"),[["hitl",'<span class="sw"></span>IA supervisionada'],["afk",'<span class="sw dash"></span>IA autopilot']],0,k=>PM=k,k=>cv(D.LINES[k].c));
+/* sem senioridade nos dados, o seletor some */
+{const c=$("#cSen");if(c){c.style.display="none";const lb=c.previousElementSibling;if(lb&&lb.classList.contains("lbl"))lb.style.display="none"}}
+chips($("#cTr"),D.ROTAS,0,k=>ST.tr=k,k=>cv(k==="trivial"?"--l-rapida":"--blue"));
 draw();
 })();

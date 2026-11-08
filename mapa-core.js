@@ -12,7 +12,9 @@ const RX=/(\[[A-Z]+\]|\.(?:kiro|sabia|opencode)\/(?:[\w.\/*-]|&lt;|&gt;)*|(?:[\w
 const fmt=t=>esc(t).replace(RX,"<code>$1</code>");
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
-const ST={line:null,st:null,sen:null,tr:"padrao",art:"sim",zoom:1,touring:false};
+const ST={line:null,st:null,sen:null,tr:D.ROTA0||"padrao",art:"sim",zoom:1,touring:false};
+const aviso=()=>D.AVISO?D.AVISO(ST):null;
+const rotaNome=()=>((D.ROTAS||[]).find(x=>x[0]===ST.tr)||[,ST.tr])[1];
 window.SABIA_STATE=ST;
 const val=(v)=>typeof v==="function"?v(ST):v;
 
@@ -217,13 +219,13 @@ function panel0(){
 }
 function lineView(L){
   const Ln=D.LINES[L];const it=itinerary(L);
-  const warn=L==="afk"&&ST.sen==="jr";
+  const warn=aviso();
   P.innerHTML=`<div class="ph" style="${lbar(L)}"><div class="ltabs"><button aria-pressed="true" style="--c:${cv(Ln.c)}"><i></i>${esc(Ln.nome)}</button></div>
   <h3>${esc(Ln.nome)}</h3><div class="sk">${esc(Ln.sub||"")}</div>
-  <div class="nav"><button class="play" data-act="tour" ${warn?"disabled":""}>${ST.touring?"❚❚ Pausar":"▶ Percorrer a linha"}</button><span class="sp"></span></div></div>
-  <div class="pb fade">${warn?`<div class="note warn">${fmt(D.SENRULE.jrAfk)}</div>`:""}
+  <div class="nav"><button class="play" data-act="tour">${ST.touring?"❚❚ Pausar":"▶ Percorrer a linha"}</button><span class="sp"></span></div></div>
+  <div class="pb fade">${warn?`<div class="note warn">${fmt(warn)}</div>`:""}
   <div class="linecard">${fmt(Ln.quando)}</div>${senStrip(Ln.sen)}
-  <div class="blk"><h4>Itinerário${["hitl","afk"].includes(L)?` · trilha ${ST.tr==="rapida"?"rápida":"padrão"}`:""}${ST.sen?` · ${D.SENNOME[ST.sen]}`:""}</h4>${itinHTML(L,it,null)}</div></div>`;
+  <div class="blk"><h4>Itinerário${["hitl","afk"].includes(L)?` · rota ${esc(rotaNome())}`:""}${ST.sen&&D.SENNOME?` · ${D.SENNOME[ST.sen]}`:""}</h4>${itinHTML(L,it,null)}</div></div>`;
   bind();
 }
 function itinHTML(L,it,cur){
@@ -259,7 +261,7 @@ function stationView(id){
    <span>${i>=0?`passo ${i+1} de ${it.length}`:skipped?"fora deste itinerário":""}</span><span class="sp"></span>${L?`<button class="play" data-act="tour">${ST.touring?"❚❚ Pausar":"▶ Percorrer"}</button>`:""}</div></div>
    <div class="pb fade">
    ${s.aviso?`<div class="note">${fmt(val(s.aviso))}</div>`:""}
-   ${L==="afk"&&ST.sen==="jr"?`<div class="note warn">${fmt(D.SENRULE.jrAfk)}</div>`:""}
+   ${aviso()?`<div class="note warn">${fmt(aviso())}</div>`:""}
    <dl class="kv"><dt>Papel</dt><dd>${fmt(val(s.papel))}</dd><dt>Agente</dt><dd>${fmt(val(s.agente))}</dd><dt>Tarefa</dt><dd>${fmt(val(s.tarefa))}</dd>${s.fase?`<dt>Fase</dt><dd>${fmt(val(s.fase))}</dd>`:""}</dl>
    ${senStrip(s.sen)}
    <div class="blk"><h4>Transições</h4><div class="trans">${outs.map(trBtn).join("")||`<span class="hint">Fim da linha.</span>`}</div></div>
@@ -288,10 +290,12 @@ if(lc)for(const k in D.LINES){const b=document.createElement("button");b.classNa
   b.innerHTML=`<span class="sw${D.LINES[k].dash?" dash":""}"></span>${esc(D.LINES[k].nome)}`;b.setAttribute("aria-pressed","false");
   b.addEventListener("click",()=>{ST.touring=false;setLine(ST.line===k?null:k)});lc.appendChild(b)}
 const sc=$("#senChips");
-if(sc)[["all","Todas"],["jr","Júnior"],["pl","Pleno"],["sr","Sênior"]].forEach(([k,n])=>{const b=document.createElement("button");b.className="chip snr";b.dataset.k=k;b.textContent=n;
+/* sem senioridade nos dados, a linha de controle some */
+if(sc&&!D.SENNOME){sc.style.display="none";const lb=sc.previousElementSibling;if(lb&&lb.classList.contains("lbl"))lb.style.display="none"}
+else if(sc)[["all","Todas"],["jr","Júnior"],["pl","Pleno"],["sr","Sênior"]].forEach(([k,n])=>{const b=document.createElement("button");b.className="chip snr";b.dataset.k=k;b.textContent=n;
   b.addEventListener("click",()=>{ST.sen=k==="all"?null:k;view();panel()});sc.insertBefore(b,sc.querySelector(".hint"))});
 const tc2=$("#trChips");
-if(tc2)[["padrao","Padrão"],["rapida","Rápida"]].forEach(([k,n])=>{const b=document.createElement("button");b.className="chip";b.dataset.k=k;b.style.setProperty("--c",cv(k==="rapida"?"--l-rapida":"--blue"));b.textContent=n;
+if(tc2)(D.ROTAS||[["padrao","Padrão"],["rapida","Rápida"]]).forEach(([k,n])=>{const b=document.createElement("button");b.className="chip";b.dataset.k=k;b.style.setProperty("--c",cv(k==="rapida"||k==="trivial"?"--l-rapida":"--blue"));b.textContent=n;
   b.addEventListener("click",()=>{ST.tr=k;view();panel()});tc2.insertBefore(b,tc2.querySelector(".hint"))});
 const ac=$("#artChips");
 if(ac)[["sim","Com artefatos"],["nao","Sem artefatos"]].forEach(([k,n])=>{const b=document.createElement("button");b.className="chip";b.dataset.k=k;b.style.setProperty("--c",cv("--blue"));b.textContent=n;

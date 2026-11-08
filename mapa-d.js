@@ -19,8 +19,7 @@ const gDynL=M.gTrain.previousElementSibling,gXL=gDynL.previousElementSibling,gX=
 /* voltas de retrabalho: leves na trilha inteira, inteiras na estação */
 gDyn.classList.add("dz-dyn");gDynL.classList.add("dz-dyn");M.gRows.classList.add("dz-rows");
 /* rótulos de região: cada um some quando a trilha em foco é outra */
-const REG={"PRODUTO · ÉPICO":"epico","FATIA · PADRÃO OU RÁPIDA":"hitl afk","AFK · SUBAGENTES ANTES DO PR":"afk","HITL · PESSOAS DEPOIS DO PR":"hitl",
-  "DEPOIS DO MERGE":"hitl afk","SUSTENTAÇÃO":"atd min","CICLO DA":"sprint","SPRINT":"sprint","sa-planejamento":"sprint"};
+const REG=Object.fromEntries(D.TEXTS.filter(t=>t.l).map(t=>[t.t,t.l]));
 M.gRows.querySelectorAll("text").forEach(t=>{const r=REG[t.textContent]||(t.classList.contains("badge-t")?"epico":"");if(r)t.dataset.l=r});
 const pat=el("pattern",{id:"dz-grade",width:"40",height:"40",patternUnits:"userSpaceOnUse"},defs),ponto=el("circle",{cx:"20",cy:"20",r:"1.2"},pat);
 const MKS=[...defs.querySelectorAll("marker")];MKS.forEach(m=>m.setAttribute("markerUnits","userSpaceOnUse"));

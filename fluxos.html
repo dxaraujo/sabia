@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fluxos · Sabiá</title>
-<meta name="description" content="Os fluxos do Sabiá 2.0, cada um com o grafo gerado do mestre: passos, chamadas, travas e saídas.">
+<meta name="description" content="Os fluxos do Sabiá 2.1.7, cada um com o grafo gerado do mestre: passos, chamadas, travas e saídas.">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500;600&display=swap">
@@ -17,364 +17,1243 @@
 <div class="wrap">
   <div class="top">
     <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá</span></a>
-    <span class="ver">2.0.0 · Kiro e opencode</span>
+    <span class="ver">2.1.7 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
     <span class="autor">Desenvolvido por <b>Daniel Xavier Araújo</b></span>
     <a class="gh" href="https://github.com/dxaraujo/sabia">GitHub</a>
   </div>
   <nav class="tabs" aria-label="Páginas">
-    <a href="index.html">Início</a><a href="como-funciona.html">Como funciona</a><a href="fluxos.html" aria-current="page">Fluxos</a><a href="papeis.html">Papéis e agentes</a><a href="arquivos.html">Arquivos</a><a href="ciclo.html">Ciclo da fatia</a><a href="toolkits.html">Toolkits</a><a href="elm.html">IBM ELM</a><a href="gates.html">Gates e senioridade</a>
+    <a href="index.html">Início</a><a href="como-funciona.html">Como funciona</a><a href="fluxos.html" aria-current="page">Fluxos</a><a href="papeis.html">Papéis e agentes</a><a href="arquivos.html">Arquivos</a><a href="ciclo.html">Ciclo da fatia</a><a href="toolkits.html">Toolkits</a><a href="elm.html">IBM ELM</a><a href="aprovacoes.html">Aprovações e travas</a><a href="glossario.html">Termos e glossário</a>
   </nav>
-  <header class="sign page"><h1>Fluxos</h1><p class="lead">Os 37 fluxos das 17 skills do Sabiá, cada um com o grafo que o compilador gera do mestre. É o mesmo arquivo que a skill instalada traz em <code>references/&lt;fluxo&gt;/grafo.md</code> e o que o <code>sabia rota --fluxo</code> mostra, já com o que o projeto mudou.</p>
-  <nav class="indice" aria-label="Skills"><a href="#sa-aprender">sa-aprender</a><a href="#sa-atender">sa-atender</a><a href="#sa-codificar">sa-codificar</a><a href="#sa-consolidar">sa-consolidar</a><a href="#sa-desenvolver">sa-desenvolver</a><a href="#sa-entrevistar">sa-entrevistar</a><a href="#sa-especificar">sa-especificar</a><a href="#sa-executar">sa-executar</a><a href="#sa-fatiar">sa-fatiar</a><a href="#sa-orquestrar">sa-orquestrar</a><a href="#sa-pesquisar">sa-pesquisar</a><a href="#sa-planejamento">sa-planejamento</a><a href="#sa-plano">sa-plano</a><a href="#sa-prd">sa-prd</a><a href="#sa-revisar">sa-revisar</a><a href="#sa-triar">sa-triar</a><a href="#sa-verificar">sa-verificar</a></nav>
+  <header class="sign page"><h1>Fluxos</h1><p class="lead">Os 48 fluxos das 15 skills do Sabiá, cada um com o grafo que o compilador gera do mestre. É o mesmo arquivo que a skill instalada traz em <code>references/&lt;fluxo&gt;/grafo.md</code> e o que o <code>sabia rota --fluxo</code> mostra, já com o que o projeto mudou.</p>
+  <nav class="indice" aria-label="Skills"><a href="#sa-atender">sa-atender</a><a href="#sa-desenvolver">sa-desenvolver</a><a href="#sa-elm">sa-elm</a><a href="#sa-entrevistar">sa-entrevistar</a><a href="#sa-especificar">sa-especificar</a><a href="#sa-pesquisar">sa-pesquisar</a><a href="#sa-planejamento">sa-planejamento</a><a href="#sa-plano">sa-plano</a><a href="#sa-prd">sa-prd</a><a href="#sa-refinar">sa-refinar</a><a href="#sa-revisar">sa-revisar</a><a href="#sa-setup">sa-setup</a><a href="#sa-status">sa-status</a><a href="#sa-triar">sa-triar</a><a href="#sa-verificar">sa-verificar</a></nav>
   <div class="bands" aria-hidden="true"><i></i><i></i><i></i></div></header>
 
 <section id="legenda"><div class="lead-sec"><h2>Como ler</h2><p>Cada caixa é um passo, na ordem. À direita, o que o passo chama, as travas e as saídas. Sem saída, segue para o próximo.</p></div>
 <p class="legenda-grafo">↓ segue · ↑ volta · ↺ repete · ⇄ chama · ⇒ passa a (o fluxo termina) · ↪ vizinhos da entrada (diga a dona, ou a frase da linha ■, e pare) · ■ fim · 🔒 trava · ⇢ passo com desvio de toolkit (pelo para e arquivos, ou pelo tipo que o passo cria)</p></section>
 
-<section id="sa-aprender"><div class="lead-sec"><h2>sa-aprender</h2><p>3 fluxos · dono <code>sa-produto</code></p></div>
-  <details class="fluxo" id="sa-aprender.promover"><summary><code>sa-aprender.promover</code> <span>3 passos</span><small>2ª ocorrência da mesma causa e da mesma Correção na fonte, pedido da pessoa ou proposta aceita na retrospectiva: a regra vai para a seção Regras aprendidas do .sabia/sabia.md; o agente sempre erra X</small></summary>
-  <pre class="cod grafo">sa-aprender.promover   dono sa-produto   travas sim-da-pessoa
+<section id="sa-atender"><div class="lead-sec"><h2>sa-atender</h2><p>1 fluxo · dono <code>sa-desenvolvedor</code></p></div>
+  <details class="fluxo" id="sa-atender.atender" open><summary><code>sa-atender.atender</code> <span>10 passos</span><small>Sustentação das seis categorias (AT · IM · BD · IN · OP · EX): registrar o pedido, puxar, atender com a IA como auxílio e concluir; atender o AT-012; registra um pedido de sustentação; aplicar o BD-004; conclui o IM-007</small></summary>
+  <pre class="cod grafo">sa-atender.atender   dono sa-desenvolvedor   travas sim-da-pessoa, decisao-da-pessoa, elm-pela-sa-elm
 
   ┌────────────────────────┐
-  │ 1 escrever             │
+  │ 1 entrada [nenhuma]    │──▶ ↪ vizinhos (diga e pare): ■ EP-nn ou FT-nnn
+  └───────────┬────────────┘    ↓ puxar  (id de Sustentação já registrado, nova ou em-andamento)
+              ▼
+  ┌────────────────────────┐
+  │ 2 registrar            │──▶ ■ fim  (só registrar, sem atender agora)
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 2 gravar               │
+  │ 3 puxar                │──▶ ■ fim  (reserva estourada, sem quem tem produto na sessão ou com …)
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 3 enxugar              │
-  └────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-aprender.registrar"><summary><code>sa-aprender.registrar</code> <span>4 passos</span><small>a cada correção: achado da revisão que chegou ao humano, cenário rejeitado na verificação, PR com mudança pedida, bloqueio por falta de informação; e as Lições candidatas da sa-consolidar; isso está errado, aprenda; registra a lição</small></summary>
-  <pre class="cod grafo">sa-aprender.registrar   dono sa-produto   travas sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 fatos                │──▶ ↓ gravar  (chamada pela sa-consolidar: fatos e causa já vêm na linha…)
+  │ 4 assumir              │──▶ ⇄ chama sa-elm.item
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 2 causa                │
+  │ 5 executar             │──▶ ⇄ chama sa-pesquisar.pesquisar
+  └───────────┬────────────┘    ■ fim  (a sessão termina antes de resolver (commit '&lt;ID&gt; registra…)
+                                ↓ finalizar  (resolvido ou retirado, nada fora do escopo)
+              ▼
+  ┌────────────────────────┐
+  │ 6 fora-do-escopo       │──▶ ↓ gravar-na-base  (categoria errada: o item ficou 'cancelada · virou &lt;novo id&gt;')
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 3 gravar               │
+  │ 7 finalizar            │──▶ ⇄ chama sa-elm.finalizar
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 4 promocao             │──▶ ⇒ passa a sa-aprender.promover  (promoção proposta)
-  └────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-aprender.retrospectiva"><summary><code>sa-aprender.retrospectiva</code> <span>3 passos</span><small>fim de fatia ou de épico: retrospectiva com dados e, no épico ou na sprint, o lint do conhecimento; a de sprint é chamada só pela sa-planejamento (retrospectiva); retrospectiva; resumo das lições</small></summary>
-  <pre class="cod grafo">sa-aprender.retrospectiva   dono sa-produto   travas sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 precondicao          │──▶ ■ fim  (retrospectiva de sprint pedida direto: use a sa-planejame…)
+  │ 8 desdobramentos       │──▶ ↓ gravar-na-base  (nenhum desdobramento)
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 2 dados                │──▶ ⇄ chama sa-aprender.registrar, sa-aprender.promover
-  └───────────┬────────────┘    ■ fim  (retrospectiva de fatia, sem pedido de lint)
+  │ 9 captura              │
+  └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 3 lint                 │
+  │ 10 gravar-na-base      │
   └────────────────────────┘</pre></details>
 </section>
 
-<section id="sa-atender"><div class="lead-sec"><h2>sa-atender</h2><p>1 fluxo · dono <code>sa-produto</code></p></div>
-  <details class="fluxo" id="sa-atender.atender" open><summary><code>sa-atender.atender</code> <span>5 passos</span></summary>
-  <pre class="cod grafo">sa-atender.atender   dono sa-produto   travas sim-da-pessoa
+<section id="sa-desenvolver"><div class="lead-sec"><h2>sa-desenvolver</h2><p>3 fluxos · dono <code>sa-desenvolvedor</code></p></div>
+  <details class="fluxo" id="sa-desenvolver.codificar"><summary><code>sa-desenvolver.codificar</code> <span>19 passos</span><small>codificar a fatia com TDD e backpressure em camadas, autorrevisão (sa-revisor), autoverificação (sa-verificador), lições e MR; retomar, corrigir os achados do MR ou seguir depois da codificação manual; implementa a FT-031; retoma a FT-031; corrige os achados do MR; terminei; abre o MR</small></summary>
+  <pre class="cod grafo">sa-desenvolver.codificar   dono sa-desenvolvedor   travas sim-da-pessoa, backpressure, sem-force, elm-pela-sa-elm
 
-  ┌────────────────────────┐
-  │ 1 entrada [exige]      │──▶ ↪ vizinhos (diga e pare): sa-executar.executar
-  └───────────┬────────────┘    ⇒ passa a sa-triar.triar  (pedido novo ou AT fora do backlog)
-                                ■ fim  (AT terminal, ou fora da sprint aberta (P.O. ou SM))
-              ▼
-  ┌────────────────────────┐
-  │ 2 assumir              │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 3 executar             │──▶ ⇄ chama sa-pesquisar.pesquisar
-  └───────────┬────────────┘    ⇒ passa a sa-triar.triar  (não é atendimento (categoria errada))
-              ▼
-  ┌────────────────────────┐
-  │ 4 finalizar            │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 5 desdobramentos       │──▶ ⇒ passa a sa-triar.triar  (alteração (defeito ou mudança) ou regra que ninguém decidiu)
-  └────────────────────────┘    ■ fim  (nada)</pre></details>
+  ┌────────────────────────────┐
+  │ 1 entrada [desenvolvedor]  │──▶ ↪ vizinhos (diga e pare): sa-desenvolver.iniciar · sa-plano.plano · sa-desenvolver.encerrar
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 2 ler                      │──▶ ↓ validar  (volta da codificação manual ('terminei'))
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 3 preparar                 │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 4 retrabalho               │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 5 tarefa ⇢                 │──▶ 🔒 toolkit-sem-commit
+  └─────────────┬──────────────┘    ↺ tarefa  (ainda há tarefa)
+                                    ↓ desvio  (o código não bate com o plano, ou trabalho fora do escopo)
+                                    ↓ banco  (a tarefa precisa de DDL)
+                                    ↓ sem-progresso  (duas correções seguidas sem progresso, ou contexto cheio)
+                                    ↓ atualizar  (todas as tarefas marcadas)
+                ▼
+  ┌────────────────────────────┐
+  │ 6 desvio                   │──▶ 🔒 decisao-da-pessoa
+  └─────────────┬──────────────┘    ↑ volta a tarefa  (tratado, ainda há tarefa)
+                                    ⇒ passa a sa-plano.replanejar  (arquitetural ou irreversível decidido, ou texto novo apro…)
+                                    ■ fim  (autopilot, arquitetural ou irreversível: devolvido à pessoa)
+                ▼
+  ┌────────────────────────────┐
+  │ 7 banco                    │──▶ ↑ volta a tarefa  (ainda há tarefa que não depende da DDL)
+  └─────────────┬──────────────┘    ■ fim  (só restam tarefas que dependem da DDL)
+                ▼
+  ┌────────────────────────────┐
+  │ 8 sem-progresso            │──▶ ↓ disjuntor  (autopilot: conta como tentativa)
+  └─────────────┬──────────────┘    ■ fim  (Retomar gravado: sessão nova)
+                ▼
+  ┌────────────────────────────┐
+  │ 9 atualizar                │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 10 validar                 │──▶ ↑ volta a tarefa  (vermelho novo: tarefa nova)
+  └─────────────┬──────────────┘    ■ fim  (falha de ambiente sem o sim de seguir, ou autopilot)
+                ▼
+  ┌────────────────────────────┐
+  │ 11 revisar                 │──▶ ⇄ chama sa-revisar.revisar
+  └─────────────┬──────────────┘    ↑ volta a tarefa  (corrige: tarefas [R&lt;n&gt;])
+                                    ⇒ passa a sa-plano.replanejar  (volta-plano)
+                                    ↓ disjuntor  (autopilot, reprovado)
+                ▼
+  ┌────────────────────────────┐
+  │ 12 verificar               │──▶ ⇄ chama sa-verificar.verificar
+  └─────────────┬──────────────┘    🔒 aceite-independente
+                                    ↓ licoes  (ACEITO)
+                                    ↑ volta a tarefa  (REJEITADO fora do autopilot: o ❌ vira tarefa)
+                                    ↓ disjuntor  (autopilot, REJEITADO ou AMBIENTE)
+                                    ■ fim  (AMBIENTE fora do autopilot, sem o sim de seguir)
+                ▼
+  ┌────────────────────────────┐
+  │ 13 disjuntor               │──▶ ■ fim  (disparou: devolvido à pessoa)
+  └─────────────┬──────────────┘    ↑ volta a tarefa  (não disparou: corrigir)
+                ▼
+  ┌────────────────────────────┐
+  │ 14 licoes                  │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 15 as-built ⇢              │──▶ ⇢ por tipo: ET
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 16 mr                      │──▶ ■ fim  (push sem o sim, ou remoto diferente do local)
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 17 avisar                  │──▶ ⇄ chama sa-elm.horas
+  └─────────────┬──────────────┘    🔒 revisao-independente
+                                    ⇒ passa a sa-desenvolver.encerrar  (MR já aprovado e CI verde)
+                                    ■ fim  (esperando a revisão, ou autopilot devolvido)
+                ▼
+  ┌────────────────────────────┐
+  │ 18 captura                 │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 19 gravar                  │
+  └────────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-desenvolver.encerrar"><summary><code>sa-desenvolver.encerrar</code> <span>11 passos</span><small>MR aprovado por um desenvolvedor ≠ autor e CI verde: merge, concluida na base, épico concluido na última fatia, archive da spec e worktree; mergeia a FT-031; o MR da FT-031 foi aprovado; MR mergeado; fecha a FT-031</small></summary>
+  <pre class="cod grafo">sa-desenvolver.encerrar   dono sa-desenvolvedor   travas sim-da-pessoa, sem-force, elm-pela-sa-elm
+
+  ┌────────────────────────────┐
+  │ 1 entrada [desenvolvedor]  │──▶ ↪ vizinhos (diga e pare): sa-desenvolver.codificar · sa-revisar.mr
+  └─────────────┬──────────────┘    ↓ archive  (concluida com a spec por arquivar)
+                                    ↓ seguir  (concluida com a spec já arquivada, ou trivial)
+                                    ↓ conferir  (MR já mergeado (auto-merge ou UI))
+                ▼
+  ┌────────────────────────────┐
+  │ 2 ler-mr                   │──▶ ⇒ passa a sa-desenvolver.codificar  (conflito com a base: retrabalho)
+  └─────────────┬──────────────┘    ■ fim  (fechado sem merge)
+                ▼
+  ┌────────────────────────────┐
+  │ 3 aprovacao                │──▶ 🔒 revisao-independente, pr-lido-por-pessoa
+  └─────────────┬──────────────┘    ■ fim  (falta aprovação ou CI verde)
+                ▼
+  ┌────────────────────────────┐
+  │ 4 merge                    │──▶ ■ fim  (sem o sim ao merge)
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 5 conferir                 │──▶ ■ fim  (não mergeado)
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 6 concluir                 │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 7 finalizar                │──▶ ⇄ chama sa-elm.finalizar
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 8 archive                  │──▶ ⇄ chama sa-especificar.archive
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 9 worktree                 │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 10 seguir                  │──▶ ⇒ passa a sa-desenvolver.iniciar  (seguir para a próxima)
+  └─────────────┬──────────────┘    ■ fim  (sem o sim)
+                ▼
+  ┌────────────────────────────┐
+  │ 11 gravar                  │
+  └────────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-desenvolver.iniciar"><summary><code>sa-desenvolver.iniciar</code> <span>12 passos</span><small>assumir uma fatia ou um bug para desenvolvimento: tamanho, rota e modo num passo só, posse na base, branch &lt;id&gt; e pasta da spec; vamos trabalhar na FT-031; pegar a FT-031; próxima; corrigir o defeito 4567; puxar o topo da sprint</small></summary>
+  <pre class="cod grafo">sa-desenvolver.iniciar   dono sa-desenvolvedor   travas sim-da-pessoa, elm-pela-sa-elm
+
+  ┌────────────────────────────┐
+  │ 1 entrada [desenvolvedor]  │──▶ ↪ vizinhos (diga e pare): sa-atender.atender · ■ tipo épico · sa-triar.triar · sa-desenvolver.codificar
+  └─────────────┬──────────────┘    ↓ captura  (pedido em texto ou defeito sem id)
+                ▼
+  ┌────────────────────────────┐
+  │ 2 conferir                 │──▶ 🔒 artefato-exclusivo
+  └─────────────┬──────────────┘    ⇒ passa a sa-refinar.detalhar  (aceita sem o sim de quem puxa: refinar antes)
+                                    ■ fim  (fora da sprint sem prioridade crítica, trava de artefato …)
+                ▼
+  ┌────────────────────────────┐
+  │ 3 assumir                  │──▶ ⇒ passa a sa-refinar.moldar  (maior que G: vira épico, sem branch)
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 4 posse                    │──▶ ■ fim  (outra pessoa pegou o item, ou a gravação na base parou)
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 5 branch                   │──▶ ■ fim  (sem o ok da branch)
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 6 pasta                    │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 7 push                     │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 8 elm                      │──▶ ⇄ chama sa-elm.item
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 9 seguir                   │──▶ ⇒ passa a sa-plano.plano  (IA supervisionada ou manual, rota quick ou completo)
+  └─────────────┬──────────────┘    ⇒ passa a sa-desenvolver.codificar  (IA supervisionada, rota trivial)
+                                    ■ fim  (manual, rota trivial: sessão encerrada até o 'terminei')
+                                    ↓ autopilot  (IA autopilot)
+                ▼
+  ┌────────────────────────────┐
+  │ 10 autopilot               │──▶ ■ fim  (subagente lançado: a devolução vem no fim do codificar ou…)
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 11 captura                 │──▶ ⇒ passa a sa-triar.triar  (capturado: a triagem vem antes do desenvolvimento)
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 12 gravar                  │
+  └────────────────────────────┘</pre></details>
 </section>
 
-<section id="sa-codificar"><div class="lead-sec"><h2>sa-codificar</h2><p>1 fluxo · dono <code>sa-desenvolvedor</code></p></div>
-  <details class="fluxo" id="sa-codificar.codificar" open><summary><code>sa-codificar.codificar</code> <span>7 passos</span></summary>
-  <pre class="cod grafo">sa-codificar.codificar   dono sa-desenvolvedor   travas sim-da-pessoa, backpressure, sem-force
+<section id="sa-elm"><div class="lead-sec"><h2>sa-elm</h2><p>12 fluxos · dono <code>sa-especificador</code>, <code>sa-desenvolvedor</code></p></div>
+  <details class="fluxo" id="sa-elm.baixar"><summary><code>sa-elm.baixar</code> <span>8 passos</span><small>baixar o bundle; atualiza o bundle; baixa os requisitos; o bundle está desatualizado; a sa-especificar.elm pede o original de um requisito (modo artefato)</small></summary>
+  <pre class="cod grafo">sa-elm.baixar   dono sa-especificador   travas elm-pela-sa-elm
 
   ┌────────────────────────┐
-  │ 1 entrada [nao]        │──▶ ↪ vizinhos (diga e pare): sa-desenvolver.desenvolver · sa-plano.plano · sa-revisar.aprovar-plano · sa-revisar.aprovar-pr · sa-desenvolver.encerrar · sa-especificar.fatia · sa-verificar.hitl · sa-revisar.hitl
+  │ 1 inicio               │──▶ ⇄ chama sa-elm.regras
+  └───────────┬────────────┘    ■ fim  (ELM não configurado ou autopilot (sa-elm.regras))
+              ▼
+  ┌────────────────────────┐
+  │ 2 pre-condicao         │──▶ ↓ artefato  (modo artefato)
+  └───────────┬────────────┘    ■ fim  (sem ELM ou pa incompleto)
+              ▼
+  ┌────────────────────────┐
+  │ 3 plano                │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 2 onde                 │──▶ ↓ pr  (fatia `verificada` (AFK))
-  └───────────┬────────────┘    ↓ verificar  (fase `verificando` (AFK): nova rodada, sem nova revisão)
-                                ■ fim  (vermelho antes de mexer: bloqueada, ⚠️ ambiente)
-                                ■ fim  (sem a linha do GATE do plano)
-                                ⇒ passa a sa-revisar.hitl  (aguardando-aprovacao-pr que virou HITL: pr-aberto, reviso…)
-              ▼
-  ┌────────────────────────┐
-  │ 3 tarefa ⇢             │──▶ 🔒 toolkit-sem-commit
-  └───────────┬────────────┘    ↺ tarefa  (ainda há tarefa não marcada)
-                                ⇒ passa a sa-plano.replanejar  (divergência com o plano que muda o desenho)
-              ▼
-  ┌────────────────────────┐
-  │ 4 validar              │──▶ ↑ volta a tarefa  (vermelho na validação completa: tarefa nova)
-  └───────────┬────────────┘    ■ fim  (falha de ambiente: bloqueada, ⚠️ ambiente)
-              ▼
-  ┌────────────────────────┐
-  │ 5 revisar              │──▶ ⇄ chama sa-revisar.revisar
-  └───────────┬────────────┘    🔒 revisao-independente
-                                ↓ pr  (HITL, APROVADO ou a pessoa decide seguir)
-                                ↑ volta a tarefa  (REVISAR)
-                                ■ fim  (AFK, 2ª reprovação desde o último desbloqueio: bloqueada)
-                                ■ fim  (AFK, VEREDITO: AMBIENTE: bloqueada)
-              ▼
-  ┌────────────────────────┐
-  │ 6 verificar            │──▶ ⇄ chama sa-verificar.verificar
-  └───────────┬────────────┘    🔒 aceite-independente
-                                ↑ volta a tarefa  (REJEITADO)
-                                ■ fim  (2ª rejeição seguida: bloqueada)
-                                ■ fim  (VERIFICACAO: AMBIENTE, ou a DDL não aplicada: bloqueada)
-              ▼
-  ┌────────────────────────┐
-  │ 7 pr                   │──▶ ⇒ passa a sa-revisar.hitl  (HITL, PR aberto)
-  └────────────────────────┘    ⇒ passa a sa-revisar.aprovar-pr  (AFK, PR aberto)
-                                ⇒ passa a sa-desenvolver.encerrar  (pedido de merge nesta sessão)</pre></details>
-</section>
-
-<section id="sa-consolidar"><div class="lead-sec"><h2>sa-consolidar</h2><p>1 fluxo · dono <code>sa-produto</code></p></div>
-  <details class="fluxo" id="sa-consolidar.consolidar" open><summary><code>sa-consolidar.consolidar</code> <span>6 passos</span></summary>
-  <pre class="cod grafo">sa-consolidar.consolidar   dono sa-produto   travas sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 entrada [nao]        │──▶ ↪ vizinhos (diga e pare): sa-desenvolver.encerrar · sa-planejamento.durante.sincronizar
+  │ 4 baixar-bundle        │──▶ ↓ indexar  (bundle no .gitignore)
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 2 drift                │
+  │ 5 commit               │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 3 elm ⇢                │──▶ ⇢ por tipo: ET
+  │ 6 indexar              │──▶ ⇄ chama sa-elm.visualizar
+  └───────────┬────────────┘    ↓ saida  (modo bundle)
+              ▼
+  ┌────────────────────────┐
+  │ 7 artefato             │──▶ 🔒 artefato-exclusivo
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 4 conhecimento         │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 5 fechar               │──▶ ⇄ chama sa-aprender.registrar
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 6 proximo              │
+  │ 8 saida                │
   └────────────────────────┘</pre></details>
-</section>
-
-<section id="sa-desenvolver"><div class="lead-sec"><h2>sa-desenvolver</h2><p>2 fluxos · dono <code>sa-desenvolvedor</code></p></div>
-  <details class="fluxo" id="sa-desenvolver.desenvolver"><summary><code>sa-desenvolver.desenvolver</code> <span>3 passos</span><small>começar uma fatia planejada na sprint aberta (compromisso, `iniciada` na base, branch, pasta, `[DEV]`) ou retomar a que parou entre o registro e a branch; vamos trabalhar na FT-031; pegar a [DEV] da FT-031; corrigir o defeito 4567; próxima fatia; retomar a FT-031</small></summary>
-  <pre class="cod grafo">sa-desenvolver.desenvolver   dono sa-desenvolvedor   travas sim-da-pessoa
+  <details class="fluxo" id="sa-elm.conferir"><summary><code>sa-elm.conferir</code> <span>6 passos</span><small>confere com o EWM; o DOORS mudou?; a sa-especificar.elm confere os artefatos da fatia; as tarefas do sprint batem com o EWM?</small></summary>
+  <pre class="cod grafo">sa-elm.conferir   dono sa-especificador   travas sim-da-pessoa, elm-pela-sa-elm
 
   ┌────────────────────────┐
-  │ 1 entrada [exige]      │──▶ ↪ vizinhos (diga e pare): sa-especificar.fatia · sa-plano.plano · sa-revisar.aprovar-plano · sa-codificar.codificar · sa-desenvolver.encerrar
-  └───────────┬────────────┘    ↓ iniciar  (iniciada sem status.md em nenhuma branch: só o responsave…)
+  │ 1 inicio               │──▶ ⇄ chama sa-elm.regras
+  └───────────┬────────────┘    ■ fim  (ELM não configurado ou autopilot (sa-elm.regras))
+                                ↓ artefatos  (modo artefatos)
               ▼
   ┌────────────────────────┐
-  │ 2 compromisso          │──▶ ⇒ passa a sa-triar.triar  (trilha registrada não serve)
-  └───────────┬────────────┘    ■ fim  (outro item falhou (responsável, Júnior em AFK, DoR, regis…)
-              ▼
-  ┌────────────────────────┐
-  │ 3 iniciar              │──▶ ⇒ passa a sa-plano.plano  (fatia iniciada: Próximo sa-plano)
-  └────────────────────────┘    ⇒ passa a sa-planejamento.durante  ([DEV] já fechada e PR mergeado: merge por fora, sincroniz…)
-                                ■ fim  (push da iniciada recusado)</pre></details>
-  <details class="fluxo" id="sa-desenvolver.encerrar"><summary><code>sa-desenvolver.encerrar</code> <span>2 passos</span><small>PR aprovado (`aceita` no HITL; `[APR]` concluída no AFK): merge, `pronta` na base e conclusão da `[DEV]`; mergeia a FT-031; o PR da FT-031 foi aprovado</small></summary>
-  <pre class="cod grafo">sa-desenvolver.encerrar   dono sa-desenvolvedor   travas sim-da-pessoa, sem-force
-
-  ┌────────────────────────┐
-  │ 1 entrada [nao]        │──▶ ↪ vizinhos (diga e pare): sa-codificar.codificar · sa-revisar.aprovar-pr · ■ PR mergeado por fora do Sabiá (sem a aprovação registrada… · ■ pronta com a [DEV] já concluída
+  │ 2 tarefas              │──▶ ↓ corrigir  (divergências listadas)
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 2 merge                │──▶ 🔒 pr-lido-por-pessoa
-  └────────────────────────┘    ⇒ passa a sa-codificar.codificar  (conflito com a base: retrabalho registrado)
-                                ⇒ passa a sa-consolidar.consolidar  (pronta, P.O. ou SM avisado)</pre></details>
-</section>
-
-<section id="sa-entrevistar"><div class="lead-sec"><h2>sa-entrevistar</h2><p>2 fluxos · dono <code>sa-produto</code>, <code>sa-especificador</code></p></div>
-  <details class="fluxo" id="sa-entrevistar.atendimento"><summary><code>sa-entrevistar.atendimento</code> <span>1 passo</span><small>uma rodada curta para registrar um AT na triagem, chamado pela sa-triar</small></summary>
-  <pre class="cod grafo">sa-entrevistar.atendimento   dono sa-produto   travas decisao-da-pessoa
-
+  │ 3 artefatos            │──▶ ⇒ passa a sa-especificar.elm  (o especificador quer baixar de novo e mesclar (pedido dir…)
+  └───────────┬────────────┘    ↓ devolver  (seguir)
+              ▼
   ┌────────────────────────┐
-  │ 1 rodada               │
+  │ 4 corrigir             │──▶ ⇄ chama sa-elm.finalizar
+  └───────────┬────────────┘    ↓ gravar  (corrigir o id na linha)
+                                ↓ devolver  (nada a gravar)
+              ▼
+  ┌────────────────────────┐
+  │ 5 gravar               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 devolver             │
   └────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-entrevistar.entrevistar"><summary><code>sa-entrevistar.entrevistar</code> <span>4 passos</span><small>alinhar uma demanda, PRD ou fatia em rodadas até o entendimento confirmado, chamado direto ou pela sa-prd, a sa-fatiar e a sa-triar diante de uma decisão em aberto; me entreviste; grill me; vamos alinhar; quais decisões estão em aberto; o que falta definir</small></summary>
-  <pre class="cod grafo">sa-entrevistar.entrevistar   dono sa-especificador   travas decisao-da-pessoa
+  <details class="fluxo" id="sa-elm.finalizar"><summary><code>sa-elm.finalizar</code> <span>9 passos</span><small>o sim a &quot;finalizar a tarefa no ELM?&quot; ao concluir um trabalho; finalizar a tarefa no ELM; concluir a DEV 123; cancelar no EWM; o item foi cancelado, cancela o IB</small></summary>
+  <pre class="cod grafo">sa-elm.finalizar   dono sa-desenvolvedor   travas sim-da-pessoa, elm-pela-sa-elm
 
   ┌────────────────────────┐
-  │ 1 arvore               │
+  │ 1 inicio               │──▶ ⇄ chama sa-elm.regras
+  └───────────┬────────────┘    ■ fim  (ELM não configurado ou autopilot (sa-elm.regras))
+                                ↓ cancelar  (cancelamento)
+              ▼
+  ┌────────────────────────┐
+  │ 2 achar-tarefa         │──▶ ↓ devolver  (sem tarefa)
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 2 rodadas              │──▶ ⇄ chama sa-pesquisar.pesquisar
-  └───────────┬────────────┘    ↺ rodadas  (resposta abriu ramos novos ou a fronteira não está vazia)
-              ▼
-  ┌────────────────────────┐
-  │ 3 registrar            │
+  │ 3 horas-antes          │──▶ ⇄ chama sa-elm.horas
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 4 linguagem            │──▶ 🔒 sim-da-pessoa
+  │ 4 concluir             │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 ligar-cobre          │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 ib                   │──▶ ↓ devolver  (feito)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 7 cancelar             │──▶ ↓ gravar  (vira épico: copiar o ib para a linha EP-nn)
+  └───────────┬────────────┘    ↓ devolver  (demais casos)
+              ▼
+  ┌────────────────────────┐
+  │ 8 gravar               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 9 devolver             │
   └────────────────────────┘</pre></details>
-</section>
-
-<section id="sa-especificar"><div class="lead-sec"><h2>sa-especificar</h2><p>4 fluxos · dono <code>sa-especificador</code></p></div>
-  <details class="fluxo" id="sa-especificar.especificar"><summary><code>sa-especificar.especificar</code> <span>8 passos</span><small>especificação de épico: EP-nn ou [ESP] EP-nn, da tarefa [ESP] à conclusão dela depois do GATE do PRD, com a publicação no ELM; especificar o EP-03; pegar a [ESP] do EP-03; retomar a especificação; fechar a sessão de especificação; tenho a transcrição da reunião; registrar a ata da reunião; tenho o protótipo; o cliente aprovou o protótipo</small></summary>
-  <pre class="cod grafo">sa-especificar.especificar   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa
+  <details class="fluxo" id="sa-elm.horas"><summary><code>sa-elm.horas</code> <span>6 passos</span><small>o sim a &quot;deseja lançar horas?&quot; em qualquer skill; lançar 8 h hoje na DEV 123; lançar horas; minhas horas da semana; relatório de horas da sprint; remover o lançamento errado</small></summary>
+  <pre class="cod grafo">sa-elm.horas   dono sa-desenvolvedor   travas sim-da-pessoa, elm-pela-sa-elm
 
   ┌────────────────────────┐
-  │ 1 entrada [exige]      │──▶ ↪ vizinhos (diga e pare): sa-especificar.fatia · sa-prd.mudanca · sa-fatiar.fatiar · sa-fatiar.refinamento
-  └───────────┬────────────┘    ↓ fechamentos  (PRD na base na Fase aprovado, com a Especificação ainda i…)
+  │ 1 inicio               │──▶ ⇄ chama sa-elm.regras
+  └───────────┬────────────┘    ■ fim  (ELM não configurado ou autopilot (sa-elm.regras))
+                                ↓ direto  (pedido completo)
+                                ↓ relatorio  (relatório)
               ▼
   ┌────────────────────────┐
-  │ 2 assumir              │
+  │ 2 direto               │──▶ ↓ lancar  (completo)
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 3 pasta                │
+  │ 3 perguntar            │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 4 encaminhar           │──▶ ⇄ chama sa-especificar.reuniao, sa-especificar.prototipo, sa-prd.prd
-  └───────────┬────────────┘    ↓ fechamentos  (aprovado na pasta de trabalho)
-              ▼
-  ┌────────────────────────┐
-  │ 5 fechar-sessao        │──▶ ■ fim  (sessão sem GATE novo, ou fechada pelo Pare se do publicar)
+  │ 4 lancar               │──▶ ↓ devolver  (lançado)
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 6 fechamentos          │
+  │ 5 relatorio            │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 7 publicar             │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 8 concluir             │──▶ ⇒ passa a sa-fatiar.fatiar  (PRD publicado e a [ESP] concluída: o fatiamento, do P.O. …)
+  │ 6 devolver             │
   └────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-especificar.fatia"><summary><code>sa-especificar.fatia</code> <span>9 passos</span><small>especificação de fatia: a [ESP] FT-nnn da fatia nova que não passa na DoR (inclusive falta: especificação) ou da fatia que voltou à especificação (plano, revisão, verificação, aprovação do PR); pegar a [ESP] da FT-031; especificar a FT-031</small></summary>
-  <pre class="cod grafo">sa-especificar.fatia   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa
+  <details class="fluxo" id="sa-elm.importar-backlog"><summary><code>sa-elm.importar-backlog</code> <span>7 passos</span><small>só a pedido, uso raro; importar do EWM; trazer os defeitos do time; importar os itens de backlog do EWM</small></summary>
+  <pre class="cod grafo">sa-elm.importar-backlog   dono sa-especificador   travas sim-da-pessoa, elm-pela-sa-elm
 
   ┌────────────────────────┐
-  │ 1 entrada [exige]      │──▶ ↪ vizinhos (diga e pare): sa-especificar.especificar · ■ fatia nova no backlog, sem a [ESP], só com falta: especif… · ■ fatia nova no backlog, sem a [ESP], com outra falta · ■ fatia elegivel até iniciada sem linha viva planejada ou i… · ■ fatia pronta
-  └───────────┬────────────┘    ↓ publicar  (linha iniciada com conceito da fatia aprovado na base e a…)
+  │ 1 inicio               │──▶ ⇄ chama sa-elm.regras
+  └───────────┬────────────┘    ■ fim  (ELM não configurado ou autopilot (sa-elm.regras))
               ▼
   ┌────────────────────────┐
-  │ 2 assumir              │
+  │ 2 filtro               │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 3 trabalho             │──▶ ⇄ chama sa-entrevistar.entrevistar
-  └───────────┬────────────┘    ↓ concluir  (sem artefato afetado)
-              ▼
-  ┌────────────────────────┐
-  │ 4 artefatos            │
+  │ 3 so-os-novos          │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 5 escrever ⇢           │──▶ ⇢ por tipo: HF, REG, EL, CT
+  │ 4 mapear               │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 6 revisao              │──▶ ⇄ chama sa-revisar.revisar
-  └───────────┬────────────┘    ↑ volta a trabalho  (achado que é decisão de negócio)
-              ▼
-  ┌────────────────────────┐
-  │ 7 aprovacao            │──▶ ↑ volta a escrever  (ajuste pedido)
+  │ 5 captura              │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 8 publicar             │
+  │ 6 gravar               │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 9 concluir             │──▶ ⇒ passa a sa-planejamento.durante  (elegivel: o encaixe na sprint aberta, do P.O. ou do SM)
-  └────────────────────────┘    ⇒ passa a sa-triar.triar  (desdobramento: alteração, regra ou demanda nova)</pre></details>
-  <details class="fluxo" id="sa-especificar.prototipo"><summary><code>sa-especificar.prototipo</code> <span>2 passos</span><small>protótipo de tela de um épico com a linha Telas = sim do sabia.md, antes do PRD: registrar a versão que o cliente vê e a aprovação dele; chamado pelo encaminhar da especificação (versão nova ou aguardando o cliente) e pelo sa-prd.prd.escrever (sem protótipo aprovado), e volta (o pedido direto, &quot;tenho o protótipo&quot; ou &quot;o cliente aprovou o protótipo&quot;, entra pelo sa-especificar.especificar)</small></summary>
-  <pre class="cod grafo">sa-especificar.prototipo   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa
+  │ 7 seguir               │──▶ ⇒ passa a sa-triar.triar  (sim: seguir para a triagem)
+  └────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-elm.item"><summary><code>sa-elm.item</code> <span>10 passos</span><small>o sim a &quot;quer criar o item no ELM?&quot; ao assumir um trabalho (DEV, ESP ou ATD); criar o item no ELM; criar a tarefa no EWM; criar o IB dos itens sem IB; ler o WI 4567; comentar na minha tarefa; anexar na tarefa</small></summary>
+  <pre class="cod grafo">sa-elm.item   dono sa-desenvolvedor   travas sim-da-pessoa, elm-pela-sa-elm
 
   ┌────────────────────────┐
-  │ 1 registrar            │──▶ ■ fim  (épico sem tela: D-nn e volta a quem chamou)
-  └───────────┬────────────┘    ⇒ passa a sa-especificar.especificar.fechar-sessao  (épico com tela sem arquivo em prototipo/, ou ajuste sem a…)
+  │ 1 inicio               │──▶ ⇄ chama sa-elm.regras
+  └───────────┬────────────┘    ■ fim  (ELM não configurado ou autopilot (sa-elm.regras))
+                                ↓ ib-em-lote  (pedido de IB em lote)
+                                ↓ ler-wi  (ler um WI)
+                                ↓ comentar  (comentar ou anexar)
               ▼
   ┌────────────────────────┐
-  │ 2 aprovacao            │──▶ 🔒 aprovacao-do-cliente
-  └────────────────────────┘    ↑ volta a registrar  (ajuste pedido pelo cliente (versão nova))
-                                ⇒ passa a sa-especificar.especificar.fechar-sessao  (aguardando o cliente ou a versão nova)</pre></details>
-  <details class="fluxo" id="sa-especificar.reuniao"><summary><code>sa-especificar.reuniao</code> <span>5 passos</span><small>ata de reunião com o cliente durante a [ESP] aberta: transcrição (.vtt ou .md) em reunioes/ da pasta de trabalho sem ATA aprovada, ou ATA aprovada não registrada; só chamado pelo encaminhar da especificação, pela entrevista do PRD ou pela sa-prd.mudanca, e volta (o pedido direto entra pelo sa-especificar.especificar)</small></summary>
-  <pre class="cod grafo">sa-especificar.reuniao   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 transcricao          │──▶ ⇒ passa a sa-especificar.especificar  (sem a pasta de trabalho do épico)
-  └───────────┬────────────┘    ↓ aprovar  (ATA draft já escrita para a transcrição)
-                                ↓ publicar  (ATA aprovada sem publicar)
-                                ↓ decisoes  (ATA aprovada com os D-nn só reservados)
-              ▼
-  ┌────────────────────────┐
-  │ 2 escrever ⇢           │──▶ ⇢ por tipo: ATA
+  │ 2 ib                   │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 3 aprovar              │──▶ ↑ volta a escrever  (ajuste pedido pela pessoa)
-  └───────────┬────────────┘    ■ fim  (sem o &quot;sim&quot; (a ATA fica draft))
+  │ 3 linha-no-sprint      │──▶ ↓ gravar-ids  (sem sprint aberta)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 tarefa               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 gravar-ids           │──▶ ↓ gravar  (ids prontos)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 ib-em-lote           │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 7 gravar               │──▶ ↓ devolver  (gravado)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 8 ler-wi               │──▶ ↓ devolver  (lido)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 9 comentar             │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 10 devolver            │
+  └────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-elm.iteracao"><summary><code>sa-elm.iteracao</code> <span>4 passos</span><small>só a pedido, ou oferta da sa-planejamento.sprint depois de gravar o sprint; criar a iteração no EWM; mover as tarefas para a sprint no EWM</small></summary>
+  <pre class="cod grafo">sa-elm.iteracao   dono sa-especificador   travas sim-da-pessoa, elm-pela-sa-elm
+
+  ┌────────────────────────┐
+  │ 1 inicio               │──▶ ⇄ chama sa-elm.regras
+  └───────────┬────────────┘    ■ fim  (ELM não configurado ou autopilot (sa-elm.regras))
+              ▼
+  ┌────────────────────────┐
+  │ 2 criar                │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 mover                │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 devolver             │
+  └────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-elm.lint"><summary><code>sa-elm.lint</code> <span>6 passos</span><small>só a pedido, uso raro; lint do ELM; o glossário contradiz os ADRs?</small></summary>
+  <pre class="cod grafo">sa-elm.lint   dono sa-especificador   travas sim-da-pessoa, elm-pela-sa-elm, decisao-da-pessoa
+
+  ┌────────────────────────┐
+  │ 1 inicio               │──▶ ⇄ chama sa-elm.regras
+  └───────────┬────────────┘    ■ fim  (ELM não configurado ou autopilot (sa-elm.regras))
+              ▼
+  ┌────────────────────────┐
+  │ 2 comparar             │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 achados              │──▶ ↓ gravar  (nenhum a registrar)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 captura              │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 gravar               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 encerrar             │──▶ ⇒ passa a sa-triar.triar  (sim: seguir para a triagem)
+  └────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-elm.publicar"><summary><code>sa-elm.publicar</code> <span>10 passos</span><small>o sim a &quot;publicar no DOORS?&quot; na sa-especificar.archive, depois do merge; publicar no DOORS; publicar a FT-031; publicações pendentes; subir os requisitos da fatia</small></summary>
+  <pre class="cod grafo">sa-elm.publicar   dono sa-especificador   travas sim-da-pessoa, elm-pela-sa-elm
+
+  ┌────────────────────────┐
+  │ 1 inicio               │──▶ ⇄ chama sa-elm.regras
+  └───────────┬────────────┘    ■ fim  (ELM não configurado ou autopilot (sa-elm.regras))
+                                ■ fim  (sem a booleana especificador)
+              ▼
+  ┌────────────────────────┐
+  │ 2 fonte                │──▶ 🔒 aprovacao-no-documento
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 conferir-versao      │
+  └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
   │ 4 publicar             │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 5 decisoes             │──▶ ↑ volta a transcricao  (outra transcrição sem ATA aprovada)
-  └────────────────────────┘    ⇒ passa a sa-prd.mudanca  (aprovado: decisão que muda o PRD, pela regra da tarefa de…)</pre></details>
-</section>
-
-<section id="sa-executar"><div class="lead-sec"><h2>sa-executar</h2><p>1 fluxo · dono <code>sa-produto</code></p></div>
-  <details class="fluxo" id="sa-executar.executar" open><summary><code>sa-executar.executar</code> <span>4 passos</span></summary>
-  <pre class="cod grafo">sa-executar.executar   dono sa-produto   travas sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 entrada [exige]      │──▶ ↪ vizinhos (diga e pare): sa-atender.atender
-  └───────────┬────────────┘    ⇒ passa a sa-triar.triar  (pedido novo ou id fora do backlog)
-                                ■ fim  (item terminal, ou fora da sprint aberta (P.O. ou SM))
-              ▼
-  ┌────────────────────────┐
-  │ 2 assumir              │
+  │ 5 trocar-ids           │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 3 registrar            │──▶ ⇒ passa a sa-triar.triar  (não é desta categoria (categoria errada))
+  │ 6 ligar                │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 4 encerrar             │──▶ ⇒ passa a sa-triar.triar  (alteração (muda o repositório) ou regra que ninguém decidiu)
-  └────────────────────────┘    ⇒ passa a sa-aprender.registrar  (lição)
-                                ■ fim  (nada)</pre></details>
-</section>
-
-<section id="sa-fatiar"><div class="lead-sec"><h2>sa-fatiar</h2><p>2 fluxos · dono <code>sa-produto</code></p></div>
-  <details class="fluxo" id="sa-fatiar.fatiar"><summary><code>sa-fatiar.fatiar</code> <span>5 passos</span><small>o primeiro fatiamento de um PRD aprovado: rascunho, GATE do backlog e gravação na base; fatiar o PRD; quebrar em histórias; gerar o backlog; criar os itens de backlog; PRD para issues</small></summary>
-  <pre class="cod grafo">sa-fatiar.fatiar   dono sa-produto   travas sim-da-pessoa
+  │ 7 ata                  │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 8 marcar               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 9 gravar               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 10 devolver            │──▶ ⇄ chama sa-elm.baixar
+  └────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-elm.regras"><summary><code>sa-elm.regras</code> <span>10 passos</span><small>incluído pelo passo inicio de cada um dos outros fluxos da sa-elm; nunca roda sozinho</small></summary>
+  <pre class="cod grafo">sa-elm.regras   dono sa-desenvolvedor   travas sim-da-pessoa, elm-pela-sa-elm
 
   ┌────────────────────────┐
-  │ 1 entrada [nao]        │──▶ ↪ vizinhos (diga e pare): sa-fatiar.refinamento · sa-especificar.especificar · sa-prd.mudanca · sa-planejamento.durante · sa-planejamento.sprint
+  │ 1 inicio               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 2 pre-condicao         │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 autopilot            │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 escrita              │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 leitura              │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 identidade           │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 7 ids                  │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 8 titulos              │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 9 erros                │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 10 volta               │
+  └────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-elm.setup"><summary><code>sa-elm.setup</code> <span>10 passos</span><small>a sa-setup.configurar perguntou &quot;usa ELM?&quot; e a resposta foi sim; setup do ELM; atualizar o pa; configurar o ELM</small></summary>
+  <pre class="cod grafo">sa-elm.setup   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa
+
+  ┌────────────────────────┐
+  │ 1 inicio               │──▶ ⇄ chama sa-elm.regras
+  └───────────┬────────────┘    ■ fim  (dentro de um agente sa-*)
+              ▼
+  ┌────────────────────────┐
+  │ 2 mcp                  │──▶ ↓ devolver  (falta o MCP ou a credencial)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 montar-pa            │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 et                   │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 gl                   │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 gravar-pa            │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 7 validar              │──▶ ↑ volta a montar-pa  (erro no elm_status)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 8 dados                │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 9 bundle               │──▶ ⇄ chama sa-elm.baixar
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 10 devolver            │──▶ ⇒ passa a sa-setup.configurar  (chamada direta, com o sim a seguir para a sa-setup)
+  └────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-elm.visualizar"><summary><code>sa-elm.visualizar</code> <span>4 passos</span><small>gera a visualização do bundle; quero explorar o bundle; o sim a indexar agora? na sa-elm.baixar</small></summary>
+  <pre class="cod grafo">sa-elm.visualizar   dono sa-especificador   travas elm-pela-sa-elm
+
+  ┌────────────────────────┐
+  │ 1 inicio               │──▶ ⇄ chama sa-elm.regras
+  └───────────┬────────────┘    ■ fim  (ELM não configurado ou autopilot (sa-elm.regras))
+              ▼
+  ┌────────────────────────┐
+  │ 2 gerar                │──▶ ↓ saida  (gerado)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 sem-indice           │──▶ ↑ volta a gerar  (indexado)
+  └───────────┬────────────┘    ⇒ passa a sa-elm.baixar  (sem bundle, com o sim a baixar)
+              ▼
+  ┌────────────────────────┐
+  │ 4 saida                │
+  └────────────────────────┘</pre></details>
+</section>
+
+<section id="sa-entrevistar"><div class="lead-sec"><h2>sa-entrevistar</h2><p>1 fluxo · dono <code>sa-especificador</code></p></div>
+  <details class="fluxo" id="sa-entrevistar.entrevistar"><summary><code>sa-entrevistar.entrevistar</code> <span>7 passos</span><small>esclarecimento proporcional do trecho tocado: árvore de decisões, rodadas de até 5 perguntas com recomendação e registro nas seções Decisões e Em aberto do documento do item (pitch.md, prd.md ou ficha); chamado pela sa-refinar.moldar, sa-refinar.detalhar, sa-prd.prd, sa-prd.mudanca, sa-desenvolver.codificar ou direto; vamos alinhar o FT-031; responder o em aberto do EP-03; me entreviste; o que falta definir</small></summary>
+  <pre class="cod grafo">sa-entrevistar.entrevistar   dono sa-especificador   travas decisao-da-pessoa
+
+  ┌────────────────────────┐
+  │ 1 entrada [nenhuma]    │──▶ ↪ vizinhos (diga e pare): sa-atender.atender
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 2 arvore               │──▶ ⇄ chama sa-pesquisar.pesquisar
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 rodadas              │──▶ ↺ rodadas  (resposta abriu ramos, ou a fronteira não está vazia)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 registrar            │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 linguagem            │──▶ ↓ devolver  (chamada por outra skill (ela grava junto com o documento …)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 gravar               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 7 devolver             │
+  └────────────────────────┘</pre></details>
+</section>
+
+<section id="sa-especificar"><div class="lead-sec"><h2>sa-especificar</h2><p>4 fluxos · dono <code>sa-desenvolvedor</code>, <code>sa-especificador</code></p></div>
+  <details class="fluxo" id="sa-especificar.archive"><summary><code>sa-especificar.archive</code> <span>5 passos</span><small>depois do merge do código: arquiva a spec da fatia ou do bug (OpenSpec) ou a deixa no lugar (Kiro) e, com ELM, pergunta se publica no DOORS; chamado pela sa-desenvolver.encerrar ou direto; archive da FT-031</small></summary>
+  <pre class="cod grafo">sa-especificar.archive   dono sa-desenvolvedor   travas sim-da-pessoa, elm-pela-sa-elm
+
+  ┌────────────────────────────┐
+  │ 1 entrada [desenvolvedor]  │──▶ ↪ vizinhos (diga e pare): ■ épico ou sustentação · sa-desenvolver.encerrar
+  └─────────────┬──────────────┘    ↓ arquivar  (fatia ou bug concluida, com o MR do item mergeado)
+                ▼
+  ┌────────────────────────────┐
+  │ 2 arquivar                 │──▶ ↓ devolver  (sem pasta da spec (rota trivial) ou sem delta)
+  └─────────────┬──────────────┘    ↓ publicar  (spec já arquivada (OpenSpec), ou com a linha Publicação n…)
+                ▼
+  ┌────────────────────────────┐
+  │ 3 gravar                   │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 4 publicar                 │──▶ ⇄ chama sa-elm.publicar
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 5 devolver                 │
+  └────────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-especificar.elm"><summary><code>sa-especificar.elm</code> <span>12 passos</span><small>só com ELM: o texto oficial que a fatia ou o bug muda, um arquivo inteiro por artefato do Cobre (HF, UC, REG, MSG, EL, GL) em elm/ da pasta da spec, com o original do DOORS num commit de base, a edição pelo modo da ficha e a aprovação do especificador; chamado pela sa-refinar.detalhar ou direto; editar o elm/ da FT-031; alterei FT-031; refazer a mescla da FT-031</small></summary>
+  <pre class="cod grafo">sa-especificar.elm   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa, elm-pela-sa-elm
+
+  ┌────────────────────────────┐
+  │ 1 entrada [especificador]  │──▶ ↪ vizinhos (diga e pare): sa-triar.triar · sa-prd.prd · ■ sustentação · ■ sem a chave elm no agentes.json · ■ Cobre da ficha sem inclui, altera nem exclui · ■ sem pessoa presente (subagente), fora do IA autopilot
+  └─────────────┬──────────────┘    ↓ sincronizar  (volta da especificação manual ('alterei FT-nnn'))
+                                    ↓ pasta  (fatia ou bug concluida com 'Publicação: pendente' (refaze…)
+                ▼
+  ┌────────────────────────────┐
+  │ 2 tarefa                   │──▶ ⇄ chama sa-elm.item
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 3 pasta                    │──▶ ↓ conferir  (fatia ou bug concluida com 'Publicação: pendente')
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 4 trava                    │──▶ 🔒 artefato-exclusivo
+  └─────────────┬──────────────┘    ↓ devolver  (todo artefato do Cobre segurado por outra fatia)
+                ▼
+  ┌────────────────────────────┐
+  │ 5 baixar                   │──▶ ⇄ chama sa-elm.baixar
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 6 base                     │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 7 editar ⇢                 │──▶ ⇢ por tipo: HF, UC, REG, MSG, EL
+  └─────────────┬──────────────┘    ■ fim  (modo manual: o especificador altera direto no DOORS)
+                                    ↓ conferir  (IA supervisionada ou IA autopilot)
+                ▼
+  ┌────────────────────────────┐
+  │ 8 sincronizar              │──▶ ⇄ chama sa-elm.baixar
+  └─────────────┬──────────────┘    ↓ aprovar  (sincronizado (o arquivo já é o DOORS))
+                ▼
+  ┌────────────────────────────┐
+  │ 9 conferir                 │──▶ ⇄ chama sa-elm.baixar
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 10 aprovar                 │──▶ 🔒 aprovacao-no-documento
+  └─────────────┬──────────────┘    ↑ volta a editar  (ajuste pedido)
+                ▼
+  ┌────────────────────────────┐
+  │ 11 gravar                  │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 12 devolver                │──▶ ⇄ chama sa-elm.finalizar
+  └────────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-especificar.prototipo"><summary><code>sa-especificar.prototipo</code> <span>5 passos</span><small>opcional, para dúvida grande de tela no shaping, no refinamento ou no PRD: registrar a versão vN do protótipo que o cliente vê (só dado fictício) e a resposta dele no documento do item; chamado pela sa-refinar.moldar, pela sa-refinar.detalhar, pela sa-prd.prd e pela sa-prd.mudanca, ou direto; tenho o protótipo do EP-03; o cliente respondeu a v2; o cliente aprovou o protótipo</small></summary>
+  <pre class="cod grafo">sa-especificar.prototipo   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa
+
+  ┌────────────────────────┐
+  │ 1 entrada [nenhuma]    │──▶ ↪ vizinhos (diga e pare): ■ sustentação · ■ sem pessoa presente (subagente)
+  └───────────┬────────────┘    ↓ aprovacao  (resposta do cliente a uma versão já registrada)
+              ▼
+  ┌────────────────────────┐
+  │ 2 registrar            │──▶ ↓ devolver  (nenhum arquivo novo e nenhuma versão aguardando o cliente)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 aprovacao            │──▶ 🔒 aprovacao-do-cliente
+  └───────────┬────────────┘    ↑ volta a registrar  (ajuste com a versão nova já na pasta)
+              ▼
+  ┌────────────────────────┐
+  │ 4 gravar               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 devolver             │──▶ ⇒ passa a sa-prd.mudanca  (aprovado e a EL muda num prd.md já aprovado)
+  └────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-especificar.reuniao"><summary><code>sa-especificar.reuniao</code> <span>7 passos</span><small>opcional: a transcrição de uma reunião (.vtt ou .md em .sabia/local/reunioes/) vira ATA aprovada em .sabia/planejamento/atas/, e as decisões vão à seção Decisões do documento do item; pedido direto de quem conduziu a reunião ou oferta da sa-prd.prd, da sa-prd.mudanca, da sa-refinar.moldar e da sa-refinar.detalhar; tenho a transcrição da reunião do EP-03; registrar a ata da reunião</small></summary>
+  <pre class="cod grafo">sa-especificar.reuniao   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa
+
+  ┌────────────────────────┐
+  │ 1 entrada [nenhuma]    │──▶ ↪ vizinhos (diga e pare): ■ sustentação · ■ sem transcrição em .sabia/local/reunioes/
+  └───────────┬────────────┘    ↓ aprovar  (ATA em rascunho para a mesma transcrição)
+              ▼
+  ┌────────────────────────┐
+  │ 2 transcricao          │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 escrever ⇢           │──▶ ⇢ por tipo: ATA
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 aprovar              │──▶ ↑ volta a escrever  (ajuste pedido)
+  └───────────┬────────────┘    ↓ devolver  (sem o &quot;sim&quot; (o rascunho fica em .sabia/local/reunioes/))
+              ▼
+  ┌────────────────────────┐
+  │ 5 decisoes             │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 gravar               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 7 devolver             │──▶ ↑ volta a transcricao  (outra transcrição sem ATA)
+  └────────────────────────┘    ⇒ passa a sa-prd.mudanca  (decisão muda um prd.md aprovado)
+                                ⇒ passa a sa-especificar.elm  (decisão muda o texto do elm/ de uma fatia)</pre></details>
+</section>
+
+<section id="sa-pesquisar"><div class="lead-sec"><h2>sa-pesquisar</h2><p>1 fluxo · dono <code>sa-pesquisador</code></p></div>
+  <details class="fluxo" id="sa-pesquisar.pesquisar" open><summary><code>sa-pesquisar.pesquisar</code> <span>4 passos</span><small>pesquisa neutra e só de leitura para quem chama (sa-plano, sa-prd, sa-refinar, sa-entrevistar, sa-atender): recebe escopo e perguntas e devolve fatos com arquivo:linha, sem gravar nada; pesquisa o código da FT-031; onde isso está implementado; entender o código antes de planejar</small></summary>
+  <pre class="cod grafo">sa-pesquisar.pesquisar   dono sa-pesquisador   travas decisao-da-pessoa
+
+  ┌────────────────────────┐
+  │ 1 escopo               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 2 perguntas            │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 investigar           │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 fatos                │
+  └────────────────────────┘</pre></details>
+</section>
+
+<section id="sa-planejamento"><div class="lead-sec"><h2>sa-planejamento</h2><p>4 fluxos · dono <code>sa-especificador</code></p></div>
+  <details class="fluxo" id="sa-planejamento.inicial"><summary><code>sa-planejamento.inicial</code> <span>6 passos</span><small>começo do projeto, ou rever a equipe e os acordos: equipe, acordos, roadmap opcional; monta o planejamento; acordos do time; rever a equipe; roadmap</small></summary>
+  <pre class="cod grafo">sa-planejamento.inicial   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa
+
+  ┌────────────────────────┐
+  │ 1 inicio               │──▶ ↓ roadmap  (equipe e acordos existem e nada mudou)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 2 equipe               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 acordos              │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 gravar-na-base       │──▶ ↓ seguir  (pedido de rever a equipe e os acordos)
+  └───────────┬────────────┘    ↓ seguir  (gravou o roadmap)
+              ▼
+  ┌────────────────────────┐
+  │ 5 roadmap              │──▶ ↑ volta a gravar-na-base  (roadmap com o ok)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 seguir               │──▶ ⇒ passa a sa-planejamento.sprint  (sim)
+  └────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-planejamento.retrospectiva"><summary><code>sa-planejamento.retrospectiva</code> <span>8 passos</span><small>fim do ciclo, independente da review: dados, bom · melhorar · ações, números da sprint e a folga revista; retrospectiva; fechar a sprint</small></summary>
+  <pre class="cod grafo">sa-planejamento.retrospectiva   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa
+
+  ┌────────────────────────┐
+  │ 1 inicio               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 2 dados                │──▶ ⇄ chama sa-status.painel, sa-status.pendencias
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 retro                │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 fechar               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 folga                │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 gravar               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 7 gravar-na-base       │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 8 seguir               │──▶ ⇒ passa a sa-planejamento.sprint  (sim)
+  └────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-planejamento.review"><summary><code>sa-planejamento.review</code> <span>7 passos</span><small>fim do ciclo, com os stakeholders quando disponíveis: o entregue com a prova do MR, o retorno, pedidos novos pela captura e a curadoria das Regras aprendidas; review da sprint</small></summary>
+  <pre class="cod grafo">sa-planejamento.review   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa
+
+  ┌────────────────────────┐
+  │ 1 inicio               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 2 rito                 │──▶ ↓ regras-aprendidas  (sem pedido novo)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 captura              │──▶ ↺ captura  (mais um pedido novo)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 regras-aprendidas    │──▶ ⇄ chama sa-status.licoes
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 gravar               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 gravar-na-base       │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 7 seguir               │──▶ ⇒ passa a sa-planejamento.retrospectiva  (sim)
+  └────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-planejamento.sprint"><summary><code>sa-planejamento.sprint</code> <span>11 passos</span><small>seleção do ciclo, no início (com a virada) ou no reabastecimento: capacidade, folga, especificação, previsão, responsáveis, meta e o sprint-&lt;nn&gt;.md; planejar a sprint; reabastecer a sprint; virada de sprint</small></summary>
+  <pre class="cod grafo">sa-planejamento.sprint   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa, elm-pela-sa-elm
+
+  ┌────────────────────────┐
+  │ 1 inicio               │──▶ ⇒ passa a sa-planejamento.inicial  (sem equipe.json ou acordos.md)
+  └───────────┬────────────┘    ↓ capacidade  (reabastecimento)
+              ▼
+  ┌────────────────────────┐
+  │ 2 virada               │──▶ ⇄ chama sa-elm.finalizar, sa-elm.iteracao
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 capacidade           │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 especificacao        │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 previsao             │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 responsaveis         │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 7 meta                 │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 8 proposta             │──▶ ↺ proposta  (ajuste)
+  └───────────┬────────────┘    ■ fim  (sem o ok, ou sem a booleana produto)
+              ▼
+  ┌────────────────────────┐
+  │ 9 gravar               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 10 gravar-na-base      │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 11 seguir              │──▶ ⇄ chama sa-elm.iteracao
+  └────────────────────────┘    ⇒ passa a sa-desenvolver.iniciar  (sim)</pre></details>
+</section>
+
+<section id="sa-plano"><div class="lead-sec"><h2>sa-plano</h2><p>2 fluxos · dono <code>sa-desenvolvedor</code></p></div>
+  <details class="fluxo" id="sa-plano.plano"><summary><code>sa-plano.plano</code> <span>12 passos</span><small>planejar a fatia nas rotas quick e completo: pesquisa (research.md), decisões técnicas, delta com o texto aprovado copiado e design e tasks pela matriz rota × formato (Kiro ou OpenSpec); planeja a FT-031; gera a spec; cria as tasks</small></summary>
+  <pre class="cod grafo">sa-plano.plano   dono sa-desenvolvedor   travas sim-da-pessoa, decisao-da-pessoa
+
+  ┌────────────────────────────┐
+  │ 1 entrada [desenvolvedor]  │──▶ ↪ vizinhos (diga e pare): sa-desenvolver.codificar · sa-desenvolver.iniciar · sa-plano.replanejar
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 2 ler                      │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 3 texto-aprovado           │──▶ 🔒 aprovacao-no-documento
+  └─────────────┬──────────────┘    ■ fim  (falta a aprovação: Em aberto registrado (no autopilot, de…)
+                ▼
+  ┌────────────────────────────┐
+  │ 4 pesquisa                 │──▶ ⇄ chama sa-pesquisar.pesquisar
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 5 decisoes                 │──▶ ■ fim  (arquitetural ou irreversível sem a decisão da pessoa (no …)
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 6 delta                    │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 7 escrever                 │──▶ ⇒ passa a sa-refinar.moldar  (o plano mostra que passa de G: vira épico)
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 8 revisar                  │──▶ ⇄ chama sa-revisar.revisar
+  └─────────────┬──────────────┘    ↑ volta a escrever  (completo com parte por escrever, ou achado corrige)
+                                    ⇒ passa a sa-desenvolver.codificar.disjuntor  (autopilot, 2ª reprovação seguida)
+                ▼
+  ┌────────────────────────────┐
+  │ 9 aprovar                  │──▶ ↑ volta a escrever  (ajuste pedido por quem desenvolve)
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 10 seguir                  │──▶ ⇒ passa a sa-desenvolver.codificar  (IA supervisionada ou IA autopilot)
+  └─────────────┬──────────────┘    ■ fim  (manual: Retomar gravado, sessão encerrada até o 'terminei')
+                ▼
+  ┌────────────────────────────┐
+  │ 11 captura                 │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 12 gravar                  │
+  └────────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-plano.replanejar"><summary><code>sa-plano.replanejar</code> <span>4 passos</span><small>o plano aprovado não serve: divergência arquitetural, achado volta-plano ou texto novo aprovado pelo especificador; muda só o que mudou e devolve à codificação; replaneja; o plano não serve</small></summary>
+  <pre class="cod grafo">sa-plano.replanejar   dono sa-desenvolvedor   travas sim-da-pessoa, decisao-da-pessoa
+
+  ┌────────────────────────────┐
+  │ 1 entrada [desenvolvedor]  │──▶ ↪ vizinhos (diga e pare): sa-desenvolver.codificar · sa-plano.plano
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 2 atualizar                │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 3 revisar                  │──▶ ⇄ chama sa-revisar.revisar
+  └─────────────┬──────────────┘    ↑ volta a atualizar  (achado corrige: ajusta de novo)
+                ▼
+  ┌────────────────────────────┐
+  │ 4 aprovar                  │──▶ ⇒ passa a sa-desenvolver.codificar.tarefa  (aprovado: volta à tarefa)
+  └────────────────────────────┘</pre></details>
+</section>
+
+<section id="sa-prd"><div class="lead-sec"><h2>sa-prd</h2><p>2 fluxos · dono <code>sa-especificador</code></p></div>
+  <details class="fluxo" id="sa-prd.mudanca"><summary><code>sa-prd.mudanca</code> <span>8 passos</span><small>mudar o prd.md aprovado, antes ou depois de fatiar: tira a aprovação, registra a versão em Mudanças, reescreve, o P.O. reaprova e a mudança chega às fatias atingidas; chamado pela sa-prd.prd, sa-refinar.fatiar, sa-refinar.ajustar, sa-especificar.reuniao, sa-especificar.prototipo ou direto; mudar o PRD do EP-03</small></summary>
+  <pre class="cod grafo">sa-prd.mudanca   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa
+
+  ┌────────────────────────┐
+  │ 1 entrada [nenhuma]    │──▶ ↪ vizinhos (diga e pare): sa-refinar.moldar · sa-prd.prd · sa-refinar.ajustar · ■ sustentação · ■ sem pessoa presente (subagente)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 2 versao               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 editar               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 aprovar              │──▶ 🔒 aprovacao-no-documento
+  └───────────┬────────────┘    ↑ volta a editar  (ajuste pedido)
+              ▼
+  ┌────────────────────────┐
+  │ 5 gravar               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 fatias               │──▶ ↓ devolver  (nenhuma fatia concluida atingida)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 7 capturar             │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 8 devolver             │──▶ ⇒ passa a sa-refinar.ajustar  (fatia atingida e o pedido direto: seguir para o ajuste da…)
+  └────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-prd.prd"><summary><code>sa-prd.prd</code> <span>11 passos</span><small>o PRD do épico depois do go no pitch.md: prd.md na pasta do épico, direto na base, proporcional ao tamanho, com a aprovação do P.O. gravada no topo; chamado pela sa-refinar.moldar no go ou direto; escrever o PRD do EP-03; aprovar o PRD do EP-03; retomar o PRD do EP-03</small></summary>
+  <pre class="cod grafo">sa-prd.prd   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa, elm-pela-sa-elm
+
+  ┌────────────────────────┐
+  │ 1 entrada [nenhuma]    │──▶ ↪ vizinhos (diga e pare): sa-refinar.detalhar · sa-refinar.moldar · sa-prd.mudanca · ■ sustentação · ■ sem pessoa presente (subagente)
+  └───────────┬────────────┘    ↓ aprovar  (pedido de aprovação ('aprovar o PRD do EP-nn'))
+              ▼
+  ┌────────────────────────┐
+  │ 2 assumir              │──▶ ⇄ chama sa-elm.item
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 abrir                │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 entender             │──▶ ⇄ chama sa-pesquisar.pesquisar
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 esclarecer           │──▶ ⇄ chama sa-entrevistar.entrevistar, sa-especificar.reuniao
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 similares            │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 7 escrever ⇢           │──▶ ⇢ por tipo: HF, UC, REG, MSG, EL
+  └───────────┬────────────┘    ⇄ chama sa-especificar.prototipo
+              ▼
+  ┌────────────────────────┐
+  │ 8 validar              │──▶ ↑ volta a esclarecer  (achado que é decisão de negócio)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 9 aprovar              │──▶ 🔒 aprovacao-no-documento
+  └───────────┬────────────┘    ↑ volta a escrever  (ajuste pedido)
+              ▼
+  ┌────────────────────────┐
+  │ 10 gravar              │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 11 concluir            │──▶ ⇄ chama sa-elm.finalizar
+  └────────────────────────┘    ⇒ passa a sa-refinar.fatiar  (seguir para o fatiamento)</pre></details>
+</section>
+
+<section id="sa-refinar"><div class="lead-sec"><h2>sa-refinar</h2><p>4 fluxos · dono <code>sa-especificador</code></p></div>
+  <details class="fluxo" id="sa-refinar.ajustar"><summary><code>sa-refinar.ajustar</code> <span>12 passos</span><small>o P.O. mexe no backlog refinado até alguém puxar: ordenar, dividir, juntar, editar, cancelar a fatia ou o épico; também a mudança do PRD nas fatias atingidas; reordenar o backlog; dividir a FT-033; juntar a FT-033 e a FT-034; editar a ficha da FT-033; cancelar a FT-033; cancelar o EP-05</small></summary>
+  <pre class="cod grafo">sa-refinar.ajustar   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa, aprovacao-no-documento, artefato-exclusivo, elm-pela-sa-elm
+
+  ┌────────────────────────┐
+  │ 1 entrada [produto]    │──▶ ↪ vizinhos (diga e pare): sa-triar.triar · sa-desenvolver.codificar · sa-refinar.moldar · sa-atender.atender
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 2 previa               │──▶ ↓ ordenar  (ordenar)
+  └───────────┬────────────┘    ↓ dividir  (dividir)
+                                ↓ juntar  (juntar)
+                                ↓ editar  (editar)
+                                ↓ cancelar-fatia  (cancelar a fatia ou o bug)
+                                ↓ cancelar-epico  (cancelar o épico)
+                                ↓ seguir  (sem o ok do P.O.)
+              ▼
+  ┌────────────────────────┐
+  │ 3 ordenar              │──▶ ↓ gravar  (ordem pronta)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 dividir              │──▶ ↓ captura  (partes novas)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 juntar               │──▶ ↑ volta a previa  (a soma passa de G)
+  └───────────┬────────────┘    ↓ gravar  (junção pronta)
+              ▼
+  ┌────────────────────────┐
+  │ 6 editar               │──▶ ↓ captura  (cenário novo em fatia já entregue)
+  └───────────┬────────────┘    ↓ gravar  (edição pronta)
+              ▼
+  ┌────────────────────────┐
+  │ 7 cancelar-fatia       │──▶ ↓ gravar  (cancelamento pronto)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 8 cancelar-epico       │──▶ ↓ seguir  (fatia em-andamento)
+  └───────────┬────────────┘    ↓ gravar  (cancelamento pronto)
+              ▼
+  ┌────────────────────────┐
+  │ 9 gravar               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 10 gravar-na-base      │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 11 seguir              │──▶ ⇄ chama sa-elm.finalizar
+  └───────────┬────────────┘    ↑ volta a previa  (mais um ajuste)
+                                ■ fim  (não)
+              ▼
+  ┌────────────────────────┐
+  │ 12 captura             │──▶ ↑ volta a gravar  (linhas novas preparadas)
+  └────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-refinar.detalhar"><summary><code>sa-refinar.detalhar</code> <span>10 passos</span><small>fatia ou bug aceita ou pronta: três amigos, ficha com regras, cenários CT-nn e Cobre e, com ELM, a pasta elm/, até pronta; refinar a FT-031; detalhar a FT-031; três amigos; ficha da FT-031; alterei FT-031</small></summary>
+  <pre class="cod grafo">sa-refinar.detalhar   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa, aprovacao-no-documento, aprovacao-do-cliente, artefato-exclusivo, elm-pela-sa-elm
+
+  ┌────────────────────────┐
+  │ 1 entrada [nenhuma]    │──▶ ↪ vizinhos (diga e pare): sa-triar.triar · sa-desenvolver.codificar · sa-refinar.moldar · sa-prd.prd · sa-refinar.ajustar · sa-atender.atender
+  └───────────┬────────────┘    ↓ elm  (volta da especificação manual ('alterei FT-nnn'))
+              ▼
+  ┌────────────────────────┐
+  │ 2 regras               │──▶ ⇄ chama sa-entrevistar.entrevistar
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 cenarios             │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 cobre                │──▶ ⇄ chama sa-elm.baixar
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 elm                  │──▶ ⇄ chama sa-especificar.elm
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 duvidas              │──▶ ⇄ chama sa-pesquisar.pesquisar, sa-especificar.prototipo, sa-especificar.reuniao
+  └───────────┬────────────┘    ↑ volta a regras  (resposta que muda regras ou cenários)
+                                ⇒ passa a sa-refinar.ajustar  (muitas regras ou mais que G, com corte possível: dividir)
+                                ↓ captura  (mais que G sem corte: vira épico)
+              ▼
+  ┌────────────────────────┐
+  │ 7 ficha                │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 8 gravar-na-base       │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 9 seguir               │──▶ ⇒ passa a sa-refinar.moldar  (virou épico: seguir no moldar)
+  └───────────┬────────────┘    ↑ volta a entrada  (refinar o próximo)
+                                ■ fim  (não)
+              ▼
+  ┌────────────────────────┐
+  │ 10 captura             │──▶ ↑ volta a gravar-na-base  (linha do épico preparada, com a fatia cancelada)
+  └────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-refinar.fatiar"><summary><code>sa-refinar.fatiar</code> <span>6 passos</span><small>PRD aprovado → fatias verticais P/M/G com Cobre, aprovadas e ordenadas por quem tem produto, num commit; fatiar o PRD; fatiar o EP-04; quebrar em histórias; gerar o backlog do épico</small></summary>
+  <pre class="cod grafo">sa-refinar.fatiar   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa, aprovacao-no-documento, artefato-exclusivo
+
+  ┌────────────────────────┐
+  │ 1 entrada [nenhuma]    │──▶ ↪ vizinhos (diga e pare): sa-prd.prd · sa-refinar.moldar · sa-refinar.ajustar · sa-refinar.detalhar
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
@@ -383,472 +1262,650 @@
               ▼
   ┌────────────────────────┐
   │ 3 perguntar            │──▶ ↺ perguntar  (ajuste pedido: repita até o ok)
-  └───────────┬────────────┘    ⇒ passa a sa-prd.mudanca  (conceito do PRD que precisa mudar)
+  └───────────┬────────────┘    ⇒ passa a sa-prd.mudanca  (conceito do PRD que muda)
+                                ■ fim  (sem quem tem produto na sessão)
               ▼
   ┌────────────────────────┐
   │ 4 gravar               │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 5 proximos             │──▶ ■ fim  (alocar as fatias na sprint: planejamento ou encaixe)
-  └────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-fatiar.refinamento"><summary><code>sa-fatiar.refinamento</code> <span>1 passo</span><small>o backlog do épico já existe (depois do GATE do backlog): cancelar fatias ou o épico, ou seguir com o plano acima do limite, decisão do P.O.; as fatias não se alteram mais, e cenário novo vai à sa-triar; cancelar um épico ainda não fatiado; refinar o backlog; cancelar a FT-033; cancelar o EP-05; seguir com o plano da FT-033</small></summary>
-  <pre class="cod grafo">sa-fatiar.refinamento   dono sa-produto   travas sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 refinar              │──▶ ⇒ passa a sa-fatiar.fatiar.proximos  (refinamento gravado)
-  └────────────────────────┘    ⇒ passa a sa-triar.triar  (fatia de Manutenção ou cenário novo: é da sa-triar)
-                                ⇒ passa a sa-especificar.fatia  (alteração de artefato: a [ESP] FT aberta, ou reaberta nes…)
-                                ⇒ passa a sa-planejamento.durante  (alteração de artefato: sem [ESP] FT, ou concluída numa sp…)
-                                ⇒ passa a sa-planejamento.sprint  (alteração de artefato sem sprint aberta: pendência do P.O…)
-                                ■ fim  (dividir, juntar ou mudar uma fatia do backlog: não se faz)</pre></details>
-</section>
-
-<section id="sa-orquestrar"><div class="lead-sec"><h2>sa-orquestrar</h2><p>1 fluxo · dono <code>sa-orquestrador</code></p></div>
-  <details class="fluxo" id="sa-orquestrar.orquestrar" open><summary><code>sa-orquestrar.orquestrar</code> <span>5 passos</span></summary>
-  <pre class="cod grafo">sa-orquestrar.orquestrar   dono sa-orquestrador   travas sim-da-pessoa, pr-lido-por-pessoa, sem-force
-
-  ┌────────────────────────┐
-  │ 1 retomar              │──▶ ↓ fases  (retoma o loop)
+  │ 5 gravar-na-base       │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 2 lote                 │──▶ ■ fim  (checkout principal fora da base ou sujo, ou push do lote …)
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 3 worktree             │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 4 fases                │──▶ ⇄ chama sa-pesquisar.pesquisar, sa-plano.plano, sa-revisar.revisar, sa-codificar.codificar, sa-verificar.verificar
-  └───────────┬────────────┘    🔒 backpressure, revisao-independente, aceite-independente
-              ▼
-  ┌────────────────────────┐
-  │ 5 parada               │──▶ ⇒ passa a sa-desenvolver.encerrar  (PR com a [APR] concluída: o merge é de quem disparou)
-  └────────────────────────┘    ⇒ passa a sa-revisar.aprovar-pr  (PR para ler e aprovar)
-                                ⇒ passa a sa-revisar.aprovar-plano  (plano para aprovar)
-                                ⇒ passa a sa-planejamento.troca-modo  (troca de modo: P.O. ou SM (agente sa-produto))</pre></details>
-</section>
-
-<section id="sa-pesquisar"><div class="lead-sec"><h2>sa-pesquisar</h2><p>1 fluxo · dono <code>sa-pesquisador</code></p></div>
-  <details class="fluxo" id="sa-pesquisar.pesquisar" open><summary><code>sa-pesquisar.pesquisar</code> <span>3 passos</span></summary>
-  <pre class="cod grafo">sa-pesquisar.pesquisar   dono sa-pesquisador   travas —
-
-  ┌────────────────────────┐
-  │ 1 perguntas            │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 2 investigar           │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 3 research             │
-  └────────────────────────┘</pre></details>
-</section>
-
-<section id="sa-planejamento"><div class="lead-sec"><h2>sa-planejamento</h2><p>6 fluxos · dono <code>sa-produto</code></p></div>
-  <details class="fluxo" id="sa-planejamento.durante"><summary><code>sa-planejamento.durante</code> <span>2 passos</span><small>sprint aberta: sincronizar com o EWM ou puxar um item para a sprint (encaixe): fatia, épico ou item de Sustentação que o fluxo de quem executa parou com &quot;fale com o P.O. ou o SM&quot;, a Sustentação com a reserva estourada ou a linha encaixe da sincronização; sincroniza a sprint; sincronizar com o EWM; encaixe na sprint; puxar a FT-031 para a sprint</small></summary>
-  <pre class="cod grafo">sa-planejamento.durante   dono sa-produto   travas sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 sincronizar          │──▶ ■ fim  (nenhuma linha encaixe)
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 2 encaixe              │──▶ ↺ encaixe  (a próxima linha encaixe da sincronização)
-  └────────────────────────┘    ■ fim  (decidido: o executor retoma pela própria skill)
-                                ■ fim  (fica para a próxima sprint)</pre></details>
-  <details class="fluxo" id="sa-planejamento.inicial"><summary><code>sa-planejamento.inicial</code> <span>4 passos</span><small>começo do projeto, antes da primeira triagem e da primeira sprint: equipe, acordos, roadmap e a base no EWM; ou rever a equipe e os acordos; monta o planejamento; acordos do time; capacidade do time; roadmap</small></summary>
-  <pre class="cod grafo">sa-planejamento.inicial   dono sa-produto   travas sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 equipe               │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 2 acordos              │──▶ ■ fim  (rever a equipe e os acordos)
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 3 roadmap              │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 4 base-ewm             │
-  └────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-planejamento.retrospectiva"><summary><code>sa-planejamento.retrospectiva</code> <span>6 passos</span><small>fim da sprint, depois da review: retrospectiva com dados, horas, fechamento com a migração, replanejamento e virada no EWM; fechar a sprint; virada de sprint</small></summary>
-  <pre class="cod grafo">sa-planejamento.retrospectiva   dono sa-produto   travas sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 precondicao          │──▶ ⇄ chama sa-planejamento.review.sincronizar, sa-planejamento.review.consolidacao
-  └───────────┬────────────┘    🔒 po-decide-fechamento
-                                ■ fim  (P.O. disse não)
-                                ■ fim  (sem a review)
-                                ↓ fechar  (de novo, depois do passo horas (antes da virada))
-                                ↓ recalcular  (virada parada antes do replanejamento)
-                                ↓ virada  (virada parada antes da publicação)
-              ▼
-  ┌────────────────────────┐
-  │ 2 retro                │──▶ ⇄ chama sa-aprender.retrospectiva
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 3 horas                │──▶ ↑ volta a precondicao  (antes da virada, a pré-condição de novo)
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 4 fechar               │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 5 recalcular           │──▶ ⇄ chama sa-planejamento.sprint
-  └───────────┬────────────┘    ■ fim  (projeto sem ELM)
-              ▼
-  ┌────────────────────────┐
-  │ 6 virada               │
-  └────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-planejamento.review"><summary><code>sa-planejamento.review</code> <span>3 passos</span><small>fim da sprint, antes da retrospectiva: a pré-condição dos ritos de fechamento e a review com a evidência de cada fatia concluída; review da sprint</small></summary>
-  <pre class="cod grafo">sa-planejamento.review   dono sa-produto   travas sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 sincronizar          │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 2 consolidacao         │──▶ 🔒 po-decide-fechamento
-  └───────────┬────────────┘    ■ fim  (P.O. disse não)
-              ▼
-  ┌────────────────────────┐
-  │ 3 rito                 │──▶ ⇄ chama sa-triar.triar
-  └────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-planejamento.sprint"><summary><code>sa-planejamento.sprint</code> <span>10 passos</span><small>planejar a próxima sprint: capacidade, previsão, responsáveis, meta e publicação no EWM; também o replanejamento da próxima na virada; planejar a sprint</small></summary>
-  <pre class="cod grafo">sa-planejamento.sprint   dono sa-produto   travas sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 senioridade          │──▶ ■ fim  (pedido direto com sprint aberta: a próxima é na virada)
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 2 capacidade           │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 3 especificacao        │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 4 previsao             │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 5 responsaveis         │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 6 modo                 │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 7 meta                 │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 8 iteracao             │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 9 proposta             │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 10 gravar              │
-  └────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-planejamento.troca-modo"><summary><code>sa-planejamento.troca-modo</code> <span>3 passos</span><small>trocar o modo de uma fatia viva na sprint, nos dois sentidos (AFK → HITL, HITL → AFK), só pelo P.O. ou pelo SM; inclusive a fatia AFK em bloqueada (de: planejando) com aguardando troca de modo; trocar o modo da FT-031; passar a FT-031 para HITL; passar a FT-031 para AFK</small></summary>
-  <pre class="cod grafo">sa-planejamento.troca-modo   dono sa-produto   travas sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 mostrar              │──▶ ■ fim  (segue no modo atual, ou HITL → AFK recusado (Júnior, PR a…)
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 2 gravar               │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 3 avisar               │
-  └────────────────────────┘</pre></details>
-</section>
-
-<section id="sa-plano"><div class="lead-sec"><h2>sa-plano</h2><p>2 fluxos · dono <code>sa-desenvolvedor</code></p></div>
-  <details class="fluxo" id="sa-plano.plano"><summary><code>sa-plano.plano</code> <span>6 passos</span><small>planejar a fatia: pesquisa, decisões, spec do Kiro, análise independente e GATE do plano; planeja a FT-031; gera a spec; cria as tasks</small></summary>
-  <pre class="cod grafo">sa-plano.plano   dono sa-desenvolvedor   travas sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 entrada [nao]        │──▶ ↪ vizinhos (diga e pare): sa-desenvolver.desenvolver · sa-especificar.fatia · sa-revisar.aprovar-plano · sa-codificar.codificar
-  └───────────┬────────────┘    ↓ gate  (aguardando-aprovacao-plano sem a [APR], ou bloqueada &quot;agu…)
-                                ↓ escrever  (planejando com o ajuste pedido no GATE do plano, ou bloqu…)
-              ▼
-  ┌────────────────────────┐
-  │ 2 pesquisa             │──▶ ⇄ chama sa-pesquisar.pesquisar
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 3 decisoes             │──▶ ■ fim  (lacuna de negócio na ficha sem épico: é do P.O.)
-  └───────────┬────────────┘    ⇒ passa a sa-especificar.fatia  (artefato que precisa mudar, [ESP] FT aberta ou reaberta: …)
-                                ⇒ passa a sa-planejamento.durante  (artefato que precisa mudar, [ESP] concluída numa sprint f…)
-                                ⇒ passa a sa-planejamento.sprint  (artefato que precisa mudar, sem sprint aberta: bloqueada,…)
-              ▼
-  ┌────────────────────────┐
-  │ 4 escrever             │──▶ ■ fim  (plano grande demais: bloqueada (de: planejando), o P.O. d…)
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 5 analise              │──▶ ⇄ chama sa-revisar.revisar
-  └───────────┬────────────┘    🔒 revisao-independente
-                                ↑ volta a escrever  (ANALISE: AJUSTAR, falta do plano)
-                                ↑ volta a decisoes  (ANALISE: AJUSTAR, falta do PRD ou da ficha)
-                                ↓ gate  (2ª rodada em ANALISE: AJUSTAR: uma pessoa decide (HITL: a…)
-              ▼
-  ┌────────────────────────┐
-  │ 6 gate                 │──▶ ⇒ passa a sa-revisar.aprovar-plano  (com GATE: aprovador avisado)
-  └────────────────────────┘    ⇒ passa a sa-codificar.codificar  (sem GATE: fase implementando)
-                                ■ fim  (AFK com risco: bloqueada, a troca é do P.O. ou do SM)</pre></details>
-  <details class="fluxo" id="sa-plano.replanejar"><summary><code>sa-plano.replanejar</code> <span>1 passo</span><small>a implementação descobriu que o plano não serve: muda só o que mudou e repete a análise e o GATE do fluxo plano; replaneja</small></summary>
-  <pre class="cod grafo">sa-plano.replanejar   dono sa-desenvolvedor   travas sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 replanejar           │──▶ ⇒ passa a sa-plano.plano.analise  (plano atualizado: análise e GATE da parte alterada)
-  └────────────────────────┘    ■ fim  (lacuna de negócio: é do P.O.)</pre></details>
-</section>
-
-<section id="sa-prd"><div class="lead-sec"><h2>sa-prd</h2><p>2 fluxos · dono <code>sa-especificador</code></p></div>
-  <details class="fluxo" id="sa-prd.mudanca"><summary><code>sa-prd.mudanca</code> <span>1 passo</span><small>mudar um PRD aprovado na base e ainda não fatiado (o intervalo GATE do PRD → fatiamento), pela regra da tarefa de especificação (a [ESP] aberta, reaberta na sprint corrente ou a [ESP] EP-nn Revisão n), numa versão nova do PRD; volta à revisão e ao GATE de sa-prd.prd; fatiado, o PRD não muda</small></summary>
-  <pre class="cod grafo">sa-prd.mudanca   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 mudanca              │──▶ ⇒ passa a sa-especificar.reuniao  (transcrição nova sem ATA: a [ESP] aberta ou reaberta, a A…)
-  └────────────────────────┘    ⇒ passa a sa-prd.prd.revisao  (o que mudou, para a revisão e o GATE)
-                                ⇒ passa a sa-planejamento.durante  ([ESP] concluída numa sprint fechada, com sprint aberta: a…)
-                                ⇒ passa a sa-planejamento.sprint  ([ESP] concluída numa sprint fechada, sem sprint aberta: p…)
-                                ⇒ passa a sa-especificar.especificar  (PRD ainda na pasta de trabalho (sem o GATE, ou aprovado s…)
-                                ⇒ passa a sa-especificar.especificar  (mudança desistida antes do GATE: a [ESP] conclui sem vers…)
-                                ⇒ passa a sa-especificar.fatia  (fatiado: alteração de artefato que uma fatia não terminal…)
-                                ⇒ passa a sa-planejamento.durante  (fatiado: a fatia sem [ESP] FT, ou com ela concluída numa …)
-                                ⇒ passa a sa-planejamento.sprint  (fatiado: [ESP] FT concluída numa sprint fechada, sem spri…)
-                                ⇒ passa a sa-triar.triar  (fatiado: escopo novo, ou a fatia já terminal)</pre></details>
-  <details class="fluxo" id="sa-prd.prd"><summary><code>sa-prd.prd</code> <span>6 passos</span><small>escrever o PRD de um épico e passar pelo GATE do PRD (o primeiro, na pasta de trabalho); escreve o PRD; documenta a demanda; especificar a demanda; aprova o PRD</small></summary>
-  <pre class="cod grafo">sa-prd.prd   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 entender             │──▶ ⇄ chama sa-pesquisar.pesquisar
-  └───────────┬────────────┘    ⇒ passa a sa-triar.triar  (sem registro na triagem)
-                                ⇒ passa a sa-especificar.especificar  (sem a pasta de trabalho)
-              ▼
-  ┌────────────────────────┐
-  │ 2 entrevistar          │──▶ ⇄ chama sa-entrevistar.entrevistar, sa-especificar.reuniao
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 3 similares            │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 4 escrever ⇢           │──▶ ⇢ por tipo: HF, REG, EL, ET, CT
-  └───────────┬────────────┘    ⇄ chama sa-especificar.prototipo
-              ▼
-  ┌────────────────────────┐
-  │ 5 revisao              │──▶ ⇄ chama sa-revisar.revisar
-  └───────────┬────────────┘    ↑ volta a entrevistar  (achado que é decisão de negócio)
-              ▼
-  ┌────────────────────────┐
-  │ 6 gate                 │──▶ ↑ volta a entrevistar  (decisão em aberto que muda comportamento)
-  └────────────────────────┘    ⇒ passa a sa-especificar.especificar  (primeiro GATE aprovado, ou mudança antes do fatiamento ap…)</pre></details>
-</section>
-
-<section id="sa-revisar"><div class="lead-sec"><h2>sa-revisar</h2><p>4 fluxos · dono <code>sa-revisor</code></p></div>
-  <details class="fluxo" id="sa-revisar.aprovar-plano"><summary><code>sa-revisar.aprovar-plano</code> <span>5 passos</span><small>[APR] Aprovar plano: o Dev Sênior lê o plano e aprova ou pede ajuste; aprovo o plano da FT-031</small></summary>
-  <pre class="cod grafo">sa-revisar.aprovar-plano   dono sa-revisor   travas revisao-independente, sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 entrada [nao]        │──▶ ↪ vizinhos (diga e pare): sa-plano.plano · sa-codificar.codificar · ■ bloqueada &quot;aguardando troca de modo&quot;
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 2 assumir              │──▶ ■ fim  (não é Dev Sênior ativo, ou é quem implementa sem ser o ún…)
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 3 ler                  │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 4 decidir              │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 5 entrega              │──▶ ⇒ passa a sa-codificar.codificar  (aprovado)
-  └────────────────────────┘    ⇒ passa a sa-plano.plano  (ajuste pedido: quem implementa replaneja)</pre></details>
-  <details class="fluxo" id="sa-revisar.aprovar-pr"><summary><code>sa-revisar.aprovar-pr</code> <span>4 passos</span><small>[APR] Aprovar PR da fatia AFK: o Dev Sênior lê o PR e aprova ou pede mudanças; aprovar o PR da FT-031</small></summary>
-  <pre class="cod grafo">sa-revisar.aprovar-pr   dono sa-revisor   travas revisao-independente, sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 entrada [nao]        │──▶ ↪ vizinhos (diga e pare): sa-codificar.codificar · sa-desenvolver.encerrar · ■ PR mergeado por fora do Sabiá, sem pronta na base
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 2 assumir              │──▶ ■ fim  (não é Dev Sênior ativo, ou é quem implementa sem ser o ún…)
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 3 ler                  │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 4 decidir              │──▶ ⇒ passa a sa-desenvolver.encerrar  (aprovado: o merge é do Dev)
-  └────────────────────────┘    ⇒ passa a sa-codificar.codificar  (mudanças pedidas: o retrabalho é do Dev)
-                                ⇒ passa a sa-especificar.fatia  (volta à especificação, [ESP] FT aberta ou reaberta: bloqu…)
-                                ⇒ passa a sa-planejamento.durante  (volta à especificação, [ESP] FT concluída numa sprint fec…)
-                                ⇒ passa a sa-planejamento.sprint  (volta à especificação, sem sprint aberta: pendência do P.…)</pre></details>
-  <details class="fluxo" id="sa-revisar.hitl"><summary><code>sa-revisar.hitl</code> <span>6 passos</span><small>fatia HITL com a tarefa [REV] e o PR aberto: a revisão oficial sobre o PR; pegar a [REV] da FT-031; revisa a FT-031</small></summary>
-  <pre class="cod grafo">sa-revisar.hitl   dono sa-revisor   travas revisao-independente, sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 entrada [nao]        │──▶ ↪ vizinhos (diga e pare): sa-verificar.hitl · sa-codificar.codificar · sa-desenvolver.encerrar · ■ PR mergeado por fora do Sabiá, sem pronta na base
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 2 assumir              │──▶ ■ fim  (não é Dev Sênior ativo, ou é quem implementa sem ser o ún…)
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 3 pr                   │──▶ ■ fim  (PR closed ou árvore suja)
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 4 rubrica              │──▶ ⇄ chama sa-revisar.revisar
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 5 veredito             │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 6 entrega              │──▶ ⇒ passa a sa-verificar.hitl  (APROVADO: a [VER] está disponível)
-  └────────────────────────┘    ⇒ passa a sa-codificar.codificar  (REVISAR: o retrabalho é do Dev, no mesmo PR)
-                                ⇒ passa a sa-especificar.fatia  (volta à especificação, [ESP] FT aberta ou reaberta: bloqu…)
-                                ⇒ passa a sa-planejamento.durante  (volta à especificação, [ESP] FT concluída numa sprint fec…)
-                                ⇒ passa a sa-planejamento.sprint  (volta à especificação, sem sprint aberta: pendência do P.…)
-                                ■ fim  (AMBIENTE: bloqueada, você retoma quando o Bloqueio se res…)</pre></details>
-  <details class="fluxo" id="sa-revisar.revisar"><summary><code>sa-revisar.revisar</code> <span>4 passos</span><small>revisão de PRD (rubrica P), plano (L) ou código (C) sem a tarefa [REV]: como subagente de outro fluxo ou a pedido direto; revisa; revisa o PRD; analisa o plano; judge; code review; no fim da sa-prd, da sa-plano e da sa-codificar</small></summary>
-  <pre class="cod grafo">sa-revisar.revisar   dono sa-revisor   travas sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 escopo               │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 2 evidencia            │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 3 calibrar             │
-  └───────────┬────────────┘
-              ▼
-  ┌────────────────────────┐
-  │ 4 relatorio            │
-  └────────────────────────┘</pre></details>
-</section>
-
-<section id="sa-triar"><div class="lead-sec"><h2>sa-triar</h2><p>2 fluxos · dono <code>sa-produto</code></p></div>
-  <details class="fluxo" id="sa-triar.lote-ewm"><summary><code>sa-triar.lote-ewm</code> <span>1 passo</span><small>&quot;importar do EWM&quot;, &quot;triar os defeitos do time&quot;: os itens novos do EWM de uma vez</small></summary>
-  <pre class="cod grafo">sa-triar.lote-ewm   dono sa-produto   travas sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 lote                 │──▶ ⇒ passa a sa-triar.triar.encaminhar  (lote registrado: &quot;Mais algum item para triar?&quot;)
-  └────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-triar.triar"><summary><code>sa-triar.triar</code> <span>4 passos</span><small>toda demanda nova, item a item: pedido em texto, número do EWM (DF, IB), Sustentação, ficha a aprovar, item que voltou; nova demanda; o cliente pediu; registra o defeito 4567; coloca no backlog; aprova a ficha da FT-040; conflito de id no push da triagem</small></summary>
-  <pre class="cod grafo">sa-triar.triar   dono sa-produto   travas sim-da-pessoa
-
-  ┌────────────────────────┐
-  │ 1 chegou               │──▶ ⇒ passa a sa-triar.lote-ewm  (lote do EWM)
-  └───────────┬────────────┘    ↓ registrar  (conflito de id no push de uma triagem já encerrada)
-                                ↓ encaminhar  (épico novo que voltou, registro completo)
-                                ↓ registrar  (fatia sem épico que vira épico, se divide ou é cancelada;…)
-                                ↓ triagem  (item de Sustentação devolvido por categoria errada)
-                                ⇒ passa a sa-planejamento.durante.encaixe  (fatia nova no backlog com só falta: especificação (entra …)
-                                ⇒ passa a sa-especificar.fatia  (fatia com a [ESP] FT aberta na sprint)
-                                ↓ encaminhar  (fatia nova de épico completada (Completar uma fatia nova))
-                                ⇒ passa a sa-fatiar.refinamento  (cancelar fatia de épico (ou o épico))
-                                ■ fim  (o resto (começar ou retomar: hub sa-iniciar))
-              ▼
-  ┌────────────────────────┐
-  │ 2 triagem              │──▶ ⇄ chama sa-entrevistar.entrevistar
-  └───────────┬────────────┘    ↓ encaminhar  (não fazer)
-              ▼
-  ┌────────────────────────┐
-  │ 3 registrar            │──▶ ⇄ chama sa-entrevistar.atendimento
-  └───────────┬────────────┘    ↑ volta a triagem  (Sustentação que muda o repositório ou com regra de negóci…)
-              ▼
-  ┌────────────────────────┐
-  │ 4 encaminhar           │──▶ ↑ volta a chegou  (sim: mais um item)
+  │ 6 proximos             │──▶ ⇒ passa a sa-refinar.detalhar  (detalhar a primeira)
   └────────────────────────┘    ■ fim  (não)</pre></details>
-</section>
-
-<section id="sa-verificar"><div class="lead-sec"><h2>sa-verificar</h2><p>2 fluxos · dono <code>sa-verificador</code></p></div>
-  <details class="fluxo" id="sa-verificar.hitl"><summary><code>sa-verificar.hitl</code> <span>5 passos</span><small>fatia HITL com a tarefa [VER] e a fase em-verificacao: a verificação oficial, depois da REV; pegar a [VER] da FT-031; verifica a FT-031</small></summary>
-  <pre class="cod grafo">sa-verificar.hitl   dono sa-verificador   travas sim-da-pessoa, aceite-independente
+  <details class="fluxo" id="sa-refinar.moldar"><summary><code>sa-refinar.moldar</code> <span>6 passos</span><small>épico a-moldar: pitch.md de uma página (Shape Up) e go/kill de quem tem produto; moldar o EP-04; ideia nova grande; pitch do épico; go ou kill do EP-04</small></summary>
+  <pre class="cod grafo">sa-refinar.moldar   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa, aprovacao-no-documento, aprovacao-do-cliente, elm-pela-sa-elm
 
   ┌────────────────────────┐
-  │ 1 entrada [nao]        │──▶ ↪ vizinhos (diga e pare): ■ pr-aberto ou em-revisao · sa-codificar.codificar · sa-desenvolver.encerrar · ■ PR mergeado por fora do Sabiá, sem pronta na base
+  │ 1 entrada [nenhuma]    │──▶ ↪ vizinhos (diga e pare): sa-prd.prd · sa-refinar.ajustar · sa-refinar.detalhar · sa-atender.atender
+  └───────────┬────────────┘    ↓ captura  (ideia grande em texto, ainda não registrada: captura como…)
+              ▼
+  ┌────────────────────────┐
+  │ 2 pitch                │──▶ ⇄ chama sa-entrevistar.entrevistar, sa-especificar.prototipo, sa-elm.baixar
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 2 assumir              │──▶ ■ fim  (quem está na sessão implementa a fatia)
+  │ 3 decisao              │──▶ ↓ captura  (cabe em G: nasce a fatia)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 gravar-na-base       │──▶ ↑ volta a pitch  (gravou o épico capturado na entrada)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 seguir               │──▶ ⇒ passa a sa-prd.prd  (go: seguir para o PRD)
+  └───────────┬────────────┘    ⇒ passa a sa-refinar.detalhar  (cabe em G: seguir para o detalhar)
+                                ↑ volta a entrada  (kill: moldar o próximo épico a-moldar)
+                                ■ fim  (sem decisão, ou não)
+              ▼
+  ┌────────────────────────┐
+  │ 6 captura              │──▶ ↑ volta a gravar-na-base  (linha preparada)
+  └────────────────────────┘</pre></details>
+</section>
+
+<section id="sa-revisar"><div class="lead-sec"><h2>sa-revisar</h2><p>2 fluxos · dono <code>sa-desenvolvedor</code>, <code>sa-revisor</code></p></div>
+  <details class="fluxo" id="sa-revisar.mr"><summary><code>sa-revisar.mr</code> <span>8 passos</span><small>revisão oficial do MR de código por um desenvolvedor que não é o autor, em qualquer modo; revisa o MR da FT-031; revisar o MR !42; aprovar o MR da FT-031</small></summary>
+  <pre class="cod grafo">sa-revisar.mr   dono sa-desenvolvedor   travas revisao-independente, pr-lido-por-pessoa, sim-da-pessoa
+
+  ┌────────────────────────────┐
+  │ 1 entrada [desenvolvedor]  │──▶ ↪ vizinhos (diga e pare): sa-desenvolver.codificar · sa-desenvolver.encerrar · ■ MR fechado sem merge
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 2 revisor                  │──▶ ■ fim  (a pessoa é o autor do MR ou não tem a booleana desenvolvedor)
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 3 ler                      │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 4 rubrica                  │──▶ ⇄ chama sa-revisar.revisar
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 5 veredito                 │──▶ ↓ entrega  (nenhum achado com destino adia)
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 6 captura                  │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 7 gravar-na-base           │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 8 entrega                  │
+  └────────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-revisar.revisar"><summary><code>sa-revisar.revisar</code> <span>5 passos</span><small>revisão independente do plano (rubrica L) ou do código (rubrica C), como subagente de quem chama ou a pedido direto; revisa o plano da FT-031; revisa o código da FT-031; code review; autorrevisão antes do MR</small></summary>
+  <pre class="cod grafo">sa-revisar.revisar   dono sa-revisor   travas decisao-da-pessoa
+
+  ┌────────────────────────┐
+  │ 1 entrada [nenhuma]    │──▶ ↪ vizinhos (diga e pare): sa-plano.plano · sa-desenvolver.codificar · ■ épico ou item de Sustentação
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 2 escopo               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 ci                   │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 evidencia            │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 relatorio            │
+  └────────────────────────┘</pre></details>
+</section>
+
+<section id="sa-setup"><div class="lead-sec"><h2>sa-setup</h2><p>2 fluxos · dono <code>sa-especificador</code></p></div>
+  <details class="fluxo" id="sa-setup.configurar"><summary><code>sa-setup.configurar</code> <span>28 passos</span><small>instalar ou atualizar o Sabiá no projeto: sabia.md, agentes.json, formato da spec, &quot;usa ELM?&quot;, pasta do produto e os 5 agentes; configurar o Sabiá; atualizar a configuração do Sabiá; regenerar os agentes; ligar o toolkit; aplicar os dados da sa-elm.setup</small></summary>
+  <pre class="cod grafo">sa-setup.configurar   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa
+
+  ┌────────────────────────┐
+  │ 1 inicio               │──▶ ■ fim  (dentro de um agente sa-*)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 2 pre-checagem         │──▶ ■ fim  (falta o uv ou as skills do Sabiá num alvo)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 projeto              │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 comandos             │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 git                  │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 gitlab               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 7 banco                │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 8 formato-spec         │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 9 pasta-produto        │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 10 elm                 │──▶ ⇄ chama sa-elm.setup
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 11 glossario           │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 12 especificacao       │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 13 sustentacao         │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 14 toolkits            │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 15 perfis              │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 16 regras-perfis       │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 17 verificacao         │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 18 autonomia           │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 19 sabia-md            │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 20 ponteiros           │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 21 agentes             │──▶ ↑ volta a toolkits  (o gerador recusou (override ou caminho inválido))
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 22 backlog             │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 23 template-mr         │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 24 codeowners          │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 25 gitignore           │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 26 conferir            │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 27 commit              │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 28 proximo             │──▶ ⇒ passa a sa-planejamento.inicial  (sim, seguir para o planejamento)
+  └────────────────────────┘    ■ fim  (veio só aplicar os dados de uma sa-elm.setup)</pre></details>
+  <details class="fluxo" id="sa-setup.customizar"><summary><code>sa-setup.customizar</code> <span>6 passos</span><small>trocar, inserir ou remover um passo, ou trocar um padrão, neste projeto; ver o que ele mudou; descustomizar; customizar o passo …; trocar o padrão …; o que este projeto mudou?; descustomizar …</small></summary>
+  <pre class="cod grafo">sa-setup.customizar   dono sa-especificador   travas sim-da-pessoa
+
+  ┌────────────────────────┐
+  │ 1 inicio               │──▶ ■ fim  (dentro de um agente sa-*)
+  └───────────┬────────────┘    ⇒ passa a sa-setup.configurar  (sem .sabia/config/agentes.json)
+                                ■ fim  (o que este projeto mudou?)
+              ▼
+  ┌────────────────────────┐
+  │ 2 achar-ponto          │──▶ ↓ regenerar  (descustomizar)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 forma                │──▶ ↺ forma  (remover um passo com trava)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 copiar               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 regenerar            │──▶ ↑ volta a copiar  (o gerador recusou o override)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 o-que-mudou          │
+  └────────────────────────┘</pre></details>
+</section>
+
+<section id="sa-status"><div class="lead-sec"><h2>sa-status</h2><p>6 fluxos · dono <code>sa-desenvolvedor</code></p></div>
+  <details class="fluxo" id="sa-status.fechar-sessao"><summary><code>sa-status.fechar-sessao</code> <span>8 passos</span><small>ao encerrar uma sessão num item: Retomar, tasks.md, horas (sa-elm), créditos do Kiro no CSV da pessoa, commit com ok e a frase de retomada; fechar a sessão; encerrar por hoje</small></summary>
+  <pre class="cod grafo">sa-status.fechar-sessao   dono sa-desenvolvedor   travas sim-da-pessoa, sem-force, elm-pela-sa-elm
+
+  ┌────────────────────────┐
+  │ 1 inicio               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 2 retomar              │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 tasks                │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 horas                │──▶ ⇄ chama sa-elm.horas
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 creditos             │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 commit               │──▶ ↓ retomada  (na branch &lt;id&gt;, ou sem o ok)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 7 gravar-na-base       │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 8 retomada             │
+  └────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-status.item"><summary><code>sa-status.item</code> <span>10 passos</span><small>porta de entrada do item: recebe '&lt;id&gt;' (EP, FT, AT…, ib ou tarefa do EWM), mostra o estado e diz a skill.fluxo dona, com 'seguir agora?'; &lt;id&gt;; vamos trabalhar na FT-031; pegar a AT-012; retomar a FT-031</small></summary>
+  <pre class="cod grafo">sa-status.item   dono sa-desenvolvedor   travas elm-pela-sa-elm
+
+  ┌──────────────────────────┐
+  │ 1 inicio                 │──▶ ■ fim  (sem .sabia/sabia.md)
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 2 identificar            │──▶ ↓ fora-do-sabia  (não registrado ou fora do Sabiá)
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 3 estado                 │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 4 terminal               │──▶ ■ fim  (terminal)
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 5 triagem-e-refinamento  │──▶ ↓ mostrar-e-seguir  (casou)
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 6 desenvolvimento        │──▶ ↓ mostrar-e-seguir  (casou)
+  └────────────┬─────────────┘    ■ fim  (trava de artefato)
+               ▼
+  ┌──────────────────────────┐
+  │ 7 epico                  │──▶ ↓ mostrar-e-seguir  (casou)
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 8 sustentacao            │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 9 mostrar-e-seguir       │──▶ ■ fim  (seguiu ou terminou)
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 10 fora-do-sabia         │
+  └──────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-status.licoes"><summary><code>sa-status.licoes</code> <span>4 passos</span><small>junta, só leitura, as Lições das fatias e da Sustentação concluídas no ciclo, cruzadas com as Regras aprendidas, para a curadoria da review; lições do ciclo</small></summary>
+  <pre class="cod grafo">sa-status.licoes   dono sa-desenvolvedor   travas —
+
+  ┌────────────────────────┐
+  │ 1 inicio               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 2 coletar              │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 cruzar               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 devolver             │──▶ ⇒ passa a sa-planejamento.review  (sim, levar à review)
+  └────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-status.minha-proxima"><summary><code>sa-status.minha-proxima</code> <span>5 passos</span><small>o trabalho da pessoa, na ordem de prioridade (posse, revisão, responsável na sprint, aprovações pelas booleanas); a escolha segue como o item; minha próxima; o que eu pego agora?; minhas tarefas</small></summary>
+  <pre class="cod grafo">sa-status.minha-proxima   dono sa-desenvolvedor   travas elm-pela-sa-elm
+
+  ┌────────────────────────┐
+  │ 1 inicio               │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 2 coletar              │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 mostrar              │──▶ ↓ nada  (nada para a pessoa)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 escolher             │──▶ ⇒ passa a sa-status.item.estado  (escolheu)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 nada                 │
+  └────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-status.painel"><summary><code>sa-status.painel</code> <span>22 passos</span><small>inspeção diária, só leitura: WIP, vazão, lead time, idade, expedite, MRs esperando pessoa, topo puxável, refinamento, Sustentação e folga, fila de triagem, publicação pendente, trava de artefato e a sugestão; status; painel; bom dia; onde parei; como está a sprint</small></summary>
+  <pre class="cod grafo">sa-status.painel   dono sa-desenvolvedor   travas elm-pela-sa-elm
+
+  ┌──────────────────────────┐
+  │ 1 inicio                 │──▶ ■ fim  (sem .sabia/sabia.md)
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 2 backlog-e-sprint       │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 3 branches-e-status      │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 4 mr                     │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 5 tasks                  │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 6 acordos-e-equipe       │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 7 identidade             │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 8 sustentacao            │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 9 autopilot              │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 10 publicacao-pendente   │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 11 trava-de-artefato     │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 12 metricas              │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 13 expedite              │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 14 fila-de-triagem       │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 15 esperando-pessoa      │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 16 retrabalho            │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 17 topo-puxavel          │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 18 refinamento-e-produto │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 19 folga                 │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 20 fim-do-ciclo          │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 21 sugestao              │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 22 mostrar               │──▶ ⇄ chama sa-status.pendencias
+  └──────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-status.pendencias"><summary><code>sa-status.pendencias</code> <span>15 passos</span><small>pendências de rastreio e de consistência, lista fechada, cada uma com destino; nenhuma trava; pendências; rastreio</small></summary>
+  <pre class="cod grafo">sa-status.pendencias   dono sa-desenvolvedor   travas elm-pela-sa-elm
+
+  ┌────────────────────────────┐
+  │ 1 inicio                   │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 2 publicacao-pendente      │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 3 trava-de-artefato        │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 4 commit-sem-id            │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 5 ct-sem-teste             │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 6 mr-mergeado-sem-concluir │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 7 mr-com-tarefas-pendentes │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 8 item-sem-ficha           │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 9 posse-e-status           │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 10 fora-da-sprint          │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 11 idade-acima-do-sle      │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 12 epico-sem-fechar        │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 13 backlog-fora-da-base    │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 14 dado-de-cliente         │
+  └─────────────┬──────────────┘
+                ▼
+  ┌────────────────────────────┐
+  │ 15 mostrar                 │
+  └────────────────────────────┘</pre></details>
+</section>
+
+<section id="sa-triar"><div class="lead-sec"><h2>sa-triar</h2><p>2 fluxos · dono <code>sa-especificador</code></p></div>
+  <details class="fluxo" id="sa-triar.capturar"><summary><code>sa-triar.capturar</code> <span>4 passos</span><small>registrar sem triar: a linha nasce nova (épico: a-moldar) e a triagem fica para depois; registra isso; anota no backlog; abre um bug; registrar sem triar</small></summary>
+  <pre class="cod grafo">sa-triar.capturar   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa
+
+  ┌────────────────────────┐
+  │ 1 entrada [nenhuma]    │──▶ ↪ vizinhos (diga e pare): ■ item já registrado no backlog.md
+  └───────────┬────────────┘    ↓ capturar  (pedido em texto, ou sem texto (pergunte o que registrar))
+              ▼
+  ┌────────────────────────┐
+  │ 2 capturar             │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 gravar-na-base       │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 seguir               │──▶ ⇒ passa a sa-triar.triar  (fatia ou bug nova: triar agora)
+  └────────────────────────┘    ↑ volta a capturar  (mais um item)
+                                ■ fim  (não)</pre></details>
+  <details class="fluxo" id="sa-triar.triar"><summary><code>sa-triar.triar</code> <span>9 passos</span><small>triagem item a item: pedido em texto, número do EWM, id do backlog.md ou a fila de itens nova; triagem; triar a fila; nova demanda; chegou um pedido; o cliente pediu; registra o defeito 4567 e tria; triar a FT-031</small></summary>
+  <pre class="cod grafo">sa-triar.triar   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa, elm-pela-sa-elm
+
+  ┌────────────────────────┐
+  │ 1 entrada [nenhuma]    │──▶ ↪ vizinhos (diga e pare): sa-refinar.ajustar · sa-desenvolver.codificar · sa-refinar.moldar · sa-prd.prd · sa-atender.atender
+  └───────────┬────────────┘    ■ fim  (sem .sabia/planejamento/backlog.md na base: diga 'rode a …)
+                                ↓ ler  (pedido em texto, número do EWM ou nada informado (não é o…)
+                                ↓ ler  (fatia ou bug em adiada até &lt;data&gt; (retriagem: o adiamento…)
+              ▼
+  ┌────────────────────────┐
+  │ 2 ler                  │──▶ ⇄ chama sa-elm.item
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 3 duplicado            │──▶ ↓ encaminhar  (o mesmo de um item aberto, e a entrada é pedido em texto …)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 4 decidir              │──▶ ↓ registrar  (duplicado, recusa, falta informação ou agora não)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 classificar          │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 registrar            │──▶ ↓ captura  (item novo (pedido em texto ou EWM) ou troca de série)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 7 gravar-na-base       │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 8 encaminhar           │──▶ ↑ volta a ler  (mais um item)
+  └───────────┬────────────┘    ■ fim  (não)
+              ▼
+  ┌────────────────────────┐
+  │ 9 captura              │──▶ ↑ volta a gravar-na-base  (linha preparada, com a triagem aplicada)
+  └────────────────────────┘</pre></details>
+</section>
+
+<section id="sa-verificar"><div class="lead-sec"><h2>sa-verificar</h2><p>2 fluxos · dono <code>sa-desenvolvedor</code>, <code>sa-verificador</code></p></div>
+  <details class="fluxo" id="sa-verificar.uat"><summary><code>sa-verificar.uat</code> <span>7 passos</span><small>UAT humano sobre o MR aberto, só quando o risco pede (o Risco do MR, o revisor ou o P.O.), por qualquer pessoa; UAT da FT-031; teste de aceite do usuário</small></summary>
+  <pre class="cod grafo">sa-verificar.uat   dono sa-desenvolvedor   travas sim-da-pessoa, decisao-da-pessoa
+
+  ┌────────────────────────┐
+  │ 1 entrada [nenhuma]    │──▶ ↪ vizinhos (diga e pare): sa-desenvolver.codificar · ■ MR mergeado
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 2 branch               │──▶ ■ fim  (árvore suja)
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
   │ 3 cenarios             │──▶ ⇄ chama sa-verificar.verificar
-  └───────────┬────────────┘    ↓ entrega  (bloqueada no verificar (AMBIENTE, DDL não aplicada, ou ce…)
-              ▼
-  ┌────────────────────────┐
-  │ 4 decisao              │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 5 entrega              │──▶ ⇒ passa a sa-desenvolver.encerrar  (ACEITO: a fatia aceita espera o merge do Dev)
-  └────────────────────────┘    ⇒ passa a sa-codificar.codificar  (REJEITADO: o retrabalho é do Dev)
-                                ⇒ passa a sa-especificar.fatia  (volta à especificação, [ESP] FT aberta ou reaberta: bloqu…)
-                                ⇒ passa a sa-planejamento.durante  (volta à especificação, [ESP] FT concluída numa sprint fec…)
-                                ⇒ passa a sa-planejamento.sprint  (volta à especificação, sem sprint aberta: pendência do P.…)
-                                ■ fim  (bloqueada por ambiente: você retoma quando o Bloqueio se …)
-                                ⇒ passa a sa-triar.triar  (bloqueada pela pergunta da ficha: é do P.O.)</pre></details>
-  <details class="fluxo" id="sa-verificar.verificar" open><summary><code>sa-verificar.verificar</code> <span>5 passos</span><small>verificação de aceite sem a tarefa [VER]: como subagente da sa-codificar ou do loop (AFK), ou chamada pela [VER] HITL (fluxo hitl); no fim da sa-codificar e na fase de verificação do sa-orquestrar</small></summary>
-  <pre class="cod grafo">sa-verificar.verificar   dono sa-verificador   travas sim-da-pessoa, aceite-independente
+  │ 4 decisao              │──▶ ↓ entrega  (nenhum ❌ adiado)
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 5 captura              │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 gravar-na-base       │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 7 entrega              │
+  └────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-verificar.verificar" open><summary><code>sa-verificar.verificar</code> <span>7 passos</span><small>aceite contra a spec: como subagente da sa-desenvolver.codificar antes do MR, da sa-verificar.uat ou a pedido direto; verifica a FT-031; testa a fatia; executa os cenários; teste de aceitação</small></summary>
+  <pre class="cod grafo">sa-verificar.verificar   dono sa-verificador   travas aceite-independente, decisao-da-pessoa
 
   ┌────────────────────────┐
-  │ 1 roteiro              │
+  │ 1 entrada [nenhuma]    │──▶ ↪ vizinhos (diga e pare): sa-desenvolver.codificar · ■ épico ou item de Sustentação
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 2 ambiente             │──▶ ■ fim  (DDL do campo Banco ainda não aplicada: bloqueada, a aplic…)
+  │ 2 roteiro              │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 3 executar             │──▶ ↓ resultado  (algum cenário rejeitado ou ⚠️, ou 🔁 no HITL)
+  │ 3 ambiente             │──▶ ↓ resultado  (a aplicação não sobe por ambiente: todos os cenários ⚠️)
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 4 casos                │
+  │ 4 executar             │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 5 resultado            │──▶ ⇒ passa a sa-triar.triar  (cenário errado na ficha sem épico, fora dos artefatos: bl…)
+  │ 5 fora-dos-cenarios    │
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 6 casos ⇢              │──▶ ⇢ por tipo: CT
+  └───────────┬────────────┘
+              ▼
+  ┌────────────────────────┐
+  │ 7 resultado            │
   └────────────────────────┘</pre></details>
 </section>
 
-<div class="proxima"><a href="toolkits.html">Próxima: Toolkits e extensão</a></div>  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.0, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
+<div class="proxima"><a href="toolkits.html">Próxima: Toolkits e extensão</a></div>  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.7, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
 </div>
 </body>
 </html>
