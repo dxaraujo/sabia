@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fluxos · Sabiá</title>
-<meta name="description" content="Os fluxos do Sabiá 2.1.10, cada um com o grafo gerado do mestre: passos, chamadas, travas e saídas.">
+<meta name="description" content="Os fluxos do Sabiá 2.1.11, cada um com o grafo gerado do mestre: passos, chamadas, travas e saídas.">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500;600&display=swap">
@@ -17,7 +17,7 @@
 <div class="wrap">
   <div class="top">
     <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá</span></a>
-    <span class="ver">2.1.10 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
+    <span class="ver">2.1.11 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
     <span class="autor">Desenvolvido por <b>Daniel Xavier Araújo</b></span>
     <a class="gh" href="https://github.com/dxaraujo/sabia">GitHub</a>
   </div>
@@ -78,7 +78,7 @@
 </section>
 
 <section id="sa-desenvolver"><div class="lead-sec"><h2>sa-desenvolver</h2><p>3 fluxos · dono <code>sa-desenvolvedor</code></p></div>
-  <details class="fluxo" id="sa-desenvolver.codificar"><summary><code>sa-desenvolver.codificar</code> <span>19 passos</span><small>codificar a fatia com TDD e backpressure em camadas, autorrevisão (sa-revisor), autoverificação (sa-verificador), lições e MR; retomar, corrigir os achados do MR ou seguir depois da codificação manual; implementa a FT-031; retoma a FT-031; corrige os achados do MR; terminei; abre o MR</small></summary>
+  <details class="fluxo" id="sa-desenvolver.codificar"><summary><code>sa-desenvolver.codificar</code> <span>19 passos</span><small>codificar a fatia com TDD e backpressure em camadas, revisão do agente (sa-revisor), verificação do agente (sa-verificador), lições e MR; retomar, corrigir os achados do MR ou seguir depois da codificação manual; implementa a FT-031; retoma a FT-031; corrige os achados do MR; terminei; abre o MR</small></summary>
   <pre class="cod grafo">sa-desenvolver.codificar   dono sa-desenvolvedor   travas sim-da-pessoa, backpressure, sem-force, elm-pela-sa-elm
 
   ┌────────────────────────────┐
@@ -357,7 +357,7 @@
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 5 ligar-cobre          │
+  │ 5 ligar-artefatos      │
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
@@ -725,11 +725,11 @@
   ┌────────────────────────────┐
   │ 5 devolver                 │
   └────────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-especificar.elm"><summary><code>sa-especificar.elm</code> <span>12 passos</span><small>só com ELM: o texto oficial que a fatia ou o bug muda, um arquivo inteiro por artefato do Cobre (HF, UC, REG, MSG, EL, GL) em elm/ da pasta da spec, com o original do DOORS num commit de base, a edição pelo modo da ficha e a aprovação do especificador; chamado pela sa-refinar.detalhar ou direto; editar o elm/ da FT-031; alterei FT-031; refazer a mescla da FT-031</small></summary>
+  <details class="fluxo" id="sa-especificar.elm"><summary><code>sa-especificar.elm</code> <span>12 passos</span><small>só com ELM: o texto oficial que a fatia ou o bug muda, um arquivo inteiro por artefato afetado (HF, UC, REG, MSG, EL, GL) em elm/ da pasta da spec, com o original do DOORS num commit de base, a edição pelo modo da ficha e a aprovação do especificador; chamado pela sa-refinar.detalhar ou direto; editar o elm/ da FT-031; alterei FT-031; refazer a mescla da FT-031</small></summary>
   <pre class="cod grafo">sa-especificar.elm   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa, elm-pela-sa-elm
 
   ┌────────────────────────────┐
-  │ 1 entrada [especificador]  │──▶ ↪ vizinhos (diga e pare): sa-triar.triar · sa-prd.prd · ■ sustentação · ■ sem a chave elm no agentes.json · ■ Cobre da ficha sem inclui, altera nem exclui · ■ sem pessoa presente (subagente), fora do IA autopilot
+  │ 1 entrada [especificador]  │──▶ ↪ vizinhos (diga e pare): sa-triar.triar · sa-prd.prd · ■ sustentação · ■ sem a chave elm no agentes.json · ■ Artefatos afetados da ficha sem inclui, altera nem exclui · ■ sem pessoa presente (subagente), fora do IA autopilot
   └─────────────┬──────────────┘    ↓ sincronizar  (volta da especificação manual ('alterei FT-nnn'))
                                     ↓ pasta  (fatia ou bug concluida com 'Publicação: pendente' (refaze…)
                 ▼
@@ -743,7 +743,7 @@
                 ▼
   ┌────────────────────────────┐
   │ 4 trava                    │──▶ 🔒 artefato-exclusivo
-  └─────────────┬──────────────┘    ↓ devolver  (todo artefato do Cobre segurado por outra fatia)
+  └─────────────┬──────────────┘    ↓ devolver  (todo artefato afetado segurado por outra fatia)
                 ▼
   ┌────────────────────────────┐
   │ 5 baixar                   │──▶ ⇄ chama sa-elm.baixar
@@ -1204,7 +1204,7 @@
   ┌────────────────────────┐
   │ 12 captura             │──▶ ↑ volta a gravar  (linhas novas preparadas)
   └────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-refinar.detalhar"><summary><code>sa-refinar.detalhar</code> <span>10 passos</span><small>fatia ou bug aceita ou pronta: três amigos, ficha com regras, cenários CT-nn e Cobre e, com ELM, a pasta elm/, até pronta; refinar a FT-031; detalhar a FT-031; três amigos; ficha da FT-031; alterei FT-031</small></summary>
+  <details class="fluxo" id="sa-refinar.detalhar"><summary><code>sa-refinar.detalhar</code> <span>10 passos</span><small>fatia ou bug aceita ou pronta: três amigos, ficha com regras, cenários CT-nn e artefatos afetados e, com ELM, a pasta elm/, até pronta; refinar a FT-031; detalhar a FT-031; três amigos; ficha da FT-031; alterei FT-031</small></summary>
   <pre class="cod grafo">sa-refinar.detalhar   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa, aprovacao-no-documento, aprovacao-do-cliente, artefato-exclusivo, elm-pela-sa-elm
 
   ┌────────────────────────┐
@@ -1220,7 +1220,7 @@
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
-  │ 4 cobre                │──▶ ⇄ chama sa-elm.baixar
+  │ 4 artefatos            │──▶ ⇄ chama sa-elm.baixar
   └───────────┬────────────┘
               ▼
   ┌────────────────────────┐
@@ -1249,7 +1249,7 @@
   ┌────────────────────────┐
   │ 10 captura             │──▶ ↑ volta a gravar-na-base  (linha do épico preparada, com a fatia cancelada)
   └────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-refinar.fatiar"><summary><code>sa-refinar.fatiar</code> <span>6 passos</span><small>PRD aprovado → fatias verticais P/M/G com Cobre, aprovadas e ordenadas por quem tem produto, num commit; fatiar o PRD; fatiar o EP-04; quebrar em histórias; gerar o backlog do épico</small></summary>
+  <details class="fluxo" id="sa-refinar.fatiar"><summary><code>sa-refinar.fatiar</code> <span>6 passos</span><small>PRD aprovado → fatias verticais P/M/G com artefatos afetados, aprovadas e ordenadas por quem tem produto, num commit; fatiar o PRD; fatiar o EP-04; quebrar em histórias; gerar o backlog do épico</small></summary>
   <pre class="cod grafo">sa-refinar.fatiar   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa, aprovacao-no-documento, artefato-exclusivo
 
   ┌────────────────────────┐
@@ -1341,7 +1341,7 @@
   ┌────────────────────────────┐
   │ 8 entrega                  │
   └────────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-revisar.revisar"><summary><code>sa-revisar.revisar</code> <span>5 passos</span><small>revisão independente do plano (rubrica L) ou do código (rubrica C), como subagente de quem chama ou a pedido direto; revisa o plano da FT-031; revisa o código da FT-031; code review; autorrevisão antes do MR</small></summary>
+  <details class="fluxo" id="sa-revisar.revisar"><summary><code>sa-revisar.revisar</code> <span>5 passos</span><small>revisão independente do plano (rubrica L) ou do código (rubrica C), como subagente de quem chama ou a pedido direto; revisa o plano da FT-031; revisa o código da FT-031; code review; revisão do agente antes do MR</small></summary>
   <pre class="cod grafo">sa-revisar.revisar   dono sa-revisor   travas decisao-da-pessoa
 
   ┌────────────────────────┐
@@ -1905,7 +1905,7 @@
   └────────────────────────┘</pre></details>
 </section>
 
-<div class="proxima"><a href="papeis.html">Próxima: Papéis e agentes</a></div>  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.10, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
+<div class="proxima"><a href="papeis.html">Próxima: Papéis e agentes</a></div>  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.11, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
 </div>
 </body>
 </html>

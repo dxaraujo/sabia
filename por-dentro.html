@@ -17,7 +17,7 @@
 <div class="wrap">
   <div class="top">
     <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá</span></a>
-    <span class="ver">2.1.10 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
+    <span class="ver">2.1.11 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
     <span class="autor">Desenvolvido por <b>Daniel Xavier Araújo</b></span>
     <a class="gh" href="https://github.com/dxaraujo/sabia">GitHub</a>
   </div>
@@ -241,7 +241,7 @@ mudança pedida é a tarefa única.
   </tbody></table></div>
   <p style="margin-top:10px;max-width:90ch">Ordem de publicação dos requisitos, de baixo para cima, para cada um nascer com os ids que cita: <code>MSG</code> → <code>GL</code> → <code>REG</code> → <code>UC</code> → <code>EL</code> → <code>HF</code> → <code>ET</code>. A <code>REG</code> entra em embed no texto da <code>HF</code>; os demais links ficam hyperlink. Artefato novo tem id provisório (<code>REG-FT031-01</code>) até a publicação, que o troca pelo id do ELM; sem ELM, o provisório é o definitivo.</p>
   <div class="duas" style="margin-top:16px">
-   <div class="bloco"><h3>O arquivo de <code>elm/</code></h3><p>Um arquivo inteiro por artefato do Cobre, em <code>&lt;pasta da spec&gt;/elm/</code>, só com ELM. O id mora no nome: <code>2101-REG-limite-inscricoes.md</code> é a <code>REG-2101</code>.</p>
+   <div class="bloco"><h3>O arquivo de <code>elm/</code></h3><p>Um arquivo inteiro por artefato afetado, em <code>&lt;pasta da spec&gt;/elm/</code>, só com ELM. O id mora no nome: <code>2101-REG-limite-inscricoes.md</code> é a <code>REG-2101</code>.</p>
 <pre class="cod">---
 <span class="k">type</span>: <span class="v">Regra</span>
 <span class="k">title</span>: <span class="v">Limite de inscrições por turma</span>
@@ -259,13 +259,13 @@ Uma turma tem no máximo **40** inscrições **Confirmadas**.
 **Referências:**
 
 - MSG-2140 Turma lotada · GL-2011 Inscrição</pre>
-   <ul><li><code>status</code>: <code>draft</code> na escrita; <code>stable</code> com <code>verified</code> na aprovação de quem tem <code>especificador</code>. Editado depois, volta a <code>draft</code>.</li><li>Ação e versão lida moram no Cobre da ficha. Ao DOORS sobe só o corpo.</li><li>Corpo sem título Markdown, só rótulos em negrito: o mesmo texto serve ao <code>elm/</code>, ao bloco do <code>prd.md</code>, ao delta e ao DOORS.</li></ul></div>
+   <ul><li><code>status</code>: <code>draft</code> na escrita; <code>stable</code> com <code>verified</code> na aprovação de quem tem <code>especificador</code>. Editado depois, volta a <code>draft</code>.</li><li>Ação e versão lida moram nos artefatos afetados da ficha. Ao DOORS sobe só o corpo.</li><li>Corpo sem título Markdown, só rótulos em negrito: o mesmo texto serve ao <code>elm/</code>, ao bloco do <code>prd.md</code>, ao delta e ao DOORS.</li></ul></div>
    <div class="bloco"><h3>Padrões dos tipos</h3><p><code>padrao/requisitos/padrao-&lt;tipo&gt;.md</code>, um por tipo (HF, UC, REG, MSG, EL, GL, ET, CT, ATA), compilados em <code>sabia/references/padrao/requisitos/</code>. Cada um traz o corpo e as regras do tipo; nos requisitos, o Checklist do padrão é conferido antes de aprovar.</p>
 <pre class="cod">.sabia/padrao/requisitos/padrao-reg.md   <span class="c">cópia do projeto, com base</span>
         ▼ vale sobre
 o padrão em vigor do tipo                 <span class="c">o do toolkit que desvia o tipo,</span>
                                           <span class="c">ou o do Sabiá</span></pre>
-   <ul><li>A cópia nasce na <code>sa-setup.customizar</code>, com a <code>base</code> pelo <code>--base</code> do gerador: <code>requisitos/padrao-&lt;tipo&gt;.md</code>, ou o caminho do padrão do toolkit quando ele desvia o tipo.</li><li><b>Referência só para baixo:</b> HF → REG, EL, MSG, GL, UC; UC → REG, MSG, GL, UC incluído; EL → REG, MSG, GL, outra EL; REG → REG, MSG, GL. Nunca para cima, nunca a ET. Existente no ELM leva link para o arquivo; novo, só o id provisório.</li><li>A ET cita as HF e os UC do Cobre na linha Atende.</li></ul></div>
+   <ul><li>A cópia nasce na <code>sa-setup.customizar</code>, com a <code>base</code> pelo <code>--base</code> do gerador: <code>requisitos/padrao-&lt;tipo&gt;.md</code>, ou o caminho do padrão do toolkit quando ele desvia o tipo.</li><li><b>Referência só para baixo:</b> HF → REG, EL, MSG, GL, UC; UC → REG, MSG, GL, UC incluído; EL → REG, MSG, GL, outra EL; REG → REG, MSG, GL. Nunca para cima, nunca a ET. Existente no ELM leva link para o arquivo; novo, só o id provisório.</li><li>A ET cita as HF e os UC dos artefatos afetados na linha Atende.</li></ul></div>
   </div>
 </section>
 
@@ -406,7 +406,7 @@ Fluxo `sa-planejamento.review`:
   <div class="scroll"><table><thead><tr><th>Modo</th><th>Codificação (<code>sa-desenvolver.iniciar</code>; Autonomia do <code>status.md</code>)</th><th>Especificação (só com ELM; <code>sa-refinar.detalhar</code>; Especificação da ficha)</th></tr></thead><tbody>
    <tr><td><b>IA supervisionada</b></td><td>O <code>sa-desenvolvedor</code> na sessão da pessoa; push e MR com o "sim".</td><td>O <code>sa-especificador</code> edita o arquivo inteiro de <code>elm/</code> com o especificador.</td></tr>
    <tr><td><b>IA autopilot</b></td><td>O <code>sa-desenvolvedor</code> como subagente na worktree <code>.sabia/local/wt/&lt;id&gt;</code>, sem perguntas; a pessoa segue na base. O disjuntor (teto do <code>acordos.md</code> ou 2 reprovações seguidas) grava <code>.sabia/local/loop-&lt;id&gt;.md</code> e devolve o item à pessoa.</td><td>O <code>sa-especificador</code> como subagente edita sem perguntas; o que não tem fonte vai ao Em aberto, e o especificador aprova.</td></tr>
-   <tr><td><b>manual</b></td><td>Só a geração do código-fonte é da pessoa; no "terminei", o fluxo segue do <code>validar</code> com as mesmas checagens.</td><td>O especificador altera direto no DOORS e avisa "alterei"; a skill sincroniza <code>elm/</code>, o Cobre e o delta.</td></tr>
+   <tr><td><b>manual</b></td><td>Só a geração do código-fonte é da pessoa; no "terminei", o fluxo segue do <code>validar</code> com as mesmas checagens.</td><td>O especificador altera direto no DOORS e avisa "alterei"; a skill sincroniza <code>elm/</code>, os artefatos afetados e o delta.</td></tr>
   </tbody></table></div>
 </section>
 
@@ -414,7 +414,7 @@ Fluxo `sa-planejamento.review`:
   <div class="lead-sec"><h2>sabia rota: ver o fluxo resolvido</h2><p>O CLI mostra o fluxo como ele vale <b>neste projeto</b>, com o override e os desvios de toolkit.</p></div>
   <div class="duas">
    <div class="bloco"><h3><code>sabia rota --fluxo sa-desenvolver.codificar</code></h3>
-<pre class="cod">fluxo     sa-desenvolver.codificar  dono sa-desenvolvedor  Sabiá 2.1.10
+<pre class="cod">fluxo     sa-desenvolver.codificar  dono sa-desenvolvedor  Sabiá 2.1.11
 travas    sim-da-pessoa, backpressure, sem-force, elm-pela-sa-elm
 desvio ⇢  tarefa: "tarefa que cria ou altera um job ou step"
           → skill spring-batch-job  toolkit spring-batch 1.0.0
@@ -443,7 +443,7 @@ stateDiagram-v2
   ler --> validar: volta da codificação manual ('terminei')
   …</pre></div>
    <div class="bloco"><h3><code>sabia rota --fluxo sa-planejamento.review</code></h3>
-<pre class="cod">fluxo   sa-planejamento.review  dono sa-especificador  Sabiá 2.1.10
+<pre class="cod">fluxo   sa-planejamento.review  dono sa-especificador  Sabiá 2.1.11
 travas  sim-da-pessoa, decisao-da-pessoa
 
 #  passo              origem                            chama
@@ -459,7 +459,7 @@ travas  sim-da-pessoa, decisao-da-pessoa
   </div>
   <div class="proxima"><a href="index.html">Voltar ao início</a></div>
 </section>
-  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.10, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
+  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.11, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
 </div>
 </body>
 </html>

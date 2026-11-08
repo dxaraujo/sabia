@@ -17,7 +17,7 @@
 <div class="wrap">
   <div class="top">
     <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá</span></a>
-    <span class="ver">2.1.10 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
+    <span class="ver">2.1.11 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
     <span class="autor">Desenvolvido por <b>Daniel Xavier Araújo</b></span>
     <a class="gh" href="https://github.com/dxaraujo/sabia">GitHub</a>
   </div>
@@ -38,9 +38,9 @@
       <div class="fh"><b>FT-031 · Exportar relatório em CSV</b><span>rota rápida · IA supervisionada · exemplo</span></div>
       <ol class="trilho">
         <li class="ok" style="--c:var(--cyan)"><b>Triagem</b><span>aceita no <code>backlog.md</code> · tamanho M</span></li>
-        <li class="ok" style="--c:var(--lime)"><b>Refinamento</b><span>ficha aprovada pelo produto: 3 regras, CT-01 a CT-03 e o Cobre</span></li>
+        <li class="ok" style="--c:var(--lime)"><b>Refinamento</b><span>ficha aprovada pelo produto: 3 regras, CT-01 a CT-03 e os artefatos afetados</span></li>
         <li class="ok" style="--c:var(--brand)"><b>Planejamento</b><span>na sprint 14, trabalho desenvolvimento</span></li>
-        <li class="pula" style="--c:var(--navy)"><b>Especificação</b><span>não se aplica: sem épico e sem artefato do ELM no Cobre</span></li>
+        <li class="pula" style="--c:var(--navy)"><b>Especificação</b><span>não se aplica: sem épico e sem artefato do ELM afetado</span></li>
         <li class="agora" style="--c:var(--green)"><b>Desenvolvimento</b><span>tarefa 4 de 6 · teste vermelho → verde · trecho tocado verde</span></li>
         <li style="--c:var(--orange)"><b>Revisão e aceite</b><span><code>sa-verificador</code> grava o <code>CT.csv</code>; outro desenvolvedor aprova o MR</span></li>
         <li style="--c:var(--teal)"><b>Merge e archive</b><span>o autor mescla com CI verde; o archive fecha a spec, que sem ELM é a spec viva</span></li>
@@ -53,11 +53,11 @@
     <div class="lead-sec"><h2>Sete disciplinas, cada uma com dono e evidência</h2><p>O mercado é o padrão: Kanban com WIP, Shape Up no épico, três amigos na fatia, TDD e MR revisado por outro desenvolvedor. Do Sabiá fica o que dá produtividade ou preserva o rastreio de requisitos. A cerimônia é do tamanho do trabalho: quem puxa escolhe a rota trivial, rápida ou completo.</p></div>
     <ol class="etapas">
       <li class="claro" style="--c:var(--cyan)"><b>Triagem</b><span>Toda demanda entra no backlog com tipo e id: épico, fatia, bug ou sustentação.</span><code>sa-triar</code></li>
-      <li class="claro" style="--c:var(--lime)"><b>Refinamento</b><span>Pitch e go/kill no épico; três amigos na fatia: regras, CT-nn e Cobre.</span><code>sa-refinar</code></li>
+      <li class="claro" style="--c:var(--lime)"><b>Refinamento</b><span>Pitch e go/kill no épico; três amigos na fatia: regras, CT-nn e artefatos afetados.</span><code>sa-refinar</code></li>
       <li class="" style="--c:var(--brand)"><b>Planejamento</b><span>Sprint com WIP e folga escritos no acordos.md; inspeção diária pelo painel.</span><code>sa-planejamento</code></li>
       <li class="" style="--c:var(--navy)"><b>Especificação</b><span>PRD do épico depois do go; com ELM, um arquivo por artefato em elm/.</span><code>sa-especificar</code></li>
       <li class="" style="--c:var(--green)"><b>Desenvolvimento</b><span>Rota e modo de quem puxa; plano, TDD e backpressure em camadas até o MR.</span><code>sa-desenvolver</code></li>
-      <li class="claro" style="--c:var(--orange)"><b>Revisão e aceite</b><span>Aceite em contexto limpo; MR aprovado por um desenvolvedor que não é o autor.</span><code>sa-verificar</code></li>
+      <li class="claro" style="--c:var(--orange)"><b>Revisão e aceite</b><span>Verificação do agente em contexto limpo; MR aprovado por um desenvolvedor que não é o autor.</span><code>sa-verificar</code></li>
       <li class="" style="--c:var(--teal)"><b>Sustentação</b><span>Seis categorias, dentro da folga; quem atende declara resolvido.</span><code>sa-atender</code></li>
     </ol>
   </section>
@@ -67,7 +67,7 @@
     <div class="controls">
       <span class="lbl">Linha</span><div class="crow" id="lineChips"></div>
       <span class="lbl">Rota</span><div class="crow" id="trChips"><span class="hint">da fatia, escolhida por quem desenvolve: trivial (tudo no MR), rápida ou completo (com plano)</span></div>
-      <span class="lbl">Artefatos</span><div class="crow" id="artChips"><span class="hint">do Cobre da fatia (inclui · altera · exclui): com ELM, viram arquivos de elm/ no refinamento</span></div>
+      <span class="lbl">Artefatos</span><div class="crow" id="artChips"><span class="hint">artefatos afetados pela fatia (inclui · altera · exclui): com ELM, viram arquivos de elm/ no refinamento</span></div>
     </div>
     <div class="dz-palco">
       <div class="dz-vista" id="vista">
@@ -85,7 +85,7 @@
     <div class="lead-sec"><h2>Por que funciona</h2><p>Cada regra do fluxo vem do que os praticantes de desenvolvimento com agentes defendem hoje. São dezessete princípios; estes três sustentam os outros.</p></div>
     <div class="razoes">
       <article style="--c:var(--lime)"><h3>Alinhar antes de escrever</h3><p>Entrevista em rodadas de até cinco perguntas, cada uma com recomendação; pitch, PRD e ficha aprovados no próprio documento; cenários CT-nn falsificáveis. Fatos o agente busca; decisões a pessoa toma.</p><span class="quem">Matt Pocock, Dex Horthy, Andrej Karpathy, Anthropic</span></article>
-      <article style="--c:var(--orange)"><h3>Verificar com evidência</h3><p>Teste primeiro, backpressure em camadas e teste que não se apaga nem se afrouxa. Autorrevisão e aceite em subagentes de contexto limpo, e um MR aprovado por outro desenvolvedor.</p><span class="quem">Kent Beck, Simon Willison, Geoffrey Huntley, Boris Cherny</span></article>
+      <article style="--c:var(--orange)"><h3>Verificar com evidência</h3><p>Teste primeiro, backpressure em camadas e teste que não se apaga nem se afrouxa. Revisão do agente e aceite em subagentes de contexto limpo, e um MR aprovado por outro desenvolvedor.</p><span class="quem">Kent Beck, Simon Willison, Geoffrey Huntley, Boris Cherny</span></article>
       <article style="--c:var(--teal)"><h3>Aprender a cada fatia</h3><p>Erro mecânico vira checagem automática; erro de julgamento vira Regra aprendida, escolhida na review do ciclo entre as Lições das fatias. O DOORS ou a spec viva guarda o que o sistema faz; o repositório, como cada mudança foi feita.</p><span class="quem">Mitchell Hashimoto, Martin Fowler, Addy Osmani</span></article>
     </div>
   </section>
@@ -114,7 +114,7 @@
   </section>
   <script>document.getElementById("copiar").addEventListener("click",e=>{const t=document.getElementById("url").textContent,b=e.currentTarget;
     (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{b.textContent="Copiado"},()=>{const r=document.createRange();r.selectNodeContents(document.getElementById("url"));const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Selecionado"}).finally(()=>setTimeout(()=>b.textContent="Copiar",1800))});</script>
-  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.10, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
+  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.11, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
 </div>
 <script src="sabia-dados.js"></script>
 <script src="mapa-core.js"></script>
