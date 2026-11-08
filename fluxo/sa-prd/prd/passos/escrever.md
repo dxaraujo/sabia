@@ -17,13 +17,12 @@ Proporcional ao tamanho. Cada requisito é um bloco na seção Requisitos:
 ### <sigla>-<id> · <título>
 **Tipo:** HF | UC | REG | MSG | EL | GL · **Ação:** inclui | altera | exclui
 
-<corpo pelo padrão do tipo, com os títulos dois níveis abaixo>
+<corpo pelo padrão do tipo>
 ```
 
 - Corpo pelo padrão do tipo: `sa-prd/hf.md`, `sa-prd/uc.md`, `sa-prd/reg.md`, `sa-prd/msg.md`, `sa-prd/el.md`,
-  `sa-prd/gl.md`. Os títulos do corpo descem dois níveis dentro do bloco (`##` → `####`, `###` → `#####`), para não
-  fecharem a seção Requisitos; o padrão continua com o nível dele, que é o do arquivo de `elm/` e do DOORS. Sem
-  frontmatter no bloco: ele só existe no arquivo de `elm/`. No altera, o texto
+  `sa-prd/gl.md`. O corpo não tem título Markdown (rótulos em negrito), então vai igual ao bloco, ao arquivo de
+  `elm/`, ao delta e ao DOORS. Sem frontmatter no bloco: ele só existe no arquivo de `elm/`. No altera, o texto
   inteiro no estado depois; no exclui, o vigente e o motivo.
 - **HF:** os cenários Dado · Quando · Então do requisito, com o Então verificável. Sem CT.csv: os CT-nn nascem na
   ficha.

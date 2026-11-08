@@ -14,17 +14,17 @@ no Em aberto.
 **Título da tela:** <título visível>
 (*) campos obrigatórios
 
-## 1. Protótipos
+**1. Protótipos**
 
 **Visão <perfil>:** prototipos/<id>-<slug>/v<N>/<arquivo> · aprovado em D-<nn>
 
-## 2. <Filtros | Formulário>
+**2. <Filtros | Formulário>**
 
 | Campo | Componente | Obrigatório | Máscara / placeholder | Valor padrão | Informações adicionais |
 |---|---|---|---|---|---|
 | "<Período>*" | Datepicker | sim | dd/mm/aaaa | mês atual | <dependência, visibilidade por perfil> |
 
-## 3. <Grid de resultados>
+**3. <Grid de resultados>**
 
 | Coluna | Componente | Formato | Informações adicionais |
 |---|---|---|---|
@@ -34,13 +34,13 @@ no Em aberto.
 |---|---|---|---|---|
 | "<Inscrever>" | <vaga e período aberto> | <fora do período> | "<Inscrever-se>" | "<Inscrições encerradas>" |
 
-## 4. Botões de ação
+**4. Botões de ação**
 
 | Botão | Componente | Habilitado quando | Efeito |
 |---|---|---|---|
 | "<Pesquisar>" | Button (primário) | <sempre> | <lista os eventos do filtro> |
 
-## Estados
+**Estados:**
 
 | Estado | O que a tela mostra | Mensagem |
 |---|---|---|

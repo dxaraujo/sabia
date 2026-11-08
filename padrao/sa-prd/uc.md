@@ -15,32 +15,32 @@ O mesmo corpo serve ao bloco do `prd.md` e ao arquivo de `elm/`.
 **Garantia de sucesso:** <estado depois, verificável>
 **Garantia mínima:** <o que vale mesmo na falha: nada gravado pela metade, a falha registrada>
 
-## Fluxo básico
+**Fluxo básico:**
 
 1. O sistema <ação>. **Conforme** REG-<id>
 2. O sistema <ação>.
 3. O sistema <ação>. **Conforme** MSG-<id>
 4. Caso de uso encerrado.
 
-## Fluxos alternativos
+**Fluxos alternativos:**
 
 **FA01 · <condição, como fato>** (no passo 2)
 
 1. O sistema <ação>.
 2. Volta ao passo 3.
 
-## Fluxos de exceção
+**Fluxos de exceção:**
 
 **FE01 · <condição>** (no passo 3)
 
 1. O sistema <ação> e registra <o quê>.
 2. Caso de uso encerrado.
 
-## Requisitos especiais   <!-- só se houver -->
+**Requisitos especiais:**   <!-- só se houver -->
 
 - <volume, janela, prazo: "processar até 5 mil turmas em 30 minutos">
 
-## Inclui   <!-- só se houver -->
+**Inclui:**   <!-- só se houver -->
 
 - UC-<id> <título> (no passo 3)
 ```

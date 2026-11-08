@@ -65,7 +65,7 @@ com o padrão do tipo, lidos pelo caminho na pasta do toolkit, ou, sem eles, as 
   gerador recusam o toolkit; sem agente, a seção **Tipos com skill de toolkit** do `.sabia/sabia.md`.
 - **Contrato, na volta ao passo:** o arquivo pela coluna Arquivo do catálogo, no formato do Sabiá (no arquivo de
   `elm/`: o frontmatter `type` · `title` · `status` · `sources` e o corpo pelo padrão do tipo; no bloco do `prd.md`,
-  o corpo com os títulos dois níveis abaixo). Fora dele → o dono completa no próprio passo e registra em Desvios do
+  o mesmo corpo, sem frontmatter). Fora dele → o dono completa no próprio passo e registra em Desvios do
   `status.md`.
 - **Padrão do núcleo:** o toolkit não troca padrão do Sabiá; o `.sabia/padrao/` do projeto vale só sobre um padrão do
   Sabiá.

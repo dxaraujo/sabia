@@ -30,7 +30,9 @@ publicado: manual <AAAA-MM-DD>   # só na especificação manual
 - **Ação e versão lida** moram no Cobre da ficha (`<sigla>-<id> · inclui | altera | exclui · versão lida`). A versão
   lida é o `modificado_em` do DOORS no download; `—` no novo. A publicação compara e, se mudou, avisa e pula.
 - **Ao DOORS sobe só o corpo:** a publicação tira o frontmatter.
-- **Corpo sem cabeçalho:** sem título `#` nem linhas de aprovação, tipo ou ação; começa na primeira seção do padrão.
+- **Corpo sem cabeçalho:** sem título `#` nem linhas de aprovação, tipo ou ação; começa no primeiro rótulo do padrão.
+- **Sem título Markdown no corpo:** as partes são rótulos em negrito (`**Narrativa:**`, `**1. <contexto>**`), para o
+  mesmo texto servir ao bloco do `prd.md`, ao delta (dentro do `### Requirement:`) e ao DOORS.
 - **Commit de base:** o original, antes de qualquer edição; o git mostra a diferença contra ele.
 - **Um artefato, uma fatia:** duas fatias não têm o mesmo artefato em `elm/` ao mesmo tempo; a segunda espera a
   primeira ficar cancelada ou com `Publicação: publicada`.

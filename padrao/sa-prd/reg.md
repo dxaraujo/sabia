@@ -9,23 +9,23 @@ Uma regra, testável, com os valores. O mesmo corpo serve ao bloco do `prd.md` e
 **Módulo:** <módulo> · **Categoria:** Validação | Cálculo | Permissão | Status | Abrangência | Temporal
 **Fonte:** D-<nn> | ATA-<nn> [mm:ss] | <sigla>-<id>
 
-## Descrição
+**Descrição:**
 
 Uma turma tem no máximo **40** inscrições **Confirmadas**.
 
-## Condições de aplicação
+**Condições de aplicação:**
 
 **Quando se aplica:** <situação>
 **Quando não se aplica:** <exceção, como a fonte disse | nenhuma>
 
-## Lógica
+**Lógica:**
 
 **Validação:** o sistema verifica:
 - <condição>, e;
 - <condição>.
 **Se não passa:** <recusa> e exibe MSG-<id> <título>.
 
-## Referências   <!-- só se houver -->
+**Referências:**   <!-- só se houver -->
 
 - REG-<id> <título> · MSG-<id> <título> · GL-<id> <termo>
 ```
