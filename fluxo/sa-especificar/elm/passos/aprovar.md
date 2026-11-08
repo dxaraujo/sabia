@@ -1,5 +1,5 @@
 ---
-{"resumo": "Quem tem especificador vê a diferença de cada arquivo contra o commit de base e aprova arquivo por arquivo, com a linha Aprovado no topo."}
+{"resumo": "Quem tem especificador vê a diferença de cada arquivo contra o commit de base e aprova arquivo por arquivo, com status: stable e verified no frontmatter."}
 ---
 ## Entrada
 
