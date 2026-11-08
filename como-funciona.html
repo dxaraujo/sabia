@@ -17,7 +17,7 @@
 <div class="wrap">
   <div class="top">
     <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá</span></a>
-    <span class="ver">2.1.9 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
+    <span class="ver">2.1.10 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
     <span class="autor">Desenvolvido por <b>Daniel Xavier Araújo</b></span>
     <a class="gh" href="https://github.com/dxaraujo/sabia">GitHub</a>
   </div>
@@ -139,7 +139,7 @@ Do plano aprovado (ou da rota trivial) ao MR aberto…
 
 ## Entrada: vizinhos
 - sem branch `&lt;id&gt;` → `sa-desenvolver.iniciar`
-- rota quick ou completo com Fase — (plano não aprovado) → `sa-plano.plano`
+- rota rápida ou completo com Fase — (plano não aprovado) → `sa-plano.plano`
 - MR aprovado com CI verde, ou MR já mergeado → `sa-desenvolver.encerrar`</pre>
    <ul><li><code>dono</code>: um dos 5 agentes; roda o fluxo e recebe no prompt o que o projeto mudou nele.</li><li><code>quando</code>: obrigatório quando a skill tem dois fluxos ou mais. A descrição e as frases de exemplo decidem o fluxo certo para o pedido.</li><li><code>de</code>: o passo vem de um arquivo comum de <code>fluxo/</code>: <code>entrada.md</code>, <code>captura.md</code> (a única captura, que grava o tipo) ou <code>gravar-na-base.md</code> (commit pequeno de estado direto na base).</li><li><code>papel</code> e <code>branch</code>: o passo <code>entrada</code> confere, nesta ordem, se o item existe, se é terminal, se está adiado, se é deste fluxo, o papel (a booleana <code>desenvolvedor</code>, <code>especificador</code> ou <code>produto</code> do <code>equipe.json</code>, ou <code>nenhuma</code>), o dono e, com <code>branch</code> <code>fatia</code>, a branch <code>&lt;id&gt;</code> do item. A sprint nunca é pré-condição. A seção <b>Entrada: vizinhos</b> diz a dona de cada estado que não é deste fluxo.</li><li><code>desvio</code>: o passo aceita um toolkit pelo <code>para</code> e pelos arquivos. Só <code>sa-desenvolver.codificar.tarefa</code> tem. O desvio <b>por tipo</b> vem do catálogo, nos passos que escrevem um tipo desviável.</li><li><code>removivel</code>: o projeto só remove passo com essa marca e sem trava. Nenhum passo do Sabiá a tem.</li></ul></div>
    <div class="bloco"><h3>Um passo</h3><p><code>fluxo/sa-desenvolver/codificar/passos/tarefa.md</code>: o resumo no front-matter e quatro seções, sempre as mesmas.</p>
@@ -414,7 +414,7 @@ Fluxo `sa-planejamento.review`:
   <div class="lead-sec"><h2>sabia rota: ver o fluxo resolvido</h2><p>O CLI mostra o fluxo como ele vale <b>neste projeto</b>, com o override e os desvios de toolkit.</p></div>
   <div class="duas">
    <div class="bloco"><h3><code>sabia rota --fluxo sa-desenvolver.codificar</code></h3>
-<pre class="cod">fluxo     sa-desenvolver.codificar  dono sa-desenvolvedor  Sabiá 2.1.9
+<pre class="cod">fluxo     sa-desenvolver.codificar  dono sa-desenvolvedor  Sabiá 2.1.10
 travas    sim-da-pessoa, backpressure, sem-force, elm-pela-sa-elm
 desvio ⇢  tarefa: "tarefa que cria ou altera um job ou step"
           → skill spring-batch-job  toolkit spring-batch 1.0.0
@@ -443,7 +443,7 @@ stateDiagram-v2
   ler --> validar: volta da codificação manual ('terminei')
   …</pre></div>
    <div class="bloco"><h3><code>sabia rota --fluxo sa-planejamento.review</code></h3>
-<pre class="cod">fluxo   sa-planejamento.review  dono sa-especificador  Sabiá 2.1.9
+<pre class="cod">fluxo   sa-planejamento.review  dono sa-especificador  Sabiá 2.1.10
 travas  sim-da-pessoa, decisao-da-pessoa
 
 #  passo              origem                            chama
@@ -459,7 +459,7 @@ travas  sim-da-pessoa, decisao-da-pessoa
   </div>
   <div class="proxima"><a href="fluxos.html">Próxima: Fluxos</a></div>
 </section>
-  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.9, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
+  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.10, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
 </div>
 </body>
 </html>

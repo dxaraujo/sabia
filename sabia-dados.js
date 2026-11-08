@@ -13,7 +13,7 @@ const LINES={
  sprint:{nome:"Ciclo da sprint",c:"--l-sprint",sub:"sa-planejamento",
   quando:"Ciclo com políticas escritas no acordos.md: seleção pela vazão, puxada com sinal de WIP e inspeção diária pela sa-status. A review faz a curadoria das Regras aprendidas, a retrospectiva leva as melhorias ao acordos.md, e a virada acontece no planejamento da sprint seguinte. O ELM fica fora do rito."}
 };
-const ROTAS=[["trivial","Trivial"],["quick","Quick"],["completo","Completo"]],ROTA0="quick";
+const ROTAS=[["trivial","Trivial"],["rapida","Rápida"],["completo","Completo"]],ROTA0="rápida";
 
 const ROUTES={
  epico:{pts:[[70,404],[436,404],[436,100],[960,100],[960,52],[200,52],[200,386]]},
@@ -112,7 +112,7 @@ const S={
   arq:["ficha e backlog.md num commit (backlog: refinamento FT-nnn)"],elm:["—"]},
  iniciar:{x:700,y1:290,y2:298,g:"pill",lab:"above",dy:-26,nome:"Assumir",sk:"sa-desenvolver.iniciar",
   papel:"quem tem desenvolvedor",agente:"sa-desenvolvedor",tarefa:"DEV, se quiser criar no ELM",fase:"pronta → em-andamento",
-  faz:["Confere: linha desenvolvimento na sprint aberta, ou expedite (crítica); fora disso, o reabastecimento é do P.O.","DoR da ficha (aceita: oferece a sa-refinar.detalhar), sinal de WIP do acordos.md (avisa, não trava), trava de artefato e o registro publicado na base","Assumir num passo só: tamanho (P · M · G), rota (trivial · quick · completo) e modo (IA supervisionada · IA autopilot · manual), fixo até o fim","Com Cobre, a rota nunca é trivial: o delta é obrigatório. Maior que G: vira épico, sem branch","Posse na base: em-andamento, responsável, iniciada_em e a linha da sprint, num commit pequeno","Branch <prefixo>ft-<nnn>-<slug> a partir da base; quick e completo: pasta da spec com o status.md (no Kiro, também o .config.kiro); o push mostra a posse"],
+  faz:["Confere: linha desenvolvimento na sprint aberta, ou expedite (crítica); fora disso, o reabastecimento é do P.O.","DoR da ficha (aceita: oferece a sa-refinar.detalhar), sinal de WIP do acordos.md (avisa, não trava), trava de artefato e o registro publicado na base","Assumir num passo só: tamanho (P · M · G), rota (trivial · rápida · completo) e modo (IA supervisionada · IA autopilot · manual), fixo até o fim","Com Cobre, a rota nunca é trivial: o delta é obrigatório. Maior que G: vira épico, sem branch","Posse na base: em-andamento, responsável, iniciada_em e a linha da sprint, num commit pequeno","Branch <prefixo>ft-<nnn>-<slug> a partir da base; rápida e completo: pasta da spec com o status.md (no Kiro, também o .config.kiro); o push mostra a posse"],
   arq:["backlog.md e sprint-<nn>.md na base (commit da posse)","<pasta da spec>/status.md: Rota · Autonomia · Fase — · MR"],
   elm:["Com ELM: “quer criar o item no ELM?” → sa-elm.item (IB [<id>] e tarefa [DEV] <id>); a resposta não muda o fluxo"],
   ctx:{afk:{faz:["As mesmas conferências e a mesma posse na base","Modo IA autopilot: a branch nasce numa worktree, .sabia/local/wt/<id>, e a pessoa continua na base","Lança o sa-desenvolvedor como subagente com o id, a rota, a worktree e o teto do disjuntor","Liberado ao subagente: push da própria branch (sem --force), merge da base nela e abrir ou atualizar o MR dela; bloqueado: merge do MR, ELM e rede","Ele não grava na base: o que gravaria vai ao Em aberto como capturar: <tipo> · <título>","A pessoa fica livre para puxar outro item: várias tarefas em paralelo, sem lote"],
@@ -124,7 +124,7 @@ const S={
   papel:"quem desenvolve (aprova o próprio plano)",agente:"sa-desenvolvedor, com os subagentes sa-pesquisador e sa-revisor",tarefa:"DEV",fase:"—",
   faz:["Lê status.md, ficha, elm/, o prd.md do épico pai, Projeto e Regras aprendidas do sabia.md e o steering","Texto aprovado: cada arquivo de elm/ com ELM, a ficha sem ELM; sem aprovação, Em aberto e para","Pesquisa: pede pistas, chama a sa-pesquisar no sa-pesquisador e grava os fatos no research.md","Decisões técnicas com alternativas reais e a recomendada; arquitetural ou irreversível espera a pessoa","Delta: copia, sem reescrever, o texto completo de cada requisito tocado, com id, ação e versão lida","Escreve pela matriz rota × formato; “quer revisar agora?”: rubrica L no sa-revisor","Resumo 🧭 e a aprovação de quem desenvolve; Fase implementando","O plano mostra que passa de G: vira épico"],
   arq:["research.md · o delta · design e tasks pela matriz rota × formato"],elm:["Não lê o ELM: o texto vem de elm/ e da ficha"],
-  trv:{quick:{arq:["Kiro Quick Spec: requirements.md · design.md · tasks.md, sem portões; no bug, bugfix.md · design.md · tasks.md","OpenSpec: proposal.md · delta em specs/<cap>/spec.md · tasks.md (no bug, delta MODIFIED)","research.md · status.md"]},
+  trv:{rapida:{arq:["Kiro Quick Spec: requirements.md · design.md · tasks.md, sem portões; no bug, bugfix.md · design.md · tasks.md","OpenSpec: proposal.md · delta em specs/<cap>/spec.md · tasks.md (no bug, delta MODIFIED)","research.md · status.md"]},
    completo:{arq:["Kiro: requirements.md → design.md → tasks.md, cada um com “quer revisar agora?”","OpenSpec: proposal.md · delta · design.md · tasks.md","research.md · status.md"]}}},
  codificar:{x:870,y:298,lab:"above",dy:-26,nome:"Codificar",sk:"sa-desenvolver.codificar",
   papel:"quem desenvolve; no manual, a pessoa escreve o código",agente:"sa-desenvolvedor",tarefa:"DEV",fase:"implementando",
@@ -137,7 +137,7 @@ const S={
   arq:["nenhum arquivo: o resumo vai à Prova do MR"],elm:["—"]},
  verif:{x:1050,y:298,lab:"above",dy:-26,nome:"Verificação",sk:"sa-verificar.verificar",
   papel:"subagente sa-verificador",agente:"sa-verificador, chamado pela sa-desenvolver.codificar",tarefa:"DEV",fase:"verificando",
-  faz:["Roteiro de cada CT-nn antes de executar: pré-condição · passos · esperado, com a repetição e o erro em um item","Sobe a aplicação pelo Executar do sabia.md, local ou na URL de teste, nunca em produção","Exercita como usuário real (curl, navegador) e marca ✅ aceito · ❌ rejeitado · ⚠️ ambiente · 🔁 possível alteração","Fora dos cenários: defeito ou DDL pendente vão ao 🔎, para quem chamou capturar","Quick e completo: reescreve o CT.csv, uma linha por cenário ✅","❌ vira tarefa; 🔁 se decide antes do MR (código errado vira ❌; a spec que muda vai ao especificador)"],
+  faz:["Roteiro de cada CT-nn antes de executar: pré-condição · passos · esperado, com a repetição e o erro em um item","Sobe a aplicação pelo Executar do sabia.md, local ou na URL de teste, nunca em produção","Exercita como usuário real (curl, navegador) e marca ✅ aceito · ❌ rejeitado · ⚠️ ambiente · 🔁 possível alteração","Fora dos cenários: defeito ou DDL pendente vão ao 🔎, para quem chamou capturar","Rápida e completo: reescreve o CT.csv, uma linha por cenário ✅","❌ vira tarefa; 🔁 se decide antes do MR (código errado vira ❌; a spec que muda vai ao especificador)"],
   arq:["<pasta da spec>/CT.csv: Tipo;Resumo;Responsável;Descrição","a evidência no bloco 🔎, que vai à Prova do MR"],elm:["—"],
   trv:{trivial:{arq:["sem CT.csv: a evidência do 🔎 vai ao MR"]}}},
 
@@ -146,7 +146,7 @@ const S={
   papel:"o subagente; quem desenvolve recebe o resumo",agente:"sa-desenvolvedor como subagente",tarefa:"DEV",fase:"—",
   faz:["As etapas da sa-plano.plano, na worktree: research.md pelo sa-pesquisador, delta copiado, design e tasks","Falta a aprovação do texto (elm/ ou ficha): Em aberto e devolve à pessoa","Escolha técnica: a recomendada, registrada; arquitetural ou irreversível sem decisão: devolve à pessoa","Rubrica L no sa-revisor; a 2ª reprovação seguida dispara o disjuntor","O subagente aprova o plano e registra; Fase implementando, e segue direto"],
   arq:["research.md · o delta · design e tasks, na worktree"],elm:["—"],
-  trv:{quick:{arq:["Kiro Quick Spec (ou Bugfix Spec no bug) · OpenSpec proposal + delta + tasks, na worktree","research.md · status.md"]},completo:{arq:["Kiro requirements → design → tasks · OpenSpec proposal + delta + design + tasks, na worktree","research.md · status.md"]}}},
+  trv:{rapida:{arq:["Kiro Quick Spec (ou Bugfix Spec no bug) · OpenSpec proposal + delta + tasks, na worktree","research.md · status.md"]},completo:{arq:["Kiro requirements → design → tasks · OpenSpec proposal + delta + design + tasks, na worktree","research.md · status.md"]}}},
  cod_a:{x:880,y:190,lab:"below",nome:"Codificar",sk:"sa-desenvolver",
   papel:"o subagente",agente:"sa-desenvolvedor como subagente",tarefa:"DEV",fase:"implementando",
   faz:["TDD e backpressure como na sessão, com os comandos na worktree (cd .sabia/local/wt/<id> && …)","Push da própria branch e merge da base nela liberados; rebase e --force, nunca","Desvio arquitetural ou irreversível: devolve à pessoa","Sem progresso ou contexto cheio: conta como tentativa no disjuntor","Validar: a suíte completa pelo pipeline da branch; falha de ambiente devolve à pessoa"],
@@ -157,7 +157,7 @@ const S={
   arq:["status.md: Desvios"],elm:["—"]},
  ver_a:{x:1100,y:190,lab:"below",nome:"Verificação",sk:"sa-verificador",
   papel:"subagente sa-verificador",agente:"sa-verificador, chamado pelo autopilot",tarefa:"DEV",fase:"verificando",
-  faz:["Os CT-nn exercitados como na sessão, nunca em produção","CT.csv na quick e no completo; o Responsável é quem desenvolve","REJEITADO ou AMBIENTE: conta no disjuntor","ACEITO: Lições, as-built e o MR, aberto pelo subagente"],
+  faz:["Os CT-nn exercitados como na sessão, nunca em produção","CT.csv na rápida e no completo; o Responsável é quem desenvolve","REJEITADO ou AMBIENTE: conta no disjuntor","ACEITO: Lições, as-built e o MR, aberto pelo subagente"],
   arq:["<pasta da spec>/CT.csv"],elm:["—"]},
 
 /* ---------- MR e revisão humana ---------- */
@@ -180,10 +180,10 @@ const S={
 /* ---------- depois do merge ---------- */
  merge:{x:1240,y1:430,y2:444,g:"pill",lab:"below",nome:"Encerrar",sk:"sa-desenvolver.encerrar",
   papel:"o autor do MR",agente:"sa-desenvolvedor",tarefa:"DEV",fase:"em-andamento → concluida",
-  faz:["Lê o MR: aberto, sem Draft e sem conflito; conflito com a base volta à codificação, por merge","Confere 1 aprovação vigente de um desenvolvedor ≠ autor e o pipeline verde no último commit","“Mergear?” e gitlab_mesclar_mr removendo a branch de origem (ou o auto-merge, se o time usa); sem o MCP, a pessoa mergeia na UI, sem o botão Rebase","concluida e concluida_em na base; última fatia aberta de um épico fatiado → épico concluido, no mesmo commit","Quick e completo: sa-especificar.archive","Oferece puxar o próximo do topo da sprint"],
+  faz:["Lê o MR: aberto, sem Draft e sem conflito; conflito com a base volta à codificação, por merge","Confere 1 aprovação vigente de um desenvolvedor ≠ autor e o pipeline verde no último commit","“Mergear?” e gitlab_mesclar_mr removendo a branch de origem (ou o auto-merge, se o time usa); sem o MCP, a pessoa mergeia na UI, sem o botão Rebase","concluida e concluida_em na base; última fatia aberta de um épico fatiado → épico concluido, no mesmo commit","Rápida e completo: sa-especificar.archive","Oferece puxar o próximo do topo da sprint"],
   arq:["backlog.md (commit <FT> concluir)"],
   elm:["Com ELM: “finalizar a tarefa?” → sa-elm.finalizar (conclui a DEV, liga-a ao Cobre que já tem id e oferece concluir o IB e o do épico)","“lançar horas?” → sa-elm.horas; qualquer resposta segue"],
-  ctx:{afk:{faz:["Igual à IA supervisionada: o merge é do autor, com a aprovação e o CI verde; o autopilot nunca faz merge","concluida e concluida_em na base; última fatia aberta de um épico fatiado → épico concluido","Item que passou pelo autopilot: remove a worktree sem --force e apaga o loop-<id>.md","Quick e completo: sa-especificar.archive"]}}},
+  ctx:{afk:{faz:["Igual à IA supervisionada: o merge é do autor, com a aprovação e o CI verde; o autopilot nunca faz merge","concluida e concluida_em na base; última fatia aberta de um épico fatiado → épico concluido","Item que passou pelo autopilot: remove a worktree sem --force e apaga o loop-<id>.md","Rápida e completo: sa-especificar.archive"]}}},
  archive:{x:1130,y1:430,y2:444,g:"pill",lab:"below",dy:26,nome:"Archive",sk:"sa-especificar.archive",
   papel:"quem desenvolve",agente:"sa-desenvolvedor",tarefa:"—",
   faz:["Fatia ou bug concluida com o MR mergeado; sem delta, nada a arquivar","OpenSpec sem ELM: openspec archive ft-<nnn>-<slug> --yes funde o delta na spec viva","OpenSpec com ELM: --skip-specs --yes; Kiro: nada se move, o vigente são as specs em .kiro/specs/","Com ELM e algo a publicar: pergunta a quem tem especificador se publica no DOORS","Sem a booleana: Publicação: pendente no status.md, e a sa-status mostra"],
@@ -258,14 +258,14 @@ const SKIP={
  publicar:s=>s.tr==="trivial"?"Trivial: sem spec, nada a publicar":s.art==="nao"?"Sem arquivos de elm/: nada do Cobre a publicar":null
 };
 /* combinação que o fluxo não aceita: aparece como aviso na ficha */
-const AVISO=s=>["hitl","afk"].includes(s.line)&&s.tr==="trivial"&&s.art==="sim"?"Com Cobre, a rota nunca é trivial: o delta é obrigatório. Escolha quick ou completo, ou veja a fatia sem artefatos.":null;
+const AVISO=s=>["hitl","afk"].includes(s.line)&&s.tr==="trivial"&&s.art==="sim"?"Com Cobre, a rota nunca é trivial: o delta é obrigatório. Escolha rápida ou completo, ou veja a fatia sem artefatos.":null;
 const VIA={
  "epico:triar>backlog":"a-moldar: só a linha","hitl:triar>backlog":"aceita, com tamanho e prioridade","afk:triar>backlog":"aceita, com tamanho e prioridade","atd:triar>backlog":"nova, com o registro",
  "epico:backlog>planejar":"linha especificação, opcional","hitl:backlog>planejar":"aceita: linha especificação","afk:backlog>planejar":"aceita: linha especificação","atd:backlog>planejar":"linha atendimento, até a folga",
  "planejar>item":"sprint gravada; puxa o topo",
  "item>moldar":"a-moldar → sa-refinar.moldar","moldar>gogk":"pitch de uma página","gogk>entrevistar":"go: em-especificacao, sa-prd.prd","entrevistar>prd":"Decisões e Em aberto no prd.md","prd>gprd":"prd.md escrito e validado","gprd>fatiar":"Aprovado: sa-refinar.fatiar","fatiar>backlog":"FT-nnn aceita, pai EP-nn; épico fatiado",
  "item>detalhar":"aceita → sa-refinar.detalhar","detalhar>elm":"com ELM e Cobre: sa-especificar.elm","detalhar>gficha":"sem elm/: a ficha basta","elm>gficha":"arquivos de elm/ aprovados","gficha>iniciar":"pronta: puxada com sinal de WIP",
- "iniciar>plano":"quick ou completo: sa-plano.plano","plano>codificar":"plano aprovado: Fase implementando","codificar>autorrev":"tarefas marcadas, validar verde","autorrev>verif":"achados triados","verif>mr":"ACEITO: Lições, as-built e MR",
+ "iniciar>plano":"rápida ou completo: sa-plano.plano","plano>codificar":"plano aprovado: Fase implementando","codificar>autorrev":"tarefas marcadas, validar verde","autorrev>verif":"achados triados","verif>mr":"ACEITO: Lições, as-built e MR",
  "iniciar>pl_a":"IA autopilot: subagente na worktree","iniciar>cod_a":"trivial: direto à codificação","pl_a>cod_a":"plano aprovado pelo subagente","cod_a>rev_a":"validar verde","rev_a>ver_a":"achados pela recomendação do revisor","ver_a>mr":"ACEITO: o subagente abre o MR",
  "mr>revmr":"um desenvolvedor ≠ autor","revmr>revhum":"o Risco pede: revisão humana","revhum>merge":"aprovado e CI verde","merge>archive":"concluida na base","archive>publicar":"com ELM: publicar no DOORS?",
  "item>atd1":"nova ou em-andamento → sa-atender.atender","atd1>atd2":"dentro da folga ou crítica","atd2>atd3":"em-andamento (<ID> iniciar)","atd3>atd4":"resolvido ou retirado","atd4>atd5":"concluida",
@@ -275,7 +275,7 @@ const VIA={
 const EXTRA=[
  /* desenhados no mapa */
  {id:"triv",f:"iniciar",t:"codificar",kind:"alt",lines:["hitl"],pts:[[700,310],[700,330],[870,330],[870,310]],rad:10,lp:[785,330],
-  when:s=>s.tr==="trivial",why:"quick e completo passam pelo plano",
+  when:s=>s.tr==="trivial",why:"rápida e completo passam pelo plano",
   lab:"trivial: sem plano nem arquivo de spec, tudo no MR",short:"trivial: direto ao código"},
  {id:"licoes",f:"merge",t:"review",kind:"xfer",lines:["hitl","afk"],toLine:"sprint",
   lab:"as Lições do status.md vão à curadoria da review do ciclo (Regras aprendidas)",short:"Lições: curadoria na review"},
@@ -386,16 +386,16 @@ const TREE=[
  ]},
  {d:".kiro/",open:true,c:[
   {d:"specs/ft-031-<slug>/  (formato Kiro)",open:true,c:[
-   {f:"status.md · .config.kiro",b:"git",w:"sa-desenvolver.iniciar cria; quem conduz a fase grava",q:"quick e completo",o:"Rota · Autonomia · Fase (— · implementando · revisando · verificando · pr-aberto · retrabalho) · MR · Publicação; Desvios, Em aberto, Lições e Retomar. A trivial não tem.",st:"iniciar",line:"hitl"},
+   {f:"status.md · .config.kiro",b:"git",w:"sa-desenvolver.iniciar cria; quem conduz a fase grava",q:"rápida e completo",o:"Rota · Autonomia · Fase (— · implementando · revisando · verificando · pr-aberto · retrabalho) · MR · Publicação; Desvios, Em aberto, Lições e Retomar. A trivial não tem.",st:"iniciar",line:"hitl"},
    {f:"research.md",b:"git",w:"sa-plano (fatos do sa-pesquisador)",q:"no plano",o:"Fatos com arquivo:linha, em até ~150 linhas.",st:"plano",line:"hitl"},
-   {f:"requirements.md · bugfix.md · design.md · tasks.md",b:"git",w:"sa-plano · sa-plano.replanejar",q:"quick e completo",o:"O delta com o texto completo de cada requisito tocado, copiado sem reescrever; o design (as-built onde há ET: Components and Interfaces · Data Models · Decisões técnicas) e as tarefas.",st:"plano",line:"hitl"},
-   {f:"CT.csv",b:"git",w:"só a sa-verificar.verificar",q:"quick e completo",o:"Tipo;Resumo;Responsável;Descrição, uma linha por cenário ✅, ligada ao CT-nn da ficha e da spec, que é a marca do teste automatizado.",st:"verif",line:"hitl"},
+   {f:"requirements.md · bugfix.md · design.md · tasks.md",b:"git",w:"sa-plano · sa-plano.replanejar",q:"rápida e completo",o:"O delta com o texto completo de cada requisito tocado, copiado sem reescrever; o design (as-built onde há ET: Components and Interfaces · Data Models · Decisões técnicas) e as tarefas.",st:"plano",line:"hitl"},
+   {f:"CT.csv",b:"git",w:"só a sa-verificar.verificar",q:"rápida e completo",o:"Tipo;Resumo;Responsável;Descrição, uma linha por cenário ✅, ligada ao CT-nn da ficha e da spec, que é a marca do teste automatizado.",st:"verif",line:"hitl"},
    {f:"elm/<id>-<TIPO>-<slug>.md",b:"git",w:"sa-especificar.elm (aprova quem tem especificador)",q:"só com ELM e Cobre",o:"Um arquivo inteiro por artefato do Cobre, com frontmatter type · title · status · sources; o corpo pelo padrão do tipo. Fonte da publicação no DOORS.",st:"elm",line:"hitl"}]},
   {d:"agents/",c:[{f:"sa-*.json",b:"gen",w:"gerador da sa-setup",q:"“regenerar os agentes”",o:"Os 5 agentes no formato do motor v3, só com nomes de capability, mais os de toolkit."}]},
   {d:"steering/",c:[{f:"sabia.md",b:"gen",w:"sa-setup",q:"sempre carregado",o:"Ponteiro para o .sabia/sabia.md."}]}
  ]},
  {d:"openspec/changes/  (formato OpenSpec)",c:[
-  {f:"ft-031-<slug>/",b:"git",w:"sa-plano · sa-desenvolver · sa-verificar · sa-especificar.elm",q:"quick e completo",o:"proposal.md, o delta em specs/<cap>/spec.md (ADDED · MODIFIED · REMOVED), design.md no completo, tasks.md, research.md, status.md, CT.csv e, com ELM, elm/.",st:"plano",line:"hitl"},
+  {f:"ft-031-<slug>/",b:"git",w:"sa-plano · sa-desenvolver · sa-verificar · sa-especificar.elm",q:"rápida e completo",o:"proposal.md, o delta em specs/<cap>/spec.md (ADDED · MODIFIED · REMOVED), design.md no completo, tasks.md, research.md, status.md, CT.csv e, com ELM, elm/.",st:"plano",line:"hitl"},
   {f:"archive/<AAAA-MM-DD>-ft-031-<slug>/",b:"git",w:"sa-especificar.archive",q:"depois do merge",o:"A spec arquivada; sem ELM, o delta se funde em openspec/specs/.",st:"archive",line:"hitl"}]},
  {d:".opencode/",c:[{d:"agents/",c:[{f:"sa-*.md",b:"gen",w:"gerador da sa-setup",q:"“regenerar os agentes”",o:"Os mesmos 5 agentes, com mode primary (sa-desenvolvedor, sa-especificador) ou subagent e permission."}]}]},
  {d:"docs/",c:[{f:"adr/NNNN-<titulo>.md",b:"git",w:"sa-desenvolver.codificar (no MR)",q:"só decisão que atravessa fatias",o:"Formato Nygard: Status · Context · Decision · Consequences · Origem FT-nnn.",st:"mr",line:"hitl"},
@@ -418,7 +418,7 @@ const PHASES={
  hitl:[
   {f:"pronta",sub:"ficha aprovada, DoR completa",st:"gficha"},
   {f:"em-andamento",sub:"posse na base, branch <id>",st:"iniciar"},
-  {f:"—",sub:"plano (quick e completo)",st:"plano",skip:c=>c.tr==="trivial"?"trivial: sem plano":null},
+  {f:"—",sub:"plano (rápida e completo)",st:"plano",skip:c=>c.tr==="trivial"?"trivial: sem plano":null},
   {f:"implementando",sub:"TDD e backpressure",st:"codificar"},
   {f:"revisando",sub:"autorrevisão (sa-revisor)",st:"autorrev"},
   {f:"verificando",sub:"aceite (sa-verificador)",st:"verif"},
@@ -443,7 +443,7 @@ const PHNOTE=c=>{
 const STATUSES=`
 <div class="stbox"><h3>Épico</h3><div class="flowr"><span>a-moldar</span><em>→</em><span>em-especificacao</span><em>→</em><span>fatiado</span><em>→</em><span>concluido</span></div><p>Nasce <code>a-moldar</code> na captura. O go do produto o leva a <code>em-especificacao</code>, com o PRD; o fatiamento, a <code>fatiado</code>. Fecha no merge da última fatia aberta (<code>sa-desenvolver.encerrar</code>). Desvio: <code>cancelado</code> (kill, ou cabe em G e virou fatia).</p></div>
 <div class="stbox"><h3>Fatia e bug</h3><div class="flowr"><span>nova</span><em>→</em><span>aceita</span><em>→</em><span>pronta</span><em>→</em><span>em-andamento</span><em>→</em><span>concluida</span></div><p>Nova na captura, aceita na triagem, pronta no refinamento (ficha aprovada e DoR completa), em-andamento na posse, concluída no merge. <code>em-revisao</code> não se grava: vem do MR aberto. Desvios: <code>cancelada</code> e <code>adiada até &lt;data&gt;</code>. Na virada, o item que não migra volta de <code>em-andamento</code> a <code>pronta</code>.</p></div>
-<div class="stbox"><h3>Fase do status.md</h3><div class="flowr"><span>—</span><em>→</em><span>implementando</span><em>→</em><span>revisando</span><em>→</em><span>verificando</span><em>→</em><span>pr-aberto</span></div><p>Só em quick e completo. <code>—</code> até o plano ser aprovado; <code>retrabalho</code> quando o MR tem thread aberta, CI vermelho ou conflito. Com ELM, a linha <code>Publicação</code> vai de <code>pendente</code> a <code>publicada &lt;data&gt;</code> depois do merge.</p></div>
+<div class="stbox"><h3>Fase do status.md</h3><div class="flowr"><span>—</span><em>→</em><span>implementando</span><em>→</em><span>revisando</span><em>→</em><span>verificando</span><em>→</em><span>pr-aberto</span></div><p>Só em rápida e completo. <code>—</code> até o plano ser aprovado; <code>retrabalho</code> quando o MR tem thread aberta, CI vermelho ou conflito. Com ELM, a linha <code>Publicação</code> vai de <code>pendente</code> a <code>publicada &lt;data&gt;</code> depois do merge.</p></div>
 <div class="stbox"><h3>Sustentação</h3><div class="flowr"><span>nova</span><em>→</em><span>em-andamento</span><em>→</em><span>concluida</span></div><p><code>nova</code> ao ser registrada, <code>em-andamento</code> ao assumir, <code>concluida</code> quando a pessoa que atende declara resolvido. Desvio: <code>cancelada</code>, também quando a categoria estava errada (virou outro id).</p></div>`;
 
 const ELM_HTML=`
@@ -485,7 +485,7 @@ const GOLDEN=`
 const INTRO=`<div class="ph"><h3>Escolha uma linha</h3><div class="sk">ou clique numa estação do mapa</div></div>
 <div class="pb fade"><p style="font-size:14px">Cada linha é um caminho pelos fluxos do Sabiá. Ao escolher uma, o mapa acende o caminho dela e a ficha mostra o itinerário, passo a passo, com as transições. Use ▶ para o trem percorrer a linha.</p>
 <div class="trans">${Object.keys(LINES).map(k=>`<button class="tr" data-line-pick="${k}" style="--tc:var(${LINES[k].c})${k==="sprint"?";color:var(--navy)":""}"><span class="ico">→</span><b>${LINES[k].nome}</b><span>${LINES[k].sub}</span></button>`).join("")}</div>
-<p style="font-size:13px;margin-top:10px">Na fatia, a rota (trivial · quick · completo) e os artefatos do ELM mudam o itinerário.</p></div>`;
+<p style="font-size:13px;margin-top:10px">Na fatia, a rota (trivial · rápida · completo) e os artefatos do ELM mudam o itinerário.</p></div>`;
 
 window.SABIA={LINES,ROTAS,ROTA0,AVISO,ROUTES,TEXTS,DECOR,S,ALL,SKIP,VIA,EXTRA,SERV,ROLES,AGENTS,TREE,GATES,PHASES,PHNOTE,STATUSES,ELM_HTML,MODOS,GOLDEN,INTRO};
 })();

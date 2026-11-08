@@ -17,7 +17,7 @@
 <div class="wrap">
   <div class="top">
     <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá</span></a>
-    <span class="ver">2.1.9 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
+    <span class="ver">2.1.10 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
     <span class="autor">Desenvolvido por <b>Daniel Xavier Araújo</b></span>
     <a class="gh" href="https://github.com/dxaraujo/sabia">GitHub</a>
   </div>
@@ -35,7 +35,7 @@
     </div>
     </div>
     <aside class="ficha" aria-label="Exemplo: uma fatia percorrendo as etapas">
-      <div class="fh"><b>FT-031 · Exportar relatório em CSV</b><span>rota quick · IA supervisionada · exemplo</span></div>
+      <div class="fh"><b>FT-031 · Exportar relatório em CSV</b><span>rota rápida · IA supervisionada · exemplo</span></div>
       <ol class="trilho">
         <li class="ok" style="--c:var(--cyan)"><b>Triagem</b><span>aceita no <code>backlog.md</code> · tamanho M</span></li>
         <li class="ok" style="--c:var(--lime)"><b>Refinamento</b><span>ficha aprovada pelo produto: 3 regras, CT-01 a CT-03 e o Cobre</span></li>
@@ -50,7 +50,7 @@
   </header>
 
   <section id="etapas">
-    <div class="lead-sec"><h2>Sete disciplinas, cada uma com dono e evidência</h2><p>O mercado é o padrão: Kanban com WIP, Shape Up no épico, três amigos na fatia, TDD e MR revisado por outro desenvolvedor. Do Sabiá fica o que dá produtividade ou preserva o rastreio de requisitos. A cerimônia é do tamanho do trabalho: quem puxa escolhe a rota trivial, quick ou completo.</p></div>
+    <div class="lead-sec"><h2>Sete disciplinas, cada uma com dono e evidência</h2><p>O mercado é o padrão: Kanban com WIP, Shape Up no épico, três amigos na fatia, TDD e MR revisado por outro desenvolvedor. Do Sabiá fica o que dá produtividade ou preserva o rastreio de requisitos. A cerimônia é do tamanho do trabalho: quem puxa escolhe a rota trivial, rápida ou completo.</p></div>
     <ol class="etapas">
       <li class="claro" style="--c:var(--cyan)"><b>Triagem</b><span>Toda demanda entra no backlog com tipo e id: épico, fatia, bug ou sustentação.</span><code>sa-triar</code></li>
       <li class="claro" style="--c:var(--lime)"><b>Refinamento</b><span>Pitch e go/kill no épico; três amigos na fatia: regras, CT-nn e Cobre.</span><code>sa-refinar</code></li>
@@ -66,7 +66,7 @@
     <div class="lead-sec"><h2>Mapa das linhas</h2><p>Escolha uma linha e a câmera conduz: aproxima e mostra só ela, do primeiro ao último passo, e depois segue estação por estação. Você só avança ou volta uma fase.</p></div>
     <div class="controls">
       <span class="lbl">Linha</span><div class="crow" id="lineChips"></div>
-      <span class="lbl">Rota</span><div class="crow" id="trChips"><span class="hint">da fatia, escolhida por quem desenvolve: trivial (tudo no MR), quick ou completo (com plano)</span></div>
+      <span class="lbl">Rota</span><div class="crow" id="trChips"><span class="hint">da fatia, escolhida por quem desenvolve: trivial (tudo no MR), rápida ou completo (com plano)</span></div>
       <span class="lbl">Artefatos</span><div class="crow" id="artChips"><span class="hint">do Cobre da fatia (inclui · altera · exclui): com ELM, viram arquivos de elm/ no refinamento</span></div>
     </div>
     <div class="dz-palco">
@@ -96,7 +96,7 @@
       <a class="porta" href="como-funciona.html" style="--c:var(--navy)"><span class="n">fonte</span><h3>Como funciona</h3><p>Fluxos e passos na fonte, a compilação das skills na instalação, os agentes gerados e a execução, em diagramas.</p><span class="ir">Ver por dentro</span></a>
       <a class="porta" href="papeis.html" style="--c:var(--blue)"><span class="n">5</span><h3>Papéis e agentes</h3><p>Papéis como permissões no <code>equipe.json</code> e os cinco agentes gerados, com permissões mínimas.</p><span class="ir">Ver os papéis</span></a>
       <a class="porta" href="arquivos.html" style="--c:var(--green)"><span class="n">git</span><h3>Arquivos</h3><p>O que vai para o git, o que fica local e o que a setup grava, arquivo por arquivo.</p><span class="ir">Ver a árvore</span></a>
-      <a class="porta" href="ciclo.html" style="--c:var(--cyan)"><span class="n">FT</span><h3>Ciclo da fatia</h3><p>Os status no <code>backlog.md</code>, a Fase do <code>status.md</code> e as rotas trivial, quick e completo.</p><span class="ir">Ver o ciclo</span></a>
+      <a class="porta" href="ciclo.html" style="--c:var(--cyan)"><span class="n">FT</span><h3>Ciclo da fatia</h3><p>Os status no <code>backlog.md</code>, a Fase do <code>status.md</code> e as rotas trivial, rápida e completo.</p><span class="ir">Ver o ciclo</span></a>
       <a class="porta" href="toolkits.html" style="--c:var(--lime)"><span class="n">⇢</span><h3>Toolkits e extensão</h3><p>Usar e criar toolkits, os desvios de passo e de tipo e a customização de um passo ou padrão no projeto.</p><span class="ir">Ver os toolkits</span></a>
       <a class="porta" href="elm.html" style="--c:var(--teal)"><span class="n">ELM</span><h3>IBM ELM</h3><p>Opcional: tarefas, horas e a publicação no DOORS depois do merge, pela <code>sa-elm</code>. As outras skills só oferecem.</p><span class="ir">Ver o ELM</span></a>
       <a class="porta" href="aprovacoes.html" style="--c:var(--orange)"><span class="n">12</span><h3>Aprovações e travas</h3><p>Quem aprova o quê, onde a aprovação fica gravada, os modos de trabalho e as doze travas.</p><span class="ir">Ver as aprovações</span></a>
@@ -113,7 +113,7 @@
   </section>
   <script>document.getElementById("copiar").addEventListener("click",e=>{const t=document.getElementById("url").textContent,b=e.currentTarget;
     (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{b.textContent="Copiado"},()=>{const r=document.createRange();r.selectNodeContents(document.getElementById("url"));const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Selecionado"}).finally(()=>setTimeout(()=>b.textContent="Copiar",1800))});</script>
-  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.9, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
+  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.10, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
 </div>
 <script src="sabia-dados.js"></script>
 <script src="mapa-core.js"></script>
