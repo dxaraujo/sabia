@@ -1,5 +1,5 @@
 ---
-{"resumo": "Lê o PRD, pede à sa-pesquisar os fatos do código tocado e monta a tabela de fatias verticais com Cobre, tamanho e dependência."}
+{"resumo": "Lê o PRD, pede à sa-pesquisar os fatos do código tocado e monta a tabela de fatias verticais com artefatos afetados, tamanho e dependência."}
 ---
 ## Entrada
 
@@ -12,13 +12,13 @@ O `prd.md` aprovado do épico (requisitos, cenários e Decisões), na base.
 2. **Tabela**, com ids provisórios:
 
    ```
-   | F | Título (comportamento) | Cobre | Tam. | Depende de |
+   | F | Título (comportamento) | Artefatos afetados | Tam. | Depende de |
    |---|---|---|---|---|
    | F1 | Bloquear a conta após 3 tentativas inválidas | HF-EP03-01 · inclui · REG-2101 · altera | M | — |
    | F2 | Desbloquear sozinho após 30 minutos | REG-EP03-02 · inclui | P | F1 |
    ```
 
-   Cobre: os requisitos do PRD que a fatia toca (`<sigla>-EPnn-nn` no novo, `<sigla>-<id do ELM>` no existente), com
+   Artefatos afetados: os requisitos do PRD que a fatia toca (`<sigla>-EPnn-nn` no novo, `<sigla>-<id do ELM>` no existente), com
    `inclui` · `altera` · `exclui`.
 3. **Boa fatia.**
    - Vertical: atravessa entrada → regra → dado → saída. A primeira é a mais fina que prova o caminho inteiro, do

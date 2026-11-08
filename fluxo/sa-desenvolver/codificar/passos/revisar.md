@@ -1,5 +1,5 @@
 ---
-{"resumo": "Autorrevisão: sa-revisar.revisar no subagente sa-revisor (rubrica C: spec · padrões · segurança) e triagem dos achados."}
+{"resumo": "Revisão do agente: sa-revisar.revisar no subagente sa-revisor (rubrica C: spec · padrões · segurança) e triagem dos achados."}
 ---
 ## Entrada
 
@@ -9,7 +9,7 @@ A branch com a suíte verde e o diff contra `origin/<base>`.
 
 1. Grave Fase `revisando`.
 2. Chame a `sa-revisar.revisar` no subagente `sa-revisor` com a rubrica C (spec · padrões · segurança), as rubricas
-   do toolkit e o diff. É autorrevisão, sem valor de revisão oficial.
+   do toolkit e o diff. É revisão do agente, sem valor de revisão oficial.
 3. Cada achado tem severidade BLOQUEANTE, IMPORTANTE ou SUGESTÃO. Triagem:
    - `corrige` → tarefa `[R<n>]` no `tasks.md` e volta ao passo `tarefa`;
    - `adia` → passo `captura` (`obs` `origem FT-nnn`);

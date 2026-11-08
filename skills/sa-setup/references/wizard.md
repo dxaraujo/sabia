@@ -308,7 +308,7 @@ Nada customizado → a linha `| — | o Sabiá como vem | — | — | ➖ |`. Pa
 (só nos primários) subagentes: os do perfil, `[✅]` fixos, e os agentes do projeto, desmarcados
 | | # | Subagente | Para quê |
 |---|---|---|---|
-| [✅] | <n> | `sa-revisor` | autorrevisão e revisão do plano |
+| [✅] | <n> | `sa-revisor` | revisão do agente e revisão do plano |
 | [ ] | <n> | `<agente do projeto>` | <início da description> |
 
 (só no dono de um passo com desvio de toolkit da etapa 5)

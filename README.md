@@ -15,7 +15,7 @@ demanda ─► captura (fluxo/captura.md; entrada direta sa-triar.capturar)   ti
    └─► TRIAGEM ───────── sa-triar.triar                                    (qualquer pessoa)
         ├─ épico ──────► REFINAMENTO sa-refinar.moldar: pitch.md ─► go/kill (produto)
         │                  └─ go ─► ESPECIFICAÇÃO sa-prd.prd: prd.md aprovado ─► sa-refinar.fatiar ─► FT-nnn
-        ├─ fatia · bug ► REFINAMENTO sa-refinar.detalhar: ficha (regras · CT-nn · Cobre) [+ elm/] ─► pronta
+        ├─ fatia · bug ► REFINAMENTO sa-refinar.detalhar: ficha (regras · CT-nn · Artefatos afetados) [+ elm/] ─► pronta
         │                  └─ sa-refinar.ajustar até alguém puxar
         └─ sustentação ► SUSTENTAÇÃO sa-atender.atender (AT · IM · BD · IN · OP · EX, dentro da folga)
 
@@ -66,14 +66,14 @@ Fontes no fim deste arquivo.
 | `sa-setup` | `configurar` · `customizar` | configura o projeto na sessão padrão: alvos, comandos, base, formato da spec, "usa ELM?", toolkits e os 5 agentes; customiza um passo ou padrão |
 | `sa-status` | `painel` · `item` · `minha-proxima` · `pendencias` · `licoes` · `fechar-sessao` | painel só leitura (WIP, vazão, idade, lead time, pendências de rastreio), estado de um `<id>`, a próxima tarefa e os créditos da sessão |
 | `sa-triar` | `capturar` · `triar` | captura sem triar e triagem da fila `nova`: duplicado, falta informação, adiar, cancelar, aceitar |
-| `sa-refinar` | `moldar` · `detalhar` · `fatiar` · `ajustar` | pitch e go/kill do épico; três amigos da fatia (ficha com regras, `CT-nn` e Cobre, e `elm/` com ELM); fatiamento do PRD; ajuste do item pronto |
+| `sa-refinar` | `moldar` · `detalhar` · `fatiar` · `ajustar` | pitch e go/kill do épico; três amigos da fatia (ficha com regras, `CT-nn` e artefatos afetados, e `elm/` com ELM); fatiamento do PRD; ajuste do item pronto |
 | `sa-prd` | `prd` · `mudanca` | PRD do épico depois do go, aprovado pelo produto no próprio documento |
 | `sa-especificar` | `elm` · `prototipo` · `reuniao` · `archive` | arquivos de `elm/` da fatia, protótipo de tela, ATA de reunião e archive da spec depois do merge |
 | `sa-entrevistar` | `entrevistar` | alinhamento em rodadas de até 5 perguntas, cada uma com recomendação |
 | `sa-desenvolver` | `iniciar` · `codificar` · `encerrar` | assume a tarefa num passo (tamanho, rota e modo), codifica com TDD e backpressure até o MR, faz o merge e fecha |
 | `sa-plano` | `plano` · `replanejar` | `research.md`, design e tasks; copia o texto aprovado para o delta sem reescrever |
 | `sa-pesquisar` | `pesquisar` | pesquisa neutra e só leitura no `sa-pesquisador`; devolve fatos com arquivo:linha |
-| `sa-revisar` | `revisar` · `mr` | autorrevisão independente (rubrica L do plano, C do código) e revisão do MR de outro autor |
+| `sa-revisar` | `revisar` · `mr` | revisão do agente, independente (rubrica L do plano, C do código) e revisão do MR de outro autor |
 | `sa-verificar` | `verificar` · `revisao-humana` | aceite de ponta a ponta com a evidência no MR e o `CT.csv`; revisão humana por risco |
 | `sa-atender` | `atender` | Sustentação: um fluxo para as seis categorias |
 | `sa-elm` | `regras` · `setup` · `item` · `finalizar` · `horas` · `importar-backlog` · `publicar` · `iteracao` · `conferir` · `lint` · `baixar` · `visualizar` | tudo o que fala com o IBM ELM (DOORS Next e EWM) |
@@ -118,7 +118,7 @@ Especificação e codificação têm modos independentes.
 | | IA supervisionada | IA autopilot | manual |
 |---|---|---|---|
 | **Codificação** (`sa-desenvolver.iniciar`; campo Autonomia do `status.md`) | o `sa-desenvolvedor` na sessão da pessoa | o `sa-desenvolvedor` como subagente na worktree `.sabia/local/wt/<id>`; a pessoa segue na base e pode puxar outro item | só a geração do código-fonte é da pessoa; no "terminei", o fluxo segue da validação com as mesmas checagens |
-| **Especificação** (só com ELM; `sa-refinar.detalhar`; campo Especificação da ficha) | o `sa-especificador` edita o arquivo inteiro de `elm/` com o especificador | o `sa-especificador` como subagente edita sem perguntas; o que não tem fonte vai ao Em aberto, e o especificador aprova | o especificador altera direto no DOORS e avisa "alterei"; a skill sincroniza `elm/`, o Cobre e o delta |
+| **Especificação** (só com ELM; `sa-refinar.detalhar`; campo Especificação da ficha) | o `sa-especificador` edita o arquivo inteiro de `elm/` com o especificador | o `sa-especificador` como subagente edita sem perguntas; o que não tem fonte vai ao Em aberto, e o especificador aprova | o especificador altera direto no DOORS e avisa "alterei"; a skill sincroniza `elm/`, os artefatos afetados e o delta |
 
 No autopilot ficam liberados o push da própria branch (sem `--force`), o merge da base nela e abrir ou atualizar o
 MR dela; merge do MR, ELM e rede seguem bloqueados. O disjuntor (teto do `acordos.md` ou 2 reprovações seguidas)

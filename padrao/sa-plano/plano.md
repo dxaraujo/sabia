@@ -17,8 +17,8 @@ conteúdo inventado. Plano curto: quem aprova lê tudo numa sentada.
 | rápida bug | Bugfix Spec: `bugfix.md`, `design.md`, `tasks.md` | `proposal.md`, delta MODIFIED, `tasks.md` |
 | completo | `requirements.md` → `design.md` → `tasks.md`, com "quer revisar agora?" em cada parte | `proposal.md`, delta, `design.md`, `tasks.md` |
 
-Rápida e completo têm também `research.md`, `status.md` e `CT.csv`; o Kiro tem `.config.kiro`; com ELM e Cobre,
-`elm/`. Cobre com inclui, altera ou exclui exige rápida ou completo.
+Rápida e completo têm também `research.md`, `status.md` e `CT.csv`; o Kiro tem `.config.kiro`; com ELM e artefatos afetados,
+`elm/`. Artefatos afetados com inclui, altera ou exclui exigem rápida ou completo.
 
 ## `.config.kiro` (Kiro)
 
@@ -79,7 +79,7 @@ Na rápida, que não tem `design.md`, as Decisões técnicas vão numa seção `
 **Migration**: <o que fazer com o que dependia dele>
 ```
 
-- Operação pela ação do Cobre: `ADDED` = inclui · `MODIFIED` = altera · `REMOVED` = exclui. `RENAMED` não se usa:
+- Operação pela ação dos artefatos afetados: `ADDED` = inclui · `MODIFIED` = altera · `REMOVED` = exclui. `RENAMED` não se usa:
   renomear é altera.
 - `<sigla>` ∈ HF · UC · REG · MSG · EL · GL; `<id>` = id do ELM, ou o provisório `<EP|FT>nn-nn` no requisito novo (sem ELM, o
   provisório é o definitivo).
@@ -153,7 +153,7 @@ Para toda entrada sem `condicaoDoDefeito`, o resultado é igual ao de antes da c
 <texto completo do requisito, copiado do aprovado>
 ```
 
-Current, Expected e Unchanged vêm da Entrada e de Não muda da ficha. `## Requisitos tocados` só quando o Cobre tem
+Current, Expected e Unchanged vêm da Entrada e de Não muda da ficha. `## Requisitos tocados` só quando os artefatos afetados têm
 requisito. As primeiras tarefas do bug são sempre o teste que reproduz o defeito e os testes de preservação.
 
 ## `design.md`
@@ -269,7 +269,7 @@ OpenSpec:
 - Toda tarefa diz o comando que prova que terminou e o `CT-nn` que ela cobre.
 - Refatoração preparatória no trecho tocado entra como tarefa própria, antes da mudança, em commit separado.
 - A última tarefa é a suíte completa.
-- Achado aceito da autorrevisão ou do MR entra como tarefa `[R<n>]` (ex.: `- [ ] [R1] 4.1 <correção>`).
+- Achado aceito da revisão do agente ou do MR entra como tarefa `[R<n>]` (ex.: `- [ ] [R1] 4.1 <correção>`).
 - Kiro: o bloco ```` ```json ```` com `waves` não vazio é obrigatório; toda tarefa folha não marcada aparece em
   exatamente uma wave, inclusive as opcionais `*`; ids de wave contíguos a partir de 0; dependente (ou que mexe no
   mesmo arquivo) vai numa wave posterior.

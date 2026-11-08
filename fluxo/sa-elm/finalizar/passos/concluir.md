@@ -12,7 +12,7 @@ Prévia e "sim" → `elm_transicao(<id>, concluir)`. Campo que a PA exige → pe
 
 ## Saída
 
-Segue para o passo `ligar-cobre`.
+Segue para o passo `ligar-artefatos`.
 
 ## Pare se
 

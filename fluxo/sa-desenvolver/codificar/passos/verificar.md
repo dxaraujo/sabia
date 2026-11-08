@@ -1,5 +1,5 @@
 ---
-{"resumo": "Autoverificação: sa-verificar.verificar no subagente sa-verificador, bloco 🔎 por CT-nn e CT.csv na rápida e no completo."}
+{"resumo": "Verificação do agente: sa-verificar.verificar no subagente sa-verificador, bloco 🔎 por CT-nn e CT.csv na rápida e no completo."}
 ---
 ## Entrada
 

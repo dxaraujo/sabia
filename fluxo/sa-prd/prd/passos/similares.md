@@ -20,7 +20,7 @@ a ação recomendada:
 - **Impacto.** Para cada altera e exclui, quem cita o requisito (a HF que embute a REG, a EL da tela) e se muda
   também: muda → linha própria; não muda → só citado no texto.
 - A decisão da pessoa vai à tabela Decisões do `prd.md`.
-- A versão lida não fica no PRD: entra no Cobre da ficha, no detalhar.
+- A versão lida não fica no PRD: entra nos artefatos afetados da ficha, no detalhar.
 
 ## Saída
 

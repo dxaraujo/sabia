@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O Cobre da ficha (`<sigla>-<id>` · inclui | altera | exclui · versão lida), os arquivos aprovados de `elm/` (com
+Os artefatos afetados da ficha (`<sigla>-<id>` · inclui | altera | exclui · versão lida), os arquivos aprovados de `elm/` (com
 ELM) ou a spec viva com as regras aprovadas da ficha (sem ELM).
 
 ## Faça
@@ -26,4 +26,4 @@ Delta com o texto aprovado → passo `escrever`.
 
 ## Pare se
 
-- Cobre com requisito sem texto aprovado (volta ao passo `texto-aprovado`).
+- Artefatos afetados com requisito sem texto aprovado (volta ao passo `texto-aprovado`).

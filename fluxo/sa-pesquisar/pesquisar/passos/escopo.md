@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O pedido de quem chamou: o escopo (ficha, Cobre e `elm/`; PRD; pedido; defeito ou item de Sustentação), as
+O pedido de quem chamou: o escopo (ficha, artefatos afetados e `elm/`; PRD; pedido; defeito ou item de Sustentação), as
 perguntas e as pistas, se houver.
 
 ## Faça

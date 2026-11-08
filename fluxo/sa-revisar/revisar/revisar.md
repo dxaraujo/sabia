@@ -1,6 +1,6 @@
 ---
 {"fluxo": "revisar", "dono": "sa-revisor",
- "quando": ["revisão independente do plano (rubrica L) ou do código (rubrica C), como subagente de quem chama ou a pedido direto", "revisa o plano da FT-031", "revisa o código da FT-031", "code review", "autorrevisão antes do MR"],
+ "quando": ["revisão independente do plano (rubrica L) ou do código (rubrica C), como subagente de quem chama ou a pedido direto", "revisa o plano da FT-031", "revisa o código da FT-031", "code review", "revisão do agente antes do MR"],
  "travas_gerais": ["decisao-da-pessoa"],
  "passos": [
    {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "fatia"},
@@ -18,7 +18,7 @@ Entra o pedido de quem chama: a rubrica (L ou C), o item e a parte do plano ou o
 |---|---|---|
 | `sa-plano.plano` | L | a pessoa aceita "quer revisar agora?" ao fim de uma parte do plano |
 | `sa-plano.replanejar` | L | só a parte alterada |
-| `sa-desenvolver.codificar` | C | autorrevisão antes do MR, em qualquer modo |
+| `sa-desenvolver.codificar` | C | revisão do agente antes do MR, em qualquer modo |
 | `sa-revisar.mr` | C | apoio ao revisor humano |
 
 O pedido direto também entra ("revisa o plano da FT-nnn", "revisa o código da FT-nnn"); nele, a sessão da pessoa

@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-A linha e a ficha da fatia ou do bug (Entrada, e Objetivo e Cobre na fatia de épico); na fatia de épico, o
+A linha e a ficha da fatia ou do bug (Entrada, e Objetivo e artefatos afetados na fatia de épico); na fatia de épico, o
 `prd.md` do pai.
 
 ## Faça

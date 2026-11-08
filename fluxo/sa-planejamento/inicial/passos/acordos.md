@@ -14,7 +14,7 @@ chaves nesta ordem e estes padrões quando o time não diz outro valor:
 - **WIP**: `<status>: <n>`, com status de fatia e bug (`aceita` · `pronta` · `em-andamento` · `em-revisao`); padrão
   `em-andamento` e `em-revisao`.
 - **SLE** (opcional): `<p>% em até <n> dias`.
-- **DoD**: CI verde · 1 aprovação de desenvolvedor ≠ autor · Prova no MR · Cobre no MR · Lições no `status.md`.
+- **DoD**: CI verde · 1 aprovação de desenvolvedor ≠ autor · Prova no MR · Artefatos afetados no MR · Lições no `status.md`.
 - **Classes de serviço**: expedite = prioridade `crítica` (vai ao topo, é puxada sem aprovação e pode passar o WIP em
   1) · padrão = ordem das linhas.
 - **Folga**: `<n>%` da capacidade em itens, reservada ao atendimento (padrão 20%).

@@ -9,7 +9,7 @@
 | Timebox | 2 semanas |
 | WIP | em-andamento: 3 · em-revisao: 2 |
 | SLE | 85% em até 5 dias |
-| DoD | CI verde · 1 aprovação de desenvolvedor ≠ autor · Prova no MR · Cobre no MR · Lições no status.md |
+| DoD | CI verde · 1 aprovação de desenvolvedor ≠ autor · Prova no MR · Artefatos afetados no MR · Lições no status.md |
 | Classes de serviço | expedite = prioridade crítica (vai ao topo, puxada sem aprovação, pode passar o WIP em 1) · padrão = ordem das linhas |
 | Folga | 20% |
 | Tamanhos | P = horas · M ≈ 1 dia · G = 2–3 dias (maior que G é épico) |

@@ -17,7 +17,7 @@ O item da entrada comum (fatia ou bug, sem branch `<id>` publicada ou com a bran
 3. **WIP.** Conte o WIP por coluna do `acordos.md` com os valores de status (`em-andamento`; `em-revisao` é derivado
    do MR aberto) e os MRs parados. Acima do limite → mostre e recomende destravar antes (revisar um MR). Não trava; o
    expedite pode passar o WIP em 1.
-4. **Trava de artefato.** Só com ELM. Um `<sigla>-<id>` com `altera` ou `exclui` no Cobre da ficha está no `elm/` de
+4. **Trava de artefato.** Só com ELM. Um `<sigla>-<id>` com `altera` ou `exclui` nos artefatos afetados da ficha está no `elm/` de
    outra fatia que não está `cancelada` nem com `Publicação: publicada` (a que gravou o `elm/` primeiro tem a
    precedência) → "FT-<x> tem o mesmo `<sigla>-<id>`; espere ela ser publicada ou cancelada" e pare.
 5. **Registro publicado.** `git fetch` e confira que a linha do item e a ficha estão em `origin/<base>`. Só no local →

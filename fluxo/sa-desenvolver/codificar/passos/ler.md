@@ -10,7 +10,7 @@ A branch `<id>` (no autopilot, a worktree), o `status.md` (Rota, Autonomia, Fase
 1. Rápida e completo: leia o `tasks.md` (no Kiro, o da Quick Spec, da Bugfix Spec ou da spec completa), o
    `design.md` onde existe, o delta com o texto completo dos requisitos tocados (OpenSpec: `specs/<cap>/spec.md`;
    Kiro: `requirements.md` ou `bugfix.md`), o `proposal.md` (OpenSpec) e o `research.md`.
-2. Sempre: a ficha (Cenários `CT-nn`, Cobre), os Comandos de build e teste e as Regras aprendidas do
+2. Sempre: a ficha (Cenários `CT-nn`, artefatos afetados), os Comandos de build e teste e as Regras aprendidas do
    `.sabia/sabia.md`. No trivial: o pedido e a ficha, se houver.
 3. Não leia o ELM: o delta já traz o texto.
 4. Retomada: siga do passo que o Retomar indica.

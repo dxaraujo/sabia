@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-Regras e cenários dos passos anteriores; na fatia de épico, o Cobre que a `sa-refinar.fatiar` gravou.
+Regras e cenários dos passos anteriores; na fatia de épico, os artefatos afetados que a `sa-refinar.fatiar` gravou.
 
 ## Faça
 
@@ -19,8 +19,8 @@ Regras e cenários dos passos anteriores; na fatia de épico, o Cobre que a `sa-
 
 ## Saída
 
-A seção Cobre → passo `elm`.
+A seção Artefatos afetados → passo `elm`.
 
 ## Pare se
 
-Nenhuma condição própria: sem bundle, o Cobre segue com o que a pessoa confirma.
+Nenhuma condição própria: sem bundle, os artefatos afetados seguem com o que a pessoa confirma.

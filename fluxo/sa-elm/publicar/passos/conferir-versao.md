@@ -8,7 +8,7 @@ A lista de artefatos.
 ## Faça
 
 Para cada `altera` e cada `exclui`, `elm_ler_req(<id>)` e compare o `modificado_em` atual com a versão lida do
-Cobre. Diferente → avise (`⚠️ <sigla>-<id> mudou no DOORS depois da leitura`) e tire aquele artefato do lote. O
+Artefatos afetados. Diferente → avise (`⚠️ <sigla>-<id> mudou no DOORS depois da leitura`) e tire aquele artefato do lote. O
 resto segue.
 
 ## Saída

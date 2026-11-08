@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O item conferido, a ficha (Regras, Cenários `CT-nn`, Cobre) e o código do trecho tocado.
+O item conferido, a ficha (Regras, Cenários `CT-nn`, artefatos afetados) e o código do trecho tocado.
 
 ## Faça
 
@@ -19,10 +19,10 @@ corrige:
      `a-moldar`, `obs` `veio de FT-nnn`) e a FT fica `cancelada` com `obs` `virou EP-nn`, num commit só. Com ELM,
      ofereça cancelar a tarefa (`sa-elm.finalizar`). Ofereça "seguir para o pitch?" e termine.
 2. **Rota**:
-   - `trivial` — mudança pequena com Cobre vazio: nenhum arquivo de spec, tudo no MR;
-   - `rapida` — mudança média, ou com Cobre;
+   - `trivial` — mudança pequena sem artefatos afetados: nenhum arquivo de spec, tudo no MR;
+   - `rapida` — mudança média, ou com artefatos afetados;
    - `completo` — desenho novo ou risco.
-   Com Cobre não vazio a rota nunca é `trivial`: o delta é obrigatório.
+   Com artefatos afetados a rota nunca é `trivial`: o delta é obrigatório.
 3. **Modo** (quem codifica), gravado em Autonomia com o mesmo nome:
    - `IA supervisionada` — o `sa-desenvolvedor` na sessão da pessoa;
    - `IA autopilot` — o `sa-desenvolvedor` como subagente na worktree `.sabia/local/wt/<id>`;

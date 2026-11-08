@@ -25,7 +25,7 @@ Aceita: fatia ou bug com MR aberto da branch `<id>`.
 
 ## Entrada: vizinhos
 
-- fatia ou bug sem MR aberto da branch `<id>` → `sa-desenvolver.codificar` (a autoverificação e o MR são dela)
+- fatia ou bug sem MR aberto da branch `<id>` → `sa-desenvolver.codificar` (a verificação do agente e o MR são dela)
 - MR mergeado → a revisão humana é antes do merge ■
 
 ## Regras

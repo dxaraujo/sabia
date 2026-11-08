@@ -1,13 +1,13 @@
 ---
-{"resumo": "Com ELM e Cobre com inclui, altera ou exclui: pergunta o modo da especificação e chama a sa-especificar.elm, que monta e aprova os arquivos de elm/ da fatia."}
+{"resumo": "Com ELM e artefatos afetados com inclui, altera ou exclui: pergunta o modo da especificação e chama a sa-especificar.elm, que monta e aprova os arquivos de elm/ da fatia."}
 ---
 ## Entrada
 
-O Cobre do passo `cobre`; na volta da especificação manual (`alterei FT-nnn`), a ficha com `Especificação: manual`.
+Os artefatos afetados do passo `artefatos`; na volta da especificação manual (`alterei FT-nnn`), a ficha com `Especificação: manual`.
 
 ## Faça
 
-Sem ELM (sem a chave `elm` no `agentes.json`), ou Cobre sem `inclui`, `altera` ou `exclui` → pule este passo (sem
+Sem ELM (sem a chave `elm` no `agentes.json`), ou artefatos afetados sem `inclui`, `altera` ou `exclui` → pule este passo (sem
 pergunta e sem a linha Especificação na ficha).
 
 1. **Modo da especificação**, perguntado uma vez e fixo até o fim dela: IA supervisionada · IA autopilot · manual.
@@ -20,7 +20,7 @@ pergunta e sem a linha Especificação na ficha).
      (`alterei`), ela sincroniza e segue para a aprovação.
 3. **Volta**: a `sa-especificar.elm` devolve os arquivos aprovados, pendentes e travados. Artefato travado → Em aberto
    da ficha: `bloqueada por FT-mmm (<sigla>-<id>)`; a fatia espera a outra ficar cancelada ou publicada.
-4. **Sem o especificador na sessão**: o Cobre fica gravado e o item segue `aceita` (DoR incompleta).
+4. **Sem o especificador na sessão**: os artefatos afetados ficam gravados e o item segue `aceita` (DoR incompleta).
 
 ## Saída
 

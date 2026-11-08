@@ -4,7 +4,7 @@ description: "Sabiá guide and router for the agent workflow (Kiro and opencode)
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.10"
+  version: "2.1.11"
 ---
 
 # Sabiá — guia e roteador do fluxo
@@ -25,7 +25,7 @@ agente dono do fluxo.
 ```
 captura (qualquer pessoa ou skill) ─► triagem sa-triar.triar
   ├─ épico ───────► sa-refinar.moldar (pitch, go/kill) ─► sa-prd.prd ─► sa-refinar.fatiar
-  ├─ fatia · bug ─► sa-refinar.detalhar (ficha: regras · CT-nn · Cobre [+ elm/]) ─► pronta ─► sa-refinar.ajustar
+  ├─ fatia · bug ─► sa-refinar.detalhar (ficha: regras · CT-nn · Artefatos afetados [+ elm/]) ─► pronta ─► sa-refinar.ajustar
   └─ sustentação ─► sa-atender.atender
 ciclo sa-planejamento (inicial · sprint · review · retrospectiva) · inspeção diária sa-status.painel
 desenvolvimento sa-desenvolver.iniciar ─► [sa-plano.plano] ─► sa-desenvolver.codificar ─► MR
@@ -42,7 +42,7 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
   `elm_login` é opcional e só a `sa-elm` o lê.
 - **Agentes.** A pessoa abre a sessão num dos dois primários: `sa-desenvolvedor` (desenvolvimento, plano, MR, revisão humana,
   Sustentação e archive) ou `sa-especificador` (refinamento, PRD, especificação, entrevista e planejamento; inclui as
-  funções de produto). Triagem, status, este guia e as ofertas da `sa-elm` rodam nos dois. Pesquisa, autorrevisão e
+  funções de produto). Triagem, status, este guia e as ofertas da `sa-elm` rodam nos dois. Pesquisa, revisão do agente e
   verificação rodam nos subagentes `sa-pesquisador`, `sa-revisor` e `sa-verificador`, de contexto limpo. A
   `sa-setup` e a `sa-elm.setup` rodam na sessão padrão. A booleana do `equipe.json` continua conferida na
   pré-condição de cada skill.
@@ -85,7 +85,7 @@ trabalho. Codificação e especificação têm modos independentes.
   `sa-desenvolvedor` na sessão da pessoa), IA autopilot (o `sa-desenvolvedor` como subagente na worktree) ou manual
   (só a geração do código-fonte é da pessoa; `status.md`, branch e plano seguem; no "terminei", o fluxo segue da
   validação, com as mesmas validações).
-- **Especificação** (só com ELM, ao detalhar a fatia com Cobre, na `sa-refinar.detalhar`; campo Especificação da
+- **Especificação** (só com ELM, ao detalhar a fatia com artefatos afetados, na `sa-refinar.detalhar`; campo Especificação da
   ficha): IA supervisionada, IA autopilot ou manual (o especificador altera direto no DOORS e avisa "alterei"; a skill
   sincroniza).
 - **Autopilot:** o `sa-desenvolvedor` roda como subagente na worktree `.sabia/local/wt/<id>` enquanto a pessoa segue na
@@ -100,20 +100,20 @@ trabalho. Codificação e especificação têm modos independentes.
 1. **Alinhar antes de escrever** — até 5 perguntas por rodada, cada uma com recomendação. O agente busca os fatos, e a
    pessoa toma as decisões. Regra de negócio é decisão de uma pessoa.
 2. **Cerimônia do tamanho** — pelas rotas `trivial` · `rapida` · `completo` e pelo tamanho P · M · G.
-3. **Fatias verticais** — cada fatia prova algo demonstrável e mantém o Cobre.
+3. **Fatias verticais** — cada fatia prova algo demonstrável e mantém os artefatos afetados.
 4. **Verificação acima de geração** — backpressure em camadas: o trecho tocado a cada alteração e a suíte completa uma
    vez antes do MR, com baseline do CI. A asserção que dura são os testes automatizados, marcados com o `CT-nn`.
-5. **Gerador ≠ avaliador** — a autorrevisão pelo `sa-revisor` tem três eixos: spec · padrões · segurança. O aceite é
+5. **Gerador ≠ avaliador** — a revisão do agente pelo `sa-revisor` tem três eixos: spec · padrões · segurança. O aceite é
    do `sa-verificador`, de contexto limpo.
 6. **Estado em disco** — o estado vive no `status.md`, no `research.md` e no plano. Na mesma tarefa, segue na mesma
    sessão; para outra tarefa, sugere sessão nova.
 7. **Autonomia gradual** — por item, escolhida por quem desenvolve, com disjuntor.
-8. **Rastreio leve** — o Cobre fica na ficha, e o texto completo dos requisitos fica no delta. Com ELM, a pasta `elm/`
+8. **Rastreio leve** — os artefatos afetados ficam na ficha, e o texto completo dos requisitos fica no delta. Com ELM, a pasta `elm/`
    da fatia é a fonte da publicação no DOORS depois do merge, conferindo a versão. Sem ELM, a spec viva fica no
    repositório.
 9. **Aprendizado composto** — a lição nasce na seção Lições do `status.md` ou do registro de Sustentação. Na review do
    ciclo, as escolhidas entram nas Regras aprendidas do `sabia.md`.
-10. **Leia o código** — o MR traz o quê, o porquê, a prova, o risco, o foco e o Cobre. Nada é mergeado sem uma
+10. **Leia o código** — o MR traz o quê, o porquê, a prova, o risco, o foco e os artefatos afetados. Nada é mergeado sem uma
     aprovação humana.
 
 ## O que dizer
@@ -125,7 +125,7 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 | instalar ou atualizar o Sabiá no projeto, os agentes, o formato da spec, "usa ELM?" · customizar ou descustomizar um passo ou padrão | `sa-setup` (`sa-setup.configurar` · `sa-setup.customizar`) |
 | onde parei · minha próxima · o estado de `<id>` · pendências (publicação pendente, travas de artefato) · lições para a review · fechar a sessão | `sa-status` (`sa-status.painel` · `sa-status.item` · `sa-status.minha-proxima` · `sa-status.pendencias` · `sa-status.licoes` · `sa-status.fechar-sessao`) |
 | registrar uma demanda sem triar · triar a fila das linhas `nova` | `sa-triar` (`sa-triar.capturar` · `sa-triar.triar`) |
-| ideia nova, pitch, go/kill · três amigos, ficha, Cobre e `elm/` da fatia · fatiar o épico · editar, dividir ou cancelar um item pronto | `sa-refinar` (`sa-refinar.moldar` · `sa-refinar.detalhar` · `sa-refinar.fatiar` · `sa-refinar.ajustar`) |
+| ideia nova, pitch, go/kill · três amigos, ficha, artefatos afetados e `elm/` da fatia · fatiar o épico · editar, dividir ou cancelar um item pronto | `sa-refinar` (`sa-refinar.moldar` · `sa-refinar.detalhar` · `sa-refinar.fatiar` · `sa-refinar.ajustar`) |
 | escrever o PRD do épico depois do go, ou mudar o PRD | `sa-prd` (`sa-prd.prd`) |
 | os arquivos de `elm/` da fatia · protótipo de tela e aprovação do cliente · ATA de reunião (transcrição em `.sabia/local/reunioes/`) · archive da spec depois do merge | `sa-especificar` (`sa-especificar.elm` · `sa-especificar.prototipo` · `sa-especificar.reuniao` · `sa-especificar.archive`) |
 | alinhar decisões em rodadas | `sa-entrevistar` (`sa-entrevistar.entrevistar`) |
@@ -133,7 +133,7 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 | puxar, começar ou retomar, com rota e autonomia · implementar e abrir o MR · mergear e fechar | `sa-desenvolver` (`sa-desenvolver.iniciar` · `sa-desenvolver.codificar` · `sa-desenvolver.encerrar`); autopilot é o modo da `sa-desenvolver` |
 | entender o código e devolver fatos, sem gravar | `sa-pesquisar` (`sa-pesquisar.pesquisar`) |
 | `research.md`, design e tasks da fatia, com o texto aprovado copiado para o delta · replanejar | `sa-plano` (`sa-plano.plano` · `sa-plano.replanejar`) |
-| autorrevisão ou revisão do plano · revisar o MR de outro autor | `sa-revisar` (`sa-revisar.revisar` · `sa-revisar.mr`) |
+| revisão do agente ou revisão do plano · revisar o MR de outro autor | `sa-revisar` (`sa-revisar.revisar` · `sa-revisar.mr`) |
 | aceite de ponta a ponta, com a evidência no MR e o `CT.csv` · revisão humana | `sa-verificar` (`sa-verificar.verificar` · `sa-verificar.revisao-humana`) |
 | atender um item de Sustentação (`AT` · `IM` · `BD` · `IN` · `OP` · `EX`) | `sa-atender` (`sa-atender.atender`) |
 | criar o item ou a tarefa no ELM · finalizar ou cancelar a tarefa · lançar horas e relatórios · publicar no DOORS · bundle ou original de um requisito · visualização · "confere com o EWM" e "o DOORS mudou?" · importar do EWM · iteração · lint · configurar o ELM | `sa-elm` (`sa-elm.item` · `sa-elm.finalizar` · `sa-elm.horas` · `sa-elm.publicar` · `sa-elm.baixar` · `sa-elm.visualizar` · `sa-elm.conferir` · `sa-elm.importar-backlog` · `sa-elm.iteracao` · `sa-elm.lint` · `sa-elm.setup`) |

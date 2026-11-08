@@ -32,7 +32,7 @@ arquivos aprovados de `elm/`.
 | # | Verificação | Severidade |
 |---|---|---|
 | L1 | Todo cenário CT-nn da ficha tem critério de aceite na spec, com o mesmo CT-nn, e nenhum critério sai da ficha. Todo valor visível ao usuário no "Então" (texto, rótulo, mensagem, formato) aparece igual, palavra por palavra. No bug, o `bugfix.md` (ou o delta MODIFIED) tem o atual com evidência, o esperado com fonte e o Não muda da ficha | BLOQUEANTE |
-| L2 | O delta traz o texto completo de cada requisito do Cobre (OpenSpec: ADDED para inclui, MODIFIED para altera, REMOVED para exclui; Kiro: o bloco completo de cada requisito), copiado do texto aprovado da ficha, do `prd.md` ou de `elm/`, sem reescrita | BLOQUEANTE |
+| L2 | O delta traz o texto completo de cada requisito dos artefatos afetados (OpenSpec: ADDED para inclui, MODIFIED para altera, REMOVED para exclui; Kiro: o bloco completo de cada requisito), copiado do texto aprovado da ficha, do `prd.md` ou de `elm/`, sem reescrita | BLOQUEANTE |
 | L3 | Todo critério tem ao menos uma tarefa no `tasks.md`; o bug começa pelo teste que reproduz o defeito e pelos testes do Não muda | BLOQUEANTE |
 | L4 | Os caminhos, classes e análogos citados existem, ou estão marcados "a criar" | BLOQUEANTE |
 | L5 | Nenhuma regra de negócio sem fonte (Regras e Decisões da ficha, `prd.md`, `elm/` aprovado). Expectativa de teste existente que muda está listada no plano com a decisão de uma pessoa | BLOQUEANTE |
@@ -64,7 +64,7 @@ avaliados em separado e relatados em tabelas próprias: um não compensa nem esc
 | C4 | Oráculo protegido: nenhum teste removido, desabilitado, ignorado, com assert vazio, enfraquecido ou tautológico; nenhuma exceção engolida. Expectativa de teste existente alterada só com a decisão registrada no plano | BLOQUEANTE |
 | C5 | Reexecução segura: rodar de novo não duplica nem corrompe (chave, situação gravada, transação) | BLOQUEANTE |
 | C6 | As tarefas `[x]` do `tasks.md` têm código no diff | BLOQUEANTE |
-| C7 | O Cobre do MR é o da ficha, e o diff não muda comportamento de requisito fora dele (diverge: destino `volta-spec`) | IMPORTANTE |
+| C7 | Os artefatos afetados do MR é o da ficha, e o diff não muda comportamento de requisito fora dele (diverge: destino `volta-spec`) | IMPORTANTE |
 | C8 | Escopo: nada além da fatia (funcionalidade não pedida, arquivo fora do design, refatoração oportunista) | IMPORTANTE |
 | C20 | Onde há `CT.csv` (rápida e completo, no MR), ele segue o padrão do CT em vigor (o do Sabiá, ou o do toolkit que desvia o CT): uma linha por cenário ✅, os blocos da Descrição na ordem e o RESULTADO ESPERADO igual ao "Então" | IMPORTANTE |
 

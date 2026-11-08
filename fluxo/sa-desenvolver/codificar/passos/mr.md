@@ -1,15 +1,15 @@
 ---
-{"resumo": "Texto do MR pelo padrão (O quê · Porquê · Prova · Risco · Foco · Cobre), commit, push, conferência no remoto e MR pelo gitlabpr."}
+{"resumo": "Texto do MR pelo padrão (O quê · Porquê · Prova · Risco · Foco · Artefatos afetados), commit, push, conferência no remoto e MR pelo gitlabpr."}
 ---
 ## Entrada
 
-A branch verificada, com lições e as-built, o resumo da autorrevisão e o bloco 🔎.
+A branch verificada, com lições e as-built, o resumo da revisão do agente e o bloco 🔎.
 
 ## Faça
 
 1. Texto pelo `.gitlab/merge_request_templates/Default.md` do projeto ou, sem ele, pelo padrão
-   `sa-desenvolver/pr.md`. Título `<FT-nnn> — <título>`. Seções: O quê · Porquê · Prova (CI, 🔎, autorrevisão) ·
-   Risco (Reversível?, DDL pendente `BD-nnn`, ADRs) · Foco (como ler) · Cobre · Lições (só no trivial).
+   `sa-desenvolver/pr.md`. Título `<FT-nnn> — <título>`. Seções: O quê · Porquê · Prova (CI, 🔎, revisão do agente) ·
+   Risco (Reversível?, DDL pendente `BD-nnn`, ADRs) · Foco (como ler) · Artefatos afetados · Lições (só no trivial).
 2. Entrega, nesta ordem:
    1. commit do que faltar, com a árvore limpa;
    2. push da branch (com o "sim"; liberado no autopilot);

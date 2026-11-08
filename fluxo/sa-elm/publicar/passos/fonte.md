@@ -1,5 +1,5 @@
 ---
-{"resumo": "Junta a fonte: os arquivos aprovados de elm/, a ET as-built do design.md e o Cobre da ficha."}
+{"resumo": "Junta a fonte: os arquivos aprovados de elm/, a ET as-built do design.md e os artefatos afetados da ficha."}
 ---
 ## Entrada
 
@@ -14,7 +14,7 @@ A fatia (`ft-<nnn>-<slug>`).
 2. Arquivo com `publicado: manual` no frontmatter → fora da prévia, conta como publicado.
 3. Onde a seção ELM do `sabia.md` diz `ET as-built: sim`, a ET sai das seções Components and Interfaces · Data
    Models · Decisões técnicas do `design.md` da spec (OpenSpec: Decisions).
-4. A ação (`inclui` · `altera` · `exclui`) e a versão lida de cada artefato vêm do Cobre da ficha
+4. A ação (`inclui` · `altera` · `exclui`) e a versão lida de cada artefato vêm dos artefatos afetados da ficha
    (`.sabia/planejamento/fatias/FT-<nnn>-<slug>.md`).
 
 ## Saída

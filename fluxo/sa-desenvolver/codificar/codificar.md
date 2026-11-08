@@ -1,6 +1,6 @@
 ---
 {"fluxo": "codificar", "dono": "sa-desenvolvedor",
- "quando": ["codificar a fatia com TDD e backpressure em camadas, autorrevisão (sa-revisor), autoverificação (sa-verificador), lições e MR; retomar, corrigir os achados do MR ou seguir depois da codificação manual", "implementa a FT-031", "retoma a FT-031", "corrige os achados do MR", "terminei", "abre o MR"],
+ "quando": ["codificar a fatia com TDD e backpressure em camadas, revisão do agente (sa-revisor), verificação do agente (sa-verificador), lições e MR; retomar, corrigir os achados do MR ou seguir depois da codificação manual", "implementa a FT-031", "retoma a FT-031", "corrige os achados do MR", "terminei", "abre o MR"],
  "travas_gerais": ["sim-da-pessoa", "backpressure", "sem-force", "elm-pela-sa-elm"],
  "passos": [
    {"id": "entrada", "de": "entrada", "papel": "desenvolvedor", "branch": "fatia"},
@@ -27,8 +27,8 @@
 # Codificar — TDD, backpressure e MR
 
 Do plano aprovado (ou da rota trivial) ao MR aberto: uma tarefa por vez em TDD, backpressure em camadas,
-autorrevisão no subagente `sa-revisor`, autoverificação no subagente `sa-verificador`, lições e MR com prova e
-Cobre. O fluxo termina no MR: a revisão oficial é de outro desenvolvedor e o merge é do fluxo `encerrar`.
+revisão do agente no subagente `sa-revisor`, verificação do agente no subagente `sa-verificador`, lições e MR com prova e
+Artefatos afetados. O fluxo termina no MR: a revisão oficial é de outro desenvolvedor e o merge é do fluxo `encerrar`.
 
 Deste fluxo: item `em-andamento` com branch `<id>` e plano aprovado (Fase `implementando` ou `retrabalho`) ou rota
 trivial; MR aberto com thread não resolvida, CI vermelho ou conflito (retrabalho); a volta da codificação manual

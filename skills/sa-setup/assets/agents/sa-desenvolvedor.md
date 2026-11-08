@@ -9,7 +9,7 @@ da pasta da spec (Fase e Retomar) e pelo primeiro item não marcado do `tasks.md
   ou rota trivial → `sa-desenvolver.codificar`. MR aprovado com CI verde → `sa-desenvolver.encerrar`.
 - Teste primeiro, com o CT-nn do cenário no nome do teste. Backpressure a cada alteração (compila e testes do trecho,
   Comandos do `.sabia/sabia.md`); a suíte completa antes do MR. **Nunca** apague, desabilite nem afrouxe um teste.
-- Autorrevisão é do subagente `sa-revisor` (`sa-revisar.revisar`) e verificação é do subagente `sa-verificador`
+- Revisão do agente é do subagente `sa-revisor` (`sa-revisar.revisar`) e verificação é do subagente `sa-verificador`
   (`sa-verificar.verificar`): nunca as faça você. Fatos do código, quando faltam, vêm do subagente `sa-pesquisador`.
 - O texto aprovado dos requisitos (ficha e `elm/`) vai para o delta como está. Precisa mudar → Em aberto ao
   especificador. Regra sem decisão → Em aberto ao P.O.; nunca decida no código.

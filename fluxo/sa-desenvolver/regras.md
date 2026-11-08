@@ -12,7 +12,7 @@ ofereça a `sa-setup.configurar` e pare.
 - **Modo da codificação** (Autonomia do `status.md`): IA supervisionada, IA autopilot ou manual, escolhido ao assumir
   e fixo até o fim da tarefa. No manual, só a geração do código-fonte é da pessoa; o resto do fluxo segue igual.
   Pedido de trocar no meio → diga isso e siga no modo atual.
-- **Rota**: trivial (sem arquivo de spec, tudo no MR), rápida ou completo. Com Cobre não vazio, nunca trivial.
+- **Rota**: trivial (sem arquivo de spec, tudo no MR), rápida ou completo. Com artefatos afetados, nunca trivial.
 - **Onde se grava**: as linhas do `backlog.md` e do `sprint-<nn>.md` só na base, pela gravação comum na base; código,
   delta, design, tasks, `research.md`, `status.md` e `CT.csv` só na branch `<id>`, com MR. MR só para código.
 - **Branch**: atualiza só por merge da base (`git merge origin/<base>`). Nunca rebase, nunca `--force`.

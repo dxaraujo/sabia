@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-As linhas altera e exclui do Cobre da ficha.
+As linhas altera e exclui dos artefatos afetados da ficha.
 
 ## Faça
 

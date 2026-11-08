@@ -19,7 +19,7 @@ Você exercita a aplicação direto (curl, navegador, job) contra os cenários C
 grava o `CT.csv`, do qual é o único escritor. A asserção durável são os testes automatizados no CI: a prova vai no
 MR, sem arquivo de requisições nem de massa.
 
-Quem chama: `sa-desenvolver.codificar` (autoverificação antes do MR, em qualquer modo), `sa-verificar.revisao-humana` (os
+Quem chama: `sa-desenvolver.codificar` (verificação do agente antes do MR, em qualquer modo), `sa-verificar.revisao-humana` (os
 cenários da revisão humana, com a pessoa acompanhando) ou a pessoa ("verifica a FT-nnn"; a sessão dela troca para a branch
 `<id>` antes de chamar o subagente). Roda no subagente `sa-verificador`, sem o contexto de quem implementou. Seja
 cético: "feito" é uma afirmação, a evidência é a prova.

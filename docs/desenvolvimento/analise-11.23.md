@@ -41,7 +41,7 @@ sa-triar → sa-planejamento: [ESP] EP na sprint
 | PRD já fatiado (correção) | quem pede: drift, VER, plano, ATA | especificador (`sa-prd.mudanca`) | P.O., GATE | de novo, só "próximo" |
 | Fatia de épico em dev | pesquisador, **só o bundle** | ninguém na fatia: vira só um fato no `research.md` | — | — |
 | ↳ lacuna no plano · cenário errado na VER · drift na consolidação | Dev · VER · P.O./SM | → `sa-prd.mudanca` | P.O. | como acima |
-| [ESP] FT (fatia `nova`) | especificador | não altera requisito (`Cobre` fixo; cenário novo → sa-triar) | — | — |
+| [ESP] FT (fatia `nova`) | especificador | não altera requisito (`Artefatos afetados` fixo; cenário novo → sa-triar) | — | — |
 | Fatia padrão sem épico | P.O. na triagem | P.O. (sa-triar, "No ELM" `altera <id>`) | **P.O.** | consolidação (as-built) |
 | Sustentação (AT) | quem atende (bundle) | não altera: desdobramento → sa-triar | — | — |
 
@@ -67,7 +67,7 @@ sa-triar → sa-planejamento: [ESP] EP na sprint
 | L1 | alta | `na-aprovacao` não tem passo de publicação | passo `publicar` no `sa-especificar.especificar` depois dos fechamentos (`elm-publicar.md` § Requisitos + CT); o mesmo na saída do GATE da mudança | especificador |
 | L2 | alta | correção depois do fatiamento roda sem tarefa ([ESP] já concluída) | `[ESP] EP-nn Correção v1.x` pelo encaixe, ou reabrir a [ESP] | especificador · P.O. |
 | L3 | alta | requisito achado na pesquisa da fatia não tem roteamento | em `sa-plano.plano.decisoes`: se a doc precisa mudar → fatia `bloqueada` + `sa-prd.mudanca` (mesmo épico) ou `sa-triar` (escopo novo) | Dev → especificador |
-| L4 | média | com `no-merge`, o escopo da publicação na consolidação e o link IB→HF sem id | publicar só os conceitos do `Cobre` (+ `depois`) e então `elm_ligar`; no fatiamento sem id → `ELM pendente` | P.O./SM |
+| L4 | média | com `no-merge`, o escopo da publicação na consolidação e o link IB→HF sem id | publicar só os conceitos do `Artefatos afetados` (+ `depois`) e então `elm_ligar`; no fatiamento sem id → `ELM pendente` | P.O./SM |
 | L5 | média | sem análise de impacto (HF que embute a REG, CT, ET, EL, outros épicos) | em `similares`: listar no bundle quem cita o id; coluna "Impacto"; P6 confere | especificador · revisor |
 | L6 | média | bundle velho antes de alterar | `elm_ler_req` ao vivo e comparar o `last_modified`; diferente → `sa-sync` | especificador |
 | L7 | média | fatia sem épico com `altera <id>`: o especificador não participa | revisão do especificador na regra `altera` (D3) | P.O. + especificador |
@@ -77,7 +77,7 @@ sa-triar → sa-planejamento: [ESP] EP na sprint
 
 ## 4. O que a nota não citou
 - **A correção trava o épico inteiro.** Com o PRD `em-revisao (de: fatiado)`, as fatias não iniciadas perdem a DoR.
-  Ou se aceita isso, ou se limita às fatias cujo `Cobre` toca o que muda.
+  Ou se aceita isso, ou se limita às fatias cujo `Artefatos afetados` toca o que muda.
 - **Dois épicos alterando o mesmo id:** não há checagem; só o `modificado_em` pega, e tarde.
 - **Requisito de outro produto ou PA:** não encontrado no fluxo.
 - **CT ligado a uma HF alterada:** a mudança não manda revisar o CT.

@@ -14,8 +14,8 @@ O pedido de quem chamou: a rubrica, o item `FT-nnn` e a parte do plano (L) ou o 
 
 | Rubrica | Entrada |
 |---|---|
-| L | Kiro: `requirements.md` (no bug, `bugfix.md`), `design.md` e `tasks.md`. OpenSpec: `proposal.md`, o delta `specs/<cap>/spec.md`, `tasks.md` e, no completo, `design.md`. Nos dois: `research.md`, a ficha `.sabia/planejamento/fatias/FT-<nnn>-<slug>.md` (Regras, Cenários CT-nn, Não muda, Cobre, Decisões), o `prd.md` do épico na fatia com pai e, com ELM, os arquivos aprovados de `elm/` da pasta da spec |
-| C | `git diff origin/<base>...HEAD` (no autopilot, `cd .sabia/local/wt/<id> && git diff origin/<base>...HEAD`; no apoio ao `sa-revisar.mr`, `git diff origin/<base>...origin/<id>`), a mesma pasta da spec e a ficha. Com o MR aberto, os campos O quê · Porquê · Prova · Risco · Foco · Cobre. Na trivial, só o diff, a ficha e o MR |
+| L | Kiro: `requirements.md` (no bug, `bugfix.md`), `design.md` e `tasks.md`. OpenSpec: `proposal.md`, o delta `specs/<cap>/spec.md`, `tasks.md` e, no completo, `design.md`. Nos dois: `research.md`, a ficha `.sabia/planejamento/fatias/FT-<nnn>-<slug>.md` (Regras, Cenários CT-nn, Não muda, artefatos afetados, Decisões), o `prd.md` do épico na fatia com pai e, com ELM, os arquivos aprovados de `elm/` da pasta da spec |
+| C | `git diff origin/<base>...HEAD` (no autopilot, `cd .sabia/local/wt/<id> && git diff origin/<base>...HEAD`; no apoio ao `sa-revisar.mr`, `git diff origin/<base>...origin/<id>`), a mesma pasta da spec e a ficha. Com o MR aberto, os campos O quê · Porquê · Prova · Risco · Foco · Artefatos afetados. Na trivial, só o diff, a ficha e o MR |
 
 3. Sempre: o `.sabia/sabia.md` (Projeto e Comandos). O delta já traz o texto completo dos requisitos
    tocados: não leia o ELM.

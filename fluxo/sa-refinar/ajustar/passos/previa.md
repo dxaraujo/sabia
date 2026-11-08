@@ -3,12 +3,12 @@
 ---
 ## Entrada
 
-O pedido de ajuste e os itens; na mudança do PRD, as fatias com Cobre atingido que a `sa-prd.mudanca` passou.
+O pedido de ajuste e os itens; na mudança do PRD, as fatias com artefatos afetados atingidos que a `sa-prd.mudanca` passou.
 
 ## Faça
 
 1. Mostre o que muda: as linhas do `backlog.md`, as fichas e as pastas de spec (com `elm/`), antes e depois.
-2. Mudança do PRD: liste as fatias com Cobre atingido e proponha o ajuste de cada uma (editar, dividir ou cancelar).
+2. Mudança do PRD: liste as fatias com artefatos afetados atingidos e proponha o ajuste de cada uma (editar, dividir ou cancelar).
 3. Peça o ok de quem tem `produto`. Ajuste diferente do mostrado → mostre a prévia de novo.
 
 ## Saída

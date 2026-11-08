@@ -10,7 +10,7 @@ inclusion: always
 ## Resumo do fluxo
 
 Este repositório usa o fluxo **Sabiá** (skills `sa-*`): alinhar antes, verificar depois. Fatias verticais
-pequenas, teste primeiro com backpressure, autorrevisão e verificação de contexto limpo, MR revisado por um
+pequenas, teste primeiro com backpressure, revisão e verificação do agente, em contexto limpo, MR revisado por um
 desenvolvedor que não é o autor e lido por uma pessoa antes do merge.
 
 - Como funciona e qual skill usar: `sabia`. Demanda nova: `sa-triar`. Onde parei ou minha próxima: `sa-status`.

@@ -11,7 +11,7 @@ Leia:
 
 1. o `status.md` (Rota, Autonomia);
 2. a ficha `.sabia/planejamento/fatias/FT-nnn-<slug>.md` da base (`git show origin/<base>:<caminho>`): Regras,
-   Cenários `CT-nn`, Cobre com a versão lida, linha Aprovado, Não muda, Decisões;
+   Cenários `CT-nn`, artefatos afetados com a versão lida, linha Aprovado, Não muda, Decisões;
 3. com ELM, os arquivos de `elm/` da pasta da spec;
 4. o `prd.md` do épico pai, na fatia de épico;
 5. o Projeto e as Regras aprendidas do `.sabia/sabia.md` e o steering de tecnologia e estrutura.

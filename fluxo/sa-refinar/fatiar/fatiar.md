@@ -1,6 +1,6 @@
 ---
 {"fluxo": "fatiar", "dono": "sa-especificador",
- "quando": ["PRD aprovado → fatias verticais P/M/G com Cobre, aprovadas e ordenadas por quem tem produto, num commit", "fatiar o PRD", "fatiar o EP-04", "quebrar em histórias", "gerar o backlog do épico"],
+ "quando": ["PRD aprovado → fatias verticais P/M/G com artefatos afetados, aprovadas e ordenadas por quem tem produto, num commit", "fatiar o PRD", "fatiar o EP-04", "quebrar em histórias", "gerar o backlog do épico"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa", "aprovacao-no-documento", "artefato-exclusivo"],
  "passos": [
    {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao"},
@@ -14,7 +14,7 @@
 # Fatiar — PRD aprovado em fatias verticais
 
 O especificador propõe as fatias com o Dev, com os fatos do código pela `sa-pesquisar`; quem tem `produto` aprova e
-ordena. As fatias nascem `aceita`, com ficha (Objetivo, Cobre e os cenários do PRD que cobrem), num commit, e o
+ordena. As fatias nascem `aceita`, com ficha (Objetivo, artefatos afetados e os cenários do PRD que cobrem), num commit, e o
 épico vai para `fatiado`. Cada uma ainda passa pelo detalhar para chegar a `pronta`. Aceita épico em
 `em-especificacao` com o `prd.md` na base aprovado (`**Aprovado:** <usuario> · AAAA-MM-DD` de quem tem `produto`).
 

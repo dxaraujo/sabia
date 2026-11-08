@@ -1,5 +1,5 @@
 ---
-{"resumo": "Só no manual, na volta do 'alterei': baixa do DOORS os artefatos do Cobre para elm/, atualiza a versão lida, grava o delta completo e marca Publicado: manual."}
+{"resumo": "Só no manual, na volta do 'alterei': baixa do DOORS os artefatos afetados para elm/, atualiza a versão lida, grava o delta completo e marca Publicado: manual."}
 ---
 ## Entrada
 
@@ -8,10 +8,10 @@ de base.
 
 ## Faça
 
-1. **Baixar.** Para cada artefato do Cobre, peça à `sa-elm.baixar` (modo artefato) o texto atual e o `modificado_em`
+1. **Baixar.** Para cada artefato afetado, peça à `sa-elm.baixar` (modo artefato) o texto atual e o `modificado_em`
    e regrave o arquivo de `elm/`: o diff contra o commit de base mostra o que mudou.
-2. **Por ação.** Altera: atualize a versão lida na linha do Cobre. Inclui: pergunte o id do ELM que o
-   especificador criou, baixe, renomeie para `<id do ELM>-<TIPO>-<slug>.md` e troque o id provisório no Cobre e no
+2. **Por ação.** Altera: atualize a versão lida na linha dos artefatos afetados. Inclui: pergunte o id do ELM que o
+   especificador criou, baixe, renomeie para `<id do ELM>-<TIPO>-<slug>.md` e troque o id provisório nos artefatos afetados e no
    `prd.md` do épico pai. Exclui: pergunte se foi para a lixeira do DOORS.
 3. **Delta.** Grave na pasta da spec o texto completo de cada requisito tocado: OpenSpec, `specs/<cap>/spec.md` com
    ADDED · MODIFIED · REMOVED; Kiro, `requirements.md` (no bug, `bugfix.md`) com o bloco completo de cada requisito.

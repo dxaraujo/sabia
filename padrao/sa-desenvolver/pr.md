@@ -1,5 +1,5 @@
 ---
-{"resumo": "Template do MR (.gitlab/merge_request_templates/Default.md): título <FT-nnn> — <título> e as seções O quê · Porquê · Prova · Risco · Foco · Cobre."}
+{"resumo": "Template do MR (.gitlab/merge_request_templates/Default.md): título <FT-nnn> — <título> e as seções O quê · Porquê · Prova · Risco · Foco · Artefatos afetados."}
 ---
 ```markdown
 FT-<nnn> — <título>
@@ -12,7 +12,7 @@ FT-<nnn> — <título>
 
 ## Prova
 - CI: <pipeline do último commit: verde | vermelho | sem CI: suíte local verde> (baseline: último pipeline da base)
-- Autorrevisão (sa-revisor, rubrica C): <VEREDITO> · achados aceitos: <[R1], … | nenhum> · descartados: <motivo | nenhum>
+- Revisão do agente (sa-revisor, rubrica C): <VEREDITO> · achados aceitos: <[R1], … | nenhum> · descartados: <motivo | nenhum>
 - Verificação (sa-verificador):
   | CT-nn | Resultado | Esperado × obtido | Evidência |
   |---|---|---|---|
@@ -29,7 +29,7 @@ FT-<nnn> — <título>
 1. `<arquivo de teste>`
 2. `<arquivo de produção>`
 
-## Cobre
+## Artefatos afetados
 <<sigla>-<id> · inclui | altera | exclui, como na ficha | nenhum requisito>
 
 ## Lições

@@ -7,7 +7,7 @@ A tabela do passo `rascunho`.
 
 ## Faça
 
-Mostre a tabela e ajuste (dividir, juntar, mudar o Cobre ou o tamanho) até o ok de quem tem `produto`, que também
+Mostre a tabela e ajuste (dividir, juntar, mudar os artefatos afetados ou o tamanho) até o ok de quem tem `produto`, que também
 ordena as fatias. O ok não congela nada: a fatia segue editável pela `sa-refinar.ajustar` até alguém puxar.
 
 ## Saída

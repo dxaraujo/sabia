@@ -54,7 +54,7 @@ Relacionamentos: <TB_INSCRICAO> → <TB_TURMA> · N:1 · <ID_TURMA>
 - <decisão> — <motivo>; <consequência> (<ADR NNNN | local>)
 ````
 
-- **Atende:** o link normal para cada HF e UC do Cobre da fatia (a HF não cita a ET). Na fatia, a HF nova ainda tem
+- **Atende:** o link normal para cada HF e UC dos artefatos afetados da fatia (a HF não cita a ET). Na fatia, a HF nova ainda tem
   o id provisório (só texto); o `trocar-ids` põe o link no `design.md` quando ela ganha o id do DOORS. Cita REG e MSG
   da mesma forma; a validação cita a REG que aplica.
 - Permissão e abrangência ficam na HF e na REG, não aqui. A DDL nova é um item BD do `tasks.md`; aqui entra a tabela

@@ -42,7 +42,7 @@
   },
   "agentes": {
     "sa-desenvolvedor": {
-      "descricao": "Sabiá developer — takes a slice (fatia) or bug from pronta to merge: assumes it in one step (size, route trivial · rápida · completo, and mode: supervised AI, AI autopilot or manual), writes the plan when the route has one, codes it with TDD and backpressure, gets a self-review from sa-revisor and a self-verification from sa-verificador, and opens the MR with the proof. Also reviews other people's MRs (sa-revisar.mr), runs the revisão humana (sa-verificar.revisao-humana), handles Sustentação (sa-atender) and archives the spec after the merge. In autopilot it runs as its own subagent in the worktree .sabia/local/wt/<id>.",
+      "descricao": "Sabiá developer — takes a slice (fatia) or bug from pronta to merge: assumes it in one step (size, route trivial · rápida · completo, and mode: supervised AI, AI autopilot or manual), writes the plan when the route has one, codes it with TDD and backpressure, gets an agent review from sa-revisor and an agent verification from sa-verificador, and opens the MR with the proof. Also reviews other people's MRs (sa-revisar.mr), runs the revisão humana (sa-verificar.revisao-humana), handles Sustentação (sa-atender) and archives the spec after the merge. In autopilot it runs as its own subagent in the worktree .sabia/local/wt/<id>.",
       "mode": "primary",
       "permissao": "build",
       "skills": ["sa-desenvolver", "sa-plano", "sa-revisar", "sa-verificar", "sa-atender", "sa-especificar", "sa-triar",
@@ -61,7 +61,7 @@
       }
     },
     "sa-especificador": {
-      "descricao": "Sabiá specifier and product owner — shapes epics (pitch, go/kill), writes and approves the PRD, slices epics into vertical slices (fatias), details a slice into its card (rules, CT-nn scenarios, Cobre) with the elm/ files when the project uses ELM, keeps the backlog ordered, runs the alignment interview, prototypes and meeting minutes, and the sprint rituals (planning, review, retrospective). Facts come from the sa-pesquisador subagent; decisions come from people. Never writes code.",
+      "descricao": "Sabiá specifier and product owner — shapes epics (pitch, go/kill), writes and approves the PRD, slices epics into vertical slices (fatias), details a slice into its card (rules, CT-nn scenarios, affected artifacts) with the elm/ files when the project uses ELM, keeps the backlog ordered, runs the alignment interview, prototypes and meeting minutes, and the sprint rituals (planning, review, retrospective). Facts come from the sa-pesquisador subagent; decisions come from people. Never writes code.",
       "mode": "primary",
       "permissao": "build",
       "skills": ["sa-refinar", "sa-prd", "sa-especificar", "sa-entrevistar", "sa-planejamento", "sa-triar", "sa-status",
