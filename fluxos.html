@@ -1843,8 +1843,8 @@
 </section>
 
 <section id="sa-verificar"><div class="lead-sec"><h2>sa-verificar</h2><p>2 fluxos · dono <code>sa-desenvolvedor</code>, <code>sa-verificador</code></p></div>
-  <details class="fluxo" id="sa-verificar.uat"><summary><code>sa-verificar.uat</code> <span>7 passos</span><small>UAT humano sobre o MR aberto, só quando o risco pede (o Risco do MR, o revisor ou o P.O.), por qualquer pessoa; UAT da FT-031; teste de aceite do usuário</small></summary>
-  <pre class="cod grafo">sa-verificar.uat   dono sa-desenvolvedor   travas sim-da-pessoa, decisao-da-pessoa
+  <details class="fluxo" id="sa-verificar.homologacao"><summary><code>sa-verificar.homologacao</code> <span>7 passos</span><small>homologação humana sobre o MR aberto, só quando o risco pede (o Risco do MR, o revisor ou o P.O.), por qualquer pessoa; homologação da FT-031; teste de aceite do usuário</small></summary>
+  <pre class="cod grafo">sa-verificar.homologacao   dono sa-desenvolvedor   travas sim-da-pessoa, decisao-da-pessoa
 
   ┌────────────────────────┐
   │ 1 entrada [nenhuma]    │──▶ ↪ vizinhos (diga e pare): sa-desenvolver.codificar · ■ MR mergeado
@@ -1873,7 +1873,7 @@
   ┌────────────────────────┐
   │ 7 entrega              │
   └────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-verificar.verificar" open><summary><code>sa-verificar.verificar</code> <span>7 passos</span><small>aceite contra a spec: como subagente da sa-desenvolver.codificar antes do MR, da sa-verificar.uat ou a pedido direto; verifica a FT-031; testa a fatia; executa os cenários; teste de aceitação</small></summary>
+  <details class="fluxo" id="sa-verificar.verificar" open><summary><code>sa-verificar.verificar</code> <span>7 passos</span><small>aceite contra a spec: como subagente da sa-desenvolver.codificar antes do MR, da sa-verificar.homologacao ou a pedido direto; verifica a FT-031; testa a fatia; executa os cenários; teste de aceitação</small></summary>
   <pre class="cod grafo">sa-verificar.verificar   dono sa-verificador   travas aceite-independente, decisao-da-pessoa
 
   ┌────────────────────────┐
