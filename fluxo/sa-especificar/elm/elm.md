@@ -1,6 +1,6 @@
 ---
 {"fluxo": "elm", "dono": "sa-especificador",
- "quando": ["só com ELM: o texto oficial que a fatia ou o bug muda, um arquivo inteiro por artefato do Cobre (HF, REG, EL, GL) em elm/ da pasta da spec, com o original do DOORS num commit de base, a edição pelo modo da ficha e a aprovação do especificador; chamado pela sa-refinar.detalhar ou direto", "editar o elm/ da FT-031", "alterei FT-031", "refazer a mescla da FT-031"],
+ "quando": ["só com ELM: o texto oficial que a fatia ou o bug muda, um arquivo inteiro por artefato do Cobre (HF, UC, REG, MSG, EL, GL) em elm/ da pasta da spec, com o original do DOORS num commit de base, a edição pelo modo da ficha e a aprovação do especificador; chamado pela sa-refinar.detalhar ou direto", "editar o elm/ da FT-031", "alterei FT-031", "refazer a mescla da FT-031"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa", "elm-pela-sa-elm"],
  "passos": [
    {"id": "entrada", "de": "entrada", "papel": "especificador", "branch": "nao", "saidas": {"volta da especificação manual ('alterei FT-nnn')": "sincronizar", "fatia ou bug concluida com 'Publicação: pendente' (refazer a mescla do artefato que a publicação pulou)": "pasta"}},
@@ -19,7 +19,7 @@
 ---
 # Elm — o texto oficial que a fatia muda
 
-Só com ELM. Para cada artefato do Cobre da ficha (HF, REG, EL, GL), o original do DOORS vem pela `sa-elm.baixar` para
+Só com ELM. Para cada artefato do Cobre da ficha (HF, UC, REG, MSG, EL, GL), o original do DOORS vem pela `sa-elm.baixar` para
 `<pasta da spec>/elm/`, num commit de base (original + versão lida), antes de qualquer edição. Depois, pelo modo da
 linha Especificação da ficha, o arquivo inteiro é editado (IA supervisionada ou IA autopilot) ou, no manual, o
 especificador altera direto no DOORS e a skill sincroniza na volta ("alterei"). O especificador aprova cada arquivo,

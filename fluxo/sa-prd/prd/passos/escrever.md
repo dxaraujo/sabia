@@ -15,15 +15,19 @@ Proporcional ao tamanho. Cada requisito é um bloco na seção Requisitos:
 
 ```markdown
 ### <sigla>-<id> · <título>
-**Tipo:** HF | REG | EL | GL · **Ação:** inclui | altera | exclui
+**Tipo:** HF | UC | REG | MSG | EL | GL · **Ação:** inclui | altera | exclui
 
-<corpo pelo padrão do tipo>
+<corpo pelo padrão do tipo, com os títulos dois níveis abaixo>
 ```
 
-- Corpo pelo padrão do tipo: `sa-prd/hf.md`, `sa-prd/reg.md`, `sa-prd/el.md`, `sa-prd/gl.md`. No altera, o texto
+- Corpo pelo padrão do tipo: `sa-prd/hf.md`, `sa-prd/uc.md`, `sa-prd/reg.md`, `sa-prd/msg.md`, `sa-prd/el.md`,
+  `sa-prd/gl.md`. Os títulos do corpo descem dois níveis dentro do bloco (`##` → `####`, `###` → `#####`), para não
+  fecharem a seção Requisitos; o padrão continua com o nível dele, que é o do arquivo de `elm/` e do DOORS. Sem
+  frontmatter no bloco: ele só existe no arquivo de `elm/`. No altera, o texto
   inteiro no estado depois; no exclui, o vigente e o motivo.
 - **HF:** os cenários Dado · Quando · Então do requisito, com o Então verificável. Sem CT.csv: os CT-nn nascem na
   ficha.
+- **UC:** só com Casos de uso = `sim`; o comportamento novo vai em HF.
 - **EL:** só com Telas = `sim`, e a fonte é o protótipo aprovado (um D-nn `Protótipo v<N> aprovado`). Sem ele →
   `sa-especificar.prototipo`; a EL fica no Em aberto, bloqueando só ela.
 - **Sem ET:** a ET é só as-built, no `design.md` da fatia.

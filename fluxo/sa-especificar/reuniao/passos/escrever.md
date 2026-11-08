@@ -12,7 +12,7 @@ a ATA sai pela skill, com o fluxo e o padrão do tipo; na volta, confira as seç
 
 Senão, escreva `.sabia/local/reunioes/<id>-<AAAA-MM-DD>.ata.md` pelo padrão `sa-especificar/ata.md`:
 
-- Cabeçalho: `**Aprovado:** —`, Reunião (`AAAA-MM-DD · <h>h<mm> · <assunto>`, a duração pelo último `[mm:ss]`) e Item.
+- Frontmatter com `status: draft`; Reunião (`AAAA-MM-DD · <h>h<mm> · <assunto>`, a duração pelo último `[mm:ss]`) e Item.
 - Participantes por nome e papel, com os papéis do passo `transcricao`.
 - Discussão com `[mm:ss]`; Decisões só as ditas pelo P.O. ou pelo representante do cliente, com o próximo D-nn livre
   do documento do item, Quem = `<nome> (<papel>)`, Quando = a data da reunião e Fonte = `ATA-nn [mm:ss]` (o `nn` entra

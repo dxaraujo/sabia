@@ -9,10 +9,10 @@ Os ids novos do passo `publicar`.
 
 Para cada requisito novo:
 
-1. Renomeie `elm/<EP|FT><nn>-<nn>-<TIPO>-<slug>.md` para `elm/<id do ELM>-<TIPO>-<slug>.md`, com o mesmo título
-   (`# <sigla>-<id do ELM> · <título>`).
+1. Renomeie `elm/<EP|FT><nn>-<nn>-<TIPO>-<slug>.md` para `elm/<id do ELM>-<TIPO>-<slug>.md`; o frontmatter fica.
 2. Troque o id provisório `<sigla>-<EP|FT>-nn` por `<sigla>-<id do ELM>` no `prd.md` do épico pai, nas fichas que
-   o citam (Cobre e Regras) e no delta da spec (`### Requirement:`).
+   o citam (Cobre e Regras), no delta da spec (`### Requirement:`), no `design.md` (a ET) e nos arquivos de `elm/`
+   que o citam, agora com o link para o arquivo (`[<sigla>-<id> <título>](<id>-<TIPO>-<slug>.md)`).
 
 Tudo vai no mesmo commit do passo `gravar`.
 

@@ -163,10 +163,11 @@ padrao/padrao-hf.md                padrão do tipo HF, idem
 
 - **Tipo → skill:** a sigla é do catálogo (o toolkit não cria tipo), desviável e não pendente; a skill é uma das
   `skills[]`; o fluxo e o padrão, opcionais, são arquivos da pasta do toolkit (sem eles, `{"skill": …}` só, a skill segue as references dela). A skill vai ao dono de cada passo de desvio
-  (coluna Desviável do catálogo) e traz em `papeis` o papel de cada um (HF, REG, EL e ATA: `especificador` ou `produto`; ET: `desenvolvedor`); sem ele, o
+  (coluna Desviável do catálogo) e traz em `papeis` o papel de cada um (HF, UC, REG, MSG, EL e ATA: `especificador` ou `produto`; ET: `desenvolvedor`; CT: `verificador`); sem ele, o
   CLI e o gerador recusam o toolkit, dizendo o papel que falta. O gerador põe no prompt de cada dono a linha **Tipos com skill de toolkit**: no passo, o
   tipo sai pela skill, que segue o fluxo com o padrão, quando há, pelo caminho na pasta instalada (`~/.sabia/toolkits/<toolkit>/`,
-  de leitura para todos os agentes), escrevendo no padrão OKF do Sabiá, e volta ao passo. O gerador imprime a seção
+  de leitura para todos os agentes), escrevendo no formato do Sabiá (no arquivo de `elm/`, o do `sa-elm/elm-arquivo.md`; no bloco do `prd.md`, o corpo com
+  os títulos dois níveis abaixo), e volta ao passo. O gerador imprime a seção
   que a setup grava no `sabia.md`: o fluxo, o padrão e a skill de cada tipo, e os itens de rubrica.
 - **Padrão do núcleo:** o toolkit não troca padrão do Sabiá. O tipo que não vai por `tipos`, e o tipo fora do passo de
   desvio, usam o padrão do Sabiá; o `.sabia/padrao/` do projeto vale só
@@ -178,8 +179,8 @@ padrao/padrao-hf.md                padrão do tipo HF, idem
   skill de toolkit** do `sabia.md`), com a severidade dele; o toolkit não troca nem afrouxa item do Sabiá.
 - **Requer:** a versão mínima do Sabiá instalado; o `sabia toolkits instalar` confere antes de copiar.
 - **Colisão:** dois toolkits do projeto no mesmo tipo ou no mesmo id de item de rubrica → o gerador recusa e não grava
-  nada. Item de rubrica com o id de um do Sabiá também: o toolkit só acrescenta itens; P5, P8 e P11 valem igual no que a
-  skill dele escreve.
+  nada. Item de rubrica com o id de um do Sabiá também: o toolkit só acrescenta itens; os itens L e C do Sabiá valem igual no
+  que a skill dele escreve.
 
 ## Proposta por agente
 

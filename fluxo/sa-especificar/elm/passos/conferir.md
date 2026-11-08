@@ -8,12 +8,12 @@ Os arquivos altera e exclui de `elm/`, menos os que têm `**Publicado:** manual`
 
 ## Faça
 
-1. **Comparar.** Peça à `sa-elm.baixar` a versão atual de cada um, sem gravar, e compare o `modificado_em` com a Versão
-   lida do commit de base.
+1. **Comparar.** Peça à `sa-elm.baixar` a versão atual de cada um, sem gravar, e compare o `modificado_em` com a versão
+   lida do Cobre da ficha.
 2. **Mudou.** Mostre o que mudou no DOORS e pergunte "mesclar ou seguir?".
    - **Mesclar:** novo commit de base com o original atual e a nova Versão lida (passo `gravar`, commit
      `FT-nnn elm: original <ids>`), e a edição reaplicada por cima (passo `gravar`, commit `FT-nnn elm: edita <ids>`).
-     O arquivo perde a linha Aprovado.
+     O arquivo volta a `status: draft` e perde o `verified`.
    - **Seguir:** nada muda; a `sa-elm.publicar` vai avisar e pular esse artefato.
 3. **Igual.** Siga.
 

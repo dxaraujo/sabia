@@ -227,6 +227,7 @@ de Decisions, cada parte num `###`). Na divergência com o plano, vale o código
 
 ````markdown
 ## Components and Interfaces
+**Atende:** [HF-<id> <título>](<id>-HF-<slug>.md) · [UC-<id> <título>](<id>-UC-<slug>.md)
 **Módulo:** <módulo> · **Schema:** <schema> · **Tipo:** Consulta | Cadastro | Processamento | Integração
 `<Componente.operacao(parâmetros)>`: <o que faz>
 
@@ -269,8 +270,9 @@ Relacionamentos: <TB_INSCRICAO> → <TB_TURMA> · N:1 · <ID_TURMA>
 - <decisão> — <motivo>; <consequência> (<ADR NNNN | local>)
 ````
 
-- A ET não cita HF nem EL; a publicação liga a ET às HF do Cobre no DOORS. Cita REG e MSG pelo id; a validação cita
-  a REG que aplica.
+- **Atende:** o link normal para cada HF e UC do Cobre da fatia (a HF não cita a ET). Na fatia, a HF nova ainda tem
+  o id provisório (só texto); o `trocar-ids` põe o link no `design.md` quando ela ganha o id do DOORS. Cita REG e MSG
+  da mesma forma; a validação cita a REG que aplica.
 - Permissão e abrangência ficam na HF e na REG, não aqui. A DDL nova é um item BD do `tasks.md`; aqui entra a tabela
   como ficou.
 - Nomes de tabela e coluna na forma original, com a convenção do steering do projeto.

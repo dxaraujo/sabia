@@ -9,9 +9,9 @@ o `equipe.json`.
 ## Faça
 
 1. **Sem ELM** (sem a chave `elm` no `agentes.json`) → passo `devolver`.
-2. **O que publicar.** Os arquivos de `elm/` aprovados e sem `**Publicado:** manual` e, com `ET as-built: sim`, a ET
+2. **O que publicar.** Os arquivos de `elm/` aprovados (`status: stable`) e sem `publicado: manual` e, com `ET as-built: sim`, a ET
    as-built do `design.md`. Arquivo de `elm/` sem aprovação → avise e deixe de fora.
-3. **Já publicado.** Tudo com `**Publicado:** manual` e nada mais a publicar → a linha `Publicação: publicada
+3. **Já publicado.** Tudo com `publicado: manual` e nada mais a publicar → a linha `Publicação: publicada
    <AAAA-MM-DD>` no `status.md`, pela gravação comum na base (passo `gravar`, commit `FT-nnn publicação`), sem a
    `sa-elm.publicar`.
 4. **Perguntar.** Quem tem `especificador` responde "publicar no DOORS?". Sim → `sa-elm.publicar`: confere a versão

@@ -19,5 +19,5 @@
 
 Depois do merge, publica no DOORS os arquivos aprovados da pasta `elm/` da fatia. Confere a versão de cada
 artefato (mudou → avisa e pula), cria os novos, troca o id provisório pelo do ELM e grava `Publicação: publicada
-<data>` no `status.md`. Arquivo com `**Publicado:** manual` (especificação feita direto no DOORS) não é
+<data>` no `status.md`. Arquivo com `publicado: manual` no frontmatter (especificação feita direto no DOORS) não é
 reenviado. Ordem, embutidos e chamadas: [mcp.md](~/.sabia/framework/skills/sa-elm/references/mcp.md).

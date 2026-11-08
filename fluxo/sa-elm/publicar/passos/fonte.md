@@ -8,12 +8,12 @@ A fatia (`ft-<nnn>-<slug>`).
 ## Faça
 
 1. A pasta `elm/` da spec da fatia: `openspec/changes/archive/<AAAA-MM-DD>-ft-<nnn>-<slug>/elm/` ou
-   `.kiro/specs/ft-<nnn>-<slug>/elm/`, um arquivo inteiro por artefato (HF, REG, EL, GL), cada um com
-   `**Aprovado:** <usuario> · <data>` de quem tem `especificador`. Sem a aprovação → fora da prévia, listado como
+   `.kiro/specs/ft-<nnn>-<slug>/elm/`, um arquivo inteiro por artefato (HF, UC, REG, MSG, EL, GL), cada um
+   com `status: stable` e o `verified` de quem tem `especificador`. Sem a aprovação → fora da prévia, listado como
    pendente.
-2. Arquivo com `**Publicado:** manual` → fora da prévia, conta como publicado.
+2. Arquivo com `publicado: manual` no frontmatter → fora da prévia, conta como publicado.
 3. Onde a seção ELM do `sabia.md` diz `ET as-built: sim`, a ET sai das seções Components and Interfaces · Data
-   Models · Decisões técnicas do `design.md` da spec.
+   Models · Decisões técnicas do `design.md` da spec (OpenSpec: Decisions).
 4. A ação (`inclui` · `altera` · `exclui`) e a versão lida de cada artefato vêm do Cobre da ficha
    (`.sabia/planejamento/fatias/FT-<nnn>-<slug>.md`).
 

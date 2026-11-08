@@ -13,7 +13,7 @@ avulsas (exceto `sabia` e `sa-*`) e mostre o cartão W5 com nome, para quê, ori
 1. `skills[].papeis` e `steering[].papeis` mapeiam 1:1 para os agentes: desenvolvedor → `sa-desenvolvedor`,
    especificador e produto → `sa-especificador`, pesquisador → `sa-pesquisador`, revisor → `sa-revisor`, verificador
    → `sa-verificador`.
-2. Tipos HF, REG, EL e GL vão ao `sa-especificador`; a ET as-built, ao `sa-desenvolvedor`; as rubricas, ao
+2. Tipos HF, UC, REG, MSG, EL e GL vão ao `sa-especificador`; a ET as-built, ao `sa-desenvolvedor`; as rubricas, ao
    `sa-revisor`; o texto `verificacao`, ao `sa-verificador`.
 3. Os desvios usam ids de passo (ex.: `sa-desenvolver.codificar.tarefa`) e vão ao prompt do agente que roda a skill
    do passo. `passo` num passo sem desvio → ❌, e a skill não é ligada.

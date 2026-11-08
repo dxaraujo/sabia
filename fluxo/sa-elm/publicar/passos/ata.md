@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-As ATAs do item em `.sabia/planejamento/atas/` com `Aprovado`.
+As ATAs do item em `.sabia/planejamento/atas/` com `status: stable`.
 
 ## Faça
 

@@ -48,11 +48,11 @@ a `sa-elm.setup`.
 
 ## Publicação de requisitos
 
-- **Ordem**: a de publicação do catálogo de tipos (cada um nasce com os ids que cita: GL → REG → EL → HF → ET). A EL
-  sobe antes da HF e nasce citando as HFs pelo título; publicadas as HFs, republique cada EL que cita uma HF nova, com o
-  id dela, no mesmo "sim".
-- **Texto**: o corpo do arquivo de `elm/` sem as linhas de cabeçalho (`**Aprovado:**`, `**Tipo:**`, `**Publicado:**`).
-  Requisito já publicado citado no texto → `[<id>](<id>)`; requisito novo citado → só o título até ganhar o id. Os tipos
+- **Ordem**: a de publicação do catálogo de tipos (cada um nasce com os ids que cita: MSG → GL → REG → UC → EL → HF → ET). A
+  referência só aponta para baixo, então nada é republicado para ganhar um id novo.
+- **Texto**: o corpo do arquivo de `elm/`, sem o frontmatter. Requisito já publicado citado com link para o arquivo
+  (`[REG-2087 <título>](2087-REG-<slug>.md)`) → `[REG-2087 <título>](2087)`; requisito novo citado → o id provisório
+  como texto, até ganhar o id. Os tipos
   da coluna Embute do catálogo (as regras citadas por uma história) vão em `embutir`; o resto fica hyperlink.
 - **Depois de publicar**: `elm_ler_req(<id>)` devolve o `modificado_em` novo, que o próximo `altera` usa como versão
   lida.

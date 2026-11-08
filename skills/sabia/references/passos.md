@@ -58,14 +58,14 @@ toolkit que declara `tipos` (`{"HF": {"skill": "skills/<skill>/SKILL.md", "fluxo
 "<arquivo>"}}`, fluxo e padrão opcionais) escreve o artefato pela skill dele, que o dono carrega e que segue o fluxo
 com o padrão do tipo, lidos pelo caminho na pasta do toolkit, ou, sem eles, as references dela; depois, volta ao passo.
 
-- **Quem escreve:** HF, REG, EL e GL saem pelo `sa-especificador`, com a aprovação gravada no documento; a ET as-built,
+- **Quem escreve:** HF, UC, REG, MSG, EL e GL saem pelo `sa-especificador`, com a aprovação gravada no documento; a ET as-built,
   pelo `sa-desenvolvedor`, com a aprovação do MR.
 - **Como o agente sabe:** a linha **Tipos com skill de toolkit** do prompt do dono de cada passo de desvio (gerada do
   `agentes.json`), com a skill do toolkit ligada a ele — a skill traz em `papeis` o papel de cada dono, senão o CLI e o
   gerador recusam o toolkit; sem agente, a seção **Tipos com skill de toolkit** do `.sabia/sabia.md`.
 - **Contrato, na volta ao passo:** o arquivo pela coluna Arquivo do catálogo, no formato do Sabiá (no arquivo de
-  `elm/`: o título `# <id> · <título>`, a linha `**Aprovado:**`, a linha `**Tipo:** … · **Ação:** … · **Versão
-  lida:** …` e o corpo pelo padrão do tipo). Fora dele → o dono completa no próprio passo e registra em Desvios do
+  `elm/`: o frontmatter `type` · `title` · `status` · `sources` e o corpo pelo padrão do tipo; no bloco do `prd.md`,
+  o corpo com os títulos dois níveis abaixo). Fora dele → o dono completa no próprio passo e registra em Desvios do
   `status.md`.
 - **Padrão do núcleo:** o toolkit não troca padrão do Sabiá; o `.sabia/padrao/` do projeto vale só sobre um padrão do
   Sabiá.

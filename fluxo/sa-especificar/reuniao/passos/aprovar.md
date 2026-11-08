@@ -16,7 +16,7 @@ Participantes: <n> · Decisões: D-<nn>…D-<nn> · Em aberto: <n>
 Aprovar? (sim | ajuste: <o quê>)
 ```
 
-- **Sim.** `**Aprovado:** <usuario> · <AAAA-MM-DD>` no cabeçalho, `<nn>` = a maior ATA de `.sabia/planejamento/atas/`
+- **Sim.** `status: stable` e `verified: {by: human:<usuario>, at: <AAAA-MM-DD>}` no frontmatter, `<nn>` = a maior ATA de `.sabia/planejamento/atas/`
   + 1, o `ATA-nn` nas Fontes, e o arquivo vai para `.sabia/planejamento/atas/ATA-<nn>-<AAAA-MM-DD>-<assunto>.md`
   (`<assunto>` em kebab-case, sem acento, até 5 palavras).
 - **Ajuste** → passo `escrever`, com o pedido.
