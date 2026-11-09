@@ -1,5 +1,5 @@
 ---
-{"resumo": "Pergunta o que a pessoa já sabe, busca no vigente, classifica cada requisito tocado em inclui, altera ou exclui, com a versão de referência, e confirma com a pessoa, inclusive 'nenhum requisito'."}
+{"resumo": "Pergunta o que a pessoa já sabe, busca no vigente, classifica cada requisito tocado em inclui, altera ou exclui, com a versão de referência, e confirma com a pessoa; 'nenhum requisito' só com a resposta dela."}
 ---
 ## Entrada
 
@@ -19,9 +19,11 @@ Regras e cenários dos passos anteriores; na fatia de épico, os artefatos afeta
    - Novo: id provisório `<sigla>-<EPnn | FTnnn>-nn` (o do PRD na fatia de épico; o da própria fatia no item
      avulso, ex.: `REG-FT031-01`), com versão `—`.
    - Sem ELM: o `<sigla>-<EP | FT>-nn` é o id definitivo e a versão é `—`.
-5. Sem requisito tocado: a linha `nenhum requisito`.
-6. **Confirme**: mostre os requisitos consultados, o motivo de cada linha e a conclusão, e peça a confirmação, inclusive de
-   `nenhum requisito`.
+5. **Confirme**: mostre os requisitos consultados, o motivo de cada linha e a conclusão, e peça a confirmação.
+6. **Resguardo: a busca não achou requisito tocado.** Não encontrar não prova que não existe. Pergunte sempre, mesmo que a
+   resposta do item 1 tenha sido `não sei`: "não encontrei requisito afetado; esta tarefa altera algum requisito?".
+   - Não → a linha `nenhum requisito`.
+   - Sim → a pessoa informa quais artefatos são alterados; classifique e grave cada um pelos itens 3 e 4.
 
 ## Saída
 
@@ -29,4 +31,4 @@ A seção Artefatos afetados → passo `elm`.
 
 ## Pare se
 
-Nenhuma condição própria: sem bundle, os artefatos afetados seguem com o que a pessoa confirma.
+- Sem a resposta do resguardo → não grave `nenhum requisito`. Sem bundle, os artefatos afetados seguem com o que a pessoa confirma.

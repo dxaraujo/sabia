@@ -42,7 +42,7 @@
   },
   "agentes": {
     "sa-desenvolvedor": {
-      "descricao": "Sabiá developer — takes a slice (fatia) or bug from elegível to merge: assumes it in one step (size, route trivial · rápida · completo, and mode: supervised AI, AI autopilot or manual), writes the plan when the route has one, codes it with TDD and backpressure, gets an agent review from sa-revisor and an agent verification from sa-verificador, and opens the MR with the proof. Also reviews other people's MRs (sa-revisar.mr), runs the revisão humana (sa-verificar.revisao-humana), handles Sustentação (sa-atender) and archives the spec after the merge. In autopilot it runs as its own subagent in the worktree .sabia/local/wt/<id>.",
+      "descricao": "Sabiá developer — takes a slice (fatia) or bug from elegível to merge: assumes it in one step (size, track trivial · rápida · completo, and autonomy: supervised AI, AI autopilot or manual), writes the plan when the track has one, codes it with TDD and backpressure, gets an agent review from sa-revisor and an agent verification from sa-verificador, and opens the MR with the evidence. Also reviews other people's MRs (sa-revisar.mr), runs the revisão humana (sa-verificar.revisao-humana), handles Sustentação (sa-atender) and archives the spec after the merge. In autopilot it runs as its own subagent in the worktree .sabia/local/wt/<id>.",
       "mode": "primary",
       "permissao": "build",
       "skills": ["sa-desenvolver", "sa-plano", "sa-revisar", "sa-verificar", "sa-atender", "sa-especificar", "sa-triar",
@@ -69,21 +69,21 @@
       "subagentes": ["sa-pesquisador", "sa-revisor", "sa-verificador", "sa-especificador"]
     },
     "sa-pesquisador": {
-      "descricao": "Sabiá researcher, read-only, clean context — reads the code, the specs in the repository, the ELM bundle and the database (queries only) and returns facts with file:line to the caller, without opinions, plans or solutions. Writes nothing.",
+      "descricao": "Sabiá researcher, read-only, isolated context — reads the code, the specs in the repository, the ELM bundle and the database (queries only) and returns facts with file:line to the caller, without opinions, plans or solutions. Writes nothing.",
       "mode": "subagent",
       "permissao": "leitura",
       "skills": ["sa-pesquisar"],
       "subagentes": []
     },
     "sa-revisor": {
-      "descricao": "Sabiá independent reviewer, read-only, clean context — reviews a plan (rubric L) or a diff (rubric C: spec, standards and security axes kept apart) with the toolkit rubrics and the learned rules, gathers evidence for every item and returns the report to the caller. Writes nothing and never commits.",
+      "descricao": "Sabiá independent reviewer, read-only, isolated context — reviews a plan (review criteria L) or a diff (rubric C: spec, standards and security axes kept apart) with the toolkit rubrics and the learned rules, gathers evidence for every item and returns the report to the caller. Writes nothing and never commits.",
       "mode": "subagent",
       "permissao": "leitura",
       "skills": ["sa-revisar"],
       "subagentes": []
     },
     "sa-verificador": {
-      "descricao": "Sabiá acceptance verifier, clean context — starts the application with the project's Executar commands, exercises every CT-nn scenario against the test URL like a real user, writes CT.csv in the spec folder and returns the 🔎 block (ACEITO, REJEITADO or AMBIENTE). Never touches production code, production data or the base branch.",
+      "descricao": "Sabiá acceptance verifier, isolated context — starts the application with the project's Executar commands, exercises every CT-nn scenario against the test URL like a real user, writes CT.csv in the spec folder and returns the 🔎 block (ACEITO, REJEITADO or AMBIENTE). Never touches production code, production data or the base branch.",
       "mode": "subagent",
       "permissao": "leitura",
       "skills": ["sa-verificar"],
