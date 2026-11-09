@@ -302,7 +302,7 @@ footer{margin-top:40px;color:var(--muted);font-size:12px;border-top:2px solid va
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 svg .decor{fill:none;stroke:var(--navy);stroke-width:2;stroke-dasharray:2 4}
 svg .dyn .xpath{stroke-width:3.5}
-svg .dyn.hot .xpath{stroke-width:4.5;animation:march 3.5s linear infinite}
+svg .xedge.hot .xpath{stroke-width:4.5;animation:march 2.6s linear infinite}
 svg .dyn.na{opacity:.25}
 @keyframes march{to{stroke-dashoffset:-84}}
 .tree .f>span:first-child{min-width:0;overflow-wrap:anywhere}

@@ -141,8 +141,8 @@ function view(){
     const inL=!L||m.includes(L)||(D.S[id].also||[]).includes(L);
     const sk=L&&it.find(x=>x.id===id&&x.skip);
     g.classList.toggle("dim",!inL);g.classList.toggle("skip",!!sk&&inL);g.classList.toggle("sel",id===ST.st)});
-  for(const e of D.EXTRA){if(!e.g)continue;const vis=!L||!e.lines||e.lines.includes(L);
-    e.g.classList.toggle("hid",!vis||!okEdge(e));e.g.classList.toggle("na",false);
+  for(const e of D.EXTRA){if(!e.g)continue;const daqui=ST.st===e.f,vis=(!L||!e.lines||e.lines.includes(L))&&(e.kind==="alt"||daqui);
+    e.g.classList.toggle("hid",!vis||!okEdge(e));e.g.classList.toggle("na",false);e.g.classList.toggle("hot",e.kind!=="alt"&&daqui);
     if(e.lab_el){e.lab_el.style.opacity=vis&&okEdge(e)?1:0;const t=val(e.short||e.lab);if(e.lab_t.textContent!==t){e.lab_t.textContent=t;const w=Math.max(30,t.length*5.6+14);e.lab_r.setAttribute("width",w);e.lab_r.setAttribute("x",e.lp[0]-w/2)}}}
   document.querySelectorAll("#lineChips .chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.k===L));
   document.querySelectorAll("#senChips .chip").forEach(c=>c.setAttribute("aria-pressed",(c.dataset.k||null)===(ST.sen||null)||(c.dataset.k==="all"&&!ST.sen)));
@@ -159,15 +159,16 @@ function anchor(id){return center(id)}
 function arcOf(e){const[x1,y1]=anchor(e.f),[x2,y2]=anchor(e.t);const dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy)||1;const nx=-dy/len,ny=dx/len;
   const b=(e.bend||1)*Math.min(160,Math.max(46,len*.3));const cx=(x1+x2)/2+nx*b,cy=(y1+y2)/2+ny*b;
   return{d:`M${x1},${y1} Q${cx},${cy} ${x2},${y2}`,mx:.25*x1+.5*cx+.25*x2,my:.25*y1+.5*cy+.25*y2}}
-function drawDyn(){gDyn.innerHTML="";gDynL.innerHTML="";const L=ST.line;if(!L)return;
-  for(const e of D.EXTRA){if(e.pts||e.kind==="xfer")continue;
-    const rel=(!e.lines||e.lines.includes(L))||e.toLine===L;if(!rel)continue;
-    const hot=ST.st&&(e.f===ST.st||e.t===ST.st);if(ST.st&&!hot)continue;
-    const ok=okEdge(e);if(!ok)continue;const a=arcOf(e);
-    const g=el("g",{class:`xedge dyn x-${e.kind}${hot?" hot":""}${ok?"":" na"}`},gDyn);
+function drawDyn(){gDyn.innerHTML="";gDynL.innerHTML="";const L=ST.line;
+  /* retornos e desvios só aparecem na estação de onde saem */
+  for(const e of D.EXTRA)if(!e.pts)e.el=null;
+  if(!L||!ST.st)return;
+  for(const e of D.EXTRA){if(e.pts||e.f!==ST.st||(e.lines&&!e.lines.includes(L))||!okEdge(e))continue;
+    const a=arcOf(e);
+    const g=el("g",{class:`xedge dyn x-${e.kind} hot`},gDyn);
     e.el=el("path",{d:a.d,class:"xpath","marker-end":`url(#arr-${e.kind})`},g);
-    if(hot&&ok){const t=val(e.short||e.lab);const txt=t.length>34?t.slice(0,33)+"…":t;const w=txt.length*5.6+14;const lg=el("g",{class:`xlab x-${e.kind}`},gDynL);
-      el("rect",{x:a.mx-w/2,y:a.my-9,width:w,height:18,rx:6},lg);el("text",{x:a.mx,y:a.my+3.5,"text-anchor":"middle"},lg).textContent=txt}}}
+    const t=val(e.short||e.lab);const txt=t.length>34?t.slice(0,33)+"…":t;const w=txt.length*5.6+14;const lg=el("g",{class:`xlab x-${e.kind}`},gDynL);
+    el("rect",{x:a.mx-w/2,y:a.my-9,width:w,height:18,rx:6},lg);el("text",{x:a.mx,y:a.my+3.5,"text-anchor":"middle"},lg).textContent=txt}}
 
 /* rolagem do mapa ampliado para acompanhar o trem ou a estação */
 const box=$(".mapscroll");
@@ -250,10 +251,9 @@ function stationView(id){
   /* próxima estação pulada nesta linha, para mostrar o porquê */
   if(L){const fi=full.findIndex(x=>x.id===id);if(fi>=0)for(let j=fi+1;j<full.length&&full[j].skip;j++)outs.push({kind:"alt",na:true,title:D.S[full[j].id].nome,sub:full[j].skip,ico:"⊘"})}
   for(const e of D.EXTRA){if(e.f!==id)continue;if(e.lines&&L&&!e.lines.includes(L))continue;if(e.pts&&e.kind==="alt"&&e.t===nextId)continue;if(e.t===nextId&&okEdge(e))continue;
-    const ok=okEdge(e);if(!ok)continue;outs.push({kind:e.kind,na:!ok,to:e.t,edge:e.id,toLine:e.toLine,title:(e.tname||D.S[e.t].nome),sub:ok?val(e.lab):(e.why?val(e.why):val(e.lab)),ico:e.kind==="loop"?"↺":e.kind==="xfer"?"⇄":e.kind==="skip"?"⤳":"↗"})}
+    const ok=okEdge(e);if(!ok)continue;outs.push({kind:e.kind,na:!ok,to:e.t,edge:e.id,toLine:e.toLine,title:(e.tname||D.S[e.t].nome),sub:ok?val(e.lab):(e.why?val(e.why):val(e.lab)),ico:e.kind==="loop"?"↺":e.kind==="xfer"?"⇄":e.kind==="skip"?"⤳":"↗",desvio:e.kind==="loop"||e.kind==="xfer"})}
   const ins=[];
   if(prevId)ins.push({back:true,to:prevId,title:D.S[prevId].nome,sub:viaLabel(L,prevId,id)||D.S[prevId].sk,ico:"←"});
-  for(const e of D.EXTRA){if(e.t!==id||!okEdge(e)||e.f===prevId)continue;if(e.lines&&L&&!e.lines.includes(L)&&e.toLine!==L)continue;ins.push({back:true,to:e.f,edge:"",title:D.S[e.f].nome,sub:val(e.lab),ico:e.kind==="loop"?"↺":"←",toLine:e.fromLine||(e.lines&&!e.lines.includes(L)?e.lines[0]:L)})}
   const tabs=m.map(x=>`<button data-tab="${x}" aria-pressed="${x===L}" style="--c:${cv(D.LINES[x].c)}"><i></i>${esc(D.LINES[x].nome)}</button>`).join("");
   P.innerHTML=`<div class="ph" style="${L?lbar(L):""}"><div class="ltabs">${tabs}</div>
    <h3>${esc(s.nome)}</h3><div class="sk">${esc(s.sk||"")}</div>
@@ -264,7 +264,8 @@ function stationView(id){
    ${aviso()?`<div class="note warn">${fmt(aviso())}</div>`:""}
    <dl class="kv"><dt>Papel</dt><dd>${fmt(val(s.papel))}</dd><dt>Agente</dt><dd>${fmt(val(s.agente))}</dd><dt>Tarefa</dt><dd>${fmt(val(s.tarefa))}</dd>${s.fase?`<dt>Fase</dt><dd>${fmt(val(s.fase))}</dd>`:""}</dl>
    ${senStrip(s.sen)}
-   <div class="blk"><h4>Transições</h4><div class="trans">${outs.map(trBtn).join("")||`<span class="hint">Fim da linha.</span>`}</div></div>
+   <div class="blk"><h4>Transições</h4><div class="trans">${outs.filter(o=>!o.desvio).map(trBtn).join("")||`<span class="hint">Fim da linha.</span>`}</div></div>
+   ${outs.some(o=>o.desvio)?`<div class="blk"><h4>Retornos e desvios daqui</h4><div class="trans">${outs.filter(o=>o.desvio).map(o=>trBtn({...o,title:(o.kind==="loop"?"Volta a ":"Vai a ")+o.title})).join("")}</div></div>`:""}
    ${ins.length?`<div class="blk"><h4>Chega de</h4><div class="trans">${ins.map(trBtn).join("")}</div></div>`:""}
    <div class="blk"><h4>O que acontece</h4><ul>${val(s.faz).map(x=>`<li>${fmt(val(x))}</li>`).join("")}</ul></div>
    <div class="blk"><h4>Arquivos</h4><ul>${val(s.arq).map(x=>`<li>${fmt(val(x))}</li>`).join("")}</ul></div>
