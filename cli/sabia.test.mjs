@@ -382,6 +382,17 @@ test("detecção do toolkit: basta um dos termos em `contem`", async () => {
   }, {}, "projeto-d");
 });
 
+test("remover a última versão não apaga o que mais houver na pasta do toolkit", async () => {
+  const indice = indiceDe([{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./batch-alfa" } }]);
+  toolkit(path.join(indice, "batch-alfa"));
+  escrever(path.join(home, ".sabia/toolkits/batch-alfa"), { "outra/coisa.md": "fica" });
+  await s.baixarToolkit("batch-alfa", { indice });
+  await s.removerToolkits(["batch-alfa"], { sim: true });
+  assert.ok(!fs.existsSync(path.join(home, ".sabia/toolkits/batch-alfa/1.0.0")));
+  assert.equal(fs.readFileSync(path.join(home, ".sabia/toolkits/batch-alfa/outra/coisa.md"), "utf8"), "fica");
+  assert.ok(!s.lerInventario().toolkits["batch-alfa"]);
+});
+
 test("toolkit sem acesso ao índice: usa a maior versão baixada e avisa; recusado continua recusado", async () => {
   const indice = indiceDe([{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./batch-alfa" } }]);
   toolkit(path.join(indice, "batch-alfa"));

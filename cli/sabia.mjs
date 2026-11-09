@@ -779,7 +779,9 @@ function apagarVersao(nome, versao) {
   const inv = lerInventario(), t = inv.toolkits[nome];
   if (t?.versoes) delete t.versoes[versao];
   if (!versoesLocais(nome).length) {
-    fs.rmSync(sabia("toolkits", nome), { recursive: true, force: true });
+    // só as pastas de versão são do CLI: o que mais houver na pasta do toolkit fica
+    const d = sabia("toolkits", nome);
+    if (fs.existsSync(d) && !fs.readdirSync(d).length) fs.rmSync(d, { recursive: true, force: true });
     delete inv.toolkits[nome];
   }
   gravarInventario(inv);
