@@ -8,7 +8,7 @@ O resultado do passo `elm`.
 ## Faça
 
 1. Sem GL do DOORS (sem ELM, ou a `sa-elm.setup` avisou que não usa GL) → ofereça o `.sabia/glossario.md` (chave
-   `glossario` do `agentes.json`), criado só se a pessoa pedir, com as colunas Termo · Definição · Evitar (o padrão
+   `glossario` do `agentes.json`), criado só se a pessoa pedir, com as colunas Termo · Definição · Evitar (o template
    `sa-entrevistar/glossario.md`). Recusou → `glossario: null`.
 2. ADRs em `docs/adr/` (chave `adr`) são opcionais e servem só para decisão que atravessa fatias. Recusou →
    `adr: null`.

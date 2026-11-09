@@ -7,7 +7,7 @@ O `equipe.json` atual, se existe, e o que a pessoa disse que mudou.
 
 ## Faça
 
-Proponha `.sabia/planejamento/equipe.json` (exemplo no padrão `sa-planejamento/equipe.md`) com
+Proponha `.sabia/planejamento/equipe.json` (exemplo no template `sa-planejamento/equipe.md`) com
 `membros[]` = `{nome, usuario, elm_login, desenvolvedor, especificador, produto, horas_semana, ausencias, ativo}`:
 
 - `usuario` = o usuário do GitLab: o autor do MR, o `@dono` no CODEOWNERS e o nome do CSV de créditos.

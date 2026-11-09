@@ -1,5 +1,5 @@
 ---
-{"resumo": "Grava a ficha pelo padrão, confere a DoR e muda a linha para elegível quando ela fecha; senão o item fica aceita."}
+{"resumo": "Grava a ficha pelo template, confere a DoR e muda a linha para elegível quando ela fecha; senão o item fica aceita."}
 ---
 ## Entrada
 
@@ -7,10 +7,10 @@ O que os passos anteriores levantaram: regras, cenários, Não muda, artefatos a
 
 ## Faça
 
-1. **Ficha** `.sabia/planejamento/fatias/FT-nnn-<slug>.md`, pelo padrão `sa-refinar/ficha.md`: título, a linha
+1. **Ficha** `.sabia/planejamento/fatias/FT-nnn-<slug>.md`, pelo template `sa-refinar/ficha.md`: título, a linha
    Aprovado, o cabeçalho (Tipo · Pai · Especificação) e as seções Entrada · Objetivo · Regras · Cenários · Não
    muda · Artefatos afetados · Em aberto · Decisões · DoR. Seção vazia fica só com o título.
-2. **DoR** (avisa, não trava): marque cada item do checklist do padrão.
+2. **DoR** (avisa, não trava): marque cada item do checklist do template.
 3. **Aprovação**: só quem tem `produto` aprova; mostre a ficha e peça o "sim". Aprovado →
    `**Aprovado:** <usuario> · AAAA-MM-DD`. Qualquer mudança depois do Aprovado volta a linha para `**Aprovado:** —`
    até a nova aprovação. Sem essa pessoa na sessão: mostre os nomes com `produto`.

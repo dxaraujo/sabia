@@ -8,7 +8,7 @@ Os agentes são **gerados**, nunca editados à mão. O script [gerar_agentes.py]
 | `sa-<nome>.md` | [../assets/agents/](../assets/agents/) | o prompt de cada um dos 5 agentes |
 | `agentes.json` | `.sabia/config/agentes.json` (projeto, versionado) | as escolhas do projeto |
 | definições dos fluxos e `tipos.json` | o framework instalado (`~/.sabia/framework`; `--framework` troca) | o dono de cada fluxo, os passos com desvio e o passo que cria cada tipo |
-| override | `.sabia/fluxo/` e `.sabia/padrao/` (projeto, esparso; harness) | o delta no prompt do agente que roda a skill do passo |
+| override | `.sabia/fluxo/` e `.sabia/template/` (projeto, esparso; harness) | o delta no prompt do agente que roda a skill do passo |
 
 ```bash
 uv run --no-project python <pasta desta skill>/scripts/gerar_agentes.py --projeto <raiz>            # mostra o diff e a tabela
@@ -19,7 +19,7 @@ uv run --no-project python <pasta desta skill>/scripts/gerar_agentes.py --base s
 ```
 
 Sai com código 1, sem gravar nada, se sobrou um `{{…}}`, se um caminho não existe ou é absoluto, ou se o override ou
-um desvio de toolkit é recusado. O `--base <id>` imprime o sha12 do original no framework (o id do passo ou o padrão
+um desvio de toolkit é recusado. O `--base <id>` imprime o sha12 do original no framework (o id do passo ou o template
 `<skill>/<nome>.md`) e não gera nada. Roda no passo `agentes` do `sa-setup.configurar` e no passo `regenerar` do
 `sa-setup.customizar`.
 
@@ -57,7 +57,7 @@ as skills que roda e os subagentes que chama. O `sa-verificador` tem as liberaç
 `agentes.json`.
 
 - **Harness** (deny): `.kiro/agents`, `.kiro/settings`, `.kiro/steering/sabia.md`, `.opencode`, `opencode.json`,
-  `.sabia/config`, `.sabia/fluxo` e `.sabia/padrao`. Liberados: `.kiro/specs`, `openspec/`, `.sabia/planejamento` e
+  `.sabia/config`, `.sabia/fluxo` e `.sabia/template`. Liberados: `.kiro/specs`, `openspec/`, `.sabia/planejamento` e
   `.sabia/creditos`.
 - **build:** ler e editar sem restrição por pasta; push, merge, curl e wget em ask; rebase, `--force`,
   `--force-with-lease`, `reset --hard`, `--no-verify` e destrutivos em deny; GitLab: leitura allow, escrita ask.
@@ -81,8 +81,8 @@ As skills instaladas são compiladas e não sabem do projeto. O que o projeto mu
 do `sa-<nome>.md`:
 
 - **Delta do override**, no agente que roda a skill do passo: passo trocado (leia o `.sabia/fluxo/…` no lugar do da
-  skill), passo inserido (o arquivo e depois de qual) e passo removido. Padrão trocado vai a todos os agentes.
-- **Recusa** (código 1): arquivo que não é passo nem padrão do Sabiá; cópia sem `branch_base`; operação que não é `inserir`
+  skill), passo inserido (o arquivo e depois de qual) e passo removido. Template trocado vai a todos os agentes.
+- **Recusa** (código 1): arquivo que não é passo nem template do Sabiá; cópia sem `branch_base`; operação que não é `inserir`
   nem `remover`; `remover` de passo com trava; `inserir` com id inválido, repetido, `depois` inexistente ou sem o
   arquivo.
 - **Aviso:** a `branch_base` da cópia difere do original atual → compare e funda à mão.

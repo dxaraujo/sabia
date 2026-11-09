@@ -8,7 +8,7 @@ As lições aprendidas e a seção Regras aprendidas do `.sabia/sabia.md`.
 ## Faça
 
 Marque "já está" na lição que já tem regra equivalente (o mesmo texto ou a mesma origem). Formato das regras:
-o padrão `sa-planejamento/regras-aprendidas.md`.
+o template `sa-planejamento/regras-aprendidas.md`.
 
 ## Saída
 

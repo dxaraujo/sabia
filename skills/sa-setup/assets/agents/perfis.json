@@ -1,7 +1,7 @@
 {
   "$comment": "Fonte única dos 5 agentes do Sabiá. O gerador da sa-setup junta isto com o .sabia/config/agentes.json do projeto e grava .kiro/agents/sa-<nome>.json e .opencode/agents/sa-<nome>.md, com o prompt de assets/agents/sa-<nome>.md. harness: nenhum agente edita. segredos: nenhum agente lê nem edita. modelos: as regras de permissão (padrao vale para o que nenhuma lista casa; deny vence ask, e ask vence allow). agentes.<nome>.permissao escolhe o modelo; liberacoes soma regras a ele; autopilot vale quando o sa-desenvolvedor roda como subagente na worktree (sem pessoa, o ask que sobra vira deny). As regras do ELM vêm da chave elm do agentes.json (sa-elm.setup). No Kiro, só os nomes de capability; os limites por caminho e URL vão no prompt. Marcadores: {{BASE}}, {{PREFIXO_BRANCH}}, {{EXECUTAR}} (cada comando Executar da seção Verificação de aceite do sabia.md), {{URL_TESTE}}; o padrão com marcador sem valor no projeto sai da saída.",
   "harness": [".kiro/agents/**", ".kiro/settings/**", ".kiro/steering/sabia.md", ".opencode/**", "opencode.json",
-      ".sabia/config/**", ".sabia/fluxo/**", ".sabia/padrao/**"],
+      ".sabia/config/**", ".sabia/fluxo/**", ".sabia/template/**"],
   "segredos": ["**/.env", "**/.env.*", "**/*.pem", "**/*.key", "**/id_rsa*", "**/elm.properties", "~/.ssh/**",
       "~/.aws/**", "~/.config/mcp-*/**"],
   "modelos": {

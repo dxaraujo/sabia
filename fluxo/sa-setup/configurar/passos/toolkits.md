@@ -18,7 +18,7 @@ avulsas (exceto `sabia` e `sa-*`) e mostre o cartão W5 com nome, para quê, ori
 3. Os desvios usam ids de passo (ex.: `sa-desenvolver.codificar.tarefa`) e vão ao prompt do agente que roda a skill
    do passo. `passo` num passo sem desvio → ❌, e a skill não é ligada.
 4. Liste também os agentes do projeto (fora os `sa-*`) com o "para quê": são oferecidos no passo `perfis`.
-5. Mostre o bloco Fluxos (W5-F): o que o projeto customizou em `.sabia/fluxo/` e `.sabia/padrao/`.
+5. Mostre o bloco Fluxos (W5-F): o que o projeto customizou em `.sabia/fluxo/` e `.sabia/template/`.
 
 ## Saída
 

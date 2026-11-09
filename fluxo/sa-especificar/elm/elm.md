@@ -27,7 +27,7 @@ e o git mostra a diferença contra o commit de referência. O `elm/` é a fonte 
 merge) e o texto que a `sa-plano.plano` copia para o delta. Tudo vai direto na branch base, sem MR.
 
 Leia antes: a ficha da fatia (`.sabia/planejamento/fatias/FT-nnn-<slug>.md`: Especificação, artefatos afetados, Decisões, Em
-aberto), o `formato_spec` do `agentes.json` e o padrão `sa-elm/elm-arquivo.md`.
+aberto), o `formato_spec` do `agentes.json` e o template `sa-elm/elm-arquivo.md`.
 
 ## Entrada: vizinhos
 

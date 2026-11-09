@@ -250,12 +250,12 @@ cartões dela e devolve os dados; a linha 3 mostra o `pa` que ela gravou.
 |---|---|---|---|---|---|
 | 1 | `<toolkit>` <versão> | <`sa-desenvolver.codificar.tarefa` | ❌ `<id>` não aceita desvio> | <quando usar> | `<skill>` | <`<agente>` | —> |
 
-(só se algum toolkit traz `tipos`) Tipos com skill de toolkit — a skill do toolkit, com o fluxo e o padrão do tipo,
+(só se algum toolkit traz `tipos`) Tipos com skill de toolkit — a skill do toolkit, com o fluxo e o template do tipo,
 escreve o tipo no passo de desvio dele (coluna Desviável do catálogo):
 
-| Tipo | Skill | Fluxo e padrão | Toolkit | Passo de desvio |
+| Tipo | Skill | Fluxo e template | Toolkit | Passo de desvio |
 |---|---|---|---|---|
-| `<sigla>` | `<skill>` | `<fluxo>` <com o padrão `<padrão>`> <ou — (as references da skill)> | `<toolkit>` <versão> | `<id do passo>` |
+| `<sigla>` | `<skill>` | `<fluxo>` <com o template `<template>`> <ou — (as references da skill)> | `<toolkit>` <versão> | `<id do passo>` |
 
 Ligar ao projeto — um toolkit de tipo por linha (marcado o detectado; desmarcado o sugerido):
 
@@ -283,7 +283,7 @@ Na mesma mensagem do W5, antes da pergunta; também no C4 ("o que este projeto m
 ### 🔀 Fluxos — o que este projeto customizou
 | # | Ponto | Mudança | Arquivo | Base |
 |---|---|---|---|---|
-| 1 | `<skill>.<fluxo>.<passo> | <skill>/<nome>.md>` | <trocado | inserido depois de `<passo>` | removido | padrão trocado> | `<.sabia/fluxo/… | .sabia/padrao/…>` | <✅ igual à do Sabiá instalado | ⚠️ a base mudou desde a cópia — compare e funda à mão | ➖ inserido ou removido | ❌ <sem `branch_base` | não é passo nem padrão do Sabiá> — o gerador recusa> |
+| 1 | `<skill>.<fluxo>.<passo> | <skill>/<nome>.md>` | <trocado | inserido depois de `<passo>` | removido | template trocado> | `<.sabia/fluxo/… | .sabia/template/…>` | <✅ igual à do Sabiá instalado | ⚠️ a base mudou desde a cópia — compare e funda à mão | ➖ inserido ou removido | ❌ <sem `branch_base` | não é passo nem template do Sabiá> — o gerador recusa> |
 
 Nada customizado → a linha `| — | o Sabiá como vem | — | — | ➖ |`. Para mudar: "customizar …", "descustomizar …".
 ```
@@ -465,7 +465,7 @@ Achei o ponto assim — confira.
 | 1 | trocar o passo | cópia inteira em `.sabia/fluxo/<skill>/<fluxo>/passos/<passo>.md`, com a `branch_base`, para você editar |
 | 2 | inserir um passo depois deste | `.sabia/fluxo/<skill>/<fluxo>/passos/<novo>.md` com as quatro seções + `inserir` no `<fluxo>.md` do projeto |
 | 3 | remover o passo | <`remover` no `<fluxo>.md` do projeto | ➖ não removível — trava `<id>`> |
-| 4 | trocar o padrão `<skill>/<nome>.md` | <cópia em `.sabia/padrao/<skill>/<nome>.md`, com a `branch_base` | ➖ o passo não usa padrão> |
+| 4 | trocar o template `<skill>/<nome>.md` | <cópia em `.sabia/template/<skill>/<nome>.md`, com a `branch_base` | ➖ o passo não usa padrão> |
 
 As travas do fluxo continuam valendo em qualquer forma.
 
@@ -482,7 +482,7 @@ Também no "descustomizar" (a coluna Ação diz "apagar").
 
 | Arquivo | Ação |
 |---|---|
-| `<.sabia/fluxo/… | .sabia/padrao/…>` | <criado — diff contra o original abaixo | alterado | apagar> |
+| `<.sabia/fluxo/… | .sabia/template/…>` | <criado — diff contra o original abaixo | alterado | apagar> |
 | `<.sabia/fluxo/<skill>/<fluxo>/<fluxo>.md>` | <`inserir` · `remover` | apagar — ficou vazio | ➖> |
 | `<.kiro/agents/<dono>.json · .opencode/agents/<dono>.md>` | <alterar — o delta no prompt, diff abaixo | manter> |
 

@@ -111,4 +111,4 @@ iteração `Backlog` com o plano: tem → a pessoa escolhe o candidato ou cola o
 Mostre o `pa` inteiro numa tabela legível (PA, time e categoria, cada tipo com campos, obrigatórios, padrões e
 `por-prefixo`, horas, RM com cada sigla, bundle e backlog), com a origem de cada valor (descoberta, pessoa ou fixo), e
 depois o JSON que será gravado, byte a byte, conferido contra o schema. Outra project area → repita tudo num outro
-`pa_<nome>.json` e diga na seção ELM qual é o padrão.
+`pa_<nome>.json` e diga na seção ELM qual é o template.

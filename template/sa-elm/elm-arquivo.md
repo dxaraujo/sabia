@@ -1,5 +1,5 @@
 ---
-{"resumo": "Arquivo de artefato em elm/ da pasta da spec: frontmatter type · title · status · sources (verified na aprovação, publicado só no manual) e o corpo inteiro pelo padrão do tipo; o id vai no nome do arquivo."}
+{"resumo": "Arquivo de artefato em elm/ da pasta da spec: frontmatter type · title · status · sources (verified na aprovação, publicado só no manual) e o corpo inteiro pelo template do tipo; o id vai no nome do arquivo."}
 ---
 ```markdown
 ---
@@ -10,7 +10,7 @@ verified: {by: human:<usuario>, at: <AAAA-MM-DD>}   # só com status: stable
 sources: [{id: D-<nn>}, {id: ATA-<nn> [mm:ss]}, {id: <sigla>-<id>}]
 publicado: manual <AAAA-MM-DD>   # só na especificação manual
 ---
-<o corpo inteiro do artefato, pelo padrão do tipo; no exclui, o original>
+<o corpo inteiro do artefato, pelo template do tipo; no exclui, o original>
 ```
 
 - **Caminho:** `<pasta da spec>/elm/`, com a pasta da spec `.kiro/specs/ft-<nnn>-<slug>/` ou
@@ -29,7 +29,7 @@ publicado: manual <AAAA-MM-DD>   # só na especificação manual
 - **publicado:** só na especificação manual, quando o texto já está no DOORS; a publicação não reenvia.
 - **Ação e versão de referência** moram nos artefatos afetados da ficha (`<sigla>-<id> · inclui | altera | exclui · versão de referência`). A versão de referência é o `modificado_em` do DOORS no download; `—` no novo. A publicação compara e, se mudou, avisa e pula.
 - **Ao DOORS sobe só o corpo:** a publicação tira o frontmatter.
-- **Corpo sem cabeçalho:** sem título `#` nem linhas de aprovação, tipo ou ação; começa no primeiro rótulo do padrão.
+- **Corpo sem cabeçalho:** sem título `#` nem linhas de aprovação, tipo ou ação; começa no primeiro rótulo do template.
 - **Sem título Markdown no corpo:** as partes são rótulos em negrito (`**Narrativa:**`, `**1. <contexto>**`), para o
   mesmo texto servir ao bloco do `prd.md`, ao delta (dentro do `### Requirement:`) e ao DOORS.
 - **Commit de referência:** o original, antes de qualquer edição; o git mostra a diferença contra ele.

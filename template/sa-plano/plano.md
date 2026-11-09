@@ -220,7 +220,7 @@ interno que o produz vai em Data Models. A decisão que atravessa fatias vira AD
 projeto mantém ET (`ET as-built: sim` na seção ELM do `sabia.md`), Components and Interfaces, Data Models e Decisões
 técnicas (OpenSpec: Decisions) formam a ET publicada; a codificação os ajusta ao que foi feito antes do MR.
 
-Onde o projeto mantém ET, a forma dessas seções é o padrão `requisitos/padrao-et.md`.
+Onde o projeto mantém ET, a forma dessas seções é o template `requisitos/template-et.md`.
 
 ## `tasks.md`
 

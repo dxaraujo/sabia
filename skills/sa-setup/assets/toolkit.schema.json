@@ -218,7 +218,7 @@
     },
     "tipos": {
       "type": "object",
-      "description": "Opcional: quem escreve um tipo desviável do catálogo do Sabiá (skills/sabia/references/tipos.md): a skill do toolkit, com o fluxo e o padrão do tipo (opcionais: sem eles, a skill segue as references dela), ex.: {\"HF\": {\"skill\": \"skills/<skill>/SKILL.md\", \"fluxo\": \"fluxo/fluxo-hf.md\", \"padrao\": \"padrao/padrao-hf.md\"}}. A skill vai ao dono do passo de desvio (coluna Desviável do catálogo, ⇢) e lê o fluxo e o padrão, quando há, pelo caminho, na pasta instalada do toolkit; o Sabiá não compila conteúdo de toolkit (fluxo com passos é só do framework). O toolkit não cria tipo: a sigla é do catálogo. A linha vai no prompt do dono do passo de desvio e na seção Tipos com skill de toolkit do sabia.md. Dois toolkits do projeto no mesmo tipo → o gerador recusa.",
+      "description": "Opcional: quem escreve um tipo desviável do catálogo do Sabiá (skills/sabia/references/tipos.md): a skill do toolkit, com o fluxo e o template do tipo (opcionais: sem eles, a skill segue as references dela), ex.: {\"HF\": {\"skill\": \"skills/<skill>/SKILL.md\", \"fluxo\": \"fluxo/fluxo-hf.md\", \"padrao\": \"template/template-hf.md\"}}. A skill vai ao dono do passo de desvio (coluna Desviável do catálogo, ⇢) e lê o fluxo e o template, quando há, pelo caminho, na pasta instalada do toolkit; o Sabiá não compila conteúdo de toolkit (fluxo com passos é só do framework). O toolkit não cria tipo: a sigla é do catálogo. A linha vai no prompt do dono do passo de desvio e na seção Tipos com skill de toolkit do sabia.md. Dois toolkits do projeto no mesmo tipo → o gerador recusa.",
       "propertyNames": {
         "pattern": "^[A-Z]{2,4}$"
       },
@@ -235,9 +235,9 @@
             "$ref": "#/$defs/arquivo",
             "description": "Opcional: o fluxo do tipo, relativo à pasta do toolkit (ex.: fluxo/fluxo-hf.md); sem ele, a skill segue as references dela."
           },
-          "padrao": {
+          "template": {
             "$ref": "#/$defs/arquivo",
-            "description": "Opcional: o padrão do tipo, relativo à pasta do toolkit (ex.: padrao/padrao-hf.md)."
+            "description": "Opcional: o template do tipo, relativo à pasta do toolkit (ex.: template/template-hf.md)."
           }
         }
       }

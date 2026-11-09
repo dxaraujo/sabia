@@ -7,7 +7,7 @@ Valem em todos os fluxos da skill.
 
 Leia antes o `.sabia/sabia.md`. Sem ele, ofereça a `sa-setup` ("configurar o Sabiá") e pare. Formato do
 `backlog.md`, status por tipo e convenções da `obs`: [backlog.md](~/.sabia/framework/skills/sa-triar/references/backlog.md).
-Corpo da fatia e do bug: o padrão `sa-refinar/ficha.md` (só a seção Entrada). Corpo da sustentação: o padrão
+Corpo da fatia e do bug: o template `sa-refinar/ficha.md` (só a seção Entrada). Corpo da sustentação: o template
 `sa-atender/registro.md`.
 
 - Triar não começa nada: não cria branch, pasta de spec nem `status.md`, não grava no `sprint-<nn>.md` e não fala

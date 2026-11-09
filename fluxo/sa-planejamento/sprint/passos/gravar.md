@@ -7,7 +7,7 @@ A proposta com o "ok".
 
 ## Faça
 
-1. **`sprint-<nn>.md`** em `.sabia/planejamento/sprints/<AAAA>/`, pelo padrão `sa-planejamento/sprint.md`: cabeçalho
+1. **`sprint-<nn>.md`** em `.sabia/planejamento/sprints/<AAAA>/`, pelo template `sa-planejamento/sprint.md`: cabeçalho
    `# <AAAA>/Sprint <nn> · AAAA-MM-DD → AAAA-MM-DD`, `**Meta:**`, `**Reserva de capacidade:** <n> itens (<p>%)`, a tabela `## Itens`
    (Item · Trabalho · Responsável · Tarefas) e as seções vazias `## Review` e `## Retro`. No reabastecimento, só
    acrescente as linhas. A coluna Tarefas fica vazia: quem puxa preenche pela `sa-elm.item`.

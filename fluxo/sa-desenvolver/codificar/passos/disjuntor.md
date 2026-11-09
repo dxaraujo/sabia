@@ -10,7 +10,7 @@ Uma etapa do autopilot terminou (tarefa, revisar, verificar) ou uma reprovação
 
 Fora do autopilot → nada a fazer; siga.
 
-1. Acrescente a linha da etapa em `.sabia/local/loop-<id>.md`, pelo padrão `sa-desenvolver/loop.md`.
+1. Acrescente a linha da etapa em `.sabia/local/loop-<id>.md`, pelo template `sa-desenvolver/loop.md`.
 2. Dispara no teto do `acordos.md` (tentativas, tempo ou custo) ou em 2 reprovações seguidas na mesma etapa
    (revisar ou verificar).
 3. Disparou: grave a linha `Devolvido: <motivo> · AAAA-MM-DD HH:MM`, o Retomar do `status.md`, commit e push da

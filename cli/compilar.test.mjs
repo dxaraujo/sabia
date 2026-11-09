@@ -23,7 +23,7 @@ const passo = (resumo, corpo = "Faça a coisa.") => `---\n{"resumo": "${resumo}"
 const mestre = (d, corpo = "# Título\n\nEntrada geral.\n\n## Regras\n\n- Uma regra.\n") => `---\n${JSON.stringify(d)}\n---\n${corpo}`;
 const skill = (nome, h1 = `# ${nome} — Teste`) => `---\nname: ${nome}\nmetadata:\n  version: "1.0.0"\n---\n\n${h1}\n`;
 
-/** Um framework mínimo: sa-a (1 fluxo, 2 passos, padrão), sa-b (2 fluxos), sabia (sem fluxo). */
+/** Um framework mínimo: sa-a (1 fluxo, 2 passos, template), sa-b (2 fluxos), sabia (sem fluxo). */
 function fixture(extra = {}) {
   return escrever(path.join(raiz, "fw"), {
     "plugin.json": { name: "sabia", version: "2.0.0" },
@@ -39,10 +39,10 @@ function fixture(extra = {}) {
     "fluxo/travas.json": { travas: { "sim-da-pessoa": { texto: "só com sim", liberavel_por: [] } } },
     "fluxo/sa-a/a/a.md": mestre({ fluxo: "a", dono: "sa-um", travas_gerais: ["sim-da-pessoa"], passos: [
       { id: "ini", desvio: true }, { id: "rev", chama: "sa-b.x", saidas: { "voltou": "ini", "pronto": "→ sa-b.y" } }] }),
-    "fluxo/sa-a/a/passos/ini.md": passo("Começa.", "Use o padrão `sa-a/modelo.md` e o passo `rev`; veja `sa-b.y.fim` e [proc](~/.sabia/framework/skills/sa-a/references/proc.md)."),
+    "fluxo/sa-a/a/passos/ini.md": passo("Começa.", "Use o template `sa-a/modelo.md` e o passo `rev`; veja `sa-b.y.fim` e [proc](~/.sabia/framework/skills/sa-a/references/proc.md)."),
     "fluxo/sa-a/a/passos/rev.md": passo("Revisa."),
     "fluxo/sa-a/regras.md": "---\n{\"resumo\": \"comuns\"}\n---\n# Regras comuns\n\n- Sempre teste.\n",
-    "padrao/sa-a/modelo.md": "---\n{\"resumo\": \"Um modelo.\"}\n---\n# Modelo\n",
+    "template/sa-a/modelo.md": "---\n{\"resumo\": \"Um modelo.\"}\n---\n# Modelo\n",
     "fluxo/sa-b/x/x.md": mestre({ fluxo: "x", dono: "sa-dois", quando: ["revisar algo"], passos: [{ id: "olhar" }] }),
     "fluxo/sa-b/x/passos/olhar.md": passo("Olha."),
     "fluxo/sa-b/y/y.md": mestre({ fluxo: "y", dono: "sa-dois", quando: ["fechar"], passos: [{ id: "fim" }] }),
@@ -69,7 +69,7 @@ test("skill de 1 fluxo: SKILL.md com regras, fluxo, tabela, travas, arquivos e o
   const ini = out(st, "sa-a/references/a/ini.md");
   assert.match(ini, /^_Começa\._\n\n## Entrada/);
   assert.ok(!ini.includes('"resumo"'));
-  assert.ok(fs.existsSync(path.join(st, "skills/sa-a/references/padrao/modelo.md")));
+  assert.ok(fs.existsSync(path.join(st, "skills/sa-a/references/template/modelo.md")));
 });
 
 test("grafo: references/<fluxo>/grafo.md gerado da definição do fluxo e o link logo abaixo da tabela", () => {
@@ -85,10 +85,10 @@ test("grafo: references/<fluxo>/grafo.md gerado da definição do fluxo e o link
   assert.match(longa, /↺ p {2}\(x{57}…\)/);
 });
 
-test("reescrita: link do framework, relativo, âncora local, id e padrão viram caminho absoluto do alvo", () => {
+test("reescrita: link do framework, relativo, âncora local, id e template viram caminho absoluto do alvo", () => {
   const st = compilar(fixture(), path.join(raiz, "st"), { base: BASE });
   const ini = out(st, "sa-a/references/a/ini.md");
-  assert.ok(ini.includes(`o padrão [\`sa-a/modelo.md\`](${BASE}/sa-a/references/padrao/modelo.md)`));
+  assert.ok(ini.includes(`o template [\`sa-a/modelo.md\`](${BASE}/sa-a/references/template/modelo.md)`));
   assert.ok(ini.includes(`[\`sa-b.y.fim\`](${BASE}/sa-b/references/y/fim.md)`));
   assert.ok(ini.includes(`[proc](${BASE}/sa-a/references/proc.md)`));
   assert.ok(ini.includes("o passo `rev`"), "passo do mesmo fluxo fica texto");
@@ -96,7 +96,7 @@ test("reescrita: link do framework, relativo, âncora local, id e padrão viram 
   assert.ok(proc.includes(`[b](${BASE}/sa-b/SKILL.md)`) && proc.includes(`[fim](${BASE}/sa-a/references/proc.md#proc)`));
   assert.ok(out(st, "sabia/SKILL.md").includes(`[proc](${BASE}/sa-a/references/proc.md)`));
   assert.equal(mapear("/fw", "/fw/fluxo/sa-a/a/passos/ini.md"), "sa-a/references/a/ini.md");
-  assert.equal(mapear("/fw", "/fw/padrao/sa-a/m.md"), "sa-a/references/padrao/m.md");
+  assert.equal(mapear("/fw", "/fw/template/sa-a/m.md"), "sa-a/references/template/m.md");
   assert.equal(mapear("/fw", "/fw/fora/x.md"), null);
   assert.equal(reescrever("```\n`sa-b.x`\n```", "/fw/x.md", { fw: "/fw", base: BASE, m: carregar(fixture()) }), "```\n`sa-b.x`\n```");
 });
@@ -129,25 +129,25 @@ test("validação: recusa a fonte com erro, com arquivo:linha", () => {
   assert.match(validar(g).join("\n"), /fluxo\/sa-b\/y\/y\.md:2: passo grafo: id reservado/);
 });
 
-test("tipos: catálogo validado (sigla, cria, padrão, elm, depois sem ciclo) e tipos.md com a ordem de publicação", () => {
+test("tipos: catálogo validado (sigla, cria, template, elm, depois sem ciclo) e tipos.md com a ordem de publicação", () => {
   const tipos = (t) => ({ "fluxo/tipos.json": { tipos: t } });
-  const ok = { GL: { nome: "Termo", cria: ["sa-a.a.ini"], padrao: "sa-a/modelo.md", elm: "DOORS", requisito: true, depois: [] },
+  const ok = { GL: { nome: "Termo", cria: ["sa-a.a.ini"], template: "sa-a/modelo.md", elm: "DOORS", requisito: true, depois: [] },
     HF: { nome: "História", cria: ["sa-a.a.rev"], elm: "DOORS", requisito: true, depois: ["GL", "XX"], embute: ["GL"] },
     CT: { nome: "Caso", cria: ["sa-a.a.rev"], elm: null, requisito: false },
-    XX: { nome: "Novo", cria: ["sa-a.z.q"], padrao: "sa-a/nao.md", elm: "DOORS", requisito: true, pendente: true } };
+    XX: { nome: "Novo", cria: ["sa-a.z.q"], template: "sa-a/nao.md", elm: "DOORS", requisito: true, pendente: true } };
   const st = compilar(fixture(tipos(ok)), path.join(raiz, "st"), { base: BASE });
   const t = out(st, "sabia/references/tipos.md");
   assert.match(t, /`GL` → `HF`\./);
   assert.match(t, /\| `XX` \(pendente\) \|/);
-  assert.match(t, /\[`sa-a\/modelo\.md`\]\(~\/\.config\/opencode\/skills\/sa-a\/references\/padrao\/modelo\.md\)/);
+  assert.match(t, /\[`sa-a\/modelo\.md`\]\(~\/\.config\/opencode\/skills\/sa-a\/references\/template\/modelo\.md\)/);
   assert.match(t, /^\| `CT` \| Caso \| .* \| — \| não \|/m);
   assert.doesNotMatch(t, /Critérios? de revisão/);
-  const e = validar(carregar(fixture(tipos({ ...ok, GL: { ...ok.GL, cria: ["sa-a.a"], padrao: "sa-a/nao.md", depois: ["HF"] } })))).join("\n");
-  for (const rx of [/tipo GL: cria sa-a\.a não é passo/, /tipo GL: padrão sa-a\/nao\.md inexistente/, /ciclo no "depois"/]) assert.match(e, rx);
+  const e = validar(carregar(fixture(tipos({ ...ok, GL: { ...ok.GL, cria: ["sa-a.a"], template: "sa-a/nao.md", depois: ["HF"] } })))).join("\n");
+  for (const rx of [/tipo GL: cria sa-a\.a não é passo/, /tipo GL: template sa-a\/nao\.md inexistente/, /ciclo no "depois"/]) assert.match(e, rx);
   assert.doesNotMatch(e, /tipo CT/);
   assert.doesNotMatch(e, /tipo XX/);
   const pr = validar(carregar(fixture(tipos({ ...ok, GL: { ...ok.GL, pendente: true } })))).join("\n");
-  assert.match(pr, /tipo GL: cria e padrão já existem; tire o "pendente"/);
+  assert.match(pr, /tipo GL: cria e template já existem; tire o "pendente"/);
   const f = validar(carregar(fixture(tipos({ gl: { cria: ["sa-a.a.ini"], elm: "DOORS" }, ZZ: { nome: "z", elm: "X", cria: [] },
     YY: { nome: "y", elm: "DOORS", cria: ["sa-a.a.ini"], depois: ["QQ"], embute: ["WW"] } })))).join("\n");
   for (const rx of [/tipo gl: sigla de 2 a 4/, /tipo ZZ: elm "X" \(use DOORS ou null\)/, /tipo ZZ: sem cria/, /tipo YY: QQ fora do catálogo/, /tipo YY: WW fora do catálogo/]) assert.match(f, rx);
@@ -296,14 +296,14 @@ test("catálogo: desviavel fora de cria é recusado", () => {
   assert.ok(validar(m).some((e) => /tipo HF: desviavel sa-verificar\.verificar\.casos fora de cria/.test(e)));
 });
 
-/** O toolkit sintético "casa": a skill casa, com o fluxo e o padrão do tipo HF como arquivos da pasta (o Sabiá não os compila). */
+/** O toolkit sintético "casa": a skill casa, com o fluxo e o template do tipo HF como arquivos da pasta (o Sabiá não os compila). */
 function casa(mudar = {}) {
-  const hf = { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md", padrao: "padrao/padrao-hf.md" };
+  const hf = { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md", template: "template/template-hf.md" };
   return escrever(path.join(raiz, "casa"), {
     "toolkit.json": { nome: "casa", versao: "1.0.0", descricao: "toolkit fictício", autor: { nome: "Ana Exemplo", area: "Equipe Alfa" },
       "tipos-de-projeto": ["backend"], skills: [{ caminho: "skills/casa/SKILL.md", papeis: ["especificador"] }], tipos: { HF: hf, ATA: { skill: hf.skill, fluxo: hf.fluxo } },
       criterios_revisao: [{ id: "EX1", tipo: "HF", verificacao: "Toda HF cita o campo de origem", severidade: "IMPORTANTE" }], requer: { sabia: "2.1.0" }, ...mudar },
-    "skills/casa/SKILL.md": skill("casa", "# casa"), "fluxo/fluxo-hf.md": "# Fluxo HF\n", "padrao/padrao-hf.md": "# Padrão HF\n",
+    "skills/casa/SKILL.md": skill("casa", "# casa"), "fluxo/fluxo-hf.md": "# Fluxo HF\n", "template/template-hf.md": "# Padrão HF\n",
   });
 }
 
@@ -317,22 +317,22 @@ function fwToolkit() {
     "fluxo/sa-prd/prd/passos/escrever.md": passo("Escreve."),
     "fluxo/sa-desenvolver/codificar/codificar.md": mestre({ fluxo: "codificar", dono: "sa-desenvolvedor", passos: [{ id: "as-built" }] }),
     "fluxo/sa-desenvolver/codificar/passos/as-built.md": passo("As-built."),
-    "padrao/sa-revisar/criterios-revisao.md": "---\n{\"resumo\": \"r\"}\n---\n| # | V | S |\n|---|---|---|\n| C2 | x | B |\n",
+    "template/sa-revisar/criterios-revisao.md": "---\n{\"resumo\": \"r\"}\n---\n| # | V | S |\n|---|---|---|\n| C2 | x | B |\n",
     "fluxo/tipos.json": { tipos: { HF: tipo(["sa-prd.prd.escrever"]), ATA: tipo(["sa-prd.prd.escrever"]), GL: tipo(["sa-prd.prd.escrever"], []),
       ET: tipo(["sa-desenvolver.codificar.as-built", "sa-prd.prd.escrever"]) } },
   });
 }
 
-test("toolkit: tipo → skill do toolkit com fluxo e padrão da pasta; recusa tipo fora, não desviável, pendente, forma \"<tk>.<fluxo>\", critérios de revisão e requer", () => {
+test("toolkit: tipo → skill do toolkit com fluxo e template da pasta; recusa tipo fora, não desviável, pendente, forma \"<tk>.<fluxo>\", critérios de revisão e requer", () => {
   const FW = fwToolkit();
   const erros = (mudar, fw = FW) => { const r = validarToolkitFonte(fw, casa(mudar)).join("\n"); fs.rmSync(path.join(raiz, "casa"), { recursive: true }); return r; };
   const hf = { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md" };
   assert.equal(erros({}), "");
   const e = erros({ tipos: { GL: hf, XX: hf, ATA: "casa.ata" }, criterios_revisao: [{ id: "C2", verificacao: "repete a do Sabiá", severidade: "BLOQUEANTE" }], requer: { sabia: "9.0.0" } });
-  for (const rx of [/tipo GL: não é desviável/, /tipo XX: fora do catálogo/, /tipo ATA: use \{"skill", "fluxo", "padrao"\}/, /critério de revisão C2: repetida ou já do Sabiá/, /requer o Sabiá 9\.0\.0/]) assert.match(e, rx);
+  for (const rx of [/tipo GL: não é desviável/, /tipo XX: fora do catálogo/, /tipo ATA: use \{"skill", "fluxo", "template"\}/, /critério de revisão C2: repetida ou já do Sabiá/, /requer o Sabiá 9\.0\.0/]) assert.match(e, rx);
   assert.match(erros({ tipos: { HF: { ...hf, skill: "skills/outra/SKILL.md" } } }), /tipo HF: a skill skills\/outra\/SKILL\.md não está em skills/);
   assert.match(erros({ tipos: { HF: { ...hf, fluxo: "fluxo/nao.md" } } }), /tipo HF: falta o fluxo fluxo\/nao\.md na pasta do toolkit/);
-  assert.match(erros({ tipos: { HF: { ...hf, padrao: "../fora.md" } } }), /tipo HF: falta o padrao \.\.\/fora\.md na pasta do toolkit/);
+  assert.match(erros({ tipos: { HF: { ...hf, template: "../fora.md" } } }), /tipo HF: falta o template \.\.\/fora\.md na pasta do toolkit/);
   // pasta no lugar do arquivo e caminho absoluto: recusados como no gerador
   assert.match(erros({ tipos: { HF: { ...hf, fluxo: "fluxo" } } }), /tipo HF: falta o fluxo fluxo na pasta do toolkit/);
   assert.match(erros({ tipos: { HF: { ...hf, fluxo: "/fluxo/fluxo-hf.md" } } }), /tipo HF: falta o fluxo \/fluxo\/fluxo-hf\.md na pasta do toolkit/);

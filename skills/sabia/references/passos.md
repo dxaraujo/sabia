@@ -8,7 +8,7 @@ O Sabiá é o fluxo; os toolkits são extensões dos agentes dele. Um toolkit aj
   configuração do agente (o `agentes.json`, que o gerador leva ao prompt como **Desvios de toolkit no passo `<id>`**),
   então vale sempre, também no autopilot, e é transparente para quem está no fluxo. A skill traz os modelos no
   `assets/` e, opcionalmente, um agente a quem o dono do passo delega;
-- **de tipo** (com `tipos` no `toolkit.json`): uma skill do toolkit, com o fluxo e o padrão do tipo, escreve um tipo
+- **de tipo** (com `tipos` no `toolkit.json`): uma skill do toolkit, com o fluxo e o template do tipo, escreve um tipo
   desviável do catálogo no passo de desvio do tipo (ver [Tipos com skill de toolkit](#tipos-com-skill-de-toolkit)).
 
 `skills[].papeis` e `steering[].papeis` mapeiam 1:1 para os agentes:
@@ -55,8 +55,8 @@ skills e os MCPs ligados ao dono (não os subagentes dele).
 O catálogo ([tipos.md](tipos.md)) é fechado: o toolkit não cria tipo. A coluna Desviável diz os passos de Cria que são
 o ponto de desvio do tipo (⇢ na tabela do fluxo); nos outros passos de Cria, o tipo é sempre do Sabiá. Nesse passo, o
 toolkit que declara `tipos` (`{"HF": {"skill": "skills/<skill>/SKILL.md", "fluxo": "<arquivo>", "padrao":
-"<arquivo>"}}`, fluxo e padrão opcionais) escreve o artefato pela skill dele, que o dono carrega e que segue o fluxo
-com o padrão do tipo, lidos pelo caminho na pasta do toolkit, ou, sem eles, as references dela; depois, volta ao passo.
+"<arquivo>"}}`, fluxo e template opcionais) escreve o artefato pela skill dele, que o dono carrega e que segue o fluxo
+com o template do tipo, lidos pelo caminho na pasta do toolkit, ou, sem eles, as references dela; depois, volta ao passo.
 
 - **Quem escreve:** HF, UC, REG, MSG e EL saem pelo `sa-especificador`, com a aprovação gravada no documento; a ET as-built,
   pelo `sa-desenvolvedor`, com a aprovação do MR.
@@ -64,11 +64,11 @@ com o padrão do tipo, lidos pelo caminho na pasta do toolkit, ou, sem eles, as 
   `agentes.json`), com a skill do toolkit ligada a ele — a skill traz em `papeis` o papel de cada dono, senão o CLI e o
   gerador recusam o toolkit; sem agente, a seção **Tipos com skill de toolkit** do `.sabia/sabia.md`.
 - **Contrato, na volta ao passo:** o arquivo pela coluna Arquivo do catálogo, no formato do Sabiá (no arquivo de
-  `elm/`: o frontmatter `type` · `title` · `status` · `sources` e o corpo pelo padrão do tipo; no bloco do `prd.md`,
+  `elm/`: o frontmatter `type` · `title` · `status` · `sources` e o corpo pelo template do tipo; no bloco do `prd.md`,
   o mesmo corpo, sem frontmatter). Fora dele → o dono completa no próprio passo e registra em Desvios do
   `status.md`.
-- **Padrão do núcleo:** o toolkit não troca padrão do Sabiá. A cópia do projeto em
-  `.sabia/padrao/requisitos/padrao-<tipo>.md` vale sobre o padrão em vigor do tipo, do Sabiá ou do toolkit.
+- **Template do núcleo:** o toolkit não troca template do Sabiá. A cópia do projeto em
+  `.sabia/template/requisitos/template-<tipo>.md` vale sobre o template em vigor do tipo, do Sabiá ou do toolkit.
 - **Continua do Sabiá:** o catálogo (sigla, arquivo, ELM), a revisão (o toolkit só acrescenta itens de critério de revisão), a
   aprovação e a publicação (`sa-elm.publicar`).
 - **Colisão:** dois toolkits do projeto no mesmo tipo ou no mesmo id de critérios de revisão → o gerador recusa e não grava nada.

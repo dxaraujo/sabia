@@ -7,7 +7,7 @@ O `acordos.md` atual, se existe, e a equipe proposta (passo `equipe`).
 
 ## Faça
 
-Proponha `.sabia/planejamento/acordos.md` pelo padrão `sa-planejamento/acordos.md`: a tabela `Item | Acordo`, com as
+Proponha `.sabia/planejamento/acordos.md` pelo template `sa-planejamento/acordos.md`: a tabela `Item | Acordo`, com as
 chaves nesta ordem e estes padrões quando o time não diz outro valor:
 
 - **Timebox**: `<n> semanas` (padrão 2).

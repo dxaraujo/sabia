@@ -94,13 +94,13 @@ backpressure e do commit. O agente dono já tem o desvio no prompt; esta tabela 
 
 ## Tipos com skill de toolkit
 
-Num tipo desviável do catálogo, a skill de um toolkit, com o fluxo e o padrão do tipo, escreve o artefato no passo
+Num tipo desviável do catálogo, a skill de um toolkit, com o fluxo e o template do tipo, escreve o artefato no passo
 de desvio do tipo; o Sabiá continua dono do catálogo, da revisão e da aprovação. Estas tabelas são as que o gerador
 imprime.
 
-| Tipo | Skill | Fluxo e padrão | Toolkit | Passo de desvio |
+| Tipo | Skill | Fluxo e template | Toolkit | Passo de desvio |
 |---|---|---|---|---|
-| `<sigla>` | `~/.sabia/toolkits/<toolkit>/skills/<skill>/SKILL.md` | `<fluxo>` <com o padrão `<padrão>`> <ou — (as references da skill)> | `<nome>` <versão> | `<id do passo>` |
+| `<sigla>` | `~/.sabia/toolkits/<toolkit>/skills/<skill>/SKILL.md` | `<fluxo>` <com o template `<template>`> <ou — (as references da skill)> | `<nome>` <versão> | `<id do passo>` |
 <nenhum — sem toolkit com `tipos`>
 
 | Item de critério de revisão | Tipo | Severidade | Verificação | Toolkit |

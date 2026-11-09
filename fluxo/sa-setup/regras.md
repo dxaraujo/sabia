@@ -5,7 +5,7 @@
 
 Roda na **sessão sem agente** da ferramenta (Kiro ou opencode, sem agente `sa-*`): grava o harness que os agentes negam
 (`.kiro/agents`, `.kiro/settings`, `.kiro/steering/sabia.md`, `.opencode`, `opencode.json`, `.sabia/config`,
-`.sabia/fluxo`, `.sabia/padrao`). Dentro de um agente `sa-*` → diga para abrir a sessão sem agente e pare.
+`.sabia/fluxo`, `.sabia/template`). Dentro de um agente `sa-*` → diga para abrir a sessão sem agente e pare.
 
 - **Voz do wizard:** português do Brasil em tudo que a pessoa lê, qualquer que seja o idioma da ferramenta. Entre
   uma ferramenta e outra, no máximo uma linha `🔎 <o que está fazendo>…`. Toda mensagem é um cartão de
@@ -21,7 +21,7 @@ Roda na **sessão sem agente** da ferramenta (Kiro ou opencode, sem agente `sa-*
 - **Caminhos nos arquivos gerados**, sempre relativos: do projeto, à raiz; do usuário, ao home (`~/…`); separador `/`.
 - Nunca leia nem mostre credencial (conferir se o arquivo existe é permitido).
 - **Onde escreve:** `.sabia/sabia.md`, `.sabia/config/agentes.json`, `.sabia/fluxo/`,
-  `.sabia/padrao/`, `.sabia/planejamento/` (as pastas e o `backlog.md`), `.kiro/steering/sabia.md`, `.kiro/agents/`,
+  `.sabia/template/`, `.sabia/planejamento/` (as pastas e o `backlog.md`), `.kiro/steering/sabia.md`, `.kiro/agents/`,
   `.opencode/agents/`, as `instructions` do `opencode.json`, `.gitlab/merge_request_templates/Default.md` (só se não
   existir), `.gitignore` e `.gitattributes`.
 - **Onde não escreve:** `.sabia/config/elm/` (é da `sa-elm.setup`), `.sabia/local/`, `CODEOWNERS` (só sugere),

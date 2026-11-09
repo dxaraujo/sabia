@@ -17,7 +17,7 @@ skill certa (tabela [O que dizer](#o-que-dizer)).
 Configuração do projeto: `.sabia/sabia.md` (gerado pela `sa-setup`). Sem ele, comece por "configurar o Sabiá".
 
 **As-built:** as skills são compiladas na pasta do usuário na instalação (`sabia instalar`, no opencode e no Kiro), e
-nada é copiado para o projeto. O que o projeto customiza fica em `.sabia/fluxo/` e `.sabia/padrao/` e chega pelo
+nada é copiado para o projeto. O que o projeto customiza fica em `.sabia/fluxo/` e `.sabia/template/` e chega pelo
 agente dono do fluxo.
 
 ## Fases e papéis
@@ -119,7 +119,7 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 
 | Quero… | Skill |
 |---|---|
-| instalar ou atualizar o Sabiá no projeto, os agentes, o formato da spec, "usa ELM?" · customizar ou descustomizar um passo ou padrão | `sa-setup` (`sa-setup.configurar` · `sa-setup.customizar`) |
+| instalar ou atualizar o Sabiá no projeto, os agentes, o formato da spec, "usa ELM?" · customizar ou descustomizar um passo ou template | `sa-setup` (`sa-setup.configurar` · `sa-setup.customizar`) |
 | onde parei · minha próxima · o estado de `<id>` · pendências (publicação pendente, travas de artefato) · lições aprendidas para a review · fechar a sessão | `sa-status` (`sa-status.painel` · `sa-status.item` · `sa-status.minha-proxima` · `sa-status.pendencias` · `sa-status.licoes-aprendidas` · `sa-status.fechar-sessao`) |
 | registrar uma demanda sem triar · triar a fila das linhas `nova` | `sa-triar` (`sa-triar.capturar` · `sa-triar.triar`) |
 | ideia nova, pitch, go/kill · refinamento conjunto, ficha, artefatos afetados e `elm/` da fatia · fatiar o épico · editar, dividir ou cancelar um item pronto | `sa-refinar` (`sa-refinar.moldar` · `sa-refinar.detalhar` · `sa-refinar.fatiar` · `sa-refinar.ajustar`) |
@@ -147,13 +147,13 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 | spec da fatia | `.kiro/specs/ft-<nnn>-<slug>/` ou `openspec/changes/ft-<nnn>-<slug>/`: `status.md`, `research.md`, os arquivos da trilha, `CT.csv` e, com ELM, `elm/`. No OpenSpec, a arquivada fica em `openspec/changes/archive/<AAAA-MM-DD>-ft-<nnn>-<slug>/` |
 | glossário · ADRs · bundle | GL no DOORS, onde há ELM; o `.sabia/glossario.md` é opcional. ADRs em `docs/adr/`, só para decisão que atravessa fatias. O bundle (chave `elm.bundle` do `agentes.json`, ex.: `docs/elm/<pa>/`) é cópia local e nunca é editado |
 | `.sabia/creditos/` | `<usuario>.csv` com os créditos do Kiro por sessão |
-| `.sabia/fluxo/` · `.sabia/padrao/` | override esparso do projeto, pela `sa-setup.customizar`; nenhum agente escreve |
+| `.sabia/fluxo/` · `.sabia/template/` | override esparso do projeto, pela `sa-setup.customizar`; nenhum agente escreve |
 | `.sabia/local/` (fora do git) | worktrees do autopilot (`wt/<id>`), `loop-<id>.md`, `reunioes/` e dados de cliente |
 
 ## Tipos de artefato
 
 O catálogo é fechado ([references/tipos.md](references/tipos.md)): HF · UC · REG · MSG · EL · GL · ET · CT · ATA. O
-padrão de cada tipo é `requisitos/padrao-<tipo>.md`; a cópia do projeto em `.sabia/padrao/requisitos/` vale sobre ele. Artefato
+padrão de cada tipo é `requisitos/template-<tipo>.md`; a cópia do projeto em `.sabia/template/requisitos/` vale sobre ele. Artefato
 existente: `<sigla>-<id do ELM>`. Novo: `<sigla>-<EP|FT>-nn`, provisório até a publicação; sem ELM, esse é o id
 definitivo.
 

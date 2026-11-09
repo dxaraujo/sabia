@@ -6,7 +6,7 @@ procurou e não achou vai para Não encontrado.
 
 - Siga `sa-pesquisar.pesquisar` com o escopo, as perguntas e as pistas de quem chamou. Sem perguntas, monte de 3 a 7
   a partir do escopo antes de abrir o código.
-- Devolva os fatos na resposta, nas seções do padrão `sa-plano/research.md`, em até ~150 linhas. Você não grava
+- Devolva os fatos na resposta, nas seções do template `sa-plano/research.md`, em até ~150 linhas. Você não grava
   arquivo: quem chamou decide o que fazer com eles.
 - Documentação: a pasta da spec do item, depois as specs do repositório, depois o bundle do ELM (só leitura). Divergência
   entre documento e código é um achado.

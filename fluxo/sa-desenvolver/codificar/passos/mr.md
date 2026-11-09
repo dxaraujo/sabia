@@ -1,5 +1,5 @@
 ---
-{"resumo": "Texto do MR pelo padrão (O quê · Porquê · Evidência · Risco · Foco · Artefatos afetados), commit, push, conferência no remoto e MR pelo gitlabpr."}
+{"resumo": "Texto do MR pelo template (O quê · Porquê · Evidência · Risco · Foco · Artefatos afetados), commit, push, conferência no remoto e MR pelo gitlabpr."}
 ---
 ## Entrada
 
@@ -7,7 +7,7 @@ A branch verificada, com lições aprendidas e as-built, o resumo da revisão do
 
 ## Faça
 
-1. Texto pelo `.gitlab/merge_request_templates/Default.md` do projeto ou, sem ele, pelo padrão
+1. Texto pelo `.gitlab/merge_request_templates/Default.md` do projeto ou, sem ele, pelo template
    `sa-desenvolver/pr.md`. Título `<FT-nnn> — <título>`. Seções: O quê · Porquê · Evidência (CI, 🔎, revisão do agente) ·
    Risco (Reversível?, DDL pendente `BD-nnn`, ADRs) · Foco (como ler) · Artefatos afetados · Lições aprendidas (só no trivial).
 2. Entrega, nesta ordem:

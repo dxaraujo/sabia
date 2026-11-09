@@ -1,17 +1,17 @@
 ---
-{"resumo": "Entrada do customizar: trocar, inserir ou remover passo, trocar padrão ou descustomizar."}
+{"resumo": "Entrada do customizar: trocar, inserir ou remover passo, trocar template ou descustomizar."}
 ---
 ## Entrada
 
-Um pedido: "customizar o passo X", "trocar o padrão Y", "o que este projeto mudou?" ou "descustomizar …".
+Um pedido: "customizar o passo X", "trocar o template Y", "o que este projeto mudou?" ou "descustomizar …".
 
 ## Faça
 
-1. Dentro de um agente `sa-*` → diga que roda na sessão sem agente, porque `.sabia/fluxo/` e `.sabia/padrao/` são
+1. Dentro de um agente `sa-*` → diga que roda na sessão sem agente, porque `.sabia/fluxo/` e `.sabia/template/` são
    harness, e pare.
 2. Sem `.sabia/config/agentes.json` → o projeto não está configurado: ofereça a `sa-setup.configurar`.
 3. "O que este projeto mudou?" → mostre o bloco Fluxos (W5-F) e, por linha, o diff contra o original (passo ou
-   padrão trocado: o corpo contra o compilado; inserido: o arquivo inteiro; removido: a linha) e encerre.
+   template trocado: o corpo contra o compilado; inserido: o arquivo inteiro; removido: a linha) e encerre.
 
 ## Saída
 

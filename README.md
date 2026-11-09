@@ -63,7 +63,7 @@ Fontes no fim deste arquivo.
 | Skill | Fluxos | Função |
 |---|---|---|
 | `sabia` | — | guia e roteador: disciplinas, papéis, aprovações, autonomia e qual skill usar |
-| `sa-setup` | `configurar` · `customizar` | configura o projeto na sessão sem agente: alvos, comandos, branch_base, formato da spec, "usa ELM?", toolkits e os 5 agentes; customiza um passo ou padrão |
+| `sa-setup` | `configurar` · `customizar` | configura o projeto na sessão sem agente: alvos, comandos, branch_base, formato da spec, "usa ELM?", toolkits e os 5 agentes; customiza um passo ou template |
 | `sa-status` | `painel` · `item` · `minha-proxima` · `pendencias` · `licoes-aprendidas` · `fechar-sessao` | painel só leitura (WIP, vazão, idade, lead time, pendências de rastreio), estado de um `<id>`, a próxima tarefa e os créditos da sessão |
 | `sa-triar` | `capturar` · `triar` | captura sem triar e triagem da fila `nova`: duplicado, falta informação, adiar, cancelar, aceitar |
 | `sa-refinar` | `moldar` · `detalhar` · `fatiar` · `ajustar` | pitch e go/kill do épico; refinamento conjunto da fatia (ficha com regras, `CT-nn` e artefatos afetados, e `elm/` com ELM); fatiamento do PRD; ajuste do item pronto |
@@ -80,7 +80,7 @@ Fontes no fim deste arquivo.
 
 Arquivos comuns em [`fluxo/`](fluxo/): `entrada.md` (pré-condição do papel e da branch), `captura.md` (o único
 mecanismo de captura, que grava o tipo), `commit-na-branch-base.md` (commit pequeno de estado direto na branch base),
-`travas.json` e `tipos.json` (catálogo fechado de artefatos). Padrões dos documentos em [`padrao/`](padrao/).
+`travas.json` e `tipos.json` (catálogo fechado de artefatos). Templates dos documentos em [`template/`](template/).
 
 ## Agentes
 
@@ -104,7 +104,7 @@ sessão sem agente: sa-setup e sa-elm.setup (as únicas que gravam o harness)
 
 | Modelo | Ler | Editar | Comandos | MCP |
 |---|---|---|---|---|
-| `build` | tudo, menos segredos (`.env*`, `*.pem`, `*.key`, `~/.ssh`, `~/.aws`, `~/.config/mcp-*`) | tudo, menos o harness: `.kiro/agents`, `.kiro/settings`, `.kiro/steering/sabia.md`, `.opencode`, `opencode.json`, `.sabia/config`, `.sabia/fluxo`, `.sabia/padrao` | allow; ask: `git push`, `git merge`, `curl`, `wget`; deny: `rebase`, `--force`, `reset --hard`, `clean -f`, `--no-verify`, `sudo`, `kubectl`, `helm`, `terraform apply` | GitLab: leitura allow, abrir e mesclar MR ask; ELM pelas regras da `sa-elm.setup` |
+| `build` | tudo, menos segredos (`.env*`, `*.pem`, `*.key`, `~/.ssh`, `~/.aws`, `~/.config/mcp-*`) | tudo, menos o harness: `.kiro/agents`, `.kiro/settings`, `.kiro/steering/sabia.md`, `.opencode`, `opencode.json`, `.sabia/config`, `.sabia/fluxo`, `.sabia/template` | allow; ask: `git push`, `git merge`, `curl`, `wget`; deny: `rebase`, `--force`, `reset --hard`, `clean -f`, `--no-verify`, `sudo`, `kubectl`, `helm`, `terraform apply` | GitLab: leitura allow, abrir e mesclar MR ask; ELM pelas regras da `sa-elm.setup` |
 | `leitura` | tudo, menos segredos | deny | só leitura (`git status/diff/log/show`, `grep`, `ls`) | só leitura |
 
 No Kiro, os agentes levam só os nomes de capability; os limites por caminho e URL vão no prompt. Detalhes em
@@ -154,8 +154,8 @@ power são ignorados. Por isso a `sa-setup` grava no projeto, a partir de `skill
 | `.sabia/config/agentes.json` | as escolhas do projeto (alvos, `formato_spec`, pasta do produto, branch_base, prefixo da branch, ELM, toolkits, desvios e extras por agente) — a entrada do gerador |
 | `.sabia/config/elm/pa_<nome>.json` · `.sabia/config/elk/elk-<ambiente>.json` | a project area do ELM (da `sa-elm.setup`) e a configuração do ELK |
 | `.kiro/agents/sa-*.json` · `.opencode/agents/sa-*.md` | os 5 agentes (e os de toolkit), gerados pelo `gerar_agentes.py` |
-| `.sabia/fluxo/` · `.sabia/padrao/` (só ao customizar) | override esparso de um passo ou padrão; nenhum agente escreve |
-| pasta do produto (padrão `.sabia/planejamento`) | `backlog.md`, `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<AAAA>/sprint-<nn>.md`, `fatias/`, `epicos/EP-nn-<slug>/` (`pitch.md`, `prd.md`), `prototipos/`, `atas/`, `sustentacao/` — versionada |
+| `.sabia/fluxo/` · `.sabia/template/` (só ao customizar) | override esparso de um passo ou template; nenhum agente escreve |
+| pasta do produto (template `.sabia/planejamento`) | `backlog.md`, `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<AAAA>/sprint-<nn>.md`, `fatias/`, `epicos/EP-nn-<slug>/` (`pitch.md`, `prd.md`), `prototipos/`, `atas/`, `sustentacao/` — versionada |
 | `.sabia/creditos/<usuario>.csv` | créditos do Kiro por sessão, gravados pela `sa-status.fechar-sessao` |
 | `.sabia/local/` (fora do git) | worktrees do autopilot, `loop-<id>.md`, transcrições e dados de cliente |
 
@@ -176,7 +176,7 @@ detecta o tipo do projeto e **propõe, agente por agente**, as skills a ligar.
 | `agentes[]` | subagente do dono do passo, com as permissões dele |
 | `requer` | versão mínima do Sabiá (`{"sabia": ">=2.1"}`) |
 
-Fluxo com passos é só do framework: o Sabiá não compila conteúdo de toolkit, e o toolkit não troca padrão do núcleo.
+Fluxo com passos é só do framework: o Sabiá não compila conteúdo de toolkit, e o toolkit não troca template do núcleo.
 Contrato em [`skills/sa-setup/references/toolkits.md`](skills/sa-setup/references/toolkits.md) e schema em
 [`toolkit.schema.json`](skills/sa-setup/assets/toolkit.schema.json).
 
@@ -220,7 +220,7 @@ ficha; o `CT.csv` da verificação) e `ATA`. Artefato novo: id provisório `<sig
 ## Primeiros passos
 
 1. Instale com o CLI (Node 18+): **`npx sabia instalar`**. Ele baixa o Sabiá para `~/.sabia/framework/`,
-   pergunta as ferramentas do time (Kiro, opencode), **compila** as skills (fluxos, padrões e skills do framework) em
+   pergunta as ferramentas do time (Kiro, opencode), **compila** as skills (fluxos, templates e skills do framework) em
    `~/.sabia/compilado/<alvo>/` e as instala na pasta do usuário — no Kiro, o power (`kiro-cli powers install`); no
    opencode, as skills em `~/.config/opencode/skills/` e os MCPs do `mcp.json` —, registrando
    tudo em `~/.sabia/inventario.json`. Nada vai para o projeto. Depois: `sabia atualizar` (recompila), `sabia desinstalar` e `sabia toolkits
@@ -255,7 +255,7 @@ as permissões usam comandos simples.
 **Prova do núcleo**, só com fixtures sintéticas (`node --test` em `cli/` e `python3 -m unittest` em
 `skills/sa-setup/scripts/`): o framework deste repositório validado, compilado e instalado no Kiro e no opencode, com
 o grafo de cada fluxo igual ao da definição do fluxo e todo link da saída resolvido; um projeto front+back com um toolkit de
-especificação (HF ⇢ a skill dele, com o fluxo e o padrão do tipo) e um passo do Sabiá trocado no projeto; e um
+especificação (HF ⇢ a skill dele, com o fluxo e o template do tipo) e um passo do Sabiá trocado no projeto; e um
 projeto batch com o desvio da tarefa de job ao agente do toolkit. Nos dois, os 5 agentes são gerados pelo
 `gerar_agentes.py` sobre a instalação, e a `sabia rota` mostra o desvio e a origem de cada passo.
 

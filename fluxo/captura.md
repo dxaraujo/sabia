@@ -26,7 +26,7 @@ gravar na mesma gravação os campos que já decidiu (status `aceita`, tamanho, 
    EWM; `obs` `origem <id>` quando nasceu do trabalho em outro item; datas vazias (o épico ganha `aceita_em`).
 5. **Corpo.** Fatia: ficha curta `.sabia/planejamento/fatias/FT-nnn-<slug>.md` com a seção Entrada (pedido · quem
    pediu · requisito, se souber). Bug: a mesma ficha, com Entrada (passos · atual · esperado · reproduzido: sim | não
-   | detalhe insuficiente). Sustentação: registro `.sabia/planejamento/sustentacao/<ID>-<slug>.md`, pelo padrão
+   | detalhe insuficiente). Sustentação: registro `.sabia/planejamento/sustentacao/<ID>-<slug>.md`, pelo template
    `sa-atender/registro.md`, com o cabeçalho Categoria · Origem · Pedido por · Prazo · Responsável e a seção Pedido.
    Épico: só a linha. `slug` = título em kebab-case, sem acento, até 5 palavras. Dado de cliente nunca vai ao git:
    fica em `.sabia/local/sustentacao/<ID>/`.

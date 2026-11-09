@@ -14,7 +14,7 @@ O item com autonomia IA autopilot, a worktree `.sabia/local/wt/<id>` e a linha D
    worktree.
 3. Liberado ao subagente: push da própria branch (sem `--force`), `git merge origin/<branch_base>` nela e abrir ou
    atualizar o MR dela. Bloqueado: merge do MR, ELM e rede. Ele não grava na branch base.
-4. Os contadores ficam em `.sabia/local/loop-<id>.md`, pelo padrão `sa-desenvolver/loop.md`.
+4. Os contadores ficam em `.sabia/local/loop-<id>.md`, pelo template `sa-desenvolver/loop.md`.
 5. Diga à pessoa que ela está livre na branch base e pode puxar outro item: várias tarefas em paralelo, sem lote.
 
 ## Saída

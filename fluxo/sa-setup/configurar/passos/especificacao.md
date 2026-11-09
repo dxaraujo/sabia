@@ -22,4 +22,4 @@ Vão na seção Especificação do `sabia.md`, com o `formato_spec`.
 
 ## Pare se
 
-- Nunca deduza a resposta sem mostrar o padrão.
+- Nunca deduza a resposta sem mostrar o template.

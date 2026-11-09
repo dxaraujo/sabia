@@ -438,7 +438,7 @@
       },
       {
        "passo": "registrar",
-       "texto": "Grava pela fluxo/commit-na-branch-base.md, um commit por item ('backlog: triagem <id>'). O item novo (pedido em texto ou EWM) nasce pela fluxo/captura.md, com a triagem já aplicada na mesma gravação. Status gravado: aceita (fatia e bug, com aceita_em), a-moldar (épico, com aceita_em), nova (sustentação e todo item com 'falta:'), cancelada ou 'adiada até <data>' pelos ramos do decidir. Colunas: id · título · tipo · status · prioridade · tamanho · responsável (vazio) · pai · relator (usuario do equipe.json ou 'externo: <área ou nome>') · ib (só o número, quando veio do EWM) · obs · aceita_em · iniciada_em · concluida_em (AAAA-MM-DD). Corpo da fatia e do bug: a ficha curta .sabia/planejamento/fatias/FT-nnn-<slug>.md, só com a seção Entrada do tipo (padrão sa-refinar/ficha.md). Corpo da sustentação: o registro .sabia/planejamento/sustentacao/<ID>-<slug>.md (padrão sa-atender/registro.md, sem subpasta por categoria). O épico fica só com a linha (o pitch nasce na sa-refinar.moldar). Não toca no ELM nem no sprint-<nn>.md.",
+       "texto": "Grava pela fluxo/commit-na-branch-base.md, um commit por item ('backlog: triagem <id>'). O item novo (pedido em texto ou EWM) nasce pela fluxo/captura.md, com a triagem já aplicada na mesma gravação. Status gravado: aceita (fatia e bug, com aceita_em), a-moldar (épico, com aceita_em), nova (sustentação e todo item com 'falta:'), cancelada ou 'adiada até <data>' pelos ramos do decidir. Colunas: id · título · tipo · status · prioridade · tamanho · responsável (vazio) · pai · relator (usuario do equipe.json ou 'externo: <área ou nome>') · ib (só o número, quando veio do EWM) · obs · aceita_em · iniciada_em · concluida_em (AAAA-MM-DD). Corpo da fatia e do bug: a ficha curta .sabia/planejamento/fatias/FT-nnn-<slug>.md, só com a seção Entrada do tipo (template sa-refinar/ficha.md). Corpo da sustentação: o registro .sabia/planejamento/sustentacao/<ID>-<slug>.md (template sa-atender/registro.md, sem subpasta por categoria). O épico fica só com a linha (o pitch nasce na sa-refinar.moldar). Não toca no ELM nem no sprint-<nn>.md.",
        "destino": "muda"
       },
       {
@@ -489,7 +489,7 @@
       },
       {
        "passo": "pitch",
-       "texto": "Escreve .sabia/planejamento/epicos/EP-nn-<slug>/pitch.md, pelo padrão sa-refinar/pitch.md. A pasta nasce aqui. No topo, a linha 'Aprovado: —'. Seções, em uma página: Problema · Limite de investimento (<n> semanas) · Solução em traços · Riscos · Não objetivos · Decisões (as tomadas antes do go, em tabela D-nn | Decisão | Quem | Quando | Fonte) · Em aberto (pergunta · para quem · bloqueia) · Decisão (vazia até o passo decisao). As perguntas vão pela sa-entrevistar.entrevistar (até 5 por rodada, cada uma com recomendação), que busca os fatos pela sa-pesquisar. Vigente: specs arquivadas → bundle (docs/elm/<pa>/). Sem bundle, oferece a sa-elm.baixar. Bundle desatualizado (sincronizado_em anterior à última 'Publicação: publicada'): mostra a data e pergunta se baixa. Dúvida que só o cliente resolve: oferece a sa-especificar.prototipo, que devolve aqui. Regra sem fonte fica em aberto (trava decisao-da-pessoa). Ao fim de cada sessão, grava o pitch.md pela fluxo/commit-na-branch-base.md ('EP-nn pitch').",
+       "texto": "Escreve .sabia/planejamento/epicos/EP-nn-<slug>/pitch.md, pelo template sa-refinar/pitch.md. A pasta nasce aqui. No topo, a linha 'Aprovado: —'. Seções, em uma página: Problema · Limite de investimento (<n> semanas) · Solução em traços · Riscos · Não objetivos · Decisões (as tomadas antes do go, em tabela D-nn | Decisão | Quem | Quando | Fonte) · Em aberto (pergunta · para quem · bloqueia) · Decisão (vazia até o passo decisao). As perguntas vão pela sa-entrevistar.entrevistar (até 5 por rodada, cada uma com recomendação), que busca os fatos pela sa-pesquisar. Vigente: specs arquivadas → bundle (docs/elm/<pa>/). Sem bundle, oferece a sa-elm.baixar. Bundle desatualizado (sincronizado_em anterior à última 'Publicação: publicada'): mostra a data e pergunta se baixa. Dúvida que só o cliente resolve: oferece a sa-especificar.prototipo, que devolve aqui. Regra sem fonte fica em aberto (trava decisao-da-pessoa). Ao fim de cada sessão, grava o pitch.md pela fluxo/commit-na-branch-base.md ('EP-nn pitch').",
        "destino": "novo"
       },
       {
@@ -541,7 +541,7 @@
       },
       {
        "passo": "ficha",
-       "texto": "Grava .sabia/planejamento/fatias/FT-nnn-<slug>.md pelo padrão sa-refinar/ficha.md: '# FT-nnn · <título>', logo abaixo a linha 'Aprovado: <usuário> · <data>' de quem tem produto ('Aprovado: —' até lá), Tipo e Pai, e as seções Entrada (do tipo) · Objetivo (fatia de épico) · Regras · Cenários · Não muda · Artefatos afetados · Em aberto · Decisões (tabela D-nn | Decisão | Quem | Quando | Fonte) · DoR. Seção vazia fica só com o título. Qualquer mudança depois do Aprovado volta a linha para 'Aprovado: —' até o P.O. aprovar de novo. DoR (avisa, não trava): [ ] entrada mínima do tipo · [ ] cenários CT-nn com Então verificável · [ ] Artefatos afetados preenchidos ou 'nenhum requisito' · [ ] com ELM, arquivos de elm/ aprovados pelo especificador · [ ] nenhum artefato afetado bloqueado por outra fatia · [ ] nenhum Em aberto que bloqueie a fatia inteira · [ ] tamanho ≤ G · [ ] ficha aprovada pelo P.O. DoR completa: status elegível. Senão o item fica aceita, e uma elegível que perde um item da DoR volta a aceita. O tamanho da linha se atualiza se mudou. Ficha e linha vão num commit pela fluxo/commit-na-branch-base.md ('backlog: refinamento FT-nnn').",
+       "texto": "Grava .sabia/planejamento/fatias/FT-nnn-<slug>.md pelo template sa-refinar/ficha.md: '# FT-nnn · <título>', logo abaixo a linha 'Aprovado: <usuário> · <data>' de quem tem produto ('Aprovado: —' até lá), Tipo e Pai, e as seções Entrada (do tipo) · Objetivo (fatia de épico) · Regras · Cenários · Não muda · Artefatos afetados · Em aberto · Decisões (tabela D-nn | Decisão | Quem | Quando | Fonte) · DoR. Seção vazia fica só com o título. Qualquer mudança depois do Aprovado volta a linha para 'Aprovado: —' até o P.O. aprovar de novo. DoR (avisa, não trava): [ ] entrada mínima do tipo · [ ] cenários CT-nn com Então verificável · [ ] Artefatos afetados preenchidos ou 'nenhum requisito' · [ ] com ELM, arquivos de elm/ aprovados pelo especificador · [ ] nenhum artefato afetado bloqueado por outra fatia · [ ] nenhum Em aberto que bloqueie a fatia inteira · [ ] tamanho ≤ G · [ ] ficha aprovada pelo P.O. DoR completa: status elegível. Senão o item fica aceita, e uma elegível que perde um item da DoR volta a aceita. O tamanho da linha se atualiza se mudou. Ficha e linha vão num commit pela fluxo/commit-na-branch-base.md ('backlog: refinamento FT-nnn').",
        "destino": "novo"
       },
       {
@@ -573,7 +573,7 @@
       },
       {
        "passo": "gravar",
-       "texto": "Grava pela fluxo/commit-na-branch-base.md, num commit ('backlog: fatiamento EP-nn'). Cada fatia ganha uma linha logo abaixo da do épico, na ordem do P.O.: id FT-nnn (maior da série + 1, lido depois do pull), tipo fatia, status aceita, aceita_em, tamanho, pai EP-nn, relator do épico, ib vazia. Cada fatia ganha também a ficha (padrão sa-refinar/ficha.md), com Objetivo, artefatos afetados (sem versão de referência, que entra no detalhar), os cenários do PRD que ela cobre (os CT-nn se numeram no detalhar) e 'Aprovado: <usuário> · <data>' do P.O. O épico vai para fatiado.",
+       "texto": "Grava pela fluxo/commit-na-branch-base.md, num commit ('backlog: fatiamento EP-nn'). Cada fatia ganha uma linha logo abaixo da do épico, na ordem do P.O.: id FT-nnn (maior da série + 1, lido depois do pull), tipo fatia, status aceita, aceita_em, tamanho, pai EP-nn, relator do épico, ib vazia. Cada fatia ganha também a ficha (template sa-refinar/ficha.md), com Objetivo, artefatos afetados (sem versão de referência, que entra no detalhar), os cenários do PRD que ela cobre (os CT-nn se numeram no detalhar) e 'Aprovado: <usuário> · <data>' do P.O. O épico vai para fatiado.",
        "destino": "muda"
       },
       {
@@ -923,7 +923,7 @@
       },
       {
        "passo": "escrever",
-       "texto": "Escreve o rascunho em .sabia/local/reunioes/, ao lado da transcrição, pelo padrão requisitos/padrao-ata.md ou pela skill de toolkit da ATA. Cabeçalho: Reunião (AAAA-MM-DD · duração · assunto) · Item · Aprovado (—). Seções: Participantes (nome · papel) · Pauta · Discussão (com [mm:ss]) · Decisões (tabela D-nn | Decisão | Quem | Quando | Fonte, com Quem = <nome> (<papel>) e Fonte = [mm:ss]) · Em aberto · Encaminhamentos (o quê · quem · até). Só entra o que a transcrição diz. Termo novo vai aos Encaminhamentos, não ao glossário.",
+       "texto": "Escreve o rascunho em .sabia/local/reunioes/, ao lado da transcrição, pelo template requisitos/template-ata.md ou pela skill de toolkit da ATA. Cabeçalho: Reunião (AAAA-MM-DD · duração · assunto) · Item · Aprovado (—). Seções: Participantes (nome · papel) · Pauta · Discussão (com [mm:ss]) · Decisões (tabela D-nn | Decisão | Quem | Quando | Fonte, com Quem = <nome> (<papel>) e Fonte = [mm:ss]) · Em aberto · Encaminhamentos (o quê · quem · até). Só entra o que a transcrição diz. Termo novo vai aos Encaminhamentos, não ao glossário.",
        "destino": "muda"
       },
       {
@@ -994,7 +994,7 @@
       },
       {
        "passo": "abrir",
-       "texto": "Sem prd.md, cria .sabia/planejamento/epicos/EP-nn-<slug>/prd.md ao lado do pitch.md, pelo padrão sa-prd/prd.md, com '**Aprovado:** —' no topo. Seções: Problema · Objetivos e métricas · Atores · Requisitos · Não objetivos · Decisões · Em aberto · Mudanças (com a 1.0). Problema, limite de investimento e não objetivos partem do pitch.md. As decisões de antes do go ficam no pitch.md, e o PRD as cita.",
+       "texto": "Sem prd.md, cria .sabia/planejamento/epicos/EP-nn-<slug>/prd.md ao lado do pitch.md, pelo template sa-prd/prd.md, com '**Aprovado:** —' no topo. Seções: Problema · Objetivos e métricas · Atores · Requisitos · Não objetivos · Decisões · Em aberto · Mudanças (com a 1.0). Problema, limite de investimento e não objetivos partem do pitch.md. As decisões de antes do go ficam no pitch.md, e o PRD as cita.",
        "destino": "novo"
       },
       {
@@ -1014,12 +1014,12 @@
       },
       {
        "passo": "escrever",
-       "texto": "Proporcional ao tamanho. Cada requisito é um bloco '### <sigla>-<id> · <título>' com a linha '**Tipo:** HF | UC | REG | MSG | EL | GL · **Ação:** inclui | altera | exclui', pelo padrão do tipo (sa-prd/hf · reg · el · gl). A EL só existe com tela (Telas = sim) e tem como fonte o protótipo aprovado; sem ele → sa-especificar.prototipo, e a EL fica no Em aberto, bloqueando só ela. Sem ET: ela é só as-built, no design.md. A HF traz os cenários Dado · Quando · Então do requisito, sem CT.csv; os CT-nn nascem na ficha. O tipo que tem skill de toolkit no prompt sai por ela. Nunca inventa regra, valor ou ator: sem fonte, vai ao Em aberto. Grava na branch base pelo fluxo/commit-na-branch-base.md a cada rodada ('EP-nn prd: <o quê>').",
+       "texto": "Proporcional ao tamanho. Cada requisito é um bloco '### <sigla>-<id> · <título>' com a linha '**Tipo:** HF | UC | REG | MSG | EL | GL · **Ação:** inclui | altera | exclui', pelo template do tipo (sa-prd/hf · reg · el · gl). A EL só existe com tela (Telas = sim) e tem como fonte o protótipo aprovado; sem ele → sa-especificar.prototipo, e a EL fica no Em aberto, bloqueando só ela. Sem ET: ela é só as-built, no design.md. A HF traz os cenários Dado · Quando · Então do requisito, sem CT.csv; os CT-nn nascem na ficha. O tipo que tem skill de toolkit no prompt sai por ela. Nunca inventa regra, valor ou ator: sem fonte, vai ao Em aberto. Grava na branch base pelo fluxo/commit-na-branch-base.md a cada rodada ('EP-nn prd: <o quê>').",
        "destino": "muda"
       },
       {
        "passo": "validar",
-       "texto": "Roda o sabia validar-spec (forma e ligações; avisa, não trava). A 'quer revisar agora?', aplica o checklist do padrão prd.md: seções preenchidas, todo requisito com id e ação, nenhuma regra sem fonte e todo em aberto com bloqueia. Achado que é decisão de negócio → esclarecer.",
+       "texto": "Roda o sabia validar-spec (forma e ligações; avisa, não trava). A 'quer revisar agora?', aplica o checklist do template prd.md: seções preenchidas, todo requisito com id e ação, nenhuma regra sem fonte e todo em aberto com bloqueia. Achado que é decisão de negócio → esclarecer.",
        "destino": "muda"
       },
       {
@@ -1184,7 +1184,7 @@
       },
       {
        "passo": "pasta e status.md",
-       "texto": "Só nas trilhas rápida e completo. A pasta segue o formato_spec do agentes.json: .kiro/specs/ft-<nnn>-<slug>/ no Kiro, openspec/changes/ft-<nnn>-<slug>/ no OpenSpec. Se a pasta já existe na branch base (elm/ criado no refinamento), reaproveita. Grava o status.md pelo padrão sa-desenvolver/status.md: Trilha, Autonomia, Fase — (fica assim até o plano ser aprovado), MR —, Desvios, Em aberto, Lições aprendidas e Retomar ('feito: iniciada · próximo: sa-plano.plano'). Só no Kiro: .config.kiro com specType feature (bugfix no bug da trilha rápida) e o workflowType da trilha. Na trilha trivial, este passo não faz nada.",
+       "texto": "Só nas trilhas rápida e completo. A pasta segue o formato_spec do agentes.json: .kiro/specs/ft-<nnn>-<slug>/ no Kiro, openspec/changes/ft-<nnn>-<slug>/ no OpenSpec. Se a pasta já existe na branch base (elm/ criado no refinamento), reaproveita. Grava o status.md pelo template sa-desenvolver/status.md: Trilha, Autonomia, Fase — (fica assim até o plano ser aprovado), MR —, Desvios, Em aberto, Lições aprendidas e Retomar ('feito: iniciada · próximo: sa-plano.plano'). Só no Kiro: .config.kiro com specType feature (bugfix no bug da trilha rápida) e o workflowType da trilha. Na trilha trivial, este passo não faz nada.",
        "destino": "muda"
       },
       {
@@ -1291,7 +1291,7 @@
       },
       {
        "passo": "MR",
-       "texto": "Escreve o texto pelo padrão sa-desenvolver/pr.md, ou pelo .gitlab/merge_request_templates/Default.md do projeto. Título '<ID> — <título>'. Seções: O quê · Porquê · Evidência (CI, 🔎, revisão do agente) · Risco (Reversível?, DDL pendente BD-nnn, ADRs) · Foco (como ler) · Artefatos afetados · Lições aprendidas (só no trivial). Entrega, nesta ordem: commit com a árvore limpa; push da branch (com o 'sim'; liberado no autopilot); conferência no remoto (HEAD = origin/<branch>); MR pelo gitlabpr. Se o MR já existe (retrabalho), o push já o atualizou; senão, gitlab_criar_mr. Sem o MCP, a pessoa abre o MR e passa o link. No status.md: Fase pr-aberto, MR <link> e Retomar; depois commit e push.",
+       "texto": "Escreve o texto pelo template sa-desenvolver/pr.md, ou pelo .gitlab/merge_request_templates/Default.md do projeto. Título '<ID> — <título>'. Seções: O quê · Porquê · Evidência (CI, 🔎, revisão do agente) · Risco (Reversível?, DDL pendente BD-nnn, ADRs) · Foco (como ler) · Artefatos afetados · Lições aprendidas (só no trivial). Entrega, nesta ordem: commit com a árvore limpa; push da branch (com o 'sim'; liberado no autopilot); conferência no remoto (HEAD = origin/<branch>); MR pelo gitlabpr. Se o MR já existe (retrabalho), o push já o atualizou; senão, gitlab_criar_mr. Sem o MCP, a pessoa abre o MR e passa o link. No status.md: Fase pr-aberto, MR <link> e Retomar; depois commit e push.",
        "destino": "muda"
       },
       {
@@ -1392,7 +1392,7 @@
       },
       {
        "passo": "pesquisa",
-       "texto": "Fora do autopilot, antes pergunta à pessoa se tem pistas de onde olhar. Chama sa-pesquisar.pesquisar no subagente sa-pesquisador, com o escopo (ficha, artefatos afetados, elm/), as pistas e 3 a 7 perguntas: pesquisa curta na rápida, factual na completo. Grava os fatos no research.md pelo padrão sa-plano/research.md e faz commit. Divergência entre documento e código: fora dos artefatos afetados, inclui fluxo/captura.md (obs 'origem FT-nnn'); dentro dos artefatos afetados, Em aberto ao especificador, porque o texto aprovado pode precisar mudar.",
+       "texto": "Fora do autopilot, antes pergunta à pessoa se tem pistas de onde olhar. Chama sa-pesquisar.pesquisar no subagente sa-pesquisador, com o escopo (ficha, artefatos afetados, elm/), as pistas e 3 a 7 perguntas: pesquisa curta na rápida, factual na completo. Grava os fatos no research.md pelo template sa-plano/research.md e faz commit. Divergência entre documento e código: fora dos artefatos afetados, inclui fluxo/captura.md (obs 'origem FT-nnn'); dentro dos artefatos afetados, Em aberto ao especificador, porque o texto aprovado pode precisar mudar.",
        "destino": "muda"
       },
       {
@@ -1483,7 +1483,7 @@
       },
       {
        "passo": "fatos",
-       "texto": "Devolve a quem chamou só fatos com arquivo:linha, em até ~150 linhas, nas seções do padrão sa-plano/research.md: Perguntas e respostas · Fluxo atual · Análogos · Reaproveitar · Dados · Testes · Documentação × código · Restrições e riscos · Não encontrado. Divergência entre documento e código é um achado, e o que fazer com ela é de quem chamou. Nada inventado. O fluxo termina aqui.",
+       "texto": "Devolve a quem chamou só fatos com arquivo:linha, em até ~150 linhas, nas seções do template sa-plano/research.md: Perguntas e respostas · Fluxo atual · Análogos · Reaproveitar · Dados · Testes · Documentação × código · Restrições e riscos · Não encontrado. Divergência entre documento e código é um achado, e o que fazer com ela é de quem chamou. Nada inventado. O fluxo termina aqui.",
        "destino": "muda"
       }
      ]
@@ -1507,7 +1507,7 @@
       },
       {
        "passo": "escopo",
-       "texto": "Escolhe os critérios de revisão no padrão sa-revisar/criterios-revisao.md, lê os critérios de revisão inteiros e depois a entrada dela. L: a pasta da spec pelo formato_spec do agentes.json. No Kiro, requirements.md (bugfix.md no bug), design.md e tasks.md. No OpenSpec, proposal.md, o delta specs/<cap>/spec.md, tasks.md e, no completo, design.md. Somam-se research.md, a ficha (regras, cenários CT-nn, artefatos afetados), o prd.md na fatia de épico e, com ELM, os arquivos aprovados de elm/ da pasta da spec. C: git diff origin/<branch_base>...HEAD (no autopilot, dentro da worktree .sabia/local/wt/<id>), a mesma pasta da spec e, com o MR aberto, os campos O quê · Porquê · Evidência · Risco · Foco · Artefatos afetados. Na trivial, só o diff, a ficha e o MR. Sempre lê o .sabia/sabia.md (Projeto e Comandos). As Regras aprendidas do sabia.md entram como itens dos critérios de revisão. O delta já traz o texto completo dos requisitos tocados, então o revisor não lê o ELM.",
+       "texto": "Escolhe os critérios de revisão no template sa-revisar/criterios-revisao.md, lê os critérios de revisão inteiros e depois a entrada dela. L: a pasta da spec pelo formato_spec do agentes.json. No Kiro, requirements.md (bugfix.md no bug), design.md e tasks.md. No OpenSpec, proposal.md, o delta specs/<cap>/spec.md, tasks.md e, no completo, design.md. Somam-se research.md, a ficha (regras, cenários CT-nn, artefatos afetados), o prd.md na fatia de épico e, com ELM, os arquivos aprovados de elm/ da pasta da spec. C: git diff origin/<branch_base>...HEAD (no autopilot, dentro da worktree .sabia/local/wt/<id>), a mesma pasta da spec e, com o MR aberto, os campos O quê · Porquê · Evidência · Risco · Foco · Artefatos afetados. Na trivial, só o diff, a ficha e o MR. Sempre lê o .sabia/sabia.md (Projeto e Comandos). As Regras aprendidas do sabia.md entram como itens dos critérios de revisão. O delta já traz o texto completo dos requisitos tocados, então o revisor não lê o ELM.",
        "destino": "muda"
       },
       {
@@ -1522,7 +1522,7 @@
       },
       {
        "passo": "relatorio",
-       "texto": "Devolve o relatório a quem chamou, sem gravar arquivo e sem commit. Formato do padrão, uma linha por achado: # · severidade (BLOQUEANTE · IMPORTANTE · SUGESTÃO) · achado · evidência · correção · origem (L: plano · ficha · PRD; C: código · ambiente) · destino sugerido (corrige · adia · volta-plano · volta-spec · descarta). Nos critérios de revisão C, uma tabela por eixo. O que diverge da spec é achado com destino volta-spec. Problema fora do escopo da fatia vira SUGESTÃO com destino adia. A última linha é exata: na L, 'ANALISE: OK | AJUSTAR'; na C, 'VEREDITO: APROVADO | REVISAR | AMBIENTE'. Só o BLOQUEANTE reprova. Se o C3 não rodou por ambiente, o fecho é AMBIENTE, nunca APROVADO. Quem chamou tria e grava: a sa-plano corrige o plano; a sa-desenvolver.codificar transforma cada 'corrige' em tarefa [R<n>] e leva o resumo à Evidência do MR; a sa-revisar.mr abre as threads no MR.",
+       "texto": "Devolve o relatório a quem chamou, sem gravar arquivo e sem commit. Formato do template, uma linha por achado: # · severidade (BLOQUEANTE · IMPORTANTE · SUGESTÃO) · achado · evidência · correção · origem (L: plano · ficha · PRD; C: código · ambiente) · destino sugerido (corrige · adia · volta-plano · volta-spec · descarta). Nos critérios de revisão C, uma tabela por eixo. O que diverge da spec é achado com destino volta-spec. Problema fora do escopo da fatia vira SUGESTÃO com destino adia. A última linha é exata: na L, 'ANALISE: OK | AJUSTAR'; na C, 'VEREDITO: APROVADO | REVISAR | AMBIENTE'. Só o BLOQUEANTE reprova. Se o C3 não rodou por ambiente, o fecho é AMBIENTE, nunca APROVADO. Quem chamou tria e grava: a sa-plano corrige o plano; a sa-desenvolver.codificar transforma cada 'corrige' em tarefa [R<n>] e leva o resumo à Evidência do MR; a sa-revisar.mr abre as threads no MR.",
        "destino": "muda"
       }
      ]
@@ -1603,7 +1603,7 @@
       },
       {
        "passo": "casos",
-       "texto": "Na rápida e no completo, reescreve o CT.csv da pasta da spec com uma linha por cenário ✅. Os cenários ❌, ⚠️ e 🔁 não entram. Segue o padrão requisitos/padrao-ct.md (UTF-8 com BOM, ';', LF): Tipo ('Caso de Teste') · Resumo ('<FT-nnn> CT-nn - <título do cenário>') · Responsável (usuario de quem disparou a verificação) · Descrição (objetivo, pré-condições, passos, esperado, evidência). Não há Status nem 'Planejado para'. O '<FT-nnn> CT-nn' é a mesma marca do teste automatizado. Na trivial não há CT.csv: a evidência fica no MR. Quando quem chama é a sa-verificar.revisao-humana, o CT.csv não é reescrito, porque o arquivo é do autor.",
+       "texto": "Na rápida e no completo, reescreve o CT.csv da pasta da spec com uma linha por cenário ✅. Os cenários ❌, ⚠️ e 🔁 não entram. Segue o template requisitos/template-ct.md (UTF-8 com BOM, ';', LF): Tipo ('Caso de Teste') · Resumo ('<FT-nnn> CT-nn - <título do cenário>') · Responsável (usuario de quem disparou a verificação) · Descrição (objetivo, pré-condições, passos, esperado, evidência). Não há Status nem 'Planejado para'. O '<FT-nnn> CT-nn' é a mesma marca do teste automatizado. Na trivial não há CT.csv: a evidência fica no MR. Quando quem chama é a sa-verificar.revisao-humana, o CT.csv não é reescrito, porque o arquivo é do autor.",
        "destino": "muda"
       },
       {
@@ -1664,7 +1664,7 @@
       },
       {
        "passo": "registrar",
-       "texto": "Pedido novo: inclui o fluxo/captura.md com tipo sustentação e já faz a triagem aqui. A pessoa confirma a categoria (AT · IM · BD · IN · OP · EX, pela seção Sustentação do sabia.md: Categoria · Descrição · Exemplo) antes de gravar. A categoria vem antes porque o id nasce da série dela (<sigla>-nnn = o maior da série + 1, lido depois do pull) e nunca muda. Prioridade: crítica (expedite pela política do acordos.md) ou vazio. Pelo fluxo/commit-na-branch-base.md, grava a linha (status nova, relator, aceita_em = hoje, obs 'origem chamado <n>' quando houver) e o registro .sabia/planejamento/sustentacao/<ID>-<slug>.md, pelo padrão sa-atender/registro.md: cabeçalho Categoria · Origem · Pedido por · Prazo (AAAA-MM-DD ou —) · Responsável e a seção Pedido, sem dado de cliente. Se é só para registrar, o fluxo termina aqui. Para atender agora, segue para o passo puxar.",
+       "texto": "Pedido novo: inclui o fluxo/captura.md com tipo sustentação e já faz a triagem aqui. A pessoa confirma a categoria (AT · IM · BD · IN · OP · EX, pela seção Sustentação do sabia.md: Categoria · Descrição · Exemplo) antes de gravar. A categoria vem antes porque o id nasce da série dela (<sigla>-nnn = o maior da série + 1, lido depois do pull) e nunca muda. Prioridade: crítica (expedite pela política do acordos.md) ou vazio. Pelo fluxo/commit-na-branch-base.md, grava a linha (status nova, relator, aceita_em = hoje, obs 'origem chamado <n>' quando houver) e o registro .sabia/planejamento/sustentacao/<ID>-<slug>.md, pelo template sa-atender/registro.md: cabeçalho Categoria · Origem · Pedido por · Prazo (AAAA-MM-DD ou —) · Responsável e a seção Pedido, sem dado de cliente. Se é só para registrar, o fluxo termina aqui. Para atender agora, segue para o passo puxar.",
        "destino": "novo"
       },
       {
@@ -2688,7 +2688,7 @@
       },
       {
        "passo": "template do MR",
-       "texto": "Se não existir .gitlab/merge_request_templates/Default.md, cria a partir do padrão sa-desenvolver/pr.md (O quê · Porquê · Evidência · Risco · Foco · Artefatos afetados). Se já existe, não sobrescreve.",
+       "texto": "Se não existir .gitlab/merge_request_templates/Default.md, cria a partir do template sa-desenvolver/pr.md (O quê · Porquê · Evidência · Risco · Foco · Artefatos afetados). Se já existe, não sobrescreve.",
        "destino": "novo"
       },
       {
@@ -2721,11 +2721,11 @@
     {
      "fluxo": "customizar",
      "destino": "fica",
-     "resumo": "Mesmo modo da 2.0: trocar, inserir ou remover passo e trocar padrão em .sabia/fluxo/ e .sabia/padrao/, com a branch base pelo --base. O delta vai ao prompt do agente que roda a skill do passo.",
+     "resumo": "Mesmo modo da 2.0: trocar, inserir ou remover passo e trocar padrão em .sabia/fluxo/ e .sabia/template/, com a branch base pelo --base. O delta vai ao prompt do agente que roda a skill do passo.",
      "passos": [
       {
        "passo": "entrada",
-       "texto": "Pedido 'customizar o passo X', 'trocar o padrão Y' ou 'descustomizar'. Roda na sessão sem agente, porque .sabia/fluxo e .sabia/padrao estão no harness.",
+       "texto": "Pedido 'customizar o passo X', 'trocar o template Y' ou 'descustomizar'. Roda na sessão sem agente, porque .sabia/fluxo e .sabia/template estão no harness.",
        "destino": "muda"
       },
       {
@@ -2740,7 +2740,7 @@
       },
       {
        "passo": "copiar com base",
-       "texto": "Copia para .sabia/fluxo/ ou .sabia/padrao/, com a branch base pelo --base.",
+       "texto": "Copia para .sabia/fluxo/ ou .sabia/template/, com a branch base pelo --base.",
        "destino": "fica"
       },
       {
@@ -2772,7 +2772,7 @@
       },
       {
        "passo": "harness",
-       "texto": "Em deny: .kiro/agents, .kiro/settings, .kiro/steering/sabia.md, .opencode, opencode.json, .sabia/config, .sabia/fluxo e .sabia/padrao. Liberados: .kiro/specs, openspec/, .sabia/planejamento e .sabia/creditos.",
+       "texto": "Em deny: .kiro/agents, .kiro/settings, .kiro/steering/sabia.md, .opencode, opencode.json, .sabia/config, .sabia/fluxo e .sabia/template. Liberados: .kiro/specs, openspec/, .sabia/planejamento e .sabia/creditos.",
        "destino": "novo"
       },
       {
@@ -2804,7 +2804,7 @@
      "passos": [
       {
        "passo": "onde escreve",
-       "texto": "AGENTS.md (por mescla), .sabia/sabia.md, .sabia/config/agentes.json, .sabia/fluxo/, .sabia/padrao/, .sabia/planejamento/backlog.md, .kiro/steering/sabia.md, .kiro/agents/, .opencode/agents/, as instructions do opencode.json, .gitlab/merge_request_templates/Default.md (só se não existir) e .gitignore.",
+       "texto": "AGENTS.md (por mescla), .sabia/sabia.md, .sabia/config/agentes.json, .sabia/fluxo/, .sabia/template/, .sabia/planejamento/backlog.md, .kiro/steering/sabia.md, .kiro/agents/, .opencode/agents/, as instructions do opencode.json, .gitlab/merge_request_templates/Default.md (só se não existir) e .gitignore.",
        "destino": "muda"
       },
       {
@@ -2838,7 +2838,7 @@
       },
       {
        "passo": "as-built",
-       "texto": "As skills são compiladas na pasta do usuário na instalação (opencode e Kiro), e nada é copiado para o projeto. O override fica em .sabia/fluxo e .sabia/padrao.",
+       "texto": "As skills são compiladas na pasta do usuário na instalação (opencode e Kiro), e nada é copiado para o projeto. O override fica em .sabia/fluxo e .sabia/template.",
        "destino": "fica"
       }
      ]
@@ -3013,7 +3013,7 @@
      "passos": [
       {
        "passo": "configurar → sa-setup",
-       "texto": "Instalar ou atualizar o Sabiá no projeto, os agentes, o formato da spec e 'usa ELM?'. Customizar ou descustomizar um passo ou padrão: sa-setup.customizar.",
+       "texto": "Instalar ou atualizar o Sabiá no projeto, os agentes, o formato da spec e 'usa ELM?'. Customizar ou descustomizar um passo ou template: sa-setup.customizar.",
        "destino": "muda"
       },
       {
@@ -3354,7 +3354,7 @@
       },
       {
        "passo": "corpo",
-       "texto": "Fatia: ficha curta .sabia/planejamento/fatias/FT-nnn-<slug>.md, com a seção Entrada (pedido · quem pediu · requisito, se souber). Bug: a mesma ficha, com Entrada (passos · atual · esperado · reproduzido: sim | não | detalhe insuficiente). Sustentação: registro .sabia/planejamento/sustentacao/<ID>-<slug>.md (sem subpasta por categoria), pelo padrão sa-atender/registro.md, com o cabeçalho Categoria · Origem · Pedido por · Prazo · Responsável e a seção Pedido. Épico: só a linha. slug = título em kebab-case, sem acento. Dado de cliente nunca vai ao git: fica em .sabia/local/sustentacao/<ID>/.",
+       "texto": "Fatia: ficha curta .sabia/planejamento/fatias/FT-nnn-<slug>.md, com a seção Entrada (pedido · quem pediu · requisito, se souber). Bug: a mesma ficha, com Entrada (passos · atual · esperado · reproduzido: sim | não | detalhe insuficiente). Sustentação: registro .sabia/planejamento/sustentacao/<ID>-<slug>.md (sem subpasta por categoria), pelo template sa-atender/registro.md, com o cabeçalho Categoria · Origem · Pedido por · Prazo · Responsável e a seção Pedido. Épico: só a linha. slug = título em kebab-case, sem acento. Dado de cliente nunca vai ao git: fica em .sabia/local/sustentacao/<ID>/.",
        "destino": "novo"
       },
       {
@@ -3500,7 +3500,7 @@
      "passos": [
       {
        "passo": "formato",
-       "texto": "Chaves de cada tipo: nome; arquivo (o nome do arquivo em elm/); cria (passos skill.fluxo.passo que escrevem o tipo); padrao (o corpo do tipo); elm (DOORS ou null); requisito (entra na publicação de requisitos da sa-elm.publicar); desviavel (os passos de cria em que a skill de um toolkit pode escrever o tipo; lista vazia = não desviável); depois (siglas publicadas antes); embute (siglas embutidas no texto); pendente (tipo declarado sem padrão ou fluxo: não é criado nem publicado). A chave critérios de revisão sai. O compilador valida: sigla única, os passos de cria e desviavel existem na 2.1, o padrão existe e depois não tem ciclo.",
+       "texto": "Chaves de cada tipo: nome; arquivo (o nome do arquivo em elm/); cria (passos skill.fluxo.passo que escrevem o tipo); template (o corpo do tipo); elm (DOORS ou null); requisito (entra na publicação de requisitos da sa-elm.publicar); desviavel (os passos de cria em que a skill de um toolkit pode escrever o tipo; lista vazia = não desviável); depois (siglas publicadas antes); embute (siglas embutidas no texto); pendente (tipo declarado sem template ou fluxo: não é criado nem publicado). A chave critérios de revisão sai. O compilador valida: sigla única, os passos de cria e desviavel existem na 2.1, o template existe e depois não tem ciclo.",
        "destino": "muda"
       },
       {
@@ -3510,22 +3510,22 @@
       },
       {
        "passo": "HF",
-       "texto": "História. cria: sa-prd.prd.escrever (requisito no PRD) e sa-especificar.elm.editar (arquivo em elm/). padrao: requisitos/padrao-hf.md. elm: DOORS. requisito: true. desviavel: os dois passos de cria. depois: REG, EL. embute: REG.",
+       "texto": "História. cria: sa-prd.prd.escrever (requisito no PRD) e sa-especificar.elm.editar (arquivo em elm/). template: requisitos/template-hf.md. elm: DOORS. requisito: true. desviavel: os dois passos de cria. depois: REG, EL. embute: REG.",
        "destino": "muda"
       },
       {
        "passo": "REG",
-       "texto": "Regra. cria: sa-prd.prd.escrever e sa-especificar.elm.editar. padrao: requisitos/padrao-reg.md. elm: DOORS. requisito: true. desviavel: os dois passos de cria. depois: GL. embute: nenhum.",
+       "texto": "Regra. cria: sa-prd.prd.escrever e sa-especificar.elm.editar. template: requisitos/template-reg.md. elm: DOORS. requisito: true. desviavel: os dois passos de cria. depois: GL. embute: nenhum.",
        "destino": "muda"
       },
       {
        "passo": "GL",
-       "texto": "Termo de glossário (o slug é o termo em kebab-case). cria: sa-prd.prd.escrever e sa-especificar.elm.editar. padrao: requisitos/padrao-gl.md. elm: DOORS. requisito: true. desviavel: nenhum. depois: nenhum. embute: nenhum.",
+       "texto": "Termo de glossário (o slug é o termo em kebab-case). cria: sa-prd.prd.escrever e sa-especificar.elm.editar. template: requisitos/template-gl.md. elm: DOORS. requisito: true. desviavel: nenhum. depois: nenhum. embute: nenhum.",
        "destino": "muda"
       },
       {
        "passo": "EL",
-       "texto": "Especificação de layout (só com Telas = sim). cria: sa-prd.prd.escrever e sa-especificar.elm.editar. padrao: requisitos/padrao-el.md. elm: DOORS. requisito: true. desviavel: os dois passos de cria. depois: REG. embute: nenhum.",
+       "texto": "Especificação de layout (só com Telas = sim). cria: sa-prd.prd.escrever e sa-especificar.elm.editar. template: requisitos/template-el.md. elm: DOORS. requisito: true. desviavel: os dois passos de cria. depois: REG. embute: nenhum.",
        "destino": "muda"
       },
       {
@@ -3535,12 +3535,12 @@
       },
       {
        "passo": "CT",
-       "texto": "Caso de teste. Não tem arquivo em elm/: o cenário CT-nn mora na ficha e na spec, e a evidência no CT.csv. cria: sa-refinar.detalhar.cenarios (o CT-nn) e sa-verificar.verificar.casos (o CT.csv, escrito só pela sa-verificar). padrao: requisitos/padrao-ct.md. elm: null (o ETM sai). requisito: false. desviavel: nenhum. O PRD não grava CT.csv.",
+       "texto": "Caso de teste. Não tem arquivo em elm/: o cenário CT-nn mora na ficha e na spec, e a evidência no CT.csv. cria: sa-refinar.detalhar.cenarios (o CT-nn) e sa-verificar.verificar.casos (o CT.csv, escrito só pela sa-verificar). template: requisitos/template-ct.md. elm: null (o ETM sai). requisito: false. desviavel: nenhum. O PRD não grava CT.csv.",
        "destino": "muda"
       },
       {
        "passo": "ATA",
-       "texto": "Ata de reunião. arquivo: ATA-<nn>-<AAAA-MM-DD>-<assunto>.md. cria: sa-especificar.reuniao.escrever. padrao: requisitos/padrao-ata.md. elm: DOORS (sobe sob pergunta da sa-elm.publicar). requisito: false. desviavel: sa-especificar.reuniao.escrever.",
+       "texto": "Ata de reunião. arquivo: ATA-<nn>-<AAAA-MM-DD>-<assunto>.md. cria: sa-especificar.reuniao.escrever. template: requisitos/template-ata.md. elm: DOORS (sobe sob pergunta da sa-elm.publicar). requisito: false. desviavel: sa-especificar.reuniao.escrever.",
        "destino": "muda"
       }
      ]
@@ -3616,7 +3616,7 @@
   }
  ],
  "artefatos": {
-  "arvore_21": "<repo>/\n├── AGENTS.md                                  # do projeto: a sa-setup só lê, como fonte do sabia.md\n├── CODEOWNERS                                 # <padrão> @usuario (raiz, .gitlab/ ou docs/); mantido pelo time, a sa-setup sugere\n├── opencode.json                              # alvo opencode: instructions inclui .sabia/sabia.md (harness)\n├── .gitignore                                 # .sabia/local/ e <bundle>/explorar.html\n├── .gitattributes                             # .sabia/creditos/*.csv merge=union\n├── .gitlab/merge_request_templates/\n│   └── Default.md                             # template do MR: título <id> — <título> · O quê · Porquê · Evidência · Risco · Foco · Artefatos afetados\n├── docs/\n│   ├── adr/NNNN-<titulo>.md                   # ADR Nygard, só decisão transversal (chave adr)\n│   └── elm/<pa>/                              # bundle (só com ELM; chave bundle = rm.download do pa): só a sa-elm.baixar escreve\n│       ├── index.md · log.md                  # índice OKF do bundle\n│       ├── sync.md                            # sincronizado_em\n│       ├── explorar.html                      # sa-elm.visualizar (fora do git)\n│       └── <conceito>.md                      # um requisito oficial por arquivo, com envelope OKF\n├── openspec/                                  # formato_spec = openspec\n│   ├── specs/<cap>/spec.md                    # especificação vigente: só sem ELM (o archive funde o delta)\n│   └── changes/\n│       ├── ft-<nnn>-<slug>/                   # rápida e completo; trivial não tem pasta\n│       │   ├── proposal.md                    # Why · What Changes · Capabilities · Impact + Fatia e Trilha\n│       │   ├── specs/<cap>/spec.md            # delta ADDED/MODIFIED/REMOVED com o texto completo de cada requisito\n│       │   ├── design.md                      # só na trilha completo\n│       │   ├── tasks.md                       # ## 1. grupo / - [ ] 1.1 tarefa\n│       │   ├── research.md · status.md · CT.csv\n│       │   └── elm/                           # com ELM: um arquivo inteiro por artefato tocado (nasce no refinamento)\n│       └── archive/AAAA-MM-DD-ft-<nnn>-<slug>/  # mudança arquivada depois do merge (1ª fonte da busca do vigente)\n├── .kiro/                                     # alvo Kiro / formato_spec = kiro\n│   ├── steering/sabia.md                      # #[[file:.sabia/sabia.md]] (harness)\n│   ├── settings/                              # do Kiro (harness)\n│   ├── agents/sa-<nome>.json · <toolkit>-<agente>.json   # gerados (harness): os 5 agentes e os de toolkit\n│   └── specs/ft-<nnn>-<slug>/                 # rápida e completo; fica no lugar depois do merge (vigente sem ELM)\n│       ├── .config.kiro                       # specId · workflowType · specType (feature | bugfix)\n│       ├── requirements.md | bugfix.md        # fatia | bug, com o bloco completo de cada requisito tocado\n│       ├── design.md · tasks.md\n│       ├── research.md · status.md · CT.csv\n│       └── elm/                               # com ELM\n├── .opencode/agents/                          # gerados (harness)\n│   ├── sa-desenvolvedor.md · sa-especificador.md   # mode primary, modelo build\n│   ├── sa-pesquisador.md · sa-revisor.md      # mode subagent, só leitura\n│   ├── sa-verificador.md                      # mode subagent, só leitura + Executar, curl à URL de teste e CT.csv\n│   └── <toolkit>-<agente>.md                # mode subagent, permissões do dono do passo\n└── .sabia/\n    ├── sabia.md                               # steering: Configuração · Verificação de aceite · Sustentação · ELM · Desvios · Tipos · Regras aprendidas\n    ├── glossario.md                           # opcional: só sem GL no DOORS (chave glossario)\n    ├── creditos/<usuario>.csv                 # Kiro: uma linha por sessão (creditos.py)\n    ├── config/                                # harness: só a sessão sem agente escreve\n    │   ├── agentes.json                       # escolhas do projeto, entrada do gerador\n    │   ├── elm/pa_<nome>.json                 # conexão do MCP elm\n    │   └── elk/elk-<ambiente>.json            # conexão do MCP elk\n    ├── fluxo/ · padrao/                       # override esparso (harness)\n    ├── toolkits/<nome>/toolkit.json           # toolkit do projeto (opcional)\n    ├── local/                                 # fora do git\n    │   ├── wt/<id>/                           # worktree do autopilot\n    │   ├── loop-<id>.md                       # log do disjuntor do autopilot\n    │   ├── reunioes/<EP-nn|FT-nnn>-<AAAA-MM-DD>.<ext>   # transcrições\n    │   └── sustentacao/<ID>/                  # dados de cliente do atendimento\n    └── planejamento/                          # chave produto; gravado direto na branch base (fluxo/commit-na-branch-base.md)\n        ├── backlog.md                         # tabela única de 14 colunas; ordem das linhas = prioridade\n        ├── acordos.md                         # Item | Acordo: timebox, WIP, SLE, DoD, classes, reserva de capacidade, tamanhos, disjuntor, id no commit, CT no teste\n        ├── equipe.json                        # membros: usuario · booleanas · capacidade\n        ├── roadmap.md                         # opcional\n        ├── sprints/<AAAA>/sprint-<nn>.md       # Meta · Item · Trabalho · Responsável · Tarefas · Review · Retro\n        ├── fatias/FT-<nnn>-<slug>.md          # ficha (fatia e bug)\n        ├── epicos/EP-<nn>-<slug>/\n        │   ├── pitch.md                       # nasce no shaping (Shape Up) com go/kill\n        │   └── prd.md                         # nasce no go\n        ├── prototipos/<EP-nn|FT-nnn>-<slug>/v<N>/   # versões do protótipo\n        ├── atas/ATA-<nn>-<AAAA-MM-DD>-<assunto>.md   # opcional\n        └── sustentacao/<ID>-<slug>.md         # registro do item de Sustentação\n\n~/.sabia/framework/                            # instalação (fora do repositório)\n├── fluxo/entrada.md · captura.md · commit-na-branch-base.md   # passos comuns incluídos pelas skills\n├── fluxo/tipos.json                           # catálogo HF · UC · REG · MSG · EL · GL · ET · CT · ATA\n├── fluxo/travas.json                          # catálogo das travas\n├── padrao/<skill>/<arquivo>.md              # modelos (catálogo no esquema dos overrides)\n└── skills/sa-setup/assets/agents/perfis.json  # 2 modelos de permissão, os 5 agentes e o harness\n~/.sabia/toolkits/<nome>/toolkit.json          # toolkit do usuário",
+  "arvore_21": "<repo>/\n├── AGENTS.md                                  # do projeto: a sa-setup só lê, como fonte do sabia.md\n├── CODEOWNERS                                 # <padrão> @usuario (raiz, .gitlab/ ou docs/); mantido pelo time, a sa-setup sugere\n├── opencode.json                              # alvo opencode: instructions inclui .sabia/sabia.md (harness)\n├── .gitignore                                 # .sabia/local/ e <bundle>/explorar.html\n├── .gitattributes                             # .sabia/creditos/*.csv merge=union\n├── .gitlab/merge_request_templates/\n│   └── Default.md                             # template do MR: título <id> — <título> · O quê · Porquê · Evidência · Risco · Foco · Artefatos afetados\n├── docs/\n│   ├── adr/NNNN-<titulo>.md                   # ADR Nygard, só decisão transversal (chave adr)\n│   └── elm/<pa>/                              # bundle (só com ELM; chave bundle = rm.download do pa): só a sa-elm.baixar escreve\n│       ├── index.md · log.md                  # índice OKF do bundle\n│       ├── sync.md                            # sincronizado_em\n│       ├── explorar.html                      # sa-elm.visualizar (fora do git)\n│       └── <conceito>.md                      # um requisito oficial por arquivo, com envelope OKF\n├── openspec/                                  # formato_spec = openspec\n│   ├── specs/<cap>/spec.md                    # especificação vigente: só sem ELM (o archive funde o delta)\n│   └── changes/\n│       ├── ft-<nnn>-<slug>/                   # rápida e completo; trivial não tem pasta\n│       │   ├── proposal.md                    # Why · What Changes · Capabilities · Impact + Fatia e Trilha\n│       │   ├── specs/<cap>/spec.md            # delta ADDED/MODIFIED/REMOVED com o texto completo de cada requisito\n│       │   ├── design.md                      # só na trilha completo\n│       │   ├── tasks.md                       # ## 1. grupo / - [ ] 1.1 tarefa\n│       │   ├── research.md · status.md · CT.csv\n│       │   └── elm/                           # com ELM: um arquivo inteiro por artefato tocado (nasce no refinamento)\n│       └── archive/AAAA-MM-DD-ft-<nnn>-<slug>/  # mudança arquivada depois do merge (1ª fonte da busca do vigente)\n├── .kiro/                                     # alvo Kiro / formato_spec = kiro\n│   ├── steering/sabia.md                      # #[[file:.sabia/sabia.md]] (harness)\n│   ├── settings/                              # do Kiro (harness)\n│   ├── agents/sa-<nome>.json · <toolkit>-<agente>.json   # gerados (harness): os 5 agentes e os de toolkit\n│   └── specs/ft-<nnn>-<slug>/                 # rápida e completo; fica no lugar depois do merge (vigente sem ELM)\n│       ├── .config.kiro                       # specId · workflowType · specType (feature | bugfix)\n│       ├── requirements.md | bugfix.md        # fatia | bug, com o bloco completo de cada requisito tocado\n│       ├── design.md · tasks.md\n│       ├── research.md · status.md · CT.csv\n│       └── elm/                               # com ELM\n├── .opencode/agents/                          # gerados (harness)\n│   ├── sa-desenvolvedor.md · sa-especificador.md   # mode primary, modelo build\n│   ├── sa-pesquisador.md · sa-revisor.md      # mode subagent, só leitura\n│   ├── sa-verificador.md                      # mode subagent, só leitura + Executar, curl à URL de teste e CT.csv\n│   └── <toolkit>-<agente>.md                # mode subagent, permissões do dono do passo\n└── .sabia/\n    ├── sabia.md                               # steering: Configuração · Verificação de aceite · Sustentação · ELM · Desvios · Tipos · Regras aprendidas\n    ├── glossario.md                           # opcional: só sem GL no DOORS (chave glossario)\n    ├── creditos/<usuario>.csv                 # Kiro: uma linha por sessão (creditos.py)\n    ├── config/                                # harness: só a sessão sem agente escreve\n    │   ├── agentes.json                       # escolhas do projeto, entrada do gerador\n    │   ├── elm/pa_<nome>.json                 # conexão do MCP elm\n    │   └── elk/elk-<ambiente>.json            # conexão do MCP elk\n    ├── fluxo/ · template/                       # override esparso (harness)\n    ├── toolkits/<nome>/toolkit.json           # toolkit do projeto (opcional)\n    ├── local/                                 # fora do git\n    │   ├── wt/<id>/                           # worktree do autopilot\n    │   ├── loop-<id>.md                       # log do disjuntor do autopilot\n    │   ├── reunioes/<EP-nn|FT-nnn>-<AAAA-MM-DD>.<ext>   # transcrições\n    │   └── sustentacao/<ID>/                  # dados de cliente do atendimento\n    └── planejamento/                          # chave produto; gravado direto na branch base (fluxo/commit-na-branch-base.md)\n        ├── backlog.md                         # tabela única de 14 colunas; ordem das linhas = prioridade\n        ├── acordos.md                         # Item | Acordo: timebox, WIP, SLE, DoD, classes, reserva de capacidade, tamanhos, disjuntor, id no commit, CT no teste\n        ├── equipe.json                        # membros: usuario · booleanas · capacidade\n        ├── roadmap.md                         # opcional\n        ├── sprints/<AAAA>/sprint-<nn>.md       # Meta · Item · Trabalho · Responsável · Tarefas · Review · Retro\n        ├── fatias/FT-<nnn>-<slug>.md          # ficha (fatia e bug)\n        ├── epicos/EP-<nn>-<slug>/\n        │   ├── pitch.md                       # nasce no shaping (Shape Up) com go/kill\n        │   └── prd.md                         # nasce no go\n        ├── prototipos/<EP-nn|FT-nnn>-<slug>/v<N>/   # versões do protótipo\n        ├── atas/ATA-<nn>-<AAAA-MM-DD>-<assunto>.md   # opcional\n        └── sustentacao/<ID>-<slug>.md         # registro do item de Sustentação\n\n~/.sabia/framework/                            # instalação (fora do repositório)\n├── fluxo/entrada.md · captura.md · commit-na-branch-base.md   # passos comuns incluídos pelas skills\n├── fluxo/tipos.json                           # catálogo HF · UC · REG · MSG · EL · GL · ET · CT · ATA\n├── fluxo/travas.json                          # catálogo das travas\n├── template/<skill>/<arquivo>.md              # modelos (catálogo no esquema dos overrides)\n└── skills/sa-setup/assets/agents/perfis.json  # 2 modelos de permissão, os 5 agentes e o harness\n~/.sabia/toolkits/<nome>/toolkit.json          # toolkit do usuário",
   "artefatos": [
    {
     "artefato": "backlog.md",
@@ -3929,7 +3929,7 @@
     "caminho": ".gitlab/merge_request_templates/Default.md",
     "grupo": "fatia",
     "destino": "alinha ao mercado",
-    "como_fica_21": "A sa-setup o cria do padrão sa-desenvolver/pr.md, se não existir. Título <id> — <título>, seções O quê · Porquê · Evidência · Risco · Foco · Artefatos afetados. A evidência da verificação vai aqui.",
+    "como_fica_21": "A sa-setup o cria do template sa-desenvolver/pr.md, se não existir. Título <id> — <título>, seções O quê · Porquê · Evidência · Risco · Foco · Artefatos afetados. A evidência da verificação vai aqui.",
     "mercado": "Template de MR do GitLab",
     "motivo": "FSP-14/15, ART-13/17, IMP-18"
    },
@@ -4169,7 +4169,7 @@
    },
    {
     "artefato": "overrides",
-    "caminho": ".sabia/fluxo/<skill>/<fluxo>/ · .sabia/padrao/<skill>/<arquivo>.md",
+    "caminho": ".sabia/fluxo/<skill>/<fluxo>/ · .sabia/template/<skill>/<arquivo>.md",
     "grupo": "configuração",
     "destino": "mantém",
     "como_fica_21": "Override esparso só do que muda, sobre o catálogo de padrões da 2.1.",
@@ -5340,7 +5340,7 @@
     },
     {
      "nome": "corpo",
-     "significado": "Texto completo pelo padrão do tipo (sa-prd/hf · reg · el · gl); no exclui, o original",
+     "significado": "Texto completo pelo template do tipo (sa-prd/hf · reg · el · gl); no exclui, o original",
      "preenche": "sa-especificar.elm",
      "valores": "md"
     }
@@ -5384,9 +5384,9 @@
   },
   {
    "arquivo": "template do MR",
-   "caminho": ".gitlab/merge_request_templates/Default.md (fonte: padrão sa-desenvolver/pr.md)",
+   "caminho": ".gitlab/merge_request_templates/Default.md (fonte: template sa-desenvolver/pr.md)",
    "formato": "md; o título vai na primeira linha; seções na ordem abaixo",
-   "escrevem": "sa-setup (cria do padrão se faltar; não sobrescreve) · sa-desenvolver.codificar (preenche o MR) · sa-verificar.verificar (Evidência)",
+   "escrevem": "sa-setup (cria do template se faltar; não sobrescreve) · sa-desenvolver.codificar (preenche o MR) · sa-verificar.verificar (Evidência)",
    "leem": "revisor humano · sa-revisar.mr · sa-elm.finalizar (Artefatos afetados)",
    "campos": [
     {
@@ -5480,7 +5480,7 @@
      "nome": "## Tipos com skill de toolkit",
      "significado": "Gerada dos tipos dos toolkits ligados",
      "preenche": "sa-setup",
-     "valores": "tabela Tipo | Skill | Fluxo e padrão | Toolkit | Passo de desvio"
+     "valores": "tabela Tipo | Skill | Fluxo e template | Toolkit | Passo de desvio"
     },
     {
      "nome": "## Regras aprendidas",
@@ -5588,7 +5588,7 @@
      "nome": "harness",
      "significado": "Caminhos que nenhum agente escreve (deny de edição)",
      "preenche": "framework",
-     "valores": ".kiro/agents/** · .kiro/settings/** · .kiro/steering/sabia.md · .opencode/** · opencode.json · .sabia/config/** · .sabia/fluxo/** · .sabia/padrao/**"
+     "valores": ".kiro/agents/** · .kiro/settings/** · .kiro/steering/sabia.md · .opencode/** · opencode.json · .sabia/config/** · .sabia/fluxo/** · .sabia/template/**"
     },
     {
      "nome": "segredos",
@@ -6095,7 +6095,7 @@
      "nome": "padrao",
      "significado": "Modelo do corpo",
      "preenche": "framework",
-     "valores": "requisitos/padrao-hf.md · requisitos/padrao-reg.md · requisitos/padrao-el.md · requisitos/padrao-gl.md · sa-plano/plano.md (ET) · requisitos/padrao-ata.md · requisitos/padrao-ct.md"
+     "valores": "requisitos/template-hf.md · requisitos/template-reg.md · requisitos/template-el.md · requisitos/template-gl.md · sa-plano/plano.md (ET) · requisitos/template-ata.md · requisitos/template-ct.md"
     },
     {
      "nome": "elm",
@@ -6158,8 +6158,8 @@
   },
   {
    "arquivo": "overrides e catálogo de padrões",
-   "caminho": ".sabia/fluxo/<skill>/<fluxo>/… · .sabia/padrao/<skill>/<arquivo>.md (harness)",
-   "formato": "cópia esparsa (com --base) só do passo ou padrão que muda",
+   "caminho": ".sabia/fluxo/<skill>/<fluxo>/… · .sabia/template/<skill>/<arquivo>.md (harness)",
+   "formato": "cópia esparsa (com --base) só do passo ou template que muda",
    "escrevem": "sa-setup (customizar)",
    "leem": "compilador · gerador",
    "campos": [
@@ -6167,7 +6167,7 @@
      "nome": "padrões da 2.1",
      "significado": "Nomes válidos para override",
      "preenche": "framework",
-     "valores": "sa-refinar/pitch.md · sa-refinar/ficha.md · sa-prd/prd.md · requisitos/padrao-hf.md · requisitos/padrao-reg.md · requisitos/padrao-el.md · requisitos/padrao-gl.md · requisitos/padrao-ata.md · sa-elm/elm-arquivo.md · sa-atender/registro.md · sa-desenvolver/status.md · sa-desenvolver/pr.md · sa-desenvolver/loop.md · sa-plano/plano.md · sa-plano/research.md · requisitos/padrao-ct.md · sa-revisar/criterios-revisao.md (L e C) · sa-entrevistar/glossario.md"
+     "valores": "sa-refinar/pitch.md · sa-refinar/ficha.md · sa-prd/prd.md · requisitos/template-hf.md · requisitos/template-reg.md · requisitos/template-el.md · requisitos/template-gl.md · requisitos/template-ata.md · sa-elm/elm-arquivo.md · sa-atender/registro.md · sa-desenvolver/status.md · sa-desenvolver/pr.md · sa-desenvolver/loop.md · sa-plano/plano.md · sa-plano/research.md · requisitos/template-ct.md · sa-revisar/criterios-revisao.md (L e C) · sa-entrevistar/glossario.md"
     }
    ]
   },
@@ -6193,7 +6193,7 @@
    ]
   }
  ],
- "agentes": "5 agentes · fonte: perfis.json (2 modelos de permissão + 5 agentes) + agentes.json do projeto\n   ─► gerador da sa-setup ─► .kiro/agents/sa-<nome>.json e .opencode/agents/sa-<nome>.md\nprimários (a pessoa escolhe ao abrir a sessão; a pré-condição da skill confere a booleana)\n├─ sa-desenvolvedor   (mode primary · build)\n│    skills: sa-desenvolver · sa-plano · sa-revisar.mr · sa-verificar.revisao-humana · sa-atender · sa-especificar.archive\n│    chama: sa-pesquisador · sa-revisor · sa-verificador\n│    └─ autopilot (o próprio sa-desenvolvedor como subagente na worktree .sabia/local/wt/<id>, sem a pessoa)\n│          allow: push da própria branch (sem --force) · merge da branch base nela · abrir/atualizar o MR dela\n│          deny: merge do MR · ELM · rede (curl, wget) · todo o resto que era ask\n├─ sa-especificador   (mode primary · build · inclui as funções de produto)\n│    skills: sa-refinar · sa-prd · sa-especificar · sa-entrevistar · sa-planejamento\n│    chama: sa-pesquisador\n└─ nos dois: sa-triar · sa-status · sabia · ofertas da sa-elm\nsubagentes (contexto isolado, chamados por um principal)\n├─ sa-pesquisador   (só leitura) ── sa-pesquisar.pesquisar\n├─ sa-revisor       (só leitura) ── sa-revisar.revisar + critérios de revisão do toolkit\n└─ sa-verificador   (só leitura + liberações) ── sa-verificar.verificar + verificacao do toolkit\n      allow: comandos Executar do sabia.md (sobe a aplicação) · curl/wget só à URL de teste\n             · editar só <pasta da spec>/CT.csv\nagente de toolkit (agentes[], ligado em passos[].agente) ─► subagente do dono do passo, com as permissões dele\n\n2 modelos de permissão\n├─ build   (sa-desenvolvedor · sa-especificador; sem restrição por pasta)\n│    ler ──────── allow\n│                 deny: segredos (**/.env*, **/*.pem, **/*.key, ~/.ssh, ~/.aws, ~/.config/mcp-*)\n│    editar ───── allow: workspace (código, .kiro/specs/**, openspec/**, .sabia/planejamento/**,\n│                        .sabia/sabia.md, .sabia/creditos/**)\n│                 deny (harness): .kiro/agents · .kiro/settings · .kiro/steering/sabia.md · .opencode\n│                        · opencode.json · .sabia/config · .sabia/fluxo · .sabia/padrao\n│    comandos ─── allow\n│                 ask: git push · git merge · curl · wget\n│                 deny: git rebase · push --force / --force-with-lease · reset --hard · clean -f\n│                       · --no-verify · sudo · kubectl · helm · terraform apply\n│    MCP ──────── GitLab: leitura allow · escrita ask (abrir MR, comentar, merge)\n│                 ELM (regras da sa-elm.setup, só com ELM): leitura allow · escrita ask\n│                 elk (logs) · banco (só a tool de consulta): leitura allow\n└─ só leitura   (sa-pesquisador · sa-revisor; base do sa-verificador)\n     ler ──────── allow · segredos deny\n     editar ───── deny\n     comandos ─── só leitura (git status · diff · log · show · grep · ls-files) · resto deny\n     MCP ──────── só leitura (GitLab · ELM · elk · banco) · escrita deny\nquem a pessoa é: usuario do equipe.json = usuário do GitLab; a pré-condição da skill confere a booleana\nquem grava o harness: sa-setup.configurar e sa-elm.setup, na sessão sem agente, fora dos 5 agentes\n   sa-elm.setup só produz dados (pa em .sabia/config/elm/pa_<nome>.json, chave elm do agentes.json,\n   seção ELM do sabia.md, regras ELM dos agentes); a sa-setup aplica e regenera os agentes\nKiro: só nomes de capability em tools (sem toolsSettings); limites por caminho e URL no prompt",
+ "agentes": "5 agentes · fonte: perfis.json (2 modelos de permissão + 5 agentes) + agentes.json do projeto\n   ─► gerador da sa-setup ─► .kiro/agents/sa-<nome>.json e .opencode/agents/sa-<nome>.md\nprimários (a pessoa escolhe ao abrir a sessão; a pré-condição da skill confere a booleana)\n├─ sa-desenvolvedor   (mode primary · build)\n│    skills: sa-desenvolver · sa-plano · sa-revisar.mr · sa-verificar.revisao-humana · sa-atender · sa-especificar.archive\n│    chama: sa-pesquisador · sa-revisor · sa-verificador\n│    └─ autopilot (o próprio sa-desenvolvedor como subagente na worktree .sabia/local/wt/<id>, sem a pessoa)\n│          allow: push da própria branch (sem --force) · merge da branch base nela · abrir/atualizar o MR dela\n│          deny: merge do MR · ELM · rede (curl, wget) · todo o resto que era ask\n├─ sa-especificador   (mode primary · build · inclui as funções de produto)\n│    skills: sa-refinar · sa-prd · sa-especificar · sa-entrevistar · sa-planejamento\n│    chama: sa-pesquisador\n└─ nos dois: sa-triar · sa-status · sabia · ofertas da sa-elm\nsubagentes (contexto isolado, chamados por um principal)\n├─ sa-pesquisador   (só leitura) ── sa-pesquisar.pesquisar\n├─ sa-revisor       (só leitura) ── sa-revisar.revisar + critérios de revisão do toolkit\n└─ sa-verificador   (só leitura + liberações) ── sa-verificar.verificar + verificacao do toolkit\n      allow: comandos Executar do sabia.md (sobe a aplicação) · curl/wget só à URL de teste\n             · editar só <pasta da spec>/CT.csv\nagente de toolkit (agentes[], ligado em passos[].agente) ─► subagente do dono do passo, com as permissões dele\n\n2 modelos de permissão\n├─ build   (sa-desenvolvedor · sa-especificador; sem restrição por pasta)\n│    ler ──────── allow\n│                 deny: segredos (**/.env*, **/*.pem, **/*.key, ~/.ssh, ~/.aws, ~/.config/mcp-*)\n│    editar ───── allow: workspace (código, .kiro/specs/**, openspec/**, .sabia/planejamento/**,\n│                        .sabia/sabia.md, .sabia/creditos/**)\n│                 deny (harness): .kiro/agents · .kiro/settings · .kiro/steering/sabia.md · .opencode\n│                        · opencode.json · .sabia/config · .sabia/fluxo · .sabia/template\n│    comandos ─── allow\n│                 ask: git push · git merge · curl · wget\n│                 deny: git rebase · push --force / --force-with-lease · reset --hard · clean -f\n│                       · --no-verify · sudo · kubectl · helm · terraform apply\n│    MCP ──────── GitLab: leitura allow · escrita ask (abrir MR, comentar, merge)\n│                 ELM (regras da sa-elm.setup, só com ELM): leitura allow · escrita ask\n│                 elk (logs) · banco (só a tool de consulta): leitura allow\n└─ só leitura   (sa-pesquisador · sa-revisor; base do sa-verificador)\n     ler ──────── allow · segredos deny\n     editar ───── deny\n     comandos ─── só leitura (git status · diff · log · show · grep · ls-files) · resto deny\n     MCP ──────── só leitura (GitLab · ELM · elk · banco) · escrita deny\nquem a pessoa é: usuario do equipe.json = usuário do GitLab; a pré-condição da skill confere a booleana\nquem grava o harness: sa-setup.configurar e sa-elm.setup, na sessão sem agente, fora dos 5 agentes\n   sa-elm.setup só produz dados (pa em .sabia/config/elm/pa_<nome>.json, chave elm do agentes.json,\n   seção ELM do sabia.md, regras ELM dos agentes); a sa-setup aplica e regenera os agentes\nKiro: só nomes de capability em tools (sem toolsSettings); limites por caminho e URL no prompt",
  "pendencias": [
   [
    "MCP do Jenkins (CI/CD)",

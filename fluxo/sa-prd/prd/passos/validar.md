@@ -1,5 +1,5 @@
 ---
-{"resumo": "Roda o sabia validar-spec (avisa, não trava) e, a 'quer revisar agora?', o checklist do padrão prd.md."}
+{"resumo": "Roda o sabia validar-spec (avisa, não trava) e, a 'quer revisar agora?', o checklist do template prd.md."}
 ---
 ## Entrada
 
@@ -9,7 +9,7 @@ O `prd.md` escrito.
 
 1. **Validador.** `sabia validar-spec <pasta do épico>` (forma e ligações). O comando ainda não existe → diga e siga.
    Achados só avisam.
-2. **Checklist.** A "quer revisar agora?", aplique o Checklist do padrão `sa-prd/prd.md`: seções preenchidas, todo
+2. **Checklist.** A "quer revisar agora?", aplique o Checklist do template `sa-prd/prd.md`: seções preenchidas, todo
    requisito com id e ação, nenhuma regra sem fonte e todo em aberto com Bloqueia.
 3. **Achado.** Forma → corrija no `prd.md`. Decisão de negócio → passo `esclarecer`.
 

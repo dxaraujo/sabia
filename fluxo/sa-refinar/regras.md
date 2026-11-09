@@ -7,7 +7,7 @@ Valem em todos os fluxos da skill.
 
 Leia antes o `.sabia/sabia.md`. Sem ele, ofereça a `sa-setup` ("configurar o Sabiá") e pare. Formato do
 `backlog.md`, status por tipo e convenções da `obs`: [backlog.md](~/.sabia/framework/skills/sa-triar/references/backlog.md).
-Ficha da fatia e do bug: o padrão `sa-refinar/ficha.md`. Pitch do épico: o padrão `sa-refinar/pitch.md`.
+Ficha da fatia e do bug: o template `sa-refinar/ficha.md`. Pitch do épico: o template `sa-refinar/pitch.md`.
 
 - Qualquer pessoa conduz. Quem tem `produto` no `equipe.json` decide o go/kill, ordena e aprova pitch, ficha e
   fatias; quem tem `especificador` aprova os arquivos de `elm/`. Sem essa pessoa na sessão, mostre os nomes com a

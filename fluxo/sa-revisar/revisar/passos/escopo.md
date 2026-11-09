@@ -1,5 +1,5 @@
 ---
-{"resumo": "Escolhe os critérios de revisão (L ou C) no padrão, lê os critérios de revisão inteiros e depois a entrada dela: a pasta da spec pelo formato, a ficha, o diff e o MR, o sabia.md (Projeto, Comandos e Regras aprendidas)."}
+{"resumo": "Escolhe os critérios de revisão (L ou C) no template, lê os critérios de revisão inteiros e depois a entrada dela: a pasta da spec pelo formato, a ficha, o diff e o MR, o sabia.md (Projeto, Comandos e Regras aprendidas)."}
 ---
 ## Entrada
 
@@ -7,7 +7,7 @@ O pedido de quem chamou: os critérios de revisão, o item `FT-nnn` e a parte do
 
 ## Faça
 
-1. Leia inteira os critérios de revisão do pedido, no padrão `sa-revisar/criterios-revisao.md`, com os itens de critério de revisão do toolkit que o
+1. Leia inteira os critérios de revisão do pedido, no template `sa-revisar/criterios-revisao.md`, com os itens de critério de revisão do toolkit que o
    seu prompt traz. As Regras aprendidas do `.sabia/sabia.md` entram como itens dos critérios de revisão.
 2. Leia a entrada dos critérios de revisão. A pasta da spec sai do `formato_spec` do `agentes.json`: `.kiro/specs/ft-<nnn>-<slug>/`
    (Kiro) ou `openspec/changes/ft-<nnn>-<slug>/` (OpenSpec).

@@ -22,9 +22,8 @@ O destino do passo `decidir` e, no aceito, a classificação do passo `classific
 `iniciada_em` · `concluida_em` (AAAA-MM-DD).
 
 **Corpo:**
-- fatia e bug: a ficha curta `.sabia/planejamento/fatias/FT-nnn-<slug>.md`, só com a seção Entrada do tipo, pelo
-  padrão `sa-refinar/ficha.md`;
-- sustentação: o registro `.sabia/planejamento/sustentacao/<ID>-<slug>.md`, pelo padrão `sa-atender/registro.md`;
+- fatia e bug: a ficha curta `.sabia/planejamento/fatias/FT-nnn-<slug>.md`, só com a seção Entrada do tipo, pelo template `sa-refinar/ficha.md`;
+- sustentação: o registro `.sabia/planejamento/sustentacao/<ID>-<slug>.md`, pelo template `sa-atender/registro.md`;
 - épico: só a linha (o pitch nasce na `sa-refinar.moldar`).
 
 **Item novo** (pedido em texto ou EWM) **ou troca de série**: a linha nasce pelo passo `captura`, com a triagem já

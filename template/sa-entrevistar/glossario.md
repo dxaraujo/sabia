@@ -10,4 +10,4 @@
 - **Termo:** canônico, no singular. **Definição:** uma frase. **Evitar:** sinônimos, separados por vírgula, ou `—`.
   **Fonte:** `D-nn` · `ATA-nn` · `arquivo:linha`.
 - Uma linha por termo; termo alterado → edite a linha e cite a nova Fonte.
-- Caminho: a chave `glossario` do `agentes.json` (padrão `.sabia/glossario.md`); `null` = o projeto não usa.
+- Caminho: a chave `glossario` do `agentes.json` (template `.sabia/glossario.md`); `null` = o projeto não usa.

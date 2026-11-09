@@ -29,15 +29,15 @@ function escrever(base, arquivos) {
   return base;
 }
 
-/** O toolkit sintético "casa": HF → a skill casa, com o fluxo e o padrão do tipo como arquivos da pasta, e um item de critério de revisão. */
+/** O toolkit sintético "casa": HF → a skill casa, com o fluxo e o template do tipo como arquivos da pasta, e um item de critério de revisão. */
 const casa = () => escrever(path.join(raiz, "fontes/casa"), {
   "toolkit.json": { nome: "casa", versao: "1.0.0", descricao: "toolkit fictício de especificação", autor: { nome: "Ana Exemplo", area: "Equipe Alfa" },
     "tipos-de-projeto": ["backend", "frontend"], skills: [{ caminho: "skills/casa/SKILL.md", papeis: ["especificador"] }],
-    tipos: { HF: { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md", padrao: "padrao/padrao-hf.md" } },
+    tipos: { HF: { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md", template: "template/template-hf.md" } },
     criterios_revisao: [{ id: "EX1", tipo: "HF", verificacao: "Toda HF cita a tela de origem", severidade: "IMPORTANTE" }], requer: { sabia: "2.1.0" } },
-  "skills/casa/SKILL.md": "---\nname: casa\ndescription: HF da casa\n---\n# casa — histórias\n\nSiga o fluxo e o padrão do tipo.\n",
+  "skills/casa/SKILL.md": "---\nname: casa\ndescription: HF da casa\n---\n# casa — histórias\n\nSiga o fluxo e o template do tipo.\n",
   "fluxo/fluxo-hf.md": "# Fluxo HF\n\nEscreva as HF e confira.\n",
-  "padrao/padrao-hf.md": "# Padrão HF\n",
+  "template/template-hf.md": "# Padrão HF\n",
 });
 
 /** O toolkit sintético "batch-alfa": a tarefa de job vai ao agente batch-job no passo sa-desenvolver.codificar.tarefa. */
@@ -86,7 +86,7 @@ before(async () => {
     return { status: 0, stdout: "", stderr: "" };
   };
   const fw = path.join(raiz, "fw");
-  for (const f of ["fluxo", "padrao", "skills", "plugin.json", "mcp.json", "README.md", "LICENSE"]) if (fs.existsSync(path.join(REPO, f))) fs.cpSync(path.join(REPO, f), path.join(fw, f), { recursive: true });
+  for (const f of ["fluxo", "template", "skills", "plugin.json", "mcp.json", "README.md", "LICENSE"]) if (fs.existsSync(path.join(REPO, f))) fs.cpSync(path.join(REPO, f), path.join(fw, f), { recursive: true });
   try {
     await s.instalar({ fonte: fw, alvo: "opencode,kiro", semMcp: true, sim: true });
     await s.instalarToolkit(casa(), { alvo: "opencode,kiro" });
@@ -122,7 +122,7 @@ test("prova front+back: o toolkit casa (HF ⇢ skill casa) com o override do pro
   // o especificador: a linha do tipo, a skill do toolkit como veio (nada compilado) e o passo do projeto
   const tk = "~/.sabia/toolkits/casa";
   const e = agenteOpencode(proj, "sa-especificador");
-  assert.ok(e.includes(`no passo \`sa-prd.prd.escrever\`, HF → carregue a skill \`casa\` e siga \`${tk}/fluxo/fluxo-hf.md\` com o padrão \`${tk}/padrao/padrao-hf.md\``));
+  assert.ok(e.includes(`no passo \`sa-prd.prd.escrever\`, HF → carregue a skill \`casa\` e siga \`${tk}/fluxo/fluxo-hf.md\` com o template \`${tk}/template/template-hf.md\``));
   assert.ok(e.includes("Fluxo `sa-prd.prd`:\n- passo `entender`: leia `.sabia/fluxo/sa-prd/prd/passos/entender.md`"));
   assert.ok(agenteKiro(proj, "sa-especificador").prompt.includes(`${tk}/fluxo/fluxo-hf.md`));
   assert.ok(!fs.existsSync(path.join(home, ".sabia/compilado-toolkits")));

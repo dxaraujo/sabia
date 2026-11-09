@@ -10,7 +10,7 @@ A sprint da review.
 1. Chame a `sa-status.licoes-aprendidas`: as Lições aprendidas das fatias e da Sustentação concluídas no ciclo, já cruzadas com as Regras
    aprendidas do `.sabia/sabia.md`.
 2. Mostre a lista e pergunte quais entram. A lição marcada "já está" não entra de novo.
-3. Cada escolhida vira uma linha na seção Regras aprendidas do `.sabia/sabia.md`, pelo padrão `sa-planejamento/regras-aprendidas.md`: `- <regra> · origem <FT-nnn | AT-nnn…> · AAAA-MM-DD`. A pessoa pode reescrever a regra antes do "ok". Erro mecânico vira checagem (lint, teste, hook, CI), não regra.
+3. Cada escolhida vira uma linha na seção Regras aprendidas do `.sabia/sabia.md`, pelo template `sa-planejamento/regras-aprendidas.md`: `- <regra> · origem <FT-nnn | AT-nnn…> · AAAA-MM-DD`. A pessoa pode reescrever a regra antes do "ok". Erro mecânico vira checagem (lint, teste, hook, CI), não regra.
 
 ## Saída
 

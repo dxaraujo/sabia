@@ -9,7 +9,7 @@ Os termos de negócio que apareceram na entrevista e a chave `glossario` do `age
 
 - **Com ELM e o termo no GL do DOORS** → cite o GL. Mudar ou criar um GL entra nos artefatos afetados da ficha
   (`GL-<id> · altera` ou `inclui`) e vai ao texto oficial pela `sa-especificar.elm`.
-- **Sem ELM** → o `glossario.md` opcional (`glossario` = `null`: não usa), pelo padrão
+- **Sem ELM** → o `glossario.md` opcional (`glossario` = `null`: não usa), pelo template
   `sa-entrevistar/glossario.md`: `Termo | Definição | Evitar | Fonte`. Um termo por conceito; sinônimos vão a Evitar.
 - Termo novo não é exigido.
 

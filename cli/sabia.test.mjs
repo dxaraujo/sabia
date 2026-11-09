@@ -604,19 +604,19 @@ test("rota --mapa: chama e passagens de todo o framework em Mermaid", async () =
 
 const REPO = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 
-/** O toolkit sintético "casa": HF → a skill casa, com o fluxo e o padrão do tipo como arquivos da pasta. */
+/** O toolkit sintético "casa": HF → a skill casa, com o fluxo e o template do tipo como arquivos da pasta. */
 function casa(base, mudar = {}) {
   return escrever(base, {
     "toolkit.json": { nome: "casa", versao: "1.0.0", descricao: "toolkit fictício de especificação", autor: { nome: "Ana Exemplo", area: "Equipe Alfa" },
       "tipos-de-projeto": ["backend"], skills: [{ caminho: "skills/casa/SKILL.md", papeis: ["especificador"] }],
-      tipos: { HF: { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md", padrao: "padrao/padrao-hf.md" } }, ...mudar },
+      tipos: { HF: { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md", template: "template/template-hf.md" } }, ...mudar },
     "skills/casa/SKILL.md": "---\nname: casa\ndescription: HF da casa\n---\n# casa\n\nSiga o fluxo do tipo.\n",
-    "fluxo/fluxo-hf.md": "# Fluxo HF\n", "padrao/padrao-hf.md": "# Padrão HF\n",
+    "fluxo/fluxo-hf.md": "# Fluxo HF\n", "template/template-hf.md": "# Padrão HF\n",
   });
 }
 
 test("toolkit com tipo → skill: instalar copia a skill como veio (nada compilado), remover apaga; o tipo é validado no baixar", async () => {
-  for (const f of ["fluxo", "padrao", "skills", "plugin.json"]) fs.cpSync(path.join(REPO, f), path.join(home, ".sabia/framework", f), { recursive: true });
+  for (const f of ["fluxo", "template", "skills", "plugin.json"]) fs.cpSync(path.join(REPO, f), path.join(home, ".sabia/framework", f), { recursive: true });
   await s.instalarToolkit(casa(path.join(raiz, "tk-casa")), { alvo: "opencode,kiro" });
   assert.equal(fs.readFileSync(skill("casa"), "utf8"), "---\nname: casa\ndescription: HF da casa\n---\n# casa\n\nSiga o fluxo do tipo.\n");
   assert.ok(fs.existsSync(path.join(home, ".sabia/toolkits/casa/fluxo/fluxo-hf.md")) && !fs.existsSync(path.join(home, ".sabia/compilado-toolkits")));
@@ -626,7 +626,7 @@ test("toolkit com tipo → skill: instalar copia a skill como veio (nada compila
   // tipo que o catálogo não deixa desviar, e a forma "<tk>.<fluxo>": recusados no baixar, nada gravado
   const hf = { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md" };
   await assert.rejects(s.baixarToolkit(casa(path.join(raiz, "tk-ruim"), { tipos: { GL: hf } }), {}), /tipo GL: não é desviável/);
-  await assert.rejects(s.baixarToolkit(casa(path.join(raiz, "tk-str"), { tipos: { HF: "casa.hf" } }), {}), /tipo HF: use \{"skill", "fluxo", "padrao"\}/);
+  await assert.rejects(s.baixarToolkit(casa(path.join(raiz, "tk-str"), { tipos: { HF: "casa.hf" } }), {}), /tipo HF: use \{"skill", "fluxo", "template"\}/);
   // a skill do tipo sem o papel do agente dono de um passo de desvio (HF desvia em passos do sa-especificador)
   await assert.rejects(s.baixarToolkit(casa(path.join(raiz, "tk-papel"), { tipos: { HF: hf }, skills: [{ caminho: hf.skill, papeis: ["revisor"] }] }), {}),
     /tipo HF: a skill skills\/casa\/SKILL\.md não traz o papel especificador ou produto em papeis/);

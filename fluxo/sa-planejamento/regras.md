@@ -5,12 +5,12 @@
 
 Valem em todos os fluxos da skill.
 
-- **Arquivos** em `.sabia/planejamento/`, cada um pelo seu padrão:
-  - `equipe.json`, validado pelo [equipe.schema.json](~/.sabia/framework/skills/sa-planejamento/assets/equipe.schema.json): o padrão `sa-planejamento/equipe.md`;
-  - `acordos.md`: o padrão `sa-planejamento/acordos.md`;
-  - `roadmap.md` (opcional): o padrão `sa-planejamento/roadmap.md`;
-  - `sprints/<AAAA>/sprint-<nn>.md`: o padrão `sa-planejamento/sprint.md`;
-  - Regras aprendidas, no `.sabia/sabia.md`: o padrão `sa-planejamento/regras-aprendidas.md`.
+- **Arquivos** em `.sabia/planejamento/`, cada um pelo seu template:
+  - `equipe.json`, validado pelo [equipe.schema.json](~/.sabia/framework/skills/sa-planejamento/assets/equipe.schema.json): o template `sa-planejamento/equipe.md`;
+  - `acordos.md`: o template `sa-planejamento/acordos.md`;
+  - `roadmap.md` (opcional): o template `sa-planejamento/roadmap.md`;
+  - `sprints/<AAAA>/sprint-<nn>.md`: o template `sa-planejamento/sprint.md`;
+  - Regras aprendidas, no `.sabia/sabia.md`: o template `sa-planejamento/regras-aprendidas.md`.
 - **Sprint aberta** = o `sprint-<nn>.md` de maior chave (`<AAAA>/Sprint <nn>`). A sprint não tem campo de situação:
   deixa de ser a aberta quando a próxima é gravada. O andamento de cada linha vem do status do `backlog.md`.
 - **Regra de ouro**: cada fluxo mostra a proposta na tela e só grava com o "ok". Ajuste → a proposta de novo.

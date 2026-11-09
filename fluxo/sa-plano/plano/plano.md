@@ -22,7 +22,7 @@
 O plano da fatia nas trilhas rápida e completo; o trivial não passa por aqui. Junta os fatos pela `sa-pesquisar` e
 grava o `research.md`, toma as decisões técnicas, copia o texto aprovado para o delta (sem reescrever) e escreve
 design e tasks pela matriz trilha × formato. Quem desenvolve aprova o próprio plano; no autopilot, o subagente aprova
-e registra. Modelos: o padrão `sa-plano/plano.md` e o padrão `sa-plano/research.md`.
+e registra. Modelos: o template `sa-plano/plano.md` e o template `sa-plano/research.md`.
 
 Deste fluxo: item `em-andamento`, branch `<id>`, pasta da spec com `status.md`, trilha rápida ou completo e Fase `—`.
 O manual segue as regras da IA supervisionada: a pessoa está presente.

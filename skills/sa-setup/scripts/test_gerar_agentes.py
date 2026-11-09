@@ -15,7 +15,7 @@ from pathlib import Path
 
 import gerar_agentes as g
 
-REPO = Path(__file__).resolve().parents[3]  # a fonte do framework (fluxo/, padrao/, plugin.json)
+REPO = Path(__file__).resolve().parents[3]  # a fonte do framework (fluxo/, template/, plugin.json)
 PERFIS = json.loads((g.ASSETS / "perfis.json").read_text(encoding="utf-8"))
 NOMES = list(PERFIS["agentes"])
 ELM = {"pa": "alfa", "bundle": "docs/elm/alfa",
@@ -104,15 +104,15 @@ class Base(unittest.TestCase):
                 "passos": [{"toolkit": "batch-alfa", "skill": "skills/batch/SKILL.md", "agente": "batch-job"}]}
 
     def casa(self, nome="casa", rubricas=None, papeis=("especificador",), extra=None, **tipos):
-        """Toolkit sintético em ~/.sabia/toolkits/<nome>: a skill <nome> escreve o tipo pelo fluxo e o padrão dele, arquivos
+        """Toolkit sintético em ~/.sabia/toolkits/<nome>: a skill <nome> escreve o tipo pelo fluxo e o template dele, arquivos
         da pasta (o Sabiá não compila conteúdo de toolkit), e uma rubrica."""
         pasta = self.home / ".sabia/toolkits" / nome
-        for f in (f"skills/{nome}/SKILL.md", "fluxo/fluxo-hf.md", "padrao/padrao-hf.md", "fluxo/fluxo-reuniao.md", "steering/java.md"):
+        for f in (f"skills/{nome}/SKILL.md", "fluxo/fluxo-hf.md", "template/template-hf.md", "fluxo/fluxo-reuniao.md", "steering/java.md"):
             (pasta / f).parent.mkdir(parents=True, exist_ok=True)
             (pasta / f).write_text("# x\n")
         sk = f"skills/{nome}/SKILL.md"
         man = {"nome": nome, "versao": "1.0.0", "skills": [{"caminho": sk, "papeis": list(papeis)}],
-               "tipos": tipos or {"HF": {"skill": sk, "fluxo": "fluxo/fluxo-hf.md", "padrao": "padrao/padrao-hf.md"},
+               "tipos": tipos or {"HF": {"skill": sk, "fluxo": "fluxo/fluxo-hf.md", "template": "template/template-hf.md"},
                                   "ATA": {"skill": sk, "fluxo": "fluxo/fluxo-reuniao.md"}},
                "criterios_revisao": [{"id": "EX1", "tipo": "HF", "verificacao": "Toda HF cita o campo de origem", "severidade": "IMPORTANTE"}] if rubricas is None else rubricas,
                **(extra or {})}
@@ -151,7 +151,7 @@ class Agentes(Base):
                          ".sabia/planejamento/backlog.md", ".sabia/sabia.md", ".sabia/creditos/ana.csv"):
                 self.assertEqual(oc(p["edit"], alvo), "allow", (nome, alvo))
             for alvo in (".kiro/agents/sa-revisor.json", ".kiro/settings/mcp.json", ".kiro/steering/sabia.md", ".opencode/agents/x.md",
-                         "opencode.json", ".sabia/config/agentes.json", ".sabia/fluxo/sa-plano/plano/passos/x.md", ".sabia/padrao/sa-plano/plano.md",
+                         "opencode.json", ".sabia/config/agentes.json", ".sabia/fluxo/sa-plano/plano/passos/x.md", ".sabia/template/sa-plano/plano.md",
                          ".sabia/local/wt/ft-001/.kiro/agents/x.json", ".env", "mod/.env.local", "certs/x.pem"):
                 self.assertEqual(oc(p["edit"], alvo), "deny", (nome, alvo))
             for alvo in (".env", "api/.env.prod", "~/.ssh/id_rsa", "conf/elm.properties"):
@@ -359,20 +359,20 @@ class Toolkits(Base):
 
     def test_copia_do_projeto_vale_sobre_o_padrao_do_toolkit(self):
         tk = self.casa()
-        orig = self.home / ".sabia/toolkits/casa/padrao/padrao-hf.md"
-        self.escrever({".sabia/padrao/requisitos/padrao-hf.md": f'---\n{{"base": "{g.sha12(orig)}"}}\n---\nHF do projeto\n'})
+        orig = self.home / ".sabia/toolkits/casa/template/template-hf.md"
+        self.escrever({".sabia/template/requisitos/template-hf.md": f'---\n{{"base": "{g.sha12(orig)}"}}\n---\nHF do projeto\n'})
         agentes = self.gerar(toolkits=tk)
-        self.assertIn("com o padrão `.sabia/padrao/requisitos/padrao-hf.md` (cópia do projeto sobre `~/.sabia/toolkits/casa/padrao/padrao-hf.md`)",
+        self.assertIn("com o template `.sabia/template/requisitos/template-hf.md` (cópia do projeto sobre `~/.sabia/toolkits/casa/template/template-hf.md`)",
                       agentes["sa-especificador"]["prompt"])
-        self.assertFalse([a for a in g.gerar.avisos if "padrao-hf" in a])
+        self.assertFalse([a for a in g.gerar.avisos if "template-hf" in a])
         orig.write_text("# x mudou\n")  # o toolkit mudou o padrão: a base da cópia ficou velha
         self.gerar(toolkits=tk)
-        self.assertTrue([a for a in g.gerar.avisos if "padrao-hf.md: a base mudou" in a])
+        self.assertTrue([a for a in g.gerar.avisos if "template-hf.md: a base mudou" in a])
 
     def test_copia_do_projeto_sem_toolkit_vale_sobre_o_padrao_do_sabia(self):
-        rel = "padrao/requisitos/padrao-hf.md"
+        rel = "template/requisitos/template-hf.md"
         self.escrever({".sabia/" + rel: f'---\n{{"base": "{self.base(rel)}"}}\n---\nHF do projeto\n'})
-        self.assertIn("`.sabia/padrao/requisitos/padrao-hf.md` (no lugar do da skill)", self.gerar()["sa-especificador"]["prompt"])
+        self.assertIn("`.sabia/template/requisitos/template-hf.md` (no lugar do da skill)", self.gerar()["sa-especificador"]["prompt"])
 
     def test_toolkit_nao_instalado_e_recusado(self):
         cfg = {**self.cfg, "toolkits": {"fantasma": {"pasta": "~/.sabia/toolkits/fantasma", "versao": "1.0.0"}}}
@@ -384,7 +384,7 @@ class Toolkits(Base):
     def test_tipo_com_skill_de_toolkit(self):
         agentes = self.gerar(toolkits=self.casa())
         e, pasta = agentes["sa-especificador"], "~/.sabia/toolkits/casa"
-        hf = f"HF → carregue a skill `casa` e siga `{pasta}/fluxo/fluxo-hf.md` com o padrão `{pasta}/padrao/padrao-hf.md`"
+        hf = f"HF → carregue a skill `casa` e siga `{pasta}/fluxo/fluxo-hf.md` com o template `{pasta}/template/template-hf.md`"
         self.assertIn(f"Tipos com skill de toolkit (⇢ no passo de desvio do tipo): no passo `sa-prd.prd.escrever`, {hf}; no passo"
                       f" `sa-especificar.elm.editar`, {hf}; no passo `sa-especificar.reuniao.escrever`, ATA → carregue a skill `casa` e siga"
                       f" `{pasta}/fluxo/fluxo-reuniao.md`.", e["prompt"])
@@ -393,8 +393,8 @@ class Toolkits(Base):
         self.assertNotIn("Tipos com skill de toolkit", agentes["sa-desenvolvedor"]["prompt"])
         self.assertIn("`EX1` (HF) IMPORTANTE — Toda HF cita o campo de origem (toolkit `casa`)", agentes["sa-revisor"]["prompt"])
         self.assertEqual(g.gerar.tabela_tipos, [
-            "| Tipo | Skill | Fluxo e padrão | Toolkit | Passo de desvio |", "|---|---|---|---|---|",
-            f"| `HF` | `{pasta}/skills/casa/SKILL.md` | `{pasta}/fluxo/fluxo-hf.md` com o padrão `{pasta}/padrao/padrao-hf.md` | `casa` 1.0.0 | `sa-prd.prd.escrever`, `sa-especificar.elm.editar` |",
+            "| Tipo | Skill | Fluxo e template | Toolkit | Passo de desvio |", "|---|---|---|---|---|",
+            f"| `HF` | `{pasta}/skills/casa/SKILL.md` | `{pasta}/fluxo/fluxo-hf.md` com o template `{pasta}/template/template-hf.md` | `casa` 1.0.0 | `sa-prd.prd.escrever`, `sa-especificar.elm.editar` |",
             f"| `ATA` | `{pasta}/skills/casa/SKILL.md` | `{pasta}/fluxo/fluxo-reuniao.md` | `casa` 1.0.0 | `sa-especificar.reuniao.escrever` |", "",
             "| Item de critério de revisão | Tipo | Severidade | Verificação | Toolkit |", "|---|---|---|---|---|",
             "| `EX1` | HF | IMPORTANTE | Toda HF cita o campo de origem | `casa` 1.0.0 |"])
@@ -424,11 +424,11 @@ class Toolkits(Base):
         casos = [(lambda: {**self.casa(), **self.casa("outro", rubricas=[], HF={**sk, "skill": "skills/outro/SKILL.md"})}, "tipo HF já é de toolkit casa"),
                  (lambda: self.casa(rubricas=[{"id": "EX1", "verificacao": "a", "severidade": "BLOQUEANTE"}, {"id": "EX1", "verificacao": "b", "severidade": "BLOQUEANTE"}]),
                   "critério de revisão EX1 já é de toolkit casa"),
-                 (lambda: self.casa(GL=sk), "tipo GL → skills/casa/SKILL.md: use {skill, fluxo, padrao} (fluxo e padrao opcionais); o tipo tem de ser desviável e não pendente"),
+                 (lambda: self.casa(GL=sk), "tipo GL → skills/casa/SKILL.md: use {skill, fluxo, template} (fluxo e template opcionais); o tipo tem de ser desviável e não pendente"),
                  (lambda: self.casa(CT=sk), "tipo CT: a skill skills/casa/SKILL.md não traz o papel verificador em papeis (dono do passo de desvio sa-verificar.verificar.casos)"),
-                 (lambda: self.casa(HF="casa.hf"), "tipo HF → casa.hf: use {skill, fluxo, padrao}"),
+                 (lambda: self.casa(HF="casa.hf"), "tipo HF → casa.hf: use {skill, fluxo, template}"),
                  (lambda: self.casa(HF={**sk, "fluxo": "fluxo/nao.md"}), "o fluxo arquivos da pasta do toolkit"),
-                 (lambda: self.casa(HF={**sk, "padrao": "padrao/nao.md"}), "o fluxo e o padrao arquivos da pasta do toolkit"),
+                 (lambda: self.casa(HF={**sk, "template": "template/nao.md"}), "o fluxo e o template arquivos da pasta do toolkit"),
                  (lambda: self.casa(HF={**sk, "skill": "skills/outra/SKILL.md"}), "a skill uma das skills do toolkit"),
                  (lambda: self.casa(HF={**sk, "fluxo": "../fora.md"}), "caminho fora da pasta do toolkit"),
                  (lambda: self.casa(rubricas=[{"id": "EX1", "tipo": "HF"}]), "critério de revisão EX1: precisa de id, verificacao e severidade"),
@@ -459,7 +459,7 @@ class Fluxos(Base):
             ".sabia/" + self.PF: f'---\n{{"base": "{self.base(self.PF)}"}}\n---\n## Entrada\n',
             ".sabia/fluxo/sa-desenvolver/codificar/codificar.md": '---\n{"inserir": [{"id": "lint-extra", "depois": "validar"}]}\n---\n',
             ".sabia/fluxo/sa-desenvolver/codificar/passos/lint-extra.md": "---\n{}\n---\n## Entrada\n",
-            ".sabia/padrao/sa-desenvolver/pr.md": f'---\n{{"base": "{self.base("padrao/sa-desenvolver/pr.md")}"}}\n---\nMR\n'})
+            ".sabia/template/sa-desenvolver/pr.md": f'---\n{{"base": "{self.base("template/sa-desenvolver/pr.md")}"}}\n---\nMR\n'})
         agentes = self.gerar()
         d = agentes["sa-desenvolvedor"]["prompt"]
         self.assertIn("Fluxo `sa-desenvolver.codificar`:", d)
@@ -467,7 +467,7 @@ class Fluxos(Base):
         self.assertIn("- passo `lint-extra` (inserido depois de `validar`)", d)
         for nome in NOMES[1:]:  # só o dono leva o delta do fluxo; o padrão vai a todos
             self.assertNotIn("Fluxo `sa-desenvolver.codificar`", agentes[nome]["prompt"], nome)
-            self.assertIn("- padrão `sa-desenvolver/pr.md`", agentes[nome]["prompt"], nome)
+            self.assertIn("- template `sa-desenvolver/pr.md`", agentes[nome]["prompt"], nome)
 
     def test_inserir_encadeado(self):
         r = "fluxo/sa-planejamento/review"
@@ -488,8 +488,8 @@ class Fluxos(Base):
             {f"{c}/codificar.md": '---\n{"remover": ["verificar"]}\n---\n'},              # trava
             {f"{c}/codificar.md": '---\n{"liberar": ["backpressure"]}\n---\n'},
             {f"{c}/codificar.md": '---\n{"inserir": [{"id": "z", "depois": "validar"}]}\n---\n'},  # sem arquivo
-            {".sabia/padrao/sa-desenvolver/nao-existe.md": "x"},
-            {".sabia/padrao/sa-desenvolver/pr.md": "MR sem base"},
+            {".sabia/template/sa-desenvolver/nao-existe.md": "x"},
+            {".sabia/template/sa-desenvolver/pr.md": "MR sem base"},
             {f"{c}/passos/validar.txt": "x"},                                            # não é .md
             {f"{rv}/review.md": '---\n{"inserir": [{"id": "a", "depois": "rito"}, {"id": "a", "depois": "rito"}]}\n---\n', f"{rv}/passos/a.md": "x"},
             {f"{rv}/review.md": '---\n{"inserir": [{"id": "a", "depois": "b"}, {"id": "b", "depois": "a"}]}\n---\n',
@@ -500,7 +500,7 @@ class Fluxos(Base):
             {".sabia/" + self.PF: f'---\n{{"base": "{self.base(self.PF)}"}}\n---\n## Travas\n\n- nenhuma\n'},
         ]
         for arquivos in ruins:
-            for d in (".sabia/fluxo", ".sabia/padrao"):
+            for d in (".sabia/fluxo", ".sabia/template"):
                 shutil.rmtree(self.projeto / d, ignore_errors=True)
             self.escrever(arquivos)
             with self.assertRaises(ValueError, msg=arquivos):
@@ -514,8 +514,8 @@ class Fluxos(Base):
         self.assertIn("configurado com o Sabiá 0.0.1", avisos)
 
     def test_padrao_do_projeto_so_sobre_o_do_sabia(self):
-        self.escrever({".sabia/padrao/casa/padrao-hf.md": '---\n{"base": "000000000000"}\n---\nHF\n'})
-        with self.assertRaisesRegex(ValueError, re.escape(".sabia/padrao/casa/padrao-hf.md: não é padrão do Sabiá")):
+        self.escrever({".sabia/template/casa/template-hf.md": '---\n{"base": "000000000000"}\n---\nHF\n'})
+        with self.assertRaisesRegex(ValueError, re.escape(".sabia/template/casa/template-hf.md: não é template do Sabiá")):
             g.gerar(self.projeto, {**self.cfg, "toolkits": self.casa()}, REPO)
 
     def test_framework_sem_fluxo_recusa(self):
@@ -567,7 +567,7 @@ class Main(Base):
         copia = Path(self.tmp.name) / "instalado/sa-setup"
         shutil.copytree(Path(__file__).resolve().parents[1], copia, ignore=shutil.ignore_patterns("__pycache__"))
         fw = Path(self.tmp.name) / "fw"
-        for d in ("fluxo", "padrao"):
+        for d in ("fluxo", "template"):
             shutil.copytree(REPO / d, fw / d)
         pf = "fluxo/sa-desenvolver/codificar/passos/validar.md"
         self.escrever({".sabia/" + pf: f'---\n{{"base": "{self.base(pf)}"}}\n---\n## Entrada\n'})
@@ -579,7 +579,7 @@ class Main(Base):
 
     def test_base_pela_linha_de_comando(self):
         for arg, rel in (("sa-desenvolver.codificar.validar", "fluxo/sa-desenvolver/codificar/passos/validar.md"),
-                         ("sa-desenvolver/pr.md", "padrao/sa-desenvolver/pr.md"),
+                         ("sa-desenvolver/pr.md", "template/sa-desenvolver/pr.md"),
                          ("sa-desenvolver.codificar.entrada", "fluxo/entrada.md")):  # passo compartilhado: a base é a de fluxo/entrada.md
             r, out = self.main("--base", arg)
             self.assertEqual((r, out.strip()), (0, self.base(rel)), arg)

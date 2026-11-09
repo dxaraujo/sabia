@@ -7,7 +7,7 @@ Os fatos da investigação.
 
 ## Faça
 
-1. Devolva a quem chamou, em até ~150 linhas, nas seções do padrão `sa-plano/research.md`: Perguntas e respostas ·
+1. Devolva a quem chamou, em até ~150 linhas, nas seções do template `sa-plano/research.md`: Perguntas e respostas ·
    Fluxo atual · Análogos · Reaproveitar · Dados · Testes · Documentação × código · Restrições e riscos · Não
    encontrado.
 2. Só fatos com `arquivo:linha`. Nunca invente arquivo, classe, coluna ou trilha: não achou → Não encontrado.

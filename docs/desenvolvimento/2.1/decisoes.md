@@ -48,7 +48,7 @@
 - sa-elm = tudo do ELM: regras, setup, item, finalizar, horas, importar-backlog, publicar, iteracao, conferir, lint, baixar, visualizar. As outras skills só oferecem. Tarefas do EWM: DEV · ESP · ATD.
 - sa-setup só pergunta "usa ELM?" e chama a sa-elm.setup. A sa-elm.setup só produz dados (pa em .sabia/config/elm/pa_<nome>.json, chave elm do agentes.json, texto da seção ELM do sabia.md, regras ELM dos perfis) e roda na sessão sem agente; a sa-setup aplica e regenera os perfis.
 - .kiro/config/* → .sabia/config/* (elm, elk). mcp-elm e mcp-elk procuram em .sabia/config/<mcp>, depois .kiro/config/<mcp> e .kiro/config/sdd. elk-<ambiente>.json fica em .sabia/config/elk/.
-- Perfis: sa-construir e sa-explorar. Harness em deny por caminhos explícitos (.kiro/agents, .kiro/settings, .kiro/steering/sabia.md, .opencode, opencode.json, .sabia/config, .sabia/fluxo, .sabia/padrao); .kiro/specs e openspec/ liberados. Verificador roda no sa-construir; revisor e pesquisa no sa-explorar.
+- Perfis: sa-construir e sa-explorar. Harness em deny por caminhos explícitos (.kiro/agents, .kiro/settings, .kiro/steering/sabia.md, .opencode, opencode.json, .sabia/config, .sabia/fluxo, .sabia/template); .kiro/specs e openspec/ liberados. Verificador roda no sa-construir; revisor e pesquisa no sa-explorar.
 - Créditos do Kiro em .sabia/creditos/<usuario>.csv (sessao · ate · item · skill · modo · creditos), pelo creditos.py ao fechar a sessão.
 - Sustentação: não existe recategorizar (categoria confirmada antes de gravar a triagem). Seção Sustentação do sabia.md: Categoria · Descrição · Exemplo.
 
@@ -67,18 +67,18 @@
 - status.md.Autonomia ∈ {IA supervisionada, IA autopilot, manual} (codificação); ficha.Especificação ∈ {IA supervisionada, IA autopilot, manual} (especificação).
 - Autonomia da especificação só existe com ELM (manual = alterar direto no DOORS); sem ELM não há pergunta nem campo Especificação na ficha (07/11).
 
-## Padrões de artefato (2.1.5, 08/11)
-- O padrão sugerido na revisão do IARA vira o padrão do Sabiá; o IARA fica com os padrões dele, só com o frontmatter, as referências e os nomes do 2.1.
+## Templates de artefato (2.1.5, 08/11)
+- O padrão sugerido na revisão do IARA vira o template do Sabiá; o IARA fica com os templates dele, só com o frontmatter, as referências e os nomes do 2.1.
 - Arquivo de elm/ e ATA: frontmatter type · title · status · sources (verified na aprovação, publicado só no manual); o id no nome do arquivo; ação e versão de referência nos artefatos afetados; ao DOORS sobe só o corpo.
 - Corpo de requisito sem título Markdown, só rótulos em negrito (como o PAB no DOORS): o mesmo texto serve a elm/, ao bloco do prd.md, ao delta e ao DOORS.
 - Referência só para baixo (HF → EL/REG/MSG/GL/UC; REG → REG/MSG/GL; EL → REG/MSG/GL/EL); existente no ELM com link para o arquivo, novo só com o id provisório. A ET cita as HF e os UC dos artefatos afetados na linha Atende, com link normal.
 - Tipos novos: MSG (o texto da mensagem) e UC (opcional, com Casos de uso = sim; o novo vai em HF). CT desviável no sa-verificar.verificar.casos.
 - Revisão contra 29148, INVEST/Gherkin, Business Rules Manifesto, IREB, NN/g, ADR e 29119-3: termos vagos no checklist, um Quando por cenário, REG declarativa e atômica, estados e acessibilidade na EL, checklist da MSG, sigla e homônimo no GL, encaminhamento com dono e prazo, Por quê nas Decisões, consequência nas Decisões técnicas, critérios de revisão C20 do CT.csv.
 
-## Padrões de artefato numa pasta (2.1.6, 08/11)
-- Os padrões dos tipos do catálogo ficam em padrao/requisitos/padrao-<tipo>.md (HF, UC, REG, MSG, EL, GL, ET, CT, ATA); a ET sai do plano.md para padrao-et.md. O elm-arquivo.md fica em sa-elm/. Compilados, moram na skill sabia (references/padrao/requisitos/).
-- A cópia do projeto em .sabia/padrao/requisitos/padrao-<tipo>.md vale sobre o padrão em vigor do tipo: o do toolkit que o desvia (base = sha do padrão do toolkit; a linha Tipos com skill de toolkit aponta para a cópia) ou o do Sabiá.
-- O toolkit segue o mesmo nome: padrao/requisitos/padrao-<tipo>.md (iara 0.4.1).
+## Templates de artefato numa pasta (2.1.6, 08/11)
+- Os templates dos tipos do catálogo ficam em template/requisitos/template-<tipo>.md (HF, UC, REG, MSG, EL, GL, ET, CT, ATA); a ET sai do plano.md para template-et.md. O elm-arquivo.md fica em sa-elm/. Compilados, moram na skill sabia (references/template/requisitos/).
+- A cópia do projeto em .sabia/template/requisitos/template-<tipo>.md vale sobre o template em vigor do tipo: o do toolkit que o desvia (base = sha do template do toolkit; a linha Tipos com skill de toolkit aponta para a cópia) ou o do Sabiá.
+- O toolkit segue o mesmo nome: template/requisitos/template-<tipo>.md (iara 0.4.1).
 
 - Comandos (08/11): a tabela ## Comandos (backpressure em camadas) mora no .sabia/sabia.md, o steering que o Kiro sempre carrega (o Kiro não lê o AGENTS.md); o AGENTS.md fica com ## Projeto.
 - requer do toolkit: semver exato = versão mínima (o CLI recusa abaixo dela); sem faixa (>=).

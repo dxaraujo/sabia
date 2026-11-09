@@ -2,7 +2,7 @@
 os agentes), dos prompts assets/agents/sa-<nome>.md e do .sabia/config/agentes.json do projeto, para cada alvo: kiro
 (.kiro/agents/<nome>.json, só nomes de capability em tools; os limites por caminho e URL vão no prompt) e opencode
 (.opencode/agents/<nome>.md, com mode e permission). Lê as definições dos fluxos no framework instalado
-(~/.sabia/framework/fluxo/, ou --framework) e o override do projeto (.sabia/fluxo/, .sabia/padrao/): o agente dono de
+(~/.sabia/framework/fluxo/, ou --framework) e o override do projeto (.sabia/fluxo/, .sabia/template/): o agente dono de
 cada fluxo recebe no prompt só o que o projeto mudou (o delta), e todo agente a regra de chamada entre fluxos.
 
     uv run --no-project python gerar_agentes.py --projeto <raiz>            # só mostra o diff e a tabela
@@ -124,7 +124,7 @@ ID = re.compile(r"[a-z][a-z0-9-]*")
 def override(projeto, fw, fluxos, originais=None):
     """O que o projeto mudou: ({"sa-x.f": [linhas do delta]}, [linhas dos padrões], avisos). Recusa (ValueError) o
     override que o compilador e o agente não entenderiam: arquivo órfão, operação desconhecida, trava liberada.
-    `originais`: {nome do padrão em requisitos/: o padrão do toolkit que desvia o tipo}, a base da cópia do projeto."""
+    `originais`: {nome do template em requisitos/: o template do toolkit que desvia o tipo}, a base da cópia do projeto."""
     originais = originais or {}
     delta, padroes, avisos, erros = {}, [], [], []
     ler = lambda f: _fm(f.read_text(encoding="utf-8"), f.relative_to(projeto))
@@ -136,22 +136,22 @@ def override(projeto, fw, fluxos, originais=None):
         elif b != sha12(original):
             avisos.append(f"{f.relative_to(projeto)}: a base mudou desde a cópia ({b} → {sha12(original)}): compare e funda à mão")
 
-    tem = [f for d in (".sabia/fluxo", ".sabia/padrao") if (projeto / d).is_dir() for f in (projeto / d).rglob("*") if f.is_file()]
+    tem = [f for d in (".sabia/fluxo", ".sabia/template") if (projeto / d).is_dir() for f in (projeto / d).rglob("*") if f.is_file()]
     por_fluxo = {}
     for f in sorted(tem):
-        rel = f.relative_to(projeto).parts[1:]  # ("fluxo"|"padrao", ...)
+        rel = f.relative_to(projeto).parts[1:]  # ("fluxo"|"template", ...)
         if f.suffix != ".md":
             erros.append(f"{f.relative_to(projeto)}: só arquivos .md")
-        elif rel[0] == "padrao":
-            # requisitos/padrao-<tipo>.md vale sobre o padrão em vigor do tipo: o do toolkit que o desvia, ou o do Sabiá
+        elif rel[0] == "template":
+            # requisitos/template-<tipo>.md vale sobre o template em vigor do tipo: o do toolkit que o desvia, ou o do Sabiá
             do_tk = rel[1:2] == ("requisitos",) and len(rel) == 3 and rel[2] in originais
-            original = originais[rel[2]] if do_tk else fw / "padrao" / Path(*rel[1:])
+            original = originais[rel[2]] if do_tk else fw / "template" / Path(*rel[1:])
             if len(rel) != 3 or not original.exists():
-                erros.append(f"{f.relative_to(projeto)}: não é padrão do Sabiá")
+                erros.append(f"{f.relative_to(projeto)}: não é template do Sabiá")
             else:
-                com_base(f, original, f"padrão {rel[1]}/{rel[2]}")
+                com_base(f, original, f"template {rel[1]}/{rel[2]}")
                 if not do_tk:  # a do toolkit chega pela linha Tipos com skill de toolkit
-                    padroes.append(f"- padrão `{rel[1]}/{rel[2]}`: `.sabia/padrao/{rel[1]}/{rel[2]}` (no lugar do da skill)")
+                    padroes.append(f"- template `{rel[1]}/{rel[2]}`: `.sabia/template/{rel[1]}/{rel[2]}` (no lugar do da skill)")
         elif (q := ".".join(rel[1:3]) if len(rel) >= 4 else None) not in fluxos:
             erros.append(f"{f.relative_to(projeto)}: não é de um fluxo do Sabiá")
         else:
@@ -236,10 +236,10 @@ def fonte_toolkits(projeto, cfg, fw, fluxos):
     O mesmo tipo ou item de critério de revisão em dois toolkits → ValueError."""
     ler = lambda f: json.loads(f.read_text(encoding="utf-8")) if f.is_file() else {}
     catalogo = ler(fw / "fluxo/tipos.json").get("tipos", {})
-    rub = fw / "padrao/sa-revisar/criterios-revisao.md"
+    rub = fw / "template/sa-revisar/criterios-revisao.md"
     de = {f"critério de revisão {r}": "Sabiá" for r in (re.findall(r"^\| ([A-Z]\d+) \|", rub.read_text(encoding="utf-8"), re.M) if rub.is_file() else [])}
     erros, por_agente, por_passo, extras, rubricas, tab_tipos, tab_rubricas = [], {}, {}, {}, [], [], []
-    fonte_toolkits.originais = {}  # padrao-<tipo>.md → o padrão do toolkit, para a base da cópia do projeto
+    fonte_toolkits.originais = {}  # template-<tipo>.md → o template do toolkit, para a base da cópia do projeto
     dono = lambda c: fluxos[".".join(c.split(".")[:2])]["dono"]
 
     def meu(chave, nome):  # a primeira dona fica; a segunda é colisão
@@ -258,11 +258,11 @@ def fonte_toolkits(projeto, cfg, fw, fluxos):
         versao = f"`{nome}` {man.get('versao', '')}".rstrip()
         for sg, q in man.get("tipos", {}).items():
             tipo = catalogo.get(sg, {})
-            ks = [k for k in ("fluxo", "padrao") if isinstance(q, dict) and k in q]
+            ks = [k for k in ("fluxo", "template") if isinstance(q, dict) and k in q]
             if not isinstance(q, dict) or not tipo.get("desviavel") or tipo.get("pendente") \
                     or q.get("skill") not in [x["caminho"] for x in man.get("skills", [])] \
                     or any(not isinstance(q.get(k), str) or not (real / dentro(q[k], nome)).is_file() for k in ks):
-                erros.append(f"toolkit {nome}: tipo {sg} → {q.get('skill') if isinstance(q, dict) else q}: use {{skill, fluxo, padrao}} (fluxo e padrao opcionais);"
+                erros.append(f"toolkit {nome}: tipo {sg} → {q.get('skill') if isinstance(q, dict) else q}: use {{skill, fluxo, template}} (fluxo e template opcionais);"
                              f" o tipo tem de ser desviável e não pendente no catálogo, a skill uma das skills do toolkit"
                              + (f", e o {' e o '.join(ks)} arquivos da pasta do toolkit" if ks else ""))
                 continue
@@ -277,12 +277,12 @@ def fonte_toolkits(projeto, cfg, fw, fluxos):
                 continue
             sk = Path(q["skill"]).parent.name
             fl = f"`{pasta}/{q['fluxo']}`" if q.get("fluxo") else ""
-            copia = f".sabia/padrao/requisitos/padrao-{sg.lower()}.md"
-            if q.get("padrao") and (projeto / copia).is_file():  # a cópia do projeto vale sobre o padrão do toolkit
-                fonte_toolkits.originais[f"padrao-{sg.lower()}.md"] = real / dentro(q["padrao"], nome)
-                pd = f"o padrão `{copia}` (cópia do projeto sobre `{pasta}/{q['padrao']}`)"
+            copia = f".sabia/template/requisitos/template-{sg.lower()}.md"
+            if q.get("template") and (projeto / copia).is_file():  # a cópia do projeto vale sobre o template do toolkit
+                fonte_toolkits.originais[f"template-{sg.lower()}.md"] = real / dentro(q["template"], nome)
+                pd = f"o template `{copia}` (cópia do projeto sobre `{pasta}/{q['template']}`)"
             else:
-                pd = f"o padrão `{pasta}/{q['padrao']}`" if q.get("padrao") else ""
+                pd = f"o template `{pasta}/{q['template']}`" if q.get("template") else ""
             segue = (f" e siga {fl}" if fl else "") + (f" com {pd}" if pd else "") or " e siga as references dela"
             for c in criam:  # a skill vai ao dono do passo de desvio
                 por_passo.setdefault(dono(c), {}).setdefault(c, []).append(f"{sg} → carregue a skill `{sk}`{segue}")
@@ -309,7 +309,7 @@ def fonte_toolkits(projeto, cfg, fw, fluxos):
     for ag, ps in por_passo.items():
         por_agente[ag]["linhas"].append(
             "Tipos com skill de toolkit (⇢ no passo de desvio do tipo): " + "; ".join(f"no passo `{c}`, {'; '.join(ls)}" for c, ls in ps.items())
-            + ". O artefato desse tipo sai pela skill do toolkit (ligada a você), que lê o fluxo e o padrão da linha pelo caminho"
+            + ". O artefato desse tipo sai pela skill do toolkit (ligada a você), que lê o fluxo e o template da linha pelo caminho"
               " (sem eles, as references dela), no arquivo da coluna Arquivo do catálogo (`references/tipos.md` da skill `sabia`);"
               " depois volte ao passo. Os demais tipos seguem o passo. O catálogo, a revisão e a aprovação continuam do Sabiá.")
     if rubricas:
@@ -319,7 +319,7 @@ def fonte_toolkits(projeto, cfg, fw, fluxos):
         por_agente.setdefault(ag, {"linhas": [], "skills": []})["linhas"] += ls
     # a seção Tipos com skill de toolkit do sabia.md: o que vale na sessão sem agente
     tabela = []
-    for cab, linhas in (("| Tipo | Skill | Fluxo e padrão | Toolkit | Passo de desvio |\n|---|---|---|---|---|", tab_tipos),
+    for cab, linhas in (("| Tipo | Skill | Fluxo e template | Toolkit | Passo de desvio |\n|---|---|---|---|---|", tab_tipos),
                         ("| Item de critério de revisão | Tipo | Severidade | Verificação | Toolkit |\n|---|---|---|---|---|", tab_rubricas)):
         if linhas:
             tabela += ([""] if tabela else []) + cab.split("\n") + linhas
@@ -700,7 +700,7 @@ def main(argv=None):
     ap.add_argument("--config", type=Path, help="padrão: <projeto>/.sabia/config/agentes.json")
     ap.add_argument("--alvo", help="kiro,opencode (padrão: `alvos` do agentes.json, ou kiro)")
     ap.add_argument("--framework", type=Path, help="o framework instalado (padrão: ~/.sabia/framework)")
-    ap.add_argument("--base", help="imprime a `base` de uma cópia: o id do passo (sa-x.f.p), o padrão (sa-x/nome.md ou requisitos/padrao-<tipo>.md) ou o caminho do padrão de um toolkit (~/.sabia/toolkits/...)")
+    ap.add_argument("--base", help="imprime a `base` de uma cópia: o id do passo (sa-x.f.p), o padrão (sa-x/nome.md ou requisitos/template-<tipo>.md) ou o caminho do padrão de um toolkit (~/.sabia/toolkits/...)")
     # gravar é opt-in: rodar sem flag nunca grava nada antes do "ok" da pessoa
     ap.add_argument("--gravar", action="store_true", help="grava os agentes (sem ela, só mostra o diff)")
     ap.add_argument("--diff", action="store_true", help="o padrão: mostra o diff e não grava")
@@ -711,7 +711,7 @@ def main(argv=None):
         fl = ler_fluxos(fw).get(".".join(partes[:2])) if len(partes) == 3 else None
         # o padrão de um toolkit (cópia em requisitos/ sobre ele) vem pelo caminho do arquivo instalado
         tk = Path(args.base).expanduser()
-        f = arq_passo(fl, partes[2]) if fl else tk if tk.is_absolute() else fw / "padrao" / args.base
+        f = arq_passo(fl, partes[2]) if fl else tk if tk.is_absolute() else fw / "template" / args.base
         if not f.is_file():
             print(f"não existe no framework: {args.base} ({f})", file=sys.stderr)
             return 1

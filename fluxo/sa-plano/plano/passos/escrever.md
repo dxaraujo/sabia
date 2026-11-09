@@ -7,7 +7,7 @@ O delta, o `research.md`, as decisões, a trilha (`status.md`), o tipo (fatia ou
 
 ## Faça
 
-1. Escreva pela matriz (modelos no padrão `sa-plano/plano.md`):
+1. Escreva pela matriz (modelos no template `sa-plano/plano.md`):
 
    | Trilha | Kiro | OpenSpec |
    |---|---|---|

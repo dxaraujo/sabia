@@ -75,7 +75,7 @@ avaliados em separado e relatados em tabelas próprias: um não compensa nem esc
 | C9 | Projeto e Regras aprendidas do `sabia.md` e steering de tecnologia e estrutura | BLOQUEANTE |
 | C10 | Modelo e entidade batem com o schema real (MCP de banco, em leitura; sem o MCP, `N/A`). DDL nova tem o item BD citado no Risco do MR | BLOQUEANTE |
 | C11 | Segue o análogo e a forma do design; nada de padrão novo sem decisão registrada. Decisão que atravessa fatias (banco, framework, padrão de integração) tem ADR no MR | IMPORTANTE |
-| C12 | Nomes do domínio = termos do glossário (GL ou `glossario.md`); nomes técnicos no padrão dos vizinhos | IMPORTANTE |
+| C12 | Nomes do domínio = termos do glossário (GL ou `glossario.md`); nomes técnicos no template dos vizinhos | IMPORTANTE |
 | C13 | Módulos profundos: interface pequena para o que esconde; sem abstração especulativa, camada a mais ou duplicação evitável | IMPORTANTE |
 | C14 | Sem `TODO`, `FIXME`, print ou log de depuração e código comentado; registros obrigatórios da estrutura (trilhas, menus, agendamentos, migrações) presentes | IMPORTANTE |
 | C15 | Onde o projeto mantém ET (`ET as-built: sim` na seção ELM do `sabia.md`), as seções as-built do `design.md` descrevem o que o diff faz, e nada além | IMPORTANTE |

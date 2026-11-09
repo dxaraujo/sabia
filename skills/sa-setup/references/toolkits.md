@@ -1,7 +1,7 @@
 # Toolkits — como a `sa-setup` encontra as skills de cada tipo de projeto
 
 O Sabiá é o fluxo; os toolkits são extensões dos agentes dele. O fluxo não sabe programar em nenhuma stack: ele organiza **o quê** (produto), **o como** (plano) e **a
-verificação**. O conhecimento de stack — Java, Spring Batch, Angular, React, Python, mainframe — e o padrão de
+verificação**. O conhecimento de stack — Java, Spring Batch, Angular, React, Python, mainframe — e o template de
 especificação de uma casa (os tipos do catálogo no formato dela) vêm de **toolkits**: pacotes de skills mantidos
 **fora** do power, um por tipo de projeto, stack ou casa. A `sa-setup` é a
 única parte do fluxo que sabe procurá-los; depois de configurado, cada agente só enxerga as skills que a pessoa
@@ -22,7 +22,7 @@ toolkit (fora do fluxo)            sa-setup                             agentes 
 Um repositório pode ter mais de um tipo (ex.: `backend` + `batch`). O tipo decide quais toolkits a setup propõe
 e quais verificações a `sa-verificar` usa para executar os cenários de aceite.
 
-| Tipo | Sinais no repositório | Como a aceitação é verificada (padrão) |
+| Tipo | Sinais no repositório | Como a aceitação é verificada (template) |
 |---|---|---|
 | `backend` | controladores/trilhas HTTP, OpenAPI, `spring-boot-starter-web`, `express`, `fastapi`, `*.csproj` web | chamada à API (HTTP), resposta e estado no banco |
 | `batch` | `spring-batch-core`, `@EnableBatchProcessing`, `Job`/`Step`, `*.jcl`, agendadores, `cron` | execução do job com os dados do cenário; contagens e estado no banco; log de execução |
@@ -104,7 +104,7 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
 | `skills[].papeis` | **quem:** pré-seleciona a skill na proposta de cada agente (`desenvolvedor` → `sa-desenvolvedor`, `especificador` e `produto` → `sa-especificador`, `pesquisador` → `sa-pesquisador`, `revisor` → `sa-revisor`, `verificador` → `sa-verificador`, 1:1) — uma skill pode servir a vários |
 | `skills[].stack`, `skills[].deteccao` | **onde:** a stack da skill (ex.: `java 17`, `react`); com `deteccao`, a setup só a pré-marca se o repositório casar |
 | `skills[].passo` | **em que passo:** opcional — a skill assume o passo de um agente do Sabiá, pelo id (`passo`: `sa-desenvolver.codificar.tarefa`, o único com `"desvio": true` na definição do fluxo), com o `para` e, opcionais, os `arquivos` (globs) e o `agente` a quem delegar — ver [Passos](#passos) |
-| `tipos` | opcional — `{"HF": {"skill": "skills/<skill>/SKILL.md", "fluxo": "<arquivo>", "padrao": "<arquivo>"}}` (a skill do toolkit, com o fluxo e o padrão do tipo, relativos à pasta do toolkit; o padrão é opcional e segue o nome `padrao/requisitos/padrao-<tipo>.md`): o toolkit escreve um tipo desviável do catálogo (`HF`, `UC`, `REG`, `MSG` e `EL` no `sa-prd.prd.escrever` e no `sa-especificar.elm.editar`; `ATA` no `sa-especificar.reuniao.escrever`; `ET` no `sa-desenvolver.codificar.as-built`; `CT` no `sa-verificar.verificar.casos`; `GL` não desvia — a fonte é a coluna Desviável do catálogo) — ver [Tipos](#tipos) |
+| `tipos` | opcional — `{"HF": {"skill": "skills/<skill>/SKILL.md", "fluxo": "<arquivo>", "template": "<arquivo>"}}` (a skill do toolkit, com o fluxo e o template do tipo, relativos à pasta do toolkit; o template é opcional e segue o nome `template/requisitos/template-<tipo>.md`): o toolkit escreve um tipo desviável do catálogo (`HF`, `UC`, `REG`, `MSG` e `EL` no `sa-prd.prd.escrever` e no `sa-especificar.elm.editar`; `ATA` no `sa-especificar.reuniao.escrever`; `ET` no `sa-desenvolver.codificar.as-built`; `CT` no `sa-verificar.verificar.casos`; `GL` não desvia — a fonte é a coluna Desviável do catálogo) — ver [Tipos](#tipos) |
 | `criterios_revisao` | opcional — itens que o toolkit **acrescenta** à revisão: `id` (maiúsculas e número, ex.: `EX1`), `verificacao`, `severidade` (`BLOQUEANTE`, `IMPORTANTE` ou `SUGESTÃO`) e, opcional, o `tipo`; vão no prompt do revisor |
 | `requer` | opcional — `{"sabia": "<versão mínima>"}`: o toolkit usa o catálogo de tipos e ids de passo do Sabiá; abaixo dela, o CLI recusa o toolkit |
 | `autor` | **obrigatório:** `nome` e `area` de quem fez e responde pelo toolkit (`email` opcional). Aparece no W5 e no `sabia toolkits listar`; toolkit sem autor é recusado |
@@ -141,39 +141,39 @@ estão em [passos.md](../../sabia/references/passos.md).
 ## Tipos
 
 Fluxo com passos (definição do fluxo, `passos/`, compilação) é só do framework: o Sabiá não compila conteúdo de toolkit. Um toolkit
-é skill — uma skill com os fluxos e padrões dela, referenciados por tipo, ou só skills com as references dentro:
+é skill — uma skill com os fluxos e templates dela, referenciados por tipo, ou só skills com as references dentro:
 
 ```
 toolkit.json                       "tipos", "criterios_revisao", "requer" (abaixo)
 skills/exemplo/SKILL.md            a skill, copiada como está (o corpo é dela)
 fluxo/fluxo-hf.md                  fluxo do tipo HF, lido pela skill pelo caminho
-padrao/padrao-hf.md                padrão do tipo HF, idem
+template/template-hf.md                template do tipo HF, idem
 ```
 
 ```json
 {
-  "nome": "exemplo", "versao": "1.0.0", "descricao": "Padrão de histórias de uma casa",
+  "nome": "exemplo", "versao": "1.0.0", "descricao": "Template de histórias de uma casa",
   "autor": { "nome": "<quem fez>", "area": "<área>" }, "tipos-de-projeto": ["backend", "frontend"],
   "skills": [{ "caminho": "skills/exemplo/SKILL.md", "papeis": ["especificador"] }],
-  "tipos": { "HF": { "skill": "skills/exemplo/SKILL.md", "fluxo": "fluxo/fluxo-hf.md", "padrao": "padrao/padrao-hf.md" } },
+  "tipos": { "HF": { "skill": "skills/exemplo/SKILL.md", "fluxo": "fluxo/fluxo-hf.md", "template": "template/template-hf.md" } },
   "criterios_revisao": [{ "id": "EX1", "tipo": "HF", "verificacao": "Toda HF cita o campo de origem", "severidade": "IMPORTANTE" }],
   "requer": { "sabia": "2.1.0" }
 }
 ```
 
 - **Tipo → skill:** a sigla é do catálogo (o toolkit não cria tipo), desviável e não pendente; a skill é uma das
-  `skills[]`; o fluxo e o padrão, opcionais, são arquivos da pasta do toolkit (sem eles, `{"skill": …}` só, a skill segue as references dela). A skill vai ao dono de cada passo de desvio
+  `skills[]`; o fluxo e o template, opcionais, são arquivos da pasta do toolkit (sem eles, `{"skill": …}` só, a skill segue as references dela). A skill vai ao dono de cada passo de desvio
   (coluna Desviável do catálogo) e traz em `papeis` o papel de cada um (HF, UC, REG, MSG, EL e ATA: `especificador` ou `produto`; ET: `desenvolvedor`; CT: `verificador`); sem ele, o
   CLI e o gerador recusam o toolkit, dizendo o papel que falta. O gerador põe no prompt de cada dono a linha **Tipos com skill de toolkit**: no passo, o
-  tipo sai pela skill, que segue o fluxo com o padrão, quando há, pelo caminho na pasta instalada (`~/.sabia/toolkits/<toolkit>/`,
+  tipo sai pela skill, que segue o fluxo com o template, quando há, pelo caminho na pasta instalada (`~/.sabia/toolkits/<toolkit>/`,
   de leitura para todos os agentes), escrevendo no formato do Sabiá (no arquivo de `elm/`, o do `sa-elm/elm-arquivo.md`; no bloco do `prd.md`, o mesmo corpo,
   sem frontmatter; o corpo nunca tem título Markdown), e volta ao passo. O gerador imprime a seção
-  que a setup grava no `sabia.md`: o fluxo, o padrão e a skill de cada tipo, e os itens de critério de revisão.
-- **Padrão do núcleo:** o toolkit não troca padrão do Sabiá. O tipo que não vai por `tipos`, e o tipo fora do passo de
-  desvio, usam o padrão do Sabiá.
-- **Padrão no projeto:** `.sabia/padrao/requisitos/padrao-<tipo>.md` vale sobre o padrão em vigor do tipo: o do toolkit
-  que o desvia (a `base` é o sha do padrão do toolkit, e a linha Tipos com skill de toolkit aponta para a cópia) ou o do
-  Sabiá. O padrão do toolkit segue o mesmo nome, `padrao/requisitos/padrao-<tipo>.md`.
+  que a setup grava no `sabia.md`: o fluxo, o template e a skill de cada tipo, e os itens de critério de revisão.
+- **Template do núcleo:** o toolkit não troca template do Sabiá. O tipo que não vai por `tipos`, e o tipo fora do passo de
+  desvio, usam o template do Sabiá.
+- **Template no projeto:** `.sabia/template/requisitos/template-<tipo>.md` vale sobre o template em vigor do tipo: o do toolkit
+  que o desvia (a `base` é o sha do template do toolkit, e a linha Tipos com skill de toolkit aponta para a cópia) ou o do
+  Sabiá. O template do toolkit segue o mesmo nome, `template/requisitos/template-<tipo>.md`.
 - **Links:** nos arquivos do toolkit, o link para o Sabiá segue o estilo do repositório
   (`~/.sabia/framework/skills/<sa-x>/references/...`). O Sabiá não confere esses links: um quebrado só aparece quando o
   agente o lê.

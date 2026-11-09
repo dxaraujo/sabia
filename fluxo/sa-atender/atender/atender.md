@@ -35,7 +35,7 @@ Aceita: item de Sustentação `nova` ou `em-andamento`.
 
 ## Arquivos
 
-- `.sabia/planejamento/sustentacao/<ID>-<slug>.md` — o registro, no padrão `sa-atender/registro.md`. Gravado direto
+- `.sabia/planejamento/sustentacao/<ID>-<slug>.md` — o registro, no template `sa-atender/registro.md`. Gravado direto
   na branch base.
 - A linha do item no `backlog.md` e a linha `atendimento` no `sprint-<nn>.md` aberto.
 - `.sabia/local/sustentacao/<ID>/` — extrações, telas e respostas com dado real. Fora do git.
