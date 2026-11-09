@@ -76,7 +76,7 @@ const S={
   papel:"quem tem produto",agente:"sa-especificador",tarefa:"—",
   faz:["investir: épico em-especificacao e iniciada_em = hoje; Decisão: investir e **Aprovado:** <usuario> · <data> no topo do pitch.md (commit EP-nn investir)","cancelar: cancelado, com obs não investir: <motivo>; a pasta fica (commit EP-nn cancelar)","Cabe em G: o épico fica cancelado com virou FT-nnn, e a fatia nasce aceita, com a ficha curta tirada do pitch","Sem quem tem produto na sessão: o épico segue a-moldar e só o pitch grava"],
   arq:["pitch.md · backlog.md"],elm:["cancelar: a sa-elm.finalizar oferece cancelar o IB"]},
- entrevistar:{x:680,y:100,lab:"below",dy:46,nome:"Esclarecer",sk:"sa-entrevistar",
+ entrevistar:{x:680,y:100,lab:"below",dx:-6,nome:"Esclarecer",sk:"sa-entrevistar",
   papel:"quem especifica, com o produto",agente:"sa-especificador",tarefa:"—",
   faz:["Árvore de decisões só do trecho tocado; o que tem fonte responde sozinha, pela sa-pesquisar","Até 5 perguntas por rodada, numeradas, cada uma com a recomendação; o sim aceita todas","Regra de negócio vale pela decisão de uma pessoa; lacuna de rotina vira suposição registrada","Registro só por acréscimo: D-nn em Decisões (D-nn | Decisão | Quem | Quando | Fonte) e Em aberto com para quem e o que bloqueia","Reunião: a transcrição em .sabia/local/reunioes/ vira ATA aprovada por quem conduziu (sa-especificar.reuniao), e as decisões vão às Decisões com Fonte ATA-nn [mm:ss]","Protótipo: versão vN em prototipos/; vale só com a aprovação do cliente num D-nn, com quem, data, versão e evidência"],
   arq:["seções Decisões e Em aberto do pitch.md, do prd.md ou da ficha",".sabia/planejamento/atas/ATA-<nn>-<AAAA-MM-DD>-<assunto>.md",".sabia/planejamento/prototipos/<id>-<slug>/v<N>/"],
