@@ -28,7 +28,7 @@
     <div class="elm3">
      <div class="sys" style="--c:var(--navy)"><h3>DOORS Next</h3><p class="sub">requisitos · publicados depois do merge</p><ul>
       <li>Tipos do catálogo fechado: HF, UC (com Casos de uso = <code>sim</code>), REG, MSG, EL (com Telas = <code>sim</code>), GL e ET as-built, onde o projeto mantém ET; a ATA sobe se a pessoa quiser</li>
-      <li>No refinamento, cada artefato afetado ganha um arquivo inteiro em <code>elm/</code> da pasta da spec; o original vem pela <code>sa-elm.baixar</code>, num commit de referência com a versão de referência</li>
+      <li>No refinamento, cada artefato afetado ganha um arquivo inteiro em <code>elm/</code> da pasta da spec; o original vem pela <code>sa-elm.baixar</code>, num commit de referência com a versão de referência e o frontmatter já final (<code>status: stable</code>, sem <code>verified</code>); a edição passa a <code>draft</code>, e o diff mostra só o que mudou. Sem acesso ao ELM, o bundle pode servir de original provisório, com a data dele, e a aprovação espera a conferência com o DOORS</li>
       <li>Depois do merge, a <code>sa-elm.publicar</code>, de quem tem <code>especificador</code>, confere a versão (mudou → avisa e pula), cria os novos e troca o id provisório pelo do ELM no PRD, nas fichas e no delta</li>
       <li>Sobe só o corpo, sem o frontmatter; o arquivo da especificação manual (<code>publicado: manual</code>) não é reenviado</li>
       <li>Exclusão: o MCP não apaga; vira roteiro manual no DOORS Next</li></ul></div>
