@@ -16,7 +16,7 @@ Valem em todos os fluxos da skill.
 - **Regra de ouro**: cada fluxo mostra a proposta na tela e só grava com o "ok". Ajuste → a proposta de novo.
 - **Quem decide**: qualquer pessoa conduz. A ordem do backlog, a seleção, a meta e o "ok" da sprint são de quem tem
   `produto` no `equipe.json`. Sem a booleana: mostre a proposta, diga quem aprova (os nomes do `equipe.json`) e não
-  grave.
+  grave; no reabastecimento da sprint, vale a anuência nomeada de quem tem `produto`.
 - **Gravação**: todo estado e todo arquivo de planejamento vão direto na branch base, num commit pequeno de cada fluxo. Nada daqui vai por MR.
 - **Previsão pela vazão**: itens de desenvolvimento concluídos por sprint, sem pontos. A meta é o compromisso; a
   seleção é previsão. Item previsto que não terminou não é falha: volta na virada do próximo planejamento.

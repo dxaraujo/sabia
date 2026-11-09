@@ -13,7 +13,7 @@ A proposta com o "ok".
    acrescente as linhas. A coluna Tarefas fica vazia: quem puxa preenche pela `sa-elm.item`.
 2. **`backlog.md`**: os itens que a virada tirou da sprint (`em-andamento` → `elegivel`).
 3. **`roadmap.md`**, só se existe: pergunte "atualizar o roadmap?" e, com o sim, atualize a Previsão pela vazão.
-4. Mensagem: `<AAAA>/Sprint <nn>: planejamento` (ou `: reabastecimento`). Grave tudo num commit só, pelo passo
+4. Mensagem: `<AAAA>/Sprint <nn>: planejamento` (ou `: reabastecimento`; com a anuência, `: reabastecimento (anuência de <usuario>)`). Grave tudo num commit só, pelo passo
    `commit-na-branch-base`.
 
 ## Saída

@@ -63,7 +63,7 @@ Então o desconto aplicado é de R$ 50,00
 - [x] nenhum artefato afetado bloqueado por outra fatia
 - [x] nenhum Em aberto que bloqueie a fatia inteira
 - [x] tamanho ≤ G
-- [x] ficha aprovada pelo P.O. (bug sem artefatos afetados dispensa)
+- [x] ficha aprovada pelo P.O. ou com a anuência dele (bug sem artefatos afetados dispensa)
 ```
 
 ## Campos
@@ -71,7 +71,7 @@ Então o desconto aplicado é de R$ 50,00
 | Campo | Valores | Quem preenche |
 |---|---|---|
 | título | `# FT-<nnn> · <título>`, o título da linha do `backlog.md` | o cadastro |
-| Aprovado | `<usuario> · AAAA-MM-DD` de quem tem `produto` · `—`; logo abaixo do título. Qualquer mudança depois volta a `—` | `sa-refinar.detalhar` · `sa-refinar.fatiar` |
+| Aprovado | `<usuario> · AAAA-MM-DD` de quem tem `produto` · `<usuario> · AAAA-MM-DD · anuência de <usuario com produto>` · `—`; logo abaixo do título. Mudança em Objetivo, Regras, Cenários, Não muda, Decisões ou artefato afetado novo volta a `—`; DoR, Especificação, versão de referência e Em aberto resolvido sem mudar regra não tiram | `sa-refinar.detalhar` · `sa-refinar.fatiar` |
 | Tipo | `fatia` · `bug` | o cadastro |
 | Pai | `EP-nn` · `—` | `sa-refinar.fatiar` · `sa-triar.triar` |
 | Especificação | `IA supervisionada` · `IA autopilot` · `manual`; a linha só existe com ELM e artefatos afetados com `inclui`, `altera` ou `exclui`. Fixa até o fim da especificação e independente da autonomia da codificação | `sa-refinar.detalhar` |

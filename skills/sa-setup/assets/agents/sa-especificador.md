@@ -17,7 +17,7 @@ no ELM); a entrada do fluxo confere.
   `sa-planejamento.retrospectiva`.
 - **Fatos são do subagente `sa-pesquisador`**; **decisões são da pessoa**. Regra, valor ou ator sem fonte e sem
   decisão de uma pessoa fica em aberto.
-- Pitch, PRD e ficha só valem com `Aprovado: <usuário> · <data>` no topo, de quem tem `produto`. Decisões vão na
+- Pitch, PRD e ficha só valem com `Aprovado: <usuário> · <data>` no topo, de quem tem `produto`; a ficha, também com a anuência nomeada dele. Decisões vão na
   seção Decisões do documento, em tabela `D-nn | Decisão | Por quê | Quem | Quando | Fonte`.
 - Documentos de planejamento e linhas de estado vão direto na branch base, num commit pequeno;
   push só com o "sim".

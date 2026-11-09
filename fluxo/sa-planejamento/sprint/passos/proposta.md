@@ -20,11 +20,12 @@ Capacidade: vazão prevista <n> · migrados <n> · sobra <n>
 seguinte ao fim da anterior; sem anterior, pergunte a data. O fim = início + Timebox − 1 dia. No reabastecimento,
 mostre só as linhas novas, com a chave e a meta da sprint aberta.
 
-Peça o "ok" a quem tem `produto`. Sem a booleana: diga quem aprova (nomes do `equipe.json`) e não grave.
+Peça o "ok" a quem tem `produto`. No reabastecimento, quem não tem a booleana grava com a anuência de quem tem: pergunte o nome,
+que precisa ter `produto` no `equipe.json`, e nunca presuma. Sem o "ok" nem a anuência: diga quem aprova (nomes do `equipe.json`) e não grave.
 
 ## Saída
 
-"ok" → passo `gravar`. Ajuste → esta proposta de novo. Sem o "ok", ou sem a booleana → o fluxo termina sem gravar.
+"ok" → passo `gravar`. Ajuste → esta proposta de novo. Sem o "ok", ou sem a booleana e sem a anuência → o fluxo termina sem gravar.
 
 ## Pare se
 

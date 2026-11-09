@@ -9,7 +9,7 @@ A ficha e, com ELM, os arquivos de `elm/` dos artefatos afetados.
 
 1. Com ELM: cada artefato afetado tem o arquivo inteiro em `elm/` com `status: stable` e o `verified` no
    frontmatter (aprovado por quem tem `especificador`).
-2. Sem ELM: a ficha tem `Aprovado: <usuario> · <data>` no topo (de quem tem `produto`).
+2. Sem ELM: a ficha tem `Aprovado: <usuario> · <data>` no topo (de quem tem `produto`, ou com a anuência nomeada dele).
 3. Falta aprovação → registre Em aberto no `status.md` (ao especificador, com ELM; ao P.O., na ficha), com
    `Bloqueia: MR`, e pare: o texto é do refinamento (`sa-refinar.detalhar`). No autopilot, devolve à pessoa.
 

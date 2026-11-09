@@ -13,7 +13,7 @@ Pedido direto ("planejar a sprint", "reabastecer a sprint", "virada de sprint") 
    chave já passou da data de fim → **início do ciclo**. Dentro das datas → **reabastecimento**: pula a virada, só
    acrescenta linhas e não muda a meta.
 3. Qualquer pessoa conduz; a ordem, a meta e o "ok" são de quem tem `produto` no `equipe.json`. Sem a booleana, o
-   fluxo segue até a proposta, diz quem aprova e não grava.
+   fluxo segue até a proposta; no reabastecimento, grava com a anuência nomeada de quem tem; senão, diz quem aprova e não grava.
 
 ## Saída
 
