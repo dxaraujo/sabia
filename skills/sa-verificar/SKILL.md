@@ -4,7 +4,7 @@ description: "Acceptance against the spec in the Sabiá flow. The verificar flow
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.24"
+  version: "2.1.25"
 ---
 
 # sa-verificar — O comportamento existe de verdade?

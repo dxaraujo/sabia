@@ -1,6 +1,6 @@
 {
   "name": "sabia",
-  "version": "2.1.24",
+  "version": "2.1.25",
   "description": "Instala, atualiza e desinstala o Sabiá e os toolkits dele no Kiro e no opencode, com um inventário em ~/.sabia/, e explica a rota dos fluxos (sabia rota).",
   "type": "module",
   "bin": {
