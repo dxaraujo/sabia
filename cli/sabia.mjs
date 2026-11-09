@@ -644,19 +644,20 @@ function indices() {
   return [INDICE, ...(fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")) : [])];
 }
 
-/** Entradas do índice (`.claude-plugin/marketplace.json`), cada uma resolvida para { nome, versao, url, ref, sha, subpasta }. */
+/** Entradas do índice (`index.json`), cada uma resolvida para { nome, versao, url, ref, sha, subpasta }. */
 export function lerIndice(fonte) {
   const local = fs.existsSync(fonte);
   const raiz = local ? fonte : baixar(fonte).pasta;
-  const m = JSON.parse(fs.readFileSync(path.join(raiz, ".claude-plugin", "marketplace.json"), "utf8"));
-  return (m.plugins || []).map((p) => {
-    const s = p.source;
-    const base = { nome: p.name, versao: p.version, descricao: p.description, customiza: p.customiza, autor: p.autor, indice: fonte };
-    if (typeof s === "string") return { ...base, url: local ? path.resolve(raiz, dentro(s.replace(/^\.\//, ""), fonte)) : fonte, subpasta: local ? null : s.replace(/^\.\//, "") };
-    if (s?.source === "github") return { ...base, url: `https://github.com/${s.repo}.git`, ref: s.ref, sha: s.sha };
-    if (s?.source === "url") return { ...base, url: s.url, ref: s.ref, sha: s.sha };
-    if (s?.source === "git-subdir") return { ...base, url: s.url, ref: s.ref, sha: s.sha, subpasta: s.path };
-    throw new Error(`${fonte}: fonte de ${p.name} não suportada (${JSON.stringify(s)}); use caminho, github, url ou git-subdir`);
+  const m = JSON.parse(fs.readFileSync(path.join(raiz, "index.json"), "utf8"));
+  return (m.toolkits || []).map((t) => {
+    const f = t.fonte;
+    const base = { nome: t.nome, versao: t.versao, descricao: t.descricao, customiza: t.customiza, autor: t.autor, indice: fonte };
+    if (f?.caminho) {
+      const c = f.caminho.replace(/^\.\//, "");
+      return { ...base, url: local ? path.resolve(raiz, dentro(c, fonte)) : fonte, subpasta: local ? null : c };
+    }
+    if (f?.url && f.ref && f.sha) return { ...base, url: f.url, ref: f.ref, sha: f.sha, subpasta: f.subpasta };
+    throw new Error(`${fonte}: fonte de ${t.nome} inválida (${JSON.stringify(f)}); use caminho, ou url, ref e sha`);
   });
 }
 

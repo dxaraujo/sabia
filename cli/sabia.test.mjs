@@ -193,16 +193,16 @@ test("valida o toolkit: nome, caminhos presos à pasta e referências", () => {
 
 test("customização: cópia modificada da base, listada abaixo dela e recusada com a base já instalada", async () => {
   const indice = escrever(path.join(raiz, "indice-c"), {
-    ".claude-plugin/marketplace.json": { name: "idx", plugins: [
-      { name: "batch-alfa-casa", version: "1.1.0", source: "./casa" }, { name: "batch-alfa", version: "1.0.0", source: "./base" }] },
+    "index.json": { nome: "idx", toolkits: [
+      { nome: "batch-alfa-casa", versao: "1.1.0", fonte: { caminho: "./casa" } }, { nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./base" } }] },
   });
   toolkit(path.join(indice, "base"));
   toolkit(path.join(indice, "casa"), { nome: "batch-alfa-casa", versao: "1.1.0",
     customiza: { toolkit: "batch-alfa", versao: "1.0.0", mudancas: ["customizações feitas pela casa", "writers da casa"] } });
   // sem nada baixado, a relação vem da entrada do índice
-  const ix = path.join(indice, ".claude-plugin/marketplace.json"), m = JSON.parse(fs.readFileSync(ix, "utf8"));
-  m.plugins[0].customiza = { toolkit: "batch-alfa", versao: "1.0.0" };
-  m.plugins[0].autor = { nome: "Bia Exemplo", area: "Casa" };
+  const ix = path.join(indice, "index.json"), m = JSON.parse(fs.readFileSync(ix, "utf8"));
+  m.toolkits[0].customiza = { toolkit: "batch-alfa", versao: "1.0.0" };
+  m.toolkits[0].autor = { nome: "Bia Exemplo", area: "Casa" };
   fs.writeFileSync(ix, JSON.stringify(m));
   assert.deepEqual(s.listarToolkits({ indice }).map((l) => [l[0], l[1], l[5]]), [["batch-alfa", "—", ""], ["↳ batch-alfa-casa", "Bia Exemplo (Casa)", "customiza batch-alfa 1.0.0"]]);
   await s.instalarToolkit("batch-alfa", { indice, alvo: "kiro" });
@@ -215,7 +215,7 @@ test("customização: cópia modificada da base, listada abaixo dela e recusada 
 
 test("toolkit pelo índice: baixa, instala nas ferramentas, atualiza e remove pelo inventário", async () => {
   const indice = escrever(path.join(raiz, "indice"), {
-    ".claude-plugin/marketplace.json": { name: "idx", plugins: [{ name: "batch-alfa", version: "1.0.0", source: "./batch-alfa" }] },
+    "index.json": { nome: "idx", toolkits: [{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./batch-alfa" } }] },
   });
   toolkit(path.join(indice, "batch-alfa"));
   await s.instalarToolkit("batch-alfa", { indice, alvo: "opencode,kiro" });
@@ -288,7 +288,7 @@ test("toolkit numa subpasta de um repositório git: #subpasta, @ref lida do comm
   assert.match(origem().sha, /^[0-9a-f]{40}$/);
   await assert.rejects(s.baixarToolkit(`${path.join(mono, "batch-alfa")}@nao-existe`, {}), /nao-existe/);
   // o mesmo conteúdo de outra fonte: nada é copiado, mas a origem passa a ser a nova
-  const indice = escrever(path.join(raiz, "indice"), { ".claude-plugin/marketplace.json": { name: "idx", plugins: [{ name: "batch-alfa", version: "1.0.0", source: "./batch-alfa" }] } });
+  const indice = escrever(path.join(raiz, "indice"), { "index.json": { nome: "idx", toolkits: [{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./batch-alfa" } }] } });
   fs.cpSync(path.join(home, ".sabia/toolkits/batch-alfa"), path.join(indice, "batch-alfa"), { recursive: true, filter: (f) => !f.endsWith(".origem.json") });
   await s.baixarToolkit("batch-alfa", { indice });
   assert.equal(origem().indice, indice);
@@ -394,7 +394,7 @@ test("instalar: a skill alterada à mão aparece com ✎ no resumo e fica; --for
 
 test("toolkits: sem subcomando lista; apelidos ls, i, rm e toolkit; idempotente; --json; o baixar saiu", async () => {
   const indice = escrever(path.join(raiz, "indice"), {
-    ".claude-plugin/marketplace.json": { name: "idx", plugins: [{ name: "batch-alfa", version: "1.0.0", source: "./batch-alfa", description: "jobs" }] },
+    "index.json": { nome: "idx", toolkits: [{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./batch-alfa" }, descricao: "jobs" }] },
   });
   toolkit(path.join(indice, "batch-alfa"));
   assert.equal((await rodar(["toolkits", "--indice", indice])).codigo, 0);
@@ -672,7 +672,7 @@ test("opção com valor sem o valor é recusada sem engolir a seguinte", async (
 
 test("cópia de toolkit alterada à mão: ✎ na prévia, fica registrada e reinstalar não a recusa; --forcar apaga", async () => {
   const indice = escrever(path.join(raiz, "indice"), {
-    ".claude-plugin/marketplace.json": { name: "idx", plugins: [{ name: "batch-alfa", version: "1.0.0", source: "./batch-alfa" }] },
+    "index.json": { nome: "idx", toolkits: [{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./batch-alfa" } }] },
   });
   toolkit(path.join(indice, "batch-alfa"));
   await s.instalarToolkit("batch-alfa", { indice, alvo: "opencode" });
@@ -704,7 +704,7 @@ test("desinstalar: a alterada à mão sai do total com ✎, fica registrada e o 
 });
 
 test("instalar: -t fora do índice e -a desconhecido falham antes do resumo, sem gravar nada", async () => {
-  const indice = escrever(path.join(raiz, "indice"), { ".claude-plugin/marketplace.json": { name: "idx", plugins: [] } });
+  const indice = escrever(path.join(raiz, "indice"), { "index.json": { nome: "idx", toolkits: [] } });
   const fw = framework("fw", "1.1.0");
   await assert.rejects(s.instalar({ fonte: fw, alvo: "opencode", toolkits: "jav", indice, sim: true }), /toolkit jav não está nos índices — veja: sabia toolkits/);
   assert.ok(!fs.existsSync(path.join(home, ".sabia/framework")) && !saida.some((x) => x.startsWith("[Resumo]")));
@@ -714,7 +714,7 @@ test("instalar: -t fora do índice e -a desconhecido falham antes do resumo, sem
 });
 
 test("índice vazio ou inacessível: o toolkits instalar diz o que conferir e sai 1", async () => {
-  const r = await rodar(["toolkits", "instalar", "--indice", escrever(path.join(raiz, "vazio"), { ".claude-plugin/marketplace.json": { plugins: [] } })]);
+  const r = await rodar(["toolkits", "instalar", "--indice", escrever(path.join(raiz, "vazio"), { "index.json": { toolkits: [] } })]);
   assert.equal(r.codigo, 1);
   assert.equal(r.erro, "sabia: nenhum toolkit nos índices — confira o --indice ou ~/.sabia/indices.json");
 });
