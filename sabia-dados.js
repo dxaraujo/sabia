@@ -52,7 +52,7 @@ const S={
   arq:[".sabia/planejamento/backlog.md, gravado direto na branch base"],elm:["Coluna ib: só o número do IB; as tarefas DEV · ESP · ATD ficam na sprint"]},
  planejar:{x:300,y1:396,y2:444,g:"pill",lab:"above",nome:"Planejar a sprint",sk:"sa-planejamento",
   papel:"o time; quem tem produto decide",agente:"sa-especificador",tarefa:"—",
-  faz:["Início do ciclo (com a virada) ou reabastecimento quando o topo esvazia","Capacidade pela vazão das 3 últimas sprints, ajustada pelas horas; a reserva de capacidade do acordos.md fica para o atendimento","Especificação: fatias e bugs aceita a refinar, épicos a moldar ou em especificação; não contam na vazão","Desenvolvimento: itens elegível, crítica primeiro e depois a ordem do backlog.md, até a sobra; atendimento até a reserva de capacidade","Responsável só quando já definido (nunca aloca sozinho); a meta é uma frase de resultado","Proposta com o ok de quem tem produto"],
+  faz:["Início do ciclo (com a virada) ou reabastecimento quando o topo esvazia","Capacidade pela vazão das 3 últimas sprints, ajustada pelas horas; a reserva de capacidade do acordos.md fica para o atendimento","Especificação: fatias e bugs aceita a refinar, épicos a moldar ou em especificação; não contam na vazão","Desenvolvimento: itens elegível, crítica primeiro e depois a ordem do backlog.md, até a sobra; atendimento até a reserva de capacidade (se estourar, quem tem produto decide)","Responsável só quando já definido (nunca aloca sozinho); a meta é uma frase de resultado","Proposta com o ok de quem tem produto"],
   arq:[".sabia/planejamento/sprints/<AAAA>/sprint-<nn>.md: Item · Trabalho (especificação | desenvolvimento | atendimento) · Responsável · Tarefas","sem coluna de situação: o andamento é o status do backlog.md","na primeira vez, a sa-planejamento.inicial grava equipe.json, acordos.md e o roadmap.md opcional"],
   elm:["Só a pedido: sa-elm.iteracao cria <pai>/Sprint <nn> e move o IB e as tarefas das linhas","Na virada, a tarefa do item que saiu é cancelada (sa-elm.finalizar); o IB fica"],
   ctx:{epico:{faz:["Linha especificação para o épico a-moldar (sa-refinar.moldar) ou em-especificacao (sa-prd.prd)","Não é pré-condição: a skill que puxa acrescenta a linha no sprint aberto"]},
@@ -217,11 +217,11 @@ const S={
   arq:["sprint-<nn>.md: a linha que faltava","backlog.md: o status, por quem muda"],elm:["Com ELM, ao assumir: sa-elm.item (DEV · ESP · ATD); horas só por pergunta ou pedido"]}),
  inspecao:Object.assign(rp(30),{lab:"in-left",nome:"Daily",sk:"sa-status.painel",
   papel:"qualquer pessoa",agente:"sa-desenvolvedor ou sa-especificador",tarefa:"—",
-  faz:["Só leitura, da branch base remota: backlog, sprint, branches, status.md, MRs e worktrees","WIP por status contra o limite, vazão, lead time, idade contra o SLE e urgente","MRs esperando pessoa, retrabalho, topo puxável, refinamento e produto, Sustentação e reserva de capacidade, fila de triagem","Pendências de rastreio (sa-status.pendencias): publicação pendente, trava de artefato, commit sem id, CT sem teste, MR mergeado sem concluir…; nenhuma trava","Sugere a ação de maior alavanca","Fechar a sessão (sa-status.fechar-sessao): Retomar, tasks.md, horas a pedido e os créditos do Kiro"],
+  faz:["Só leitura, da branch base remota: backlog, sprint, branches, status.md, MRs e worktrees","WIP por status contra o limite, vazão, lead time, idade contra o SLE e urgente","MRs esperando pessoa, retrabalho, topo puxável, refinamento e produto, Sustentação e reserva de capacidade, fila de triagem","Pendências de rastreio (sa-status.pendencias): publicação pendente, trava de artefato, commit sem id, CT sem teste, MR mergeado sem concluir…; nenhuma trava","Publicação pendente: quem tem especificador roda a sa-elm.publicar","Sugere a ação de maior alavanca","Fechar a sessão (sa-status.fechar-sessao): Retomar, tasks.md, horas a pedido e os créditos do Kiro"],
   arq:["só leitura",".sabia/creditos/<usuario>.csv (fechar a sessão, no Kiro)"],elm:["Publicação pendente: o especificador roda a sa-elm.publicar"]}),
  review:Object.assign(rp(90),{lab:"above",nome:"Review",sk:"rito · curadoria",
   papel:"o time, com os stakeholders quando disponíveis",agente:"sa-especificador",tarefa:"—",
-  faz:["Não trava o ciclo","Os concluídos com o link do MR e os abertos; o retorno por item","Pedido novo vai ao cadastro","Curadoria: as Lições aprendidas do ciclo (sa-status.licoes-aprendidas) e quais entram em Regras aprendidas do sabia.md, no formato regra · origem FT/AT · data"],
+  faz:["Não trava o ciclo","Os concluídos com o link do MR e os abertos; o retorno por item","Pedido novo vai ao cadastro e segue pela triagem","Curadoria: as Lições aprendidas do ciclo (sa-status.licoes-aprendidas) e quais entram em Regras aprendidas do sabia.md, no formato regra · origem FT/AT · data"],
   arq:["sprint-<nn>.md: ## Review e .sabia/sabia.md: Regras aprendidas, num commit"],elm:["—"]}),
  retro:Object.assign(rp(150),{lab:"left",nome:"Retro",sk:"rito · acordos.md",
   papel:"o time",agente:"sa-especificador",tarefa:"—",
@@ -295,9 +295,6 @@ const EXTRA=[
  {id:"atd_fora",f:"atd3",t:"triar",kind:"xfer",lines:["atd"],toLine:"hitl",tname:"Triagem",lab:"muda o código: vira bug ou fatia pelo cadastro, com origem <ID>",short:"muda o código: triagem"},
  {id:"atd_desd",f:"atd5",t:"triar",kind:"xfer",lines:["atd"],toLine:"hitl",tname:"Triagem",lab:"desdobramento: cadastro com origem <ID>, segue pela triagem",short:"desdobramento: triagem"},
  {id:"atd_folga",f:"atd1",t:"planejar",kind:"xfer",lines:["atd"],toLine:"sprint",tname:"Seleção (produto)",lab:"reserva de capacidade estourada: quem tem produto decide na seleção",short:"reserva de capacidade estourada: produto"},
- {id:"dur_ini",f:"durante",t:"iniciar",kind:"xfer",lines:["sprint"],toLine:"hitl",tname:"Assumir (desenvolvedor)",lab:"puxa o topo com sinal de WIP: sa-desenvolver.iniciar",short:"puxa o topo"},
- {id:"insp_pub",f:"inspecao",t:"publicar",kind:"xfer",lines:["sprint"],toLine:"hitl",tname:"Publicar (especificador)",lab:"Publicação: pendente: quem tem especificador roda a sa-elm.publicar",short:"publicação pendente"},
- {id:"rev_cap",f:"review",t:"triar",kind:"xfer",lines:["sprint"],toLine:"hitl",tname:"Triagem",lab:"pedido novo na review: cadastro, depois a triagem",short:"pedido novo: cadastro"}
 ];
 
 const SERV=[
