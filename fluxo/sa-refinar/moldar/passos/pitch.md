@@ -15,7 +15,7 @@ O épico `a-moldar` (linha e `obs`; o `veio de FT-nnn` traz a ficha de origem) e
 3. **Perguntas** pela `sa-entrevistar.entrevistar`: até 5 por rodada, cada uma com a recomendação; os fatos do código
    ela busca pela `sa-pesquisar`. Regra sem fonte fica em Em aberto.
 4. **Vigente**: specs arquivadas, depois o bundle (`docs/elm/<pa>/`). Sem bundle, ofereça a `sa-elm.baixar`. Bundle
-   desatualizado (`sincronizado_em` anterior à última `Publicação: publicada`): mostre a data e pergunte se baixa. A
+   desatualizado, pelo critério da `sa-elm.regras`: mostre a data e pergunte se baixa. A
    resposta não trava o pitch.
 5. **Dúvida que só o cliente resolve**: ofereça a `sa-especificar.prototipo`, que devolve aqui.
 

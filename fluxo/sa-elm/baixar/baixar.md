@@ -15,6 +15,6 @@
 ---
 # Baixar — DOORS → repositório: o bundle ou o original de um requisito
 
-Só no sentido DOORS → repositório, em dois modos. Bundle: baixa a cópia local, grava `sincronizado_em`, faz o
+Só no sentido DOORS → repositório, em dois modos. Bundle: baixa a cópia local, grava a data no `sync.md`, faz o
 commit e oferece indexar. Artefato: lê o original de um requisito para a pasta `elm/` da fatia; quem grava o
 arquivo e o commit de referência é a `sa-especificar.elm`. Não envia nada e não tem conflito.

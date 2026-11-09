@@ -8,7 +8,7 @@ O resultado do modo.
 ## Faça
 
 Modo bundle: `🔄 ELM · baixados <n> · bundle de <data>` (`<data>` = os 10 primeiros caracteres do
-`sincronizado_em`). Modo artefato: devolva a quem chamou o texto, o título e a versão de referência (`modificado_em`),
+`generated.at` do `sync.md`). Modo artefato: devolva a quem chamou o texto, o título e a versão de referência (`modificado_em`),
 sem gravar.
 
 ## Saída

@@ -10,7 +10,7 @@ O item `em-andamento` com a pessoa (passo `assumir`).
 A pessoa faz o trabalho; a IA ajuda quando ela pede.
 
 1. **Regras vigentes**, em leitura local: specs arquivadas → especificação vigente → bundle do ELM. Com ELM, sem bundle ou com
-   bundle desatualizado (`sincronizado_em` anterior à última publicação; mostre a data) → ofereça a `sa-elm.baixar`.
+   bundle desatualizado (critério da `sa-elm.regras`; mostre a data) → ofereça a `sa-elm.baixar`.
    Sem ELM, não ofereça.
 2. **Código:** pela `sa-pesquisar.pesquisar` (subagente `sa-pesquisador`), com o pedido e um escopo fechado (termos
    ou arquivos e um limite de leitura). Ela devolve fatos com `arquivo:linha`; o resumo vai na Atividade.

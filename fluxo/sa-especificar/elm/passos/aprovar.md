@@ -9,7 +9,8 @@ Os arquivos de `elm/` editados ou sincronizados e o `equipe.json`.
 
 1. **Papel.** Só quem tem `especificador` no `equipe.json` aprova.
 2. **Conferir.** Antes de mostrar, confira cada arquivo pelo Checklist do template do tipo (o do Sabiá, ou o do toolkit
-   que desvia o tipo); achado de forma, corrija; de negócio, Em aberto.
+   que desvia o tipo); achado de forma, corrija; de negócio, Em aberto. No `altera`, o Checklist vale
+   para o trecho novo. O texto que fica não pode contradizer o trecho novo: contradição é achado de negócio.
 3. **Mostrar.** Para cada arquivo, `git diff <commit de referência> -- <arquivo>` (o novo, inteiro) e pergunte "aprova
    `<arquivo>`? (sim | ajuste: <o quê>)".
 4. **Sim.** No frontmatter, `status: stable` e `verified: {by: human:<usuario>, at: <AAAA-MM-DD>}`. Quando todos os da sessão

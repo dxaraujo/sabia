@@ -10,8 +10,9 @@ O fluxo que incluiu as regras.
 - Qualquer skill lê o ELM para buscar o vigente: `elm_ler_req`, `elm_buscar_req`, `elm_ler_wi` e o bundle pelas
   tools `elm_*_local`, nunca lendo os arquivos do bundle. Ordem da busca do vigente: specs arquivadas → bundle →
   ELM ao vivo.
-- Bundle desatualizado = `sincronizado_em` do `sync.md` anterior à última `Publicação: publicada` nos `status.md`:
-  mostre a data e pergunte se baixa (`sa-elm.baixar`).
+- Bundle desatualizado = `generated.at` do `sync.md` anterior à última `Publicação: publicada` nos `status.md` ou, em
+  tarefa que altera código ou requisito, com mais de 7 dias: mostre a data e pergunte se baixa (`sa-elm.baixar`). Só avisa,
+  não bloqueia.
 - Escrever no ELM e baixar dele (bundle ou original de um requisito) só pela `sa-elm`.
 
 ## Saída

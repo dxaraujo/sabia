@@ -20,6 +20,8 @@ arquivo desse tipo sai pela skill, com o fluxo e o template do tipo; na volta, c
   pessoa grava.
 - **Manual.** Não edite. Diga "altere no DOORS `<ids>`; avise com `alterei FT-nnn`" e encerre.
 - **Exclui.** O texto fica como veio; a linha Ação diz exclui.
+- **Altera em requisito existente.** Mantenha a forma do texto vigente e mude só o necessário, mesmo fora do template do
+  tipo: o template vale para o requisito novo, e nenhum campo que o original não tem é inventado.
 
 Cada sessão grava pelo commit direto na branch base (passo `gravar`, commit `FT-nnn elm: edita <ids>`) e volta aqui; a
 edição pode levar várias sessões.

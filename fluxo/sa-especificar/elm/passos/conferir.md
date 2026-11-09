@@ -14,7 +14,7 @@ Os arquivos altera e exclui de `elm/`, menos os que têm `**Publicado:** manual`
      `FT-nnn elm: original <ids>`), e a edição reaplicada por cima (passo `gravar`, commit `FT-nnn elm: edita <ids>`).
      O arquivo volta a `status: draft` e perde o `verified`.
    - **Seguir:** nada muda; a `sa-elm.publicar` vai avisar e pular esse artefato.
-3. **Igual.** Siga.
+3. **Igual.** Siga. O original provisório conferido sai do Em aberto da ficha.
 
 ## Saída
 
@@ -23,4 +23,5 @@ Tudo conferido → passo `aprovar`. Na fatia `concluida`, mesclado e aprovado, o
 
 ## Pare se
 
-- A `sa-elm.baixar` não respondeu → avise que a conferência ficou para a próxima sessão e siga.
+- A `sa-elm.baixar` não respondeu → avise que a conferência ficou para a próxima sessão e siga, menos no original
+  provisório do bundle: mostre `⚠️ <id>: sem a conferência com o DOORS, não vai à aprovação` e pare nesse arquivo.

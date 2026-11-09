@@ -65,6 +65,6 @@ DOORS Next` da seção ELM do `sabia.md`), entregue o roteiro com os ids exatos 
 ## Bundle local
 
 O bundle (chave `elm.bundle` do `agentes.json`, ex.: `docs/elm/<pa>/`) é a cópia local, em OKF, dos requisitos do DOORS:
-`index.md` e `log.md` (índice), `sync.md` (`sincronizado_em`), `explorar.html` (fora do git) e um `<conceito>.md` por
+`index.md` e `log.md` (índice), `sync.md` (`generated.at`), `explorar.html` (fora do git) e um `<conceito>.md` por
 requisito. Consulte sempre pelas tools `elm_*_local`, nunca lendo os arquivos. `indexando: true, restantes: <n>` → a
 busca usou o que já estava indexado, e a indexação segue em segundo plano.
