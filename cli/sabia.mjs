@@ -851,7 +851,7 @@ function skillsNoProjeto(cfg, sai = []) {
 
 const detectado = ({ arquivos = [], contem = [] } = {}) => !arquivos.length || arquivos.some((a) => {
   const f = path.join(process.cwd(), a);
-  return fs.existsSync(f) && contem.every((c) => fs.readFileSync(f, "utf8").includes(c));
+  return fs.existsSync(f) && (!contem.length || contem.some((c) => fs.readFileSync(f, "utf8").includes(c)));
 });
 
 /** As seções geradas do sabia.md: a tabela de desvios vem do agentes.json e a de tipos, do gerador. */

@@ -366,6 +366,22 @@ test("projeto com a pasta sem versão, ou que a máquina não tem: instalar e at
   }
 });
 
+test("detecção do toolkit: basta um dos termos em `contem`", async () => {
+  const indice = indiceDe([{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./batch-alfa" } }]);
+  toolkit(path.join(indice, "batch-alfa"), { deteccao: { arquivos: ["pom.xml"], contem: ["<java.version>", "spring-boot"] } });
+  const aviso = "batch-alfa: a detecção do toolkit não casou com este projeto";
+  await emProjeto(async (proj) => {
+    escrever(proj, { "pom.xml": "<artifactId>spring-boot</artifactId>" });
+    await s.instalarToolkits(["batch-alfa"], { indice, sim: true });
+    assert.ok(!saida.includes(aviso));
+  });
+  await emProjeto(async (proj) => {
+    escrever(proj, { "pom.xml": "<outra/>" });
+    await s.instalarToolkits(["batch-alfa"], { indice, sim: true });
+    assert.ok(saida.includes(aviso));
+  }, {}, "projeto-d");
+});
+
 test("toolkit sem acesso ao índice: usa a maior versão baixada e avisa; recusado continua recusado", async () => {
   const indice = indiceDe([{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./batch-alfa" } }]);
   toolkit(path.join(indice, "batch-alfa"));
