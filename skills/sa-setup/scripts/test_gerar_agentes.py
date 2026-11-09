@@ -423,7 +423,7 @@ class Toolkits(Base):
         sk = {"skill": "skills/casa/SKILL.md", "fluxo": "fluxo/fluxo-hf.md"}
         casos = [(lambda: {**self.casa(), **self.casa("outro", rubricas=[], HF={**sk, "skill": "skills/outro/SKILL.md"})}, "tipo HF já é de toolkit casa"),
                  (lambda: self.casa(rubricas=[{"id": "EX1", "verificacao": "a", "severidade": "BLOQUEANTE"}, {"id": "EX1", "verificacao": "b", "severidade": "BLOQUEANTE"}]),
-                  "rubrica EX1 já é de toolkit casa"),
+                  "critério de revisão EX1 já é de toolkit casa"),
                  (lambda: self.casa(GL=sk), "tipo GL → skills/casa/SKILL.md: use {skill, fluxo, padrao} (fluxo e padrao opcionais); o tipo tem de ser desviável e não pendente"),
                  (lambda: self.casa(CT=sk), "tipo CT: a skill skills/casa/SKILL.md não traz o papel verificador em papeis (dono do passo de desvio sa-verificar.verificar.casos)"),
                  (lambda: self.casa(HF="casa.hf"), "tipo HF → casa.hf: use {skill, fluxo, padrao}"),
@@ -431,7 +431,7 @@ class Toolkits(Base):
                  (lambda: self.casa(HF={**sk, "padrao": "padrao/nao.md"}), "o fluxo e o padrao arquivos da pasta do toolkit"),
                  (lambda: self.casa(HF={**sk, "skill": "skills/outra/SKILL.md"}), "a skill uma das skills do toolkit"),
                  (lambda: self.casa(HF={**sk, "fluxo": "../fora.md"}), "caminho fora da pasta do toolkit"),
-                 (lambda: self.casa(rubricas=[{"id": "EX1", "tipo": "HF"}]), "rubrica EX1: precisa de id, verificacao e severidade"),
+                 (lambda: self.casa(rubricas=[{"id": "EX1", "tipo": "HF"}]), "critério de revisão EX1: precisa de id, verificacao e severidade"),
                  (lambda: self.casa(extra={"steering": [{"caminho": "steering/nao.md", "papeis": ["revisor"]}]}), "steering steering/nao.md não existe")]
         for toolkits, erro in casos:
             with self.assertRaisesRegex(ValueError, re.escape(erro), msg=erro):
