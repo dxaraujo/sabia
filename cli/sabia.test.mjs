@@ -349,6 +349,23 @@ test("toolkit já registrado no inventário sem a lista de versões continua ins
   assert.ok(s.lerInventario().toolkits["batch-alfa"].versoes["1.0.0"]);
 });
 
+test("projeto com a pasta sem versão, ou que a máquina não tem: instalar e atualizar refazem em vez de travar", async () => {
+  const indice = indiceDe([{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./batch-alfa" } }]);
+  toolkit(path.join(indice, "batch-alfa"));
+  const antigo = (versao) => ({ toolkits: { "batch-alfa": { pasta: "~/.sabia/toolkits/batch-alfa", versao } }, passos: [{ toolkit: "batch-alfa", skill: "skills/batch/SKILL.md", agente: true }],
+    agentes: { "sa-desenvolvedor": { skills: ["skill://~/.sabia/toolkits/batch-alfa/skills/batch/SKILL.md"] } } });
+  const certo = "skill://~/.sabia/toolkits/batch-alfa/1.0.0/skills/batch/SKILL.md";
+  for (const [i, faz] of [["instalar", () => s.instalarToolkits(["batch-alfa"], { indice, sim: true })], ["atualizar", () => s.atualizarToolkits([], { indice, sim: true })]]) {
+    await emProjeto(async (proj) => {
+      await faz();
+      const c = cfgDe(proj);
+      assert.equal(c.toolkits["batch-alfa"].pasta, "~/.sabia/toolkits/batch-alfa/1.0.0", i);
+      assert.deepEqual(c.agentes["sa-desenvolvedor"].skills, [certo], i);
+      assert.deepEqual(c.passos, [{ toolkit: "batch-alfa", skill: "skills/batch/SKILL.md", agente: true }], i);
+    }, antigo("0.9.0"), `projeto-${i}`);
+  }
+});
+
 test("toolkit sem acesso ao índice: usa a maior versão baixada e avisa; recusado continua recusado", async () => {
   const indice = indiceDe([{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./batch-alfa" } }]);
   toolkit(path.join(indice, "batch-alfa"));
