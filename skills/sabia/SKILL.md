@@ -152,14 +152,14 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 
 ## Tipos de artefato
 
-O catálogo é fechado ([references/tipos.md](references/tipos.md)): HF · UC · REG · MSG · EL · GL · ET · CT · ATA. O
+O catálogo é fechado ([references/tipos.md](references/tipos.md)): HF · UC · REG · MSG · EL · GL · RF · RNF · ET · CT · ATA. O
 padrão de cada tipo é `requisitos/template-<tipo>.md`; a cópia do projeto em `.sabia/template/requisitos/` vale sobre ele. Artefato
 existente: `<sigla>-<id do ELM>`. Novo: `<sigla>-<EP|FT>-nn`, provisório até a publicação; sem ELM, esse é o id
 definitivo.
 
 | Tipo | Onde nasce |
 |---|---|
-| HF · UC · REG · MSG · EL · GL | o texto completo dos requisitos tocados vai no delta da spec; com ELM, também em `elm/` da fatia, um arquivo por artefato, criado no refinamento (`sa-refinar.detalhar`). EL só com Telas = sim; UC só com Casos de uso = sim |
+| HF · UC · REG · MSG · EL · GL · RF · RNF | o texto completo dos requisitos tocados vai no delta da spec; com ELM, também em `elm/` da fatia, um arquivo por artefato, criado no refinamento (`sa-refinar.detalhar`). EL só com Telas = sim; UC só com Casos de uso = sim |
 | ET | só as-built, publicada na finalização do desenvolvimento, nos projetos que mantêm ET |
 | CT | cenários `CT-nn` na ficha; o `CT.csv` é escrito só pela `sa-verificar.verificar` (pela skill do toolkit, quando o CT desvia), e cada linha liga ao `CT-nn` marcado no teste automatizado |
 | ATA | opcional, pela `sa-especificar.reuniao`; a decisão vale com quem e quando |

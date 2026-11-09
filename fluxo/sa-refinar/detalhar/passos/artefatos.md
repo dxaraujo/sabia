@@ -14,7 +14,7 @@ Regras e cenários dos passos anteriores; na fatia de épico, os artefatos afeta
 3. **Classifique**: `inclui` — regra, mensagem, termo ou comportamento que não existe no vigente; `altera` — regra da
    ficha que muda, contradiz ou restringe o texto vigente, ou caso de uso cujo fluxo muda; `exclui` — o requisito deixa de valer.
 4. **Uma linha por requisito tocado**: `<sigla>-<id> · inclui | altera | exclui · versão de referência <AAAA-MM-DDTHH:MM>`,
-   com `<sigla>` ∈ `HF` · `UC` · `REG` · `MSG` · `EL` · `GL`.
+   com `<sigla>` ∈ `HF` · `UC` · `REG` · `MSG` · `EL` · `GL` · `RF` · `RNF`.
    - Existente: `<sigla>-<id do ELM>`; a versão é o `modificado_em` do DOORS no bundle.
    - Novo: id provisório `<sigla>-<EPnn | FTnnn>-nn` (o do PRD na fatia de épico; o da própria fatia no item
      avulso, ex.: `REG-FT031-01`), com versão `—`.

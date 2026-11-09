@@ -88,7 +88,7 @@ do `sa-<nome>.md`:
 - **Aviso:** a `branch_base` da cópia difere do original atual → compare e funda à mão.
 - **Toolkit:** `skills[].papeis` e `steering[].papeis` mapeiam 1:1 (desenvolvedor → `sa-desenvolvedor`,
   especificador e produto → `sa-especificador`, pesquisador → `sa-pesquisador`, revisor → `sa-revisor`, verificador →
-  `sa-verificador`). Tipos HF, UC, REG, MSG e EL → `sa-especificador`; ET as-built → `sa-desenvolvedor`; critérios de revisão →
+  `sa-verificador`). Tipos HF, UC, REG, MSG, EL, RF e RNF → `sa-especificador`; ET as-built → `sa-desenvolvedor`; critérios de revisão →
   `sa-revisor`; `verificacao` → `sa-verificador`. O desvio da codificação é `sa-desenvolver.codificar.tarefa`. Um
   agente de toolkit (`agentes[]`, ligado em `passos[].agente`) vira subagente do dono do passo, em
   `.kiro/agents/<toolkit>-<agente>.json` e `.opencode/agents/<toolkit>-<agente>.md`, com as permissões dele. Ver

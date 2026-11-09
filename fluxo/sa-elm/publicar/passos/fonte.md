@@ -8,7 +8,7 @@ A fatia (`ft-<nnn>-<slug>`).
 ## Faça
 
 1. A pasta `elm/` da spec da fatia: `openspec/changes/archive/<AAAA-MM-DD>-ft-<nnn>-<slug>/elm/` ou
-   `.kiro/specs/ft-<nnn>-<slug>/elm/`, um arquivo inteiro por artefato (HF, UC, REG, MSG, EL, GL), cada um
+   `.kiro/specs/ft-<nnn>-<slug>/elm/`, um arquivo inteiro por artefato (HF, UC, REG, MSG, EL, GL, RF, RNF), cada um
    com `status: stable` e o `verified` de quem tem `especificador`. Sem a aprovação → fora da prévia, listado como
    pendente.
 2. Arquivo com `publicado: manual` no frontmatter → fora da prévia, conta como publicado.

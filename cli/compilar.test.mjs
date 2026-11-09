@@ -287,7 +287,7 @@ test("desvio no repo: a tarefa da codificação por para e arquivos; HF, UC, REG
   assert.deepEqual(p("sa-desenvolver.codificar.as-built").tipos, ["ET"]);
   assert.deepEqual(p("sa-verificar.verificar.casos").tipos, ["CT"]);
   assert.ok(!p("sa-refinar.detalhar.cenarios").tipos);
-  assert.match(grafoAscii(m.fluxos["sa-prd.prd"]), /│ \d+ escrever ⇢ +│──▶ ⇢ por tipo: HF, UC, REG, MSG, EL\n/);
+  assert.match(grafoAscii(m.fluxos["sa-prd.prd"]), /│ \d+ escrever ⇢ +│──▶ ⇢ por tipo: HF, UC, REG, MSG, EL, RF, RNF\n/);
 });
 
 test("catálogo: desviavel fora de cria é recusado", () => {

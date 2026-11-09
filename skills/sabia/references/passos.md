@@ -58,7 +58,7 @@ toolkit que declara `tipos` (`{"HF": {"skill": "skills/<skill>/SKILL.md", "fluxo
 "<arquivo>"}}`, fluxo e template opcionais) escreve o artefato pela skill dele, que o dono carrega e que segue o fluxo
 com o template do tipo, lidos pelo caminho na pasta do toolkit, ou, sem eles, as references dela; depois, volta ao passo.
 
-- **Quem escreve:** HF, UC, REG, MSG e EL saem pelo `sa-especificador`, com a aprovação gravada no documento; a ET as-built,
+- **Quem escreve:** HF, UC, REG, MSG, EL, RF e RNF saem pelo `sa-especificador`, com a aprovação gravada no documento; a ET as-built,
   pelo `sa-desenvolvedor`, com a aprovação do MR.
 - **Como o agente sabe:** a linha **Tipos com skill de toolkit** do prompt do dono de cada passo de desvio (gerada do
   `agentes.json`), com a skill do toolkit ligada a ele — a skill traz em `papeis` o papel de cada dono, senão o CLI e o

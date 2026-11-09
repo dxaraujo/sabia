@@ -20,7 +20,7 @@ pergunta e sem a linha Especificação na ficha).
 2. **Chame a `sa-especificar.elm`** com o especificador presente, a autonomia e as respostas de sprint e ELM. Ela monta a pasta `elm/` dentro da pasta da
    spec (`.kiro/specs/ft-<nnn>-<slug>/elm/` ou `openspec/changes/ft-<nnn>-<slug>/elm/`, pelo `formato_spec`), aplica
    a trava de artefato, baixa os originais e grava o commit de referência, direto na branch base.
-   - IA supervisionada ou IA autopilot: edita, e o especificador aprova cada arquivo inteiro (HF, UC, REG, MSG, EL, GL).
+   - IA supervisionada ou IA autopilot: edita, e o especificador aprova cada arquivo inteiro (HF, UC, REG, MSG, EL, GL, RF, RNF).
    - Manual: o especificador altera direto no DOORS, e a skill encerra a especificação nesta sessão; na volta
      (`alterei`), ela sincroniza e segue para a aprovação.
 3. **Volta**: a `sa-especificar.elm` devolve os arquivos aprovados, pendentes e travados. Artefato travado → Em aberto

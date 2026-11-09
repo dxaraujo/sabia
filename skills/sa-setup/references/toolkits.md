@@ -163,7 +163,7 @@ template/template-hf.md                template do tipo HF, idem
 
 - **Tipo → skill:** a sigla é do catálogo (o toolkit não cria tipo), desviável e não pendente; a skill é uma das
   `skills[]`; o fluxo e o template, opcionais, são arquivos da pasta do toolkit (sem eles, `{"skill": …}` só, a skill segue as references dela). A skill vai ao dono de cada passo de desvio
-  (coluna Desviável do catálogo) e traz em `papeis` o papel de cada um (HF, UC, REG, MSG, EL e ATA: `especificador` ou `produto`; ET: `desenvolvedor`; CT: `verificador`); sem ele, o
+  (coluna Desviável do catálogo) e traz em `papeis` o papel de cada um (HF, UC, REG, MSG, EL, RF, RNF e ATA: `especificador` ou `produto`; ET: `desenvolvedor`; CT: `verificador`); sem ele, o
   CLI e o gerador recusam o toolkit, dizendo o papel que falta. O gerador põe no prompt de cada dono a linha **Tipos com skill de toolkit**: no passo, o
   tipo sai pela skill, que segue o fluxo com o template, quando há, pelo caminho na pasta instalada (`~/.sabia/toolkits/<toolkit>/<versão>/`,
   de leitura para todos os agentes), escrevendo no formato do Sabiá (no arquivo de `elm/`, o do `sa-elm/elm-arquivo.md`; no bloco do `prd.md`, o mesmo corpo,

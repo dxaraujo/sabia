@@ -92,9 +92,9 @@ confirme). Os dois viram uma linha `✔ Bloco 6 — …` no começo do bloco 7.
 
 ## 7. DOORS Next
 
-Para cada sigla com ELM `DOORS` do catálogo de tipos (HF · REG · EL · GL · ATA; a ET fica para o passo `et`), pergunte
+Para cada sigla com ELM `DOORS` do catálogo de tipos (HF · UC · REG · MSG · EL · GL · RF · RNF · ATA; a ET fica para o passo `et`), pergunte
 o tipo de artefato (lista `rm.tipos`) e a pasta (lista `rm.pastas`), com a recomendada pelo nome. Projeto sem uma
-delas → a sigla fica de fora. `EL` só com Telas = sim na seção Especificação do `sabia.md`. **Bundle**
+delas → a sigla fica de fora. `EL` só com Telas = sim na seção Especificação do `sabia.md`. `RF` e `RNF` podem apontar para o mesmo tipo e a mesma pasta do DOORS. **Bundle**
 (`rm.download`): procure no repositório pastas com `index.md` de `okf_version`; senão sugira `docs/elm/<nome>` e
 pergunte.
 

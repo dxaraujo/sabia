@@ -3,7 +3,7 @@
 ---
 ```markdown
 ---
-type: <o tipo do DOORS para a sigla: História de Usuário | Regra | Leiaute | Mensagem | Caso de Uso | Termo>
+type: <o tipo do DOORS para a sigla: História de Usuário | Regra | Leiaute | Mensagem | Caso de Uso | Termo | Requisito>
 title: <título do DOORS>
 status: draft | stable
 verified: {by: human:<usuario>, at: <AAAA-MM-DD>}   # só com status: stable

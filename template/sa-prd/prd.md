@@ -22,7 +22,7 @@
 ## Requisitos
 
 ### <sigla>-<id> · <título>
-**Tipo:** HF | UC | REG | MSG | EL | GL · **Ação:** inclui | altera | exclui · **Fonte:** D-<nn> | ATA-<nn> [mm:ss] | <sigla>-<id>
+**Tipo:** HF | UC | REG | MSG | EL | GL | RF | RNF · **Ação:** inclui | altera | exclui · **Fonte:** D-<nn> | ATA-<nn> [mm:ss] | <sigla>-<id>
 
 <corpo pelo template do tipo>
 
