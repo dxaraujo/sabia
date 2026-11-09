@@ -73,7 +73,7 @@ Então o desconto aplicado é de R$ 50,00
 | Aprovado | `<usuario> · AAAA-MM-DD` de quem tem `produto` · `—`; logo abaixo do título. Qualquer mudança depois volta a `—` | `sa-refinar.detalhar` · `sa-refinar.fatiar` |
 | Tipo | `fatia` · `bug` | a captura |
 | Pai | `EP-nn` · `—` | `sa-refinar.fatiar` · `sa-triar.triar` |
-| Especificação | `IA supervisionada` · `IA autopilot` · `manual`; a linha só existe com ELM e artefatos afetados com `inclui`, `altera` ou `exclui`. Fixa até o fim da especificação e independente do modo da codificação | `sa-refinar.detalhar` |
+| Especificação | `IA supervisionada` · `IA autopilot` · `manual`; a linha só existe com ELM e artefatos afetados com `inclui`, `altera` ou `exclui`. Fixa até o fim da especificação e independente da autonomia da codificação | `sa-refinar.detalhar` |
 | Entrada | fatia: Pedido · Quem pediu · Requisito citado (opcional). bug: Passos · Atual · Esperado · Reproduzido (`sim` · `não` · `detalhe insuficiente`) | a captura · `sa-triar.triar` |
 | Objetivo | para que serve a fatia do épico (opcional) | `sa-refinar.fatiar` |
 | Regras | `R<n> · <texto> · fonte: <D-nn \| <sigla>-<id>>` | `sa-refinar.detalhar` |

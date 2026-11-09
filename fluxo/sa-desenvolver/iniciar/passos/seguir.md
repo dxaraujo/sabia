@@ -1,14 +1,14 @@
 ---
-{"resumo": "Mostra o resumo do início e encaminha pelo modo: plano, codificação, autopilot ou a espera do manual."}
+{"resumo": "Mostra o resumo do início e encaminha pela autonomia: plano, codificação, autopilot ou a espera do manual."}
 ---
 ## Entrada
 
-O item assumido: título, tamanho, rota, modo, branch e pasta.
+O item assumido: título, tamanho, trilha, autonomia, branch e pasta.
 
 ## Faça
 
-1. Mostre `🚦 FT-nnn — <título> · <tamanho> · <rota> · <autonomia> · <branch> · <pasta | sem pasta>`.
-2. Pelo modo:
+1. Mostre `🚦 FT-nnn — <título> · <tamanho> · <trilha> · <autonomia> · <branch> · <pasta | sem pasta>`.
+2. Pela autonomia:
    - **IA supervisionada**: ofereça "seguir?" na mesma sessão, para a `sa-plano.plano` (rápida e completo) ou a
      `sa-desenvolver.codificar` (trivial).
    - **Manual**: na rápida e no completo, ofereça a `sa-plano.plano` como na IA supervisionada; ela encerra a sessão
@@ -18,7 +18,7 @@ O item assumido: título, tamanho, rota, modo, branch e pasta.
 
 ## Saída
 
-A saída do mestre pelo modo e pela rota.
+A saída do mestre pela autonomia e pela trilha.
 
 ## Pare se
 

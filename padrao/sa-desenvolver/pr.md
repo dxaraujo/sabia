@@ -33,7 +33,7 @@ FT-<nnn> — <título>
 <<sigla>-<id> · inclui | altera | exclui, como na ficha | nenhum requisito>
 
 ## Lições
-<só na rota trivial: lição · regra proposta | —>
+<só na trilha trivial: lição · regra proposta | —>
 ```
 
 A primeira linha é o título do MR; o resto é a descrição. O MR é para uma pessoa ler o código: pequeno, com a

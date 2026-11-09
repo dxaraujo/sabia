@@ -7,7 +7,7 @@ A pasta da spec de cada item em andamento.
 
 ## Faça
 
-Na rota rápida e na completa, leia do `tasks.md` o `[x]`/total e o primeiro pendente. Na trivial não há.
+Na trilha rápida e na completa, leia do `tasks.md` o `[x]`/total e o primeiro pendente. Na trivial não há.
 
 ## Saída
 

@@ -1,5 +1,5 @@
 ---
-{"resumo": "Assumir a tarefa num passo só: quem pega confirma o tamanho, a rota e o modo da codificação."}
+{"resumo": "Assumir a tarefa num passo só: quem pega confirma o tamanho, a trilha e a autonomia da codificação."}
 ---
 ## Entrada
 
@@ -7,8 +7,8 @@ O item conferido, a ficha (Regras, Cenários `CT-nn`, artefatos afetados) e o c�
 
 ## Faça
 
-**Volta da virada** (branch `<id>` publicada): tamanho, rota e modo são os já escolhidos (Rota e Autonomia do
-`status.md`; no trivial, sem `status.md`, confirme só o modo): mostre e siga.
+**Volta da virada** (branch `<id>` publicada): tamanho, trilha e autonomia são os já escolhidos (Trilha e Autonomia do
+`status.md`; no trivial, sem `status.md`, confirme só a autonomia): mostre e siga.
 
 Senão, leia o código do trecho tocado e mostre, de uma vez, as três escolhas com a recomendação; quem pega confirma ou
 corrige:
@@ -18,20 +18,20 @@ corrige:
    - **Maior que G** → vira épico, sem branch: pelo passo `gravar`, nasce a linha `EP-nn` (tipo `épico`, status
      `a-moldar`, `obs` `veio de FT-nnn`) e a FT fica `cancelada` com `obs` `virou EP-nn`, num commit só. Com ELM,
      ofereça cancelar a tarefa (`sa-elm.finalizar`). Ofereça "seguir para o pitch?" e termine.
-2. **Rota**:
+2. **Trilha**:
    - `trivial` — mudança pequena sem artefatos afetados: nenhum arquivo de spec, tudo no MR;
    - `rapida` — mudança média, ou com artefatos afetados;
    - `completo` — desenho novo ou risco.
-   Com artefatos afetados a rota nunca é `trivial`: o delta é obrigatório.
-3. **Modo** (quem codifica), gravado em Autonomia com o mesmo nome:
+   Com artefatos afetados a trilha nunca é `trivial`: o delta é obrigatório.
+3. **Autonomia** (quem codifica), gravada com o mesmo nome:
    - `IA supervisionada` — o `sa-desenvolvedor` na sessão da pessoa;
    - `IA autopilot` — o `sa-desenvolvedor` como subagente na worktree `.sabia/local/wt/<id>`;
    - `manual` — só a geração do código-fonte é da pessoa; `status.md`, branch e plano seguem como sempre.
-   O modo vale até o fim da tarefa: não troca no meio.
+   A autonomia vale até o fim da tarefa: não troca no meio.
 
 ## Saída
 
-Tamanho, rota e modo confirmados → passo `posse`.
+Tamanho, trilha e autonomia confirmados → passo `posse`.
 
 ## Pare se
 

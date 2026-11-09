@@ -7,7 +7,7 @@ A fatia ou o bug `concluida`, o `formato_spec` e a chave `elm` do `agentes.json`
 
 ## Faça
 
-1. **Nada a arquivar.** Sem pasta da spec (rota trivial) ou sem delta → passo `devolver`.
+1. **Nada a arquivar.** Sem pasta da spec (trilha trivial) ou sem delta → passo `devolver`.
 2. **Já feito.** Spec já em `openspec/changes/archive/`, ou com a linha Publicação no `status.md` → passo `publicar`.
 3. **Kiro.** A pasta fica em `.kiro/specs/ft-<nnn>-<slug>/`, que é o vigente; nada se move → passo `publicar`.
 4. **OpenSpec.** Pela gravação comum na base (passo `gravar`), com o comando no lugar do Escrever dela, depois do

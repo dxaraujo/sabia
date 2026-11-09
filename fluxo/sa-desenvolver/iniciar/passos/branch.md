@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O modo escolhido, o `prefixo_branch` e a `base` do `agentes.json` e o `slug` da ficha.
+O autonomia escolhida, o `prefixo_branch` e a `base` do `agentes.json` e o `slug` da ficha.
 
 ## Faça
 

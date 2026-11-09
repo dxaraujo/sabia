@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O plano aprovado e o modo (Autonomia do `status.md`).
+O plano aprovado e a autonomia (`status.md`).
 
 ## Faça
 
@@ -15,7 +15,7 @@ O plano aprovado e o modo (Autonomia do `status.md`).
 
 ## Saída
 
-A saída do mestre pelo modo.
+A saída do mestre pela autonomia.
 
 ## Pare se
 

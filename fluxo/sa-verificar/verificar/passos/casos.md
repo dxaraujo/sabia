@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-Os resultados por cenário (passo `executar`) e a rota da fatia.
+Os resultados por cenário (passo `executar`) e a trilha da fatia.
 
 ## Faça
 

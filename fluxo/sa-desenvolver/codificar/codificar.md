@@ -26,11 +26,11 @@
 ---
 # Codificar — TDD, backpressure e MR
 
-Do plano aprovado (ou da rota trivial) ao MR aberto: uma tarefa por vez em TDD, backpressure em camadas,
+Do plano aprovado (ou da trilha trivial) ao MR aberto: uma tarefa por vez em TDD, backpressure em camadas,
 revisão do agente no subagente `sa-revisor`, verificação do agente no subagente `sa-verificador`, lições e MR com prova e
 Artefatos afetados. O fluxo termina no MR: a revisão oficial é de outro desenvolvedor e o merge é do fluxo `encerrar`.
 
-Deste fluxo: item `em-andamento` com branch `<id>` e plano aprovado (Fase `implementando` ou `retrabalho`) ou rota
+Deste fluxo: item `em-andamento` com branch `<id>` e plano aprovado (Fase `implementando` ou `retrabalho`) ou trilha
 trivial; MR aberto com thread não resolvida, CI vermelho ou conflito (retrabalho); a volta da codificação manual
 ("terminei"); o subagente do autopilot. Na retomada, o Retomar do `status.md` (no trivial, o MR ou o último commit)
 diz o passo.
@@ -47,5 +47,5 @@ Os passos `captura` e `gravar` são a captura comum e a gravação comum na base
 
 - sem branch `<id>` → `sa-desenvolver.iniciar`
 - `pronta` com branch `<id>` (voltou na virada) → `sa-desenvolver.iniciar`
-- rota rápida ou completo com Fase — (plano não aprovado) → `sa-plano.plano`
+- trilha rápida ou completo com Fase — (plano não aprovado) → `sa-plano.plano`
 - MR aprovado com CI verde, ou MR já mergeado → `sa-desenvolver.encerrar`

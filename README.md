@@ -21,7 +21,7 @@ demanda ─► captura (fluxo/captura.md; entrada direta sa-triar.capturar)   ti
 
 PLANEJAMENTO ─────── sa-planejamento.inicial · .sprint · .review · .retrospectiva · daily sa-status.painel
 DESENVOLVIMENTO ──── sa-desenvolver.iniciar ─► [sa-plano.plano] ─► sa-desenvolver.codificar ─► MR
-                     rota: trivial · rápida · completo       modo: IA supervisionada · IA autopilot · manual
+                     trilha: trivial · rápida · completo       autonomia: IA supervisionada · IA autopilot · manual
 REVISÃO E ACEITE ─── sa-verificar.verificar · sa-revisar.mr (desenvolvedor ≠ autor) · [sa-verificar.revisao-humana]
                      └─► sa-desenvolver.encerrar (merge) ─► sa-especificar.archive ─► [sa-elm.publicar]
 
@@ -50,7 +50,7 @@ estação; a ficha ao lado mostra papel, agente, arquivos, chamadas ao ELM e as 
 | 10 | Proteger o oráculo: teste não se apaga nem se afrouxa | Anthropic (*long-running harnesses*), Beck ("o gênio trapaceando"), Karpathy (`autoresearch`) |
 | 11 | Gerador ≠ avaliador; revisão em contexto isolado e em eixos separados; avaliador cético mas sem caçar gosto | Anthropic (*harness design*), Pocock (`code-review`), Cherny |
 | 12 | Contexto isolado por fatia e estado em disco | Horthy (zona burra acima de ~40%), Pocock (*smart zone*), Huntley, Anthropic (*context engineering*) |
-| 13 | Slider de autonomia: IA supervisionada, IA autopilot ou manual, escolhido por item por quem desenvolve; WIP limitado pela revisão humana | Karpathy ("Iron Man suits"), Pocock (AFK/HITL), Addy Osmani (*orchestration tax*), DORA 2025 |
+| 13 | Slider de autonomia: IA supervisionada, IA autopilot ou manual, escolhida por item por quem desenvolve; WIP limitado pela revisão humana | Karpathy ("Iron Man suits"), Pocock (AFK/HITL), Addy Osmani (*orchestration tax*), DORA 2025 |
 | 14 | Leia o código: MRs pequenos, com caminho de leitura e evidência | Horthy ("read the dang code"), Willison, Osmani (*comprehension debt*), Thoughtworks Radar vol. 34 |
 | 15 | Aprendizado composto: cada correção muda o ambiente — checagem determinística primeiro | Mitchell Hashimoto (*engineer the harness*), Cherny, Pocock (`retro`), Fowler (*guides & sensors*) |
 | 16 | Conhecimento mantido por LLM, com *lint* de contradições | Karpathy (*LLM Wiki*) — aqui, o bundle do ELM + glossário + ADRs |
@@ -70,7 +70,7 @@ Fontes no fim deste arquivo.
 | `sa-prd` | `prd` · `mudanca` | PRD do épico depois do go, aprovado pelo produto no próprio documento |
 | `sa-especificar` | `elm` · `prototipo` · `reuniao` · `archive` | arquivos de `elm/` da fatia, protótipo de tela, ATA de reunião e archive da spec depois do merge |
 | `sa-entrevistar` | `entrevistar` | alinhamento em rodadas de até 5 perguntas, cada uma com recomendação |
-| `sa-desenvolver` | `iniciar` · `codificar` · `encerrar` | assume a tarefa num passo (tamanho, rota e modo), codifica com TDD e backpressure até o MR, faz o merge e fecha |
+| `sa-desenvolver` | `iniciar` · `codificar` · `encerrar` | assume a tarefa num passo (tamanho, trilha e autonomia), codifica com TDD e backpressure até o MR, faz o merge e fecha |
 | `sa-plano` | `plano` · `replanejar` | `research.md`, design e tasks; copia o texto aprovado para o delta sem reescrever |
 | `sa-pesquisar` | `pesquisar` | pesquisa neutra e só leitura no `sa-pesquisador`; devolve fatos com arquivo:linha |
 | `sa-revisar` | `revisar` · `mr` | revisão do agente, independente (rubrica L do plano, C do código) e revisão do MR de outro autor |
@@ -110,10 +110,10 @@ sessão sem agente: sa-setup e sa-elm.setup (as únicas que gravam o harness)
 No Kiro, os agentes levam só os nomes de capability; os limites por caminho e URL vão no prompt. Detalhes em
 [`skills/sa-setup/references/agentes.md`](skills/sa-setup/references/agentes.md).
 
-## Modos de trabalho
+## Autonomia de trabalho
 
 IA supervisionada · IA autopilot · manual, escolhido antes de começar e fixo até o fim daquele trabalho.
-Especificação e codificação têm modos independentes.
+Especificação e codificação têm autonomias independentes.
 
 | | IA supervisionada | IA autopilot | manual |
 |---|---|---|---|
@@ -130,7 +130,7 @@ O formato é decidido por projeto na `sa-setup`: alvo Kiro → Kiro, sem pergunt
 OpenSpec. Fica em `formato_spec` no `agentes.json` e na seção Especificação do `sabia.md`. A pasta é
 `.kiro/specs/ft-<nnn>-<slug>/` ou `openspec/changes/ft-<nnn>-<slug>/`.
 
-| Rota | Kiro | OpenSpec |
+| Trilha | Kiro | OpenSpec |
 |---|---|---|
 | `trivial` | nenhum arquivo de spec; tudo no MR | idem |
 | `rapida` fatia | Quick Spec: `requirements.md`, `design.md`, `tasks.md` | `proposal.md` + delta + `tasks.md` |
@@ -259,7 +259,7 @@ especificação (HF ⇢ a skill dele, com o fluxo e o padrão do tipo) e um pass
 projeto batch com o desvio da tarefa de job ao agente do toolkit. Nos dois, os 5 agentes são gerados pelo
 `gerar_agentes.py` sobre a instalação, e a `sabia rota` mostra o desvio e a origem de cada passo.
 
-**A conferir num Kiro e num opencode reais:** o `.config.kiro` da pasta da spec em cada rota; se os subagentes
+**A conferir num Kiro e num opencode reais:** o `.config.kiro` da pasta da spec em cada trilha; se os subagentes
 `sa-pesquisador`, `sa-revisor` e `sa-verificador` exigem declaração própria; se o `sa-desenvolvedor` roda como
 subagente no autopilot (no opencode, se precisa de `mode: all`); e EARS em português no Analyze Requirements.
 

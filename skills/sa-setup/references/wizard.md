@@ -15,7 +15,7 @@ ferramenta", use o nome da que está nos alvos.
 
 | Uso | Ícones |
 |---|---|
-| Trilha das etapas | `●` feita · `◉` atual · `○` por vir |
+| Progresso das etapas | `●` feita · `◉` atual · `○` por vir |
 | Status | ✅ ok · ⚠️ atenção · ❌ falhou · ⏸️ não testado (sempre com o motivo) · ➖ não se aplica |
 | De onde veio o valor | 🔍 detectado · 📐 padrão do Sabiá · 🙋 você · 🧩 ELM |
 | Seleção (primeira coluna da tabela) | `[✅]` marcado · `[ ]` desmarcado |
@@ -27,7 +27,7 @@ nunca "testado".
 
 ## Peças de todo cartão
 
-**Cabeçalho** (primeira linha de toda mensagem de etapa; a trilha tem 9 posições):
+**Cabeçalho** (primeira linha de toda mensagem de etapa; o progresso tem 9 posições):
 
 ```
 ## 🧭 Etapa <n> de 9 · <nome da etapa>

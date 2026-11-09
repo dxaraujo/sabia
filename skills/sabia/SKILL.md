@@ -57,7 +57,7 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
 - **Prioridade e tamanho.** `prioridade` ∈ {`crítica`, vazio}: crítica é o expedite, pela política do `acordos.md`;
   vazio segue a ordem das linhas. `tamanho` ∈ {`P`, `M`, `G`}: P = horas, M ≈ 1 dia, G = 2 a 3 dias. Maior que G é
   épico, e só o épico vai ao pitch e ao go/kill.
-- **Rotas.** Quem desenvolve escolhe pelo código: `trivial` (sem arquivo de spec, tudo no MR), `rapida` ou `completo`.
+- **Trilhas.** Quem desenvolve escolhe pelo código: `trivial` (sem arquivo de spec, tudo no MR), `rapida` ou `completo`.
   O formato da spec vem do `formato_spec` do `agentes.json` (Kiro ou OpenSpec). A pasta da spec é `ft-<nnn>-<slug>`.
 - **Sustentação.** A categoria é confirmada antes de gravar a triagem e não se recategoriza depois. Quem atende puxa
   dentro da folga reservada. A IA auxilia, e a pessoa declara o item resolvido (`sa-atender.atender`).
@@ -78,8 +78,8 @@ O autor faz o merge com a aprovação e o CI verde. Não há rebase: a branch se
 
 ## Autonomia
 
-Modo de trabalho: IA supervisionada, IA autopilot ou manual, escolhido antes de começar e fixo até o fim daquele
-trabalho. Codificação e especificação têm modos independentes.
+Autonomia de trabalho: IA supervisionada, IA autopilot ou manual, escolhida antes de começar e fixa até o fim daquele
+trabalho. Codificação e especificação têm autonomias independentes.
 
 - **Codificação** (ao assumir, na `sa-desenvolver.iniciar`; campo Autonomia do `status.md`): IA supervisionada (o
   `sa-desenvolvedor` na sessão da pessoa), IA autopilot (o `sa-desenvolvedor` como subagente na worktree) ou manual
@@ -99,7 +99,7 @@ trabalho. Codificação e especificação têm modos independentes.
 
 1. **Alinhar antes de escrever** — até 5 perguntas por rodada, cada uma com recomendação. O agente busca os fatos, e a
    pessoa toma as decisões. Regra de negócio é decisão de uma pessoa.
-2. **Cerimônia do tamanho** — pelas rotas `trivial` · `rapida` · `completo` e pelo tamanho P · M · G.
+2. **Cerimônia do tamanho** — pelas trilhas `trivial` · `rapida` · `completo` e pelo tamanho P · M · G.
 3. **Fatias verticais** — cada fatia prova algo demonstrável e mantém os artefatos afetados.
 4. **Verificação acima de geração** — backpressure em camadas: o trecho tocado a cada alteração e a suíte completa uma
    vez antes do MR, com baseline do CI. A asserção que dura são os testes automatizados, marcados com o `CT-nn`.
@@ -130,7 +130,7 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 | os arquivos de `elm/` da fatia · protótipo de tela e aprovação do cliente · ATA de reunião (transcrição em `.sabia/local/reunioes/`) · archive da spec depois do merge | `sa-especificar` (`sa-especificar.elm` · `sa-especificar.prototipo` · `sa-especificar.reuniao` · `sa-especificar.archive`) |
 | alinhar decisões em rodadas | `sa-entrevistar` (`sa-entrevistar.entrevistar`) |
 | planejamento inicial (`equipe.json`, `acordos.md`) · planejar a sprint, reabastecer, virada · review com curadoria das Regras aprendidas · retrospectiva | `sa-planejamento` (`sa-planejamento.inicial` · `sa-planejamento.sprint` · `sa-planejamento.review` · `sa-planejamento.retrospectiva`) |
-| puxar, começar ou retomar, com rota e autonomia · implementar e abrir o MR · mergear e fechar | `sa-desenvolver` (`sa-desenvolver.iniciar` · `sa-desenvolver.codificar` · `sa-desenvolver.encerrar`); autopilot é o modo da `sa-desenvolver` |
+| puxar, começar ou retomar, com trilha e autonomia · implementar e abrir o MR · mergear e fechar | `sa-desenvolver` (`sa-desenvolver.iniciar` · `sa-desenvolver.codificar` · `sa-desenvolver.encerrar`); autopilot é uma autonomia da `sa-desenvolver` |
 | entender o código e devolver fatos, sem gravar | `sa-pesquisar` (`sa-pesquisar.pesquisar`) |
 | `research.md`, design e tasks da fatia, com o texto aprovado copiado para o delta · replanejar | `sa-plano` (`sa-plano.plano` · `sa-plano.replanejar`) |
 | revisão do agente ou revisão do plano · revisar o MR de outro autor | `sa-revisar` (`sa-revisar.revisar` · `sa-revisar.mr`) |
@@ -147,7 +147,7 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 | `.sabia/config/` | `agentes.json` (as escolhas do projeto e a entrada do gerador), `elm/pa_<nome>.json` (da `sa-elm.setup`) e `elk/elk-<ambiente>.json` |
 | `.kiro/agents/` · `.opencode/agents/` | os 5 agentes gerados (e os de toolkit) |
 | `.sabia/planejamento/` | `backlog.md` (id · título · tipo · status · prioridade · tamanho · responsável · pai · relator · ib · obs · aceita_em · iniciada_em · concluida_em), `acordos.md`, `equipe.json`, `roadmap.md`, `sprints/<AAAA>/sprint-<nn>.md` (Item · Trabalho · Responsável · Tarefas), `fatias/FT-<nnn>-<slug>.md`, `epicos/EP-nn-<slug>/` (`pitch.md`; `prd.md` a partir do go), `prototipos/`, `atas/`, `sustentacao/<pasta>/` |
-| spec da fatia | `.kiro/specs/ft-<nnn>-<slug>/` ou `openspec/changes/ft-<nnn>-<slug>/`: `status.md`, `research.md`, os arquivos da rota, `CT.csv` e, com ELM, `elm/`. No OpenSpec, a arquivada fica em `openspec/changes/archive/<AAAA-MM-DD>-ft-<nnn>-<slug>/` |
+| spec da fatia | `.kiro/specs/ft-<nnn>-<slug>/` ou `openspec/changes/ft-<nnn>-<slug>/`: `status.md`, `research.md`, os arquivos da trilha, `CT.csv` e, com ELM, `elm/`. No OpenSpec, a arquivada fica em `openspec/changes/archive/<AAAA-MM-DD>-ft-<nnn>-<slug>/` |
 | glossário · ADRs · bundle | GL no DOORS, onde há ELM; o `.sabia/glossario.md` é opcional. ADRs em `docs/adr/`, só para decisão que atravessa fatias. O bundle (chave `elm.bundle` do `agentes.json`, ex.: `docs/elm/<pa>/`) é cópia local e nunca é editado |
 | `.sabia/creditos/` | `<usuario>.csv` com os créditos do Kiro por sessão |
 | `.sabia/fluxo/` · `.sabia/padrao/` | override esparso do projeto, pela `sa-setup.customizar`; nenhum agente escreve |

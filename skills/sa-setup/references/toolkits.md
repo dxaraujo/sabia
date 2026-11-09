@@ -24,7 +24,7 @@ e quais verificações a `sa-verificar` usa para executar os cenários de aceite
 
 | Tipo | Sinais no repositório | Como a aceitação é verificada (padrão) |
 |---|---|---|
-| `backend` | controladores/rotas HTTP, OpenAPI, `spring-boot-starter-web`, `express`, `fastapi`, `*.csproj` web | chamada à API (HTTP), resposta e estado no banco |
+| `backend` | controladores/trilhas HTTP, OpenAPI, `spring-boot-starter-web`, `express`, `fastapi`, `*.csproj` web | chamada à API (HTTP), resposta e estado no banco |
 | `batch` | `spring-batch-core`, `@EnableBatchProcessing`, `Job`/`Step`, `*.jcl`, agendadores, `cron` | execução do job com os dados do cenário; contagens e estado no banco; log de execução |
 | `frontend` | `package.json` com `@angular/core`, `react`, `vue`, `svelte`; `src/app`, `pages/` | navegação no browser (Playwright/MCP de browser), screenshot como evidência |
 | `mobile` | `android/`, `ios/`, `pubspec.yaml`, `react-native` | emulador/dispositivo, quando houver; senão roteiro manual |

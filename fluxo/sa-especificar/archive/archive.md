@@ -4,7 +4,7 @@
  "travas_gerais": ["sim-da-pessoa", "elm-pela-sa-elm"],
  "passos": [
    {"id": "entrada", "de": "entrada", "papel": "desenvolvedor", "branch": "nao", "saidas": {"fatia ou bug concluida, com o MR do item mergeado": "arquivar"}},
-   {"id": "arquivar", "saidas": {"sem pasta da spec (rota trivial) ou sem delta": "devolver", "spec já arquivada (OpenSpec), ou com a linha Publicação no status.md": "publicar"}},
+   {"id": "arquivar", "saidas": {"sem pasta da spec (trilha trivial) ou sem delta": "devolver", "spec já arquivada (OpenSpec), ou com a linha Publicação no status.md": "publicar"}},
    {"id": "gravar", "de": "gravar-na-base"},
    {"id": "publicar", "chama": "sa-elm.publicar"},
    {"id": "devolver"}

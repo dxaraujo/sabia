@@ -1,5 +1,5 @@
 ---
-{"resumo": "Escreve, antes de executar, o roteiro de cada cenário CT-nn da ficha e da spec, conforme a rota e o formato: pré-condição · passos · esperado · CT-nn, com a repetição e o erro em um item."}
+{"resumo": "Escreve, antes de executar, o roteiro de cada cenário CT-nn da ficha e da spec, conforme a trilha e o formato: pré-condição · passos · esperado · CT-nn, com a repetição e o erro em um item."}
 ---
 ## Entrada
 
@@ -8,9 +8,9 @@ A branch `<id>`, a ficha `.sabia/planejamento/fatias/FT-<nnn>-<slug>.md` e a pas
 
 ## Faça
 
-1. Os cenários vêm da ficha e da spec, conforme a rota (no `status.md`; sem ele, trivial) e o formato:
+1. Os cenários vêm da ficha e da spec, conforme a trilha (no `status.md`; sem ele, trivial) e o formato:
 
-| Rota | Kiro | OpenSpec |
+| Trilha | Kiro | OpenSpec |
 |---|---|---|
 | trivial | os cenários da ficha e o teste que acompanha a mudança | o mesmo |
 | rápida fatia | `requirements.md` da Quick Spec | o delta |

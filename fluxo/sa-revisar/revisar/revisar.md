@@ -18,11 +18,11 @@ Entra o pedido de quem chama: a rubrica (L ou C), o item e a parte do plano ou o
 |---|---|---|
 | `sa-plano.plano` | L | a pessoa aceita "quer revisar agora?" ao fim de uma parte do plano |
 | `sa-plano.replanejar` | L | só a parte alterada |
-| `sa-desenvolver.codificar` | C | revisão do agente antes do MR, em qualquer modo |
+| `sa-desenvolver.codificar` | C | revisão do agente antes do MR, em qualquer autonomia |
 | `sa-revisar.mr` | C | apoio ao revisor humano |
 
 O pedido direto também entra ("revisa o plano da FT-nnn", "revisa o código da FT-nnn"); nele, a sessão da pessoa
-troca para a branch `<id>` antes de chamar o subagente. A rota trivial não tem plano: só recebe a rubrica C.
+troca para a branch `<id>` antes de chamar o subagente. A trilha trivial não tem plano: só recebe a rubrica C.
 
 Roda no subagente `sa-revisor`, sem o contexto de quem escreveu: julgue os arquivos e ignore as justificativas
 (mensagem de commit, texto do pedido). Você só lê: não grava arquivo, não roda a suíte e não faz commit. O relatório

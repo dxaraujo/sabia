@@ -1,13 +1,13 @@
 ---
-{"resumo": "Lança o sa-desenvolvedor como subagente na worktree com o id, a rota e o teto do disjuntor; a pessoa fica livre na base."}
+{"resumo": "Lança o sa-desenvolvedor como subagente na worktree com o id, a trilha e o teto do disjuntor; a pessoa fica livre na base."}
 ---
 ## Entrada
 
-O item com modo IA autopilot, a worktree `.sabia/local/wt/<id>` e a linha Disjuntor do `acordos.md`.
+O item com autonomia IA autopilot, a worktree `.sabia/local/wt/<id>` e a linha Disjuntor do `acordos.md`.
 
 ## Faça
 
-1. Lance o `sa-desenvolvedor` como subagente com: o id, a rota, a worktree e o teto do disjuntor (tentativas,
+1. Lance o `sa-desenvolvedor` como subagente com: o id, a trilha, a worktree e o teto do disjuntor (tentativas,
    tempo, custo; 2 reprovações seguidas disparam sempre).
 2. O subagente roda a `sa-plano.plano` (rápida e completo) e depois a `sa-desenvolver.codificar`, até o MR aberto.
    Os comandos rodam sempre como `cd .sabia/local/wt/<id> && <comando>`, e os arquivos são acessados pelo caminho da

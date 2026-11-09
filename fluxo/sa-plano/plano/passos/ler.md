@@ -9,7 +9,7 @@ A branch `<id>` (no autopilot, a worktree) e a pasta da spec com o `status.md`.
 
 Leia:
 
-1. o `status.md` (Rota, Autonomia);
+1. o `status.md` (Trilha, Autonomia);
 2. a ficha `.sabia/planejamento/fatias/FT-nnn-<slug>.md` da base (`git show origin/<base>:<caminho>`): Regras,
    Cenários `CT-nn`, artefatos afetados com a versão de referência, linha Aprovado, Não muda, Decisões;
 3. com ELM, os arquivos de `elm/` da pasta da spec;

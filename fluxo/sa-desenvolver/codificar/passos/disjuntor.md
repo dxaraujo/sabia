@@ -16,7 +16,7 @@ Fora do autopilot → nada a fazer; siga.
 3. Disparou: grave a linha `Devolvido: <motivo> · AAAA-MM-DD HH:MM`, o Retomar do `status.md`, commit e push da
    branch, e devolva à pessoa o resumo (motivo, Desvios, Em aberto).
 4. A pessoa resolve o motivo na worktree e relança o autopilot (`sa-desenvolver.iniciar.autopilot`), que
-   zera as reprovações; o modo não muda.
+   zera as reprovações; a autonomia não muda.
 
 ## Saída
 

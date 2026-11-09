@@ -11,7 +11,7 @@ Valem em todos os fluxos da skill.
   `sa-status.painel.trava-de-artefato`), sempre da base remota depois do `git fetch --quiet`. Sem rede, a base local,
   com o aviso "dados locais".
 - **Pasta da spec** pelo `formato_spec` do `agentes.json`: Kiro `.kiro/specs/ft-<nnn>-<slug>/`; OpenSpec
-  `openspec/changes/ft-<nnn>-<slug>/` (arquivada: `openspec/changes/archive/*-ft-<nnn>-<slug>/`). A rota trivial não
+  `openspec/changes/ft-<nnn>-<slug>/` (arquivada: `openspec/changes/archive/*-ft-<nnn>-<slug>/`). A trilha trivial não
   tem pasta: a fase sai do MR.
 - **Identidade**: a regra do `sa-status.painel.identidade`, citada pelas outras skills.
 - **Quem pode**, pelas booleanas do `equipe.json`: `desenvolvedor` para `sa-desenvolver.*` e `sa-revisar.mr`; `produto`

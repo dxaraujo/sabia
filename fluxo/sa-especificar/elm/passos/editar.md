@@ -1,5 +1,5 @@
 ---
-{"resumo": "Edita o arquivo inteiro pelo modo da ficha: IA supervisionada com o especificador, IA autopilot num subagente sem perguntas, ou manual direto no DOORS (diz e encerra)."}
+{"resumo": "Edita o arquivo inteiro pela autonomia da ficha: IA supervisionada com o especificador, IA autopilot num subagente sem perguntas, ou manual direto no DOORS (diz e encerra)."}
 ---
 ## Entrada
 

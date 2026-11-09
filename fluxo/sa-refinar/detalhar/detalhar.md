@@ -19,7 +19,7 @@
 
 Pouco antes de alguém puxar, o especificador (ou o P.O.) com o Dev, e QA ou UX se houver, transforma regras e
 exemplos na ficha: regras, cenários `CT-nn`, os artefatos afetados (requisitos tocados, com a versão de referência) e, com ELM, a pasta
-`elm/` dos artefatos tocados, no modo da especificação escolhido. Com a DoR completa e a ficha aprovada por quem tem
+`elm/` dos artefatos tocados, na autonomia da especificação escolhida. Com a DoR completa e a ficha aprovada por quem tem
 `produto`, a linha vai para `pronta`. Curto no bug e no P: o bug sem requisito tocado é do Dev sozinho, com a
 ficha curta (passos · atual · esperado · reproduzido). Aceita fatia ou bug em `aceita` ou `pronta`.
 

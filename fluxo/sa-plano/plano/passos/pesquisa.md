@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-A ficha, os artefatos afetados, o `elm/` e a rota.
+A ficha, os artefatos afetados, o `elm/` e a trilha.
 
 ## Faça
 

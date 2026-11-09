@@ -1,15 +1,15 @@
 ---
-{"resumo": "Escreve pela matriz rota × formato: Quick Spec, Bugfix Spec ou spec completa no Kiro; proposal, delta, design e tasks no OpenSpec."}
+{"resumo": "Escreve pela matriz trilha × formato: Quick Spec, Bugfix Spec ou spec completa no Kiro; proposal, delta, design e tasks no OpenSpec."}
 ---
 ## Entrada
 
-O delta, o `research.md`, as decisões, a rota (`status.md`), o tipo (fatia ou bug) e o `formato_spec`.
+O delta, o `research.md`, as decisões, a trilha (`status.md`), o tipo (fatia ou bug) e o `formato_spec`.
 
 ## Faça
 
 1. Escreva pela matriz (modelos no padrão `sa-plano/plano.md`):
 
-   | Rota | Kiro | OpenSpec |
+   | Trilha | Kiro | OpenSpec |
    |---|---|---|
    | rápida fatia | Quick Spec: `requirements.md`, `design.md` e `tasks.md` numa passada, sem portões | `proposal.md` + delta + `tasks.md` |
    | rápida bug | Bugfix Spec: `bugfix.md`, `design.md`, `tasks.md` | `proposal.md` + delta MODIFIED + `tasks.md` |

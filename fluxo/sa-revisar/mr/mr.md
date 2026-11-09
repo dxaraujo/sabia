@@ -1,6 +1,6 @@
 ---
 {"fluxo": "mr", "dono": "sa-desenvolvedor",
- "quando": ["revisão oficial do MR de código por um desenvolvedor que não é o autor, em qualquer modo", "revisa o MR da FT-031", "revisar o MR !42", "aprovar o MR da FT-031"],
+ "quando": ["revisão oficial do MR de código por um desenvolvedor que não é o autor, em qualquer autonomia", "revisa o MR da FT-031", "revisar o MR !42", "aprovar o MR da FT-031"],
  "travas_gerais": ["revisao-independente", "pr-lido-por-pessoa", "sim-da-pessoa"],
  "passos": [
    {"id": "entrada", "de": "entrada", "papel": "desenvolvedor", "branch": "nao"},
@@ -16,7 +16,7 @@
 # MR — revisão oficial do MR de código
 
 Um desenvolvedor que não é o autor revisa o MR com o apoio da `sa-revisar.revisar` (rubrica C), tria os achados no
-próprio MR e aprova. Vale para qualquer modo (IA supervisionada, IA autopilot ou manual). Não há merge direto: o
+próprio MR e aprova. Vale para qualquer autonomia (IA supervisionada, IA autopilot ou manual). Não há merge direto: o
 merge é do autor, pela `sa-desenvolver.encerrar`. A escrita no GitLab (threads, aprovação) é sempre com o "sim".
 
 Entra o id do item ou o link do MR, depois do aviso da `sa-desenvolver.codificar` de que o MR espera revisão. Não há

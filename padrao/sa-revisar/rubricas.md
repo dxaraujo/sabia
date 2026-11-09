@@ -11,7 +11,7 @@ As Regras aprendidas do `.sabia/sabia.md` valem como itens extras da rubrica a q
 um toolkit (no prompt do revisor e na seção Tipos com skill de toolkit do `sabia.md`) também só se somam: nenhum
 troca, afrouxa ou dispensa um item daqui.
 
-Item que não se aplica à rota (a trivial não tem plano; a rápida do OpenSpec não tem `design.md`) fica `N/A`.
+Item que não se aplica à trilha (a trivial não tem plano; a rápida do OpenSpec não tem `design.md`) fica `N/A`.
 
 ## Destinos
 
@@ -77,7 +77,7 @@ avaliados em separado e relatados em tabelas próprias: um não compensa nem esc
 | C11 | Segue o análogo e a forma do design; nada de padrão novo sem decisão registrada. Decisão que atravessa fatias (banco, framework, padrão de integração) tem ADR no MR | IMPORTANTE |
 | C12 | Nomes do domínio = termos do glossário (GL ou `glossario.md`); nomes técnicos no padrão dos vizinhos | IMPORTANTE |
 | C13 | Módulos profundos: interface pequena para o que esconde; sem abstração especulativa, camada a mais ou duplicação evitável | IMPORTANTE |
-| C14 | Sem `TODO`, `FIXME`, print ou log de depuração e código comentado; registros obrigatórios da estrutura (rotas, menus, agendamentos, migrações) presentes | IMPORTANTE |
+| C14 | Sem `TODO`, `FIXME`, print ou log de depuração e código comentado; registros obrigatórios da estrutura (trilhas, menus, agendamentos, migrações) presentes | IMPORTANTE |
 | C15 | Onde o projeto mantém ET (`ET as-built: sim` na seção ELM do `sabia.md`), as seções as-built do `design.md` descrevem o que o diff faz, e nada além | IMPORTANTE |
 
 **Eixo segurança** — o diff abre risco?

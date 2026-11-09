@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-A branch `<id>` (no autopilot, a worktree), o `status.md` (Rota, Autonomia, Fase, Retomar) e a pasta da spec.
+A branch `<id>` (no autopilot, a worktree), o `status.md` (Trilha, Autonomia, Fase, Retomar) e a pasta da spec.
 
 ## Faça
 

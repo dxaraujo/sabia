@@ -1,5 +1,5 @@
 ---
-{"resumo": "Modelos do plano da fatia pela matriz rota × formato: .config.kiro, proposal.md, delta OpenSpec, requirements.md, bugfix.md, design.md e tasks.md."}
+{"resumo": "Modelos do plano da fatia pela matriz trilha × formato: .config.kiro, proposal.md, delta OpenSpec, requirements.md, bugfix.md, design.md e tasks.md."}
 ---
 # Plano da fatia — modelos por formato
 
@@ -8,9 +8,9 @@ A pasta da spec é `.kiro/specs/ft-<nnn>-<slug>/` (Kiro) ou `openspec/changes/ft
 exatamente como abaixo (em inglês, no Kiro e no OpenSpec). Seção fixa sem conteúdo leva `Não se aplica.`, nunca
 conteúdo inventado. Plano curto: quem aprova lê tudo numa sentada.
 
-## Matriz rota × formato
+## Matriz trilha × formato
 
-| Rota | Kiro | OpenSpec |
+| Trilha | Kiro | OpenSpec |
 |---|---|---|
 | trivial | sem pasta: tudo no MR | sem pasta: tudo no MR |
 | rápida fatia | Quick Spec: `requirements.md`, `design.md`, `tasks.md` numa passada, sem portões | `proposal.md`, `specs/<cap>/spec.md`, `tasks.md` |
@@ -33,7 +33,7 @@ Uma linha de JSON, criada pela `sa-desenvolver.iniciar.pasta`:
 ## `proposal.md` (OpenSpec)
 
 ```markdown
-**Fatia:** [FT-<nnn>](<caminho da ficha>) · **Rota:** <rapida | completo>
+**Fatia:** [FT-<nnn>](<caminho da ficha>) · **Trilha:** <rapida | completo>
 
 ## Why
 <motivo, a partir da Entrada e do Objetivo da ficha>
