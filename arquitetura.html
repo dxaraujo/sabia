@@ -17,7 +17,7 @@
 <div class="wrap">
   <div class="top">
     <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá</span></a>
-    <span class="ver">2.1.21 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
+    <span class="ver">2.1.22 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
     <span class="autor">Desenvolvido por <b>Daniel Xavier Araújo</b></span>
     <a class="gh" href="https://github.com/dxaraujo/sabia">GitHub</a>
   </div>
@@ -55,7 +55,7 @@
     <rect class="cx" x="26" y="368" width="268" height="74" rx="10"/>
     <text class="m" x="40" y="392">skills/sa-setup/</text>
     <text class="s" x="40" y="411">perfis.json: 5 agentes, 2 permissões</text>
-    <text class="s" x="40" y="430">gerar_agentes.py: o gerador</text>
+    <text class="s" x="40" y="430">sabia agentes gerar: o gerador</text>
     <rect x="385" y="10" width="300" height="450" rx="16" style="fill:var(--grey)"/>
     <text class="t" x="403" y="40">2 · Usuário (a compilação)</text><text class="s" x="403" y="60">uma vez por máquina, por alvo</text>
     <rect class="cx" x="401" y="78" width="268" height="74" rx="10"/>
@@ -325,7 +325,7 @@ decisao-da-pessoa.</pre><p>Recorte: a tabela real tem também as colunas # (a or
 </section>
 
 <section id="agentes">
-  <div class="lead-sec"><h2>Os agentes gerados</h2><p>A <code>sa-setup</code> grava as escolhas do projeto no <code>agentes.json</code>. O <code>gerar_agentes.py</code> junta essas escolhas ao <code>perfis.json</code> (os 2 modelos de permissão e os 5 agentes) e ao prompt de cada agente (<code>sa-&lt;nome&gt;.md</code>), aos fluxos, ao catálogo de tipos e ao override do projeto, e escreve os 5 agentes nos dois formatos, mais os agentes dos toolkits ligados. Nenhum agente se edita à mão.</p></div>
+  <div class="lead-sec"><h2>Os agentes gerados</h2><p>A <code>sa-setup</code> grava as escolhas do projeto no <code>agentes.json</code>. O <code>sabia agentes gerar</code> junta essas escolhas ao <code>perfis.json</code> (os 2 modelos de permissão e os 5 agentes) e ao prompt de cada agente (<code>sa-&lt;nome&gt;.md</code>), aos fluxos, ao catálogo de tipos e ao override do projeto, e escreve os 5 agentes nos dois formatos, mais os agentes dos toolkits ligados. Nenhum agente se edita à mão.</p></div>
 <pre class="cod">principais <span class="c">(a pessoa escolhe ao abrir a sessão; o passo entrada confere a booleana do equipe.json)</span>
 ├─ sa-desenvolvedor   build · sa-desenvolver · sa-plano · sa-revisar.mr · sa-verificar.revisao-humana · sa-atender
 │                     · sa-especificar.archive
@@ -343,7 +343,7 @@ sessão sem agente: sa-setup e sa-elm.setup <span class="c">(as únicas que grav
     <rect class="cx" x="20" y="156" width="250" height="56" rx="10"/><text class="m" x="34" y="180">fluxo/ e tipos.json</text><text class="s" x="34" y="199">donos, desvios e quem cria cada tipo</text>
     <rect x="20" y="224" width="250" height="56" rx="10" style="fill:var(--nota);stroke:var(--yellow)"/><text class="m" x="34" y="248">.sabia/fluxo/ · template/</text><text class="s" x="34" y="267">o override do projeto</text>
     <path class="seta" d="M270 48 C320 48 320 150 362 150"/><path class="seta" d="M270 116 C310 116 320 150 362 150"/><path class="seta" d="M270 184 C310 184 320 150 362 150"/><path class="seta" d="M270 252 C320 252 320 150 362 150"/>
-    <rect x="365" y="118" width="170" height="64" rx="12" style="fill:var(--navy)"/><text style="fill:var(--on-navy)" class="m w" x="450" y="146" text-anchor="middle">gerar_agentes.py</text><text style="fill:var(--on-navy)" class="s w" x="450" y="166" text-anchor="middle">valida e recusa</text>
+    <rect x="365" y="118" width="170" height="64" rx="12" style="fill:var(--navy)"/><text style="fill:var(--on-navy)" class="m w" x="450" y="146" text-anchor="middle">sabia agentes gerar</text><text style="fill:var(--on-navy)" class="s w" x="450" y="166" text-anchor="middle">valida e recusa</text>
     <path class="seta" d="M535 150 H588"/>
     <rect x="590" y="12" width="390" height="306" rx="16" style="fill:var(--soft)"/>
     <text class="t" x="608" y="40">sa-desenvolvedor (prompt gerado)</text>
@@ -414,7 +414,7 @@ Fluxo `sa-planejamento.review`:
   <div class="lead-sec"><h2>sabia rota: ver o fluxo resolvido</h2><p>O CLI mostra o fluxo como ele vale <b>neste projeto</b>, com o override e os desvios de toolkit.</p></div>
   <div class="duas">
    <div class="bloco"><h3><code>sabia rota --fluxo sa-desenvolver.codificar</code></h3>
-<pre class="cod">fluxo     sa-desenvolver.codificar  dono sa-desenvolvedor  Sabiá 2.1.21
+<pre class="cod">fluxo     sa-desenvolver.codificar  dono sa-desenvolvedor  Sabiá 2.1.22
 travas    sim-da-pessoa, backpressure, sem-force, elm-pela-sa-elm
 desvio ⇢  tarefa: "tarefa que cria ou altera um job ou step"
           → skill spring-batch-job  toolkit spring-batch 1.0.0
@@ -443,7 +443,7 @@ stateDiagram-v2
   ler --> validar: volta da codificação manual ('terminei')
   …</pre></div>
    <div class="bloco"><h3><code>sabia rota --fluxo sa-planejamento.review</code></h3>
-<pre class="cod">fluxo   sa-planejamento.review  dono sa-especificador  Sabiá 2.1.21
+<pre class="cod">fluxo   sa-planejamento.review  dono sa-especificador  Sabiá 2.1.22
 travas  sim-da-pessoa, decisao-da-pessoa
 
 #  passo              origem                            chama
@@ -459,7 +459,7 @@ travas  sim-da-pessoa, decisao-da-pessoa
   </div>
   <div class="proxima"><a href="index.html">Voltar ao início</a></div>
 </section>
-  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.21, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
+  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.22, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
 </div>
 </body>
 </html>
