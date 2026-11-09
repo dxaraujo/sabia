@@ -6,7 +6,7 @@ transição ou o lançamento de horas. Por isso aqui não vale "padrão sem perg
 - **Dois lugares de onde vem um valor:** a descoberta (`elm_setup_descobrir`) ou a pessoa. Nunca deduza um nome, um
   `qname`, um time code ou um valor de enumeração; nunca copie de outro projeto sem mostrar a origem e pedir a
   confirmação daquele valor.
-- **Formato:** leia o [schema publicado](https://dxaraujo.github.io/mcps/elm/pa.schema.json) antes do bloco 0 e monte
+- **Formato:** leia o [schema publicado](https://dxaraujo.github.io/json-schemas/mcp/elm/pa.schema.json) antes do bloco 0 e monte
   o `pa` nele: chaves, aninhamento e obrigatórios vêm do schema, não da memória.
 - **Um bloco por mensagem**, na ordem abaixo, no cartão:
 

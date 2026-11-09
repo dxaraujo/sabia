@@ -726,3 +726,10 @@ test("opção desconhecida é recusada; o toolkits -h só mostra as opções do 
   assert.equal((await rodar(["toolkits", "-h"])).codigo, 0);
   assert.ok(!/-t, --toolkits|--sem-mcp/.test(logs.at(-1)) && /-y, --sim/.test(logs.at(-1)));
 });
+
+test("schemas públicos: as cópias do framework são iguais às do repositório json-schemas", (t) => {
+  const pub = path.resolve(REPO, "../json-schemas/sabia");
+  if (!fs.existsSync(pub)) return t.skip("repositório json-schemas não clonado ao lado");
+  for (const [nome, copia] of [["toolkit", "skills/sa-setup/assets"], ["equipe", "skills/sa-planejamento/assets"]])
+    assert.equal(fs.readFileSync(path.join(REPO, copia, `${nome}.schema.json`), "utf8"), fs.readFileSync(path.join(pub, `${nome}.schema.json`), "utf8"), nome);
+});

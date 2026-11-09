@@ -60,7 +60,7 @@ Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.js
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/dxaraujo/sabia/main/skills/sa-setup/assets/toolkit.schema.json",
+  "$schema": "https://dxaraujo.github.io/json-schemas/sabia/toolkit.schema.json",
   "nome": "spring-batch",
   "versao": "1.0.0",
   "autor": { "nome": "<quem fez>", "area": "<área, equipe ou projeto>" },
