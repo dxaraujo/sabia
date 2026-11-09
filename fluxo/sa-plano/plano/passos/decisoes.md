@@ -11,7 +11,8 @@ O `research.md` e a ficha.
    no autopilot, decida pela recomendada e registre.
 2. O registro fica em Decisões técnicas do `design.md` (`<decisão> — <motivo> (ADR NNNN | local)`); na rápida do
    OpenSpec, que não tem `design.md`, numa seção Decisões técnicas do `proposal.md`.
-3. Regra sem decisão → Em aberto ao P.O. e para só o que depende dela.
+3. Regra sem decisão → Em aberto ao P.O. e para só o que depende dela. Risco de negócio ligado a uma regra (ex.: volume de
+   dados que passa a falhar) vai ao Em aberto do `status.md` para o P.O., além dos Riscos do `design.md`.
 4. Decisão arquitetural ou irreversível → pare e pergunte; no autopilot, devolve à pessoa.
 5. Decisão que atravessa fatias vira ADR no MR (`sa-desenvolver.codificar.as-built`).
 

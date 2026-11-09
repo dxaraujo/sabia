@@ -13,7 +13,7 @@ Proponha o destino e o motivo numa linha; a decisão é da pessoa.
 |---|---|---|
 | duplicado | `cancelada` | `duplicada de <id>` |
 | recusa | `cancelada` | `motivo: <texto>` |
-| falta informação | fica `nova` | `falta: <pergunta> · para <relator>`; volta à fila quando o relator responde |
+| falta informação | fica `nova` | `falta: <pergunta> · para <quem responde>`; volta à fila quando essa pessoa responde |
 | agora não | fatia ou bug: `adiada até <AAAA-MM-DD>`; épico: fica `a-moldar`, no fim da ordem; sustentação: fica `nova` (não tem adiada) | `motivo: <texto>` |
 | aceito | definido no passo `classificar` | — |
 

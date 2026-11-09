@@ -12,7 +12,8 @@ Nesta ordem:
 1. **Estrutura**: o steering e o glob dos módulos.
 2. **Fluxo atual**: do ponto de entrada até o dado, lendo os arquivos.
 3. **Análogos**: 1 ou 2, lidos de ponta a ponta com os testes.
-4. **Reaproveitamento**: o que já existe e serve.
+4. **Reaproveitamento**: o que já existe e serve. Dependência sem fonte no repositório: antes de Não encontrado, tente o
+   pacote de fontes do cache do gerenciador e a inspeção do binário (em Java, `-sources.jar` e `javap -p -c`).
 5. **Dados**: MCP de banco só em leitura; guarde só a consulta e a contagem, nunca dado real.
 6. **Testes**: como rodar os da área (pelos Comandos do `.sabia/sabia.md`) e o que eles já cobrem.
 7. **Documentação**: a pasta da spec da fatia (delta e `elm/`), se houver; depois as specs do repositório
