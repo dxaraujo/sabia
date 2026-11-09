@@ -225,7 +225,7 @@ function lineView(L){
   <div class="nav"><button class="play" data-act="tour">${ST.touring?"❚❚ Pausar":"▶ Percorrer a linha"}</button><span class="sp"></span></div></div>
   <div class="pb fade">${warn?`<div class="note warn">${fmt(warn)}</div>`:""}
   <div class="linecard">${fmt(Ln.quando)}</div>${senStrip(Ln.sen)}
-  <div class="blk"><h4>Itinerário${["hitl","afk"].includes(L)?` · rota ${esc(rotaNome())}`:""}${ST.sen&&D.SENNOME?` · ${D.SENNOME[ST.sen]}`:""}</h4>${itinHTML(L,it,null)}</div></div>`;
+  <div class="blk"><h4>Itinerário${["hitl","afk"].includes(L)?` · trilha ${esc(rotaNome())}`:""}${ST.sen&&D.SENNOME?` · ${D.SENNOME[ST.sen]}`:""}</h4>${itinHTML(L,it,null)}</div></div>`;
   bind();
 }
 function itinHTML(L,it,cur){
