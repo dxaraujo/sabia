@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O ajuste pronto de um dos passos anteriores (e as linhas novas do passo `captura`, quando houver).
+O ajuste pronto de um dos passos anteriores (e as linhas novas do passo `cadastro`, quando houver).
 
 ## Faça
 

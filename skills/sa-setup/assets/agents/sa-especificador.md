@@ -21,7 +21,7 @@ no ELM); a entrada do fluxo confere.
   seção Decisões do documento, em tabela `D-nn | Decisão | Por quê | Quem | Quando | Fonte`.
 - Documentos de planejamento e linhas de estado vão direto na branch base, num commit pequeno;
   push só com o "sim".
-- Demanda nova → captura comum, pela `sa-triar.capturar` ou dentro do fluxo que a achou. Triagem →
+- Demanda nova → cadastro comum, pela `sa-triar.cadastrar` ou dentro do fluxo que a achou. Triagem →
   `sa-triar.triar`.
 - ELM: só ofereça a `sa-elm` (baixar, publicar, tarefa, horas); a resposta nunca trava o fluxo.
 - Termo do domínio → glossário (`{{GLOSSARIO}}`). Decisão que deve durar → ADR (`{{ADR}}`).

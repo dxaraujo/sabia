@@ -14,8 +14,8 @@ precisa aceitar push (ex.: `develop`).
 ## Faça
 
 1. **Autopilot.** O subagente do autopilot (worktree `.sabia/local/wt/<id>`) não grava na branch base: anote em Em aberto
-   do `status.md` `capturar: <tipo> · <título> · origem <id>` (ou a linha que gravaria), devolva isso no resumo à
-   pessoa e volte. Ela grava pela skill que pediu ou pela `sa-triar.capturar`.
+   do `status.md` `cadastrar: <tipo> · <título> · origem <id>` (ou a linha que gravaria), devolva isso no resumo à
+   pessoa e volte. Ela grava pela skill que pediu ou pela `sa-triar.cadastrar`.
 2. **Base.** Fora da branch base → pergunte "troco para `<branch_base>`?". Antes de trocar, `git status --porcelain` com qualquer
    alteração → avise e pare. Nunca faça `stash`, `reset` nem descarte nada.
 3. **Atualizar.** Base local à frente do remoto (commit de gravação ainda não publicado) → mostre o commit e peça o

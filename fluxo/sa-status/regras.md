@@ -15,7 +15,7 @@ Valem em todos os fluxos da skill.
   tem pasta: a fase sai do MR.
 - **Identidade**: a regra do `sa-status.painel.identidade`, citada pelas outras skills.
 - **Quem pode**, pelas booleanas do `equipe.json`: `desenvolvedor` para `sa-desenvolver.*` e `sa-revisar.mr`; `produto`
-  para go/kill e aprovações de pitch, PRD e ficha; `especificador` para `elm/` e `sa-elm.publicar`; captura, triagem
+  para go/kill e aprovações de pitch, PRD e ficha; `especificador` para `elm/` e `sa-elm.publicar`; cadastro, triagem
   e revisão humana, qualquer pessoa.
 - **Sem ELM** (sem a seção ELM no `.sabia/sabia.md`): publicação pendente, horas e Tarefas não aparecem.
 - **Nunca invente** dado de item: o que não está no `backlog.md`, nos `sprint-<nn>.md` ou no MR não existe para a

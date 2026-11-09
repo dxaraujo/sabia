@@ -6,7 +6,7 @@
    {"id": "inicio", "chama": "sa-elm.regras", "saidas": {"ELM não configurado ou autopilot (sa-elm.regras)": "fim"}},
    {"id": "comparar"},
    {"id": "achados", "saidas": {"nenhum a registrar": "gravar"}},
-   {"id": "captura", "de": "captura"},
+   {"id": "cadastro", "de": "cadastro"},
    {"id": "gravar", "de": "commit-na-branch-base"},
    {"id": "encerrar", "saidas": {"sim: seguir para a triagem": "→ sa-triar.triar"}}
  ]}

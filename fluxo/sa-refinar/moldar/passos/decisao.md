@@ -16,13 +16,13 @@ O go/kill é de quem tem `produto` no `equipe.json`. Sem essa pessoa na sessão:
 | kill | status `cancelado`, `obs` `não investir: <motivo>` | `Decisão: kill · <motivo>` e, no topo, `**Aprovado:** <usuario> · AAAA-MM-DD`; a pasta fica | `EP-nn kill` |
 | cabe em G (não é épico) | status `cancelado`, `obs` `virou FT-nnn` | `Decisão: kill · cabe em G, virou FT-nnn` e, no topo, `**Aprovado:** <usuario> · AAAA-MM-DD` | `EP-nn kill` |
 
-**Cabe em G**: a fatia nasce pelo passo `captura`, já `aceita` (com `aceita_em` e o tamanho), com `veio de EP-nn` na
+**Cabe em G**: a fatia nasce pelo passo `cadastro`, já `aceita` (com `aceita_em` e o tamanho), com `veio de EP-nn` na
 `obs` e a ficha curta com a Entrada tirada do pitch. A linha do épico, a da fatia e o `pitch.md` vão no mesmo commit.
 
 ## Saída
 
 Go, kill ou sem quem tem `produto` → passo `commit-na-branch-base`, com o `pitch.md` e a linha do épico. Cabe em G → passo
-`captura`.
+`cadastro`.
 
 ## Pare se
 

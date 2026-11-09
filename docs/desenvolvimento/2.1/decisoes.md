@@ -1,10 +1,10 @@
 # Sabiá 2.1 — decisões finais de 07/11 (prevalecem sobre qualquer texto anterior)
 
 ## Skills e fluxos
-- 17 skills: sa-triar, sa-refinar (moldar · detalhar · fatiar · ajustar), sa-planejamento, sa-especificar, sa-prd, sa-entrevistar, sa-desenvolver (iniciar · codificar · encerrar), sa-pesquisar, sa-plano, sa-revisar (revisar · mr), sa-verificar (verificar · revisao-humana), sa-atender, sa-elm, sa-status, sa-setup, sabia, mais os arquivos comuns fluxo/ (entrada.md, captura.md, commit-na-branch-base.md, travas.json, tipos.json).
+- 17 skills: sa-triar, sa-refinar (moldar · detalhar · fatiar · ajustar), sa-planejamento, sa-especificar, sa-prd, sa-entrevistar, sa-desenvolver (iniciar · codificar · encerrar), sa-pesquisar, sa-plano, sa-revisar (revisar · mr), sa-verificar (verificar · revisao-humana), sa-atender, sa-elm, sa-status, sa-setup, sabia, mais os arquivos comuns fluxo/ (entrada.md, cadastro.md, commit-na-branch-base.md, travas.json, tipos.json).
 - Saem ou se fundem: sa-fatiar → sa-refinar; sa-codificar → sa-desenvolver.codificar; sa-sync → sa-elm.baixar/visualizar; sa-orquestrar → autopilot da sa-desenvolver; sa-consolidar sai; sa-executar → sa-atender; sa-aprender sai (curadoria na review); sa-iniciar → sa-status. O fluxo sa-especificar.especificar sai (épico vai de sa-refinar.moldar direto para a sa-prd). Os critérios de revisão P sai da sa-revisar.
 - sa-pesquisar: neutra, roda no sa-explorar, devolve fatos; quem grava o research.md é a sa-plano. Chamada por sa-plano, sa-prd, sa-refinar.fatiar, sa-entrevistar, sa-atender.
-- Captura: um só mecanismo, fluxo/captura.md, incluído por toda skill que captura; a sa-triar.capturar é só a entrada direta "registrar sem triar". A captura grava o tipo.
+- Cadastro: um só mecanismo, fluxo/cadastro.md, incluído por toda skill que cadastro; a sa-triar.cadastrar é só a entrada direta "registrar sem triar". O cadastro grava o tipo.
 - Nomes de passo sem prefixos da 2.0 ("mestre ·", "onde ·", "tarefa ·", "pr ·", números de etapa).
 
 ## Tipos, ids, status, colunas
@@ -33,12 +33,12 @@
 - ET: só as-built, publicada na finalização do desenvolvimento, onde o projeto mantém ET. Saem "inicial no PRD" e "não publica".
 - Matriz trilha × formato: trivial = nenhum arquivo de spec (tudo no MR); rápida fatia = Kiro Quick Spec (requirements, design, tasks sem portões) | OpenSpec proposal + delta + tasks; rápida bug = Kiro Bugfix Spec (bugfix, design, tasks) | OpenSpec proposal + delta MODIFIED + tasks; completo = Kiro requirements → design → tasks com "quer revisar agora?" | OpenSpec proposal + delta + design + tasks. Rápida e completo têm também research.md, status.md e CT.csv. O nome da pasta é ft-<nnn>-<slug>.
 - Formato da spec: a sa-setup decide por projeto (alvo Kiro → Kiro, sem perguntar; só opencode → pergunta Kiro ou OpenSpec), grava formato_spec no agentes.json e registra no sabia.md. O CLI não muda.
-- status.md da fatia = Trilha (trivial · rápida · completo) · Autonomia (supervisionado · autopilot) · Fase (implementando · revisando · verificando · pr-aberto · retrabalho) · MR (link) · Desvios · Em aberto · Lições aprendidas · Retomar (feito e próximo passo exato). Saem Responsável, Rodadas, Bloqueio, ELM, Banco e Créditos. A DDL pendente vira item BD pela captura.
+- status.md da fatia = Trilha (trivial · rápida · completo) · Autonomia (supervisionado · autopilot) · Fase (implementando · revisando · verificando · pr-aberto · retrabalho) · MR (link) · Desvios · Em aberto · Lições aprendidas · Retomar (feito e próximo passo exato). Saem Responsável, Rodadas, Bloqueio, ELM, Banco e Créditos. A DDL pendente vira item BD pelo cadastro.
 - CT.csv: escrito só pela sa-verificar; colunas sem Status e sem "Planejado para"; cada linha liga ao CT-nn da ficha/spec, que é o id marcado no teste automatizado. O PRD não grava CT.csv.
 - Verificação: sem http.sh, massa/ ou arquivo de requisições; o verificador exercita a aplicação direto (curl/navegador) e põe a evidência no MR; a asserção durável são os testes automatizados no CI. verificacao.md não existe (a evidência vai no MR).
 
 ## Desenvolvimento, revisão, autopilot
-- Booleana desenvolvedor = pode puxar item para desenvolvimento; revisor de MR = qualquer desenvolvedor ≠ autor (CODEOWNERS indica o dono). Captura, triagem e revisão humana por qualquer pessoa. especificador = publicar no ELM e aprovar arquivos de elm/. produto = go/kill, ordenar, aprovar PRD, pitch e ficha.
+- Booleana desenvolvedor = pode puxar item para desenvolvimento; revisor de MR = qualquer desenvolvedor ≠ autor (CODEOWNERS indica o dono). Cadastro, triagem e revisão humana por qualquer pessoa. especificador = publicar no ELM e aprovar arquivos de elm/. produto = go/kill, ordenar, aprovar PRD, pitch e ficha.
 - Identidade = usuário do GitLab (usuario no equipe.json = autor do MR = @dono no CODEOWNERS); elm_login opcional, lido só pela sa-elm.
 - Autopilot: subagente em worktree .sabia/local/wt/<id>; a pessoa segue na branch base; várias tarefas em paralelo. No autopilot ficam liberados push da própria branch (sem --force), merge da branch base nela e abrir/atualizar o MR dela; merge do MR, ELM e rede seguem bloqueados. Disjuntor (teto do acordos.md ou 2 reprovações seguidas) grava em .sabia/local/loop-<id>.md e devolve à pessoa. Sem lote.
 - Sem rebase: a branch se atualiza só por merge da branch base.

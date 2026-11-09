@@ -9,7 +9,7 @@
    {"id": "aprovar", "travas": ["aprovacao-no-documento"], "saidas": {"ajuste pedido": "editar"}},
    {"id": "gravar", "de": "commit-na-branch-base"},
    {"id": "fatias", "saidas": {"nenhuma fatia concluida atingida": "devolver"}},
-   {"id": "capturar", "de": "captura"},
+   {"id": "cadastrar", "de": "cadastro"},
    {"id": "devolver", "saidas": {"fatia atingida e o pedido direto: seguir para o ajuste das fatias": "→ sa-refinar.ajustar"}}
  ]}
 ---
@@ -17,7 +17,7 @@
 
 O `prd.md` aprovado muda no mesmo arquivo, antes ou depois de fatiar: a aprovação sai, a versão entra em Mudanças, o
 texto muda só no que muda, o P.O. reaprova no documento e a mudança chega às fatias atingidas
-(`sa-refinar.ajustar`, aviso ao responsável ou captura).
+(`sa-refinar.ajustar`, aviso ao responsável ou cadastro).
 
 Entrada: o `prd.md` aprovado e o épico `em-especificacao` ou `fatiado`.
 

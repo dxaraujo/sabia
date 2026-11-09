@@ -11,7 +11,7 @@ mercado. Com IBM ELM, o DOORS Next é o registro oficial; sem ELM, a especifica�
 Desenvolvido por Daniel Xavier Araújo.
 
 ```
-demanda ─► captura (fluxo/captura.md; entrada direta sa-triar.capturar)   tipo ∈ épico · fatia · bug · sustentação
+demanda ─► cadastro (fluxo/cadastro.md; entrada direta sa-triar.cadastrar)   tipo ∈ épico · fatia · bug · sustentação
    └─► TRIAGEM ───────── sa-triar.triar                                    (qualquer pessoa)
         ├─ épico ──────► REFINAMENTO sa-refinar.moldar: pitch.md ─► go/kill (produto)
         │                  └─ go ─► ESPECIFICAÇÃO sa-prd.prd: prd.md aprovado ─► sa-refinar.fatiar ─► FT-nnn
@@ -65,7 +65,7 @@ Fontes no fim deste arquivo.
 | `sabia` | — | guia e roteador: disciplinas, papéis, aprovações, autonomia e qual skill usar |
 | `sa-setup` | `configurar` · `customizar` | configura o projeto na sessão sem agente: alvos, comandos, branch_base, formato da spec, "usa ELM?", toolkits e os 5 agentes; customiza um passo ou template |
 | `sa-status` | `painel` · `item` · `minha-proxima` · `pendencias` · `licoes-aprendidas` · `fechar-sessao` | painel só leitura (WIP, vazão, idade, lead time, pendências de rastreio), estado de um `<id>`, a próxima tarefa e os créditos da sessão |
-| `sa-triar` | `capturar` · `triar` | captura sem triar e triagem da fila `nova`: duplicado, falta informação, adiar, cancelar, aceitar |
+| `sa-triar` | `cadastrar` · `triar` | cadastro sem triar e triagem da fila `nova`: duplicado, falta informação, adiar, cancelar, aceitar |
 | `sa-refinar` | `moldar` · `detalhar` · `fatiar` · `ajustar` | pitch e go/kill do épico; refinamento conjunto da fatia (ficha com regras, `CT-nn` e artefatos afetados, e `elm/` com ELM); fatiamento do PRD; ajuste do item pronto |
 | `sa-prd` | `prd` · `mudanca` | PRD do épico depois do go, aprovado pelo produto no próprio documento |
 | `sa-especificar` | `elm` · `prototipo` · `reuniao` · `archive` | arquivos de `elm/` da fatia, protótipo de tela, ATA de reunião e archive da spec depois do merge |
@@ -78,8 +78,8 @@ Fontes no fim deste arquivo.
 | `sa-atender` | `atender` | Sustentação: um fluxo para as seis categorias |
 | `sa-elm` | `regras` · `setup` · `item` · `finalizar` · `horas` · `importar-backlog` · `publicar` · `iteracao` · `conferir` · `lint` · `baixar` · `visualizar` | tudo o que fala com o IBM ELM (DOORS Next e EWM) |
 
-Arquivos comuns em [`fluxo/`](fluxo/): `entrada.md` (pré-condição do papel e da branch), `captura.md` (o único
-mecanismo de captura, que grava o tipo), `commit-na-branch-base.md` (commit pequeno de estado direto na branch base),
+Arquivos comuns em [`fluxo/`](fluxo/): `entrada.md` (pré-condição do papel e da branch), `cadastro.md` (o único
+mecanismo de cadastro, que grava o tipo), `commit-na-branch-base.md` (commit pequeno de estado direto na branch base),
 `travas.json` e `tipos.json` (catálogo fechado de artefatos). Templates dos documentos em [`template/`](template/).
 
 ## Agentes

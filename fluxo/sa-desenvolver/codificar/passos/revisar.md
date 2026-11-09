@@ -12,7 +12,7 @@ A branch com a suíte verde e o diff contra `origin/<branch_base>`.
    do toolkit e o diff. É revisão do agente, sem valor de revisão oficial.
 3. Cada achado tem severidade BLOQUEANTE, IMPORTANTE ou SUGESTÃO. Triagem:
    - `corrige` → tarefa `[R<n>]` no `tasks.md` e volta ao passo `tarefa`;
-   - `adia` → passo `captura` (`obs` `origem FT-nnn`);
+   - `adia` → passo `cadastro` (`obs` `origem FT-nnn`);
    - `volta-plano` → `sa-plano.replanejar`;
    - `volta-spec` → Em aberto ao especificador;
    - `descarta` → o motivo vai no MR.

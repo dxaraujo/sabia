@@ -8,10 +8,10 @@
    {"id": "duplicado", "saidas": {"o mesmo de um item aberto, e a entrada é pedido em texto ou EWM": "encaminhar"}},
    {"id": "decidir", "saidas": {"duplicado, recusa, falta informação ou agora não": "registrar"}},
    {"id": "classificar"},
-   {"id": "registrar", "saidas": {"item novo (pedido em texto ou EWM) ou troca de série": "captura"}},
+   {"id": "registrar", "saidas": {"item novo (pedido em texto ou EWM) ou troca de série": "cadastro"}},
    {"id": "commit-na-branch-base", "de": "commit-na-branch-base"},
    {"id": "encaminhar", "saidas": {"mais um item": "ler", "não": "fim"}},
-   {"id": "captura", "de": "captura", "saidas": {"linha preparada, com a triagem aplicada": "commit-na-branch-base"}}
+   {"id": "cadastro", "de": "cadastro", "saidas": {"linha preparada, com a triagem aplicada": "commit-na-branch-base"}}
  ]}
 ---
 # Triar — decidir se o item entra

@@ -1,5 +1,5 @@
 ---
-{"resumo": "Captura comum: o único jeito de registrar item; grava o tipo, a linha e o corpo mínimo na branch base e volta a quem incluiu."}
+{"resumo": "Cadastro comum: o único jeito de registrar item; grava o tipo, a linha e o corpo mínimo na branch base e volta a quem incluiu."}
 ---
 ## Entrada
 
@@ -30,12 +30,12 @@ gravar na mesma gravação os campos que já decidiu (status `aceita`, tamanho, 
    `sa-atender/registro.md`, com o cabeçalho Categoria · Origem · Pedido por · Prazo · Responsável e a seção Pedido.
    Épico: só a linha. `slug` = título em kebab-case, sem acento, até 5 palavras. Dado de cliente nunca vai ao git:
    fica em `.sabia/local/sustentacao/<ID>/`.
-6. **Gravar.** Pelo commit direto na branch base (`backlog: captura <id>`), ou junto com as linhas de quem incluiu, num
+6. **Gravar.** Pelo commit direto na branch base (`backlog: cadastro <id>`), ou junto com as linhas de quem incluiu, num
    commit só. No autopilot não grave: siga a regra do autopilot do commit direto na branch base.
 
 ## Saída
 
-"capturado `<id>` · `<tipo>` · `<status>`" e volta ao passo que incluiu. A triagem da fatia ou do bug `nova` é pela
+"cadastrado `<id>` · `<tipo>` · `<status>`" e volta ao passo que incluiu. A triagem da fatia ou do bug `nova` é pela
 `sa-triar.triar`; a sustentação nova já está na fila da `sa-atender.atender`.
 
 ## Pare se

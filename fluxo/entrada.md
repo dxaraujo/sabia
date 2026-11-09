@@ -25,13 +25,13 @@ Senão, nesta ordem; o primeiro caso que casar decide:
    `origin/<branch_base>`; sem rede, o local). Id do Sabiá → a linha dele. Número do EWM → a linha com esse número na
    coluna `ib`. Tarefa do EWM → a linha do `sprint-<nn>.md` que a tem em Tarefas e, por ela, o item. Fatia ou bug
    com branch `<id>`: o `status.md` dela (Fase) completa o estado, mas o status vem da linha da branch base. Pedido em
-   texto ou id fora do `backlog.md` → pergunte "não está registrado: capturo agora?". Com o "sim", rode a captura
+   texto ou id fora do `backlog.md` → pergunte "não está registrado: cadastro agora?". Com o "sim", rode o cadastro
    comum (a linha nasce `nova`; épico, `a-moldar`) e siga só se os vizinhos deste fluxo aceitam esse status; senão
-   diga "capturado `<id>`; a triagem é pela `sa-triar.triar`" e pare. Nunca invente dado de work item: o EWM (pela
+   diga "cadastrado `<id>`; a triagem é pela `sa-triar.triar`" e pare. Nunca invente dado de work item: o EWM (pela
    `sa-elm.item`) e a pessoa só completam.
 2. **Terminal?** Status `concluida`, `concluido`, `cancelada` ou `cancelado` → mostre o status e a `obs` e pare. Com
    `virou <id>` na `obs`, diga "o item seguiu como `<id>`". Pedido novo sobre item terminal não reabre nada: é item
-   novo pela captura comum, com `origem <id>` na `obs`.
+   novo pelo cadastro comum, com `origem <id>` na `obs`.
 3. **Adiada?** Só fatia e bug. `adiada até <data>` com a data no futuro → avise ("adiada até `<data>`: `<motivo da
    obs>`") e pergunte "seguir mesmo assim?". Sim: acrescente na `obs` `adiamento ignorado (<usuario>, AAAA-MM-DD)`, e
    o status volta a `aceita`. Não: pare. Data já passada: o status volta a `aceita` sem perguntar. A correção grava
@@ -59,7 +59,7 @@ passo `entrada` na definição do fluxo indica para aquele estado.
 
 ## Pare se
 
-- Não registrado sem o "sim" à captura, terminal, adiada sem o "sim", vizinho ou fora deste fluxo → a frase do caso,
+- Não registrado sem o "sim" ao cadastro, terminal, adiada sem o "sim", vizinho ou fora deste fluxo → a frase do caso,
   com a `skill.fluxo` seguinte quando há uma, e pare.
 - Fora do `equipe.json` ou sem a booleana do papel → a frase do caso e pare.
 - Branch `fatia`: sem o "sim" à troca, árvore suja ou branch no autopilot → avise e pare.

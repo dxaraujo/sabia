@@ -12,7 +12,7 @@ Os achados (passo `criterios-revisao`).
 | Destino | O que acontece |
 |---|---|
 | corrige | thread no MR; ajuste pequeno vai como suggested change, que o autor aplica |
-| adia | captura de um bug ou fatia com `origem FT-nnn` na `obs` (passo `captura`) |
+| adia | cadastro de um bug ou fatia com `origem FT-nnn` na `obs` (passo `cadastro`) |
 | volta-plano | thread para o autor, que segue pela `sa-plano.replanejar` |
 | volta-spec | thread; o autor registra em Em aberto do `status.md` a pergunta ao especificador, que decide (com ELM, ajusta o `elm/` pela `sa-especificar.elm`; sem ELM, a decisão entra nas Decisões da ficha) e a `sa-plano.replanejar` recopia o texto para o delta |
 | descarta | o motivo vai na thread |
@@ -23,7 +23,7 @@ Os achados (passo `criterios-revisao`).
 
 ## Saída
 
-Achados triados e o MR aprovado ou com mudanças pedidas. Algum `adia` → passo `captura`, um por achado adiado.
+Achados triados e o MR aprovado ou com mudanças pedidas. Algum `adia` → passo `cadastro`, um por achado adiado.
 
 ## Pare se
 

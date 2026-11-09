@@ -18,7 +18,7 @@ Item que não se aplica à trilha (a trivial não tem plano; a rápida do OpenSp
 | Destino | Quando |
 |---|---|
 | corrige | o autor corrige nesta fatia |
-| adia | problema real fora do escopo da fatia: vira item novo pela captura comum |
+| adia | problema real fora do escopo da fatia: vira item novo pelo cadastro comum |
 | volta-plano | o plano não serve mais: `sa-plano.replanejar` |
 | volta-spec | o comportamento diverge da spec ou a spec parece errada: decide o especificador |
 | descarta | não procede; o motivo fica registrado |

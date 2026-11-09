@@ -23,7 +23,7 @@ agente dono do fluxo.
 ## Fases e papéis
 
 ```
-captura (qualquer pessoa ou skill) ─► triagem sa-triar.triar
+cadastro (qualquer pessoa ou skill) ─► triagem sa-triar.triar
   ├─ épico ───────► sa-refinar.moldar (pitch, go/kill) ─► sa-prd.prd ─► sa-refinar.fatiar
   ├─ fatia · bug ─► sa-refinar.detalhar (ficha: regras · CT-nn · Artefatos afetados [+ elm/]) ─► elegível ─► sa-refinar.ajustar
   └─ sustentação ─► sa-atender.atender
@@ -37,7 +37,7 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
 
 - **Papéis** são booleanas no `equipe.json`. `desenvolvedor`: puxa item para desenvolvimento e revisa o MR de outro
   autor. `especificador`: aprova os arquivos de `elm/` e publica no ELM. `produto`: decide go/kill, ordena e aprova
-  pitch, PRD e ficha. Captura, triagem e revisão humana ficam abertos a qualquer pessoa.
+  pitch, PRD e ficha. Cadastro, triagem e revisão humana ficam abertos a qualquer pessoa.
 - **Identidade** é o usuário do GitLab: o `usuario` do `equipe.json` é o autor do MR e o `@dono` no CODEOWNERS. O
   `elm_login` é opcional e só a `sa-elm` o lê.
 - **Agentes.** A pessoa abre a sessão num dos dois principais: `sa-desenvolvedor` (desenvolvimento, plano, MR, revisão humana,
@@ -121,7 +121,7 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 |---|---|
 | instalar ou atualizar o Sabiá no projeto, os agentes, o formato da spec, "usa ELM?" · customizar ou descustomizar um passo ou template | `sa-setup` (`sa-setup.configurar` · `sa-setup.customizar`) |
 | onde parei · minha próxima · o estado de `<id>` · pendências (publicação pendente, travas de artefato) · lições aprendidas para a review · fechar a sessão | `sa-status` (`sa-status.painel` · `sa-status.item` · `sa-status.minha-proxima` · `sa-status.pendencias` · `sa-status.licoes-aprendidas` · `sa-status.fechar-sessao`) |
-| registrar uma demanda sem triar · triar a fila das linhas `nova` | `sa-triar` (`sa-triar.capturar` · `sa-triar.triar`) |
+| registrar uma demanda sem triar · triar a fila das linhas `nova` | `sa-triar` (`sa-triar.cadastrar` · `sa-triar.triar`) |
 | ideia nova, pitch, go/kill · refinamento conjunto, ficha, artefatos afetados e `elm/` da fatia · fatiar o épico · editar, dividir ou cancelar um item pronto | `sa-refinar` (`sa-refinar.moldar` · `sa-refinar.detalhar` · `sa-refinar.fatiar` · `sa-refinar.ajustar`) |
 | escrever o PRD do épico depois do go, ou mudar o PRD | `sa-prd` (`sa-prd.prd`) |
 | os arquivos de `elm/` da fatia · protótipo de tela e aprovação do cliente · ATA de reunião (transcrição em `.sabia/local/reunioes/`) · archive da spec depois do merge | `sa-especificar` (`sa-especificar.elm` · `sa-especificar.prototipo` · `sa-especificar.reuniao` · `sa-especificar.archive`) |

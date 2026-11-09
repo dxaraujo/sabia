@@ -13,7 +13,7 @@
    {"id": "revisar", "chama": "sa-revisar.revisar", "saidas": {"completo com parte por escrever, ou achado corrige": "escrever", "autopilot, 2ª reprovação seguida": "→ sa-desenvolver.codificar.disjuntor"}},
    {"id": "aprovar", "saidas": {"ajuste pedido por quem desenvolve": "escrever"}},
    {"id": "seguir", "saidas": {"IA supervisionada ou IA autopilot": "→ sa-desenvolver.codificar", "manual: Retomar gravado, sessão encerrada até o 'terminei'": "fim"}},
-   {"id": "captura", "de": "captura"},
+   {"id": "cadastro", "de": "cadastro"},
    {"id": "gravar", "de": "commit-na-branch-base"}
  ]}
 ---
@@ -27,7 +27,7 @@ e registra. Modelos: o template `sa-plano/plano.md` e o template `sa-plano/resea
 Deste fluxo: item `em-andamento`, branch `<id>`, pasta da spec com `status.md`, trilha rápida ou completo e Fase `—`.
 O manual segue as regras da IA supervisionada: a pessoa está presente.
 
-Os passos `captura` e `gravar` são a captura comum e o commit direto na branch base: outros passos os incluem e voltam.
+Os passos `cadastro` e `gravar` são o cadastro comum e o commit direto na branch base: outros passos os incluem e voltam.
 
 ## Entrada: vizinhos
 

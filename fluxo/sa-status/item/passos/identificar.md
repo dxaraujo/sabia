@@ -12,7 +12,7 @@ Procure, nesta ordem:
 2. o número na coluna `ib`;
 3. a tarefa (`DEV 123`, `ESP 456`, `ATD 789` ou só o número) na coluna Tarefas dos `sprint-<nn>.md`.
 
-Texto sem id → pedido não registrado → `sa-triar.triar` (ou `sa-triar.capturar`, para só registrar). Id que não
+Texto sem id → pedido não registrado → `sa-triar.triar` (ou `sa-triar.cadastrar`, para só registrar). Id que não
 está em lugar nenhum → diga que não está registrado e ofereça as mesmas duas. Nunca invente dado de item.
 
 ## Saída

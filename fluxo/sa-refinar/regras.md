@@ -17,7 +17,7 @@ Ficha da fatia e do bug: o template `sa-refinar/ficha.md`. Pitch do épico: o te
   Aprovado volta a linha para `**Aprovado:** —` até a nova aprovação.
 - Decisões vão na seção Decisões do documento (pitch antes do go, PRD depois, ficha na fatia), sempre em tabela
   `D-nn | Decisão | Por quê | Quem | Quando | Fonte`.
-- O id nunca muda: vira épico, dividir e juntar criam linha nova pela captura comum, com `veio de <id>`, e a antiga
+- O id nunca muda: vira épico, dividir e juntar criam linha nova pelo cadastro comum, com `veio de <id>`, e a antiga
   fica `cancelada` com `virou <id>` quando sai.
 - Item refinado segue editável até alguém puxar (status `em-andamento`). Dúvida grande vira spike, protótipo ou
   reunião, nunca épico; só o que passa de G vira épico.

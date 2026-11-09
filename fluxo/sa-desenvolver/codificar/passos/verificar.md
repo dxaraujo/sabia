@@ -13,7 +13,7 @@ A branch revisada, sem BLOQUEANTE aberto.
 3. Por cenário: ✅ aceito · ❌ rejeitado · ⚠️ ambiente · 🔁 possível alteração. Fecho: `ACEITO`, `REJEITADO` ou
    `AMBIENTE`. Rápida e completo: o verificador grava o `CT.csv`; trivial: só a evidência, que vai ao MR.
 4. ❌ → tarefa. 🔁 → decida antes do MR: código errado vira ❌; a spec muda → Em aberto ao especificador.
-   "Fora dos cenários" do 🔎 → passo `captura` (`obs` `origem FT-nnn`).
+   "Fora dos cenários" do 🔎 → passo `cadastro` (`obs` `origem FT-nnn`).
 5. `AMBIENTE`: fora do autopilot, a pessoa decide; no autopilot, devolve à pessoa.
 6. Commit do `CT.csv` na branch.
 

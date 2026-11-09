@@ -6,15 +6,15 @@
    {"id": "entrada", "de": "entrada", "papel": "produto", "branch": "nao"},
    {"id": "previa", "saidas": {"ordenar": "ordenar", "dividir": "dividir", "juntar": "juntar", "editar": "editar", "cancelar a fatia ou o bug": "cancelar-fatia", "cancelar o épico": "cancelar-epico", "sem o ok do P.O.": "seguir"}},
    {"id": "ordenar", "saidas": {"ordem pronta": "gravar"}},
-   {"id": "dividir", "saidas": {"partes novas": "captura"}},
+   {"id": "dividir", "saidas": {"partes novas": "cadastro"}},
    {"id": "juntar", "saidas": {"a soma passa de G": "previa", "junção pronta": "gravar"}},
-   {"id": "editar", "saidas": {"cenário novo em fatia já entregue": "captura", "edição pronta": "gravar"}},
+   {"id": "editar", "saidas": {"cenário novo em fatia já entregue": "cadastro", "edição pronta": "gravar"}},
    {"id": "cancelar-fatia", "saidas": {"cancelamento pronto": "gravar"}},
    {"id": "cancelar-epico", "saidas": {"fatia em-andamento": "seguir", "cancelamento pronto": "gravar"}},
    {"id": "gravar"},
    {"id": "commit-na-branch-base", "de": "commit-na-branch-base"},
    {"id": "seguir", "chama": "sa-elm.finalizar", "saidas": {"mais um ajuste": "previa", "não": "fim"}},
-   {"id": "captura", "de": "captura", "saidas": {"linhas novas preparadas": "gravar"}}
+   {"id": "cadastro", "de": "cadastro", "saidas": {"linhas novas preparadas": "gravar"}}
  ]}
 ---
 # Ajustar — o backlog refinado até alguém puxar

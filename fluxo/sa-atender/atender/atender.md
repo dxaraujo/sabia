@@ -11,7 +11,7 @@
    {"id": "fora-do-escopo", "saidas": {"categoria errada: o item ficou 'cancelada · virou <novo id>'": "commit-na-branch-base"}},
    {"id": "finalizar", "chama": "sa-elm.finalizar"},
    {"id": "desdobramentos", "saidas": {"nenhum desdobramento": "commit-na-branch-base"}},
-   {"id": "captura", "de": "captura"},
+   {"id": "cadastro", "de": "cadastro"},
    {"id": "commit-na-branch-base", "de": "commit-na-branch-base"}
  ]}
 ---

@@ -1,5 +1,5 @@
 ---
-{"resumo": "Lista as fatias do épico que citam os requisitos mudados e leva a mudança a cada uma pelo status: ajuste, aviso ao responsável ou captura."}
+{"resumo": "Lista as fatias do épico que citam os requisitos mudados e leva a mudança a cada uma pelo status: ajuste, aviso ao responsável ou cadastro."}
 ---
 ## Entrada
 
@@ -13,12 +13,12 @@ Para cada fatia do épico cujos artefatos afetados ou cenários citam um requisi
   cancelar).
 - **`em-andamento`** → avise o responsável (coluna responsável do `backlog.md`); com ELM, o texto do `elm/` volta ao
   especificador pela `sa-especificar.elm`.
-- **`concluida`** → o que muda vira item novo pela captura comum (passo `capturar`): tipo fatia, pai `EP-nn`, obs
+- **`concluida`** → o que muda vira item novo pelo cadastro comum (passo `cadastrar`): tipo fatia, pai `EP-nn`, obs
   `veio de EP-nn v<N>`.
 
 ## Saída
 
-Alguma fatia `concluida` atingida → passo `capturar`. Nenhuma → passo `devolver`.
+Alguma fatia `concluida` atingida → passo `cadastrar`. Nenhuma → passo `devolver`.
 
 ## Pare se
 

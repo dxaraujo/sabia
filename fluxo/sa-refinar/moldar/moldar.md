@@ -3,12 +3,12 @@
  "quando": ["épico a-moldar: pitch.md de uma página (Shape Up) e go/kill de quem tem produto", "moldar o EP-04", "ideia nova grande", "pitch do épico", "go ou kill do EP-04"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa", "aprovacao-no-documento", "aprovacao-do-cliente", "elm-pela-sa-elm"],
  "passos": [
-   {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao", "saidas": {"ideia grande em texto, ainda não registrada: captura como épico": "captura"}},
+   {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao", "saidas": {"ideia grande em texto, ainda não registrada: cadastro como épico": "cadastro"}},
    {"id": "pitch", "chama": ["sa-entrevistar.entrevistar", "sa-especificar.prototipo", "sa-elm.baixar"]},
-   {"id": "decisao", "saidas": {"cabe em G: nasce a fatia": "captura"}},
-   {"id": "commit-na-branch-base", "de": "commit-na-branch-base", "saidas": {"gravou o épico capturado na entrada": "pitch"}},
+   {"id": "decisao", "saidas": {"cabe em G: nasce a fatia": "cadastro"}},
+   {"id": "commit-na-branch-base", "de": "commit-na-branch-base", "saidas": {"gravou o épico cadastrado na entrada": "pitch"}},
    {"id": "seguir", "saidas": {"go: seguir para o PRD": "→ sa-prd.prd", "cabe em G: seguir para o detalhar": "→ sa-refinar.detalhar", "kill: moldar o próximo épico a-moldar": "entrada", "sem decisão, ou não": "fim"}},
-   {"id": "captura", "de": "captura", "saidas": {"linha preparada": "commit-na-branch-base"}}
+   {"id": "cadastro", "de": "cadastro", "saidas": {"linha preparada": "commit-na-branch-base"}}
  ]}
 ---
 # Moldar — pitch e go/kill do épico

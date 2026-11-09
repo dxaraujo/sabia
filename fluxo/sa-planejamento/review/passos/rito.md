@@ -1,5 +1,5 @@
 ---
-{"resumo": "Mostra os concluídos com o link do MR e os abertos; registra o retorno por item; pedido novo vai à captura."}
+{"resumo": "Mostra os concluídos com o link do MR e os abertos; registra o retorno por item; pedido novo vai ao cadastro."}
 ---
 ## Entrada
 
@@ -12,12 +12,12 @@ A sprint e o `backlog.md` da branch base.
    planejamento.
 2. Registre o retorno de quem está presente, uma linha por item concluído: `<id> · <retorno>`, ou `<id> · sem
    retorno`. Vai na `## Review` do `sprint-<nn>.md` (passo `gravar`).
-3. Pedido novo vira item pelo passo `captura`, com `origem review <AAAA>/Sprint <nn>` na `obs`. Item concluído não
-   reabre: o pedido sobre ele também entra pela captura.
+3. Pedido novo vira item pelo passo `cadastro`, com `origem review <AAAA>/Sprint <nn>` na `obs`. Item concluído não
+   reabre: o pedido sobre ele também entra pelo cadastro.
 
 ## Saída
 
-Pedido novo → passo `captura`. Sem pedido novo → passo `regras-aprendidas`.
+Pedido novo → passo `cadastro`. Sem pedido novo → passo `regras-aprendidas`.
 
 ## Pare se
 

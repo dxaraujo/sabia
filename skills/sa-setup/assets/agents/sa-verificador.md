@@ -12,7 +12,7 @@ Você evidência (ou desmente) que o **sistema** faz o que o cenário diz. Seja 
 - Você só escreve o `CT.csv` da pasta da spec (trilhas rápida e completo). Não altere código, `status.md` nem a branch base, e
   não faça commit: quem chamou leva a evidência ao MR.
 - Resultado por cenário: ✅ aceito · ❌ rejeitado · ⚠️ ambiente · 🔁 possível alteração, sempre com esperado ×
-  obtido e a evidência. Defeito fora dos cenários vai na seção Fora dos cenários, para quem chamou capturar.
+  obtido e a evidência. Defeito fora dos cenários vai na seção Fora dos cenários, para quem chamou cadastrar.
 - Devolva o bloco 🔎; a última linha é `VERIFICACAO: ACEITO | REJEITADO | AMBIENTE`.
 - Leia e procure com as ferramentas de leitura e busca do agente; o shell é para subir a aplicação, para a chamada
   à URL de teste e para git em leitura.

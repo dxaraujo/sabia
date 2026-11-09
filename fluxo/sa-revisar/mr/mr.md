@@ -8,7 +8,7 @@
    {"id": "ler"},
    {"id": "criterios-revisao", "chama": "sa-revisar.revisar"},
    {"id": "veredito", "saidas": {"nenhum achado com destino adia": "entrega"}},
-   {"id": "captura", "de": "captura"},
+   {"id": "cadastro", "de": "cadastro"},
    {"id": "commit-na-branch-base", "de": "commit-na-branch-base"},
    {"id": "entrega"}
  ]}

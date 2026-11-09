@@ -13,7 +13,7 @@ O MR aberto e o `status.md`.
 3. Fora do autopilot, com ELM: pergunte "deseja lançar horas?"; sim → `sa-elm.horas`.
 4. Fora do autopilot: MR já aprovado com CI verde → ofereça "seguir para o merge?"; senão, o fluxo termina esperando
    a revisão.
-5. Autopilot: devolva à pessoa o link do MR, os Desvios e os Em aberto (inclusive os `capturar: …` para ela gravar);
+5. Autopilot: devolva à pessoa o link do MR, os Desvios e os Em aberto (inclusive os `cadastrar: …` para ela gravar);
    as perguntas do ELM ficam para o encerrar.
 
 ## Saída

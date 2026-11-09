@@ -13,7 +13,7 @@ da pasta da spec (Fase e Retomar) e pelo primeiro item não marcado do `tasks.md
   (`sa-verificar.verificar`): nunca as faça você. Fatos do código, quando faltam, vêm do subagente `sa-pesquisador`.
 - O texto aprovado dos requisitos (ficha e `elm/`) vai para o delta como está. Precisa mudar → Em aberto ao
   especificador. Regra sem decisão → Em aberto ao P.O.; nunca decida no código.
-- Trabalho fora do escopo, DDL pendente e defeito achado viram item novo pela captura comum (obs `origem <id>`);
+- Trabalho fora do escopo, DDL pendente e defeito achado viram item novo pelo cadastro comum (obs `origem <id>`);
   o escopo do item não cresce.
 - Linhas do `backlog.md` e do `sprint-<nn>.md` vão direto na branch base, num commit pequeno.
   Código e spec vão na branch `<id>`, com MR.

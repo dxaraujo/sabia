@@ -38,12 +38,12 @@ Seção sem conteúdo fica só com o título.
 
 | Campo | Significado | Valores | Preenche |
 |---|---|---|---|
-| Categoria | Confirmada antes de gravar; define a série do id e não muda | AT (Atendimento) · IM (Implantação) · BD (Banco de dados) · IN (Infra) · OP (Operação) · EX (Apoio a outros times) | captura comum, pela `sa-atender.atender` ou pela `sa-triar.triar` |
-| Origem | De onde veio o pedido | `chamado <n>` · `EWM <n>` · `pedido` · `origem <id>` (desdobramento ou DDL de fatia) | captura comum |
-| Pedido por | Área ou papel, sem nome de pessoa | texto | captura comum |
-| Prazo | Data-limite | `AAAA-MM-DD` · `—` | captura comum · `sa-atender.atender` |
+| Categoria | Confirmada antes de gravar; define a série do id e não muda | AT (Atendimento) · IM (Implantação) · BD (Banco de dados) · IN (Infra) · OP (Operação) · EX (Apoio a outros times) | cadastro comum, pela `sa-atender.atender` ou pela `sa-triar.triar` |
+| Origem | De onde veio o pedido | `chamado <n>` · `EWM <n>` · `pedido` · `origem <id>` (desdobramento ou DDL de fatia) | cadastro comum |
+| Pedido por | Área ou papel, sem nome de pessoa | texto | cadastro comum |
+| Prazo | Data-limite | `AAAA-MM-DD` · `—` | cadastro comum · `sa-atender.atender` |
 | Responsável | Quem atende | `usuario` do `equipe.json` · `—` | `sa-atender.atender` |
-| Pedido | O que o cliente precisa, sem dado pessoal | texto | captura comum |
+| Pedido | O que o cliente precisa, sem dado pessoal | texto | cadastro comum |
 | Critério de pronto | Quando se considera resolvido | uma frase | `sa-atender.atender` |
 | Atividade | O que foi feito: consultas, pesquisa de código (`arquivo:linha`), passos em ambiente (o que · onde · resultado), troca de responsável, regra em aberto ao P.O. | linhas `AAAA-MM-DD · feito · próximo` | `sa-atender.atender` · fechar a sessão da `sa-status` |
 | Resposta | Texto enviado, sem dado que identifique pessoas | texto | `sa-atender.atender` |

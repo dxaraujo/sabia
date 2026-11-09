@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-As decisões (passo `decisao`) e as capturas gravadas, se houve.
+As decisões (passo `decisao`) e os cadastros gravados, se houve.
 
 ## Faça
 

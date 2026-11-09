@@ -20,7 +20,7 @@
    {"id": "as-built"},
    {"id": "mr", "saidas": {"push sem o sim, ou remoto diferente do local": "fim"}},
    {"id": "avisar", "chama": "sa-elm.horas", "travas": ["revisao-independente"], "saidas": {"MR já aprovado e CI verde": "→ sa-desenvolver.encerrar", "esperando a revisão, ou autopilot devolvido": "fim"}},
-   {"id": "captura", "de": "captura"},
+   {"id": "cadastro", "de": "cadastro"},
    {"id": "gravar", "de": "commit-na-branch-base"}
  ]}
 ---
@@ -41,7 +41,7 @@ validações e, dali em diante, roda como na IA supervisionada (a pessoa decide 
 **Autopilot**: sem perguntas; os sins que o autopilot libera (push da própria branch, merge da branch base nela, MR dela)
 seguem direto, e o resto devolve à pessoa. Tudo roda em `cd .sabia/local/wt/<id> && <comando>`.
 
-Os passos `captura` e `gravar` são a captura comum e o commit direto na branch base: outros passos os incluem e voltam.
+Os passos `cadastro` e `gravar` são o cadastro comum e o commit direto na branch base: outros passos os incluem e voltam.
 
 ## Entrada: vizinhos
 

@@ -273,4 +273,4 @@ OpenSpec:
 - Kiro: o bloco ```` ```json ```` com `waves` não vazio é obrigatório; toda tarefa folha não marcada aparece em
   exatamente uma wave, inclusive as opcionais `*`; ids de wave contíguos a partir de 0; dependente (ou que mexe no
   mesmo arquivo) vai numa wave posterior.
-- DDL não vira tarefa: vai para Riscos e, pela captura, para um item BD.
+- DDL não vira tarefa: vai para Riscos e, pelo cadastro, para um item BD.

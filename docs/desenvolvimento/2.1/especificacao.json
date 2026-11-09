@@ -1,5 +1,5 @@
 {
- "geral": "Sabiá 2.1 · 7 disciplinas · 5 agentes (principais sa-desenvolvedor · sa-especificador; subagentes sa-pesquisador · sa-revisor · sa-verificador) · alvos Kiro e opencode\npapéis = booleanas no equipe.json · identidade = usuário do GitLab\n   qualquer pessoa ── captura · triagem · revisão humana\n   desenvolvedor ──── puxa para desenvolvimento · revisa MR de outro autor\n   especificador ──── aprova os arquivos de elm/ · publica no ELM\n   produto ────────── go/kill · ordena · aprova pitch, PRD e ficha\n\ndemanda ─► fluxo/captura.md (toda skill que captura · entrada direta: sa-triar.capturar)\n   │        tipo ∈ épico · fatia · bug · sustentação        id: EP-nn · FT-nnn · <categoria>-nnn\n   └─► 1 TRIAGEM ─────────── sa-triar.triar                       (qualquer pessoa)\n        ├─ épico ──────────► 2 REFINAMENTO   sa-refinar.moldar: pitch.md ─► go/kill (produto)\n        │                      └─ go ─► 4 ESPECIFICAÇÃO   sa-prd.prd: prd.md aprovado (produto)\n        │                               └─► sa-refinar.fatiar ─► fatias FT-nnn (pai EP-nn)\n        ├─ fatia · bug ────► 2 REFINAMENTO   sa-refinar.detalhar: ficha (regras · CT-nn · Artefatos afetados) [+ elm/] ─► elegível\n        │                      └─ sa-refinar.ajustar até alguém puxar\n        └─ sustentação ────► 7 SUSTENTAÇÃO   sa-atender.atender (quem atende puxa, dentro da reserva de capacidade)\n\n3 PLANEJAMENTO ────── sa-planejamento.inicial · .sprint (virada) · .review · .retrospectiva\n                      daily: sa-status.painel (WIP · vazão · idade · lead time · pendências de rastreio)\n5 DESENVOLVIMENTO ─── sa-desenvolver.iniciar ─► [sa-plano.plano: rápida · completo] ─► sa-desenvolver.codificar ─► MR\n                      quem codifica, ao assumir: IA supervisionada · IA autopilot (sa-desenvolvedor como subagente na worktree .sabia/local/wt/<id>) · manual\n6 REVISÃO E ACEITE ── sa-verificar.verificar · sa-revisar.mr (desenvolvedor ≠ autor) · [sa-verificar.revisao-humana, por risco]\n                      └─► sa-desenvolver.encerrar (merge) ─► sa-especificar.archive ─► Lições aprendidas ─► curadoria na review\n\nestado (linhas do backlog.md e do sprint-<nn>.md): commit pequeno direto na branch base · fluxo/commit-na-branch-base.md\ndocumentos (pitch.md · prd.md · ficha · elm/): direto na branch base, com 'Aprovado: <usuário> · <data>'\nMR: só para código (com o delta da spec, design e tasks)\n\n══════════════════ borda ══════════════════\nELM = sa-elm (DOORS + EWM). Só com ELM configurado; a skill do trabalho oferece e nunca trava.\n   assumir ──────────► sa-elm.item (tarefa DEV · ESP · ATD)\n   horas ────────────► sa-elm.horas (só por pergunta ou pedido)\n   concluir ─────────► sa-elm.finalizar\n   refinamento ──────► sa-elm.baixar (original do DOORS em elm/)\n   depois do merge ──► sa-elm.publicar (especificador; sem a booleana: 'Publicação: pendente')\nsem ELM: nenhuma oferta aparece · especificação vigente no repositório (OpenSpec: archive funde o delta · Kiro: .kiro/specs/)",
+ "geral": "Sabiá 2.1 · 7 disciplinas · 5 agentes (principais sa-desenvolvedor · sa-especificador; subagentes sa-pesquisador · sa-revisor · sa-verificador) · alvos Kiro e opencode\npapéis = booleanas no equipe.json · identidade = usuário do GitLab\n   qualquer pessoa ── cadastro · triagem · revisão humana\n   desenvolvedor ──── puxa para desenvolvimento · revisa MR de outro autor\n   especificador ──── aprova os arquivos de elm/ · publica no ELM\n   produto ────────── go/kill · ordena · aprova pitch, PRD e ficha\n\ndemanda ─► fluxo/cadastro.md (toda skill que cadastro · entrada direta: sa-triar.cadastrar)\n   │        tipo ∈ épico · fatia · bug · sustentação        id: EP-nn · FT-nnn · <categoria>-nnn\n   └─► 1 TRIAGEM ─────────── sa-triar.triar                       (qualquer pessoa)\n        ├─ épico ──────────► 2 REFINAMENTO   sa-refinar.moldar: pitch.md ─► go/kill (produto)\n        │                      └─ go ─► 4 ESPECIFICAÇÃO   sa-prd.prd: prd.md aprovado (produto)\n        │                               └─► sa-refinar.fatiar ─► fatias FT-nnn (pai EP-nn)\n        ├─ fatia · bug ────► 2 REFINAMENTO   sa-refinar.detalhar: ficha (regras · CT-nn · Artefatos afetados) [+ elm/] ─► elegível\n        │                      └─ sa-refinar.ajustar até alguém puxar\n        └─ sustentação ────► 7 SUSTENTAÇÃO   sa-atender.atender (quem atende puxa, dentro da reserva de capacidade)\n\n3 PLANEJAMENTO ────── sa-planejamento.inicial · .sprint (virada) · .review · .retrospectiva\n                      daily: sa-status.painel (WIP · vazão · idade · lead time · pendências de rastreio)\n5 DESENVOLVIMENTO ─── sa-desenvolver.iniciar ─► [sa-plano.plano: rápida · completo] ─► sa-desenvolver.codificar ─► MR\n                      quem codifica, ao assumir: IA supervisionada · IA autopilot (sa-desenvolvedor como subagente na worktree .sabia/local/wt/<id>) · manual\n6 REVISÃO E ACEITE ── sa-verificar.verificar · sa-revisar.mr (desenvolvedor ≠ autor) · [sa-verificar.revisao-humana, por risco]\n                      └─► sa-desenvolver.encerrar (merge) ─► sa-especificar.archive ─► Lições aprendidas ─► curadoria na review\n\nestado (linhas do backlog.md e do sprint-<nn>.md): commit pequeno direto na branch base · fluxo/commit-na-branch-base.md\ndocumentos (pitch.md · prd.md · ficha · elm/): direto na branch base, com 'Aprovado: <usuário> · <data>'\nMR: só para código (com o delta da spec, design e tasks)\n\n══════════════════ borda ══════════════════\nELM = sa-elm (DOORS + EWM). Só com ELM configurado; a skill do trabalho oferece e nunca trava.\n   assumir ──────────► sa-elm.item (tarefa DEV · ESP · ATD)\n   horas ────────────► sa-elm.horas (só por pergunta ou pedido)\n   concluir ─────────► sa-elm.finalizar\n   refinamento ──────► sa-elm.baixar (original do DOORS em elm/)\n   depois do merge ──► sa-elm.publicar (especificador; sem a booleana: 'Publicação: pendente')\nsem ELM: nenhuma oferta aparece · especificação vigente no repositório (OpenSpec: archive funde o delta · Kiro: .kiro/specs/)",
  "principios": [
   [
    "O mercado é o padrão",
@@ -7,7 +7,7 @@
   ],
   [
    "Papéis são permissões",
-   "equipe.json com booleanas. desenvolvedor: puxa item para desenvolvimento e revisa MR de outro autor. especificador: aprova os arquivos de elm/ e publica no ELM. produto: go/kill, ordena, aprova pitch, PRD e ficha. Captura, triagem e revisão humana: qualquer pessoa. Nenhuma regra depende de senioridade."
+   "equipe.json com booleanas. desenvolvedor: puxa item para desenvolvimento e revisa MR de outro autor. especificador: aprova os arquivos de elm/ e publica no ELM. produto: go/kill, ordena, aprova pitch, PRD e ficha. Cadastro, triagem e revisão humana: qualquer pessoa. Nenhuma regra depende de senioridade."
   ],
   [
    "Identidade = GitLab",
@@ -38,8 +38,8 @@
    "Rota (trivial · rápida · completo) e autonomia (IA supervisionada · IA autopilot · manual) são de quem desenvolve. A triagem só registra e ordena. 'Vira épico' devolve o item ao produto."
   ],
   [
-   "Uma captura só",
-   "Toda skill que captura inclui fluxo/captura.md, que grava o tipo. Desvio maior, DDL pendente e desdobramento viram linha nova e não crescem o escopo do item."
+   "Um cadastro só",
+   "Toda skill que cadastro inclui fluxo/cadastro.md, que grava o tipo. Desvio maior, DDL pendente e desdobramento viram linha nova e não crescem o escopo do item."
   ],
   [
    "Encadeamento",
@@ -59,7 +59,7 @@
    "k": "triagem",
    "nome": "Triagem",
    "resumo": "Qualquer pessoa registra e tria. O item é a linha no backlog.md, com o tipo e o id da série. O corpo do item é achado pelo id. A triagem aceita, adia, cancela ou pede informação, e encaminha cada tipo para a disciplina seguinte. Trilha e autonomia não são decididos aqui.",
-   "arvore": "demanda (qualquer pessoa, skill ou integração)   (quem descobre)\n └─► captura ─ fluxo/captura.md, incluído por toda skill que captura\n       entrada direta 'registrar sem triar': sa-triar.capturar\n       do EWM, a pedido: sa-elm.importar-backlog (Defeito → bug · Item de Backlog → fatia)\n       grava por fluxo/commit-na-branch-base.md: linha no backlog.md + corpo mínimo do tipo\n         id = maior da série + 1, lido depois do pull · tipo · relator · obs com a origem\n         ├─ épico ──────► EP-nn · a-moldar ─► fila do sa-refinar.moldar\n         ├─ fatia · bug ─► FT-nnn · nova · pai EP-nn ou vazio\n         └─ sustentação ─► <categoria>-nnn (AT · IM · BD · IN · OP · EX) · nova · registro.md\n                           categoria confirmada antes de gravar\n       ─► devolve a quem chamou\n └─► fila = linhas 'nova' ─► sa-status.painel mostra\n └─► sa-triar.triar   (qualquer pessoa; na prática P.O. e SM)\n       lê a linha e procura duplicado no backlog.md\n       ├─ duplicado ─────────► cancelada · obs 'duplicada de <id>'\n       ├─ falta informação ──► fica nova · obs 'falta: <pergunta> · para <relator>'\n       ├─ agora não ─────────► adiada até <data>\n       ├─ recusa ────────────► cancelada · obs com o motivo\n       └─ aceita ─► tamanho (P · M · G) · prioridade (crítica | vazio) · aceita_em\n             ├─ fatia · bug ─► aceita ─► oferece sa-refinar.detalhar\n             ├─ maior que G ─► vira épico: linha EP-nn a-moldar (obs 'veio de FT-nnn')\n             │                 · FT 'cancelada · virou EP-nn' ─► oferece sa-refinar.moldar\n             └─ sustentação ─► fica nova na fila da Sustentação ─► oferece sa-atender.atender\n       grava por fluxo/commit-na-branch-base.md ─► próximo da fila ou segue a oferta\n   expedite: prioridade 'crítica' pela política do acordos.md\n   ELM: a coluna ib guarda só o número do IB; as tarefas (DEV · ESP · ATD) vão no sprint-<nn>.md\n   roadmap.md não muda na triagem (é do planejamento)",
+   "arvore": "demanda (qualquer pessoa, skill ou integração)   (quem descobre)\n └─► cadastro ─ fluxo/cadastro.md, incluído por toda skill que cadastro\n       entrada direta 'registrar sem triar': sa-triar.cadastrar\n       do EWM, a pedido: sa-elm.importar-backlog (Defeito → bug · Item de Backlog → fatia)\n       grava por fluxo/commit-na-branch-base.md: linha no backlog.md + corpo mínimo do tipo\n         id = maior da série + 1, lido depois do pull · tipo · relator · obs com a origem\n         ├─ épico ──────► EP-nn · a-moldar ─► fila do sa-refinar.moldar\n         ├─ fatia · bug ─► FT-nnn · nova · pai EP-nn ou vazio\n         └─ sustentação ─► <categoria>-nnn (AT · IM · BD · IN · OP · EX) · nova · registro.md\n                           categoria confirmada antes de gravar\n       ─► devolve a quem chamou\n └─► fila = linhas 'nova' ─► sa-status.painel mostra\n └─► sa-triar.triar   (qualquer pessoa; na prática P.O. e SM)\n       lê a linha e procura duplicado no backlog.md\n       ├─ duplicado ─────────► cancelada · obs 'duplicada de <id>'\n       ├─ falta informação ──► fica nova · obs 'falta: <pergunta> · para <relator>'\n       ├─ agora não ─────────► adiada até <data>\n       ├─ recusa ────────────► cancelada · obs com o motivo\n       └─ aceita ─► tamanho (P · M · G) · prioridade (crítica | vazio) · aceita_em\n             ├─ fatia · bug ─► aceita ─► oferece sa-refinar.detalhar\n             ├─ maior que G ─► vira épico: linha EP-nn a-moldar (obs 'veio de FT-nnn')\n             │                 · FT 'cancelada · virou EP-nn' ─► oferece sa-refinar.moldar\n             └─ sustentação ─► fica nova na fila da Sustentação ─► oferece sa-atender.atender\n       grava por fluxo/commit-na-branch-base.md ─► próximo da fila ou segue a oferta\n   expedite: prioridade 'crítica' pela política do acordos.md\n   ELM: a coluna ib guarda só o número do IB; as tarefas (DEV · ESP · ATD) vão no sprint-<nn>.md\n   roadmap.md não muda na triagem (é do planejamento)",
    "regras": [
     [
      "Onde o item vive",
@@ -75,7 +75,7 @@
     ],
     [
      "Status na entrada",
-     "Captura: fatia, bug e sustentação nascem 'nova'; o épico nasce 'a-moldar'. Triagem: fatia e bug aceitos → 'aceita'; a sustentação fica 'nova' até alguém puxar; recusa e duplicado → 'cancelada'; agora não → 'adiada até <data>'."
+     "Cadastro: fatia, bug e sustentação nascem 'nova'; o épico nasce 'a-moldar'. Triagem: fatia e bug aceitos → 'aceita'; a sustentação fica 'nova' até alguém puxar; recusa e duplicado → 'cancelada'; agora não → 'adiada até <data>'."
     ],
     [
      "Quem tria",
@@ -183,7 +183,7 @@
     ],
     [
      "Item fora da seleção",
-     "Expedite, captura puxada na hora ou especificação que fechou: a skill que puxa acrescenta a linha no sprint aberto. Não há segundo encaixe."
+     "Expedite, cadastro puxado na hora ou especificação que fechou: a skill que puxa acrescenta a linha no sprint aberto. Não há segundo encaixe."
     ],
     [
      "Reserva de capacidade",
@@ -267,7 +267,7 @@
    "k": "desenvolvimento",
    "nome": "Desenvolvimento",
    "resumo": "Do puxar ao MR: quem desenvolve assume pela branch <id>, escolhe a trilha e a autonomia, planeja na rápida e no completo e codifica com TDD e backpressure em camadas. O autopilot roda num subagente em worktree, com disjuntor. A branch se atualiza só por merge da branch base.",
-   "arvore": "item pronto no sprint-<nn>.md · expedite (crítica) · captura puxada na hora\n └─► sa-desenvolver.iniciar   (quem tem a booleana desenvolvedor)\n       entrada comum fluxo/entrada.md: existe? · terminal · adiada · é deste fluxo · branch\n       DoR da ficha · sinal de WIP do acordos.md\n       assumir: tamanho (P · M · G) · trilha (trivial · rápida · completo) · autonomia (IA supervisionada · IA autopilot · manual; manual = só o código-fonte, e o 'terminei' segue do validar)\n          └─ maior que G ─► vira épico (EP-nn a-moldar · FT 'cancelada · virou EP-nn'), sem branch ─► puxa outra\n       branch <id> a partir da branch base · pasta ft-<nnn>-<slug> (rápida · completo) · status.md\n       backlog: em-andamento · iniciada_em · responsável · linha no sprint aberto, se faltar\n          (fluxo/commit-na-branch-base.md) ─► push da branch = atribuição\n       com ELM: 'quer criar o item no ELM?' ─► sa-elm.item (DEV)\n       ├─ trivial ────────► sa-desenvolver.codificar\n       └─ rápida · completo ─► sa-plano.plano   (quem desenvolve aprova)\n             fatos: sa-pesquisar.pesquisar (sa-pesquisador) ─► a sa-plano grava research.md\n             delta (cópia do texto aprovado) · design · tasks, conforme trilha × formato\n             completo: requirements ─► design ─► tasks, cada um com 'quer revisar agora?'\n                ─► sa-revisar.revisar (critérios de revisão L)\n             ─► oferece sa-desenvolver.codificar · plano não serve mais ─► sa-plano.replanejar\n └─► sa-desenvolver.codificar   (Fase: implementando)\n       TDD por tarefa · refatoração preparatória no trecho tocado é tarefa do plano\n       backpressure: a cada alteração, compila + testes do trecho tocado\n          antes do MR: suíte completa uma vez (pipeline da branch; local se não houver CI)\n          baseline = último pipeline da branch base: nenhum teste verde fica vermelho\n       atualizar a branch: só merge da branch base (sem rebase)\n       ├─ desvio leve ──────────────► corrige e registra em Desvios do status.md\n       ├─ desvio maior · DDL pendente ─► fluxo/captura.md (BD ou FT, obs 'veio de FT-nnn')\n       ├─ regra sem decisão ────────► Em aberto do status.md ─► sa-entrevistar.entrevistar com o produto\n       │                              para só o que depende dela\n       ├─ texto do requisito muda ──► volta ao especificador (sa-refinar.detalhar)\n       └─ arquitetural · irreversível ─► para e pergunta\n       revisão do agente: sa-revisar.revisar no sa-revisor (critérios de revisão C: spec · padrões · segurança)\n       aceite: sa-verificar.verificar no sa-verificador (Revisão e aceite)\n       MR pelo template: o quê · porquê · evidência · risco · foco · Artefatos afetados ─► Fase pr-aberto ─► sa-revisar.mr\n autopilot (por item, escolhido ao assumir e fixo até o fim, decidido por quem desenvolve)\n       o sa-desenvolvedor como subagente na worktree .sabia/local/wt/<id> · a pessoa segue na branch base · vários itens em paralelo\n       liberado: push da própria branch (sem --force) · merge da branch base nela · abrir/atualizar o MR dela\n       bloqueado: merge do MR · ELM · rede\n       disjuntor: teto do acordos.md ou 2 reprovações seguidas ─► .sabia/local/loop-<id>.md ─► devolve à pessoa\n retomar: sa-status.painel ('<id>' · 'minha próxima') lê o Retomar do status.md\n       ─► 'seguir agora?' ─► sa-desenvolver.codificar\n fechar a sessão: sa-status.fechar-sessao (Retomar · créditos do Kiro em .sabia/creditos/<usuario>.csv)",
+   "arvore": "item pronto no sprint-<nn>.md · expedite (crítica) · cadastro puxado na hora\n └─► sa-desenvolver.iniciar   (quem tem a booleana desenvolvedor)\n       entrada comum fluxo/entrada.md: existe? · terminal · adiada · é deste fluxo · branch\n       DoR da ficha · sinal de WIP do acordos.md\n       assumir: tamanho (P · M · G) · trilha (trivial · rápida · completo) · autonomia (IA supervisionada · IA autopilot · manual; manual = só o código-fonte, e o 'terminei' segue do validar)\n          └─ maior que G ─► vira épico (EP-nn a-moldar · FT 'cancelada · virou EP-nn'), sem branch ─► puxa outra\n       branch <id> a partir da branch base · pasta ft-<nnn>-<slug> (rápida · completo) · status.md\n       backlog: em-andamento · iniciada_em · responsável · linha no sprint aberto, se faltar\n          (fluxo/commit-na-branch-base.md) ─► push da branch = atribuição\n       com ELM: 'quer criar o item no ELM?' ─► sa-elm.item (DEV)\n       ├─ trivial ────────► sa-desenvolver.codificar\n       └─ rápida · completo ─► sa-plano.plano   (quem desenvolve aprova)\n             fatos: sa-pesquisar.pesquisar (sa-pesquisador) ─► a sa-plano grava research.md\n             delta (cópia do texto aprovado) · design · tasks, conforme trilha × formato\n             completo: requirements ─► design ─► tasks, cada um com 'quer revisar agora?'\n                ─► sa-revisar.revisar (critérios de revisão L)\n             ─► oferece sa-desenvolver.codificar · plano não serve mais ─► sa-plano.replanejar\n └─► sa-desenvolver.codificar   (Fase: implementando)\n       TDD por tarefa · refatoração preparatória no trecho tocado é tarefa do plano\n       backpressure: a cada alteração, compila + testes do trecho tocado\n          antes do MR: suíte completa uma vez (pipeline da branch; local se não houver CI)\n          baseline = último pipeline da branch base: nenhum teste verde fica vermelho\n       atualizar a branch: só merge da branch base (sem rebase)\n       ├─ desvio leve ──────────────► corrige e registra em Desvios do status.md\n       ├─ desvio maior · DDL pendente ─► fluxo/cadastro.md (BD ou FT, obs 'veio de FT-nnn')\n       ├─ regra sem decisão ────────► Em aberto do status.md ─► sa-entrevistar.entrevistar com o produto\n       │                              para só o que depende dela\n       ├─ texto do requisito muda ──► volta ao especificador (sa-refinar.detalhar)\n       └─ arquitetural · irreversível ─► para e pergunta\n       revisão do agente: sa-revisar.revisar no sa-revisor (critérios de revisão C: spec · padrões · segurança)\n       aceite: sa-verificar.verificar no sa-verificador (Revisão e aceite)\n       MR pelo template: o quê · porquê · evidência · risco · foco · Artefatos afetados ─► Fase pr-aberto ─► sa-revisar.mr\n autopilot (por item, escolhido ao assumir e fixo até o fim, decidido por quem desenvolve)\n       o sa-desenvolvedor como subagente na worktree .sabia/local/wt/<id> · a pessoa segue na branch base · vários itens em paralelo\n       liberado: push da própria branch (sem --force) · merge da branch base nela · abrir/atualizar o MR dela\n       bloqueado: merge do MR · ELM · rede\n       disjuntor: teto do acordos.md ou 2 reprovações seguidas ─► .sabia/local/loop-<id>.md ─► devolve à pessoa\n retomar: sa-status.painel ('<id>' · 'minha próxima') lê o Retomar do status.md\n       ─► 'seguir agora?' ─► sa-desenvolver.codificar\n fechar a sessão: sa-status.fechar-sessao (Retomar · créditos do Kiro em .sabia/creditos/<usuario>.csv)",
    "regras": [
     [
      "Quem puxa",
@@ -315,7 +315,7 @@
    "k": "revisao",
    "nome": "Revisão e aceite",
    "resumo": "Todo MR de código passa pela revisão do agente, pelo verificador e por um desenvolvedor que não é o autor. A revisão humana só entra por risco. O autor faz o merge com aprovação e CI verde. Depois do merge vêm o status final, o archive da spec, a oferta de finalizar a tarefa no ELM e as lições aprendidas para a curadoria.",
-   "arvore": "MR aberto pela sa-desenvolver.codificar, com revisão do agente feita (critérios de revisão C)\n ├─ sa-verificar.verificar   (subagente sa-verificador; o autor chama antes do merge · Fase verificando)\n │     roteiro pelos CT-nn da ficha e da spec ─► exercita a aplicação direto (curl · navegador)\n │     grava CT.csv (uma linha por CT-nn) · evidência no MR\n │     asserção durável: testes automatizados no CI, marcados com o CT-nn\n │     achou demanda ─► fluxo/captura.md\n ├─ sa-revisar.mr   (qualquer desenvolvedor ≠ autor; CODEOWNERS indica o dono · Fase revisando)\n │     apoio: sa-revisar.revisar no subagente sa-revisor (critérios de revisão C)\n │     pendente (MCP do Jenkins): ler o resultado e os logs do último commit da branch\n │     achados nas threads do MR\n │     ├─ corrige ─► o autor ajusta (suggested change no ajuste pequeno)\n │     ├─ adia ───► fluxo/captura.md\n │     ├─ volta ao plano ─► sa-plano.replanejar\n │     ├─ volta à spec ───► especificador (sa-refinar.detalhar)\n │     └─ descarta\n │     reprovado ─► Fase retrabalho ─► sa-desenvolver.codificar · só o bloqueante trava o merge\n ├─ sa-verificar.revisao-humana   (qualquer pessoa; só quando o risco pede; sobre a branch do MR)\n └─► sa-desenvolver.encerrar   (autor)\n       aprovação + CI verde ─► merge (ou auto-merge)\n       backlog: concluida · concluida_em (fluxo/commit-na-branch-base.md)\n          última fatia aberta do épico ─► épico concluido\n       ─► sa-especificar.archive (archive e publicação: Especificação)\n       ─► com ELM: 'finalizar a tarefa?' ─► sa-elm.finalizar · 'lançar horas?' ─► sa-elm.horas\n       ─► Lições aprendidas do status.md ─► curadoria na sa-planejamento.review ─► fim: oferece puxar o próximo\n conhecimento\n   ADR: só decisão que atravessa fatias (banco, framework, padrão de integração); o resto no design e no MR\n   glossário: GL no DOORS onde já existe; sem ELM, glossario.md opcional",
+   "arvore": "MR aberto pela sa-desenvolver.codificar, com revisão do agente feita (critérios de revisão C)\n ├─ sa-verificar.verificar   (subagente sa-verificador; o autor chama antes do merge · Fase verificando)\n │     roteiro pelos CT-nn da ficha e da spec ─► exercita a aplicação direto (curl · navegador)\n │     grava CT.csv (uma linha por CT-nn) · evidência no MR\n │     asserção durável: testes automatizados no CI, marcados com o CT-nn\n │     achou demanda ─► fluxo/cadastro.md\n ├─ sa-revisar.mr   (qualquer desenvolvedor ≠ autor; CODEOWNERS indica o dono · Fase revisando)\n │     apoio: sa-revisar.revisar no subagente sa-revisor (critérios de revisão C)\n │     pendente (MCP do Jenkins): ler o resultado e os logs do último commit da branch\n │     achados nas threads do MR\n │     ├─ corrige ─► o autor ajusta (suggested change no ajuste pequeno)\n │     ├─ adia ───► fluxo/cadastro.md\n │     ├─ volta ao plano ─► sa-plano.replanejar\n │     ├─ volta à spec ───► especificador (sa-refinar.detalhar)\n │     └─ descarta\n │     reprovado ─► Fase retrabalho ─► sa-desenvolver.codificar · só o bloqueante trava o merge\n ├─ sa-verificar.revisao-humana   (qualquer pessoa; só quando o risco pede; sobre a branch do MR)\n └─► sa-desenvolver.encerrar   (autor)\n       aprovação + CI verde ─► merge (ou auto-merge)\n       backlog: concluida · concluida_em (fluxo/commit-na-branch-base.md)\n          última fatia aberta do épico ─► épico concluido\n       ─► sa-especificar.archive (archive e publicação: Especificação)\n       ─► com ELM: 'finalizar a tarefa?' ─► sa-elm.finalizar · 'lançar horas?' ─► sa-elm.horas\n       ─► Lições aprendidas do status.md ─► curadoria na sa-planejamento.review ─► fim: oferece puxar o próximo\n conhecimento\n   ADR: só decisão que atravessa fatias (banco, framework, padrão de integração); o resto no design e no MR\n   glossário: GL no DOORS onde já existe; sem ELM, glossario.md opcional",
    "regras": [
     [
      "Faixa de revisão",
@@ -359,11 +359,11 @@
    "k": "sustentacao",
    "nome": "Sustentação",
    "resumo": "Um fluxo só para as seis categorias (AT · IM · BD · IN · OP · EX). Qualquer pessoa registra. Quem atende puxa dentro da reserva de capacidade, atende com a IA só como auxílio e declara resolvido. O que muda o código vira fatia ou bug pela triagem normal.",
-   "arvore": "pedido (qualquer pessoa)\n └─► captura ─ fluxo/captura.md (entrada direta: sa-atender.atender ou sa-triar.capturar)\n       categoria confirmada antes de gravar: AT · IM · BD · IN · OP · EX\n       ─► <categoria>-nnn · nova · registro.md (fluxo/commit-na-branch-base.md)\n       ├─ muda o código ─► é fatia ou bug: captura com esse tipo ─► Triagem (sa-triar.triar)\n       └─► sa-atender.atender   (quem atende puxa, dentro da reserva de capacidade do acordos.md)\n             em-andamento · iniciada_em · responsável · linha 'atendimento' no sprint aberto\n             com ELM: 'quer criar o item no ELM?' ─► sa-elm.item (ATD)\n             reserva de capacidade estourada ─► sa-status.painel avisa ─► o produto decide na seleção (sa-planejamento.sprint)\n             ajuda a pedido: especificador · produto · time (refinamento só quando quem atende pede)\n             IA como auxílio, a pedido\n                fatos do código e das specs vigentes: sa-pesquisar.pesquisar\n                com ELM: 'pesquisar nas regras do ELM?' (bundle ─► ELM ao vivo, só leitura)\n                banco só leitura · rascunho de resposta, se pedido\n                o agente não executa em ambiente nem responde ao cliente · dado de cliente fora do git\n             └─► concluir: a pessoa que atende declara resolvido (nunca a IA)\n                   concluida · concluida_em · atividade no registro.md (fluxo/commit-na-branch-base.md)\n                   com ELM: 'finalizar a tarefa?' ─► sa-elm.finalizar · 'lançar horas?' ─► sa-elm.horas\n                   ├─ lição ─► Lições aprendidas do registro.md ─► curadoria na sa-planejamento.review\n                   ├─ desdobramento ─► fluxo/captura.md (obs 'origem <id>') ─► Triagem\n                   └─ não procede ─► cancelada · obs com o motivo",
+   "arvore": "pedido (qualquer pessoa)\n └─► cadastro ─ fluxo/cadastro.md (entrada direta: sa-atender.atender ou sa-triar.cadastrar)\n       categoria confirmada antes de gravar: AT · IM · BD · IN · OP · EX\n       ─► <categoria>-nnn · nova · registro.md (fluxo/commit-na-branch-base.md)\n       ├─ muda o código ─► é fatia ou bug: cadastro com esse tipo ─► Triagem (sa-triar.triar)\n       └─► sa-atender.atender   (quem atende puxa, dentro da reserva de capacidade do acordos.md)\n             em-andamento · iniciada_em · responsável · linha 'atendimento' no sprint aberto\n             com ELM: 'quer criar o item no ELM?' ─► sa-elm.item (ATD)\n             reserva de capacidade estourada ─► sa-status.painel avisa ─► o produto decide na seleção (sa-planejamento.sprint)\n             ajuda a pedido: especificador · produto · time (refinamento só quando quem atende pede)\n             IA como auxílio, a pedido\n                fatos do código e das specs vigentes: sa-pesquisar.pesquisar\n                com ELM: 'pesquisar nas regras do ELM?' (bundle ─► ELM ao vivo, só leitura)\n                banco só leitura · rascunho de resposta, se pedido\n                o agente não executa em ambiente nem responde ao cliente · dado de cliente fora do git\n             └─► concluir: a pessoa que atende declara resolvido (nunca a IA)\n                   concluida · concluida_em · atividade no registro.md (fluxo/commit-na-branch-base.md)\n                   com ELM: 'finalizar a tarefa?' ─► sa-elm.finalizar · 'lançar horas?' ─► sa-elm.horas\n                   ├─ lição ─► Lições aprendidas do registro.md ─► curadoria na sa-planejamento.review\n                   ├─ desdobramento ─► fluxo/cadastro.md (obs 'origem <id>') ─► Triagem\n                   └─ não procede ─► cancelada · obs com o motivo",
    "regras": [
     [
      "Quem registra",
-     "Qualquer pessoa, pela captura comum."
+     "Qualquer pessoa, pelo cadastro comum."
     ],
     [
      "Categoria",
@@ -391,11 +391,11 @@
     ],
     [
      "Desdobramento",
-     "Vira demanda nova pela captura, com origem na obs, e segue o fluxo normal da triagem."
+     "Vira demanda nova pelo cadastro, com origem na obs, e segue o fluxo normal da triagem."
     ],
     [
      "DDL do desenvolvimento",
-     "A DDL pendente de uma fatia chega como item BD pela captura, com obs 'origem FT-nnn'."
+     "A DDL pendente de uma fatia chega como item BD pelo cadastro, com obs 'origem FT-nnn'."
     ]
    ]
   }
@@ -404,7 +404,7 @@
   {
    "skill": "sa-triar",
    "destino_skill": "muda",
-   "papel": "A triagem livre. Qualquer pessoa registra e tria, item a item, direto na branch base. A triagem decide se o item entra (aceita, cancelada, falta informação ou adiada) e define tipo, tamanho, prioridade e pai. Grava a linha e o corpo pela fluxo/commit-na-branch-base.md. Não toca no ELM (só oferece ler o WI pela sa-elm.item) nem no sprint-<nn>.md. O fluxo capturar é só a entrada direta 'registrar sem triar'. As outras skills não o chamam: incluem a fluxo/captura.md.",
+   "papel": "A triagem livre. Qualquer pessoa registra e tria, item a item, direto na branch base. A triagem decide se o item entra (aceita, cancelada, falta informação ou adiada) e define tipo, tamanho, prioridade e pai. Grava a linha e o corpo pela fluxo/commit-na-branch-base.md. Não toca no ELM (só oferece ler o WI pela sa-elm.item) nem no sprint-<nn>.md. O fluxo cadastrar é só a entrada direta 'registrar sem triar'. As outras skills não o chamam: incluem a fluxo/cadastro.md.",
    "fluxos": [
     {
      "fluxo": "triar",
@@ -413,7 +413,7 @@
      "passos": [
       {
        "passo": "entrada",
-       "texto": "Usa a fluxo/entrada.md. Quem chama: a pessoa (pedido em texto, número do EWM, id do backlog.md ou nada), a sa-triar.capturar ('triar agora?') e a sa-elm.importar-backlog ('seguir para a triagem?'). papel: nenhuma (qualquer pessoa tria). branch: nao. Pré-condição: .sabia/planejamento/backlog.md na branch base. Sem ele, diz 'rode a sa-setup' e para. Aceita qualquer tipo em nova e também fatia ou bug em aceita ou 'adiada até <data>' (retriagem; a triagem trata o adiamento). Pedido em texto não é o caso 'não registrado' da entrada comum: segue para ler. Vizinhos: fatia ou bug elegível → sa-refinar.ajustar; fatia ou bug em-andamento → sa-desenvolver.codificar; épico a-moldar → sa-refinar.moldar; épico em-especificacao → sa-prd.prd; épico fatiado → sa-refinar.ajustar; sustentação em-andamento → sa-atender.atender.",
+       "texto": "Usa a fluxo/entrada.md. Quem chama: a pessoa (pedido em texto, número do EWM, id do backlog.md ou nada), a sa-triar.cadastrar ('triar agora?') e a sa-elm.importar-backlog ('seguir para a triagem?'). papel: nenhuma (qualquer pessoa tria). branch: nao. Pré-condição: .sabia/planejamento/backlog.md na branch base. Sem ele, diz 'rode a sa-setup' e para. Aceita qualquer tipo em nova e também fatia ou bug em aceita ou 'adiada até <data>' (retriagem; a triagem trata o adiamento). Pedido em texto não é o caso 'não registrado' da entrada comum: segue para ler. Vizinhos: fatia ou bug elegível → sa-refinar.ajustar; fatia ou bug em-andamento → sa-desenvolver.codificar; épico a-moldar → sa-refinar.moldar; épico em-especificacao → sa-prd.prd; épico fatiado → sa-refinar.ajustar; sustentação em-andamento → sa-atender.atender.",
        "destino": "novo"
       },
       {
@@ -433,12 +433,12 @@
       },
       {
        "passo": "classificar",
-       "texto": "Só o item aceito. tipo ∈ {épico, fatia, bug, sustentação}. Sustentação é trabalho sem mudança no repositório, numa categoria da seção Sustentação do sabia.md (AT · IM · BD · IN · OP · EX), confirmada aqui (depois não existe recategorizar). O que muda código ou configuração é fatia ou bug. O que não cabe em G é épico. tamanho ∈ {P, M, G} (linha Tamanhos do acordos.md), só em fatia e bug. prioridade ∈ {crítica, vazio}: crítica = expedite pela política do acordos.md; vazio = vale a ordem das linhas. pai = EP-nn aberto ou vazio, só em fatia e bug. Campos mínimos do corpo. Bug: passos · atual · esperado · reproduzido (sim | não | detalhe insuficiente), reproduzindo só quando é barato. Fatia: pedido · quem pediu · requisito (se souber). Sustentação: pedido · pedido por · prazo. Épico: só a linha. Tipo com série diferente da do id que o item já tem (fatia ou bug ↔ épico ou sustentação, ou outra categoria): nasce a linha da série certa pela fluxo/captura.md, com 'veio de <id>' na obs, e a antiga fica cancelada com 'virou <novo id>'. O id nunca muda. Entre fatia e bug, só a coluna tipo muda.",
+       "texto": "Só o item aceito. tipo ∈ {épico, fatia, bug, sustentação}. Sustentação é trabalho sem mudança no repositório, numa categoria da seção Sustentação do sabia.md (AT · IM · BD · IN · OP · EX), confirmada aqui (depois não existe recategorizar). O que muda código ou configuração é fatia ou bug. O que não cabe em G é épico. tamanho ∈ {P, M, G} (linha Tamanhos do acordos.md), só em fatia e bug. prioridade ∈ {crítica, vazio}: crítica = expedite pela política do acordos.md; vazio = vale a ordem das linhas. pai = EP-nn aberto ou vazio, só em fatia e bug. Campos mínimos do corpo. Bug: passos · atual · esperado · reproduzido (sim | não | detalhe insuficiente), reproduzindo só quando é barato. Fatia: pedido · quem pediu · requisito (se souber). Sustentação: pedido · pedido por · prazo. Épico: só a linha. Tipo com série diferente da do id que o item já tem (fatia ou bug ↔ épico ou sustentação, ou outra categoria): nasce a linha da série certa pela fluxo/cadastro.md, com 'veio de <id>' na obs, e a antiga fica cancelada com 'virou <novo id>'. O id nunca muda. Entre fatia e bug, só a coluna tipo muda.",
        "destino": "novo"
       },
       {
        "passo": "registrar",
-       "texto": "Grava pela fluxo/commit-na-branch-base.md, um commit por item ('backlog: triagem <id>'). O item novo (pedido em texto ou EWM) nasce pela fluxo/captura.md, com a triagem já aplicada na mesma gravação. Status gravado: aceita (fatia e bug, com aceita_em), a-moldar (épico, com aceita_em), nova (sustentação e todo item com 'falta:'), cancelada ou 'adiada até <data>' pelos ramos do decidir. Colunas: id · título · tipo · status · prioridade · tamanho · responsável (vazio) · pai · relator (usuario do equipe.json ou 'externo: <área ou nome>') · ib (só o número, quando veio do EWM) · obs · aceita_em · iniciada_em · concluida_em (AAAA-MM-DD). Corpo da fatia e do bug: a ficha curta .sabia/planejamento/fatias/FT-nnn-<slug>.md, só com a seção Entrada do tipo (template sa-refinar/ficha.md). Corpo da sustentação: o registro .sabia/planejamento/sustentacao/<ID>-<slug>.md (template sa-atender/registro.md, sem subpasta por categoria). O épico fica só com a linha (o pitch nasce na sa-refinar.moldar). Não toca no ELM nem no sprint-<nn>.md.",
+       "texto": "Grava pela fluxo/commit-na-branch-base.md, um commit por item ('backlog: triagem <id>'). O item novo (pedido em texto ou EWM) nasce pela fluxo/cadastro.md, com a triagem já aplicada na mesma gravação. Status gravado: aceita (fatia e bug, com aceita_em), a-moldar (épico, com aceita_em), nova (sustentação e todo item com 'falta:'), cancelada ou 'adiada até <data>' pelos ramos do decidir. Colunas: id · título · tipo · status · prioridade · tamanho · responsável (vazio) · pai · relator (usuario do equipe.json ou 'externo: <área ou nome>') · ib (só o número, quando veio do EWM) · obs · aceita_em · iniciada_em · concluida_em (AAAA-MM-DD). Corpo da fatia e do bug: a ficha curta .sabia/planejamento/fatias/FT-nnn-<slug>.md, só com a seção Entrada do tipo (template sa-refinar/ficha.md). Corpo da sustentação: o registro .sabia/planejamento/sustentacao/<ID>-<slug>.md (template sa-atender/registro.md, sem subpasta por categoria). O épico fica só com a linha (o pitch nasce na sa-refinar.moldar). Não toca no ELM nem no sprint-<nn>.md.",
        "destino": "muda"
       },
       {
@@ -449,9 +449,9 @@
      ]
     },
     {
-     "fluxo": "capturar",
+     "fluxo": "cadastrar",
      "destino": "novo",
-     "resumo": "Entrada direta 'registrar sem triar': inclui a fluxo/captura.md, mostra o id gravado e oferece triar. As outras skills não chamam este fluxo: incluem a fluxo/captura.md.",
+     "resumo": "Entrada direta 'registrar sem triar': inclui a fluxo/cadastro.md, mostra o id gravado e oferece triar. As outras skills não chamam este fluxo: incluem a fluxo/cadastro.md.",
      "passos": [
       {
        "passo": "entrada",
@@ -459,13 +459,13 @@
        "destino": "novo"
       },
       {
-       "passo": "capturar",
-       "texto": "Inclui a fluxo/captura.md com o tipo que a pessoa diz, ou que o fluxo pergunta com uma recomendação (a regra do tipo está no classificar da sa-triar.triar). A linha nasce nova (épico: a-moldar), com o corpo mínimo, e é gravada na branch base.",
+       "passo": "cadastrar",
+       "texto": "Inclui a fluxo/cadastro.md com o tipo que a pessoa diz, ou que o fluxo pergunta com uma recomendação (a regra do tipo está no classificar da sa-triar.triar). A linha nasce nova (épico: a-moldar), com o corpo mínimo, e é gravada na branch base.",
        "destino": "novo"
       },
       {
        "passo": "seguir",
-       "texto": "Mostra 'capturado <id> · <tipo> · <status>'. Fatia ou bug nova: oferece 'triar agora?' (sa-triar.triar, na mesma sessão). Depois pergunta 'mais algum item para registrar?'. Sim: volta ao capturar. Não: fim.",
+       "texto": "Mostra 'cadastrado <id> · <tipo> · <status>'. Fatia ou bug nova: oferece 'triar agora?' (sa-triar.triar, na mesma sessão). Depois pergunta 'mais algum item para registrar?'. Sim: volta ao cadastrar. Não: fim.",
        "destino": "novo"
       }
      ]
@@ -484,7 +484,7 @@
      "passos": [
       {
        "passo": "entrada",
-       "texto": "Usa a fluxo/entrada.md. Quem chama: a sa-triar.triar.encaminhar (sugestão), a pessoa ('moldar o EP-04', 'ideia nova grande') e o 'vira épico' da sa-refinar.detalhar e da sa-desenvolver.iniciar (a linha EP-nn já nasceu pela fluxo/captura.md, com 'veio de FT-nnn'). Ideia grande em texto ainda não registrada: captura como épico e segue. papel: nenhuma (qualquer pessoa conduz; o passo decisao confere produto). branch: nao. Aceita épico em a-moldar. Vizinhos: épico em-especificacao → sa-prd.prd; épico fatiado → sa-refinar.ajustar; fatia ou bug → sa-refinar.detalhar; sustentação → sa-atender.atender.",
+       "texto": "Usa a fluxo/entrada.md. Quem chama: a sa-triar.triar.encaminhar (sugestão), a pessoa ('moldar o EP-04', 'ideia nova grande') e o 'vira épico' da sa-refinar.detalhar e da sa-desenvolver.iniciar (a linha EP-nn já nasceu pela fluxo/cadastro.md, com 'veio de FT-nnn'). Ideia grande em texto ainda não registrada: cadastro como épico e segue. papel: nenhuma (qualquer pessoa conduz; o passo decisao confere produto). branch: nao. Aceita épico em a-moldar. Vizinhos: épico em-especificacao → sa-prd.prd; épico fatiado → sa-refinar.ajustar; fatia ou bug → sa-refinar.detalhar; sustentação → sa-atender.atender.",
        "destino": "novo"
       },
       {
@@ -494,7 +494,7 @@
       },
       {
        "passo": "decisao",
-       "texto": "O go/kill é de quem tem produto no equipe.json. Sem essa pessoa na sessão: mostra os nomes com produto e vai ao seguir (o épico fica a-moldar). Go: status em-especificacao; no pitch.md, 'Decisão: go' e, na linha do topo, 'Aprovado: <usuário> · <data>'. Kill: status cancelado, obs 'não investir: <motivo>'; no pitch.md, 'Decisão: kill · <motivo>' e, na linha do topo, 'Aprovado: <usuário> · <data>'; a pasta fica. Cabe em G (não é épico): nasce a fatia, já aceita, pela fluxo/captura.md, com 'veio de EP-nn', e o épico fica cancelado com 'virou FT-nnn'. Status, obs e pitch.md vão num commit pela fluxo/commit-na-branch-base.md ('EP-nn go' ou 'EP-nn kill').",
+       "texto": "O go/kill é de quem tem produto no equipe.json. Sem essa pessoa na sessão: mostra os nomes com produto e vai ao seguir (o épico fica a-moldar). Go: status em-especificacao; no pitch.md, 'Decisão: go' e, na linha do topo, 'Aprovado: <usuário> · <data>'. Kill: status cancelado, obs 'não investir: <motivo>'; no pitch.md, 'Decisão: kill · <motivo>' e, na linha do topo, 'Aprovado: <usuário> · <data>'; a pasta fica. Cabe em G (não é épico): nasce a fatia, já aceita, pela fluxo/cadastro.md, com 'veio de EP-nn', e o épico fica cancelado com 'virou FT-nnn'. Status, obs e pitch.md vão num commit pela fluxo/commit-na-branch-base.md ('EP-nn go' ou 'EP-nn kill').",
        "destino": "novo"
       },
       {
@@ -536,7 +536,7 @@
       },
       {
        "passo": "duvidas",
-       "texto": "Dúvida grande: spike pela sa-pesquisar ou protótipo pela sa-especificar.prototipo (só vale com a aprovação do cliente, pela trava aprovacao-do-cliente), que devolve aqui. Dúvida grande não faz o item virar épico. Regra sem fonte: entra em Em aberto da ficha ('<pergunta> · para <nome com produto> · Bloqueia: <CT-nn | a fatia>') e para só o que depende dela. Muitas regras ou mais que G: com corte possível, vai à sa-refinar.ajustar (dividir). Sem corte, vira épico: nasce a linha EP-nn a-moldar pela fluxo/captura.md, com 'veio de FT-nnn', a FT fica cancelada com 'virou EP-nn', e o trabalho segue na sa-refinar.moldar.",
+       "texto": "Dúvida grande: spike pela sa-pesquisar ou protótipo pela sa-especificar.prototipo (só vale com a aprovação do cliente, pela trava aprovacao-do-cliente), que devolve aqui. Dúvida grande não faz o item virar épico. Regra sem fonte: entra em Em aberto da ficha ('<pergunta> · para <nome com produto> · Bloqueia: <CT-nn | a fatia>') e para só o que depende dela. Muitas regras ou mais que G: com corte possível, vai à sa-refinar.ajustar (dividir). Sem corte, vira épico: nasce a linha EP-nn a-moldar pela fluxo/cadastro.md, com 'veio de FT-nnn', a FT fica cancelada com 'virou EP-nn', e o trabalho segue na sa-refinar.moldar.",
        "destino": "novo"
       },
       {
@@ -605,7 +605,7 @@
       },
       {
        "passo": "dividir",
-       "texto": "A original fica com a primeira parte, e o id dela não muda. Cada outra parte nasce aceita pela fluxo/captura.md, com o mesmo tipo e pai, 'veio de FT-nnn' na obs, ficha própria e o seus artefatos afetados e cenários. O arquivo de elm/ do requisito que muda de fatia vai junto (git mv para a pasta da spec da nova). Vale também para fatia ou bug sem pai que veio do detalhar.",
+       "texto": "A original fica com a primeira parte, e o id dela não muda. Cada outra parte nasce aceita pela fluxo/cadastro.md, com o mesmo tipo e pai, 'veio de FT-nnn' na obs, ficha própria e o seus artefatos afetados e cenários. O arquivo de elm/ do requisito que muda de fatia vai junto (git mv para a pasta da spec da nova). Vale também para fatia ou bug sem pai que veio do detalhar.",
        "destino": "muda"
       },
       {
@@ -615,7 +615,7 @@
       },
       {
        "passo": "editar",
-       "texto": "Muda a ficha (regras, cenários, artefatos afetados) ou o tamanho. A mudança tira o 'Aprovado' da ficha até o P.O. aprovar de novo, e a DoR é refeita: o item que perde um ponto volta de elegível para aceita. Cenário novo em fatia não puxada: entra nela ou numa fatia nova do épico. Cenário novo em fatia já entregue: vira item novo pela fluxo/captura.md, com 'origem FT-nnn'.",
+       "texto": "Muda a ficha (regras, cenários, artefatos afetados) ou o tamanho. A mudança tira o 'Aprovado' da ficha até o P.O. aprovar de novo, e a DoR é refeita: o item que perde um ponto volta de elegível para aceita. Cenário novo em fatia não puxada: entra nela ou numa fatia nova do épico. Cenário novo em fatia já entregue: vira item novo pela fluxo/cadastro.md, com 'origem FT-nnn'.",
        "destino": "muda"
       },
       {
@@ -739,7 +739,7 @@
     {
      "fluxo": "review",
      "destino": "muda",
-     "resumo": "Fim do ciclo, com os stakeholders presentes e sem travar: o que foi entregue, com a evidência do MR → retorno no sprint-<nn>.md → pedido novo pela captura → Regras aprendidas (curadoria das Lições aprendidas) → grava → 'seguir para a retrospectiva?'.",
+     "resumo": "Fim do ciclo, com os stakeholders presentes e sem travar: o que foi entregue, com a evidência do MR → retorno no sprint-<nn>.md → pedido novo pelo cadastro → Regras aprendidas (curadoria das Lições aprendidas) → grava → 'seguir para a retrospectiva?'.",
      "passos": [
       {
        "passo": "entrada",
@@ -748,7 +748,7 @@
       },
       {
        "passo": "rito",
-       "texto": "Mostra os itens concluídos no ciclo: linhas desenvolvimento e atendimento cujo item tem concluida_em dentro das datas da sprint. Cada um aparece com o link do MR, onde está a evidência. Depois vêm os abertos, que vão para a virada do próximo planejamento. O retorno vai na ## Review do sprint-<nn>.md, uma linha por item concluído ('<id> · <retorno>', ou 'sem retorno'). Pedido novo vira linha 'nova' pela captura (fluxo/captura.md), com obs 'origem review <pai>/Sprint <nn>'. Item concluído não reabre: o pedido sobre ele também entra pela captura.",
+       "texto": "Mostra os itens concluídos no ciclo: linhas desenvolvimento e atendimento cujo item tem concluida_em dentro das datas da sprint. Cada um aparece com o link do MR, onde está a evidência. Depois vêm os abertos, que vão para a virada do próximo planejamento. O retorno vai na ## Review do sprint-<nn>.md, uma linha por item concluído ('<id> · <retorno>', ou 'sem retorno'). Pedido novo vira linha 'nova' pelo cadastro (fluxo/cadastro.md), com obs 'origem review <pai>/Sprint <nn>'. Item concluído não reabre: o pedido sobre ele também entra pelo cadastro.",
        "destino": "muda"
       },
       {
@@ -758,7 +758,7 @@
       },
       {
        "passo": "gravar",
-       "texto": "Com o 'ok', grava a ## Review do sprint-<nn>.md e as Regras aprendidas do .sabia/sabia.md por fluxo/commit-na-branch-base.md, commit '<pai>/Sprint <nn>: review'. As linhas da captura seguem o fluxo/captura.md.",
+       "texto": "Com o 'ok', grava a ## Review do sprint-<nn>.md e as Regras aprendidas do .sabia/sabia.md por fluxo/commit-na-branch-base.md, commit '<pai>/Sprint <nn>: review'. As linhas do cadastro seguem o fluxo/cadastro.md.",
        "destino": "novo"
       },
       {
@@ -824,7 +824,7 @@
      "passos": [
       {
        "passo": "entrada",
-       "texto": "Quem chama: a sa-refinar.detalhar, quando os artefatos afetados têm inclui, altera ou exclui; o Dev, quando acha que o texto precisa mudar; ou um pedido direto ('editar o elm/ da FT-031'). Usa o fluxo/entrada.md. Não existe ou está nova → sa-triar.triar. Cancelada, ou concluida sem 'Publicação: pendente' → a mudança vira item novo pelo fluxo/captura.md. Épico → sa-prd.prd. Sustentação → não tem elm/: diz e para. Aceita fatia e bug em aceita, elegível ou em-andamento, e também concluida com 'Publicação: pendente', para refazer a mescla (passo conferir) do artefato que a publicação pulou, na pasta da spec (no OpenSpec, a arquivada); no fim, oferece a sa-elm.publicar. Sem a chave elm no agentes.json → 'sem ELM, o texto vai só ao delta' e devolve. Sem artefatos afetados → nada a fazer, devolve. Volta da especificação manual ('alterei FT-nnn', pela sa-refinar.detalhar ou direto) → passo sincronizar. Sem pessoa presente (subagente) → diz e para; no IA autopilot, o subagente só faz o passo editar.",
+       "texto": "Quem chama: a sa-refinar.detalhar, quando os artefatos afetados têm inclui, altera ou exclui; o Dev, quando acha que o texto precisa mudar; ou um pedido direto ('editar o elm/ da FT-031'). Usa o fluxo/entrada.md. Não existe ou está nova → sa-triar.triar. Cancelada, ou concluida sem 'Publicação: pendente' → a mudança vira item novo pelo fluxo/cadastro.md. Épico → sa-prd.prd. Sustentação → não tem elm/: diz e para. Aceita fatia e bug em aceita, elegível ou em-andamento, e também concluida com 'Publicação: pendente', para refazer a mescla (passo conferir) do artefato que a publicação pulou, na pasta da spec (no OpenSpec, a arquivada); no fim, oferece a sa-elm.publicar. Sem a chave elm no agentes.json → 'sem ELM, o texto vai só ao delta' e devolve. Sem artefatos afetados → nada a fazer, devolve. Volta da especificação manual ('alterei FT-nnn', pela sa-refinar.detalhar ou direto) → passo sincronizar. Sem pessoa presente (subagente) → diz e para; no IA autopilot, o subagente só faz o passo editar.",
        "destino": "muda"
       },
       {
@@ -1037,11 +1037,11 @@
     {
      "fluxo": "mudanca",
      "destino": "muda",
-     "resumo": "Muda o prd.md aprovado, antes ou depois de fatiar. Tira a aprovação, registra a versão em Mudanças e reescreve; o P.O. reaprova no documento, e a mudança chega às fatias atingidas (sa-refinar.ajustar, aviso ao responsável ou captura).",
+     "resumo": "Muda o prd.md aprovado, antes ou depois de fatiar. Tira a aprovação, registra a versão em Mudanças e reescreve; o P.O. reaprova no documento, e a mudança chega às fatias atingidas (sa-refinar.ajustar, aviso ao responsável ou cadastro).",
      "passos": [
       {
        "passo": "entrada",
-       "texto": "Quem chama: a sa-prd.prd (PRD já aprovado), a sa-refinar.fatiar (conceito do PRD muda), a sa-refinar.ajustar, a sa-especificar.reuniao ou a sa-especificar.prototipo (decisão ou versão que muda o PRD), ou um pedido direto ('mudar o PRD do EP-03'). Precisa de prd.md aprovado e de épico em em-especificacao ou fatiado. Concluido ou cancelado → o escopo novo vai pelo fluxo/captura.md (tipo épico ou fatia, obs 'veio de EP-nn') e para. Sem pessoa presente → diz e para.",
+       "texto": "Quem chama: a sa-prd.prd (PRD já aprovado), a sa-refinar.fatiar (conceito do PRD muda), a sa-refinar.ajustar, a sa-especificar.reuniao ou a sa-especificar.prototipo (decisão ou versão que muda o PRD), ou um pedido direto ('mudar o PRD do EP-03'). Precisa de prd.md aprovado e de épico em em-especificacao ou fatiado. Concluido ou cancelado → o escopo novo vai pelo fluxo/cadastro.md (tipo épico ou fatia, obs 'veio de EP-nn') e para. Sem pessoa presente → diz e para.",
        "destino": "muda"
       },
       {
@@ -1061,7 +1061,7 @@
       },
       {
        "passo": "fatias",
-       "texto": "Lista as fatias do épico (pai = EP-nn) cujos artefatos afetados ou cenários citam os requisitos mudados. Nova, aceita ou elegível → oferece a sa-refinar.ajustar (atualizar ficha e artefatos afetados, dividir, juntar ou cancelar). Em-andamento → avisa o responsável (coluna responsável do backlog.md); com ELM, o texto do elm/ volta ao especificador pela sa-especificar.elm. Concluida → o que muda vira item novo pelo fluxo/captura.md, tipo fatia, pai EP-nn, obs 'veio de EP-nn v<N>'.",
+       "texto": "Lista as fatias do épico (pai = EP-nn) cujos artefatos afetados ou cenários citam os requisitos mudados. Nova, aceita ou elegível → oferece a sa-refinar.ajustar (atualizar ficha e artefatos afetados, dividir, juntar ou cancelar). Em-andamento → avisa o responsável (coluna responsável do backlog.md); com ELM, o texto do elm/ volta ao especificador pela sa-especificar.elm. Concluida → o que muda vira item novo pelo fluxo/cadastro.md, tipo fatia, pai EP-nn, obs 'veio de EP-nn v<N>'.",
        "destino": "novo"
       },
       {
@@ -1129,12 +1129,12 @@
      "passos": [
       {
        "passo": "entrada",
-       "texto": "Inclui fluxo/entrada.md, que trata: item inexistente, item terminal (concluida, cancelada), 'adiada até <data>' (o passo adiada da entrada comum) e branch <id> de outra pessoa (regra de atribuição da entrada comum). Este fluxo atende fatia ou bug sem branch <id> publicada. Vizinhos: tipo sustentação → sa-atender.atender. Tipo épico → 'sa-status <id>' mostra a fase e o dono. Status nova → sa-triar.triar. Status em-andamento com branch <id> publicada → sa-desenvolver.codificar. Pedido em texto sem id → passo captura. 'Próxima' sem id: pega o primeiro item do sprint-<nn>.md aberto com Trabalho desenvolvimento, status elegível e sem Responsável. Se não houver: 'o topo está vazio; o reabastecimento é do P.O. (sa-planejamento.sprint)', e o fluxo para.",
+       "texto": "Inclui fluxo/entrada.md, que trata: item inexistente, item terminal (concluida, cancelada), 'adiada até <data>' (o passo adiada da entrada comum) e branch <id> de outra pessoa (regra de atribuição da entrada comum). Este fluxo atende fatia ou bug sem branch <id> publicada. Vizinhos: tipo sustentação → sa-atender.atender. Tipo épico → 'sa-status <id>' mostra a fase e o dono. Status nova → sa-triar.triar. Status em-andamento com branch <id> publicada → sa-desenvolver.codificar. Pedido em texto sem id → passo cadastro. 'Próxima' sem id: pega o primeiro item do sprint-<nn>.md aberto com Trabalho desenvolvimento, status elegível e sem Responsável. Se não houver: 'o topo está vazio; o reabastecimento é do P.O. (sa-planejamento.sprint)', e o fluxo para.",
        "destino": "muda"
       },
       {
-       "passo": "captura",
-       "texto": "Pedido em texto ou defeito sem id: inclui fluxo/captura.md, que grava a linha nova com o tipo (fatia ou bug), o id FT-nnn (o maior da série no backlog.md + 1, lido depois do pull), o relator e 'origem <...>' na obs, mais a ficha mínima. Mostra o id e oferece 'seguir para a triagem?' (sa-triar.triar). O fluxo termina aqui.",
+       "passo": "cadastro",
+       "texto": "Pedido em texto ou defeito sem id: inclui fluxo/cadastro.md, que grava a linha nova com o tipo (fatia ou bug), o id FT-nnn (o maior da série no backlog.md + 1, lido depois do pull), o relator e 'origem <...>' na obs, mais a ficha mínima. Mostra o id e oferece 'seguir para a triagem?' (sa-triar.triar). O fluxo termina aqui.",
        "destino": "novo"
       },
       {
@@ -1241,12 +1241,12 @@
       },
       {
        "passo": "desvio",
-       "texto": "Desvio leve: corrige, registra em Desvios e segue. Melhoria ou trabalho fora do escopo: inclui fluxo/captura.md (linha nova com obs 'origem FT-nnn'). Regra sem decisão: Em aberto ao P.O. com 'bloqueia: <tarefa>', e para só essa tarefa. Texto do requisito aprovado precisa mudar: Em aberto ao especificador; a tarefa espera o texto novo, que a sa-plano.replanejar copia. Mudança arquitetural ou irreversível: para e pergunta, depois vai à sa-plano.replanejar. No autopilot, esse último caso devolve à pessoa.",
+       "texto": "Desvio leve: corrige, registra em Desvios e segue. Melhoria ou trabalho fora do escopo: inclui fluxo/cadastro.md (linha nova com obs 'origem FT-nnn'). Regra sem decisão: Em aberto ao P.O. com 'bloqueia: <tarefa>', e para só essa tarefa. Texto do requisito aprovado precisa mudar: Em aberto ao especificador; a tarefa espera o texto novo, que a sa-plano.replanejar copia. Mudança arquitetural ou irreversível: para e pergunta, depois vai à sa-plano.replanejar. No autopilot, esse último caso devolve à pessoa.",
        "destino": "muda"
       },
       {
        "passo": "banco",
-       "texto": "Banco só em leitura. DDL necessária: inclui fluxo/captura.md com tipo sustentação, série BD-nnn e obs 'origem FT-nnn'. O Em aberto 'BD-nnn' bloqueia só as tarefas que dependem da DDL.",
+       "texto": "Banco só em leitura. DDL necessária: inclui fluxo/cadastro.md com tipo sustentação, série BD-nnn e obs 'origem FT-nnn'. O Em aberto 'BD-nnn' bloqueia só as tarefas que dependem da DDL.",
        "destino": "muda"
       },
       {
@@ -1266,7 +1266,7 @@
       },
       {
        "passo": "revisar",
-       "texto": "Grava Fase revisando. Chama sa-revisar.revisar (critérios de revisão C: spec · padrões · segurança) no subagente sa-revisor, com os critérios de revisão do toolkit. É revisão do agente, sem valor de revisão oficial. Cada achado tem severidade BLOQUEANTE, IMPORTANTE ou SUGESTÃO e é triado. corrige: vira tarefa [R<n>] e volta ao passo tarefa. adia: fluxo/captura.md. volta-plano: sa-plano.replanejar. volta-spec: Em aberto ao especificador. descarta: o motivo vai no MR. Fora do autopilot, a pessoa tria; no autopilot, segue a recomendação do revisor e registra em Desvios. Sem BLOQUEANTE aberto, vai ao passo verificar.",
+       "texto": "Grava Fase revisando. Chama sa-revisar.revisar (critérios de revisão C: spec · padrões · segurança) no subagente sa-revisor, com os critérios de revisão do toolkit. É revisão do agente, sem valor de revisão oficial. Cada achado tem severidade BLOQUEANTE, IMPORTANTE ou SUGESTÃO e é triado. corrige: vira tarefa [R<n>] e volta ao passo tarefa. adia: fluxo/cadastro.md. volta-plano: sa-plano.replanejar. volta-spec: Em aberto ao especificador. descarta: o motivo vai no MR. Fora do autopilot, a pessoa tria; no autopilot, segue a recomendação do revisor e registra em Desvios. Sem BLOQUEANTE aberto, vai ao passo verificar.",
        "destino": "muda"
       },
       {
@@ -1392,7 +1392,7 @@
       },
       {
        "passo": "pesquisa",
-       "texto": "Fora do autopilot, antes pergunta à pessoa se tem pistas de onde olhar. Chama sa-pesquisar.pesquisar no subagente sa-pesquisador, com o escopo (ficha, artefatos afetados, elm/), as pistas e 3 a 7 perguntas: pesquisa curta na rápida, factual na completo. Grava os fatos no research.md pelo template sa-plano/research.md e faz commit. Divergência entre documento e código: fora dos artefatos afetados, inclui fluxo/captura.md (obs 'origem FT-nnn'); dentro dos artefatos afetados, Em aberto ao especificador, porque o texto aprovado pode precisar mudar.",
+       "texto": "Fora do autopilot, antes pergunta à pessoa se tem pistas de onde olhar. Chama sa-pesquisar.pesquisar no subagente sa-pesquisador, com o escopo (ficha, artefatos afetados, elm/), as pistas e 3 a 7 perguntas: pesquisa curta na rápida, factual na completo. Grava os fatos no research.md pelo template sa-plano/research.md e faz commit. Divergência entre documento e código: fora dos artefatos afetados, inclui fluxo/cadastro.md (obs 'origem FT-nnn'); dentro dos artefatos afetados, Em aberto ao especificador, porque o texto aprovado pode precisar mudar.",
        "destino": "muda"
       },
       {
@@ -1554,7 +1554,7 @@
       },
       {
        "passo": "veredito",
-       "texto": "A pessoa tria cada achado. corrige: abre thread no MR. adia: captura pelo fluxo/captura.md (tipo bug ou fatia, obs 'origem FT-nnn'), gravada pelo fluxo/commit-na-branch-base.md. volta-plano: thread para o autor, que segue pela sa-plano.replanejar. volta-spec: thread; o autor registra Em aberto ao especificador no status.md, o especificador decide (com ELM, ajusta o elm/ pela sa-especificar.elm; sem ELM, a decisão entra nas Decisões da ficha) e a sa-plano.replanejar recopia o texto para o delta. descarta: o motivo vai na thread. BLOQUEANTE só sai por corrige ou por descarta com motivo. Ajuste pequeno vai como suggested change, que o autor aplica. Se o Risco do MR pede, oferece revisão humana pela sa-verificar.revisao-humana antes de aprovar. Sem BLOQUEANTE aberto, aprova no MR (em ask). Com BLOQUEANTE aberto, pede mudanças.",
+       "texto": "A pessoa tria cada achado. corrige: abre thread no MR. adia: cadastro pelo fluxo/cadastro.md (tipo bug ou fatia, obs 'origem FT-nnn'), gravada pelo fluxo/commit-na-branch-base.md. volta-plano: thread para o autor, que segue pela sa-plano.replanejar. volta-spec: thread; o autor registra Em aberto ao especificador no status.md, o especificador decide (com ELM, ajusta o elm/ pela sa-especificar.elm; sem ELM, a decisão entra nas Decisões da ficha) e a sa-plano.replanejar recopia o texto para o delta. descarta: o motivo vai na thread. BLOQUEANTE só sai por corrige ou por descarta com motivo. Ajuste pequeno vai como suggested change, que o autor aplica. Se o Risco do MR pede, oferece revisão humana pela sa-verificar.revisao-humana antes de aprovar. Sem BLOQUEANTE aberto, aprova no MR (em ask). Com BLOQUEANTE aberto, pede mudanças.",
        "destino": "muda"
       },
       {
@@ -1574,7 +1574,7 @@
     {
      "fluxo": "verificar",
      "destino": "muda",
-     "resumo": "roteiro (cenários CT-nn da ficha e da spec) → ambiente (Executar do sabia.md, nunca produção) → executar (como usuário real) → fora dos cenários → casos (CT.csv, na rápida e no completo) → resultado (🔎 para quem chamou). O verificador não grava status.md, não grava na branch base e não faz commit: quem chamou leva a evidência ao MR e faz as capturas.",
+     "resumo": "roteiro (cenários CT-nn da ficha e da spec) → ambiente (Executar do sabia.md, nunca produção) → executar (como usuário real) → fora dos cenários → casos (CT.csv, na rápida e no completo) → resultado (🔎 para quem chamou). O verificador não grava status.md, não grava na branch base e não faz commit: quem chamou leva a evidência ao MR e faz os cadastros.",
      "passos": [
       {
        "passo": "entrada",
@@ -1598,7 +1598,7 @@
       },
       {
        "passo": "fora dos cenários",
-       "texto": "Defeito achado fora dos cenários da fatia, e DDL pendente sem item BD, vão para a seção 'Fora dos cenários' do 🔎, com o tipo (bug ou sustentação BD) e uma ficha curta (passos · atual · esperado). Quem chamou faz a captura pelo fluxo/captura.md, com obs 'origem FT-nnn'; no pedido direto, é a própria sessão da pessoa que captura. Isso não vira CT, não entra no veredito e não trava a fatia.",
+       "texto": "Defeito achado fora dos cenários da fatia, e DDL pendente sem item BD, vão para a seção 'Fora dos cenários' do 🔎, com o tipo (bug ou sustentação BD) e uma ficha curta (passos · atual · esperado). Quem chamou faz o cadastro pelo fluxo/cadastro.md, com obs 'origem FT-nnn'; no pedido direto, é a própria sessão da pessoa que cadastro. Isso não vira CT, não entra no veredito e não trava a fatia.",
        "destino": "novo"
       },
       {
@@ -1635,7 +1635,7 @@
       },
       {
        "passo": "decisao",
-       "texto": "Tria cada resultado que não é ✅. ❌: corrige (thread no MR, que segura o merge), adia (captura pelo fluxo/captura.md, tipo bug, obs 'origem FT-nnn') ou descarta (com o motivo). 🔁: a pessoa decide com o autor. Se o código está errado, vira ❌; se a spec muda, é volta-spec (thread; o autor registra Em aberto ao especificador, que decide, com ELM pela sa-especificar.elm, e a sa-plano.replanejar recopia para o delta). ⚠️: thread dizendo o que faltou no ambiente, sem contar como falha. Só o corrige segura o merge.",
+       "texto": "Tria cada resultado que não é ✅. ❌: corrige (thread no MR, que segura o merge), adia (cadastro pelo fluxo/cadastro.md, tipo bug, obs 'origem FT-nnn') ou descarta (com o motivo). 🔁: a pessoa decide com o autor. Se o código está errado, vira ❌; se a spec muda, é volta-spec (thread; o autor registra Em aberto ao especificador, que decide, com ELM pela sa-especificar.elm, e a sa-plano.replanejar recopia para o delta). ⚠️: thread dizendo o que faltou no ambiente, sem contar como falha. Só o corrige segura o merge.",
        "destino": "muda"
       },
       {
@@ -1655,7 +1655,7 @@
     {
      "fluxo": "atender",
      "destino": "muda",
-     "resumo": "Um pedido em texto vai para o registrar (captura e triagem, com a categoria confirmada antes de gravar); um id entra direto. Depois: puxar (reserva de capacidade) → assumir (em-andamento e a linha de atendimento no sprint) → executar (a pessoa faz e a IA ajuda a pedido) → finalizar (a pessoa declara resolvido: concluida) → desdobramentos (captura com 'origem <ID>'). O estado é gravado pelo fluxo/commit-na-branch-base.md.",
+     "resumo": "Um pedido em texto vai para o registrar (cadastro e triagem, com a categoria confirmada antes de gravar); um id entra direto. Depois: puxar (reserva de capacidade) → assumir (em-andamento e a linha de atendimento no sprint) → executar (a pessoa faz e a IA ajuda a pedido) → finalizar (a pessoa declara resolvido: concluida) → desdobramentos (cadastro com 'origem <ID>'). O estado é gravado pelo fluxo/commit-na-branch-base.md.",
      "passos": [
       {
        "passo": "entrada",
@@ -1664,7 +1664,7 @@
       },
       {
        "passo": "registrar",
-       "texto": "Pedido novo: inclui o fluxo/captura.md com tipo sustentação e já faz a triagem aqui. A pessoa confirma a categoria (AT · IM · BD · IN · OP · EX, pela seção Sustentação do sabia.md: Categoria · Descrição · Exemplo) antes de gravar. A categoria vem antes porque o id nasce da série dela (<sigla>-nnn = o maior da série + 1, lido depois do pull) e nunca muda. Prioridade: crítica (expedite pela política do acordos.md) ou vazio. Pelo fluxo/commit-na-branch-base.md, grava a linha (status nova, relator, aceita_em = hoje, obs 'origem chamado <n>' quando houver) e o registro .sabia/planejamento/sustentacao/<ID>-<slug>.md, pelo template sa-atender/registro.md: cabeçalho Categoria · Origem · Pedido por · Prazo (AAAA-MM-DD ou —) · Responsável e a seção Pedido, sem dado de cliente. Se é só para registrar, o fluxo termina aqui. Para atender agora, segue para o passo puxar.",
+       "texto": "Pedido novo: inclui o fluxo/cadastro.md com tipo sustentação e já faz a triagem aqui. A pessoa confirma a categoria (AT · IM · BD · IN · OP · EX, pela seção Sustentação do sabia.md: Categoria · Descrição · Exemplo) antes de gravar. A categoria vem antes porque o id nasce da série dela (<sigla>-nnn = o maior da série + 1, lido depois do pull) e nunca muda. Prioridade: crítica (expedite pela política do acordos.md) ou vazio. Pelo fluxo/commit-na-branch-base.md, grava a linha (status nova, relator, aceita_em = hoje, obs 'origem chamado <n>' quando houver) e o registro .sabia/planejamento/sustentacao/<ID>-<slug>.md, pelo template sa-atender/registro.md: cabeçalho Categoria · Origem · Pedido por · Prazo (AAAA-MM-DD ou —) · Responsável e a seção Pedido, sem dado de cliente. Se é só para registrar, o fluxo termina aqui. Para atender agora, segue para o passo puxar.",
        "destino": "novo"
       },
       {
@@ -1684,7 +1684,7 @@
       },
       {
        "passo": "fora do escopo",
-       "texto": "Pedido que muda o código ou o comportamento do sistema: captura um item (bug ou fatia) pelo fluxo/captura.md, com obs 'origem <ID>'. Categoria errada depois de gravada: não se recategoriza. O item fica 'cancelada · virou <novo id>', e o item certo nasce pela captura com obs 'origem <ID>'. Nos dois casos, o que já foi feito fica na Atividade.",
+       "texto": "Pedido que muda o código ou o comportamento do sistema: cadastro um item (bug ou fatia) pelo fluxo/cadastro.md, com obs 'origem <ID>'. Categoria errada depois de gravada: não se recategoriza. O item fica 'cancelada · virou <novo id>', e o item certo nasce pelo cadastro com obs 'origem <ID>'. Nos dois casos, o que já foi feito fica na Atividade.",
        "destino": "muda"
       },
       {
@@ -1694,7 +1694,7 @@
       },
       {
        "passo": "desdobramentos",
-       "texto": "Pergunta 'algum desdobramento?'. Nada: segue para o commit. Defeito, mudança ou outro item de Sustentação: captura pelo fluxo/captura.md com obs 'origem <ID>'. Lição, se houver, vai na seção Lições aprendidas do registro.md, uma linha: lição · regra proposta. A resposta que se repete também vira lição. As lições aprendidas vão para a curadoria na review (sa-planejamento.review). Um commit '<ID> concluir' pelo fluxo/commit-na-branch-base.md leva o registro, o backlog.md e as capturas. Oferece 'seguir para a próxima?'.",
+       "texto": "Pergunta 'algum desdobramento?'. Nada: segue para o commit. Defeito, mudança ou outro item de Sustentação: cadastro pelo fluxo/cadastro.md com obs 'origem <ID>'. Lição, se houver, vai na seção Lições aprendidas do registro.md, uma linha: lição · regra proposta. A resposta que se repete também vira lição. As lições aprendidas vão para a curadoria na review (sa-planejamento.review). Um commit '<ID> concluir' pelo fluxo/commit-na-branch-base.md leva o registro, o backlog.md e os cadastros. Oferece 'seguir para a próxima?'.",
        "destino": "muda"
       }
      ]
@@ -1959,7 +1959,7 @@
     {
      "fluxo": "importar-backlog",
      "destino": "novo",
-     "resumo": "Uso raro, só a pedido. Traz do EWM os Defeitos e os Itens de Backlog que ainda não estão no backlog.md e grava cada um como linha 'nova' pela captura. A triagem vem depois.",
+     "resumo": "Uso raro, só a pedido. Traz do EWM os Defeitos e os Itens de Backlog que ainda não estão no backlog.md e grava cada um como linha 'nova' pelo cadastro. A triagem vem depois.",
      "passos": [
       {
        "passo": "entrada",
@@ -1978,7 +1978,7 @@
       },
       {
        "passo": "gravar",
-       "texto": "Cada WI entra pelo fluxo/captura.md. Tipo: Defeito → bug, Item de Backlog → fatia (série FT-nnn). Status nova, pai vazio. Relator: o usuario do equipe.json cujo elm_login criou o WI; se não houver, o nome do criador. ib: o número do WI. Obs: 'origem EWM <n>'. A descrição do WI vira o corpo mínimo da ficha. Uma confirmação vale para o lote, e um único commit vai pelo fluxo/commit-na-branch-base.md.",
+       "texto": "Cada WI entra pelo fluxo/cadastro.md. Tipo: Defeito → bug, Item de Backlog → fatia (série FT-nnn). Status nova, pai vazio. Relator: o usuario do equipe.json cujo elm_login criou o WI; se não houver, o nome do criador. ib: o número do WI. Obs: 'origem EWM <n>'. A descrição do WI vira o corpo mínimo da ficha. Uma confirmação vale para o lote, e um único commit vai pelo fluxo/commit-na-branch-base.md.",
        "destino": "novo"
       },
       {
@@ -2116,7 +2116,7 @@
       },
       {
        "passo": "achados",
-       "texto": "Cada achado tem dois caminhos: corrigir na fonte do repositório, com 'sim', ou registrar pelo fluxo/captura.md, com o tipo que a pessoa disser (padrão: fatia) e a obs 'origem lint'. O DOORS só muda pela sa-elm.publicar de uma fatia.",
+       "texto": "Cada achado tem dois caminhos: corrigir na fonte do repositório, com 'sim', ou registrar pelo fluxo/cadastro.md, com o tipo que a pessoa disser (padrão: fatia) e a obs 'origem lint'. O DOORS só muda pela sa-elm.publicar de uma fatia.",
        "destino": "novo"
       },
       {
@@ -2336,7 +2336,7 @@
       },
       {
        "passo": "identificar",
-       "texto": "A coleta é a do sa-status.painel. Procura, nesta ordem: o id no backlog.md da branch base; o número na coluna ib; a tarefa ('DEV 123', 'ESP 456', 'ATD 789' ou só o número) na coluna Tarefas dos sprint-<nn>.md. Texto sem id → pedido não registrado → sa-triar.triar (ou sa-triar.capturar, para só registrar). Id que não está em nenhum lugar → diz que não está registrado e oferece as mesmas duas. Nunca inventa dado de item.",
+       "texto": "A coleta é a do sa-status.painel. Procura, nesta ordem: o id no backlog.md da branch base; o número na coluna ib; a tarefa ('DEV 123', 'ESP 456', 'ATD 789' ou só o número) na coluna Tarefas dos sprint-<nn>.md. Texto sem id → pedido não registrado → sa-triar.triar (ou sa-triar.cadastrar, para só registrar). Id que não está em nenhum lugar → diz que não está registrado e oferece as mesmas duas. Nunca inventa dado de item.",
        "destino": "muda"
       },
       {
@@ -2376,7 +2376,7 @@
       },
       {
        "passo": "mostrar e seguir",
-       "texto": "Mostra '🔀 <id> — <título> · <tipo> · <status> · branch de <usuario> · MR <estado> · <Fase>' e 'Próximo: <skill.fluxo> (<quem pode>)'. Quem pode sai das booleanas: desenvolvedor para sa-desenvolver.* e sa-revisar.mr; produto para go/kill e aprovações; especificador para sa-elm.publicar e elm/; triagem, captura e revisão humana são de qualquer pessoa. Se a pessoa não tem a booleana, diz quem tem (equipe.json) e para. Se tem, pergunta 'seguir agora?': com o sim, segue pela skill.fluxo na mesma sessão; sem o sim, termina.",
+       "texto": "Mostra '🔀 <id> — <título> · <tipo> · <status> · branch de <usuario> · MR <estado> · <Fase>' e 'Próximo: <skill.fluxo> (<quem pode>)'. Quem pode sai das booleanas: desenvolvedor para sa-desenvolver.* e sa-revisar.mr; produto para go/kill e aprovações; especificador para sa-elm.publicar e elm/; triagem, cadastro e revisão humana são de qualquer pessoa. Se a pessoa não tem a booleana, diz quem tem (equipe.json) e para. Se tem, pergunta 'seguir agora?': com o sim, segue pela skill.fluxo na mesma sessão; sem o sim, termina.",
        "destino": "muda"
       }
      ]
@@ -2850,12 +2850,12 @@
      "passos": [
       {
        "passo": "fases",
-       "texto": "captura (fluxo/captura.md, qualquer pessoa ou skill) → triagem (sa-triar.triar) → refinamento (sa-refinar: moldar · detalhar · fatiar · ajustar; épico: pitch, go/kill e PRD pela sa-prd) → ciclo (sa-planejamento: seleção, reabastecimento, virada, review, retrospectiva) → desenvolvimento (sa-desenvolver: iniciar · codificar · encerrar) → MR e revisão (sa-revisar.mr) → verificação (sa-verificar) → merge → archive (sa-especificar.archive) e 'publicar no DOORS?' (sa-elm.publicar). Sustentação: sa-atender. Não existe consolidação: o fechamento é o merge, o archive e a publicação.",
+       "texto": "cadastro (fluxo/cadastro.md, qualquer pessoa ou skill) → triagem (sa-triar.triar) → refinamento (sa-refinar: moldar · detalhar · fatiar · ajustar; épico: pitch, go/kill e PRD pela sa-prd) → ciclo (sa-planejamento: seleção, reabastecimento, virada, review, retrospectiva) → desenvolvimento (sa-desenvolver: iniciar · codificar · encerrar) → MR e revisão (sa-revisar.mr) → verificação (sa-verificar) → merge → archive (sa-especificar.archive) e 'publicar no DOORS?' (sa-elm.publicar). Sustentação: sa-atender. Não existe consolidação: o fechamento é o merge, o archive e a publicação.",
        "destino": "muda"
       },
       {
        "passo": "papéis",
-       "texto": "São booleanas no equipe.json. desenvolvedor: puxa item para desenvolvimento e revisa o MR de outro autor. especificador: aprova os arquivos de elm/ e publica no ELM. produto: decide go/kill, ordena e aprova pitch, PRD e ficha. Captura, triagem e revisão humana ficam abertos a qualquer pessoa. Não há regra por senioridade.",
+       "texto": "São booleanas no equipe.json. desenvolvedor: puxa item para desenvolvimento e revisa o MR de outro autor. especificador: aprova os arquivos de elm/ e publica no ELM. produto: decide go/kill, ordena e aprova pitch, PRD e ficha. Cadastro, triagem e revisão humana ficam abertos a qualquer pessoa. Não há regra por senioridade.",
        "destino": "muda"
       },
       {
@@ -3023,7 +3023,7 @@
       },
       {
        "passo": "registrar ou triar → sa-triar",
-       "texto": "Registrar uma demanda sem triar: sa-triar.capturar. Triar a fila das linhas 'nova': sa-triar.triar. As outras skills capturam pelo fluxo/captura.md.",
+       "texto": "Registrar uma demanda sem triar: sa-triar.cadastrar. Triar a fila das linhas 'nova': sa-triar.triar. As outras skills cadastram pelo fluxo/cadastro.md.",
        "destino": "muda"
       },
       {
@@ -3263,7 +3263,7 @@
   {
    "skill": "fluxo/ (comum)",
    "destino_skill": "muda",
-   "papel": "Arquivos comuns que as skills incluem: entrada.md (pré-condição de quem pega um item), captura.md (o único jeito de registrar item), commit-na-branch-base.md (estado e documentos de planejamento direto na branch base), travas.json (as regras que o gerador escreve no prompt) e tipos.json (catálogo dos artefatos de requisito). Incluir não é chamar outra skill: o arquivo roda dentro do passo que o inclui e volta a ele.",
+   "papel": "Arquivos comuns que as skills incluem: entrada.md (pré-condição de quem pega um item), cadastro.md (o único jeito de registrar item), commit-na-branch-base.md (estado e documentos de planejamento direto na branch base), travas.json (as regras que o gerador escreve no prompt) e tipos.json (catálogo dos artefatos de requisito). Incluir não é chamar outra skill: o arquivo roda dentro do passo que o inclui e volta a ele.",
    "fluxos": [
     {
      "fluxo": "entrada.md",
@@ -3282,12 +3282,12 @@
       },
       {
        "passo": "existe",
-       "texto": "Lê o item na branch base: git fetch e depois o backlog.md da branch base (se a branch base local está atrás do remoto, o de origin/<branch_base>; sem rede, o local). Formas de entrada: id do Sabiá (EP-nn, FT-nnn, AT-nnn, IM-nnn, BD-nnn, IN-nnn, OP-nnn, EX-nnn) → a linha; número do EWM → a linha com esse número na coluna ib; tarefa do EWM (DEV · ESP · ATD <n>) → a linha do sprint-<nn>.md que a tem em Tarefas e, por ela, o item. Fatia ou bug com branch <id>: o status.md dela (Fase) completa o estado, mas o status da linha vem da branch base. Pedido em texto ou id que não está no backlog.md: pergunta 'não está registrado: capturo agora?'. Com o sim, roda a fluxo/captura.md (a linha nasce nova; épico, a-moldar) e segue só se os vizinhos do fluxo aceitam esse status; senão diz 'capturado <id>; a triagem é pela sa-triar.triar' e para. Nunca inventa dado de work item: o EWM (pela sa-elm.item) e a pessoa só completam.",
+       "texto": "Lê o item na branch base: git fetch e depois o backlog.md da branch base (se a branch base local está atrás do remoto, o de origin/<branch_base>; sem rede, o local). Formas de entrada: id do Sabiá (EP-nn, FT-nnn, AT-nnn, IM-nnn, BD-nnn, IN-nnn, OP-nnn, EX-nnn) → a linha; número do EWM → a linha com esse número na coluna ib; tarefa do EWM (DEV · ESP · ATD <n>) → a linha do sprint-<nn>.md que a tem em Tarefas e, por ela, o item. Fatia ou bug com branch <id>: o status.md dela (Fase) completa o estado, mas o status da linha vem da branch base. Pedido em texto ou id que não está no backlog.md: pergunta 'não está registrado: cadastro agora?'. Com o sim, roda a fluxo/cadastro.md (a linha nasce nova; épico, a-moldar) e segue só se os vizinhos do fluxo aceitam esse status; senão diz 'cadastrado <id>; a triagem é pela sa-triar.triar' e para. Nunca inventa dado de work item: o EWM (pela sa-elm.item) e a pessoa só completam.",
        "destino": "muda"
       },
       {
        "passo": "terminal",
-       "texto": "Status concluida, concluido, cancelada ou cancelado: mostra o status e a obs e para. Com 'virou <id>' na obs, diz 'o item seguiu como <id>'. Pedido novo sobre item terminal não reabre nada: é item novo pela fluxo/captura.md, com 'origem <id>' na obs.",
+       "texto": "Status concluida, concluido, cancelada ou cancelado: mostra o status e a obs e para. Com 'virou <id>' na obs, diz 'o item seguiu como <id>'. Pedido novo sobre item terminal não reabre nada: é item novo pela fluxo/cadastro.md, com 'origem <id>' na obs.",
        "destino": "muda"
       },
       {
@@ -3323,7 +3323,7 @@
      ]
     },
     {
-     "fluxo": "captura.md",
+     "fluxo": "cadastro.md",
      "destino": "novo",
      "resumo": "O único mecanismo de registrar item. Toda skill que registra (sa-triar, sa-desenvolver, sa-atender, sa-verificar, sa-revisar, sa-prd, sa-planejamento, sa-elm.importar-backlog, sa-refinar) inclui este arquivo, que grava o tipo, a linha e o corpo mínimo na branch base e volta ao passo que o incluiu.",
      "passos": [
@@ -3359,12 +3359,12 @@
       },
       {
        "passo": "gravar",
-       "texto": "Grava pela fluxo/commit-na-branch-base.md ('backlog: captura <id>'), ou junto com as linhas de quem incluiu, num commit só. No autopilot não grava: segue a regra do autopilot da fluxo/commit-na-branch-base.md.",
+       "texto": "Grava pela fluxo/commit-na-branch-base.md ('backlog: cadastro <id>'), ou junto com as linhas de quem incluiu, num commit só. No autopilot não grava: segue a regra do autopilot da fluxo/commit-na-branch-base.md.",
        "destino": "novo"
       },
       {
        "passo": "devolver",
-       "texto": "Mostra 'capturado <id> · <tipo> · <status>' e volta ao passo que incluiu. A triagem do item nova (fatia ou bug) é pela sa-triar.triar. A sustentação nova já está na fila da sa-atender.atender.",
+       "texto": "Mostra 'cadastrado <id> · <tipo> · <status>' e volta ao passo que incluiu. A triagem do item nova (fatia ou bug) é pela sa-triar.triar. A sustentação nova já está na fila da sa-atender.atender.",
        "destino": "novo"
       }
      ]
@@ -3416,7 +3416,7 @@
       },
       {
        "passo": "autopilot",
-       "texto": "O subagente do autopilot (worktree .sabia/local/wt/<id>) não grava na branch base. Anota em Em aberto do status.md 'capturar: <tipo> · <título> · origem <id>' (ou a linha que gravaria) e devolve isso no resumo à pessoa, que grava pela skill que pediu ou pela sa-triar.capturar.",
+       "texto": "O subagente do autopilot (worktree .sabia/local/wt/<id>) não grava na branch base. Anota em Em aberto do status.md 'cadastrar: <tipo> · <título> · origem <id>' (ou a linha que gravaria) e devolve isso no resumo à pessoa, que grava pela skill que pediu ou pela sa-triar.cadastrar.",
        "destino": "novo"
       }
      ]
@@ -3616,7 +3616,7 @@
   }
  ],
  "artefatos": {
-  "arvore_21": "<repo>/\n├── AGENTS.md                                  # do projeto: a sa-setup só lê, como fonte do sabia.md\n├── CODEOWNERS                                 # <padrão> @usuario (raiz, .gitlab/ ou docs/); mantido pelo time, a sa-setup sugere\n├── opencode.json                              # alvo opencode: instructions inclui .sabia/sabia.md (harness)\n├── .gitignore                                 # .sabia/local/ e <bundle>/explorar.html\n├── .gitattributes                             # .sabia/creditos/*.csv merge=union\n├── .gitlab/merge_request_templates/\n│   └── Default.md                             # template do MR: título <id> — <título> · O quê · Porquê · Evidência · Risco · Foco · Artefatos afetados\n├── docs/\n│   ├── adr/NNNN-<titulo>.md                   # ADR Nygard, só decisão transversal (chave adr)\n│   └── elm/<pa>/                              # bundle (só com ELM; chave bundle = rm.download do pa): só a sa-elm.baixar escreve\n│       ├── index.md · log.md                  # índice OKF do bundle\n│       ├── sync.md                            # sincronizado_em\n│       ├── explorar.html                      # sa-elm.visualizar (fora do git)\n│       └── <conceito>.md                      # um requisito oficial por arquivo, com envelope OKF\n├── openspec/                                  # formato_spec = openspec\n│   ├── specs/<cap>/spec.md                    # especificação vigente: só sem ELM (o archive funde o delta)\n│   └── changes/\n│       ├── ft-<nnn>-<slug>/                   # rápida e completo; trivial não tem pasta\n│       │   ├── proposal.md                    # Why · What Changes · Capabilities · Impact + Fatia e Trilha\n│       │   ├── specs/<cap>/spec.md            # delta ADDED/MODIFIED/REMOVED com o texto completo de cada requisito\n│       │   ├── design.md                      # só na trilha completo\n│       │   ├── tasks.md                       # ## 1. grupo / - [ ] 1.1 tarefa\n│       │   ├── research.md · status.md · CT.csv\n│       │   └── elm/                           # com ELM: um arquivo inteiro por artefato tocado (nasce no refinamento)\n│       └── archive/AAAA-MM-DD-ft-<nnn>-<slug>/  # mudança arquivada depois do merge (1ª fonte da busca do vigente)\n├── .kiro/                                     # alvo Kiro / formato_spec = kiro\n│   ├── steering/sabia.md                      # #[[file:.sabia/sabia.md]] (harness)\n│   ├── settings/                              # do Kiro (harness)\n│   ├── agents/sa-<nome>.json · <toolkit>-<agente>.json   # gerados (harness): os 5 agentes e os de toolkit\n│   └── specs/ft-<nnn>-<slug>/                 # rápida e completo; fica no lugar depois do merge (vigente sem ELM)\n│       ├── .config.kiro                       # specId · workflowType · specType (feature | bugfix)\n│       ├── requirements.md | bugfix.md        # fatia | bug, com o bloco completo de cada requisito tocado\n│       ├── design.md · tasks.md\n│       ├── research.md · status.md · CT.csv\n│       └── elm/                               # com ELM\n├── .opencode/agents/                          # gerados (harness)\n│   ├── sa-desenvolvedor.md · sa-especificador.md   # mode primary, modelo build\n│   ├── sa-pesquisador.md · sa-revisor.md      # mode subagent, só leitura\n│   ├── sa-verificador.md                      # mode subagent, só leitura + Executar, curl à URL de teste e CT.csv\n│   └── <toolkit>-<agente>.md                # mode subagent, permissões do dono do passo\n└── .sabia/\n    ├── sabia.md                               # steering: Configuração · Verificação de aceite · Sustentação · ELM · Desvios · Tipos · Regras aprendidas\n    ├── glossario.md                           # opcional: só sem GL no DOORS (chave glossario)\n    ├── creditos/<usuario>.csv                 # Kiro: uma linha por sessão (creditos.py)\n    ├── config/                                # harness: só a sessão sem agente escreve\n    │   ├── agentes.json                       # escolhas do projeto, entrada do gerador\n    │   ├── elm/pa_<nome>.json                 # conexão do MCP elm\n    │   └── elk/elk-<ambiente>.json            # conexão do MCP elk\n    ├── fluxo/ · template/                       # override esparso (harness)\n    ├── toolkits/<nome>/toolkit.json           # toolkit do projeto (opcional)\n    ├── local/                                 # fora do git\n    │   ├── wt/<id>/                           # worktree do autopilot\n    │   ├── loop-<id>.md                       # log do disjuntor do autopilot\n    │   ├── reunioes/<EP-nn|FT-nnn>-<AAAA-MM-DD>.<ext>   # transcrições\n    │   └── sustentacao/<ID>/                  # dados de cliente do atendimento\n    └── planejamento/                          # chave produto; gravado direto na branch base (fluxo/commit-na-branch-base.md)\n        ├── backlog.md                         # tabela única de 14 colunas; ordem das linhas = prioridade\n        ├── acordos.md                         # Item | Acordo: timebox, WIP, SLE, DoD, classes, reserva de capacidade, tamanhos, disjuntor, id no commit, CT no teste\n        ├── equipe.json                        # membros: usuario · booleanas · capacidade\n        ├── roadmap.md                         # opcional\n        ├── sprints/<AAAA>/sprint-<nn>.md       # Meta · Item · Trabalho · Responsável · Tarefas · Review · Retro\n        ├── fatias/FT-<nnn>-<slug>.md          # ficha (fatia e bug)\n        ├── epicos/EP-<nn>-<slug>/\n        │   ├── pitch.md                       # nasce no shaping (Shape Up) com go/kill\n        │   └── prd.md                         # nasce no go\n        ├── prototipos/<EP-nn|FT-nnn>-<slug>/v<N>/   # versões do protótipo\n        ├── atas/ATA-<nn>-<AAAA-MM-DD>-<assunto>.md   # opcional\n        └── sustentacao/<ID>-<slug>.md         # registro do item de Sustentação\n\n~/.sabia/framework/                            # instalação (fora do repositório)\n├── fluxo/entrada.md · captura.md · commit-na-branch-base.md   # passos comuns incluídos pelas skills\n├── fluxo/tipos.json                           # catálogo HF · UC · REG · MSG · EL · GL · ET · CT · ATA\n├── fluxo/travas.json                          # catálogo das travas\n├── template/<skill>/<arquivo>.md              # modelos (catálogo no esquema dos overrides)\n└── skills/sa-setup/assets/agents/perfis.json  # 2 modelos de permissão, os 5 agentes e o harness\n~/.sabia/toolkits/<nome>/toolkit.json          # toolkit do usuário",
+  "arvore_21": "<repo>/\n├── AGENTS.md                                  # do projeto: a sa-setup só lê, como fonte do sabia.md\n├── CODEOWNERS                                 # <padrão> @usuario (raiz, .gitlab/ ou docs/); mantido pelo time, a sa-setup sugere\n├── opencode.json                              # alvo opencode: instructions inclui .sabia/sabia.md (harness)\n├── .gitignore                                 # .sabia/local/ e <bundle>/explorar.html\n├── .gitattributes                             # .sabia/creditos/*.csv merge=union\n├── .gitlab/merge_request_templates/\n│   └── Default.md                             # template do MR: título <id> — <título> · O quê · Porquê · Evidência · Risco · Foco · Artefatos afetados\n├── docs/\n│   ├── adr/NNNN-<titulo>.md                   # ADR Nygard, só decisão transversal (chave adr)\n│   └── elm/<pa>/                              # bundle (só com ELM; chave bundle = rm.download do pa): só a sa-elm.baixar escreve\n│       ├── index.md · log.md                  # índice OKF do bundle\n│       ├── sync.md                            # sincronizado_em\n│       ├── explorar.html                      # sa-elm.visualizar (fora do git)\n│       └── <conceito>.md                      # um requisito oficial por arquivo, com envelope OKF\n├── openspec/                                  # formato_spec = openspec\n│   ├── specs/<cap>/spec.md                    # especificação vigente: só sem ELM (o archive funde o delta)\n│   └── changes/\n│       ├── ft-<nnn>-<slug>/                   # rápida e completo; trivial não tem pasta\n│       │   ├── proposal.md                    # Why · What Changes · Capabilities · Impact + Fatia e Trilha\n│       │   ├── specs/<cap>/spec.md            # delta ADDED/MODIFIED/REMOVED com o texto completo de cada requisito\n│       │   ├── design.md                      # só na trilha completo\n│       │   ├── tasks.md                       # ## 1. grupo / - [ ] 1.1 tarefa\n│       │   ├── research.md · status.md · CT.csv\n│       │   └── elm/                           # com ELM: um arquivo inteiro por artefato tocado (nasce no refinamento)\n│       └── archive/AAAA-MM-DD-ft-<nnn>-<slug>/  # mudança arquivada depois do merge (1ª fonte da busca do vigente)\n├── .kiro/                                     # alvo Kiro / formato_spec = kiro\n│   ├── steering/sabia.md                      # #[[file:.sabia/sabia.md]] (harness)\n│   ├── settings/                              # do Kiro (harness)\n│   ├── agents/sa-<nome>.json · <toolkit>-<agente>.json   # gerados (harness): os 5 agentes e os de toolkit\n│   └── specs/ft-<nnn>-<slug>/                 # rápida e completo; fica no lugar depois do merge (vigente sem ELM)\n│       ├── .config.kiro                       # specId · workflowType · specType (feature | bugfix)\n│       ├── requirements.md | bugfix.md        # fatia | bug, com o bloco completo de cada requisito tocado\n│       ├── design.md · tasks.md\n│       ├── research.md · status.md · CT.csv\n│       └── elm/                               # com ELM\n├── .opencode/agents/                          # gerados (harness)\n│   ├── sa-desenvolvedor.md · sa-especificador.md   # mode primary, modelo build\n│   ├── sa-pesquisador.md · sa-revisor.md      # mode subagent, só leitura\n│   ├── sa-verificador.md                      # mode subagent, só leitura + Executar, curl à URL de teste e CT.csv\n│   └── <toolkit>-<agente>.md                # mode subagent, permissões do dono do passo\n└── .sabia/\n    ├── sabia.md                               # steering: Configuração · Verificação de aceite · Sustentação · ELM · Desvios · Tipos · Regras aprendidas\n    ├── glossario.md                           # opcional: só sem GL no DOORS (chave glossario)\n    ├── creditos/<usuario>.csv                 # Kiro: uma linha por sessão (creditos.py)\n    ├── config/                                # harness: só a sessão sem agente escreve\n    │   ├── agentes.json                       # escolhas do projeto, entrada do gerador\n    │   ├── elm/pa_<nome>.json                 # conexão do MCP elm\n    │   └── elk/elk-<ambiente>.json            # conexão do MCP elk\n    ├── fluxo/ · template/                       # override esparso (harness)\n    ├── toolkits/<nome>/toolkit.json           # toolkit do projeto (opcional)\n    ├── local/                                 # fora do git\n    │   ├── wt/<id>/                           # worktree do autopilot\n    │   ├── loop-<id>.md                       # log do disjuntor do autopilot\n    │   ├── reunioes/<EP-nn|FT-nnn>-<AAAA-MM-DD>.<ext>   # transcrições\n    │   └── sustentacao/<ID>/                  # dados de cliente do atendimento\n    └── planejamento/                          # chave produto; gravado direto na branch base (fluxo/commit-na-branch-base.md)\n        ├── backlog.md                         # tabela única de 14 colunas; ordem das linhas = prioridade\n        ├── acordos.md                         # Item | Acordo: timebox, WIP, SLE, DoD, classes, reserva de capacidade, tamanhos, disjuntor, id no commit, CT no teste\n        ├── equipe.json                        # membros: usuario · booleanas · capacidade\n        ├── roadmap.md                         # opcional\n        ├── sprints/<AAAA>/sprint-<nn>.md       # Meta · Item · Trabalho · Responsável · Tarefas · Review · Retro\n        ├── fatias/FT-<nnn>-<slug>.md          # ficha (fatia e bug)\n        ├── epicos/EP-<nn>-<slug>/\n        │   ├── pitch.md                       # nasce no shaping (Shape Up) com go/kill\n        │   └── prd.md                         # nasce no go\n        ├── prototipos/<EP-nn|FT-nnn>-<slug>/v<N>/   # versões do protótipo\n        ├── atas/ATA-<nn>-<AAAA-MM-DD>-<assunto>.md   # opcional\n        └── sustentacao/<ID>-<slug>.md         # registro do item de Sustentação\n\n~/.sabia/framework/                            # instalação (fora do repositório)\n├── fluxo/entrada.md · cadastro.md · commit-na-branch-base.md   # passos comuns incluídos pelas skills\n├── fluxo/tipos.json                           # catálogo HF · UC · REG · MSG · EL · GL · ET · CT · ATA\n├── fluxo/travas.json                          # catálogo das travas\n├── template/<skill>/<arquivo>.md              # modelos (catálogo no esquema dos overrides)\n└── skills/sa-setup/assets/agents/perfis.json  # 2 modelos de permissão, os 5 agentes e o harness\n~/.sabia/toolkits/<nome>/toolkit.json          # toolkit do usuário",
   "artefatos": [
    {
     "artefato": "backlog.md",
@@ -4218,32 +4218,32 @@
   {
    "arquivo": "backlog.md",
    "caminho": ".sabia/planejamento/backlog.md (raiz = chave produto do agentes.json)",
-   "formato": "md: título '# Backlog' e uma tabela única, uma linha por item, nas colunas abaixo nesta ordem. A ordem das linhas é a prioridade: o topo é o próximo a puxar. A captura acrescenta no fim; quem tem a booleana produto reordena; prioridade crítica sobe ao topo. Célula sem valor fica vazia. Toda escrita passa por fluxo/commit-na-branch-base.md.",
-   "escrevem": "fluxo/captura.md (linha nova; incluída por sa-triar.capturar, sa-desenvolver.codificar, sa-verificar.verificar, sa-atender.atender e as demais que capturam) · sa-triar.triar · sa-refinar.moldar · sa-refinar.detalhar · sa-refinar.fatiar · sa-refinar.ajustar · sa-planejamento.sprint (virada) · sa-desenvolver.iniciar · sa-desenvolver.encerrar · sa-atender.atender · sa-elm.item (ib) · sa-elm.importar-backlog",
+   "formato": "md: título '# Backlog' e uma tabela única, uma linha por item, nas colunas abaixo nesta ordem. A ordem das linhas é a prioridade: o topo é o próximo a puxar. O cadastro acrescenta no fim; quem tem a booleana produto reordena; prioridade crítica sobe ao topo. Célula sem valor fica vazia. Toda escrita passa por fluxo/commit-na-branch-base.md.",
+   "escrevem": "fluxo/cadastro.md (linha nova; incluída por sa-triar.cadastrar, sa-desenvolver.codificar, sa-verificar.verificar, sa-atender.atender e as demais que cadastram) · sa-triar.triar · sa-refinar.moldar · sa-refinar.detalhar · sa-refinar.fatiar · sa-refinar.ajustar · sa-planejamento.sprint (virada) · sa-desenvolver.iniciar · sa-desenvolver.encerrar · sa-atender.atender · sa-elm.item (ib) · sa-elm.importar-backlog",
    "leem": "fluxo/entrada.md · sa-status · sa-triar.triar (duplicado) · sa-refinar.* · sa-planejamento.sprint · sa-desenvolver.iniciar · sa-elm.importar-backlog (ib já presente) · sa-elm.finalizar",
    "campos": [
     {
      "nome": "id",
      "significado": "Id estável do item; nunca muda. Série pelo tipo: épico EP-nn; fatia e bug FT-nnn; sustentação <categoria>-nnn",
-     "preenche": "fluxo/captura.md e sa-elm.importar-backlog: maior id da série no backlog.md + 1 (incluindo canceladas), lido depois do pull",
+     "preenche": "fluxo/cadastro.md e sa-elm.importar-backlog: maior id da série no backlog.md + 1 (incluindo canceladas), lido depois do pull",
      "valores": "EP-nn · FT-nnn · AT-nnn · IM-nnn · BD-nnn · IN-nnn · OP-nnn · EX-nnn"
     },
     {
      "nome": "título",
      "significado": "O comportamento ou pedido em linguagem do negócio, numa linha. O <slug> dos arquivos sai daqui: até 5 palavras, kebab-case, minúsculas, sem acento",
-     "preenche": "quem captura; sa-triar.triar e sa-refinar.* ajustam",
+     "preenche": "quem cadastro; sa-triar.triar e sa-refinar.* ajustam",
      "valores": "texto"
     },
     {
      "nome": "tipo",
      "significado": "Classe do item; define a série do id e a máquina de status",
-     "preenche": "fluxo/captura.md (cada skill passa o seu: sa-verificar → bug, sa-atender → sustentação); sa-triar.triar confirma; sa-elm.importar-backlog mapeia Defeito → bug, Item de Backlog → fatia",
+     "preenche": "fluxo/cadastro.md (cada skill passa o seu: sa-verificar → bug, sa-atender → sustentação); sa-triar.triar confirma; sa-elm.importar-backlog mapeia Defeito → bug, Item de Backlog → fatia",
      "valores": "épico · fatia · bug · sustentação"
     },
     {
      "nome": "status",
      "significado": "Situação gravada do item. em-revisao é derivado do MR aberto e nunca se grava",
-     "preenche": "fatia/bug: nova (captura) → aceita (sa-triar.triar) → elegível (sa-refinar.detalhar; ficha com DoR e Aprovado) → em-andamento (sa-desenvolver.iniciar; sa-planejamento.sprint volta a elegível o que sai da sprint na virada) → concluida (sa-desenvolver.encerrar, no merge); cancelada (sa-triar.triar, sa-refinar.ajustar, ou quem descobre que virou épico); adiada até <data> (sa-triar.triar). Épico: a-moldar (captura ou sa-triar.triar) → em-especificacao (go em sa-refinar.moldar) → fatiado (sa-refinar.fatiar) → concluido (sa-desenvolver.encerrar, no merge da última fatia aberta); cancelado (kill em sa-refinar.moldar, ou sa-refinar.ajustar). Sustentação: nova (captura/sa-atender.atender) → em-andamento → concluida · cancelada (sa-atender.atender)",
+     "preenche": "fatia/bug: nova (cadastro) → aceita (sa-triar.triar) → elegível (sa-refinar.detalhar; ficha com DoR e Aprovado) → em-andamento (sa-desenvolver.iniciar; sa-planejamento.sprint volta a elegível o que sai da sprint na virada) → concluida (sa-desenvolver.encerrar, no merge); cancelada (sa-triar.triar, sa-refinar.ajustar, ou quem descobre que virou épico); adiada até <data> (sa-triar.triar). Épico: a-moldar (cadastro ou sa-triar.triar) → em-especificacao (go em sa-refinar.moldar) → fatiado (sa-refinar.fatiar) → concluido (sa-desenvolver.encerrar, no merge da última fatia aberta); cancelado (kill em sa-refinar.moldar, ou sa-refinar.ajustar). Sustentação: nova (cadastro/sa-atender.atender) → em-andamento → concluida · cancelada (sa-atender.atender)",
      "valores": "fatia e bug: nova · aceita · elegível · em-andamento · concluida · cancelada · adiada até AAAA-MM-DD; épico: a-moldar · em-especificacao · fatiado · concluido · cancelado; sustentação: nova · em-andamento · concluida · cancelada"
     },
     {
@@ -4273,7 +4273,7 @@
     {
      "nome": "relator",
      "significado": "Quem trouxe a demanda",
-     "preenche": "fluxo/captura.md · sa-elm.importar-backlog",
+     "preenche": "fluxo/cadastro.md · sa-elm.importar-backlog",
      "valores": "usuario do equipe.json · externo: <área ou nome>"
     },
     {
@@ -4286,7 +4286,7 @@
      "nome": "obs",
      "significado": "Anotações; convenções fechadas separadas por ' · ', o resto é texto livre",
      "preenche": "quem causa a anotação",
-     "valores": "duplicada de <id> · falta: <pergunta> · para <relator> · motivo: <texto> · não investir: <motivo> (kill) · origem <id | chamado <n> | EWM <n> | review <AAAA>/Sprint <nn> | lint> (capturado a partir de outro item ou fonte: achado, desvio, DDL, desdobramento, verificação, review, importação, lint) · veio de <id>[ v<N>] (nasceu de outro: virar épico, dividir, juntar, mudança do PRD) · virou <id> · adiamento ignorado (<usuario>, AAAA-MM-DD) · reserva de capacidade estourada: <decisão> (<usuario>, AAAA-MM-DD)"
+     "valores": "duplicada de <id> · falta: <pergunta> · para <relator> · motivo: <texto> · não investir: <motivo> (kill) · origem <id | chamado <n> | EWM <n> | review <AAAA>/Sprint <nn> | lint> (cadastrado a partir de outro item ou fonte: achado, desvio, DDL, desdobramento, verificação, review, importação, lint) · veio de <id>[ v<N>] (nasceu de outro: virar épico, dividir, juntar, mudança do PRD) · virou <id> · adiamento ignorado (<usuario>, AAAA-MM-DD) · reserva de capacidade estourada: <decisão> (<usuario>, AAAA-MM-DD)"
     },
     {
      "nome": "aceita_em",
@@ -4546,7 +4546,7 @@
    "arquivo": "ficha da fatia",
    "caminho": ".sabia/planejamento/fatias/FT-<nnn>-<slug>.md (fatia e bug)",
    "formato": "md: '# FT-<nnn> · <título>', '**Aprovado:** <usuario> · AAAA-MM-DD | —' logo abaixo do título, a linha de cabeçalho (Tipo · Pai · Especificação, esta só com ELM e artefatos afetados com inclui, altera ou exclui) e as seções abaixo, nesta ordem. Uma seção sem conteúdo fica só com o título. Gravada direto na branch base e editável até alguém puxar (status em-andamento).",
-   "escrevem": "fluxo/captura.md (cabeçalho e Entrada mínima) · sa-triar.triar (Entrada) · sa-refinar.detalhar (Especificação, Regras, Cenários, Não muda, artefatos afetados, Em aberto, Decisões, DoR, Aprovado) · sa-especificar.elm (versão de referência e id nos artefatos afetados, na sincronização do manual) · sa-refinar.fatiar (Objetivo, artefatos afetados, Pai) · sa-refinar.ajustar · sa-entrevistar.entrevistar (Decisões, Em aberto) · sa-elm.publicar (troca o id provisório nos artefatos afetados)",
+   "escrevem": "fluxo/cadastro.md (cabeçalho e Entrada mínima) · sa-triar.triar (Entrada) · sa-refinar.detalhar (Especificação, Regras, Cenários, Não muda, artefatos afetados, Em aberto, Decisões, DoR, Aprovado) · sa-especificar.elm (versão de referência e id nos artefatos afetados, na sincronização do manual) · sa-refinar.fatiar (Objetivo, artefatos afetados, Pai) · sa-refinar.ajustar · sa-entrevistar.entrevistar (Decisões, Em aberto) · sa-elm.publicar (troca o id provisório nos artefatos afetados)",
    "leem": "sa-desenvolver.iniciar (DoR) · sa-plano.plano · sa-desenvolver.codificar · sa-revisar.revisar · sa-verificar.verificar · sa-especificar.elm (Especificação) · sa-status",
    "campos": [
     {
@@ -4558,7 +4558,7 @@
     {
      "nome": "Tipo",
      "significado": "Tipo da linha do backlog.md",
-     "preenche": "fluxo/captura.md",
+     "preenche": "fluxo/cadastro.md",
      "valores": "fatia · bug"
     },
     {
@@ -4576,7 +4576,7 @@
     {
      "nome": "Entrada",
      "significado": "O pedido mínimo por tipo. bug: Passos · Atual · Esperado · Reproduzido; fatia: Pedido · Quem pediu · Requisito citado (opcional)",
-     "preenche": "fluxo/captura.md · sa-triar.triar",
+     "preenche": "fluxo/cadastro.md · sa-triar.triar",
      "valores": "Reproduzido ∈ sim · não · detalhe insuficiente"
     },
     {
@@ -4759,7 +4759,7 @@
    "arquivo": "registro de Sustentação",
    "caminho": ".sabia/planejamento/sustentacao/<ID>-<slug>.md",
    "formato": "md: '# <ID> · <título>', uma linha de cabeçalho e as seções abaixo. Sem status: a situação está no backlog.md. Gravado direto na branch base.",
-   "escrevem": "fluxo/captura.md · sa-atender.atender · sa-status (fechar a sessão: Atividade)",
+   "escrevem": "fluxo/cadastro.md · sa-atender.atender · sa-status (fechar a sessão: Atividade)",
    "leem": "sa-atender.atender · sa-status (prazo, lições aprendidas) · sa-planejamento.review (lições aprendidas)",
    "campos": [
     {
@@ -4771,19 +4771,19 @@
     {
      "nome": "Origem",
      "significado": "De onde veio o pedido",
-     "preenche": "fluxo/captura.md",
+     "preenche": "fluxo/cadastro.md",
      "valores": "chamado <n> · EWM <n> · pedido · origem <id> (desdobramento ou DDL de fatia)"
     },
     {
      "nome": "Pedido por",
      "significado": "Área ou papel, sem nome de pessoa",
-     "preenche": "fluxo/captura.md",
+     "preenche": "fluxo/cadastro.md",
      "valores": "texto"
     },
     {
      "nome": "Prazo",
      "significado": "Data-limite",
-     "preenche": "fluxo/captura.md · sa-atender.atender",
+     "preenche": "fluxo/cadastro.md · sa-atender.atender",
      "valores": "AAAA-MM-DD · —"
     },
     {
@@ -4795,7 +4795,7 @@
     {
      "nome": "Pedido",
      "significado": "O que o cliente precisa, sem dado pessoal",
-     "preenche": "fluxo/captura.md",
+     "preenche": "fluxo/cadastro.md",
      "valores": "texto"
     },
     {

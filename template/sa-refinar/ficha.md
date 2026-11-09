@@ -3,7 +3,7 @@
 ---
 # Ficha — `.sabia/planejamento/fatias/FT-<nnn>-<slug>.md`
 
-Toda fatia e todo bug têm ficha. Nasce curta na captura (só a Entrada), cresce no detalhar e é editável até alguém
+Toda fatia e todo bug têm ficha. Nasce curta no cadastro (só a Entrada), cresce no detalhar e é editável até alguém
 puxar (status `em-andamento`). Fica direto na branch base. Seção sem conteúdo fica só com o título.
 
 ## Formato
@@ -69,12 +69,12 @@ Então o desconto aplicado é de R$ 50,00
 
 | Campo | Valores | Quem preenche |
 |---|---|---|
-| título | `# FT-<nnn> · <título>`, o título da linha do `backlog.md` | a captura |
+| título | `# FT-<nnn> · <título>`, o título da linha do `backlog.md` | o cadastro |
 | Aprovado | `<usuario> · AAAA-MM-DD` de quem tem `produto` · `—`; logo abaixo do título. Qualquer mudança depois volta a `—` | `sa-refinar.detalhar` · `sa-refinar.fatiar` |
-| Tipo | `fatia` · `bug` | a captura |
+| Tipo | `fatia` · `bug` | o cadastro |
 | Pai | `EP-nn` · `—` | `sa-refinar.fatiar` · `sa-triar.triar` |
 | Especificação | `IA supervisionada` · `IA autopilot` · `manual`; a linha só existe com ELM e artefatos afetados com `inclui`, `altera` ou `exclui`. Fixa até o fim da especificação e independente da autonomia da codificação | `sa-refinar.detalhar` |
-| Entrada | fatia: Pedido · Quem pediu · Requisito citado (opcional). bug: Passos · Atual · Esperado · Reproduzido (`sim` · `não` · `detalhe insuficiente`) | a captura · `sa-triar.triar` |
+| Entrada | fatia: Pedido · Quem pediu · Requisito citado (opcional). bug: Passos · Atual · Esperado · Reproduzido (`sim` · `não` · `detalhe insuficiente`) | o cadastro · `sa-triar.triar` |
 | Objetivo | para que serve a fatia do épico (opcional) | `sa-refinar.fatiar` |
 | Regras | `R<n> · <texto> · fonte: <D-nn \| <sigla>-<id>>` | `sa-refinar.detalhar` |
 | Cenários | `**CT-nn · <título>**` + Dado / Quando / Então, com o Então verificável e com valores. O `CT-nn` é sequencial na ficha; o teste e o `CT.csv` usam `FT-<nnn> CT-nn` | `sa-refinar.detalhar` |

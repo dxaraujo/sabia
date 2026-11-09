@@ -21,4 +21,4 @@
 Seleção do ciclo, no início ou no reabastecimento: virada (só no início) → capacidade e reserva de capacidade → especificação →
 previsão pela ordem das linhas → responsáveis → meta → proposta → grava o `sprint-<nn>.md` (e o `backlog.md` dos
 itens que a virada tirou) → "seguir para puxar o topo?". Dentro do ciclo, o trabalho é puxado com sinal de WIP: item
-fora da seleção (expedite, captura puxada na hora, especificação que fechou) ganha a linha pela skill que o puxa.
+fora da seleção (expedite, cadastro puxado na hora, especificação que fechou) ganha a linha pela skill que o puxa.

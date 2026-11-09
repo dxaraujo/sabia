@@ -7,7 +7,7 @@
    {"id": "branch", "saidas": {"árvore suja": "fim"}},
    {"id": "cenarios", "chama": "sa-verificar.verificar"},
    {"id": "decisao", "saidas": {"nenhum ❌ adiado": "entrega"}},
-   {"id": "captura", "de": "captura"},
+   {"id": "cadastro", "de": "cadastro"},
    {"id": "commit-na-branch-base", "de": "commit-na-branch-base"},
    {"id": "entrega"}
  ]}

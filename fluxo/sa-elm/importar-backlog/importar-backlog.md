@@ -7,7 +7,7 @@
    {"id": "filtro"},
    {"id": "so-os-novos"},
    {"id": "mapear"},
-   {"id": "captura", "de": "captura"},
+   {"id": "cadastro", "de": "cadastro"},
    {"id": "gravar", "de": "commit-na-branch-base"},
    {"id": "seguir", "saidas": {"sim: seguir para a triagem": "→ sa-triar.triar"}}
  ]}
@@ -15,4 +15,4 @@
 # Importar backlog — Defeitos e Itens de Backlog do EWM
 
 Uso raro, só a pedido. Traz do EWM os Defeitos e os Itens de Backlog que ainda não estão no `backlog.md` e grava
-cada um como linha `nova` pela captura comum. A triagem vem depois.
+cada um como linha `nova` pelo cadastro comum. A triagem vem depois.

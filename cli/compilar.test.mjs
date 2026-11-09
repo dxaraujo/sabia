@@ -193,13 +193,13 @@ test("passo compartilhado: corpo de fluxo/entrada.md, linha do papel e da branch
   assert.match(g, /│ 1 entrada \[desenvolvedor\] +│──▶ ↪ vizinhos \(diga e pare\): sa-b\.x · ■ bloqueada aguardando troca\n/);
 });
 
-test("passo compartilhado além da entrada (captura, commit-na-branch-base): só o arquivo comum, sem papel, branch nem vizinhos", () => {
-  const fw = fixture({ "fluxo/captura.md": passo("Captura comum."),
-    "fluxo/sa-a/a/a.md": mestre({ fluxo: "a", dono: "sa-um", passos: [{ id: "ini" }, { id: "capturar", de: "captura" }, { id: "rev" }] }) });
+test("passo compartilhado além da entrada (cadastro, commit-na-branch-base): só o arquivo comum, sem papel, branch nem vizinhos", () => {
+  const fw = fixture({ "fluxo/cadastro.md": passo("Cadastro comum."),
+    "fluxo/sa-a/a/a.md": mestre({ fluxo: "a", dono: "sa-um", passos: [{ id: "ini" }, { id: "cadastrar", de: "cadastro" }, { id: "rev" }] }) });
   assert.deepEqual(validar(carregar(fw)), []);
   const st = compilar(fw, path.join(raiz, "st"), { base: BASE });
-  assert.match(out(st, "sa-a/references/a/capturar.md"), /^_Captura comum\._\n\n## Entrada/);
-  assert.match(out(st, "sa-a/references/a/grafo.md"), /│ 2 capturar +│\n/);
+  assert.match(out(st, "sa-a/references/a/cadastrar.md"), /^_Cadastro comum\._\n\n## Entrada/);
+  assert.match(out(st, "sa-a/references/a/grafo.md"), /│ 2 cadastrar +│\n/);
 });
 
 test("passo compartilhado: recusa passos/entrada.md, de sem arquivo, papel fora do catálogo, campo sprint, branch fora de fatia|nao, id entrada local e falta dos vizinhos", () => {

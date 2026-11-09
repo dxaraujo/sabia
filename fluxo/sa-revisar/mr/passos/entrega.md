@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O MR aprovado ou com mudanças pedidas (passo `veredito`) e as capturas gravadas, se houve.
+O MR aprovado ou com mudanças pedidas (passo `veredito`) e os cadastros gravados, se houve.
 
 ## Faça
 
