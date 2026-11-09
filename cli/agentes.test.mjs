@@ -150,7 +150,7 @@ describe("Agentes", () => {
         ".sabia/planejamento/backlog.md", ".sabia/sabia.md", ".sabia/creditos/ana.csv"])
         assert.equal(oc(p.edit, alvo), "allow", `${nome} ${alvo}`);
       for (const alvo of [".kiro/agents/sa-revisor.json", ".kiro/settings/mcp.json", ".kiro/steering/sabia.md", ".opencode/agents/x.md",
-        "opencode.json", ".sabia/config/agentes.json", ".sabia/fluxo/sa-plano/plano/passos/x.md", ".sabia/template/sa-plano/plano.md",
+        "opencode.json", ".sabia/config/agentes.json", ".sabia/fluxo/sa-plano/plano/passos/x.md", ".sabia/template/sa-plano/spec.md",
         ".sabia/local/wt/ft-001/.kiro/agents/x.json", ".env", "mod/.env.local", "certs/x.pem"])
         assert.equal(oc(p.edit, alvo), "deny", `${nome} ${alvo}`);
       for (const alvo of [".env", "api/.env.prod", "~/.ssh/id_rsa"]) assert.equal(oc(p.read, alvo), "deny", `${nome} ${alvo}`);

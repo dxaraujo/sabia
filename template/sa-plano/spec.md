@@ -1,12 +1,13 @@
 ---
 {"resumo": "Modelos do plano da fatia pela matriz trilha × formato: .config.kiro, proposal.md, delta OpenSpec, requirements.md, bugfix.md, design.md e tasks.md."}
 ---
-# Plano da fatia — modelos por formato
+# Spec da fatia — modelos por formato
 
 A pasta da spec é `.kiro/specs/ft-<nnn>-<slug>/` (Kiro) ou `openspec/changes/ft-<nnn>-<slug>/` (OpenSpec), pelo
 `formato_spec` do `agentes.json`. O texto é no idioma do projeto; os títulos que a ferramenta valida ficam
 exatamente como abaixo (em inglês, no Kiro e no OpenSpec). Seção fixa sem conteúdo leva `Não se aplica.`, nunca
-conteúdo inventado. Plano curto: quem aprova lê tudo numa sentada.
+conteúdo inventado. Plano curto: quem aprova lê tudo numa sentada. Não existe arquivo `plano.md`: o plano é a spec da
+matriz abaixo, com o `research.md` e o `status.md`.
 
 ## Matriz trilha × formato
 

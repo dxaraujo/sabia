@@ -21,4 +21,5 @@ Contexto lido → passo `preparar`; volta da codificação manual → passo `val
 
 ## Pare se
 
-- Rápida ou completo sem `tasks.md` → "o plano é da `sa-plano.plano`" e pare.
+- Rápida ou completo sem os arquivos da matriz do template `sa-plano/spec.md` ou sem o `research.md` → "o plano é da
+  `sa-plano.plano`" e pare.

@@ -11,7 +11,7 @@
    {"id": "delta"},
    {"id": "escrever", "saidas": {"o plano mostra que passa de G: vira épico": "→ sa-refinar.moldar"}},
    {"id": "revisar", "chama": "sa-revisar.revisar", "saidas": {"completo com parte por escrever, ou achado corrige": "escrever", "autopilot, 2ª reprovação seguida": "→ sa-desenvolver.codificar.disjuntor"}},
-   {"id": "aprovar", "saidas": {"ajuste pedido por quem desenvolve": "escrever"}},
+   {"id": "aprovar", "saidas": {"ajuste pedido por quem desenvolve, ou falta arquivo da matriz": "escrever"}},
    {"id": "seguir", "saidas": {"IA supervisionada ou IA autopilot": "→ sa-desenvolver.codificar", "manual: Retomar gravado, sessão encerrada até o 'terminei'": "fim"}},
    {"id": "cadastro", "de": "cadastro"},
    {"id": "gravar", "de": "commit-na-branch-base"}
@@ -22,7 +22,7 @@
 O plano da fatia nas trilhas rápida e completo; o trivial não passa por aqui. Junta os fatos pela `sa-pesquisar` e
 grava o `research.md`, toma as decisões técnicas, copia o texto aprovado para o delta (sem reescrever) e escreve
 design e tasks pela matriz trilha × formato. Quem desenvolve aprova o próprio plano; no autopilot, o subagente aprova
-e registra. Modelos: o template `sa-plano/plano.md` e o template `sa-plano/research.md`.
+e registra. Modelos: o template `sa-plano/spec.md` e o template `sa-plano/research.md`.
 
 Deste fluxo: item `em-andamento`, branch `<id>`, pasta da spec com `status.md`, trilha rápida ou completo e Fase `—`.
 O manual segue as regras da IA supervisionada: a pessoa está presente.

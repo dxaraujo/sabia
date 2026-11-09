@@ -14,7 +14,7 @@ Trilha `trivial`, ou volta da virada (a pasta e o `status.md` já estão na bran
 2. **`status.md`** pelo template `sa-desenvolver/status.md`: Trilha, Autonomia, Fase `—` (fica assim até o plano ser
    aprovado), MR `—`, sem a linha Publicação, as seções Desvios, Em aberto e Lições aprendidas vazias e o Retomar `Feito:
    item assumido · Próximo: sa-plano.plano`.
-3. **Só no Kiro**: `.config.kiro` pelo template `sa-plano/plano.md`, com `specId` = um UUID novo, `workflowType`
+3. **Só no Kiro**: `.config.kiro` pelo template `sa-plano/spec.md`, com `specId` = um UUID novo, `workflowType`
    `requirements-first` e `specType` `feature` (fatia) ou `bugfix` (bug).
 
 ## Saída

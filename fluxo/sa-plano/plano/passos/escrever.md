@@ -7,7 +7,7 @@ O delta, o `research.md`, as decisões, a trilha (`status.md`), o tipo (fatia ou
 
 ## Faça
 
-1. Escreva pela matriz (modelos no template `sa-plano/plano.md`):
+1. Escreva pela matriz (modelos no template `sa-plano/spec.md`):
 
    | Trilha | Kiro | OpenSpec |
    |---|---|---|
@@ -15,6 +15,7 @@ O delta, o `research.md`, as decisões, a trilha (`status.md`), o tipo (fatia ou
    | rápida bug | Bugfix Spec: `bugfix.md`, `design.md`, `tasks.md` | `proposal.md` + delta MODIFIED + `tasks.md` |
    | completo | `requirements.md` → `design.md` → `tasks.md` | `proposal.md` + delta + `design.md` + `tasks.md` |
 
+   Não existe arquivo `plano.md`: o plano é a spec da matriz, com o `research.md` e o `status.md`.
 2. Completo: uma parte por vez, com o passo `revisar` entre elas.
 3. `design.md`: os títulos fixos do formato, Decisões técnicas e os critérios de pronto (Cenário `CT-nn` · Como
    executar · Esperado · Onde verificar).

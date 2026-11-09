@@ -8,7 +8,7 @@ O plano aprovado e o motivo de quem chamou.
 ## Faça
 
 1. Atualize o delta, o `design.md` e o `tasks.md` (ou os arquivos da rápida) só no que mudou, pelo template
-   `sa-plano/plano.md`.
+   `sa-plano/spec.md`.
 2. Texto aprovado novo → copie de novo para o delta, sem reescrever.
 3. Acrescente tarefas; nunca desmarque as feitas.
 4. Registre o motivo em Desvios do `status.md` (Tipo `plano`).
