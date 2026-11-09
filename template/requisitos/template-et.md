@@ -11,8 +11,7 @@ de Decisions, cada parte num `###`). Na divergência com o plano, vale o código
 
 ````markdown
 ## Components and Interfaces
-**Atende:** [HF-<id> <título>](<id>-HF-<slug>.md) · [UC-<id> <título>](<id>-UC-<slug>.md)
-**Módulo:** <módulo> · **Schema:** <schema> · **Tipo:** Consulta | Cadastro | Processamento | Integração
+**Atende:** [HF-<id> <título>](<id>-HF-<slug>.md) · [UC-<id> <título>](<id>-UC-<slug>.md) \
 `<Componente.operacao(parâmetros)>`: <o que faz>
 
 ### Q01 - <consulta>
@@ -40,9 +39,9 @@ SELECT …
 **<job>:** <gatilho e frequência> · <tabela de controle> · <situações e valores>
 
 ## Data Models
-| Tabela | Alias | Descrição | Operação |
-|---|---|---|---|
-| <TB_TURMA> | t | <turma do evento> | SELECT |
+| Tabela | Operação |
+|---|---|
+| <TB_TURMA> | SELECT |
 Relacionamentos: <TB_INSCRICAO> → <TB_TURMA> · N:1 · <ID_TURMA>
 
 ### Campos da tela → colunas   <!-- só com tela -->

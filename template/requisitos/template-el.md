@@ -8,10 +8,10 @@ Uma tela, como o cliente a aprovou no protótipo. Só com a linha Telas = `sim` 
 no Em aberto.
 
 ```markdown
-**Design system:** <nome> (<url>)   <!-- do steering do projeto; sem ele, a linha sai -->
-**Descrição:** <o que o ator faz na tela>
-**Breadcrumb:** <caminho de navegação>
-**Título da tela:** <título visível>
+**Design system:** <nome> (<url>)   <!-- do steering do projeto; sem ele, a linha sai --> \
+**Descrição:** <o que o ator faz na tela> \
+**Breadcrumb:** <caminho de navegação> \
+**Título da tela:** <título visível> \
 (*) campos obrigatórios
 
 **1. Protótipos**

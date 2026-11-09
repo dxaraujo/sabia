@@ -29,6 +29,7 @@ publicado: manual <AAAA-MM-DD>   # só na especificação manual
 - **publicado:** só na especificação manual, quando o texto já está no DOORS; a publicação não reenvia.
 - **Ação e versão de referência** moram nos artefatos afetados da ficha (`<sigla>-<id> · inclui | altera | exclui · versão de referência`). A versão de referência é o `modificado_em` do DOORS no download; `—` no novo. A publicação compara e, se mudou, avisa e pula.
 - **Ao DOORS sobe só o corpo:** a publicação tira o frontmatter.
+- **Linhas seguidas** do mesmo bloco terminam com ` \`: sem isso, o ELM junta tudo numa linha.
 - **Corpo sem cabeçalho:** sem título `#` nem linhas de aprovação, tipo ou ação; começa no primeiro rótulo do template.
 - **Sem título Markdown no corpo:** as partes são rótulos em negrito (`**Narrativa:**`, `**1. <contexto>**`), para o
   mesmo texto servir ao bloco do `prd.md`, ao delta (dentro do `### Requirement:`) e ao DOORS.
