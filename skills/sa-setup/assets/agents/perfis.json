@@ -18,7 +18,7 @@
       },
       "mcp": {
         "padrao": "ask",
-        "allow": ["gitlabpr/gitlab_listar_mrs", "gitlabpr/gitlab_obter_mr", "elk/*"],
+        "allow": ["gitlabpr/gitlab_listar_mrs", "gitlabpr/gitlab_obter_mr"],
         "ask": ["gitlabpr/gitlab_criar_mr", "gitlabpr/gitlab_mesclar_mr"]
       }
     },
@@ -36,7 +36,7 @@
       },
       "mcp": {
         "padrao": "deny",
-        "allow": ["gitlabpr/gitlab_listar_mrs", "gitlabpr/gitlab_obter_mr", "elk/*"]
+        "allow": ["gitlabpr/gitlab_listar_mrs", "gitlabpr/gitlab_obter_mr"]
       }
     }
   },

@@ -53,6 +53,7 @@
 - Sustentação: não existe recategorizar (categoria confirmada antes de gravar a triagem). Seção Sustentação do sabia.md: Categoria · Descrição · Exemplo.
 
 ## Pendências que continuam
+- MCP elk fora do framework (09/11): sai do mcp.json e do perfis.json; só a sustentação usa, se configurado. Quem usa instala por fora e o lista em agentes.<agente>.mcp.
 - MCP do Jenkins; sabia validar-spec (CLI); busca nas três pastas no mcp-elm e mcp-elk; conferir no Kiro real o .config.kiro; revisão de termos (depois da 2.1); ELM como toolkit (2.2).
 
 ## Complementos de 07/11 (depois da reescrita)

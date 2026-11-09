@@ -208,11 +208,13 @@ ficha; o `CT.csv` da verificação) e `ATA`. Artefato novo: id provisório `<sig
 - Kiro Web não lê `~/.kiro`: os agentes do projeto aparecem lá, mas sem as skills do power — use a IDE ou o CLI.
 - MCPs do próprio power (o `mcp.json` os sobe com `uvx`): [`mcp-gitlabpr`](https://pypi.org/project/mcp-gitlabpr/),
   que lista, lê, abre e mescla os MRs — credencial em `~/.config/mcp-gitlabpr/gitlabpr.properties` (`url` e
-  `token`); sem ela, o fluxo entrega título e descrição do MR, e a pessoa o abre;
-  [`mcp-elm`](https://pypi.org/project/mcp-elm/), que também consulta o bundle local; e
-  [`mcp-elk`](https://pypi.org/project/mcp-elk/), que consulta logs no ELK. O código e os schemas públicos (como o
+  `token`); sem ela, o fluxo entrega título e descrição do MR, e a pessoa o abre; e
+  [`mcp-elm`](https://pypi.org/project/mcp-elm/), que também consulta o bundle local. O código e os schemas públicos (como o
   [`pa.schema.json`](https://dxaraujo.github.io/mcps/elm/pa.schema.json)) estão em
   [`dxaraujo/mcps`](https://github.com/dxaraujo/mcps).
+- Opcional: logs do ELK na Sustentação, pelo [`mcp-elk`](https://pypi.org/project/mcp-elk/), que fica fora do Sabiá. Instale o servidor na
+  ferramenta com o nome `elk`, grave `.sabia/config/elk/elk-<ambiente>.json` e acrescente `"elk"` em `agentes.<agente>.mcp` de quem atende
+  (`sa-desenvolvedor` e `sa-especificador`), na `sa-setup`.
 - Opcional: IBM ELM — credencial em `~/.config/mcp-elm/elm.properties` e o `pa` gerado pela `sa-elm.setup`; MCP de
   consulta ao banco (somente leitura); MCP de browser/Playwright para verificar frontend.
 - Toolkits da stack do projeto (opcional — sem eles os agentes dependem do steering e do código vizinho).
