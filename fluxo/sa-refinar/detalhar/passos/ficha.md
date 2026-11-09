@@ -11,7 +11,8 @@ O que os passos anteriores levantaram: regras, cenários, Não muda, artefatos a
    Aprovado, o cabeçalho (Tipo · Pai · Especificação) e as seções Entrada · Objetivo · Regras · Cenários · Não
    muda · Artefatos afetados · Em aberto · Decisões · DoR. Seção vazia fica só com o título.
 2. **DoR** (avisa, não trava): marque cada item do checklist do template. Requisito que Regras, Decisões ou Não muda
-   dizem mudar não convive com `nenhum requisito`: deixe o item sem marcar e mostre a divergência.
+   dizem mudar não convive com `nenhum requisito`: deixe o item sem marcar e mostre a divergência. A conferência dos artefatos afetados só se marca com a Decisão do passo
+   `artefatos`.
 3. **Aprovação**: mostre a ficha e peça o "sim" de quem tem `produto` → `**Aprovado:** <usuario> · AAAA-MM-DD`. Quem não
    tem a booleana grava com a anuência de quem tem: pergunte o nome, que precisa ter `produto` no `equipe.json`, e nunca
    presuma → `**Aprovado:** <usuario> · AAAA-MM-DD · anuência de <usuario com produto>`. Sem nenhum dos dois: mostre os

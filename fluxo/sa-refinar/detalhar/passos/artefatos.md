@@ -1,16 +1,18 @@
 ---
-{"resumo": "Pergunta o que a pessoa já sabe, busca no vigente, classifica cada requisito tocado em inclui, altera ou exclui, com a versão de referência, e confirma com a pessoa; 'nenhum requisito' só com a resposta dela."}
+{"resumo": "Busca no vigente os requisitos que as regras tocam, classifica em inclui, altera ou exclui, mostra o que achou e pergunta se há outro artefato afetado; a resposta vira Decisão, com quem respondeu."}
 ---
 ## Entrada
 
-Regras e cenários dos passos anteriores; na fatia de épico, os artefatos afetados que a `sa-refinar.fatiar` gravou.
+Regras e cenários dos passos anteriores, o Requisito citado da Entrada e, na fatia de épico, os artefatos afetados que a
+`sa-refinar.fatiar` gravou.
 
 ## Faça
 
-1. **O que a pessoa já sabe**, antes de buscar: "você já sabe de algum requisito, caso de uso ou regra afetada?". Sem
-   repetir o Requisito citado da Entrada; `não sei` é resposta.
-2. **Vigente**, a partir da resposta, das Regras e dos Cenários: specs arquivadas, depois o bundle (`docs/elm/<pa>/`).
-   Sem bundle, ofereça a `sa-elm.baixar`; bundle desatualizado, pelo critério da `sa-elm.regras`, mostre a data e pergunte se baixa.
+1. **Busque antes de perguntar**, a partir das Regras, dos Cenários e do Requisito citado: specs arquivadas, depois o bundle
+   (`docs/elm/<pa>/`), pelas tools `elm_*_local`. Bundle desatualizado, pelo critério da `sa-elm.regras`: mostre a data e
+   pergunte se baixa.
+2. **Sem bundle, ou a busca local não bastou:** pergunte "busco no ELM? é mais demorado". Sem o aceite, não busque; siga com o
+   que achou e registre que o ELM não foi consultado.
 3. **Classifique**: `inclui` — regra, mensagem, termo ou comportamento que não existe no vigente; `altera` — regra da
    ficha que muda, contradiz ou restringe o texto vigente, ou caso de uso cujo fluxo muda; `exclui` — o requisito deixa de valer.
 4. **Uma linha por requisito tocado**: `<sigla>-<id> · inclui | altera | exclui · versão de referência <AAAA-MM-DDTHH:MM>`,
@@ -19,16 +21,22 @@ Regras e cenários dos passos anteriores; na fatia de épico, os artefatos afeta
    - Novo: id provisório `<sigla>-<EPnn | FTnnn>-nn` (o do PRD na fatia de épico; o da própria fatia no item
      avulso, ex.: `REG-FT031-01`), com versão `—`.
    - Sem ELM: o `<sigla>-<EP | FT>-nn` é o id definitivo e a versão é `—`.
-5. **Confirme**: mostre os requisitos consultados, o motivo de cada linha e a conclusão, e peça a confirmação.
-6. **Resguardo: a busca não achou requisito tocado.** Não encontrar não prova que não existe. Pergunte sempre, mesmo que a
-   resposta do item 1 tenha sido `não sei`: "não encontrei requisito afetado; esta tarefa altera algum requisito?".
-   - Não → a linha `nenhum requisito`.
-   - Sim → a pessoa informa quais artefatos são alterados; classifique e grave cada um pelos itens 3 e 4.
+5. **Mostre e pergunte uma vez só.** Diga os termos pesquisados e:
+   - **Achou:** a tabela Requisito · Por que apareceu · Proposta, e pergunte "Existe outro artefato que possa ser afetado por
+     essa regra e não está nesta lista?".
+   - **Não achou:** "Realizei a pesquisa por estes termos e não encontrei nenhum artefato que referencie essa regra. Você
+     conhece artefato que possa ser afetado por esta regra?".
+   - Sim → a pessoa informa quais; classifique e grave cada um pelos itens 3 e 4. Não, e sem nenhuma linha → `nenhum requisito`.
+6. **Quem responde:** quem tem `especificador`, na fatia e no bug que toca requisito; no bug sem requisito tocado, quem conduz.
+7. **Registre em Decisões**, com quem respondeu: `Artefatos afetados conferidos: <ids | nenhum>; termos: <termos>`, e diga se o
+   ELM não foi consultado.
 
 ## Saída
 
-A seção Artefatos afetados → passo `elm`.
+A seção Artefatos afetados e a Decisão → passo `elm`.
 
 ## Pare se
 
-- Sem a resposta do resguardo → não grave `nenhum requisito`. Sem bundle, os artefatos afetados seguem com o que a pessoa confirma.
+- Sem a resposta → não grave `nenhum requisito`.
+- Sem quem responde na sessão → grave o que a busca achou, mande a pergunta ao Em aberto, para os nomes com `especificador`, com
+  `Bloqueia: esta fatia`, e siga: o item fica `aceita`.
