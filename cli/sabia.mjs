@@ -10,7 +10,8 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { ALIAS_PASSO, carregar, compilar, grafoAscii, LEGENDA, partes, temDesvio, validarToolkitFonte } from "./compilar.mjs";
+import { AGENTE_DO_PAPEL, baseDe as baseDaCopia, ganchoDe, gerarProjeto } from "./agentes.mjs";
+import { carregar, compilar, grafoAscii, LEGENDA, partes, temDesvio, validarToolkitFonte } from "./compilar.mjs";
 
 const VERSAO = JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8")).version;
 const REPO = "https://github.com/dxaraujo/sabia.git";
@@ -94,6 +95,7 @@ let quadroAberto = false;  // ┌ sem └: o erro do main fecha o quadro
 // trocáveis nos testes
 export const ctx = {
   exec: (cmd, args, opcoes = {}) => spawnSync(cmd, args, { encoding: "utf8", ...opcoes }),
+  gerarAgentes: gerarProjeto,
   log: (...xs) => console.log(...xs),
   interativo: Boolean(process.stdin.isTTY && process.stdout.isTTY && !process.env.CI),
   /** Multisseleção. opcoes: [{ valor, rotulo, dica, marcado }]; devolve a lista dos valores marcados. */
@@ -584,13 +586,6 @@ export async function desinstalar(opcoes = {}) {
 
 // ---------- toolkits ----------
 
-/** O passo do framework (`m` do carregar) que o `passo` de um toolkit assume, pelo id (ou pelo id antigo do ALIAS_PASSO)
- * — a mesma regra do gancho() do gerar_agentes.py. */
-const ganchoDe = (m, ext) => {
-  const passos = Object.entries(m.fluxos).flatMap(([q, fl]) => fl.passos.map((x) => ({ id: `${q}.${x.id}`, x })));
-  return passos.find(({ id }) => id === ext.passo) || passos.find(({ id }) => id === ALIAS_PASSO[ext.passo]);
-};
-
 /** Erros do toolkit.json: campos, nome, caminhos presos à pasta e arquivos que existem (o schema completo é o da setup). */
 export function validarToolkit(pasta, nomeEsperado = null, fw = null) {
   const f = path.join(pasta, "toolkit.json");
@@ -842,10 +837,6 @@ export async function removerToolkits(nomes = [], opcoes = {}) {
   ctx.tela.fechar(ficaram.length ? `Pronto.\n   → para tirar as cópias alteradas: sabia toolkits remover ${ficaram.join(" ")} --forcar` : "Pronto.");
 }
 
-// papéis do toolkit.json → agentes do Sabiá (o mesmo mapa do gerar_agentes.py)
-const AGENTE_DO_PAPEL = { desenvolvedor: "sa-desenvolvedor", especificador: "sa-especificador", produto: "sa-especificador",
-  pesquisador: "sa-pesquisador", revisor: "sa-revisor", verificador: "sa-verificador" };
-
 function manifestoInstalado(nome) {
   const f = sabia("toolkits", nome, "toolkit.json");
   if (!fs.existsSync(f)) throw new Error(`${nome} não está instalado — use: sabia toolkits instalar ${nome}`);
@@ -884,7 +875,7 @@ const detectado = ({ arquivos = [], contem = [] } = {}) => !arquivos.length || a
 });
 
 /** As seções geradas do sabia.md: a tabela de desvios vem do agentes.json e a de tipos, do que o gerador imprime. */
-function atualizarSabiaMd(cfg, saidaGerador) {
+function atualizarSabiaMd(cfg, tabelaTipos) {
   const f = path.join(process.cwd(), ".sabia", "sabia.md");
   if (!fs.existsSync(f)) return;
   const corpo = (md, titulo, texto) => md.replace(new RegExp(`(## ${titulo}\\n\\n[\\s\\S]*?\\n\\n)[\\s\\S]*?(?=\\n## |$)`), (_, cab) => `${cab}${texto}\n`);
@@ -892,7 +883,7 @@ function atualizarSabiaMd(cfg, saidaGerador) {
     const m = manifestoInstalado(p.toolkit), s = (m.skills || []).find((x) => x.caminho === p.skill);
     return s?.passo ? [`| \`${s.passo.passo}\` | \`${p.toolkit}\` ${m.versao} | ${s.passo.para} | \`${path.basename(path.dirname(p.skill))}\` | ${p.agente ? `\`${s.passo.agente}\`` : "—"} |`] : [];
   });
-  const tipos = saidaGerador.split("Tipos com skill de toolkit (seção do sabia.md):\n")[1]?.split(/\n(?:aviso:|\nO que não tem)/)[0].trim();
+  const tipos = tabelaTipos.join("\n");
   let md = fs.readFileSync(f, "utf8");
   md = corpo(md, "Desvios de toolkit", desvios.length ? ["| Passo | Toolkit | Para | Skill | Agente |", "|---|---|---|---|---|", ...desvios].join("\n") : "Nenhum.");
   fs.writeFileSync(f, corpo(md, "Tipos com skill de toolkit", tipos || "Nenhum."));
@@ -921,13 +912,15 @@ async function mudarToolkits(nomes, opcoes, ligar) {
   ctx.tela.nota(linhas.join("\n"), "Resumo");
   await confirmar(opcoes, `${ligar ? "Ligar" : "Desligar"} ${qt(nomes.length, "toolkit")} e regenerar os agentes?`, true, `sabia toolkits ${acao} ${nomes.join(" ")}`);
   fs.writeFileSync(f, JSON.stringify(cfg, null, 2) + "\n");
-  const r = ctx.exec("uv", ["run", "--no-project", "python", sabia("framework", "skills/sa-setup/scripts/gerar_agentes.py"), "--projeto", process.cwd(), "--gravar"]);
-  if (r.status !== 0) {
+  let r;
+  try {
+    r = ctx.gerarAgentes({ projeto: process.cwd(), gravar: true });
+  } catch (e) {
     fs.writeFileSync(f, antes);  // o gerador recusa antes de gravar: nada fica pela metade
-    throw new Error(`o gerador recusou; agentes.json restaurado:\n${r.stderr || r.stdout || r.error?.message}`);
+    throw new Error(`o gerador recusou; agentes.json restaurado:\n${e.message}`);
   }
-  atualizarSabiaMd(cfg, r.stdout);
-  for (const a of r.stdout.split("\n").filter((l) => l.startsWith("aviso: "))) ctx.tela.aviso(a.slice(7));
+  atualizarSabiaMd(cfg, r.tabelaTipos);
+  for (const a of r.avisos) ctx.tela.aviso(a);
   ctx.tela.fechar("Pronto: agentes e sabia.md atualizados. Confira o diff e faça o commit.");
 }
 
@@ -1240,6 +1233,8 @@ const USO = [
   ["sabia toolkits remover", "escolhe e remove toolkits", "[<nome> …] [-y] [--forcar]   (apelido rm; sem nome: escolha nos instalados)"],
   ["sabia toolkits ligar", "liga toolkits instalados ao projeto e regenera os agentes", "<nome> … [-y]"],
   ["sabia toolkits desligar", "desliga toolkits do projeto e regenera os agentes", "<nome> … [-y]"],
+  ["sabia agentes gerar", "gera os agentes do projeto; sem --gravar, só mostra o que muda", "[--gravar] [-a kiro,opencode] [--projeto <pasta>] [--config <arquivo>] [--framework <pasta>]"],
+  ["sabia agentes base <id>", "a base de uma cópia: o sha do passo ou do template", "<sa-x.f.p | sa-x/nome.md | requisitos/template-<tipo>.md | ~/.sabia/toolkits/…> [--framework <pasta>]"],
   ["sabia rota <arquivo>", "explica a rota de um arquivo", "o passo com desvio de toolkit, o dono, o toolkit, o motivo e as travas\n" +
     "  sabia rota <tasks.md>#<tarefa>     o mesmo pelos arquivos que a tarefa (#2, #2.1) cita; sem casar, o texto dela\n" +
     "  sabia rota --fluxo <skill.fluxo>   o fluxo resolvido no projeto (tabela, grafo ASCII e Mermaid)\n" +
@@ -1275,8 +1270,8 @@ function ajudaDe(prefixo) {
 
 const CURTAS = { "-y": "--sim", "-h": "--ajuda", "-v": "--version", "-a": "--alvo", "-t": "--toolkits" };
 
-const BOOLEANAS = ["sim", "forcar", "semMcp", "mapa", "ajuda", "version", "json"];
-const COM_VALOR = ["alvo", "toolkits", "versao", "fonte", "indice", "fluxo", "projeto", "framework"];
+const BOOLEANAS = ["sim", "forcar", "semMcp", "mapa", "ajuda", "version", "json", "gravar"];
+const COM_VALOR = ["alvo", "toolkits", "versao", "fonte", "indice", "fluxo", "projeto", "framework", "config"];
 
 export function lerArgs(argv) {
   const posicionais = [];
@@ -1306,6 +1301,11 @@ const COMANDOS = {
   "toolkits remover": removerToolkits,
   "toolkits ligar": (n, o) => mudarToolkits(n, o, true),
   "toolkits desligar": (n, o) => mudarToolkits(n, o, false),
+  agentes: ([sub, id], o) => {
+    if (sub === "gerar") ctx.log(gerarProjeto({ projeto: o.projeto, config: o.config, alvo: o.alvo, framework: o.framework, gravar: o.gravar }).texto);
+    else if (sub === "base" && id) ctx.log(baseDaCopia(id, o.framework));
+    else throw new Error("use: sabia agentes gerar [--gravar], ou sabia agentes base <id> — veja: sabia agentes -h");
+  },
   rota: ([arquivo], o) => {
     if (!arquivo && !o.fluxo && !o.mapa) throw new Error("diga o arquivo, o --fluxo ou o --mapa — veja: sabia rota -h");
     ctx.log(o.mapa ? rotaMapa(o) : o.fluxo ? rotaFluxo(o.fluxo, o) : rota(arquivo, o));

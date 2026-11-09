@@ -153,7 +153,7 @@ power são ignorados. Por isso a `sa-setup` grava no projeto, a partir de `skill
 | `.sabia/sabia.md` (e o ponteiro `.kiro/steering/sabia.md` ou a entrada no `opencode.json`) | o steering do fluxo: resumo, Projeto, Especificação, Comandos, Verificação de aceite, Sustentação, ELM, Desvios de toolkit, Tipos com skill de toolkit e Regras aprendidas |
 | `.sabia/config/agentes.json` | as escolhas do projeto (alvos, `formato_spec`, pasta do produto, branch_base, prefixo da branch, ELM, toolkits, desvios e extras por agente) — a entrada do gerador |
 | `.sabia/config/elm/pa_<nome>.json` · `.sabia/config/elk/elk-<ambiente>.json` | a project area do ELM (da `sa-elm.setup`) e a configuração do ELK |
-| `.kiro/agents/sa-*.json` · `.opencode/agents/sa-*.md` | os 5 agentes (e os de toolkit), gerados pelo `gerar_agentes.py` |
+| `.kiro/agents/sa-*.json` · `.opencode/agents/sa-*.md` | os 5 agentes (e os de toolkit), gerados pelo `sabia agentes gerar` |
 | `.sabia/fluxo/` · `.sabia/template/` (só ao customizar) | override esparso de um passo ou template; nenhum agente escreve |
 | pasta do produto (template `.sabia/planejamento`) | `backlog.md`, `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<AAAA>/sprint-<nn>.md`, `fatias/`, `epicos/EP-nn-<slug>/` (`pitch.md`, `prd.md`), `prototipos/`, `atas/`, `sustentacao/` — versionada |
 | `.sabia/creditos/<usuario>.csv` | créditos do Kiro por sessão, gravados pela `sa-status.fechar-sessao` |
@@ -252,12 +252,11 @@ as skills, `references/` e `assets/`; o formato `.md` de agente não é carregad
 do Kiro são JSON; padrões de comando encadeado (`cd … && …`) são descartados pelo `kiro-cli agent upgrade`, por isso
 as permissões usam comandos simples.
 
-**Prova do núcleo**, só com fixtures sintéticas (`node --test` em `cli/` e `python3 -m unittest` em
-`skills/sa-setup/scripts/`): o framework deste repositório validado, compilado e instalado no Kiro e no opencode, com
+**Prova do núcleo**, só com fixtures sintéticas (`node --test` em `cli/`): o framework deste repositório validado, compilado e instalado no Kiro e no opencode, com
 o grafo de cada fluxo igual ao da definição do fluxo e todo link da saída resolvido; um projeto front+back com um toolkit de
 especificação (HF ⇢ a skill dele, com o fluxo e o template do tipo) e um passo do Sabiá trocado no projeto; e um
 projeto batch com o desvio da tarefa de job ao agente do toolkit. Nos dois, os 5 agentes são gerados pelo
-`gerar_agentes.py` sobre a instalação, e a `sabia rota` mostra o desvio e a origem de cada passo.
+`sabia agentes gerar` sobre a instalação, e a `sabia rota` mostra o desvio e a origem de cada passo.
 
 **A conferir num Kiro e num opencode reais:** o `.config.kiro` da pasta da spec em cada trilha; se os subagentes
 `sa-pesquisador`, `sa-revisor` e `sa-verificador` exigem declaração própria; se o `sa-desenvolvedor` roda como

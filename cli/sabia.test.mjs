@@ -437,19 +437,18 @@ test("toolkits ligar e desligar: agentes.json pelo manifesto, sabia.md e restaur
       { caminho: "skills/job/SKILL.md", papeis: ["desenvolvedor", "revisor"], passo: { passo: "sa-desenvolver.codificar.tarefa", para: "criar job", agente: "alfa-job" } },
       { caminho: "skills/teste/SKILL.md", papeis: ["verificador"] }] },
   });
-  const cwd = process.cwd();
+  const cwd = process.cwd(), gerarOriginal = s.ctx.gerarAgentes;
   process.chdir(proj);
   try {
     const f = ".sabia/config/agentes.json", ler = () => JSON.parse(fs.readFileSync(f, "utf8"));
-    s.ctx.exec = (cmd, args) => { chamadas.push([cmd, ...args].join(" "));
-      return { status: 0, stdout: "tabela\n\nTipos com skill de toolkit (seção do sabia.md):\n| Tipo |\n|---|\n| `REG` |\naviso: olhe isto\n", stderr: "" }; };
+    s.ctx.gerarAgentes = (o) => { chamadas.push(JSON.stringify(o)); return { avisos: ["olhe isto"], tabelaTipos: ["| Tipo |", "|---|", "| `REG` |"] }; };
     await s.mudarToolkits(["alfa"], { sim: true }, true);
     let c = ler();
     assert.deepEqual(c.toolkits.alfa, { pasta: "~/.sabia/toolkits/alfa", versao: "1.2.0", sha: "abc" });
     assert.deepEqual(c.passos, [{ toolkit: "alfa", skill: "skills/job/SKILL.md", agente: true }]);
     assert.deepEqual(c.agentes["sa-verificador"].skills, ["skill://~/.sabia/toolkits/alfa/skills/teste/SKILL.md"]);
     assert.equal(c.agentes["sa-revisor"].skills.length, 2);
-    assert.match(chamadas.at(-1), /^uv run --no-project python .*gerar_agentes\.py --projeto .* --gravar$/);
+    assert.match(chamadas.at(-1), /"gravar":true/);
     let md = fs.readFileSync(".sabia/sabia.md", "utf8");
     assert.match(md, /Intro\.\n\n\| Passo \| Toolkit[^]*`alfa` 1\.2\.0 \| criar job \| `job` \| `alfa-job` \|\n\n## Tipos/);
     assert.match(md, /\| `REG` \|\n\n## Regras aprendidas\n\n- r/);
@@ -461,12 +460,12 @@ test("toolkits ligar e desligar: agentes.json pelo manifesto, sabia.md e restaur
     assert.deepEqual(c.agentes["sa-revisor"].skills, ["skill://~/outra/SKILL.md"]);
 
     const antes = fs.readFileSync(f, "utf8");
-    s.ctx.exec = () => ({ status: 1, stdout: "", stderr: "recusado" });
+    s.ctx.gerarAgentes = () => { throw new Error("recusado"); };
     await assert.rejects(s.mudarToolkits(["alfa"], { sim: true }, true), /restaurado:\nrecusado/);
     assert.equal(fs.readFileSync(f, "utf8"), antes);
     await assert.rejects(s.mudarToolkits(["beta"], { sim: true }, true), /beta não está instalado/);
     await assert.rejects(s.mudarToolkits(["alfa"], { sim: true }, false), /não está ligado/);
-  } finally { process.chdir(cwd); }
+  } finally { process.chdir(cwd); s.ctx.gerarAgentes = gerarOriginal; }
 });
 
 test("<cmd> -h mostra a ajuda do comando e nunca executa; -v a versão; as flags curtas", async () => {

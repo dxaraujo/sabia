@@ -1,6 +1,6 @@
 # Agentes — o gerador e o `agentes.json`
 
-Os agentes são **gerados**, nunca editados à mão. O script [gerar_agentes.py](../scripts/gerar_agentes.py) junta:
+Os agentes são **gerados**, nunca editados à mão. O comando `sabia agentes gerar` junta:
 
 | Fonte | Onde | O quê |
 |---|---|---|
@@ -11,11 +11,11 @@ Os agentes são **gerados**, nunca editados à mão. O script [gerar_agentes.py]
 | override | `.sabia/fluxo/` e `.sabia/template/` (projeto, esparso; harness) | o delta no prompt do agente que roda a skill do passo |
 
 ```bash
-uv run --no-project python <pasta desta skill>/scripts/gerar_agentes.py --projeto <raiz>            # mostra o diff e a tabela
-uv run --no-project python <pasta desta skill>/scripts/gerar_agentes.py --projeto <raiz> --gravar   # grava
+npx sabia agentes gerar --projeto <raiz>            # lista o que muda e mostra a tabela
+npx sabia agentes gerar --projeto <raiz> --gravar   # grava
 ... --alvo kiro,opencode           # padrão: os alvos do agentes.json
 ... --framework <dir>              # padrão: ~/.sabia/framework (os testes passam outro)
-uv run --no-project python <pasta desta skill>/scripts/gerar_agentes.py --base sa-desenvolver.codificar.tarefa  # a base de uma cópia
+npx sabia agentes base sa-desenvolver.codificar.tarefa  # a base de uma cópia
 ```
 
 Sai com código 1, sem gravar nada, se sobrou um `{{…}}`, se um caminho não existe ou é absoluto, ou se o override ou
@@ -98,7 +98,7 @@ do `sa-<nome>.md`:
 
 ## Testes
 
-O `test_gerar_agentes.py` (na pasta `scripts/`: `uv run --no-project python -m unittest test_gerar_agentes`) cobre os
+O `cli/agentes.test.mjs` (`cd cli && node --test`) cobre os
 5 agentes × 2 formatos, com e sem `elm`, o bloco `autopilot`, as liberações do `sa-verificador`, o mapeamento 1:1 de
 papéis e o agente de toolkit com as permissões do dono. Mudar uma regra é no `perfis.json`, com o teste; os projetos
 pegam a mudança com "regenerar os agentes".

@@ -7,7 +7,7 @@ O ponto e a forma.
 
 ## Faça
 
-A `base` vem sempre de `uv run --no-project python <pasta desta skill>/scripts/gerar_agentes.py --base <id>` (o sha
+A `base` vem sempre de `npx sabia agentes base <id>` (o sha
 do original no framework), e o corpo, do arquivo compilado:
 
 - trocar → `.sabia/fluxo/<skill>/<fluxo>/passos/<passo>.md` = `{"base": "<saída do --base>"}` + o passo compilado,

@@ -1,5 +1,5 @@
 // node --test   (nesta pasta) — prova do núcleo de ponta a ponta, só com fixtures sintéticas: o framework deste
-// repositório instalado e compilado nos dois alvos, os toolkits instalados, os agentes gerados pelo gerar_agentes.py
+// repositório instalado e compilado nos dois alvos, os toolkits instalados, os agentes gerados pelo gerador do CLI
 // (o de verdade, sobre a instalação) e a rota e o grafo dos fluxos no projeto.
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
@@ -10,12 +10,11 @@ import path from "node:path";
 import { after, before, test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { carregar, grafoAscii } from "./compilar.mjs";
+import { gerarProjeto } from "./agentes.mjs";
 import * as s from "./sabia.mjs";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const VERSAO_FW = JSON.parse(fs.readFileSync(path.join(REPO, "plugin.json"), "utf8")).version;  // o projeto configurado com o Sabiá deste repositório
-const GERAR = path.join(REPO, "skills/sa-setup/scripts/gerar_agentes.py");
-const PYTHON = spawnSync("python3", ["--version"]).status === 0;
 let raiz, home, falhaInstalar = null;
 
 const fm = (d) => `---\n${JSON.stringify(d)}\n---\n`;
@@ -61,12 +60,11 @@ function projeto(nome, { tipos, elm = {}, toolkits = {}, passos = [] }, extra = 
   });
 }
 
-/** O gerar_agentes.py de verdade, sobre o ~/.sabia/framework instalado; devolve a saída (o resumo e as tabelas). */
+/** O gerador de verdade, sobre o ~/.sabia/framework instalado; devolve a saída (o resumo e as tabelas). */
 function gerar(proj) {
-  const r = spawnSync("python3", [GERAR, "--projeto", proj, "--gravar"], { encoding: "utf8", env: { ...process.env, HOME: home } });
-  assert.equal(r.status, 0, r.stderr);
-  assert.doesNotMatch(r.stdout, /^aviso:/m);
-  return r.stdout;
+  const { texto } = gerarProjeto({ projeto: proj, gravar: true });
+  assert.doesNotMatch(texto, /^aviso:/m);
+  return texto;
 }
 
 const agenteKiro = (proj, n) => JSON.parse(fs.readFileSync(path.join(proj, ".kiro/agents", `${n}.json`), "utf8"));
@@ -111,7 +109,7 @@ test("prova: o framework compilado nos dois alvos tem o catálogo e o grafo de c
   }
 });
 
-test("prova front+back: o toolkit casa (HF ⇢ skill casa) com o override do projeto num passo do Sabiá, gerado e na rota", { skip: !PYTHON && "sem python3" }, () => {
+test("prova front+back: o toolkit casa (HF ⇢ skill casa) com o override do projeto num passo do Sabiá, gerado e na rota", () => {
   assert.ifError(falhaInstalar);
   const fonte = path.join(home, ".sabia/framework/fluxo/sa-prd/prd/passos/entender.md");
   const base = sha12(fonte);
@@ -138,7 +136,7 @@ test("prova front+back: o toolkit casa (HF ⇢ skill casa) com o override do pro
   assert.match(s.rotaFluxo("sa-especificar.reuniao", o), /│ \d+ escrever ⇢ +│──▶ ⇢ por tipo: ATA\n/);
 });
 
-test("prova batch: o desvio do batch-alfa na tarefa de job, gerado nos dois alvos, sem tipo de toolkit", { skip: !PYTHON && "sem python3" }, () => {
+test("prova batch: o desvio do batch-alfa na tarefa de job, gerado nos dois alvos, sem tipo de toolkit", () => {
   assert.ifError(falhaInstalar);
   const proj = projeto("lote", { tipos: "batch",
     toolkits: { "batch-alfa": { pasta: "~/.sabia/toolkits/batch-alfa", versao: "1.0.0" } },
