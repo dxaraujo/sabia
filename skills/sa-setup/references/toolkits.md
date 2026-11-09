@@ -34,7 +34,7 @@ e quais verificações a `sa-verificar` usa para executar os cenários de aceite
 
 ## Onde procurar (nesta ordem)
 
-1. **Usuário (CLI `sabia`):** `~/.sabia/toolkits/*/toolkit.json` — instalados por `sabia toolkits instalar`, com a
+1. **Usuário (CLI `sabia`):** `~/.sabia/toolkits/*/*/toolkit.json` (uma pasta por versão) — baixados por `sabia toolkits instalar`, com a
    origem (índice, url, ref, sha e versão) em `.origem.json`
 2. **Projeto:** `.sabia/toolkits/*/toolkit.json` (o toolkit do próprio projeto, versionado)
 3. **Powers instalados:** `~/.kiro/powers/installed/*/toolkit.json` (um toolkit pode ser distribuído como power;
@@ -165,7 +165,7 @@ template/template-hf.md                template do tipo HF, idem
   `skills[]`; o fluxo e o template, opcionais, são arquivos da pasta do toolkit (sem eles, `{"skill": …}` só, a skill segue as references dela). A skill vai ao dono de cada passo de desvio
   (coluna Desviável do catálogo) e traz em `papeis` o papel de cada um (HF, UC, REG, MSG, EL e ATA: `especificador` ou `produto`; ET: `desenvolvedor`; CT: `verificador`); sem ele, o
   CLI e o gerador recusam o toolkit, dizendo o papel que falta. O gerador põe no prompt de cada dono a linha **Tipos com skill de toolkit**: no passo, o
-  tipo sai pela skill, que segue o fluxo com o template, quando há, pelo caminho na pasta instalada (`~/.sabia/toolkits/<toolkit>/`,
+  tipo sai pela skill, que segue o fluxo com o template, quando há, pelo caminho na pasta instalada (`~/.sabia/toolkits/<toolkit>/<versão>/`,
   de leitura para todos os agentes), escrevendo no formato do Sabiá (no arquivo de `elm/`, o do `sa-elm/elm-arquivo.md`; no bloco do `prd.md`, o mesmo corpo,
   sem frontmatter; o corpo nunca tem título Markdown), e volta ao passo. O gerador imprime a seção
   que a setup grava no `sabia.md`: o fluxo, o template e a skill de cada tipo, e os itens de critério de revisão.
@@ -179,7 +179,7 @@ template/template-hf.md                template do tipo HF, idem
   agente o lê.
 - **Critérios de revisão:** cada item se soma aos critérios de revisão do revisor (no prompt do `sa-revisor`; sem agente, na seção **Tipos com
   skill de toolkit** do `sabia.md`), com a severidade dele; o toolkit não troca nem afrouxa item do Sabiá.
-- **Requer:** a versão mínima do Sabiá instalado; o `sabia toolkits instalar` confere antes de copiar.
+- **Requer:** a versão mínima do Sabiá instalado; o `sabia toolkits instalar` confere antes de gravar.
 - **Colisão:** dois toolkits do projeto no mesmo tipo ou no mesmo id de item de critério de revisão → o gerador recusa e não grava
   nada. Item de critério de revisão com o id de um do Sabiá também: o toolkit só acrescenta itens; os itens L e C do Sabiá valem igual no
   que a skill dele escreve.
@@ -196,11 +196,13 @@ O cartão é o W6 de [wizard.md](wizard.md): skills numeradas com a caixa `[✅]
 "Para quê" (ex.: `spring-batch-job` — steps chunk/tasklet · toolkit spring-batch 🔍 detectado), e a resposta pelos
 números (`tirar 3,5`, `pôr 7`, `nenhuma skill`, `as mesmas do sa-<outro>`).
 
-A skill confirmada vai ao `agentes.json` pela fonte (`skill://~/.sabia/toolkits/<toolkit>/skills/<skill>/SKILL.md`);
+A skill confirmada vai ao `agentes.json` pela fonte (`skill://~/.sabia/toolkits/<toolkit>/<versão>/skills/<skill>/SKILL.md`);
 a skill de um tipo, ligada também pelo `tipos`, não se repete.
 
-Fora da setup, `sabia toolkits ligar <nome>` faz o mesmo sem modelo, ligando cada skill aos agentes dos seus papéis, e
-`sabia toolkits desligar <nome>` desfaz; os dois regeneram os agentes e as seções do `sabia.md`.
+No projeto, `sabia toolkits instalar <nome>[@versão]` baixa a versão, liga cada skill aos agentes dos seus papéis e regenera os
+agentes e as seções do `sabia.md`, sem modelo. `sabia toolkits atualizar` leva à última versão, mantendo o que a pessoa
+escolheu, e `sabia toolkits remover` tira do projeto. Cada projeto aponta para a sua versão; a pasta só sai da máquina quando
+nenhum projeto a usa. No opencode, a cópia da skill fica em `.opencode/skills/` do projeto.
 
 Num projeto 100% Spring Batch, o normal é o desenvolvedor receber as skills de batch e Java, e não as de REST ou
 de frontend — mas quem decide é a pessoa.

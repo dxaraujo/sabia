@@ -19,8 +19,8 @@ do original no framework), e o corpo, do arquivo compilado:
 - template → `.sabia/template/<skill>/<nome>.md` = `{"base": "<saída do --base <skill>/<nome>.md>"}` + o template
   compilado;
 - template de um tipo de artefato → `.sabia/template/requisitos/template-<tipo>.md`, sobre o template em vigor do tipo: o do
-  toolkit que desvia o tipo (`{"base": "<saída do --base ~/.sabia/toolkits/<toolkit>/<template do tipo>>"}` + o template
-  do toolkit) ou, sem toolkit, o do Sabiá (`--base requisitos/template-<tipo>.md`).
+  toolkit que desvia o tipo (`{"base": "<saída de npx sabia agentes base ~/.sabia/toolkits/<toolkit>/<versão>/<template do tipo>>"}` + o template
+  do toolkit) ou, sem toolkit, o do Sabiá (`npx sabia agentes base requisitos/template-<tipo>.md`).
 
 Cópia que já existe → não sobrescreva: mostre e ofereça editar. A pessoa edita (ou a `sa-setup`, a pedido dela,
 mostrando o diff). As travas continuam valendo.

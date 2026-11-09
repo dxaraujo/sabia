@@ -82,7 +82,7 @@ export function carregar(fw) {
 }
 
 /** a < b em versão semântica (os três números). */
-function versaoMenor(a, b) {
+export function versaoMenor(a, b) {
   const [x, y] = [a, b].map((v) => String(v).split(/[.-]/).slice(0, 3).map(Number));
   const i = x.findIndex((n, k) => n !== y[k]);
   return i >= 0 && x[i] < y[i];

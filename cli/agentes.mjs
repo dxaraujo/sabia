@@ -222,7 +222,7 @@ export function override(projeto, fw, fluxos, originais = {}) {
 
 /** [pasta como o agentes.json a cita, pasta real] de um toolkit. */
 function pastaDe(projeto, nome, t) {
-  const pasta = (t.pasta ?? `~/.sabia/toolkits/${nome}`).replace(/\/+$/, "");
+  const pasta = (t.pasta ?? `~/.sabia/toolkits/${nome}/${t.versao}`).replace(/\/+$/, "");
   return [pasta, pasta.startsWith("~/") ? path.join(os.homedir(), pasta.slice(2)) : path.join(projeto, pasta)];
 }
 

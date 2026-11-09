@@ -100,7 +100,7 @@ imprime.
 
 | Tipo | Skill | Fluxo e template | Toolkit | Passo de desvio |
 |---|---|---|---|---|
-| `<sigla>` | `~/.sabia/toolkits/<toolkit>/skills/<skill>/SKILL.md` | `<fluxo>` <com o template `<template>`> <ou — (as references da skill)> | `<nome>` <versão> | `<id do passo>` |
+| `<sigla>` | `~/.sabia/toolkits/<toolkit>/<versão>/skills/<skill>/SKILL.md` | `<fluxo>` <com o template `<template>`> <ou — (as references da skill)> | `<nome>` <versão> | `<id do passo>` |
 <nenhum — sem toolkit com `tipos`>
 
 | Item de critério de revisão | Tipo | Severidade | Verificação | Toolkit |

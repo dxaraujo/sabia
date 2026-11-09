@@ -11,7 +11,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { AGENTE_DO_PAPEL, baseDe as baseDaCopia, ganchoDe, gerarProjeto } from "./agentes.mjs";
-import { carregar, compilar, grafoAscii, LEGENDA, partes, temDesvio, validarToolkitFonte } from "./compilar.mjs";
+import { carregar, compilar, versaoMenor, grafoAscii, LEGENDA, partes, temDesvio, validarToolkitFonte } from "./compilar.mjs";
 
 const VERSAO = JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8")).version;
 const REPO = "https://github.com/dxaraujo/sabia.git";
@@ -499,7 +499,7 @@ export async function instalar(opcoes = {}) {
   } finally {
     gravarInventario(inv);
   }
-  for (const t of toolkits) mostrar(await instalarToolkit(t, { ...opcoes, alvo: alvos.join(",") }));
+  for (const t of toolkits) { const r = await baixarToolkit(t, opcoes); mostrar({ texto: `${r.nome} ${r.versao} baixado` }); }
   ctx.tela.fechar(`Pronto.${opcoes.semMcp ? " (MCPs não registrados: --sem-mcp)" : ""}\n` +
     '   → na raiz do projeto, no Kiro ou no opencode, peça "configurar o Sabiá" (já configurado: "atualizar os agentes do Sabiá")');
 }
@@ -544,11 +544,11 @@ export async function desinstalar(opcoes = {}) {
   const alvos = (opcoes.alvo ? opcoes.alvo.split(",") : Object.keys(inv.alvos)).filter((a) => inv.alvos[a]);
   if (!alvos.length) return ctx.tela.fechar("nada a desinstalar: o Sabiá não está em nenhuma ferramenta");
   const sai = alvos.flatMap((a) => {
-    const reg = inv.alvos[a], tks = Object.keys(inv.toolkits).filter((n) => inv.toolkits[n].alvos?.[a]);
-    const fica = [...(a === "kiro" ? [] : ficariam(reg.copias, opcoes)), ...tks.flatMap((n) => ficariam(inv.toolkits[n].alvos[a].copias, opcoes))];
+    const reg = inv.alvos[a];
+    const fica = a === "kiro" ? [] : ficariam(reg.copias, opcoes);
     const skills = a === "kiro" ? 0 : Object.keys(reg.copias).filter((k) => !fica.includes(k)).length;
     const o = a === "kiro" ? ["power sabia"] : [qt(skills, "skill"), ...(reg.mcp?.length ? [`MCP ${reg.mcp.join(", ")}`] : [])];
-    return [`✗ ${a}: ${[...o, ...(tks.length ? [`toolkits ${tks.join(", ")}`] : [])].join(" · ")}`, ...fica.map((k) => `✎ ${alterada(k, "apaga")}`)];
+    return [`✗ ${a}: ${o.join(" · ")}`, ...fica.map((k) => `✎ ${alterada(k, "apaga")}`)];
   });
   // com cópia alterada que fica, o alvo fica no inventário e o framework também
   if (alvos.length === Object.keys(inv.alvos).length && !sai.some((l) => l.startsWith("✎"))) sai.push("✗ ~/.sabia/framework e ~/.sabia/compilado");
@@ -558,16 +558,12 @@ export async function desinstalar(opcoes = {}) {
   try {
     for (const alvo of alvos) {
       const reg = inv.alvos[alvo], mantidos = [];
-      for (const tk of Object.values(inv.toolkits)) if (tk.alvos?.[alvo]) {
-        mantidos.push(...apagar(tk.alvos[alvo].copias, opcoes));
-        if (!Object.keys(tk.alvos[alvo].copias).length) delete tk.alvos[alvo];  // a alterada à mão fica registrada
-      }
       if (alvo === "kiro") {
         const r = ctx.exec("kiro-cli", ["powers", "uninstall", reg.power]);
         if (r.status !== 0) { ctx.tela.aviso(`kiro: kiro-cli powers uninstall falhou: ${(r.stderr || r.error?.message || "").trim()}`); continue; }
       } else mantidos.push(...apagar(reg.copias, opcoes));
       if (alvo === "opencode") for (const nome of reg.mcp || []) tirarMcpDoOpencode(nome);
-      // com cópia alterada à mão (do Sabiá ou de um toolkit), o alvo fica no inventário para o --forcar achá-la
+      // com cópia alterada à mão, o alvo fica no inventário para o --forcar achá-la
       if (mantidos.length) sobrou.push(alvo);
       else delete inv.alvos[alvo];
       mostrar({ texto: `${alvo}: Sabiá ${mantidos.length ? "desinstalado, menos as cópias alteradas à mão" : "desinstalado"}`, mantidos }, "apaga");
@@ -597,6 +593,7 @@ export function validarToolkit(pasta, nomeEsperado = null, fw = null) {
   // quem fez responde pelo toolkit: nome e área aparecem no listar e na setup
   if (m.autor && (typeof m.autor.nome !== "string" || typeof m.autor.area !== "string" || !m.autor.nome.trim() || !m.autor.area.trim()))
     erros.push("autor: precisa de nome e area");
+  if ("versao" in m && !/^\d[\w.-]*$/.test(String(m.versao)) || String(m.versao).includes("..")) erros.push(`versao inválida (vira nome de pasta): ${m.versao}`);
   const nomeOk = (n) => typeof n === "string" && /^[a-z0-9][a-z0-9-]*$/.test(n) && !n.startsWith("sa-");
   if (!nomeOk(m.nome)) erros.push(`nome inválido (kebab-case, sem sa-): ${m.nome}`);
   if (nomeEsperado && m.nome !== nomeEsperado) erros.push(`nome ${m.nome} ≠ ${nomeEsperado} do índice`);
@@ -658,7 +655,8 @@ export function lerIndice(fonte) {
 
 function acharNoIndice(nome, versao, opcoes) {
   for (const i of opcoes.indice ? [opcoes.indice] : indices()) {
-    const e = lerIndice(i).find((x) => x.nome === nome && (!versao || x.versao === versao));
+    // o índice pode listar várias versões: sem pedir uma, vale a maior
+    const e = lerIndice(i).filter((x) => x.nome === nome && (!versao || x.versao === versao)).sort((a, b) => ordemVersao(b.versao, a.versao))[0];
     if (e) return e;
   }
   throw new Error(`toolkit ${nome}${versao ? "@" + versao : ""} não está nos índices — veja: sabia toolkits`);
@@ -673,26 +671,42 @@ function entradasDosIndices(opcoes) {
   });
 }
 
-/** Baixa e valida o toolkit numa pasta temporária e diz o que muda em ~/.sabia/toolkits/<nome> (nada é gravado). */
 const ehUrl = (alvo) => /[:/]/.test(alvo) && !/^[a-z0-9-]+(@[\w.-]+)?$/.test(alvo);
+
+// Cada versão de um toolkit tem a sua pasta, ~/.sabia/toolkits/<nome>/<versão>/, e cada projeto aponta para a dele.
+const cfgDoProjeto = () => path.join(process.cwd(), ".sabia", "config", "agentes.json");
+const noProjeto = () => fs.existsSync(cfgDoProjeto());
+const pastaTk = (nome, versao) => sabia("toolkits", nome, versao);
+const ordemVersao = (a, b) => (versaoMenor(a, b) ? -1 : versaoMenor(b, a) ? 1 : 0);
+const manifestoTk = (nome, versao) => JSON.parse(fs.readFileSync(path.join(pastaTk(nome, versao), "toolkit.json"), "utf8"));
+const lerOrigem = (nome, versao) => { const f = path.join(pastaTk(nome, versao), ".origem.json"); return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")) : null; };
+
+/** As versões baixadas do toolkit, da menor para a maior. */
+export function versoesLocais(nome) {
+  const d = sabia("toolkits", nome);
+  return fs.existsSync(d) ? fs.readdirSync(d).filter((v) => fs.existsSync(path.join(d, v, "toolkit.json"))).sort(ordemVersao) : [];
+}
+
+/** Baixa e valida a entrada numa pasta temporária e diz o que muda na pasta da versão (nada é gravado). */
+function buscarEntrada(e) {
+  const { pasta, sha } = baixar(e.url, e);
+  const erros = validarToolkit(pasta, e.nome, sabia("framework"));
+  if (erros.length) throw new Error(`toolkit recusado:\n- ${erros.join("\n- ")}`);
+  const m = JSON.parse(fs.readFileSync(path.join(pasta, "toolkit.json"), "utf8"));
+  const destino = pastaTk(m.nome, m.versao);
+  const dif = diferencas(destino, pasta);
+  dif.removidos = dif.removidos.filter((f) => f !== ".origem.json");  // é nossa, regravada no gravarToolkit
+  return { e, pasta, sha, m, destino, dif, mudou: Object.values(dif).some((xs) => xs.length) };
+}
 
 function buscarToolkit(alvo, opcoes = {}) {
   // `<url>[@ref]#<subpasta>`: o toolkit numa subpasta de um repositório (monorepo de toolkits)
   const [semSub, subpasta = null] = ehUrl(alvo) ? alvo.split("#") : [alvo];
   const [nomeOuUrl, versaoOuRef] = separarRef(semSub);
-  const e = ehUrl(alvo) ? { nome: null, url: nomeOuUrl, ref: versaoOuRef, subpasta } : acharNoIndice(nomeOuUrl, versaoOuRef, opcoes);
-  const { pasta, sha } = baixar(e.url, e);
-  const erros = validarToolkit(pasta, e.nome, sabia("framework"));
-  if (erros.length) throw new Error(`toolkit recusado:\n- ${erros.join("\n- ")}`);
-  const m = JSON.parse(fs.readFileSync(path.join(pasta, "toolkit.json"), "utf8"));
-  const destino = sabia("toolkits", m.nome);
-  const dif = diferencas(destino, pasta);
-  dif.removidos = dif.removidos.filter((f) => f !== ".origem.json");  // é nossa, regravada no gravarToolkit
-  const de = fs.existsSync(path.join(destino, "toolkit.json")) ? JSON.parse(fs.readFileSync(path.join(destino, "toolkit.json"), "utf8")).versao : null;
-  return { e, pasta, sha, m, destino, de, dif, mudou: Object.values(dif).some((xs) => xs.length) };
+  return buscarEntrada(ehUrl(alvo) ? { nome: null, url: nomeOuUrl, ref: versaoOuRef, subpasta } : acharNoIndice(nomeOuUrl, versaoOuRef, opcoes));
 }
 
-/** Grava em ~/.sabia/toolkits/<nome> o que o buscarToolkit trouxe, com a origem, e registra no inventário. */
+/** Grava a versão em ~/.sabia/toolkits/<nome>/<versão>, com a origem, e registra no inventário. */
 function gravarToolkit({ e, pasta, sha, m, destino, mudou }) {
   if (mudou) {
     fs.rmSync(destino, { recursive: true, force: true });
@@ -703,170 +717,133 @@ function gravarToolkit({ e, pasta, sha, m, destino, mudou }) {
   const origem = { indice: e.indice || null, url: e.url, ref: e.ref || null, subpasta: e.indice ? null : e.subpasta || null, sha, versao: m.versao };
   fs.writeFileSync(path.join(destino, ".origem.json"), JSON.stringify(origem, null, 2) + "\n");
   const inv = lerInventario();
-  inv.toolkits[m.nome] = { ...(inv.toolkits[m.nome] || { alvos: {} }), versao: m.versao, sha, fonte: e.url };
+  const t = (inv.toolkits[m.nome] ||= { versoes: {} });
+  t.versoes[m.versao] = { ...t.versoes[m.versao], sha, fonte: e.url };
   gravarInventario(inv);
-  return m.nome;
+  return { nome: m.nome, versao: m.versao };
 }
 
-/** Baixa o toolkit para ~/.sabia/toolkits (sem as ferramentas): o primeiro passo do instalar e do atualizar. */
+/** Só baixa a versão para ~/.sabia/toolkits: usado fora de um projeto e no `sabia instalar -t`. */
 export async function baixarToolkit(alvo, opcoes = {}) {
   return gravarToolkit(buscarToolkit(alvo, opcoes));
 }
 
-/** Copia as skills do toolkit para as ferramentas (o Kiro lê de ~/.sabia/toolkits pelo `skill://` de cada agente). Sem
- * perguntas, salvo as ferramentas quando não há --alvo nem Sabiá instalado; devolve a linha e as cópias mantidas. */
-export async function instalarToolkit(alvo, opcoes = {}) {
-  const [nome] = separarRef(alvo);
-  const baixado = fs.existsSync(sabia("toolkits", nome, "toolkit.json")) && !opcoes.atualizar ? nome : await baixarToolkit(alvo, opcoes);
-  const pasta = sabia("toolkits", baixado);
-  const m = JSON.parse(fs.readFileSync(path.join(pasta, "toolkit.json"), "utf8"));
-  const inv = lerInventario();
-  // a customização é uma cópia modificada da base: as duas juntas no projeto dão skills e agentes repetidos
-  const familia = m.customiza?.toolkit ?? baixado;
-  const rival = Object.keys(inv.toolkits).find((n) => n !== baixado && (baseDe(n) ?? n) === familia);
-  // mesmos nomes de skill e de agente: as duas no usuário se sobrescreveriam
-  if (rival) throw new Error(`${baixado} e ${rival} são versões do mesmo toolkit (base ${familia}); instale um só: sabia toolkits remover ${rival}`);
-  const tk = (inv.toolkits[baixado] ||= { versao: m.versao, alvos: {} });
-  const doInv = Object.keys(inv.alvos);
-  const alvos = opcoes.alvo || !doInv.length ? await escolherAlvos(opcoes, `sabia toolkits instalar ${baixado}`) : doInv;
-  const mantidos = [];
+/** O que o pedido resolve, sem gravar: a última do índice ou a versão pedida; sem o índice, a maior já baixada, com aviso. */
+function preparar(alvo, opcoes) {
+  const [nome, versao] = ehUrl(alvo) ? [null, null] : separarRef(alvo);
+  if (nome && versao && fs.existsSync(path.join(pastaTk(nome, versao), "toolkit.json"))) return { nome, versao, m: manifestoTk(nome, versao), b: null };
   try {
-    for (const a of alvos.filter((x) => x !== "kiro")) {
-      const reg = (tk.alvos[a] ||= { copias: {} });
-      for (const s of m.skills) {
-        const dir = path.dirname(path.join(pasta, s.caminho)), destino = path.join(PASTA_SKILLS[a](), path.basename(dir));
-        if (copiar(dir, destino, reg.copias, opcoes) === "mantido") mantidos.push(curto(destino));
-      }
-    }
-  } finally {
-    gravarInventario(inv);
+    const b = buscarToolkit(alvo, opcoes);
+    return { nome: b.m.nome, versao: b.m.versao, m: b.m, b };
+  } catch (e) {
+    const local = nome && !versao ? versoesLocais(nome).at(-1) : null;
+    if (!local || e.message.startsWith("toolkit recusado")) throw e;
+    ctx.tela.aviso(`${nome}: sem acesso ao índice; usando a ${local}, a maior já baixada`);
+    return { nome, versao: local, m: manifestoTk(nome, local), b: null };
   }
-  const onde = alvos.map((a) => (a === "kiro" ? `kiro (lê de ~/.sabia/toolkits/${baixado})` : a));
-  return { texto: `${baixado} ${m.versao}: ${onde.join(", ")}`, mantidos };
 }
 
-const usaNoProjeto = (nome) => {
-  const f = path.join(process.cwd(), ".sabia", "config", "agentes.json");
-  return fs.existsSync(f) && !!JSON.parse(fs.readFileSync(f, "utf8")).toolkits?.[nome];
-};
-const ondeEsta = (t) => Object.keys(t.alvos || {}).join(", ") || "~/.sabia/toolkits";
-
-/** `sabia toolkits instalar [nome…]`: sem nome, no projeto, as versões dele; fora dele, a multisseleção do índice. */
-export async function instalarToolkits(nomes = [], opcoes = {}) {
-  ctx.tela.abrir("sabia toolkits instalar");
-  const inv = lerInventario();
-  let pedidos = nomes;
-  if (!pedidos.length) {
-    const f = path.join(process.cwd(), ".sabia", "config", "agentes.json");
-    if (fs.existsSync(f)) {
-      pedidos = Object.entries(JSON.parse(fs.readFileSync(f, "utf8")).toolkits || {}).map(([n, t]) => (t.versao ? `${n}@${t.versao}` : n));
-      ctx.tela.passo(`Este projeto usa: ${pedidos.join(", ") || "nenhum toolkit"}`);
-    } else {
-      if (opcoes.sim || !ctx.interativo) throw new Error("diga o toolkit — use: sabia toolkits instalar <nome> -y (os nomes: sabia toolkits)");
-      const todos = ctx.tela.esperar("lendo os índices de toolkits …", () => entradasDosIndices(opcoes), (l) => `${qt(l.length, "toolkit")} nos índices`);
-      if (!todos.length) throw new Error(SEM_INDICE);
-      const livres = todos.filter((e) => !inv.toolkits[e.nome]);
-      if (!livres.length) return ctx.tela.fechar("todos os toolkits dos índices já estão instalados");
-      pedidos = await ctx.escolher({ mensagem: "Quais toolkits?", multi: true, minimo: 1,
-        opcoes: livres.map((e) => ({ valor: e.nome, rotulo: e.nome, dica: [e.versao, e.descricao].filter(Boolean).join("  ") })) });
-    }
-  }
-  // o que já está instalado na versão pedida não é baixado de novo (com --alvo, é copiado para as ferramentas novas)
-  const faltam = pedidos.filter((p) => {
-    const [n, v] = separarRef(p), t = inv.toolkits[n];
-    // sem ~/.sabia/toolkits/<nome>, o registro é só das cópias alteradas que o remover deixou
-    if (!t || (v && t.versao !== v) || opcoes.alvo || !fs.existsSync(sabia("toolkits", n, "toolkit.json"))) return true;
-    ctx.tela.ok(`${n} ${t.versao} já instalado (${ondeEsta(t)})`);
-    return false;
-  });
-  if (!faltam.length) return ctx.tela.fechar("Nada a instalar.");
-  const alvos = Object.keys(inv.alvos).length && !opcoes.alvo ? Object.keys(inv.alvos) : await escolherAlvos(opcoes, `sabia toolkits instalar ${faltam.join(" ")}`);
-  ctx.tela.nota(colunas([["toolkits", faltam.join(", ")], ["em", alvos.join(", ")]]), "Resumo");
-  await confirmar(opcoes, `Instalar ${qt(faltam.length, "toolkit")}?`, true, `sabia toolkits instalar ${faltam.join(" ")}`);
-  for (const p of faltam) {
-    const [n, v] = separarRef(p);
-    mostrar(await instalarToolkit(p, { ...opcoes, alvo: alvos.join(","), atualizar: !!(v && inv.toolkits[n] && inv.toolkits[n].versao !== v) }));
-  }
-  ctx.tela.fechar('Pronto.\n   → no projeto, peça "atualizar os agentes do Sabiá" para ligar o toolkit');
-}
-
-/** Apaga o toolkit das ferramentas e de ~/.sabia/toolkits; devolve as cópias mantidas (alteradas à mão), que ficam no
- * inventário: sem o registro, reinstalar as recusaria como de outra pessoa. */
-export function removerToolkit(nome, opcoes = {}) {
-  const inv = lerInventario();
-  const tk = inv.toolkits[nome], mantidos = [];
-  try {
-    for (const [a, reg] of Object.entries(tk?.alvos || {})) {
-      mantidos.push(...apagar(reg.copias, opcoes));
-      if (!Object.keys(reg.copias).length) delete tk.alvos[a];
-    }
-    fs.rmSync(sabia("toolkits", nome), { recursive: true, force: true });
-    if (!Object.keys(tk?.alvos || {}).length) delete inv.toolkits[nome];
-  } finally {
-    gravarInventario(inv);
-  }
-  return mantidos;
-}
-
-/** `sabia toolkits remover [nome…]`: sem nome, a multisseleção dos instalados; o que sai aparece com ✗ antes do confirm. */
-export async function removerToolkits(nomes = [], opcoes = {}) {
-  ctx.tela.abrir("sabia toolkits remover");
-  const inv = lerInventario();
-  if (!nomes.length) {
-    if (!Object.keys(inv.toolkits).length) return ctx.tela.fechar("nenhum toolkit instalado");
-    if (opcoes.sim || !ctx.interativo) throw new Error("diga o toolkit — use: sabia toolkits remover <nome> -y");
-    nomes = await ctx.escolher({ mensagem: "Quais remover?", multi: true, minimo: 1,
-      opcoes: Object.entries(inv.toolkits).map(([n, t]) => ({ valor: n, rotulo: n, dica: `${t.versao}  ${ondeEsta(t)}` })) });
-  }
-  const sai = nomes.filter((n) => {
-    if (inv.toolkits[n] || fs.existsSync(sabia("toolkits", n))) return true;
-    ctx.tela.ok(`${n} não está instalado`);
-    return false;
-  });
-  if (!sai.length) return ctx.tela.fechar("Nada a remover.");
-  for (const n of sai) {
-    for (const reg of Object.values(inv.toolkits[n]?.alvos || {})) {
-      const fica = ficariam(reg.copias, opcoes);
-      for (const k of Object.keys(reg.copias)) fica.includes(k) ? ctx.tela.marca("✎", alterada(k, "apaga")) : ctx.tela.marca("✗", k);
-    }
-    ctx.tela.marca("✗", `~/.sabia/toolkits/${n}`);
-    if (usaNoProjeto(n)) ctx.tela.aviso(`este projeto usa o ${n}: depois peça "atualizar os agentes do Sabiá"`);
-  }
-  await confirmar(opcoes, `Remover ${qt(sai.length, "toolkit")}?`, false, `sabia toolkits remover ${sai.join(" ")}`);
-  const ficaram = sai.filter((n) => { const m = removerToolkit(n, opcoes); mostrar({ texto: `${n} removido`, mantidos: m }, "apaga"); return m.length; });
-  ctx.tela.fechar(ficaram.length ? `Pronto.\n   → para tirar as cópias alteradas: sabia toolkits remover ${ficaram.join(" ")} --forcar` : "Pronto.");
-}
-
-function manifestoInstalado(nome) {
-  const f = sabia("toolkits", nome, "toolkit.json");
-  if (!fs.existsSync(f)) throw new Error(`${nome} não está instalado — use: sabia toolkits instalar ${nome}`);
+/** A pasta real do toolkit citado no agentes.json. */
+const pastaReal = (nome, t) => (t.pasta?.startsWith("~/") ? longo(t.pasta) : t.pasta ? path.resolve(process.cwd(), t.pasta) : pastaTk(nome, t.versao));
+const manifestoDoCfg = (cfg, nome) => {
+  const f = path.join(pastaReal(nome, cfg.toolkits[nome]), "toolkit.json");
+  if (!fs.existsSync(f)) throw new Error(`${nome} ${cfg.toolkits[nome].versao ?? ""} não está nesta máquina — use: sabia toolkits instalar`);
   return JSON.parse(fs.readFileSync(f, "utf8"));
+};
+const nomeDaSkill = (caminho) => path.basename(path.dirname(caminho));
+const projetosDe = (nome, versao) => lerInventario().toolkits[nome]?.versoes?.[versao]?.projetos ?? [];
+
+/** Os projetos que ainda apontam para a versão: o projeto apagado ou que mudou de versão deixa de contar. */
+function quemUsa(nome, versao) {
+  return projetosDe(nome, versao).filter((p) => {
+    const f = path.join(p, ".sabia", "config", "agentes.json");
+    return fs.existsSync(f) && JSON.parse(fs.readFileSync(f, "utf8")).toolkits?.[nome]?.versao === versao;
+  });
+}
+
+function registrarUso(nome, versao) {
+  const inv = lerInventario(), e = inv.toolkits[nome]?.versoes?.[versao];
+  if (!e) return;
+  e.projetos = [...new Set([...(e.projetos ?? []), process.cwd()])];
+  gravarInventario(inv);
+}
+
+function apagarVersao(nome, versao) {
+  fs.rmSync(pastaTk(nome, versao), { recursive: true, force: true });
+  const inv = lerInventario(), t = inv.toolkits[nome];
+  if (t?.versoes) delete t.versoes[versao];
+  if (!versoesLocais(nome).length) {
+    fs.rmSync(sabia("toolkits", nome), { recursive: true, force: true });
+    delete inv.toolkits[nome];
+  }
+  gravarInventario(inv);
+}
+
+/** Este projeto largou a versão: sem outro projeto que a use, ela sai da máquina. */
+function soltarVersao(nome, versao) {
+  if (!quemUsa(nome, versao).length) apagarVersao(nome, versao);
 }
 
 /** Tira o toolkit do agentes.json: a entrada, os passos e as skills ligadas aos agentes. */
-function desligarDoCfg(cfg, nome) {
+function tirarDoCfg(cfg, nome) {
   delete cfg.toolkits?.[nome];
   cfg.passos = (cfg.passos || []).filter((p) => p.toolkit !== nome);
   for (const a of Object.values(cfg.agentes || {}))
     if (a.skills) a.skills = a.skills.filter((s) => !s.startsWith(`skill://~/.sabia/toolkits/${nome}/`));
 }
 
-/** Põe o toolkit no agentes.json pelo manifesto: `passo` vai a `passos`, e cada skill aos agentes dos seus papéis. */
-function ligarNoCfg(cfg, nome, m) {
-  desligarDoCfg(cfg, nome);
-  const fo = sabia("toolkits", nome, ".origem.json");
-  cfg.toolkits = { ...cfg.toolkits, [nome]: { pasta: `~/.sabia/toolkits/${nome}`, versao: m.versao,
-    ...(fs.existsSync(fo) ? { sha: JSON.parse(fs.readFileSync(fo, "utf8")).sha } : {}) } };
+const entradaCfg = (nome, versao) => {
+  const o = lerOrigem(nome, versao);
+  return { pasta: `~/.sabia/toolkits/${nome}/${versao}`, versao, ...(o ? { sha: o.sha, fonte: { indice: o.indice, url: o.url, ref: o.ref, subpasta: o.subpasta } } : {}) };
+};
+
+/** Liga a skill: `passo` vai a `passos`, e a skill vai aos agentes dos seus papéis. */
+function ligarSkill(cfg, nome, s, ligadas) {
+  if (s.passo) (cfg.passos ||= []).push({ toolkit: nome, skill: s.caminho, agente: Boolean(s.passo.agente) });
+  for (const ag of new Set((s.papeis || []).map((p) => AGENTE_DO_PAPEL[p]).filter(Boolean))) {
+    const a = ((cfg.agentes ||= {})[ag] ||= {}), id = `skill://${cfg.toolkits[nome].pasta}/${s.caminho}`;
+    if (!(a.skills ||= []).includes(id)) a.skills.push(id);
+    ligadas.push(`${nomeDaSkill(s.caminho)} → ${ag}`);
+  }
+}
+
+function porNoCfg(cfg, nome, m) {
+  tirarDoCfg(cfg, nome);
+  cfg.toolkits = { ...cfg.toolkits, [nome]: entradaCfg(nome, m.versao) };
   const ligadas = [];
-  for (const s of m.skills || []) {
-    if (s.passo) cfg.passos.push({ toolkit: nome, skill: s.caminho, agente: Boolean(s.passo.agente) });
-    for (const ag of new Set((s.papeis || []).map((p) => AGENTE_DO_PAPEL[p]).filter(Boolean))) {
-      const a = ((cfg.agentes ||= {})[ag] ||= {}), id = `skill://~/.sabia/toolkits/${nome}/${s.caminho}`;
-      if (!(a.skills ||= []).includes(id)) a.skills.push(id);
-      ligadas.push(`${path.basename(path.dirname(s.caminho))} → ${ag}`);
+  for (const s of m.skills || []) ligarSkill(cfg, nome, s, ligadas);
+  return ligadas;
+}
+
+/** Troca a versão sem desfazer o que a pessoa escolheu: as ligações ficam, sai o que deixou de existir e entra o que é novo. */
+function moverNoCfg(cfg, nome, m0, m1) {
+  const velha = cfg.toolkits[nome].pasta, antes = new Map((m0.skills || []).map((s) => [s.caminho, s])), agora = new Map((m1.skills || []).map((s) => [s.caminho, s]));
+  cfg.toolkits[nome] = entradaCfg(nome, m1.versao);
+  const pasta = cfg.toolkits[nome].pasta, prefixo = `skill://${velha}/`;
+  for (const a of Object.values(cfg.agentes || {}))
+    if (a.skills) a.skills = a.skills.flatMap((s) => (!s.startsWith(prefixo) ? [s] : agora.has(s.slice(prefixo.length)) ? [`skill://${pasta}/${s.slice(prefixo.length)}`] : []));
+  cfg.passos = (cfg.passos || []).filter((p) => p.toolkit !== nome || agora.get(p.skill)?.passo);
+  const ligadas = [];
+  for (const s of agora.values()) {
+    if (!antes.has(s.caminho)) ligarSkill(cfg, nome, s, ligadas);
+    else if (s.passo && !antes.get(s.caminho).passo) cfg.passos.push({ toolkit: nome, skill: s.caminho, agente: Boolean(s.passo.agente) });
+  }
+  return { ligadas, saiu: [...antes.keys()].filter((c) => !agora.has(c)).map(nomeDaSkill) };
+}
+
+/** No opencode a skill é achada pelo nome: cada projeto leva a cópia da sua versão em .opencode/skills/. */
+function skillsNoProjeto(cfg, sai = []) {
+  if (!(cfg.alvos ?? ["kiro"]).includes("opencode")) return;
+  const raiz = path.join(process.cwd(), ".opencode", "skills");
+  for (const s of sai) fs.rmSync(path.join(raiz, s), { recursive: true, force: true });
+  for (const nome of Object.keys(cfg.toolkits || {})) {
+    const m = manifestoDoCfg(cfg, nome), base = pastaReal(nome, cfg.toolkits[nome]);
+    for (const s of m.skills || []) {
+      const destino = path.join(raiz, nomeDaSkill(s.caminho));
+      fs.rmSync(destino, { recursive: true, force: true });
+      fs.cpSync(path.dirname(path.join(base, s.caminho)), destino, { recursive: true });
     }
   }
-  return ligadas;
 }
 
 const detectado = ({ arquivos = [], contem = [] } = {}) => !arquivos.length || arquivos.some((a) => {
@@ -874,14 +851,14 @@ const detectado = ({ arquivos = [], contem = [] } = {}) => !arquivos.length || a
   return fs.existsSync(f) && contem.every((c) => fs.readFileSync(f, "utf8").includes(c));
 });
 
-/** As seções geradas do sabia.md: a tabela de desvios vem do agentes.json e a de tipos, do que o gerador imprime. */
+/** As seções geradas do sabia.md: a tabela de desvios vem do agentes.json e a de tipos, do gerador. */
 function atualizarSabiaMd(cfg, tabelaTipos) {
   const f = path.join(process.cwd(), ".sabia", "sabia.md");
   if (!fs.existsSync(f)) return;
   const corpo = (md, titulo, texto) => md.replace(new RegExp(`(## ${titulo}\\n\\n[\\s\\S]*?\\n\\n)[\\s\\S]*?(?=\\n## |$)`), (_, cab) => `${cab}${texto}\n`);
   const desvios = (cfg.passos || []).flatMap((p) => {
-    const m = manifestoInstalado(p.toolkit), s = (m.skills || []).find((x) => x.caminho === p.skill);
-    return s?.passo ? [`| \`${s.passo.passo}\` | \`${p.toolkit}\` ${m.versao} | ${s.passo.para} | \`${path.basename(path.dirname(p.skill))}\` | ${p.agente ? `\`${s.passo.agente}\`` : "—"} |`] : [];
+    const m = manifestoDoCfg(cfg, p.toolkit), s = (m.skills || []).find((x) => x.caminho === p.skill);
+    return s?.passo ? [`| \`${s.passo.passo}\` | \`${p.toolkit}\` ${m.versao} | ${s.passo.para} | \`${nomeDaSkill(p.skill)}\` | ${p.agente ? `\`${s.passo.agente}\`` : "—"} |`] : [];
   });
   const tipos = tabelaTipos.join("\n");
   let md = fs.readFileSync(f, "utf8");
@@ -889,71 +866,192 @@ function atualizarSabiaMd(cfg, tabelaTipos) {
   fs.writeFileSync(f, corpo(md, "Tipos com skill de toolkit", tipos || "Nenhum."));
 }
 
-/** `sabia toolkits ligar|desligar <nome…>`: muda o agentes.json do projeto, regenera os agentes e o sabia.md. */
-async function mudarToolkits(nomes, opcoes, ligar) {
-  const acao = ligar ? "ligar" : "desligar";
-  ctx.tela.abrir(`sabia toolkits ${acao}`);
-  if (!nomes.length) throw new Error(`diga o toolkit — use: sabia toolkits ${acao} <nome> -y`);
-  const f = path.join(process.cwd(), ".sabia", "config", "agentes.json");
-  if (!fs.existsSync(f)) throw new Error("este projeto não tem .sabia/config/agentes.json — rode a sa-setup antes");
-  const antes = fs.readFileSync(f, "utf8"), cfg = JSON.parse(antes);
-  const linhas = [];
-  for (const n of nomes) {
-    if (!ligar) {
-      if (!cfg.toolkits?.[n]) throw new Error(`${n} não está ligado neste projeto`);
-      desligarDoCfg(cfg, n);
-      linhas.push(`✗ ${n}`);
-      continue;
-    }
-    const m = manifestoInstalado(n);
-    if (!detectado(m.deteccao)) ctx.tela.aviso(`${n}: a detecção do toolkit não casou com este projeto`);
-    linhas.push(`${n} ${m.versao}`, ...ligarNoCfg(cfg, n, m).map((l) => `  ${l}`));
-  }
-  ctx.tela.nota(linhas.join("\n"), "Resumo");
-  await confirmar(opcoes, `${ligar ? "Ligar" : "Desligar"} ${qt(nomes.length, "toolkit")} e regenerar os agentes?`, true, `sabia toolkits ${acao} ${nomes.join(" ")}`);
+/** Grava o agentes.json e regenera; se o gerador recusa, o arquivo volta como estava. */
+function aplicarNoProjeto(cfg, antes, sai = []) {
+  const f = cfgDoProjeto();
   fs.writeFileSync(f, JSON.stringify(cfg, null, 2) + "\n");
   let r;
   try {
     r = ctx.gerarAgentes({ projeto: process.cwd(), gravar: true });
   } catch (e) {
-    fs.writeFileSync(f, antes);  // o gerador recusa antes de gravar: nada fica pela metade
+    fs.writeFileSync(f, antes);
     throw new Error(`o gerador recusou; agentes.json restaurado:\n${e.message}`);
   }
   atualizarSabiaMd(cfg, r.tabelaTipos);
+  skillsNoProjeto(cfg, sai);
   for (const a of r.avisos) ctx.tela.aviso(a);
-  ctx.tela.fechar("Pronto: agentes e sabia.md atualizados. Confira o diff e faça o commit.");
 }
 
-/** `sabia toolkits atualizar [nome…]`: busca todos (sem gravar), uma tabela de → para e um confirm. */
+const PRONTO = "Pronto: agentes e sabia.md atualizados. Confira o diff e faça o commit.";
+
+/** Fora de um projeto, instalar só baixa: sem nome, a multisseleção do índice. */
+async function instalarNaMaquina(nomes, opcoes) {
+  const inv = lerInventario();
+  let pedidos = nomes;
+  if (!pedidos.length) {
+    if (opcoes.sim || !ctx.interativo) throw new Error("diga o toolkit — use: sabia toolkits instalar <nome> -y (os nomes: sabia toolkits)");
+    const todos = ctx.tela.esperar("lendo os índices de toolkits …", () => entradasDosIndices(opcoes), (l) => `${qt(l.length, "toolkit")} nos índices`);
+    if (!todos.length) throw new Error(SEM_INDICE);
+    const livres = todos.filter((e) => !inv.toolkits[e.nome]);
+    if (!livres.length) return ctx.tela.fechar("todos os toolkits dos índices já estão baixados");
+    pedidos = await ctx.escolher({ mensagem: "Quais toolkits?", multi: true, minimo: 1,
+      opcoes: livres.map((e) => ({ valor: e.nome, rotulo: e.nome, dica: [e.versao, e.descricao].filter(Boolean).join("  ") })) });
+  }
+  const itens = pedidos.map((p) => preparar(p, opcoes)).filter((x) => {
+    if (x.b ? x.b.mudou : !fs.existsSync(path.join(pastaTk(x.nome, x.versao), "toolkit.json"))) return true;
+    ctx.tela.ok(`${x.nome} ${x.versao} já está na máquina`);
+    return false;
+  });
+  if (!itens.length) return ctx.tela.fechar("Nada a baixar.");
+  ctx.tela.nota(colunas(itens.map((x) => [x.nome, x.versao])), "Baixar");
+  await confirmar(opcoes, `Baixar ${qt(itens.length, "toolkit")}?`, true, `sabia toolkits instalar ${pedidos.join(" ")}`);
+  for (const x of itens) { if (x.b) gravarToolkit(x.b); ctx.tela.passo(`${x.nome} ${x.versao} em ~/.sabia/toolkits`); }
+  ctx.tela.fechar(`Pronto.\n   → na raiz do projeto: sabia toolkits instalar ${itens.map((x) => x.nome).join(" ")}`);
+}
+
+/** Quem clonou o projeto: baixa as versões que ele já usa, sem mudar o agentes.json. */
+async function restaurarDoProjeto(cfg, opcoes) {
+  const nomes = Object.keys(cfg.toolkits || {});
+  ctx.tela.passo(`Este projeto usa: ${nomes.map((n) => `${n}@${cfg.toolkits[n].versao ?? "?"}`).join(", ") || "nenhum toolkit"}`);
+  const faltam = nomes.filter((n) => {
+    if (fs.existsSync(path.join(pastaReal(n, cfg.toolkits[n]), "toolkit.json"))) { ctx.tela.ok(`${n} ${cfg.toolkits[n].versao ?? ""} já está nesta máquina`); return false; }
+    return true;
+  });
+  const buscados = faltam.map((n) => { const t = cfg.toolkits[n]; return t.fonte?.url ? buscarEntrada({ nome: n, sha: t.sha, ...t.fonte, ref: t.fonte.ref ?? undefined, subpasta: t.fonte.subpasta ?? undefined }) : buscarToolkit(`${n}@${t.versao}`, opcoes); });
+  if (buscados.length) {
+    ctx.tela.nota(colunas(buscados.map((b) => [b.m.nome, b.m.versao])), "Baixar");
+    await confirmar(opcoes, `Baixar ${qt(buscados.length, "toolkit")}?`, true, "sabia toolkits instalar");
+    for (const b of buscados) gravarToolkit(b);
+  }
+  for (const n of nomes) if (cfg.toolkits[n].versao) registrarUso(n, cfg.toolkits[n].versao);
+  skillsNoProjeto(cfg);
+  ctx.tela.fechar(buscados.length ? "Pronto." : "Nada a instalar.");
+}
+
+/** `sabia toolkits instalar [nome[@versão]…]`: no projeto, baixa, liga e regenera; fora dele, só baixa. */
+export async function instalarToolkits(nomes = [], opcoes = {}) {
+  ctx.tela.abrir("sabia toolkits instalar");
+  if (!noProjeto()) return instalarNaMaquina(nomes, opcoes);
+  const antes = fs.readFileSync(cfgDoProjeto(), "utf8"), cfg = JSON.parse(antes);
+  if (!nomes.length) return restaurarDoProjeto(cfg, opcoes);
+  const itens = ctx.tela.esperar("buscando as versões …", () => nomes.map((p) => ({ ...preparar(p, opcoes), fixada: !ehUrl(p) && Boolean(separarRef(p)[1]) })), (l) => `${qt(l.length, "toolkit")} conferido${l.length === 1 ? "" : "s"}`);
+  const trocas = [], linhas = [];
+  for (const x of itens) {
+    const t = cfg.toolkits?.[x.nome];
+    const familia = x.m.customiza?.toolkit ?? x.nome;
+    // a customização é uma cópia modificada da base: as duas juntas no projeto dão skills e agentes repetidos
+    const rival = Object.keys(cfg.toolkits || {}).find((n) => n !== x.nome && (manifestoDoCfg(cfg, n).customiza?.toolkit ?? n) === familia);
+    if (rival) throw new Error(`${x.nome} e ${rival} são versões do mesmo toolkit (base ${familia}); use um só: sabia toolkits remover ${rival}`);
+    if (t && t.versao === x.versao) { ctx.tela.ok(`${x.nome} ${x.versao} já está neste projeto`); continue; }
+    if (t && !x.fixada) { ctx.tela.aviso(`${x.nome} já está neste projeto na ${t.versao}: use sabia toolkits atualizar ${x.nome}`); continue; }
+    if (!detectado(x.m.deteccao)) ctx.tela.aviso(`${x.nome}: a detecção do toolkit não casou com este projeto`);
+    trocas.push({ ...x, de: t?.versao });
+    linhas.push(t ? `${x.nome} ${t.versao} → ${x.versao}` : `${x.nome} ${x.versao}`);
+  }
+  if (!trocas.length) return ctx.tela.fechar("Nada a instalar.");
+  ctx.tela.nota(linhas.join("\n"), "Instalar no projeto");
+  await confirmar(opcoes, `Instalar ${qt(trocas.length, "toolkit")} e regenerar os agentes?`, true, `sabia toolkits instalar ${nomes.join(" ")}`);
+  const sai = [], velhas = [];
+  for (const x of trocas) {
+    const m0 = x.de ? manifestoDoCfg(cfg, x.nome) : null;
+    if (x.b) gravarToolkit(x.b);
+    if (m0) { sai.push(...moverNoCfg(cfg, x.nome, m0, x.m).saiu); velhas.push([x.nome, x.de]); }
+    else for (const l of porNoCfg(cfg, x.nome, x.m)) ctx.tela.passo(`${x.nome}: ${l}`);
+  }
+  aplicarNoProjeto(cfg, antes, sai);
+  for (const x of trocas) registrarUso(x.nome, x.versao);
+  for (const [n, v] of velhas) soltarVersao(n, v);
+  ctx.tela.fechar(PRONTO);
+}
+
+/** `sabia toolkits atualizar [nome…]`: leva os toolkits deste projeto à última versão, mantendo as ligações. */
 export async function atualizarToolkits(nomes = [], opcoes = {}) {
   ctx.tela.abrir("sabia toolkits atualizar");
-  const inv = lerInventario();
-  // sem nome: os baixados (o registro das cópias alteradas que o remover deixou não tem o que atualizar)
-  if (!nomes.length) nomes = Object.keys(inv.toolkits).filter((n) => fs.existsSync(sabia("toolkits", n, ".origem.json")));
-  if (!nomes.length) return ctx.tela.fechar("nenhum toolkit instalado — veja: sabia toolkits");
+  if (!noProjeto()) throw new Error("rode na raiz do projeto: cada projeto tem as suas versões de toolkit");
+  const antes = fs.readFileSync(cfgDoProjeto(), "utf8"), cfg = JSON.parse(antes);
+  if (!nomes.length) nomes = Object.keys(cfg.toolkits || {}).filter((n) => cfg.toolkits[n].pasta?.startsWith("~/"));
+  if (!nomes.length) return ctx.tela.fechar("este projeto não tem toolkit instalado — use: sabia toolkits instalar <nome>");
+  for (const n of nomes) if (!cfg.toolkits?.[n]) throw new Error(`${n} não está neste projeto — use: sabia toolkits instalar ${n}`);
   const buscados = ctx.tela.esperar("buscando as versões novas …", () => nomes.map((n) => {
-    const fo = sabia("toolkits", n, ".origem.json");
-    if (!inv.toolkits[n] || !fs.existsSync(fo)) throw new Error(`${n} não está instalado pelo CLI — use: sabia toolkits instalar ${n}`);
-    const origem = JSON.parse(fs.readFileSync(fo, "utf8"));
-    const alvo = origem.indice ? n : `${origem.url}${origem.ref ? "@" + origem.ref : ""}${origem.subpasta ? "#" + origem.subpasta : ""}`;
-    return { n, b: buscarToolkit(alvo, { ...opcoes, indice: origem.indice || opcoes.indice }) };
+    const t = cfg.toolkits[n], o = t.fonte ?? lerOrigem(n, t.versao);
+    if (!o) throw new Error(`${n} ${t.versao} não está nesta máquina — use: sabia toolkits instalar`);
+    const alvo = o.indice || !o.url ? n : `${o.url}${o.ref ? "@" + o.ref : ""}${o.subpasta ? "#" + o.subpasta : ""}`;
+    return { n, de: t.versao, b: buscarToolkit(alvo, { ...opcoes, indice: o.indice || opcoes.indice }) };
   }), (l) => `${qt(l.length, "toolkit")} conferido${l.length === 1 ? "" : "s"}`);
-  for (const { n, b } of buscados) if (!b.mudou) ctx.tela.ok(`${n} já na última versão (${b.m.versao})`);
-  const novos = buscados.filter(({ b }) => b.mudou);
+  for (const { n, b, de } of buscados) if (b.m.versao === de && !b.mudou) ctx.tela.ok(`${n} já na última versão (${de})`);
+  const novos = buscados.filter(({ b, de }) => b.m.versao !== de || b.mudou);
   if (!novos.length) return ctx.tela.fechar("Nada a atualizar.");
-  ctx.tela.nota(colunas(novos.map(({ n, b }) => [n, `${b.de || "—"} → ${b.m.versao}`, linhasDif(b.dif).join("; ")])), "Atualizar");
-  await confirmar(opcoes, `Atualizar ${qt(novos.length, "toolkit")}?`, true, `sabia toolkits atualizar ${novos.map((x) => x.n).join(" ")}`);
+  ctx.tela.nota(colunas(novos.map(({ n, b, de }) => {
+    const dif = diferencas(pastaReal(n, cfg.toolkits[n]), b.pasta);
+    dif.removidos = dif.removidos.filter((f) => f !== ".origem.json");
+    return [n, `${de} → ${b.m.versao}`, linhasDif(dif).join("; ")];
+  })), "Atualizar");
+  await confirmar(opcoes, `Atualizar ${qt(novos.length, "toolkit")} e regenerar os agentes?`, true, `sabia toolkits atualizar ${novos.map((x) => x.n).join(" ")}`);
+  const sai = [];
   for (const { n, b } of novos) {
+    const m0 = manifestoDoCfg(cfg, n);
     gravarToolkit(b);
-    mostrar(await instalarToolkit(n, { ...opcoes, alvo: Object.keys(inv.toolkits[n]?.alvos || {}).join(",") || "kiro" }));
+    sai.push(...moverNoCfg(cfg, n, m0, b.m).saiu);
   }
-  ctx.tela.fechar('Pronto.\n   → em cada projeto, peça "atualizar os agentes do Sabiá"');
+  aplicarNoProjeto(cfg, antes, sai);
+  for (const { n, b, de } of novos) {
+    registrarUso(n, b.m.versao);
+    if (de !== b.m.versao) soltarVersao(n, de);
+  }
+  ctx.tela.fechar(PRONTO);
 }
 
-/** A base que o toolkit baixado customiza (do toolkit.json em ~/.sabia/toolkits), ou null. */
-function baseDe(nome) {
-  const f = sabia("toolkits", nome, "toolkit.json");
-  return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")).customiza?.toolkit ?? null : null;
+/** `sabia toolkits remover`: no projeto, desliga e regenera; a versão sai da máquina se nenhum outro projeto a usar. */
+export async function removerToolkits(nomes = [], opcoes = {}) {
+  ctx.tela.abrir("sabia toolkits remover");
+  if (!noProjeto()) return removerDaMaquina(nomes, opcoes);
+  const antes = fs.readFileSync(cfgDoProjeto(), "utf8"), cfg = JSON.parse(antes);
+  const doProjeto = Object.keys(cfg.toolkits || {});
+  if (!nomes.length) {
+    if (!doProjeto.length) return ctx.tela.fechar("este projeto não tem toolkit instalado");
+    if (opcoes.sim || !ctx.interativo) throw new Error("diga o toolkit — use: sabia toolkits remover <nome> -y");
+    nomes = await ctx.escolher({ mensagem: "Quais remover deste projeto?", multi: true, minimo: 1, opcoes: doProjeto.map((n) => ({ valor: n, rotulo: n, dica: cfg.toolkits[n].versao ?? "" })) });
+  }
+  const saem = nomes.filter((n) => { if (doProjeto.includes(n)) return true; ctx.tela.ok(`${n} não está neste projeto`); return false; });
+  if (!saem.length) return ctx.tela.fechar("Nada a remover.");
+  const sai = [], versoes = [];
+  for (const n of saem) {
+    const t = cfg.toolkits[n];
+    ctx.tela.marca("✗", `${n} ${t.versao ?? ""} deste projeto`);
+    const outros = t.versao ? quemUsa(n, t.versao).filter((p) => p !== process.cwd()) : [];
+    if (t.pasta?.startsWith("~/")) { if (outros.length) ctx.tela.passo(`${n} ${t.versao} continua na máquina: ${outros.map(curto).join(", ")}`); else ctx.tela.marca("✗", `~/.sabia/toolkits/${n}/${t.versao}`); versoes.push([n, t.versao]); }
+    sai.push(...(manifestoDoCfgSeHouver(cfg, n)?.skills || []).map((s) => nomeDaSkill(s.caminho)));
+  }
+  await confirmar(opcoes, `Remover ${qt(saem.length, "toolkit")} deste projeto?`, false, `sabia toolkits remover ${saem.join(" ")}`);
+  for (const n of saem) tirarDoCfg(cfg, n);
+  aplicarNoProjeto(cfg, antes, sai);
+  for (const [n, v] of versoes) soltarVersao(n, v);
+  ctx.tela.fechar(PRONTO);
+}
+
+function manifestoDoCfgSeHouver(cfg, nome) {
+  try { return manifestoDoCfg(cfg, nome); } catch { return null; }
+}
+
+/** Fora de um projeto: apaga as versões pedidas (`nome` são todas; `nome@versão`, uma), avisando quem ainda as usa. */
+async function removerDaMaquina(nomes, opcoes) {
+  const inv = lerInventario();
+  if (!nomes.length) {
+    if (!Object.keys(inv.toolkits).length) return ctx.tela.fechar("nenhum toolkit na máquina");
+    if (opcoes.sim || !ctx.interativo) throw new Error("diga o toolkit — use: sabia toolkits remover <nome> -y");
+    nomes = await ctx.escolher({ mensagem: "Quais remover?", multi: true, minimo: 1,
+      opcoes: Object.keys(inv.toolkits).map((n) => ({ valor: n, rotulo: n, dica: versoesLocais(n).join(", ") })) });
+  }
+  const saem = nomes.flatMap((p) => { const [n, v] = separarRef(p); const vs = v ? versoesLocais(n).filter((x) => x === v) : versoesLocais(n); if (!vs.length) ctx.tela.ok(`${p} não está na máquina`); return vs.map((x) => [n, x]); });
+  if (!saem.length) return ctx.tela.fechar("Nada a remover.");
+  for (const [n, v] of saem) {
+    ctx.tela.marca("✗", `~/.sabia/toolkits/${n}/${v}`);
+    const usam = quemUsa(n, v);
+    if (usam.length) ctx.tela.aviso(`${n} ${v} ainda é usado por: ${usam.map(curto).join(", ")}`);
+  }
+  await confirmar(opcoes, `Remover ${qt(saem.length, "versão").replace(/versãos/, "versões")} da máquina?`, false, `sabia toolkits remover ${nomes.join(" ")}`);
+  for (const [n, v] of saem) apagarVersao(n, v);
+  ctx.tela.fechar("Pronto.");
 }
 
 export function listarToolkits(opcoes = {}) {
@@ -961,19 +1059,20 @@ export function listarToolkits(opcoes = {}) {
   const projeto = path.join(process.cwd(), ".sabia", "config", "agentes.json");
   const doProjeto = fs.existsSync(projeto) ? JSON.parse(fs.readFileSync(projeto, "utf8")).toolkits || {} : {};
   // autor e customiza: do toolkit baixado (o toolkit.json) ou, sem ele, da entrada do índice
-  const manifesto = (n) => { const f = sabia("toolkits", n, "toolkit.json"); return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")) : {}; };
+  const manifesto = (n) => { const v = versoesLocais(n).at(-1); return v ? manifestoTk(n, v) : {}; };
+  const baixadas = (n) => versoesLocais(n).join(", ") || "—";
   const linhas = [], doIndice = {};
   for (const i of opcoes.indice ? [opcoes.indice] : indices()) {
     try {
       for (const e of lerIndice(i)) {
         doIndice[e.nome] = e;
-        linhas.push([e.nome, "", e.versao || "—", inv.toolkits[e.nome]?.versao || "—", doProjeto[e.nome]?.versao || "—", e.descricao || ""]);
+        linhas.push([e.nome, "", e.versao || "—", baixadas(e.nome), doProjeto[e.nome]?.versao || "—", e.descricao || ""]);
       }
     } catch (err) {
       console.error(`sabia: índice ${i}: ${err.message}`);  // no stderr: o stdout do --json fica um JSON só
     }
   }
-  for (const [n, t] of Object.entries(inv.toolkits)) if (!linhas.some((l) => l[0] === n)) linhas.push([n, "", "—", t.versao, doProjeto[n]?.versao || "—", "(fora dos índices)"]);
+  for (const n of Object.keys(inv.toolkits)) if (!linhas.some((l) => l[0] === n)) linhas.push([n, "", "—", baixadas(n), doProjeto[n]?.versao || "—", "(fora dos índices)"]);
   for (const l of linhas) {
     const a = manifesto(l[0]).autor ?? doIndice[l[0]]?.autor;
     l[1] = a ? `${a.nome} (${a.area})` : "—";
@@ -1030,7 +1129,7 @@ function contextoRota(opcoes) {
   const projeto = path.resolve(opcoes.projeto || process.cwd());
   const cfg = lerJson(path.join(projeto, ".sabia", "config", "agentes.json"), {});
   const m = carregar(fw);
-  const dirTk = (nome) => { const pasta = cfg.toolkits?.[nome]?.pasta; return !pasta ? sabia("toolkits", nome) : pasta.startsWith("~/") ? longo(pasta) : path.resolve(projeto, pasta); };
+  const dirTk = (nome) => { const t = cfg.toolkits?.[nome], pasta = t?.pasta; return !pasta ? sabia("toolkits", nome, String(t?.versao ?? "")) : pasta.startsWith("~/") ? longo(pasta) : path.resolve(projeto, pasta); };
   // os tipos dos toolkits do projeto viram o desvio por tipo: a skill do toolkit, com o fluxo do tipo, se o traz
   const tipos = [];
   for (const nome of Object.keys(cfg.toolkits || {})) {
@@ -1228,11 +1327,9 @@ const USO = [
   ["sabia atualizar", "atualiza o Sabiá instalado", `[-y] ${FONTE} [--forcar]`],
   ["sabia desinstalar", "tira o Sabiá das ferramentas", "[-a kiro,opencode] [-y] [--forcar]"],
   ["sabia toolkits", "lista os toolkits (índice, instalados, projeto)", "[listar|ls] [--json] [--indice <url-git|pasta>]"],
-  ["sabia toolkits instalar", "escolhe e instala toolkits", `[${TK} …] [-a …] [-y] [--indice <url-git|pasta>] [--forcar]   (apelido i; sem nome, no projeto: as versões dele; fora: escolha no índice)`],
-  ["sabia toolkits atualizar", "atualiza os toolkits instalados", "[<nome> …] [-y] [--indice <url-git|pasta>] [--forcar]   (sem nome: todos)"],
-  ["sabia toolkits remover", "escolhe e remove toolkits", "[<nome> …] [-y] [--forcar]   (apelido rm; sem nome: escolha nos instalados)"],
-  ["sabia toolkits ligar", "liga toolkits instalados ao projeto e regenera os agentes", "<nome> … [-y]"],
-  ["sabia toolkits desligar", "desliga toolkits do projeto e regenera os agentes", "<nome> … [-y]"],
+  ["sabia toolkits instalar", "instala no projeto: baixa, liga e regenera os agentes", `[${TK} …] [-y] [--indice <url-git|pasta>]   (apelido i; sem nome, no projeto: as versões dele; fora de um projeto, só baixa)`],
+  ["sabia toolkits atualizar", "leva os toolkits do projeto à última versão", "[<nome> …] [-y] [--indice <url-git|pasta>]   (sem nome: todos os do projeto)"],
+  ["sabia toolkits remover", "tira do projeto; a versão sai da máquina se ninguém mais usar", "[<nome>[@versao] …] [-y]   (apelido rm; fora de um projeto: apaga da máquina)"],
   ["sabia agentes gerar", "gera os agentes do projeto; sem --gravar, só mostra o que muda", "[--gravar] [-a kiro,opencode] [--projeto <pasta>] [--config <arquivo>] [--framework <pasta>]"],
   ["sabia agentes base <id>", "a base de uma cópia: o sha do passo ou do template", "<sa-x.f.p | sa-x/nome.md | requisitos/template-<tipo>.md | ~/.sabia/toolkits/…> [--framework <pasta>]"],
   ["sabia rota <arquivo>", "explica a rota de um arquivo", "o passo com desvio de toolkit, o dono, o toolkit, o motivo e as travas\n" +
@@ -1299,8 +1396,6 @@ const COMANDOS = {
   "toolkits instalar": instalarToolkits,
   "toolkits atualizar": atualizarToolkits,
   "toolkits remover": removerToolkits,
-  "toolkits ligar": (n, o) => mudarToolkits(n, o, true),
-  "toolkits desligar": (n, o) => mudarToolkits(n, o, false),
   agentes: ([sub, id], o) => {
     if (sub === "gerar") ctx.log(gerarProjeto({ projeto: o.projeto, config: o.config, alvo: o.alvo, framework: o.framework, gravar: o.gravar }).texto);
     else if (sub === "base" && id) ctx.log(baseDaCopia(id, o.framework));
@@ -1311,8 +1406,6 @@ const COMANDOS = {
     ctx.log(o.mapa ? rotaMapa(o) : o.fluxo ? rotaFluxo(o.fluxo, o) : rota(arquivo, o));
   },
 };
-
-export { mudarToolkits };
 
 export async function main(argv = process.argv.slice(2)) {
   let args;

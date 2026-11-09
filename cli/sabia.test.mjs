@@ -176,6 +176,17 @@ function toolkit(base, mudar = {}) {
   });
 }
 
+/** Roda `fn` dentro de um projeto novo, com o gerador trocado por um que só registra a chamada. */
+async function emProjeto(fn, cfg = {}, nome = "projeto") {
+  const proj = escrever(path.join(raiz, nome), { ".sabia/config/agentes.json": { produto: "p", branch_base: "main", ...cfg } });
+  const cwd = process.cwd(), gerar = s.ctx.gerarAgentes;
+  s.ctx.gerarAgentes = (o) => { chamadas.push(JSON.stringify(o)); return { avisos: [], tabelaTipos: [] }; };
+  process.chdir(proj);
+  try { return await fn(proj); } finally { process.chdir(cwd); s.ctx.gerarAgentes = gerar; }
+}
+const cfgDe = (proj) => JSON.parse(fs.readFileSync(path.join(proj, ".sabia/config/agentes.json"), "utf8"));
+const indiceDe = (entradas) => escrever(path.join(raiz, `indice-${Math.random().toString(36).slice(2)}`), { "index.json": { nome: "idx", toolkits: entradas } });
+
 test("valida o toolkit: nome, caminhos presos à pasta e referências", () => {
   assert.deepEqual(s.validarToolkit(toolkit(path.join(raiz, "ok")), "batch-alfa"), []);
   const erros = (mudar, nome) => s.validarToolkit(toolkit(path.join(raiz, Math.random().toString(36).slice(2)), mudar), nome).join("\n");
@@ -191,7 +202,7 @@ test("valida o toolkit: nome, caminhos presos à pasta e referências", () => {
   assert.match(erros({ autor: { nome: "Ana" } }), /autor: precisa de nome e area/);
 });
 
-test("customização: cópia modificada da base, listada abaixo dela e recusada com a base já instalada", async () => {
+test("customização: cópia modificada da base, listada abaixo dela e recusada no projeto que já usa a base", async () => {
   const indice = escrever(path.join(raiz, "indice-c"), {
     "index.json": { nome: "idx", toolkits: [
       { nome: "batch-alfa-casa", versao: "1.1.0", fonte: { caminho: "./casa" } }, { nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./base" } }] },
@@ -205,53 +216,139 @@ test("customização: cópia modificada da base, listada abaixo dela e recusada 
   m.toolkits[0].autor = { nome: "Bia Exemplo", area: "Casa" };
   fs.writeFileSync(ix, JSON.stringify(m));
   assert.deepEqual(s.listarToolkits({ indice }).map((l) => [l[0], l[1], l[5]]), [["batch-alfa", "—", ""], ["↳ batch-alfa-casa", "Bia Exemplo (Casa)", "customiza batch-alfa 1.0.0"]]);
-  await s.instalarToolkit("batch-alfa", { indice, alvo: "kiro" });
-  await assert.rejects(s.instalarToolkit("batch-alfa-casa", { indice, alvo: "kiro" }), /batch-alfa-casa e batch-alfa são versões do mesmo toolkit/);
+  await emProjeto(async () => {
+    await s.instalarToolkits(["batch-alfa"], { indice, sim: true });
+    await assert.rejects(s.instalarToolkits(["batch-alfa-casa"], { indice, sim: true }), /batch-alfa-casa e batch-alfa são versões do mesmo toolkit/);
+  });
+  await s.baixarToolkit("batch-alfa-casa", { indice });  // em outro projeto pode ser a casa: na máquina convivem
   const linhas = s.listarToolkits({ indice });
   assert.deepEqual(linhas.map((l) => l[0]), ["batch-alfa", "↳ batch-alfa-casa"]);
   assert.match(linhas[1][5], /^customiza batch-alfa 1\.0\.0: customizações feitas pela casa; …/);
   assert.equal(linhas[0][1], "Ana Exemplo (Equipe Alfa)");  // do toolkit baixado
 });
 
-test("toolkit pelo índice: baixa, instala nas ferramentas, atualiza e remove pelo inventário", async () => {
-  const indice = escrever(path.join(raiz, "indice"), {
-    "index.json": { nome: "idx", toolkits: [{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./batch-alfa" } }] },
+test("toolkit no projeto: instalar baixa na pasta da versão, liga e regenera; atualizar troca a versão sem desfazer escolhas; remover limpa", async () => {
+  const dois = { skills: [{ caminho: "skills/batch/SKILL.md", papeis: ["desenvolvedor", "revisor"], passo: { passo: "sa-desenvolver.codificar.tarefa", para: "job", agente: "batch-job" } }] };
+  const fonte = toolkit(path.join(raiz, "fonte/batch-alfa"), dois);
+  const indice = escrever(path.join(raiz, "indice"), { "index.json": { nome: "idx", toolkits: [{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "../fonte/batch-alfa".replace("../fonte/", "./") } }] } });
+  fs.cpSync(fonte, path.join(indice, "batch-alfa"), { recursive: true });
+  const v1 = path.join(home, ".sabia/toolkits/batch-alfa/1.0.0"), v2 = path.join(home, ".sabia/toolkits/batch-alfa/1.1.0");
+  const id = (v, c = "skills/batch/SKILL.md") => `skill://~/.sabia/toolkits/batch-alfa/${v}/${c}`;
+  await emProjeto(async (proj) => {
+    await s.instalarToolkits(["batch-alfa"], { indice, sim: true });
+    assert.ok(fs.existsSync(path.join(v1, "toolkit.json")));
+    assert.equal(JSON.parse(fs.readFileSync(path.join(v1, ".origem.json"), "utf8")).indice, indice);
+    let c = cfgDe(proj);
+    assert.equal(c.toolkits["batch-alfa"].pasta, "~/.sabia/toolkits/batch-alfa/1.0.0");
+    assert.deepEqual(c.passos, [{ toolkit: "batch-alfa", skill: "skills/batch/SKILL.md", agente: true }]);
+    assert.deepEqual(c.agentes["sa-desenvolvedor"].skills, [id("1.0.0")]);
+    assert.match(chamadas.at(-1), /"gravar":true/);
+    assert.deepEqual(s.listarToolkits({ indice }).map((l) => [l[0], l[2], l[3], l[4]]), [["batch-alfa", "1.0.0", "1.0.0", "1.0.0"]]);
+    assert.deepEqual(s.lerInventario().toolkits["batch-alfa"].versoes["1.0.0"].projetos, [fs.realpathSync(proj)]);
+
+    saida = [];
+    await s.instalarToolkits(["batch-alfa"], { indice, sim: true });
+    assert.ok(saida.includes("batch-alfa 1.0.0 já está neste projeto") && saida.includes("Nada a instalar."));
+    saida = [];
+    await s.atualizarToolkits([], { indice });
+    assert.ok(saida.includes("batch-alfa já na última versão (1.0.0)") && !saida.some((x) => x.startsWith("?")));
+    await assert.rejects(s.atualizarToolkits(["outro"], { indice }), /outro não está neste projeto — use: sabia toolkits instalar outro/);
+
+    // a pessoa tirou a skill do revisor; a versão nova traz outra skill e não pode devolver a que saiu
+    c.agentes["sa-revisor"].skills = [];
+    fs.writeFileSync(path.join(proj, ".sabia/config/agentes.json"), JSON.stringify(c));
+    toolkit(path.join(indice, "batch-alfa"), { versao: "1.1.0", skills: [...dois.skills, { caminho: "skills/nova/SKILL.md", papeis: ["verificador"] }] });
+    escrever(path.join(indice, "batch-alfa"), { "skills/nova/SKILL.md": "nova" });
+    fs.writeFileSync(path.join(indice, "index.json"), JSON.stringify({ nome: "idx", toolkits: [{ nome: "batch-alfa", versao: "1.1.0", fonte: { caminho: "./batch-alfa" } }] }));
+    await s.atualizarToolkits([], { indice });  // uma tabela e um confirm (padrão S)
+    assert.match(saida.find((x) => x.startsWith("[Atualizar]")), /batch-alfa {2}1\.0\.0 → 1\.1\.0/);
+    c = cfgDe(proj);
+    assert.equal(c.toolkits["batch-alfa"].versao, "1.1.0");
+    assert.deepEqual(c.agentes["sa-desenvolvedor"].skills, [id("1.1.0")]);
+    assert.deepEqual(c.agentes["sa-revisor"].skills, []);
+    assert.deepEqual(c.agentes["sa-verificador"].skills, [id("1.1.0", "skills/nova/SKILL.md")]);
+    assert.ok(fs.existsSync(path.join(v2, "toolkit.json")) && !fs.existsSync(v1));  // ninguém mais usa a 1.0.0
+
+    await assert.rejects(s.removerToolkits(["batch-alfa"], { indice }), s.Cancelado);  // destrutivo: padrão N
+    assert.ok(fs.existsSync(v2));
+    respostas = [true];
+    await s.removerToolkits(["batch-alfa"], {});
+    c = cfgDe(proj);
+    assert.deepEqual([c.toolkits, c.passos, c.agentes["sa-desenvolvedor"].skills], [{}, [], []]);
+    assert.ok(!fs.existsSync(path.join(home, ".sabia/toolkits/batch-alfa")));
+    assert.deepEqual(s.lerInventario().toolkits, {});
   });
+});
+
+test("toolkit em dois projetos: cada um na sua versão, e a pasta só sai quando ninguém mais a usa", async () => {
+  const indice = indiceDe([{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./v1" } }, { nome: "batch-alfa", versao: "2.0.0", fonte: { caminho: "./v2" } }]);
+  toolkit(path.join(indice, "v1"));
+  toolkit(path.join(indice, "v2"), { versao: "2.0.0" });
+  const pasta = (v) => path.join(home, ".sabia/toolkits/batch-alfa", v, "toolkit.json");
+  await emProjeto(async (a) => {
+    await s.instalarToolkits(["batch-alfa@1.0.0"], { indice, sim: true });
+    assert.equal(cfgDe(a).toolkits["batch-alfa"].versao, "1.0.0");
+    await emProjeto(async (b) => {
+      await s.instalarToolkits(["batch-alfa"], { indice, sim: true });  // sem versão: a maior do índice
+      assert.equal(cfgDe(b).toolkits["batch-alfa"].versao, "2.0.0");
+      assert.ok(fs.existsSync(pasta("1.0.0")) && fs.existsSync(pasta("2.0.0")));
+      assert.deepEqual(s.listarToolkits({ indice }).map((l) => l[3]), ["1.0.0, 2.0.0", "1.0.0, 2.0.0"]);
+      // versão fixada que difere troca neste projeto, e a do outro fica
+      await s.instalarToolkits(["batch-alfa@1.0.0"], { indice, sim: true });
+      assert.equal(cfgDe(b).toolkits["batch-alfa"].versao, "1.0.0");
+      assert.ok(fs.existsSync(pasta("1.0.0")) && !fs.existsSync(pasta("2.0.0")));
+      await s.removerToolkits(["batch-alfa"], { sim: true });
+      assert.ok(fs.existsSync(pasta("1.0.0")));  // o projeto a ainda usa
+    }, {}, "projeto-b");
+    await s.removerToolkits(["batch-alfa"], { sim: true });
+    assert.ok(!fs.existsSync(pasta("1.0.0")));
+  });
+});
+
+test("toolkit: quem clona baixa as versões do projeto; opencode tem a cópia por projeto; fora de um projeto só baixa", async () => {
+  const indice = indiceDe([{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./batch-alfa" } }]);
   toolkit(path.join(indice, "batch-alfa"));
-  await s.instalarToolkit("batch-alfa", { indice, alvo: "opencode,kiro" });
-  assert.ok(fs.existsSync(path.join(home, ".sabia/toolkits/batch-alfa/toolkit.json")));
-  assert.equal(JSON.parse(fs.readFileSync(path.join(home, ".sabia/toolkits/batch-alfa/.origem.json"), "utf8")).indice, indice);
-  assert.equal(fs.readFileSync(skill("batch"), "utf8"), "batch");
-  assert.ok(!fs.existsSync(path.join(home, ".kiro")));  // o Kiro lê de ~/.sabia/toolkits
-  const linhas = s.listarToolkits({ indice });
-  assert.deepEqual([linhas[0][0], linhas[0][2], linhas[0][3]], ["batch-alfa", "1.0.0", "1.0.0"]);
-
-  fs.writeFileSync(path.join(indice, "batch-alfa/skills/batch/SKILL.md"), "batch 2");
-  await s.atualizarToolkits(["batch-alfa"], {});  // uma tabela e um confirm (padrão S)
-  assert.equal(fs.readFileSync(skill("batch"), "utf8"), "batch 2");
-  assert.match(saida.find((x) => x.startsWith("[Atualizar]")), /batch-alfa {2}1\.0\.0 → 1\.0\.0 {2}alterados \(1\): skills\/batch\/SKILL\.md/);
+  await assert.rejects(s.atualizarToolkits([], { indice }), /rode na raiz do projeto/);
+  await s.instalarToolkits(["batch-alfa"], { indice, sim: true });
+  assert.ok(fs.existsSync(path.join(home, ".sabia/toolkits/batch-alfa/1.0.0/toolkit.json")));
+  assert.match(saida.at(-1), /na raiz do projeto: sabia toolkits instalar batch-alfa/);
+  await emProjeto(async (proj) => {
+    await s.instalarToolkits(["batch-alfa"], { indice, sim: true });
+    const copia = path.join(proj, ".opencode/skills/batch/SKILL.md");
+    assert.equal(fs.readFileSync(copia, "utf8"), "batch");
+    assert.ok(!fs.existsSync(skill("batch")));  // nada global: outro projeto pode estar em outra versão
+    // o clone: a máquina não tem o toolkit, e o agentes.json diz de onde ele veio
+    const c = cfgDe(proj);
+    fs.rmSync(path.join(home, ".sabia/toolkits"), { recursive: true });
+    fs.rmSync(copia);
+    const inv = s.lerInventario(); inv.toolkits = {}; s.gravarInventario(inv);
+    await s.instalarToolkits([], { indice, sim: true });
+    assert.ok(fs.existsSync(path.join(home, ".sabia/toolkits/batch-alfa/1.0.0/toolkit.json")) && fs.existsSync(copia));
+    assert.deepEqual(cfgDe(proj).toolkits, c.toolkits);
+    saida = [];
+    await s.instalarToolkits([], { indice, sim: true });
+    assert.ok(saida.includes("batch-alfa 1.0.0 já está nesta máquina") && saida.includes("Nada a instalar."));
+    await s.removerToolkits(["batch-alfa"], { sim: true });
+    assert.ok(!fs.existsSync(copia));
+  }, { alvos: ["opencode"] });
+  // fora de um projeto, remover avisa quem ainda usa
+  await s.baixarToolkit("batch-alfa", { indice });
+  await emProjeto(async () => { await s.instalarToolkits(["batch-alfa"], { indice, sim: true }); });
   saida = [];
-  await s.atualizarToolkits([], {});  // todos; nada mudou
-  assert.ok(saida.includes("batch-alfa já na última versão (1.0.0)") && !saida.some((x) => x.startsWith("?")));
-
-  const projeto = escrever(path.join(raiz, "projeto"), { ".sabia/config/agentes.json": { toolkits: { "batch-alfa": { versao: "1.0.0" } } } });
-  const cwd = process.cwd();
-  process.chdir(projeto);
-  try {
-    await s.instalarToolkits([], { indice });  // sem nome, no projeto: as versões dele; a mesma versão: nada a fazer
-    assert.ok(saida.includes("batch-alfa 1.0.0 já instalado (opencode)"));
-    assert.equal(fs.readFileSync(skill("batch"), "utf8"), "batch 2");
-    await assert.rejects(s.removerToolkits(["batch-alfa"], {}), s.Cancelado);  // destrutivo: padrão N
-    assert.ok(fs.existsSync(skill("batch")));
-    assert.ok(saida.includes("✗ ~/.config/opencode/skills/batch") && saida.includes("✗ ~/.sabia/toolkits/batch-alfa"));
-    assert.ok(saida.includes('este projeto usa o batch-alfa: depois peça "atualizar os agentes do Sabiá"'));
-  } finally { process.chdir(cwd); }
-
-  respostas = [true];
-  await s.removerToolkits(["batch-alfa"], {});
-  assert.ok(!fs.existsSync(skill("batch")));
+  await s.removerToolkits(["batch-alfa@1.0.0"], { sim: true });
+  assert.ok(saida.some((x) => /batch-alfa 1\.0\.0 ainda é usado por:/.test(x)));
   assert.ok(!fs.existsSync(path.join(home, ".sabia/toolkits/batch-alfa")));
-  assert.deepEqual(s.lerInventario().toolkits, {});
+});
+
+test("toolkit sem acesso ao índice: usa a maior versão baixada e avisa; recusado continua recusado", async () => {
+  const indice = indiceDe([{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./batch-alfa" } }]);
+  toolkit(path.join(indice, "batch-alfa"));
+  await s.baixarToolkit("batch-alfa", { indice });
+  await emProjeto(async (proj) => {
+    await s.instalarToolkits(["batch-alfa"], { indice: path.join(raiz, "nao-existe"), sim: true });
+    assert.ok(saida.some((x) => /sem acesso ao índice; usando a 1\.0\.0/.test(x)));
+    assert.equal(cfgDe(proj).toolkits["batch-alfa"].versao, "1.0.0");
+  });
 });
 
 test("o passo do toolkit pelo id: só em passo do Sabiá com gancho de desvio; o id antigo da tarefa vale como alias", () => {
@@ -277,8 +374,8 @@ test("toolkit numa subpasta de um repositório git: #subpasta, @ref lida do comm
   const g = (...a) => assert.equal(spawnSync("git", ["-c", "user.name=t", "-c", "user.email=t@t", ...a], { cwd: mono }).status, 0);
   g("init", "-q"); g("add", "."); g("commit", "-qm", "v1"); g("tag", "v1");
   fs.writeFileSync(path.join(mono, "batch-alfa/skills/batch/SKILL.md"), "árvore suja");  // fora do commit
-  const origem = () => JSON.parse(fs.readFileSync(path.join(home, ".sabia/toolkits/batch-alfa/.origem.json"), "utf8"));
-  const lido = () => fs.readFileSync(path.join(home, ".sabia/toolkits/batch-alfa/skills/batch/SKILL.md"), "utf8");
+  const origem = () => JSON.parse(fs.readFileSync(path.join(home, ".sabia/toolkits/batch-alfa/1.0.0/.origem.json"), "utf8"));
+  const lido = () => fs.readFileSync(path.join(home, ".sabia/toolkits/batch-alfa/1.0.0/skills/batch/SKILL.md"), "utf8");
   await s.baixarToolkit(`${mono}@v1#batch-alfa`, {});
   assert.equal(lido(), "batch");
   assert.equal(origem().subpasta, "batch-alfa");
@@ -289,7 +386,7 @@ test("toolkit numa subpasta de um repositório git: #subpasta, @ref lida do comm
   await assert.rejects(s.baixarToolkit(`${path.join(mono, "batch-alfa")}@nao-existe`, {}), /nao-existe/);
   // o mesmo conteúdo de outra fonte: nada é copiado, mas a origem passa a ser a nova
   const indice = escrever(path.join(raiz, "indice"), { "index.json": { nome: "idx", toolkits: [{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./batch-alfa" } }] } });
-  fs.cpSync(path.join(home, ".sabia/toolkits/batch-alfa"), path.join(indice, "batch-alfa"), { recursive: true, filter: (f) => !f.endsWith(".origem.json") });
+  fs.cpSync(path.join(home, ".sabia/toolkits/batch-alfa/1.0.0"), path.join(indice, "batch-alfa"), { recursive: true, filter: (f) => !f.endsWith(".origem.json") });
   await s.baixarToolkit("batch-alfa", { indice });
   assert.equal(origem().indice, indice);
 });
@@ -376,7 +473,7 @@ test("sem terminal: sem -y, a pergunta necessária vira saída 1 com a flag; com
   assert.equal(r.codigo, 1);
   assert.match(r.erro, /diga o toolkit — use: sabia toolkits instalar <nome> -y/);
   assert.equal((await rodar(["toolkits", "remover"])).codigo, 0);
-  assert.ok(saida.includes("nenhum toolkit instalado"));
+  assert.ok(saida.includes("nenhum toolkit na máquina"));
 });
 
 test("instalar: a skill alterada à mão aparece com ✎ no resumo e fica; --forcar sobrescreve", async () => {
@@ -397,75 +494,62 @@ test("toolkits: sem subcomando lista; apelidos ls, i, rm e toolkit; idempotente;
     "index.json": { nome: "idx", toolkits: [{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./batch-alfa" }, descricao: "jobs" }] },
   });
   toolkit(path.join(indice, "batch-alfa"));
+  const baixado = path.join(home, ".sabia/toolkits/batch-alfa/1.0.0/toolkit.json");
   assert.equal((await rodar(["toolkits", "--indice", indice])).codigo, 0);
   assert.match(logs.at(-1), /^TOOLKIT +AUTOR[\s\S]*\nbatch-alfa +— +1\.0\.0 +— +— +jobs$/);
   assert.equal((await rodar(["toolkit", "ls", "--indice", indice])).codigo, 0);
   assert.equal(logs.at(-1), logs.at(-2));
   // sem nome, fora de projeto: a multisseleção do índice sem os instalados
   respostas = [["batch-alfa"], true];
-  assert.equal((await rodar(["toolkits", "i", "--indice", indice, "-a", "opencode"])).codigo, 0);
+  assert.equal((await rodar(["toolkits", "i", "--indice", indice])).codigo, 0);
   assert.deepEqual(escolhas[0].opcoes.map((o) => [o.valor, o.dica]), [["batch-alfa", "1.0.0  jobs"]]);
-  assert.ok(fs.existsSync(skill("batch")));
+  assert.ok(fs.existsSync(baixado));
   saida = [];
   assert.equal((await rodar(["toolkits", "instalar", "batch-alfa", "-y", "--indice", indice])).codigo, 0);
-  assert.ok(saida.includes("batch-alfa 1.0.0 já instalado (opencode)") && !saida.some((x) => x.startsWith("?")));
+  assert.ok(saida.includes("batch-alfa 1.0.0 já está na máquina") && !saida.some((x) => x.startsWith("?")));
   assert.equal((await rodar(["toolkits", "listar", "--json", "--indice", indice])).codigo, 0);
   assert.deepEqual(JSON.parse(logs.at(-1)), [{ nome: "batch-alfa", autor: "Ana Exemplo (Equipe Alfa)", indice: "1.0.0", instalado: "1.0.0",
     projeto: null, descricao: "jobs", customiza: null }]);
   // remover sem nome: a multisseleção dos instalados e o confirm (padrão N)
   respostas = [["batch-alfa"]];
   assert.equal((await rodar(["toolkits", "rm"])).codigo, 0);
-  assert.ok(saida.includes("cancelado — nada foi alterado") && fs.existsSync(skill("batch")));
+  assert.ok(saida.includes("cancelado — nada foi alterado") && fs.existsSync(baixado));
   assert.equal((await rodar(["toolkits", "rm", "batch-alfa", "-y"])).codigo, 0);
-  assert.ok(!fs.existsSync(skill("batch")));
+  assert.ok(!fs.existsSync(baixado));
   saida = [];
   assert.equal((await rodar(["toolkits", "remover", "batch-alfa", "-y"])).codigo, 0);
-  assert.ok(saida.includes("batch-alfa não está instalado"));
+  assert.ok(saida.includes("batch-alfa não está na máquina"));
   const r = await rodar(["toolkits", "baixar", "batch-alfa"]);
   assert.equal(r.codigo, 1);
   assert.equal(r.erro, 'sabia: comando desconhecido "toolkits baixar" — veja sabia -h');
 });
 
-test("toolkits ligar e desligar: agentes.json pelo manifesto, sabia.md e restauração quando o gerador recusa", async () => {
-  const proj = escrever(path.join(raiz, "proj"), {
-    ".sabia/config/agentes.json": { produto: "p", branch_base: "main", agentes: { "sa-revisor": { skills: ["skill://~/outra/SKILL.md"] } } },
-    ".sabia/sabia.md": "## Desvios de toolkit\n\nIntro.\n\nNenhum.\n\n## Tipos com skill de toolkit\n\nIntro.\n\nNenhum.\n\n## Regras aprendidas\n\n- r\n",
-  });
-  escrever(path.join(home, ".sabia/toolkits/alfa"), {
-    ".origem.json": { sha: "abc" },
-    "toolkit.json": { nome: "alfa", versao: "1.2.0", skills: [
-      { caminho: "skills/job/SKILL.md", papeis: ["desenvolvedor", "revisor"], passo: { passo: "sa-desenvolver.codificar.tarefa", para: "criar job", agente: "alfa-job" } },
-      { caminho: "skills/teste/SKILL.md", papeis: ["verificador"] }] },
-  });
-  const cwd = process.cwd(), gerarOriginal = s.ctx.gerarAgentes;
-  process.chdir(proj);
-  try {
-    const f = ".sabia/config/agentes.json", ler = () => JSON.parse(fs.readFileSync(f, "utf8"));
-    s.ctx.gerarAgentes = (o) => { chamadas.push(JSON.stringify(o)); return { avisos: ["olhe isto"], tabelaTipos: ["| Tipo |", "|---|", "| `REG` |"] }; };
-    await s.mudarToolkits(["alfa"], { sim: true }, true);
-    let c = ler();
-    assert.deepEqual(c.toolkits.alfa, { pasta: "~/.sabia/toolkits/alfa", versao: "1.2.0", sha: "abc" });
+test("toolkits no projeto: instalar liga pelo manifesto, escreve o sabia.md e volta atrás se o gerador recusa", async () => {
+  const indice = indiceDe([{ nome: "alfa", versao: "1.2.0", fonte: { caminho: "./alfa" } }]);
+  toolkit(path.join(indice, "alfa"), { nome: "alfa", versao: "1.2.0", skills: [
+    { caminho: "skills/job/SKILL.md", papeis: ["desenvolvedor", "revisor"], passo: { passo: "sa-desenvolver.codificar.tarefa", para: "criar job", agente: "alfa-job" } },
+    { caminho: "skills/teste/SKILL.md", papeis: ["verificador"] }], agentes: [{ nome: "alfa-job", descricao: "codifica um job", prompt: "agentes/job.md", skills: ["skills/job/SKILL.md"] }] });
+  escrever(path.join(indice, "alfa"), { "skills/job/SKILL.md": "job", "skills/teste/SKILL.md": "teste" });
+  await emProjeto(async (proj) => {
+    escrever(proj, { ".sabia/sabia.md": "## Desvios de toolkit\n\nIntro.\n\nNenhum.\n\n## Tipos com skill de toolkit\n\nIntro.\n\nNenhum.\n\n## Regras aprendidas\n\n- r\n" });
+    s.ctx.gerarAgentes = () => ({ avisos: ["olhe isto"], tabelaTipos: ["| Tipo |", "|---|", "| `REG` |"] });
+    await s.instalarToolkits(["alfa"], { indice, sim: true });
+    const c = cfgDe(proj);
+    assert.equal(c.toolkits.alfa.pasta, "~/.sabia/toolkits/alfa/1.2.0");
+    assert.equal(c.toolkits.alfa.fonte.indice, indice);
     assert.deepEqual(c.passos, [{ toolkit: "alfa", skill: "skills/job/SKILL.md", agente: true }]);
-    assert.deepEqual(c.agentes["sa-verificador"].skills, ["skill://~/.sabia/toolkits/alfa/skills/teste/SKILL.md"]);
-    assert.equal(c.agentes["sa-revisor"].skills.length, 2);
-    assert.match(chamadas.at(-1), /"gravar":true/);
-    let md = fs.readFileSync(".sabia/sabia.md", "utf8");
+    assert.deepEqual(c.agentes["sa-verificador"].skills, ["skill://~/.sabia/toolkits/alfa/1.2.0/skills/teste/SKILL.md"]);
+    assert.deepEqual(c.agentes["sa-revisor"].skills, ["skill://~/.sabia/toolkits/alfa/1.2.0/skills/job/SKILL.md"]);
+    const md = fs.readFileSync(path.join(proj, ".sabia/sabia.md"), "utf8");
     assert.match(md, /Intro\.\n\n\| Passo \| Toolkit[^]*`alfa` 1\.2\.0 \| criar job \| `job` \| `alfa-job` \|\n\n## Tipos/);
     assert.match(md, /\| `REG` \|\n\n## Regras aprendidas\n\n- r/);
     assert.ok(saida.includes("olhe isto"));
-
-    await s.mudarToolkits(["alfa"], { sim: true }, false);
-    c = ler();
-    assert.ok(!c.toolkits.alfa && !c.passos.length && !c.agentes["sa-verificador"].skills.length);
-    assert.deepEqual(c.agentes["sa-revisor"].skills, ["skill://~/outra/SKILL.md"]);
-
-    const antes = fs.readFileSync(f, "utf8");
+    const antes = fs.readFileSync(path.join(proj, ".sabia/config/agentes.json"), "utf8");
     s.ctx.gerarAgentes = () => { throw new Error("recusado"); };
-    await assert.rejects(s.mudarToolkits(["alfa"], { sim: true }, true), /restaurado:\nrecusado/);
-    assert.equal(fs.readFileSync(f, "utf8"), antes);
-    await assert.rejects(s.mudarToolkits(["beta"], { sim: true }, true), /beta não está instalado/);
-    await assert.rejects(s.mudarToolkits(["alfa"], { sim: true }, false), /não está ligado/);
-  } finally { process.chdir(cwd); s.ctx.gerarAgentes = gerarOriginal; }
+    await assert.rejects(s.removerToolkits(["alfa"], { sim: true }), /restaurado:\nrecusado/);
+    assert.equal(fs.readFileSync(path.join(proj, ".sabia/config/agentes.json"), "utf8"), antes);
+    await assert.rejects(s.instalarToolkits(["beta"], { indice, sim: true }), /beta não está nos índices/);
+  });
 });
 
 test("<cmd> -h mostra a ajuda do comando e nunca executa; -v a versão; as flags curtas", async () => {
@@ -473,7 +557,7 @@ test("<cmd> -h mostra a ajuda do comando e nunca executa; -v a versão; as flags
   assert.match(logs.at(-1), /^uso:\n {2}sabia instalar — instala o Sabiá[\s\S]*-y, --sim/);
   assert.ok(!fs.existsSync(path.join(home, ".sabia")) && !chamadas.length);
   assert.equal((await rodar(["toolkits", "-h"])).codigo, 0);
-  assert.equal(logs.at(-1).match(/^ {2}sabia toolkits/gm).length, 6);
+  assert.equal(logs.at(-1).match(/^ {2}sabia toolkits/gm).length, 4);
   assert.equal((await rodar(["-v"])).codigo, 0);
   assert.equal(logs.at(-1), JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8")).version);
   assert.equal((await rodar([])).codigo, 0);
@@ -657,14 +741,14 @@ function casa(base, mudar = {}) {
   });
 }
 
-test("toolkit com tipo → skill: instalar copia a skill como veio (nada compilado), remover apaga; o tipo é validado no baixar", async () => {
+test("toolkit com tipo → skill: baixa como veio (nada compilado), remover apaga; o tipo é validado no baixar", async () => {
   for (const f of ["fluxo", "template", "skills", "plugin.json"]) fs.cpSync(path.join(REPO, f), path.join(home, ".sabia/framework", f), { recursive: true });
-  await s.instalarToolkit(casa(path.join(raiz, "tk-casa")), { alvo: "opencode,kiro" });
-  assert.equal(fs.readFileSync(skill("casa"), "utf8"), "---\nname: casa\ndescription: HF da casa\n---\n# casa\n\nSiga o fluxo do tipo.\n");
-  assert.ok(fs.existsSync(path.join(home, ".sabia/toolkits/casa/fluxo/fluxo-hf.md")) && !fs.existsSync(path.join(home, ".sabia/compilado-toolkits")));
-  assert.deepEqual(Object.keys(s.lerInventario().toolkits.casa.alvos.opencode.copias), ["~/.config/opencode/skills/casa"]);
-  await s.removerToolkit("casa", {});
-  assert.ok(!fs.existsSync(skill("casa")) && !fs.existsSync(path.join(home, ".sabia/toolkits/casa")));
+  await s.baixarToolkit(casa(path.join(raiz, "tk-casa")), {});
+  const pasta = path.join(home, ".sabia/toolkits/casa/1.0.0");
+  assert.equal(fs.readFileSync(path.join(pasta, "skills/casa/SKILL.md"), "utf8"), "---\nname: casa\ndescription: HF da casa\n---\n# casa\n\nSiga o fluxo do tipo.\n");
+  assert.ok(fs.existsSync(path.join(pasta, "fluxo/fluxo-hf.md")) && !fs.existsSync(path.join(home, ".sabia/compilado-toolkits")));
+  await s.removerToolkits(["casa"], { sim: true });
+  assert.ok(!fs.existsSync(path.join(home, ".sabia/toolkits/casa")));
   // tipo que o catálogo não deixa desviar, e a forma "<tk>.<fluxo>": recusados no baixar, nada gravado
   const hf = { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md" };
   await assert.rejects(s.baixarToolkit(casa(path.join(raiz, "tk-ruim"), { tipos: { GL: hf } }), {}), /tipo GL: não é desviável/);
@@ -710,28 +794,6 @@ test("rota --fluxo: o tipo → skill do toolkit no passo que cria o tipo", () =>
 test("opção com valor sem o valor é recusada sem engolir a seguinte", async () => {
   assert.throws(() => s.lerArgs(["rota", "--fluxo", "--framework", "x"]), /--fluxo precisa de um valor/);
   assert.equal(await s.main(["rota", "--fluxo"]), 1);
-});
-
-test("cópia de toolkit alterada à mão: ✎ na prévia, fica registrada e reinstalar não a recusa; --forcar apaga", async () => {
-  const indice = escrever(path.join(raiz, "indice"), {
-    "index.json": { nome: "idx", toolkits: [{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./batch-alfa" } }] },
-  });
-  toolkit(path.join(indice, "batch-alfa"));
-  await s.instalarToolkit("batch-alfa", { indice, alvo: "opencode" });
-  fs.writeFileSync(skill("batch"), "mexi");
-  await s.removerToolkits(["batch-alfa"], { sim: true });
-  assert.ok(saida.includes("✎ ~/.config/opencode/skills/batch alterada à mão — mantida (--forcar apaga)") && !saida.includes("✗ ~/.config/opencode/skills/batch"));
-  assert.match(saida.at(-1), /→ para tirar as cópias alteradas: sabia toolkits remover batch-alfa --forcar/);
-  assert.equal(fs.readFileSync(skill("batch"), "utf8"), "mexi");
-  assert.deepEqual(Object.keys(s.lerInventario().toolkits["batch-alfa"].alvos.opencode.copias), ["~/.config/opencode/skills/batch"]);
-  await s.atualizarToolkits([], {});  // o registro das cópias não tem o que atualizar
-  assert.ok(saida.includes("nenhum toolkit instalado — veja: sabia toolkits"));
-  await s.instalarToolkits(["batch-alfa"], { indice, sim: true });  // não é "de outra pessoa": a edição fica
-  assert.equal(fs.readFileSync(skill("batch"), "utf8"), "mexi");
-  assert.ok(fs.existsSync(path.join(home, ".sabia/toolkits/batch-alfa/toolkit.json")));
-  await s.removerToolkits(["batch-alfa"], { sim: true, forcar: true });
-  assert.ok(!fs.existsSync(skill("batch")));
-  assert.deepEqual(s.lerInventario().toolkits, {});
 });
 
 test("desinstalar: a alterada à mão sai do total com ✎, fica registrada e o fecho diz como apagá-la", async () => {

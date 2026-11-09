@@ -38,11 +38,11 @@ Esquema fechado; chave desconhecida faz o gerador parar.
 | `glossario` | `".sabia/glossario.md"` \| `null` | o glossário opcional (só sem GL do DOORS) |
 | `adr` | `"docs/adr"` \| `null` | os ADRs opcionais |
 | `elm` | `false` \| `{"pa": "<nome>", "bundle": "<caminho>", "regras": {"allow": [], "ask": [], "deny": []}}` | os dados da `sa-elm.setup`; as regras só entram com `elm` diferente de `false` |
-| `toolkits` | `{"<nome>": {"pasta": "…", "versao": "…", "sha": "…" \| null}}` | os toolkits ligados |
+| `toolkits` | `{"<nome>": {"pasta": "~/.sabia/toolkits/<nome>/<versão>", "versao": "…", "sha": "…" \| null, "fonte": {…}}}` | os toolkits ligados, gravados por `sabia toolkits instalar`; `fonte` é de onde baixar a mesma versão em outra máquina |
 | `passos` | `[{"toolkit": "<nome>", "skill": "<caminho no toolkit.json>", "agente": true \| false}]` | as skills de toolkit com `passo`; `agente: true` gera o agente do toolkit |
 | `agentes.<agente>.modelo` | `"<modelo>"` | o modelo, se não for o padrão |
 | `agentes.<agente>.mcp` | `["<servidor>/<tool>" \| "<servidor>"]` | MCPs do projeto (banco: só a tool de consulta) |
-| `agentes.<agente>.skills` | `["skill://~/.sabia/toolkits/<toolkit>/skills/<skill>/SKILL.md"]` (com o prefixo `skill://`) | skills extras (de toolkit) |
+| `agentes.<agente>.skills` | `["skill://~/.sabia/toolkits/<toolkit>/<versão>/skills/<skill>/SKILL.md"]` (com o prefixo `skill://`) | skills extras (de toolkit) |
 | `agentes.<agente>.subagentes` | `[{"nome": "<agente>", "para": "<quando usar>"}]` | agentes do projeto como subagentes |
 
 `<agente>` ∈ `sa-desenvolvedor` · `sa-especificador` · `sa-pesquisador` · `sa-revisor` · `sa-verificador`.

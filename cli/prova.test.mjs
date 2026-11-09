@@ -87,8 +87,8 @@ before(async () => {
   for (const f of ["fluxo", "template", "skills", "plugin.json", "mcp.json", "README.md", "LICENSE"]) if (fs.existsSync(path.join(REPO, f))) fs.cpSync(path.join(REPO, f), path.join(fw, f), { recursive: true });
   try {
     await s.instalar({ fonte: fw, alvo: "opencode,kiro", semMcp: true, sim: true });
-    await s.instalarToolkit(casa(), { alvo: "opencode,kiro" });
-    await s.instalarToolkit(batchAlfa(), { alvo: "opencode,kiro" });
+    await s.baixarToolkit(casa(), {});
+    await s.baixarToolkit(batchAlfa(), {});
   } catch (e) { falhaInstalar = e; }
 });
 
@@ -113,18 +113,18 @@ test("prova front+back: o toolkit casa (HF ⇢ skill casa) com o override do pro
   assert.ifError(falhaInstalar);
   const fonte = path.join(home, ".sabia/framework/fluxo/sa-prd/prd/passos/entender.md");
   const base = sha12(fonte);
-  const proj = projeto("loja", { tipos: "backend, frontend", toolkits: { casa: { pasta: "~/.sabia/toolkits/casa", versao: "1.0.0" } },
+  const proj = projeto("loja", { tipos: "backend, frontend", toolkits: { casa: { pasta: "~/.sabia/toolkits/casa/1.0.0", versao: "1.0.0" } },
     elm: { "ET as-built": "sim", "REG com dados técnicos": "sim", Telas: "sim" } },
   { ".sabia/fluxo/sa-prd/prd/passos/entender.md": fm({ base }) + "## Entrada\n\nO pedido, com as telas do protótipo aprovado.\n" });
   gerar(proj);
   // o especificador: a linha do tipo, a skill do toolkit como veio (nada compilado) e o passo do projeto
-  const tk = "~/.sabia/toolkits/casa";
+  const tk = "~/.sabia/toolkits/casa/1.0.0";
   const e = agenteOpencode(proj, "sa-especificador");
   assert.ok(e.includes(`no passo \`sa-prd.prd.escrever\`, HF → carregue a skill \`casa\` e siga \`${tk}/fluxo/fluxo-hf.md\` com o template \`${tk}/template/template-hf.md\``));
   assert.ok(e.includes("Fluxo `sa-prd.prd`:\n- passo `entender`: leia `.sabia/fluxo/sa-prd/prd/passos/entender.md`"));
   assert.ok(agenteKiro(proj, "sa-especificador").prompt.includes(`${tk}/fluxo/fluxo-hf.md`));
   assert.ok(!fs.existsSync(path.join(home, ".sabia/compilado-toolkits")));
-  assert.equal(fs.readFileSync(path.join(home, ".config/opencode/skills/casa/SKILL.md"), "utf8"), fs.readFileSync(path.join(raiz, "fontes/casa/skills/casa/SKILL.md"), "utf8"));
+  assert.equal(fs.readFileSync(path.join(home, ".sabia/toolkits/casa/1.0.0/skills/casa/SKILL.md"), "utf8"), fs.readFileSync(path.join(raiz, "fontes/casa/skills/casa/SKILL.md"), "utf8"));
   assert.ok(agenteKiro(proj, "sa-revisor").prompt.includes("`EX1` (HF) IMPORTANTE — Toda HF cita a tela de origem (toolkit `casa`)"));
   // a rota: o passo do projeto (com a base do Sabiá) e o desvio por tipo no sa-prd.prd e em elm/
   const o = { projeto: proj };
@@ -139,7 +139,7 @@ test("prova front+back: o toolkit casa (HF ⇢ skill casa) com o override do pro
 test("prova batch: o desvio do batch-alfa na tarefa de job, gerado nos dois alvos, sem tipo de toolkit", () => {
   assert.ifError(falhaInstalar);
   const proj = projeto("lote", { tipos: "batch",
-    toolkits: { "batch-alfa": { pasta: "~/.sabia/toolkits/batch-alfa", versao: "1.0.0" } },
+    toolkits: { "batch-alfa": { pasta: "~/.sabia/toolkits/batch-alfa/1.0.0", versao: "1.0.0" } },
     passos: [{ passo: "sa-desenvolver.codificar.tarefa", toolkit: "batch-alfa", skill: "skills/batch/SKILL.md", agente: "batch-job" }] });
   const saida = gerar(proj);
   const d = agenteOpencode(proj, "sa-desenvolvedor");
