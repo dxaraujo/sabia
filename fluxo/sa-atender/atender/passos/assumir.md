@@ -12,7 +12,7 @@ O item puxado (passo `puxar`) e o usuário da sessão.
 2. Responsável de outra pessoa → mostre de quem é e só assuma com o "sim"; registre a troca na Atividade do registro.
 3. Já `em-andamento` com a mesma pessoa (retomada) → nada a gravar; siga.
 4. Grave pelo commit direto na branch base (passo `commit-na-branch-base`), num commit `<ID> iniciar`:
-   - no `backlog.md`: status `em-andamento`, `responsável` = `usuario`, `iniciada_em` = hoje e a `obs` da reserva,
+   - no `backlog.md`: status `em-andamento`, `responsável` = `usuario`, `iniciada_em` = hoje e a `obs` da reserva de capacidade,
      se houve;
    - no registro: o Responsável;
    - no `sprint-<nn>.md` aberto, se falta: a linha Item · `atendimento` · Responsável.

@@ -13,7 +13,7 @@ Proponha as linhas Trabalho = especificação, na ordem das linhas do `backlog.m
 - épico `a-moldar` → `sa-refinar.moldar`;
 - épico `em-especificacao` → `sa-prd.prd`.
 
-Quem tem `produto` escolhe. Essas linhas não contam na vazão. Quando a ficha fica pronta, o item pode ser puxado para
+Quem tem `produto` escolhe. Essas linhas não contam na vazão. Quando a ficha fica elegível, o item pode ser puxado para
 desenvolvimento sem segundo encaixe: quem puxa acrescenta a linha.
 
 ## Saída

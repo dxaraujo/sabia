@@ -14,7 +14,7 @@ Senão, leia o código do trecho tocado e mostre, de uma vez, as três escolhas 
 corrige:
 
 1. **Tamanho**: o triado (`P` = horas · `M` ≈ 1 dia · `G` = 2–3 dias, linha Tamanhos do `acordos.md`). O corrigido
-   vai à linha do `backlog.md` no commit da posse.
+   vai à linha do `backlog.md` no commit da atribuição.
    - **Maior que G** → vira épico, sem branch: pelo passo `gravar`, nasce a linha `EP-nn` (tipo `épico`, status
      `a-moldar`, `obs` `veio de FT-nnn`) e a FT fica `cancelada` com `obs` `virou EP-nn`, num commit só. Com ELM,
      ofereça cancelar a tarefa (`sa-elm.finalizar`). Ofereça "seguir para o pitch?" e termine.
@@ -31,7 +31,7 @@ corrige:
 
 ## Saída
 
-Tamanho, trilha e autonomia confirmados → passo `posse`.
+Tamanho, trilha e autonomia confirmados → passo `atribuicao`.
 
 ## Pare se
 

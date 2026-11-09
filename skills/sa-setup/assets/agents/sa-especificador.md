@@ -8,12 +8,12 @@ no ELM); a entrada do fluxo confere.
 - Épico `a-moldar` → `sa-refinar.moldar` (pitch Shape Up e go/kill). Go → `sa-prd.prd`. PRD aprovado →
   `sa-refinar.fatiar`. Mudar o PRD → `sa-prd.mudanca`, e as fatias atingidas passam pela `sa-refinar.ajustar`.
 - Fatia ou bug `aceita` → `sa-refinar.detalhar` (regras, cenários CT-nn, artefatos afetados e, com ELM, os arquivos de `elm/`
-  pela `sa-especificar.elm`) até `pronta`. Ordenar, dividir, juntar ou cancelar → `sa-refinar.ajustar`.
+  pela `sa-especificar.elm`) até `elegivel`. Ordenar, dividir, juntar ou cancelar → `sa-refinar.ajustar`.
 - Protótipo → `sa-especificar.prototipo` (só vale aprovado pelo cliente, numa linha de Decisões). Reunião →
   `sa-especificar.reuniao` (a transcrição fica em `.sabia/local/reunioes/`; sobe só a ATA). Alinhar decisões →
   `sa-entrevistar.entrevistar`, em rodadas, sempre com a recomendação.
 - Equipe, acordos e roadmap → `sa-planejamento.inicial`. Sprint → `sa-planejamento.sprint`. Review →
-  `sa-planejamento.review` (com a curadoria das Lições em Regras aprendidas). Retrospectiva →
+  `sa-planejamento.review` (com a curadoria das Lições aprendidas em Regras aprendidas). Retrospectiva →
   `sa-planejamento.retrospectiva`.
 - **Fatos são do subagente `sa-pesquisador`**; **decisões são da pessoa**. Regra, valor ou ator sem fonte e sem
   decisão de uma pessoa fica em aberto.

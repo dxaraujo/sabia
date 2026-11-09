@@ -11,7 +11,7 @@ prioridade `crítica` é expedite. Célula sem valor fica vazia. Toda escrita va
 | id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | obs | aceita_em | iniciada_em | concluida_em |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | EP-03 | Bloqueio de conta por tentativas | épico | fatiado | | | | | ana.souza | 612010 | | 2026-10-02 | 2026-10-05 | |
-| FT-031 | Bloquear após 3 tentativas inválidas | fatia | pronta | | M | | EP-03 | ana.souza | | | 2026-10-12 | | |
+| FT-031 | Bloquear após 3 tentativas inválidas | fatia | elegível | | M | | EP-03 | ana.souza | | | 2026-10-12 | | |
 | FT-034 | Erro 500 no login com senha vazia | bug | em-andamento | crítica | P | joao.lima | | externo: suporte | 4567 | | 2026-10-20 | 2026-10-21 | |
 | AT-012 | Extrair contas bloqueadas de outubro | sustentação | nova | | | | | externo: financeiro | | | | | |
 ```
@@ -39,12 +39,12 @@ prioridade `crítica` é expedite. Célula sem valor fica vazia. Toda escrita va
 
 | Tipo | Máquina | Quem grava |
 |---|---|---|
-| fatia e bug | `nova` → `aceita` → `pronta` → `em-andamento` → `concluida`; mais `cancelada` e `adiada até AAAA-MM-DD` | `nova`: a captura · `aceita`: `sa-triar.triar` (ou `sa-refinar.fatiar`) · `pronta`: `sa-refinar.detalhar` (DoR completa e ficha aprovada) · `em-andamento`: `sa-desenvolver.iniciar` · `concluida`: `sa-desenvolver.encerrar` · `cancelada`: `sa-triar.triar` ou `sa-refinar.ajustar` · `adiada`: `sa-triar.triar` |
+| fatia e bug | `nova` → `aceita` → `elegivel` → `em-andamento` → `concluida`; mais `cancelada` e `adiada até AAAA-MM-DD` | `nova`: a captura · `aceita`: `sa-triar.triar` (ou `sa-refinar.fatiar`) · `elegivel`: `sa-refinar.detalhar` (DoR completa e ficha aprovada) · `em-andamento`: `sa-desenvolver.iniciar` · `concluida`: `sa-desenvolver.encerrar` · `cancelada`: `sa-triar.triar` ou `sa-refinar.ajustar` · `adiada`: `sa-triar.triar` |
 | épico | `a-moldar` → `em-especificacao` → `fatiado` → `concluido`; mais `cancelado` | `a-moldar`: a captura · `em-especificacao`: go na `sa-refinar.moldar` · `fatiado`: `sa-refinar.fatiar` · `concluido`: `sa-desenvolver.encerrar`, no merge da última fatia aberta · `cancelado`: kill na `sa-refinar.moldar` ou `sa-refinar.ajustar` |
 | sustentação | `nova` → `em-andamento` → `concluida`; mais `cancelada` | `sa-atender.atender` |
 
-`em-revisao` é derivado do MR aberto e nunca se grava. A pronta que perde um item da DoR volta a `aceita`. Na
-virada, o item que sai da sprint e estava `em-andamento` volta a `pronta` (`sa-planejamento.sprint`).
+`em-revisao` é derivado do MR aberto e nunca se grava. A elegível que perde um item da DoR volta a `aceita`. Na
+virada, o item que sai da sprint e estava `em-andamento` volta a `elegivel` (`sa-planejamento.sprint`).
 
 ## Convenções da `obs`
 
@@ -58,7 +58,7 @@ virada, o item que sai da sprint e estava `em-andamento` volta a `pronta` (`sa-p
 | `veio de <id>[ v<N>]` | nasceu de outro: virar épico, dividir, juntar, mudança do PRD |
 | `virou <id>` | a linha antiga de uma troca de série ou de uma junção |
 | `adiamento ignorado (<usuario>, AAAA-MM-DD)` | a entrada comum seguiu antes da data |
-| `reserva estourada: <decisão> (<usuario>, AAAA-MM-DD)` | a folga do atendimento estourou e o produto decidiu |
+| `reserva de capacidade estourada: <decisão> (<usuario>, AAAA-MM-DD)` | a reserva de capacidade do atendimento estourou e o produto decidiu |
 
 ## Id estável
 

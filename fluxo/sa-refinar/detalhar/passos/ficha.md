@@ -1,5 +1,5 @@
 ---
-{"resumo": "Grava a ficha pelo padrão, confere a DoR e muda a linha para pronta quando ela fecha; senão o item fica aceita."}
+{"resumo": "Grava a ficha pelo padrão, confere a DoR e muda a linha para elegível quando ela fecha; senão o item fica aceita."}
 ---
 ## Entrada
 
@@ -14,13 +14,13 @@ O que os passos anteriores levantaram: regras, cenários, Não muda, artefatos a
 3. **Aprovação**: só quem tem `produto` aprova; mostre a ficha e peça o "sim". Aprovado →
    `**Aprovado:** <usuario> · AAAA-MM-DD`. Qualquer mudança depois do Aprovado volta a linha para `**Aprovado:** —`
    até a nova aprovação. Sem essa pessoa na sessão: mostre os nomes com `produto`.
-4. **Linha**: DoR completa → status `pronta`. Senão, fica `aceita`; a `pronta` que perde um item da DoR volta a
+4. **Linha**: DoR completa → status `elegivel`. Senão, fica `aceita`; a `elegivel` que perde um item da DoR volta a
    `aceita`. O tamanho se atualiza se mudou.
 5. Ficha e linha vão num commit: `backlog: refinamento FT-nnn`.
 
 ## Saída
 
-A ficha e a linha prontas para gravar → passo `commit-na-branch-base`.
+A ficha e a linha elegíveis para gravar → passo `commit-na-branch-base`.
 
 ## Pare se
 

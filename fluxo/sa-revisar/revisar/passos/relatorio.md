@@ -16,7 +16,7 @@ Os achados e as verificações (passo `evidencia`).
    `APROVADO`.
 3. Devolva o relatório a quem chamou. Não grave arquivo e não faça commit. Quem chamou tria e grava: a
    `sa-plano.plano` corrige o plano; a `sa-desenvolver.codificar` transforma cada `corrige` em tarefa `[R<n>]` e
-   leva o resumo à Prova do MR; a `sa-revisar.mr` abre as threads no MR.
+   leva o resumo à Evidência do MR; a `sa-revisar.mr` abre as threads no MR.
 
 ## Saída
 

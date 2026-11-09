@@ -17,7 +17,7 @@ A tabela aprovada e ordenada no passo `perguntar`.
 
 ## Saída
 
-Linhas, fichas e a linha do épico prontas → passo `commit-na-branch-base`.
+Linhas, fichas e a linha do épico elegíveis → passo `commit-na-branch-base`.
 
 ## Pare se
 

@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-A Retro, a linha Números e a folga revista.
+A Retro, a linha Números e a reserva de capacidade revista.
 
 ## Faça
 

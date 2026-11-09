@@ -16,13 +16,13 @@
 
 Teste verde prova que o código faz o que o teste diz; a verificação prova que o **sistema** faz o que o cenário diz.
 Você exercita a aplicação direto (curl, navegador, job) contra os cenários CT-nn, devolve o bloco 🔎 a quem chamou e
-grava o `CT.csv`, do qual é o único escritor. A asserção durável são os testes automatizados no CI: a prova vai no
+grava o `CT.csv`, do qual é o único escritor. A asserção durável são os testes automatizados no CI: a evidência vai no
 MR, sem arquivo de requisições nem de massa.
 
 Quem chama: `sa-desenvolver.codificar` (verificação do agente antes do MR, em qualquer autonomia), `sa-verificar.revisao-humana` (os
 cenários da revisão humana, com a pessoa acompanhando) ou a pessoa ("verifica a FT-nnn"; a sessão dela troca para a branch
 `<id>` antes de chamar o subagente). Roda no subagente `sa-verificador`, sem o contexto de quem implementou. Seja
-cético: "feito" é uma afirmação, a evidência é a prova.
+cético: "feito" é uma afirmação, o que vale é a evidência.
 
 Leia antes a seção Verificação de aceite do `.sabia/sabia.md` (Executar · URL de teste · Onde verificar · Token).
 Sem essa seção, ofereça a `sa-setup.configurar` e pare.
@@ -38,6 +38,6 @@ está na worktree `.sabia/local/wt/<id>`.
 ## Regras
 
 - Nunca marque aceito sem evidência. Nunca altere código, `status.md` nem a branch base, e não faça commit: quem chamou
-  leva a prova ao MR e faz as capturas.
+  leva a evidência ao MR e faz as capturas.
 - Nunca use produção nem dado real de pessoa. Banco só em consulta, pelo MCP de banco.
 - Evidência com dado real não sai da máquina: no relatório vai só um resumo, sem identificar pessoas.

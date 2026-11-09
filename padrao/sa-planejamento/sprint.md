@@ -1,12 +1,12 @@
 ---
-{"resumo": "Formato do .sabia/planejamento/sprints/<AAAA>/sprint-<nn>.md: cabeçalho, meta, folga, Itens, Review e Retro."}
+{"resumo": "Formato do .sabia/planejamento/sprints/<AAAA>/sprint-<nn>.md: cabeçalho, meta, reserva de capacidade, Itens, Review e Retro."}
 ---
 ```markdown
 # 2026/Sprint 03 · 2026-11-09 → 2026-11-20
 
 **Meta:** o cliente consulta o extrato sem ligar para o suporte.
 
-**Folga:** 2 itens (20%)
+**Reserva de capacidade:** 2 itens (20%)
 
 ## Itens
 
@@ -38,10 +38,10 @@
   - Tarefas = ids do EWM com o prefixo do trabalho, numa coluna só: `DEV <id>` · `ESP <id>` · `ATD <id>`; vazio sem
     ELM. Preenche a `sa-elm.item`.
   - Não há coluna de situação: o andamento é o status do `backlog.md`.
-- A folga consumida é a contagem das linhas de atendimento.
+- A reserva de capacidade consumida é a contagem das linhas de atendimento.
 - Review: `<id> · <retorno>` ou `<id> · sem retorno`, uma linha por item concluído.
 - Retro: bom · melhorar · ações (com dono) e a linha Números.
 
-Escrevem: `sa-planejamento.sprint` (cabeçalho, meta, folga, linhas, virada) · a skill que puxa um item fora da seleção
+Escrevem: `sa-planejamento.sprint` (cabeçalho, meta, reserva de capacidade, linhas, virada) · a skill que puxa um item fora da seleção
 (a linha que falta) · `sa-elm.item` (Tarefas) · `sa-planejamento.review` (Review) · `sa-planejamento.retrospectiva`
 (Retro). Toda escrita vai direto na branch base.

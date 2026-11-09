@@ -10,7 +10,7 @@ O repositório do projeto.
 Rode `git fetch --quiet` e leia de `origin/<branch_base>` (a chave `branch_base` do `agentes.json`):
 - `.sabia/planejamento/backlog.md`: id · título · tipo · status · prioridade · tamanho · responsável · pai · relator ·
   ib · obs · aceita_em · iniciada_em · concluida_em. A ordem das linhas é a prioridade.
-- a sprint aberta: o `.sabia/planejamento/sprints/<AAAA>/sprint-<nn>.md` de maior chave (datas, meta, folga e as
+- a sprint aberta: o `.sabia/planejamento/sprints/<AAAA>/sprint-<nn>.md` de maior chave (datas, meta, reserva de capacidade e as
   linhas Item · Trabalho · Responsável · Tarefas).
 
 ## Saída

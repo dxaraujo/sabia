@@ -15,7 +15,7 @@ O backlog, os `prd.md` e as fatias por `pai`.
 
 ## Saída
 
-Refinamento e produto → passo `folga`.
+Refinamento e produto → passo `reserva-capacidade`.
 
 ## Pare se
 

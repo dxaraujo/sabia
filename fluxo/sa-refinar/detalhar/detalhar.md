@@ -1,6 +1,6 @@
 ---
 {"fluxo": "detalhar", "dono": "sa-especificador",
- "quando": ["fatia ou bug aceita ou pronta: refinamento conjunto, ficha com regras, cenários CT-nn e artefatos afetados e, com ELM, a pasta elm/, até pronta", "refinar a FT-031", "detalhar a FT-031", "refinamento conjunto", "ficha da FT-031", "alterei FT-031"],
+ "quando": ["fatia ou bug aceita ou elegível: refinamento conjunto, ficha com regras, cenários CT-nn e artefatos afetados e, com ELM, a pasta elm/, até elegível", "refinar a FT-031", "detalhar a FT-031", "refinamento conjunto", "ficha da FT-031", "alterei FT-031"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa", "aprovacao-no-documento", "aprovacao-do-cliente", "artefato-exclusivo", "elm-pela-sa-elm"],
  "passos": [
    {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao", "saidas": {"volta da especificação manual ('alterei FT-nnn')": "elm"}},
@@ -20,8 +20,8 @@
 Pouco antes de alguém puxar, o especificador (ou o P.O.) com o Dev, e QA ou UX se houver, transforma regras e
 exemplos na ficha: regras, cenários `CT-nn`, os artefatos afetados (requisitos tocados, com a versão de referência) e, com ELM, a pasta
 `elm/` dos artefatos tocados, na autonomia da especificação escolhida. Com a DoR completa e a ficha aprovada por quem tem
-`produto`, a linha vai para `pronta`. Curto no bug e no P: o bug sem requisito tocado é do Dev sozinho, com a
-ficha curta (passos · atual · esperado · reproduzido). Aceita fatia ou bug em `aceita` ou `pronta`.
+`produto`, a linha vai para `elegivel`. Curto no bug e no P: o bug sem requisito tocado é do Dev sozinho, com a
+ficha curta (passos · atual · esperado · reproduzido). Aceita fatia ou bug em `aceita` ou `elegivel`.
 
 ## Entrada: vizinhos
 

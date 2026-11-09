@@ -53,7 +53,7 @@ a `sa-elm.setup`.
 - **Texto**: o corpo do arquivo de `elm/`, sem o frontmatter. Requisito já publicado citado com link para o arquivo
   (`[REG-2087 <título>](2087-REG-<slug>.md)`) → `[REG-2087 <título>](2087)`; requisito novo citado → o id provisório
   como texto, até ganhar o id. Os tipos
-  da coluna Embute do catálogo (as regras citadas por uma história) vão em `embutir`; o resto fica hyperlink.
+  da coluna Embute do catálogo (as regras citadas por uma história de usuário) vão em `embutir`; o resto fica hyperlink.
 - **Depois de publicar**: `elm_ler_req(<id>)` devolve o `modificado_em` novo, que o próximo `altera` usa como versão de referência.
 
 ## O que o MCP não grava (roteiro manual)

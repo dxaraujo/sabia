@@ -15,7 +15,7 @@
 
 O especificador propõe as fatias com o Dev, com os fatos do código pela `sa-pesquisar`; quem tem `produto` aprova e
 ordena. As fatias nascem `aceita`, com ficha (Objetivo, artefatos afetados e os cenários do PRD que cobrem), num commit, e o
-épico vai para `fatiado`. Cada uma ainda passa pelo detalhar para chegar a `pronta`. Aceita épico em
+épico vai para `fatiado`. Cada uma ainda passa pelo detalhar para chegar a `elegivel`. Aceita épico em
 `em-especificacao` com o `prd.md` na branch base aprovado (`**Aprovado:** <usuario> · AAAA-MM-DD` de quem tem `produto`).
 
 ## Regras

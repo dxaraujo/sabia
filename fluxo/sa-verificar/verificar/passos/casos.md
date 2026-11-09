@@ -7,7 +7,7 @@ Os resultados por cenário (passo `executar`) e a trilha da fatia.
 
 ## Faça
 
-1. Na trivial não há `CT.csv`: a prova fica no MR. Quando quem chama é a `sa-verificar.revisao-humana`, o `CT.csv` não é
+1. Na trivial não há `CT.csv`: a evidência fica no MR. Quando quem chama é a `sa-verificar.revisao-humana`, o `CT.csv` não é
    reescrito, porque o arquivo é do autor. Nos dois casos, pule este passo.
 2. Na rápida e no completo, reescreva o `CT.csv` da pasta da spec (`<pasta da spec>/CT.csv`; no autopilot, dentro
    da worktree) com uma linha por cenário ✅, no padrão `requisitos/padrao-ct.md`. Tipo `CT` com skill de toolkit no seu

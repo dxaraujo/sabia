@@ -13,7 +13,7 @@ Acrescente na `## Retro` a linha `Números: concluídas <n> (desenvolvimento) ·
 
 ## Saída
 
-A linha Números → passo `folga`.
+A linha Números → passo `reserva-capacidade`.
 
 ## Pare se
 

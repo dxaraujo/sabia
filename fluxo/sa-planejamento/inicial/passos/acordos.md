@@ -1,5 +1,5 @@
 ---
-{"resumo": "Propõe o acordos.md (timebox, WIP, SLE, DoD, classes de serviço, folga, tamanhos, disjuntor, id no commit, CT no teste) e grava com a equipe."}
+{"resumo": "Propõe o acordos.md (timebox, WIP, SLE, DoD, classes de serviço, reserva de capacidade, tamanhos, disjuntor, id no commit, CT no teste) e grava com a equipe."}
 ---
 ## Entrada
 
@@ -11,13 +11,13 @@ Proponha `.sabia/planejamento/acordos.md` pelo padrão `sa-planejamento/acordos.
 chaves nesta ordem e estes padrões quando o time não diz outro valor:
 
 - **Timebox**: `<n> semanas` (padrão 2).
-- **WIP**: `<status>: <n>`, com status de fatia e bug (`aceita` · `pronta` · `em-andamento` · `em-revisao`); padrão
+- **WIP**: `<status>: <n>`, com status de fatia e bug (`aceita` · `elegivel` · `em-andamento` · `em-revisao`); padrão
   `em-andamento` e `em-revisao`.
 - **SLE** (opcional): `<p>% em até <n> dias`.
-- **DoD**: CI verde · 1 aprovação de desenvolvedor ≠ autor · Prova no MR · Artefatos afetados no MR · Lições no `status.md`.
+- **DoD**: CI verde · 1 aprovação de desenvolvedor ≠ autor · Evidência no MR · Artefatos afetados no MR · Lições aprendidas no `status.md`.
 - **Classes de serviço**: expedite = prioridade `crítica` (vai ao topo, é puxada sem aprovação e pode passar o WIP em
   1) · padrão = ordem das linhas.
-- **Folga**: `<n>%` da capacidade em itens, reservada ao atendimento (padrão 20%).
+- **Reserva de capacidade**: `<n>%` da capacidade em itens, reservada ao atendimento (padrão 20%).
 - **Tamanhos**: P = horas · M ≈ 1 dia · G = 2–3 dias; maior que G é épico.
 - **Disjuntor**: teto do autopilot por item, `tentativas <n> · tempo <n> h · custo <n> créditos`; 2 reprovações
   seguidas disparam sempre.

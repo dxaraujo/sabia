@@ -9,7 +9,7 @@
 ```
 
 - Uma linha por regra: `- <regra> · origem <FT-nnn | AT-nnn…> · AAAA-MM-DD` (data da review). A origem é o item cuja
-  Lição gerou a regra: fatia ou bug (Lições do `status.md`) ou Sustentação (Lições do registro).
+  Lição gerou a regra: fatia ou bug (Lições aprendidas do `status.md`) ou Sustentação (Lições aprendidas do registro).
 - A regra é curta e imperativa, uma frase. A explicação longa fica na Lição de origem.
 - Antes de virar regra, escolha o lugar certo da correção: erro mecânico → checagem determinística (lint, teste, hook,
   CI), não regra; julgamento → esta seção; conhecimento de domínio → glossário, ADR ou PRD; conhecimento de stack →

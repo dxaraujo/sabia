@@ -292,7 +292,7 @@ Nada customizado → a linha `| — | o Sabiá como vem | — | — | ➖ |`. Pa
 
 ```
 ## 🧭 Etapa 6 de 9 · Agentes — <n> de 5 · `sa-<nome>`
-`●●●●●◉○○○` <o agente em uma frase: ex. "leva a fatia de pronta ao merge">
+`●●●●●◉○○○` <o agente em uma frase: ex. "leva a fatia de elegível ao merge">
 
 **Já vem do perfil:** <as skills do agente no `perfis.json`> · <principal | subagente>
 

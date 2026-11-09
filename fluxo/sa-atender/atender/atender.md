@@ -5,7 +5,7 @@
  "passos": [
    {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao", "saidas": {"id de Sustentação já registrado, nova ou em-andamento": "puxar"}},
    {"id": "registrar", "saidas": {"só registrar, sem atender agora": "fim"}},
-   {"id": "puxar", "saidas": {"reserva estourada, sem quem tem produto na sessão ou com a decisão de esperar": "fim"}},
+   {"id": "puxar", "saidas": {"reserva de capacidade estourada, sem quem tem produto na sessão ou com a decisão de esperar": "fim"}},
    {"id": "assumir", "chama": "sa-elm.item"},
    {"id": "executar", "chama": "sa-pesquisar.pesquisar", "saidas": {"a sessão termina antes de resolver (commit '<ID> registrar sessão')": "fim", "resolvido ou retirado, nada fora do escopo": "finalizar"}},
    {"id": "fora-do-escopo", "saidas": {"categoria errada: o item ficou 'cancelada · virou <novo id>'": "commit-na-branch-base"}},
@@ -19,7 +19,7 @@
 
 Um fluxo só para as seis categorias da Sustentação: AT (Atendimento) · IM (Implantação) · BD (Banco de dados) · IN
 (Infra) · OP (Operação) · EX (Apoio a outros times). A categoria só muda o registro. Qualquer pessoa registra o
-pedido aqui; quem atende puxa dentro da reserva, faz o trabalho com a IA só como auxílio e declara resolvido.
+pedido aqui; quem atende puxa dentro da reserva de capacidade, faz o trabalho com a IA só como auxílio e declara resolvido.
 
 Entra um id (`AT-`, `IM-`, `BD-`, `IN-`, `OP-` ou `EX-nnn`) ou um pedido em texto. Pedido em texto, ou id que não
 existe, vai para o passo `registrar`. O estado vai por commit direto na branch base (passo `commit-na-branch-base`).

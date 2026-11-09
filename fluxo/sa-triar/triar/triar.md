@@ -24,7 +24,7 @@ de outro fluxo:
 
 ## Entrada: vizinhos
 
-- fatia ou bug `pronta` → `sa-refinar.ajustar`
+- fatia ou bug `elegivel` → `sa-refinar.ajustar`
 - fatia ou bug `em-andamento` → `sa-desenvolver.codificar` (agente `sa-desenvolvedor`)
 - épico `a-moldar` → `sa-refinar.moldar`
 - épico `em-especificacao` → `sa-prd.prd`

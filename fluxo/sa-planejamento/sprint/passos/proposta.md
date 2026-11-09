@@ -1,5 +1,5 @@
 ---
-{"resumo": "Mostra a proposta (chave, datas, meta, tabela, folga e capacidade) e espera o ok de quem tem produto."}
+{"resumo": "Mostra a proposta (chave, datas, meta, tabela, reserva de capacidade e capacidade) e espera o ok de quem tem produto."}
 ---
 ## Entrada
 
@@ -12,7 +12,7 @@ Mostre na tela:
 ```
 <AAAA>/Sprint <nn> · <início> → <fim> · <meta>
 | Item | Título | Tipo | Tam. | Trabalho | Responsável |     (migrados primeiro)
-Folga: <n> itens (<p>%)
+Reserva de capacidade: <n> itens (<p>%)
 Capacidade: vazão prevista <n> · migrados <n> · sobra <n>
 ```
 

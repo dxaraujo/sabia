@@ -114,7 +114,7 @@ FT-<nnn> — <título>. <o comportamento que a fatia entrega, em 2–3 frases.> 
 ```
 
 Padrões EARS: `QUANDO … ENTÃO … DEVE` · `ENQUANTO … DEVE` · `SE … ENTÃO … DEVE` · `ONDE … DEVE`. Critérios
-numerados `N.M`, cada um com o `CT-nn` que o prova; o `tasks.md` cita `N.M`.
+numerados `N.M`, cada um com o `CT-nn` que o evidência; o `tasks.md` cita `N.M`.
 
 ## `bugfix.md` (Kiro, bug na rápida)
 

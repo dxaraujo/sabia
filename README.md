@@ -15,9 +15,9 @@ demanda ─► captura (fluxo/captura.md; entrada direta sa-triar.capturar)   ti
    └─► TRIAGEM ───────── sa-triar.triar                                    (qualquer pessoa)
         ├─ épico ──────► REFINAMENTO sa-refinar.moldar: pitch.md ─► go/kill (produto)
         │                  └─ go ─► ESPECIFICAÇÃO sa-prd.prd: prd.md aprovado ─► sa-refinar.fatiar ─► FT-nnn
-        ├─ fatia · bug ► REFINAMENTO sa-refinar.detalhar: ficha (regras · CT-nn · Artefatos afetados) [+ elm/] ─► pronta
+        ├─ fatia · bug ► REFINAMENTO sa-refinar.detalhar: ficha (regras · CT-nn · Artefatos afetados) [+ elm/] ─► elegível
         │                  └─ sa-refinar.ajustar até alguém puxar
-        └─ sustentação ► SUSTENTAÇÃO sa-atender.atender (AT · IM · BD · IN · OP · EX, dentro da folga)
+        └─ sustentação ► SUSTENTAÇÃO sa-atender.atender (AT · IM · BD · IN · OP · EX, dentro da reserva de capacidade)
 
 PLANEJAMENTO ─────── sa-planejamento.inicial · .sprint · .review · .retrospectiva · daily sa-status.painel
 DESENVOLVIMENTO ──── sa-desenvolver.iniciar ─► [sa-plano.plano] ─► sa-desenvolver.codificar ─► MR
@@ -64,7 +64,7 @@ Fontes no fim deste arquivo.
 |---|---|---|
 | `sabia` | — | guia e roteador: disciplinas, papéis, aprovações, autonomia e qual skill usar |
 | `sa-setup` | `configurar` · `customizar` | configura o projeto na sessão sem agente: alvos, comandos, branch_base, formato da spec, "usa ELM?", toolkits e os 5 agentes; customiza um passo ou padrão |
-| `sa-status` | `painel` · `item` · `minha-proxima` · `pendencias` · `licoes` · `fechar-sessao` | painel só leitura (WIP, vazão, idade, lead time, pendências de rastreio), estado de um `<id>`, a próxima tarefa e os créditos da sessão |
+| `sa-status` | `painel` · `item` · `minha-proxima` · `pendencias` · `licoes-aprendidas` · `fechar-sessao` | painel só leitura (WIP, vazão, idade, lead time, pendências de rastreio), estado de um `<id>`, a próxima tarefa e os créditos da sessão |
 | `sa-triar` | `capturar` · `triar` | captura sem triar e triagem da fila `nova`: duplicado, falta informação, adiar, cancelar, aceitar |
 | `sa-refinar` | `moldar` · `detalhar` · `fatiar` · `ajustar` | pitch e go/kill do épico; refinamento conjunto da fatia (ficha com regras, `CT-nn` e artefatos afetados, e `elm/` com ELM); fatiamento do PRD; ajuste do item pronto |
 | `sa-prd` | `prd` · `mudanca` | PRD do épico depois do go, aprovado pelo produto no próprio documento |
@@ -193,7 +193,7 @@ Sem ELM configurado, nenhuma oferta aparece.
 | depois do merge | `sa-elm.publicar` | do especificador: confere a versão de cada artefato (mudou → avisa e pula), cria os novos e troca o id provisório pelo do ELM |
 | a pedido | `sa-elm.importar-backlog` · `iteracao` · `conferir` · `lint` · `visualizar` | importar do EWM, iteração, "o DOORS mudou?", lint do bundle e visualização offline |
 
-Catálogo fechado de artefatos em [`fluxo/tipos.json`](fluxo/tipos.json): `HF` história, `REG` regra, `EL` leiaute
+Catálogo fechado de artefatos em [`fluxo/tipos.json`](fluxo/tipos.json): `HF` história de usuário, `REG` regra de negócio, `EL` especificação de layout
 (só com Telas = sim), `GL` termo, `ET` especificação técnica (só as-built), `CT` caso de teste (cenários `CT-nn` na
 ficha; o `CT.csv` da verificação) e `ATA`. Artefato novo: id provisório `<sigla>-<EP|FT>-nn` até a publicação. O MCP
 `mcp-elm` lê o `pa` em `.sabia/config/elm/`; tools, retornos e erros em

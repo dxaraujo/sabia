@@ -9,7 +9,7 @@ Os requisitos mudados (ids) e as linhas do `backlog.md` com pai = `EP-nn`.
 
 Para cada fatia do épico cujos artefatos afetados ou cenários citam um requisito mudado:
 
-- **`nova`, `aceita` ou `pronta`** → ofereça a `sa-refinar.ajustar` (atualizar ficha e artefatos afetados, dividir, juntar ou
+- **`nova`, `aceita` ou `elegivel`** → ofereça a `sa-refinar.ajustar` (atualizar ficha e artefatos afetados, dividir, juntar ou
   cancelar).
 - **`em-andamento`** → avise o responsável (coluna responsável do `backlog.md`); com ELM, o texto do `elm/` volta ao
   especificador pela `sa-especificar.elm`.

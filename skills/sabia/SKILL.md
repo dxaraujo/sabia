@@ -25,7 +25,7 @@ agente dono do fluxo.
 ```
 captura (qualquer pessoa ou skill) ─► triagem sa-triar.triar
   ├─ épico ───────► sa-refinar.moldar (pitch, go/kill) ─► sa-prd.prd ─► sa-refinar.fatiar
-  ├─ fatia · bug ─► sa-refinar.detalhar (ficha: regras · CT-nn · Artefatos afetados [+ elm/]) ─► pronta ─► sa-refinar.ajustar
+  ├─ fatia · bug ─► sa-refinar.detalhar (ficha: regras · CT-nn · Artefatos afetados [+ elm/]) ─► elegível ─► sa-refinar.ajustar
   └─ sustentação ─► sa-atender.atender
 ciclo sa-planejamento (inicial · sprint · review · retrospectiva) · daily sa-status.painel
 desenvolvimento sa-desenvolver.iniciar ─► [sa-plano.plano] ─► sa-desenvolver.codificar ─► MR
@@ -50,7 +50,7 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
   `FT-nnn`; sustentação → `<categoria>-nnn` (`AT` · `IM` · `BD` · `IN` · `OP` · `EX`). Fatia e bug têm `pai` `EP-nn`
   ou vazio. O próximo id é o maior da série no `backlog.md` + 1, lido depois do pull, e nunca muda: "vira épico" cria
   a linha `EP-nn` com a obs `veio de FT-nnn`, e a FT fica `cancelada · virou EP-nn`.
-- **Status.** Fatia e bug: `nova` → `aceita` → `pronta` → `em-andamento` → `concluida`, mais `cancelada` e `adiada
+- **Status.** Fatia e bug: `nova` → `aceita` → `elegivel` → `em-andamento` → `concluida`, mais `cancelada` e `adiada
   até <data>`; `em-revisao` não se grava, vem do MR aberto. Épico: `a-moldar` → `em-especificacao` (go) → `fatiado` →
   `concluido` · `cancelado`; fecha no merge da última fatia aberta (`sa-desenvolver.encerrar`). Sustentação: `nova` →
   `em-andamento` → `concluida` · `cancelada`.
@@ -60,7 +60,7 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
 - **Trilhas.** Quem desenvolve escolhe pelo código: `trivial` (sem arquivo de spec, tudo no MR), `rapida` ou `completo`.
   O formato da spec vem do `formato_spec` do `agentes.json` (Kiro ou OpenSpec). A pasta da spec é `ft-<nnn>-<slug>`.
 - **Sustentação.** A categoria é confirmada antes de gravar a triagem e não se recategoriza depois. Quem atende puxa
-  dentro da folga reservada. A IA auxilia, e a pessoa declara o item resolvido (`sa-atender.atender`).
+  dentro da reserva de capacidade reservada. A IA auxilia, e a pessoa declara o item resolvido (`sa-atender.atender`).
 - **Estado na branch base.** As linhas do `backlog.md` e do `sprint-<nn>.md` vão num commit pequeno por commit direto na branch base na branch base. Os documentos de planejamento (`pitch.md`, `prd.md`, ficha, arquivos de `elm/`) também vão
   direto na branch base. MR só existe para código.
 
@@ -108,9 +108,9 @@ trabalho. Codificação e especificação têm autonomias independentes.
 8. **Rastreio leve** — os artefatos afetados ficam na ficha, e o texto completo dos requisitos fica no delta. Com ELM, a pasta `elm/`
    da fatia é a fonte da publicação no DOORS depois do merge, conferindo a versão. Sem ELM, a especificação vigente fica no
    repositório.
-9. **Aprendizado composto** — a lição nasce na seção Lições do `status.md` ou do registro de Sustentação. Na review do
+9. **Aprendizado composto** — a lição nasce na seção Lições aprendidas do `status.md` ou do registro de Sustentação. Na review do
    ciclo, as escolhidas entram nas Regras aprendidas do `sabia.md`.
-10. **Leia o código** — o MR traz o quê, o porquê, a prova, o risco, o foco e os artefatos afetados. Nada é mergeado sem uma
+10. **Leia o código** — o MR traz o quê, o porquê, a evidência, o risco, o foco e os artefatos afetados. Nada é mergeado sem uma
     aprovação humana.
 
 ## O que dizer
@@ -120,7 +120,7 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 | Quero… | Skill |
 |---|---|
 | instalar ou atualizar o Sabiá no projeto, os agentes, o formato da spec, "usa ELM?" · customizar ou descustomizar um passo ou padrão | `sa-setup` (`sa-setup.configurar` · `sa-setup.customizar`) |
-| onde parei · minha próxima · o estado de `<id>` · pendências (publicação pendente, travas de artefato) · lições para a review · fechar a sessão | `sa-status` (`sa-status.painel` · `sa-status.item` · `sa-status.minha-proxima` · `sa-status.pendencias` · `sa-status.licoes` · `sa-status.fechar-sessao`) |
+| onde parei · minha próxima · o estado de `<id>` · pendências (publicação pendente, travas de artefato) · lições aprendidas para a review · fechar a sessão | `sa-status` (`sa-status.painel` · `sa-status.item` · `sa-status.minha-proxima` · `sa-status.pendencias` · `sa-status.licoes-aprendidas` · `sa-status.fechar-sessao`) |
 | registrar uma demanda sem triar · triar a fila das linhas `nova` | `sa-triar` (`sa-triar.capturar` · `sa-triar.triar`) |
 | ideia nova, pitch, go/kill · refinamento conjunto, ficha, artefatos afetados e `elm/` da fatia · fatiar o épico · editar, dividir ou cancelar um item pronto | `sa-refinar` (`sa-refinar.moldar` · `sa-refinar.detalhar` · `sa-refinar.fatiar` · `sa-refinar.ajustar`) |
 | escrever o PRD do épico depois do go, ou mudar o PRD | `sa-prd` (`sa-prd.prd`) |

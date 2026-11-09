@@ -1,5 +1,5 @@
 ---
-{"resumo": "Registro do item de Sustentação (AT · IM · BD · IN · OP · EX) em .sabia/planejamento/sustentacao/<ID>-<slug>.md: cabeçalho, Pedido, Critério de pronto, Atividade, Resposta, Horas e Lições, sem status e sem dado de cliente."}
+{"resumo": "Registro do item de Sustentação (AT · IM · BD · IN · OP · EX) em .sabia/planejamento/sustentacao/<ID>-<slug>.md: cabeçalho, Pedido, Critério de pronto, Atividade, Resposta, Horas e Lições aprendidas, sem status e sem dado de cliente."}
 ---
 # Registro de Sustentação
 
@@ -29,7 +29,7 @@ Planilha com as contas bloqueadas por tentativas, por dia.
 |---|---|
 | 2026-10-14 | 2 |
 
-## Lições
+## Lições aprendidas
 | Lição | Regra proposta |
 |---|---|
 ```
@@ -48,4 +48,4 @@ Seção sem conteúdo fica só com o título.
 | Atividade | O que foi feito: consultas, pesquisa de código (`arquivo:linha`), passos em ambiente (o que · onde · resultado), troca de responsável, regra em aberto ao P.O. | linhas `AAAA-MM-DD · feito · próximo` | `sa-atender.atender` · fechar a sessão da `sa-status` |
 | Resposta | Texto enviado, sem dado que identifique pessoas | texto | `sa-atender.atender` |
 | Horas | Horas informadas pela pessoa (opcional; nunca bloqueia) | tabela Data \| Horas (`AAAA-MM-DD` \| decimal) | `sa-atender.atender` |
-| Lições | Candidatas às Regras aprendidas, para a curadoria na review | tabela Lição \| Regra proposta | `sa-atender.atender` |
+| Lições aprendidas | Candidatas às Regras aprendidas, para a curadoria na review | tabela Lição \| Regra proposta | `sa-atender.atender` |

@@ -1,5 +1,5 @@
 ---
-{"resumo": "Posse na branch base: em-andamento, responsável, iniciada_em, tamanho corrigido e a linha da sprint, num commit pequeno."}
+{"resumo": "Atribuição na branch base: em-andamento, responsável, iniciada_em, tamanho corrigido e a linha da sprint, num commit pequeno."}
 ---
 ## Entrada
 
@@ -17,7 +17,7 @@ As escolhas do passo `assumir` e o `usuario` da sessão no `equipe.json`.
 
 ## Saída
 
-Posse gravada na branch base → passo `branch`.
+Atribuição gravada na branch base → passo `branch`.
 
 ## Pare se
 

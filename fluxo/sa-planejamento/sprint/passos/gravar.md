@@ -8,10 +8,10 @@ A proposta com o "ok".
 ## Faça
 
 1. **`sprint-<nn>.md`** em `.sabia/planejamento/sprints/<AAAA>/`, pelo padrão `sa-planejamento/sprint.md`: cabeçalho
-   `# <AAAA>/Sprint <nn> · AAAA-MM-DD → AAAA-MM-DD`, `**Meta:**`, `**Folga:** <n> itens (<p>%)`, a tabela `## Itens`
+   `# <AAAA>/Sprint <nn> · AAAA-MM-DD → AAAA-MM-DD`, `**Meta:**`, `**Reserva de capacidade:** <n> itens (<p>%)`, a tabela `## Itens`
    (Item · Trabalho · Responsável · Tarefas) e as seções vazias `## Review` e `## Retro`. No reabastecimento, só
    acrescente as linhas. A coluna Tarefas fica vazia: quem puxa preenche pela `sa-elm.item`.
-2. **`backlog.md`**: os itens que a virada tirou da sprint (`em-andamento` → `pronta`).
+2. **`backlog.md`**: os itens que a virada tirou da sprint (`em-andamento` → `elegivel`).
 3. **`roadmap.md`**, só se existe: pergunte "atualizar o roadmap?" e, com o sim, atualize a Previsão pela vazão.
 4. Mensagem: `<AAAA>/Sprint <nn>: planejamento` (ou `: reabastecimento`). Grave tudo num commit só, pelo passo
    `commit-na-branch-base`.

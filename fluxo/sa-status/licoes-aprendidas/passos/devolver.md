@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-As lições marcadas.
+As lições aprendidas marcadas.
 
 ## Faça
 

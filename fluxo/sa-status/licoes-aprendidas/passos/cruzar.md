@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-As lições e a seção Regras aprendidas do `.sabia/sabia.md`.
+As lições aprendidas e a seção Regras aprendidas do `.sabia/sabia.md`.
 
 ## Faça
 
@@ -12,7 +12,7 @@ o padrão `sa-planejamento/regras-aprendidas.md`.
 
 ## Saída
 
-As lições marcadas → passo `devolver`.
+As lições aprendidas marcadas → passo `devolver`.
 
 ## Pare se
 

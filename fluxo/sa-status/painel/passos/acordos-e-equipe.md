@@ -7,7 +7,7 @@
 
 ## Faça
 
-Do `acordos.md`: WIP por status, SLE, classes de serviço, Folga, Id no commit e CT no teste. Do `equipe.json`: os
+Do `acordos.md`: WIP por status, SLE, classes de serviço, Reserva de capacidade, Id no commit e CT no teste. Do `equipe.json`: os
 membros ativos e as booleanas `desenvolvedor` · `especificador` · `produto`.
 
 ## Saída

@@ -1,5 +1,5 @@
 ---
-{"resumo": "Pronta, em andamento, retrabalho, MR em revisão, aprovado ou fechado, revisão humana e trava."}
+{"resumo": "Elegível, em andamento, retrabalho, MR em revisão, aprovado ou fechado, revisão humana e trava."}
 ---
 ## Entrada
 
@@ -7,7 +7,7 @@ O estado.
 
 ## Faça
 
-- `pronta` sem branch, ou `pronta` com branch (voltou na virada: a posse volta e a branch é reaproveitada) →
+- `elegivel` sem branch, ou `elegivel` com branch (voltou na virada: a atribuição volta e a branch é reaproveitada) →
   `sa-desenvolver.iniciar`.
 - `em-andamento` sem MR → `sa-desenvolver.codificar`, pelo Retomar.
 - `em-andamento` sem branch publicada (a sessão parou antes do push) → só o responsável retoma

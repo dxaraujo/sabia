@@ -17,7 +17,7 @@ A branch com a suíte verde e o diff contra `origin/<branch_base>`.
    - `volta-spec` → Em aberto ao especificador;
    - `descarta` → o motivo vai no MR.
 4. Fora do autopilot, a pessoa tria. No autopilot, siga a recomendação do revisor e registre em Desvios.
-5. Guarde o resumo para a Prova do MR.
+5. Guarde o resumo para a Evidência do MR.
 
 ## Saída
 

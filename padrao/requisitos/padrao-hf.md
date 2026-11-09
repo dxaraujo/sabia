@@ -1,7 +1,7 @@
 ---
-{"resumo": "Corpo da história (HF): narrativa, gatilho e telas, fluxo principal com FA e FE, critérios Gherkin por contexto (um Quando por cenário, todo fluxo coberto) e as regras aplicáveis."}
+{"resumo": "Corpo da história de usuário (HF): narrativa, gatilho e telas, fluxo principal com FA e FE, critérios Gherkin por contexto (um Quando por cenário, todo fluxo coberto) e as regras aplicáveis."}
 ---
-# História (HF)
+# História de usuário (HF)
 
 Um comportamento observável, com o valor para quem o usa. O mesmo corpo serve ao bloco do `prd.md` e ao arquivo de
 `elm/` (no arquivo, o frontmatter do `sa-elm/elm-arquivo.md` vem antes).
@@ -14,7 +14,7 @@ Um comportamento observável, com o valor para quem o usa. O mesmo corpo serve a
 **Para** <objetivo>.
 
 **Gatilho:** <ação na tela | chamada de API | agendamento | evento>
-**Telas:** EL-<id> <tela>   <!-- só com Telas = sim; sem tela na história, a linha sai -->
+**Telas:** EL-<id> <tela>   <!-- só com Telas = sim; sem tela na história de usuário, a linha sai -->
 
 **Fluxo principal:**
 
@@ -78,7 +78,7 @@ FE01: <condição>: <o que acontece>.
   status em negrito.
 - **Referência só para baixo:** REG, EL, MSG, GL e UC, nunca a ET. O que já existe no ELM leva link para o arquivo
   dele (`[REG-2087 <título>](2087-REG-<slug>.md)`); o novo, só o id provisório (`REG-EP03-02`). Na publicação, a REG
-  entra em embed na história.
+  entra em embed na história de usuário.
 - Os cenários não têm CT-nn: o CT-nn nasce na ficha da fatia, que diz qual cenário cobre.
 - Só dado fictício nos exemplos.
 

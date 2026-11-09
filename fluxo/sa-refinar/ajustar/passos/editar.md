@@ -9,7 +9,7 @@ A fatia ou o bug e a mudança aprovados no passo `previa`.
 
 1. Mude a ficha (regras, cenários, artefatos afetados) ou o tamanho.
 2. A mudança tira o Aprovado (`**Aprovado:** —`) até o P.O. aprovar de novo, e a DoR é refeita: o item que perde um
-   ponto volta de `pronta` para `aceita`.
+   ponto volta de `elegivel` para `aceita`.
 3. Cenário novo em fatia não puxada: entra nela ou numa fatia nova do épico (pelo passo `captura`, `veio de EP-nn`).
    Cenário novo em fatia já entregue: vira item novo pelo passo `captura`, com `origem FT-nnn`.
 

@@ -1,5 +1,5 @@
 ---
-{"resumo": "Diz se a fatia está pronta para puxar ou o que falta na DoR e oferece refinar o próximo item aceita."}
+{"resumo": "Diz se a fatia está elegível para puxar ou o que falta na DoR e oferece refinar o próximo item aceita."}
 ---
 ## Entrada
 
@@ -7,7 +7,7 @@ A ficha e a linha gravadas no passo `commit-na-branch-base`, ou o épico nascido
 
 ## Faça
 
-- `pronta` → "pronta para puxar: `sa-desenvolver.iniciar` FT-nnn" (é outra tarefa: sugira sessão nova).
+- `elegivel` → "elegível para puxar: `sa-desenvolver.iniciar` FT-nnn" (é outra tarefa: sugira sessão nova).
 - `aceita` → liste o que falta na DoR.
 - Virou épico → ofereça seguir na `sa-refinar.moldar` com o `EP-nn`.
 

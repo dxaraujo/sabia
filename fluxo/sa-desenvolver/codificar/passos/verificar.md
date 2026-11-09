@@ -19,7 +19,7 @@ A branch revisada, sem BLOQUEANTE aberto.
 
 ## Saída
 
-`ACEITO` → passo `licoes`.
+`ACEITO` → passo `licoes-aprendidas`.
 
 ## Pare se
 

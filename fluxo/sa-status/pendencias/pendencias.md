@@ -11,7 +11,7 @@
    {"id": "mr-mergeado-sem-concluir"},
    {"id": "mr-com-tarefas-pendentes"},
    {"id": "item-sem-ficha"},
-   {"id": "posse-e-status"},
+   {"id": "atribuicao-e-status"},
    {"id": "fora-da-sprint"},
    {"id": "idade-acima-do-sle"},
    {"id": "epico-sem-fechar"},

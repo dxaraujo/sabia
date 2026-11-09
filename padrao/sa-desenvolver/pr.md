@@ -1,5 +1,5 @@
 ---
-{"resumo": "Template do MR (.gitlab/merge_request_templates/Default.md): título <FT-nnn> — <título> e as seções O quê · Porquê · Prova · Risco · Foco · Artefatos afetados."}
+{"resumo": "Template do MR (.gitlab/merge_request_templates/Default.md): título <FT-nnn> — <título> e as seções O quê · Porquê · Evidência · Risco · Foco · Artefatos afetados."}
 ---
 ```markdown
 FT-<nnn> — <título>
@@ -10,7 +10,7 @@ FT-<nnn> — <título>
 ## Porquê
 <motivo, da Entrada e do Objetivo da ficha> · Ficha: [FT-<nnn>](<caminho da ficha>) · Spec: <pasta da spec | trivial: sem pasta>
 
-## Prova
+## Evidência
 - CI: <pipeline do último commit: verde | vermelho | sem CI: suíte local verde> (baseline: último pipeline da branch base)
 - Revisão do agente (sa-revisor, rubrica C): <VEREDITO> · achados aceitos: <[R1], … | nenhum> · descartados: <motivo | nenhum>
 - Verificação (sa-verificador):
@@ -32,7 +32,7 @@ FT-<nnn> — <título>
 ## Artefatos afetados
 <<sigla>-<id> · inclui | altera | exclui, como na ficha | nenhum requisito>
 
-## Lições
+## Lições aprendidas
 <só na trilha trivial: lição · regra proposta | —>
 ```
 

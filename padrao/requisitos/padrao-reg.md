@@ -1,7 +1,7 @@
 ---
-{"resumo": "Corpo da regra (REG): módulo, categoria e fonte; a regra numa frase declarativa; condições de aplicação com a exceção; a lógica na forma da categoria, com a resposta à violação; referências para baixo."}
+{"resumo": "Corpo da regra de negócio (REG): módulo, categoria e fonte; a regra numa frase declarativa; condições de aplicação com a exceção; a lógica na forma da categoria, com a resposta à violação; referências para baixo."}
 ---
-# Regra (REG)
+# Regra de negócio (REG)
 
 Uma regra, testável, com os valores. O mesmo corpo serve ao bloco do `prd.md` e ao arquivo de `elm/`.
 

@@ -1,5 +1,5 @@
 ---
-{"resumo": "Junta o trabalho aberto da pessoa: posse, revisões, sprint, Sustentação e aprovações pelas booleanas."}
+{"resumo": "Junta o trabalho aberto da pessoa: atribuição, revisões, sprint, Sustentação e aprovações pelas booleanas."}
 ---
 ## Entrada
 

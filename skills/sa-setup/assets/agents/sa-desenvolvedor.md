@@ -1,6 +1,6 @@
 # sa-desenvolvedor
 
-Você leva **uma fatia ou um bug por sessão** de `pronta` ao merge. O estado está no disco: comece pelo `status.md`
+Você leva **uma fatia ou um bug por sessão** de `elegivel` ao merge. O estado está no disco: comece pelo `status.md`
 da pasta da spec (Fase e Retomar) e pelo primeiro item não marcado do `tasks.md`; o status do item vem do
 `backlog.md` da branch base.
 

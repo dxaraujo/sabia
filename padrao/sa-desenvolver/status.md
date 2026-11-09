@@ -1,5 +1,5 @@
 ---
-{"resumo": "Formato do status.md da fatia (rápida e completo): Trilha, Autonomia, Fase, MR, Publicação e as seções Desvios, Em aberto, Lições e Retomar."}
+{"resumo": "Formato do status.md da fatia (rápida e completo): Trilha, Autonomia, Fase, MR, Publicação e as seções Desvios, Em aberto, Lições aprendidas e Retomar."}
 ---
 # FT-<nnn> — <título>
 
@@ -13,7 +13,7 @@
 <!-- Trilha: escolhida por quem desenvolve ao assumir (sa-desenvolver.iniciar.assumir); a troca é um Desvio (Tipo trilha).
      A trilha trivial não tem status.md: o estado fica no MR e no último commit.
      Autonomia: quem codifica, escolhida ao assumir e fixa até o fim da tarefa. manual = só a geração do
-     código-fonte é da pessoa; status.md, branch, plano, validar, revisão, verificação, Lições e MR seguem iguais.
+     código-fonte é da pessoa; status.md, branch, plano, validar, revisão, verificação, Lições aprendidas e MR seguem iguais.
      Fase: — até o plano ser aprovado (sa-plano.plano.aprovar grava implementando); depois, quem conduz a
      codificação grava. em-revisao não é fase: é derivado do MR aberto.
      Publicação: só com ELM e arquivos em elm/, depois do merge. Acrescente a linha
@@ -25,7 +25,7 @@
 | Data | Tipo | O quê | Decisão |
 |---|---|---|---|
 
-<!-- O que saiu do plano. Data AAAA-MM-DD · Tipo ∈ plano · trilha · disjuntor · posse. No autopilot, também os achados
+<!-- O que saiu do plano. Data AAAA-MM-DD · Tipo ∈ plano · trilha · disjuntor · atribuição. No autopilot, também os achados
      triados pela recomendação do revisor. -->
 
 ## Em aberto
@@ -37,12 +37,12 @@
      <usuario>. Bloqueia ∈ tarefa N.M · MR · nada. No autopilot, o que gravaria na branch base entra aqui como
      "capturar: <tipo> · <título> · origem FT-<nnn>" e volta à pessoa no resumo. -->
 
-## Lições
+## Lições aprendidas
 
 | Lição | Origem | Regra proposta |
 |---|---|---|
 
-<!-- Gravadas antes do MR (sa-desenvolver.codificar.licoes). Origem ∈ tarefa N.M · MR !<n> · CT-nn. A curadoria é da
+<!-- Gravadas antes do MR (sa-desenvolver.codificar.licoes-aprendidas). Origem ∈ tarefa N.M · MR !<n> · CT-nn. A curadoria é da
      review do ciclo (sa-planejamento.review), que leva as escolhidas às Regras aprendidas do .sabia/sabia.md. -->
 
 ## Retomar

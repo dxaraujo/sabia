@@ -1,7 +1,7 @@
 ---
-{"resumo": "Corpo do leiaute (EL): uma tela do protótipo aprovado, com protótipos por visão, campos em tabela de 6 colunas, ícones de grid, botões e estados, no texto visível."}
+{"resumo": "Corpo da especificação de layout (EL): uma tela do protótipo aprovado, com protótipos por visão, campos em tabela de 6 colunas, ícones de grid, botões e estados, no texto visível."}
 ---
-# Leiaute (EL)
+# Especificação de layout (EL)
 
 Uma tela, como o cliente a aprovou no protótipo. Só com a linha Telas = `sim` na seção Especificação do
 `.sabia/sabia.md`, e escrita da versão aprovada (o D-nn `Protótipo v<N> aprovado`). Sem protótipo aprovado, a EL fica
@@ -56,7 +56,7 @@ no Em aberto.
   da MSG.
 - **Texto visível igual ao do protótipo** (rótulo, ação, tooltip), palavra por palavra. Divergência entre o
   protótipo, a HF e o banco → Em aberto, nunca escolhida na escrita.
-- **Nada inventado:** campo ou ação sem história, regra ou D-nn que a sustente → Em aberto.
+- **Nada inventado:** campo ou ação sem história de usuário, regra ou D-nn que a sustente → Em aberto.
 - **Ícone de grid:** habilitado quando o perfil pode e nenhuma regra impede; desabilitado quando o perfil pode mas uma
   regra impede naquele registro; oculto quando a ação nunca vale para o perfil. Tooltip nos dois estados.
 - **Componente reutilizável** (modal, grid comum) tem EL própria, citada com **Conforme** EL-<id>.

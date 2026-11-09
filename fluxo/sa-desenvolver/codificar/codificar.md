@@ -1,6 +1,6 @@
 ---
 {"fluxo": "codificar", "dono": "sa-desenvolvedor",
- "quando": ["codificar a fatia com TDD e backpressure em camadas, revisão do agente (sa-revisor), verificação do agente (sa-verificador), lições e MR; retomar, corrigir os achados do MR ou seguir depois da codificação manual", "implementa a FT-031", "retoma a FT-031", "corrige os achados do MR", "terminei", "abre o MR"],
+ "quando": ["codificar a fatia com TDD e backpressure em camadas, revisão do agente (sa-revisor), verificação do agente (sa-verificador), lições aprendidas e MR; retomar, corrigir os achados do MR ou seguir depois da codificação manual", "implementa a FT-031", "retoma a FT-031", "corrige os achados do MR", "terminei", "abre o MR"],
  "travas_gerais": ["sim-da-pessoa", "backpressure", "sem-force", "elm-pela-sa-elm"],
  "passos": [
    {"id": "entrada", "de": "entrada", "papel": "desenvolvedor", "branch": "fatia"},
@@ -14,9 +14,9 @@
    {"id": "atualizar"},
    {"id": "validar", "saidas": {"vermelho novo: tarefa nova": "tarefa", "falha de ambiente sem o sim de seguir, ou autopilot": "fim"}},
    {"id": "revisar", "chama": "sa-revisar.revisar", "saidas": {"corrige: tarefas [R<n>]": "tarefa", "volta-plano": "→ sa-plano.replanejar", "autopilot, reprovado": "disjuntor"}},
-   {"id": "verificar", "chama": "sa-verificar.verificar", "travas": ["aceite-independente"], "saidas": {"ACEITO": "licoes", "REJEITADO fora do autopilot: o ❌ vira tarefa": "tarefa", "autopilot, REJEITADO ou AMBIENTE": "disjuntor", "AMBIENTE fora do autopilot, sem o sim de seguir": "fim"}},
+   {"id": "verificar", "chama": "sa-verificar.verificar", "travas": ["aceite-independente"], "saidas": {"ACEITO": "licoes-aprendidas", "REJEITADO fora do autopilot: o ❌ vira tarefa": "tarefa", "autopilot, REJEITADO ou AMBIENTE": "disjuntor", "AMBIENTE fora do autopilot, sem o sim de seguir": "fim"}},
    {"id": "disjuntor", "saidas": {"disparou: devolvido à pessoa": "fim", "não disparou: corrigir": "tarefa"}},
-   {"id": "licoes"},
+   {"id": "licoes-aprendidas"},
    {"id": "as-built"},
    {"id": "mr", "saidas": {"push sem o sim, ou remoto diferente do local": "fim"}},
    {"id": "avisar", "chama": "sa-elm.horas", "travas": ["revisao-independente"], "saidas": {"MR já aprovado e CI verde": "→ sa-desenvolver.encerrar", "esperando a revisão, ou autopilot devolvido": "fim"}},
@@ -27,7 +27,7 @@
 # Codificar — TDD, backpressure e MR
 
 Do plano aprovado (ou da trilha trivial) ao MR aberto: uma tarefa por vez em TDD, backpressure em camadas,
-revisão do agente no subagente `sa-revisor`, verificação do agente no subagente `sa-verificador`, lições e MR com prova e
+revisão do agente no subagente `sa-revisor`, verificação do agente no subagente `sa-verificador`, lições aprendidas e MR com evidência e
 Artefatos afetados. O fluxo termina no MR: a revisão oficial é de outro desenvolvedor e o merge é do fluxo `encerrar`.
 
 Deste fluxo: item `em-andamento` com branch `<id>` e plano aprovado (Fase `implementando` ou `retrabalho`) ou trilha
@@ -46,6 +46,6 @@ Os passos `captura` e `gravar` são a captura comum e o commit direto na branch 
 ## Entrada: vizinhos
 
 - sem branch `<id>` → `sa-desenvolver.iniciar`
-- `pronta` com branch `<id>` (voltou na virada) → `sa-desenvolver.iniciar`
+- `elegivel` com branch `<id>` (voltou na virada) → `sa-desenvolver.iniciar`
 - trilha rápida ou completo com Fase — (plano não aprovado) → `sa-plano.plano`
 - MR aprovado com CI verde, ou MR já mergeado → `sa-desenvolver.encerrar`

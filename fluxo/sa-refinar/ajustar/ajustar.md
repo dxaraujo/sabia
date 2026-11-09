@@ -22,7 +22,7 @@
 Quem tem `produto` mexe no backlog refinado até alguém puxar (status antes de `em-andamento`): ordenar, dividir,
 juntar, editar, cancelar a fatia ou o épico. Também recebe a mudança do PRD nas fatias atingidas (pela
 `sa-prd.mudanca`, com as fatias pelos artefatos afetados). Cada ajuste mostra a prévia, só grava com o ok do P.O. e vai num commit.
-Aceita fatia ou bug em `aceita` ou `pronta`, e épico em `em-especificacao` ou `fatiado` (para ordenar e cancelar).
+Aceita fatia ou bug em `aceita` ou `elegivel`, e épico em `em-especificacao` ou `fatiado` (para ordenar e cancelar).
 
 ## Entrada: vizinhos
 

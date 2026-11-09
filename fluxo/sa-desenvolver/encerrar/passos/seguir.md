@@ -9,7 +9,7 @@ O resultado do merge, da conclusão, do archive e da publicação.
 
 1. Mostre: merge · `concluida` · épico `concluido` (se for o caso) · publicação (`publicada <data>`, `pendente` ou
    sem ELM).
-2. Lembre que as Lições do `status.md` vão à curadoria na review do ciclo (`sa-planejamento.review`).
+2. Lembre que as Lições aprendidas do `status.md` vão à curadoria na review do ciclo (`sa-planejamento.review`).
 3. Ofereça "seguir para a próxima?": o próximo item do topo da sprint, pela `sa-desenvolver.iniciar`.
 
 ## Saída
