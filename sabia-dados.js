@@ -50,7 +50,7 @@ const S={
   papel:"produto (ordem das linhas)",agente:"—",tarefa:"—",
   faz:["Uma linha por item, com o tipo e o id da série; o corpo é achado pelo id (sem coluna link nem sprint)","A ordem das linhas é a prioridade; crítica é o item urgente, pela política do acordos.md","Fatia e bug: nova → aceita → elegível → em-andamento → concluida, mais cancelada e adiada até <data>; em-revisao vem do MR aberto e não se grava","Épico: a-moldar → em-especificacao → fatiado → concluido · cancelado","Sustentação: nova → em-andamento → concluida · cancelada","Até alguém puxar, a sa-refinar.ajustar ordena, divide, junta, edita ou cancela, com o ok do P.O.","aceita_em, iniciada_em e concluida_em dão o lead time"],
   arq:[".sabia/planejamento/backlog.md, gravado direto na branch base"],elm:["Coluna ib: só o número do IB; as tarefas DEV · ESP · ATD ficam na sprint"]},
- planejar:{x:300,y1:396,y2:444,g:"pill",lab:"above",dx:-8,nome:"Planejar a sprint",sk:"sa-planejamento",
+ planejar:{x:300,y1:396,y2:444,g:"pill",lab:"above",nome:"Planejar a sprint",sk:"sa-planejamento",
   papel:"o time; quem tem produto decide",agente:"sa-especificador",tarefa:"—",
   faz:["Início do ciclo (com a virada) ou reabastecimento quando o topo esvazia","Capacidade pela vazão das 3 últimas sprints, ajustada pelas horas; a reserva de capacidade do acordos.md fica para o atendimento","Especificação: fatias e bugs aceita a refinar, épicos a moldar ou em especificação; não contam na vazão","Desenvolvimento: itens elegível, crítica primeiro e depois a ordem do backlog.md, até a sobra; atendimento até a reserva de capacidade","Responsável só quando já definido (nunca aloca sozinho); a meta é uma frase de resultado","Proposta com o ok de quem tem produto"],
   arq:[".sabia/planejamento/sprints/<AAAA>/sprint-<nn>.md: Item · Trabalho (especificação | desenvolvimento | atendimento) · Responsável · Tarefas","sem coluna de situação: o andamento é o status do backlog.md","na primeira vez, a sa-planejamento.inicial grava equipe.json, acordos.md e o roadmap.md opcional"],
@@ -58,14 +58,6 @@ const S={
   ctx:{epico:{faz:["Linha especificação para o épico a-moldar (sa-refinar.moldar) ou em-especificacao (sa-prd.prd)","Não é pré-condição: a skill que puxa acrescenta a linha no sprint aberto"]},
    hitl:{faz:["Fatia ou bug aceita entra como especificação (sa-refinar.detalhar)","Item elegível entra como desenvolvimento; a ficha que fica elegível durante a sprint é puxada sem segundo encaixe","Urgente (crítica) entra sem aprovação: a linha nasce na atribuição","O item preso pela trava de artefato entra com o aviso aguarda <FT> (artefato <id>)"]},
    atd:{faz:["Linha atendimento: Sustentação nova ou em-andamento com prazo na sprint, até a reserva de capacidade","Reserva de capacidade consumida = soma das linhas de atendimento; estourou, o produto decide na seleção"]}}},
- item:{x:400,y1:396,y2:444,g:"hubpill",lab:"above",nome:"Porta do item",sk:"sa-status.item",
-  papel:"qualquer pessoa",agente:"sa-desenvolvedor ou sa-especificador",tarefa:"—",
-  faz:["Recebe <id> (EP, FT, AT…), o número do IB ou a tarefa do EWM; texto sem id vai à triagem","Junta status, obs, linha da sprint, branch e dono, status.md, MR, loop do autopilot, publicação e trava","Mostra o estado e a skill.fluxo dona; quem tem a booleana segue na mesma sessão (“seguir agora?”)","“minha próxima” (sa-status.minha-proxima): atribuição, revisões, sprint, Sustentação e aprovações pelas booleanas, crítica primeiro"],
-  arq:["só leitura"],elm:["Acha o item também pelo ib ou pela tarefa do EWM"],
-  ctx:{epico:{faz:["a-moldar → sa-refinar.moldar","em-especificacao sem prd.md aprovado → sa-prd.prd; aprovado → sa-refinar.fatiar","fatiado → as fatias com o próximo passo de cada uma; ajuste → sa-refinar.ajustar"]},
-   hitl:{faz:["nova → sa-triar.triar · aceita → sa-refinar.detalhar · elegível → sa-desenvolver.iniciar","em-andamento sem MR → sa-desenvolver.codificar, pelo Retomar; retrabalho também","MR esperando revisão → qualquer desenvolvedor ≠ autor (sa-revisar.mr); aprovado com CI verde → o autor (sa-desenvolver.encerrar)","Revisão humana pedida → qualquer pessoa (sa-verificar.revisao-humana)","Trava de artefato: mostra quem tem a precedência e para"]},
-   afk:{faz:["elegível → sa-desenvolver.iniciar, onde se escolhe o autopilot","Autopilot devolvido pelo disjuntor → sa-desenvolver.codificar, com o motivo do loop-<id>.md","MR esperando revisão → qualquer desenvolvedor ≠ autor (sa-revisar.mr); aprovado com CI verde → o autor (sa-desenvolver.encerrar)","Trava de artefato: mostra quem tem a precedência e para"]},
-   atd:{faz:["Sustentação nova ou em-andamento → sa-atender.atender"]}}},
 
 /* ---------- épico ---------- */
  moldar:{x:520,y:100,lab:"below",nome:"Moldar",sk:"sa-refinar.moldar",
@@ -244,10 +236,10 @@ S.triar.ctx.afk=S.triar.ctx.hitl;
 S.planejar.ctx.afk=S.planejar.ctx.hitl;
 
 const ALL={
- epico:["triar","backlog","planejar","item","moldar","gogk","entrevistar","prd","gprd","fatiar","backlog@fim"],
- hitl:["triar","backlog","planejar","item","detalhar","elm","gficha","iniciar","plano","codificar","autorrev","verif","mr","revmr","revhum","merge","archive","publicar"],
- afk:["triar","backlog","planejar","item","detalhar","elm","gficha","iniciar","pl_a","cod_a","rev_a","ver_a","mr","revmr","revhum","merge","archive","publicar"],
- atd:["triar","backlog","planejar","item","atd1","atd2","atd3","atd4","atd5"],
+ epico:["triar","backlog","planejar","moldar","gogk","entrevistar","prd","gprd","fatiar","backlog@fim"],
+ hitl:["triar","backlog","planejar","detalhar","elm","gficha","iniciar","plano","codificar","autorrev","verif","mr","revmr","revhum","merge","archive","publicar"],
+ afk:["triar","backlog","planejar","detalhar","elm","gficha","iniciar","pl_a","cod_a","rev_a","ver_a","mr","revmr","revhum","merge","archive","publicar"],
+ atd:["triar","backlog","planejar","atd1","atd2","atd3","atd4","atd5"],
  sprint:["planejar","durante","inspecao","review","retro","virada","planejar@fim"]
 };
 const TRIV=s=>s.tr==="trivial"?"Trivial: sem plano nem arquivo de spec; tudo no MR":null;
@@ -262,13 +254,12 @@ const AVISO=s=>["hitl","afk"].includes(s.line)&&s.tr==="trivial"&&s.art==="sim"?
 const VIA={
  "epico:triar>backlog":"a-moldar: só a linha","hitl:triar>backlog":"aceita, com tamanho e prioridade","afk:triar>backlog":"aceita, com tamanho e prioridade","atd:triar>backlog":"nova, com o registro",
  "epico:backlog>planejar":"linha especificação, opcional","hitl:backlog>planejar":"aceita: linha especificação","afk:backlog>planejar":"aceita: linha especificação","atd:backlog>planejar":"linha atendimento, até a reserva de capacidade",
- "planejar>item":"sprint gravada; puxa o topo",
- "item>moldar":"a-moldar → sa-refinar.moldar","moldar>gogk":"pitch de uma página","gogk>entrevistar":"investir: em-especificacao, sa-prd.prd","entrevistar>prd":"Decisões e Em aberto no prd.md","prd>gprd":"prd.md escrito e validado","gprd>fatiar":"Aprovado: sa-refinar.fatiar","fatiar>backlog":"FT-nnn aceita, pai EP-nn; épico fatiado",
- "item>detalhar":"aceita → sa-refinar.detalhar","detalhar>elm":"com ELM e artefatos afetados: sa-especificar.elm","detalhar>gficha":"sem elm/: a ficha basta","elm>gficha":"arquivos de elm/ aprovados","gficha>iniciar":"elegível: puxada com sinal de WIP",
+  "planejar>moldar":"a-moldar → sa-refinar.moldar","moldar>gogk":"pitch de uma página","gogk>entrevistar":"investir: em-especificacao, sa-prd.prd","entrevistar>prd":"Decisões e Em aberto no prd.md","prd>gprd":"prd.md escrito e validado","gprd>fatiar":"Aprovado: sa-refinar.fatiar","fatiar>backlog":"FT-nnn aceita, pai EP-nn; épico fatiado",
+ "planejar>detalhar":"aceita → sa-refinar.detalhar","detalhar>elm":"com ELM e artefatos afetados: sa-especificar.elm","detalhar>gficha":"sem elm/: a ficha basta","elm>gficha":"arquivos de elm/ aprovados","gficha>iniciar":"elegível: puxada com sinal de WIP",
  "iniciar>plano":"rápida ou completo: sa-plano.plano","plano>codificar":"plano aprovado: Fase implementando","codificar>autorrev":"tarefas marcadas, validar verde","autorrev>verif":"achados triados","verif>mr":"ACEITO: Lições aprendidas, as-built e MR",
  "iniciar>pl_a":"IA autopilot: subagente na worktree","iniciar>cod_a":"trivial: direto à codificação","pl_a>cod_a":"plano aprovado pelo subagente","cod_a>rev_a":"validar verde","rev_a>ver_a":"achados pela recomendação do revisor","ver_a>mr":"ACEITO: o subagente abre o MR",
  "mr>revmr":"um desenvolvedor ≠ autor","revmr>revhum":"o Risco pede: revisão humana","revhum>merge":"aprovado e CI verde","merge>archive":"concluida na branch base","archive>publicar":"com ELM: publicar no DOORS?",
- "item>atd1":"nova ou em-andamento → sa-atender.atender","atd1>atd2":"dentro da reserva de capacidade ou crítica","atd2>atd3":"em-andamento (<ID> iniciar)","atd3>atd4":"resolvido ou retirado","atd4>atd5":"concluida",
+ "planejar>atd1":"nova ou em-andamento → sa-atender.atender","atd1>atd2":"dentro da reserva de capacidade ou crítica","atd2>atd3":"em-andamento (<ID> iniciar)","atd3>atd4":"resolvido ou retirado","atd4>atd5":"concluida",
  "planejar>durante":"sprint-<nn>.md gravado","durante>inspecao":"todo dia","inspecao>review":"fim do timebox","review>retro":"Regras aprendidas gravadas","retro>virada":"o próximo sa-planejamento.sprint","virada>planejar":"migrados primeiro na capacidade"
 };
 
@@ -318,7 +309,7 @@ const SERV=[
   arq:[".sabia/sabia.md (Projeto, Comandos; preserva as Regras aprendidas)",".sabia/config/agentes.json · .kiro/agents/sa-*.json · .opencode/agents/sa-*.md (gerados)",".sabia/fluxo/ · .sabia/template/ (só ao customizar)","backlog.md vazio, com as colunas"],
   elm:["sa-elm.setup: monta o pa_<nome>.json, pergunta pela ET as-built e devolve os dados que a sa-setup aplica","Com ELM, o glossário é o GL do DOORS"]},
  {sk:"sa-status",nome:"Onde parei",desc:"Painel, item, minha próxima, pendências, lições aprendidas",papel:"qualquer pessoa",agente:"sa-desenvolvedor ou sa-especificador",tarefa:"—",
-  faz:["painel: a daily, só leitura, com a sugestão de maior alavanca","item: a porta de entrada de <id>, com a skill.fluxo dona e o “seguir agora?”","minha próxima: o trabalho da pessoa, crítica primeiro","pendências: lista fechada de rastreio e consistência, cada uma com destino; nenhuma trava","lições aprendidas: as do ciclo, cruzadas com as Regras aprendidas, para a review","fechar a sessão: Retomar, tasks.md, horas a pedido, créditos do Kiro e o commit com ok"],
+  faz:["painel: a daily, só leitura, com a sugestão de maior alavanca","item: a consulta de <id>, com a skill.fluxo dona e o “seguir agora?”","minha próxima: o trabalho da pessoa, crítica primeiro","pendências: lista fechada de rastreio e consistência, cada uma com destino; nenhuma trava","lições aprendidas: as do ciclo, cruzadas com as Regras aprendidas, para a review","fechar a sessão: Retomar, tasks.md, horas a pedido, créditos do Kiro e o commit com ok"],
   arq:[".sabia/creditos/<usuario>.csv: sessao · ate · item · skill · modo · creditos"],elm:["Horas só com ELM e só com o sim (sa-elm.horas)"]},
  {sk:"sa-elm",nome:"ELM utilitário",desc:"DOORS e EWM, sempre por oferta",papel:"quem trabalha no item",agente:"sa-desenvolvedor ou sa-especificador; o setup, na sessão sem agente",tarefa:"DEV · ESP · ATD",
   faz:["Só com ELM configurado; as outras skills oferecem e nunca param por causa dele; no autopilot, não roda","item: o IB [<id>] <título> e a tarefa [DEV|ESP|ATD] <id> <título>, ao assumir; os ids na coluna ib e em Tarefas","horas: só por pergunta ou pedido (“8 h hoje na DEV 123”); relatório da semana ou do ciclo a pedido","finalizar: conclui a tarefa, liga a DEV aos artefatos afetados e oferece concluir o IB; cancela o que o Sabiá cancelou","publicar: depois do merge, por quem tem especificador","baixar e visualizar: o bundle e o original de um requisito; explorar.html offline","conferir (“confere com o EWM”, “o DOORS mudou?”), importar-backlog, iteracao e lint, a pedido","Toda escrita com prévia e um sim; nada se apaga: o que deixou de valer é cancelado"],
@@ -335,7 +326,7 @@ const ROLES=[
  {nome:"Revisor do MR",who:"um desenvolvedor que não é o autor; o CODEOWNERS indica o dono",tarefa:"MR",c:"--cyan",agente:"sa-desenvolvedor",st:"revmr",line:"hitl",
   faz:["Lê o MR de verdade, com os critérios de revisão C do sa-revisor como apoio","Tria cada achado: corrige · adia · volta-plano · volta-spec · descarta","Aprova sem BLOQUEANTE aberto, ou pede mudanças","Oferece a revisão humana quando o risco pede"]},
  {nome:"Qualquer pessoa",who:"sem booleana",tarefa:"—",c:"--green",agente:"sa-desenvolvedor ou sa-especificador",st:"triar",line:"hitl",
-  faz:["Cadastro e triagem","Revisão humana, quando o risco pede","Atende a Sustentação dentro da reserva de capacidade e declara resolvido","Consulta o painel e a porta do item"]},
+  faz:["Cadastro e triagem","Revisão humana, quando o risco pede","Atende a Sustentação dentro da reserva de capacidade e declara resolvido","Consulta o painel e o estado do item"]},
  {nome:"Subagentes",who:"contexto isolado, só leitura",tarefa:"—",c:"--orange",agente:"sa-pesquisador · sa-revisor · sa-verificador",st:"autorrev",line:"hitl",
   faz:["sa-pesquisador: fatos com arquivo:linha, sem gravar","sa-revisor: critérios de revisão L do plano e C do código (spec · padrões · segurança)","sa-verificador: sobe a aplicação, exercita os CT-nn e grava só o CT.csv","Gerador ≠ avaliador: quem implementou não verifica"]}
 ];
