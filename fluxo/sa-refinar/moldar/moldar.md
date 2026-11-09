@@ -14,7 +14,7 @@
 # Moldar — pitch e decisão de investimento do épico
 
 Shape Up antes do PRD: o épico `a-moldar` ganha o `pitch.md` de uma página na pasta
-`.sabia/planejamento/epicos/EP-nn-<slug>/` (problema, limite de investimento, solução em traços, riscos, não objetivos), e quem tem
+`.sabia/planejamento/epicos/EP-nn-<slug>/` (problema, limite de investimento, esboço da solução, riscos, fora do escopo), e quem tem
 `produto` decide investir ou cancelar. Investir: `em-especificacao` e o PRD (`sa-prd.prd`). Cancelar: `cancelado`, e a pasta fica.
 Aceita épico em `a-moldar`.
 

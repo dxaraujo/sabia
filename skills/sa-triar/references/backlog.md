@@ -2,7 +2,7 @@
 
 Uma tabela única, uma linha por item, com o título `# Backlog`. A ordem das linhas é a prioridade: o topo é o
 próximo a puxar. O cadastro acrescenta no fim, quem tem a booleana `produto` reordena (`sa-refinar.ajustar`), e a
-prioridade `crítica` é expedite. Célula sem valor fica vazia. Toda escrita vai por commit direto na branch base
+prioridade `crítica` é urgente. Célula sem valor fica vazia. Toda escrita vai por commit direto na branch base
 (commit pequeno, push com o "sim"). O corpo do item é achado pelo id: não há coluna de link nem de sprint.
 
 ```markdown

@@ -4,7 +4,7 @@ description: "Sabiá guide and router for the agent workflow (Kiro and opencode)
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.12"
+  version: "2.1.13"
 ---
 
 # Sabiá — guia e roteador do fluxo
@@ -54,7 +54,7 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
   até <data>`; `em-revisao` não se grava, vem do MR aberto. Épico: `a-moldar` → `em-especificacao` (investir) → `fatiado` →
   `concluido` · `cancelado`; fecha no merge da última fatia aberta (`sa-desenvolver.encerrar`). Sustentação: `nova` →
   `em-andamento` → `concluida` · `cancelada`.
-- **Prioridade e tamanho.** `prioridade` ∈ {`crítica`, vazio}: crítica é o expedite, pela política do `acordos.md`;
+- **Prioridade e tamanho.** `prioridade` ∈ {`crítica`, vazio}: crítica é o item urgente, pela política do `acordos.md`;
   vazio segue a ordem das linhas. `tamanho` ∈ {`P`, `M`, `G`}: P = horas, M ≈ 1 dia, G = 2 a 3 dias. Maior que G é
   épico, e só o épico vai ao pitch e à decisão de investimento.
 - **Trilhas.** Quem desenvolve escolhe pelo código: `trivial` (sem arquivo de spec, tudo no MR), `rapida` ou `completo`.

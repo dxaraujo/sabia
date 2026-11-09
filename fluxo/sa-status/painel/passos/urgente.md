@@ -12,7 +12,7 @@ a política do `acordos.md`, sem aprovação.
 
 ## Saída
 
-Expedite → passo `fila-de-triagem`.
+Urgente → passo `fila-de-triagem`.
 
 ## Pare se
 

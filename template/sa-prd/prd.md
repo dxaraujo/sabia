@@ -1,5 +1,5 @@
 ---
-{"resumo": "PRD do épico (prd.md): Aprovado no topo, Problema, Objetivos e métricas, Atores, Requisitos (um bloco por requisito com Tipo e Ação), Não objetivos, Decisões, Em aberto e Mudanças, com o checklist do validar."}
+{"resumo": "PRD do épico (prd.md): Aprovado no topo, Problema, Objetivos e métricas, Atores, Requisitos (um bloco por requisito com Tipo e Ação), Fora do escopo, Decisões, Em aberto e Mudanças, com o checklist do validar."}
 ---
 ```markdown
 # PRD — EP-<nn> <título>
@@ -26,7 +26,7 @@
 
 <corpo pelo template do tipo>
 
-## Não objetivos
+## Fora do escopo
 
 - <o que fica fora do épico>
 

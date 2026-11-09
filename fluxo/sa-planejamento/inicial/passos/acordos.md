@@ -15,7 +15,7 @@ chaves nesta ordem e estes padrões quando o time não diz outro valor:
   `em-andamento` e `em-revisao`.
 - **SLE** (opcional): `<p>% em até <n> dias`.
 - **DoD**: CI verde · 1 aprovação de desenvolvedor ≠ autor · Evidência no MR · Artefatos afetados no MR · Lições aprendidas no `status.md`.
-- **Classes de serviço**: expedite = prioridade `crítica` (vai ao topo, é puxada sem aprovação e pode passar o WIP em
+- **Classes de serviço**: urgente = prioridade `crítica` (vai ao topo, é puxada sem aprovação e pode passar o WIP em
   1) · padrão = ordem das linhas.
 - **Reserva de capacidade**: `<n>%` da capacidade em itens, reservada ao atendimento (padrão 20%).
 - **Tamanhos**: P = horas · M ≈ 1 dia · G = 2–3 dias; maior que G é épico.

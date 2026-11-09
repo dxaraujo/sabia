@@ -12,8 +12,8 @@ O mesmo corpo serve ao bloco do `prd.md` e ao arquivo de `elm/`.
 **Ator principal:** <pessoa, sistema ou agendamento> · **Atores secundários:** <… | —>
 **Gatilho:** <agendamento diário, 02h00 | chamada | evento | ação na tela>
 **Pré-condições:** <estado antes>
-**Garantia de sucesso:** <estado depois, verificável>
-**Garantia mínima:** <o que vale mesmo na falha: nada gravado pela metade, a falha registrada>
+**Pós-condição de sucesso:** <estado depois, verificável>
+**Pós-condição mínima:** <o que vale mesmo na falha: nada gravado pela metade, a falha registrada>
 
 **Fluxo básico:**
 

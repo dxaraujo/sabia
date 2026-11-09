@@ -1,5 +1,5 @@
 ---
-{"resumo": "Trata o que ficou aberto: spike, protótipo ou reunião para dúvida grande, Em aberto para regra sem fonte, dividir ou virar épico para o que passa de G."}
+{"resumo": "Trata o que ficou aberto: investigação técnica, protótipo ou reunião para dúvida grande, Em aberto para regra sem fonte, dividir ou virar épico para o que passa de G."}
 ---
 ## Entrada
 
@@ -9,7 +9,7 @@ As perguntas sem resposta e o tamanho estimado depois dos passos anteriores.
 
 | Caso | O que fazer |
 |---|---|
-| dúvida grande de código | spike pela `sa-pesquisar.pesquisar`, que devolve os fatos aqui |
+| dúvida grande de código | investigação técnica pela `sa-pesquisar.pesquisar`, que devolve os fatos aqui |
 | dúvida grande de tela | protótipo pela `sa-especificar.prototipo`; só vale com a aprovação do cliente |
 | reunião com transcrição | ATA pela `sa-especificar.reuniao`, que leva as decisões à ficha |
 | regra sem fonte | Em aberto da ficha: `<pergunta> · para <nome com produto> · Bloqueia: <CT-nn \| esta fatia>`; para só o que depende dela |

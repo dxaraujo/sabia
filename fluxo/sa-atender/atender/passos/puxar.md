@@ -10,14 +10,14 @@ O item de Sustentação `nova` ou `em-andamento` (passos `entrada` ou `registrar
 1. Item já `em-andamento`: pule este passo.
 2. Sem sprint aberto: não há reserva de capacidade a conferir; siga.
 3. Reserva de capacidade consumida = a contagem das linhas `atendimento` do `sprint-<nn>.md` aberto, contra o `**Reserva de capacidade:**` dele
-   (o % do `acordos.md`). Dentro da reserva de capacidade, ou com prioridade `crítica` (expedite), siga.
+   (o % do `acordos.md`). Dentro da reserva de capacidade, ou com prioridade `crítica` (urgente), siga.
 4. Reserva de capacidade estourada → mostre o estouro. Decide quem tem `produto` no `equipe.json`: puxar assim mesmo ou esperar. A
    decisão vai na `obs`: `reserva de capacidade estourada: <decisão> (<usuario>, AAAA-MM-DD)`, gravada com o passo `assumir` (ou
    logo, pelo commit direto na branch base, se a decisão é esperar).
 
 ## Saída
 
-Dentro da reserva de capacidade, expedite ou puxar assim mesmo → passo `assumir`.
+Dentro da reserva de capacidade, urgente ou puxar assim mesmo → passo `assumir`.
 
 ## Pare se
 

@@ -11,7 +11,7 @@ O item aceito no passo `decidir`.
    categoria da seção Sustentação do `sabia.md` (`AT` · `IM` · `BD` · `IN` · `OP` · `EX`), confirmada aqui: o id sai
    dela e não existe recategorizar. O que muda código ou configuração é fatia ou bug. O que não cabe em G é épico.
 2. **Tamanho** ∈ `P` · `M` · `G` (linha Tamanhos do `acordos.md`), só em fatia e bug.
-3. **Prioridade** ∈ `crítica` · vazio. `crítica` = expedite pela política do `acordos.md`; vazio = vale a ordem das
+3. **Prioridade** ∈ `crítica` · vazio. `crítica` = urgente pela política do `acordos.md`; vazio = vale a ordem das
    linhas.
 4. **Pai** = `EP-nn` aberto ou vazio, só em fatia e bug.
 5. **Campos mínimos do corpo**, perguntados numa rodada, cada um com a recomendação:

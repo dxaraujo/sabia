@@ -1,5 +1,5 @@
 ---
-{"resumo": "Corpo da história de usuário (HF): narrativa, gatilho e telas, fluxo principal com FA e FE, critérios Gherkin por contexto (um Quando por cenário, todo fluxo coberto) e as regras aplicáveis."}
+{"resumo": "Corpo da história de usuário (HF): narrativa, gatilho e telas, fluxo básico com FA e FE, critérios Gherkin por contexto (um Quando por cenário, todo fluxo coberto) e as regras aplicáveis."}
 ---
 # História de usuário (HF)
 
@@ -16,7 +16,7 @@ Um comportamento observável, com o valor para quem o usa. O mesmo corpo serve a
 **Gatilho:** <ação na tela | chamada de API | agendamento | evento>
 **Telas:** EL-<id> <tela>   <!-- só com Telas = sim; sem tela na história de usuário, a linha sai -->
 
-**Fluxo principal:**
+**Fluxo básico:**
 
 1. <passo>
 2. <passo>

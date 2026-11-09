@@ -15,7 +15,7 @@ Linha de topo:
 
 ## Saída
 
-As métricas → passo `expedite`. Chamado pela retrospectiva → devolva as métricas e a reserva de capacidade consumida a ela.
+As métricas → passo `urgente`. Chamado pela retrospectiva → devolva as métricas e a reserva de capacidade consumida a ela.
 
 ## Pare se
 

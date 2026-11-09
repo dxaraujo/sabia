@@ -8,7 +8,7 @@ As seções.
 ## Faça
 
 A primeira que existir, nesta ordem:
-1. expedite;
+1. urgente;
 2. MR esperando revisão, MR aprovado esperando merge ou WIP estourado;
 3. Sustentação com prazo vencido ou vencendo até o próximo dia útil;
 4. autopilot devolvido;

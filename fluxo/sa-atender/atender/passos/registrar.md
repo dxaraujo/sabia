@@ -11,7 +11,7 @@ Um pedido em texto, ou um id que não existe no `backlog.md` (passo `entrada`).
    (Categoria · Descrição · Exemplo), com a sua recomendação. Ela vem antes de gravar porque o id nasce da série
    dela (`<sigla>-nnn`) e nunca muda. Pedido que muda o código ou o comportamento do sistema não é Sustentação:
    registre como bug ou fatia pelo cadastro comum (passo `cadastro`), que segue para a `sa-triar.triar`, e pare.
-2. **Prioridade.** `crítica` (expedite pela política do `acordos.md`) ou vazio.
+2. **Prioridade.** `crítica` (urgente pela política do `acordos.md`) ou vazio.
 3. **Registro.** Junte o que vai no registro, pelo template `sa-atender/registro.md`: Origem (`chamado <n>`, `EWM <n>`,
    `pedido` ou `origem <id>`), Pedido por (área ou papel, sem nome de pessoa), Prazo (`AAAA-MM-DD` ou `—`), a seção
    Pedido (sem dado de cliente) e o Critério de pronto, numa frase.

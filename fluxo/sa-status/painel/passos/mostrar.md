@@ -8,7 +8,7 @@ A coleta, as métricas, as seções e a sugestão.
 ## Faça
 
 Chame a `sa-status.pendencias` para a contagem. Mostre, nesta ordem, só as seções com conteúdo:
-cabeçalho (projeto · `<AAAA>/Sprint <nn>` · dias restantes · meta) · métricas · expedite · em andamento (Item ·
+cabeçalho (projeto · `<AAAA>/Sprint <nn>` · dias restantes · meta) · métricas · urgente · em andamento (Item ·
 Título · Fase · Autonomia · Tarefas · MR · Idade · Retomar) · esperando pessoa · retrabalho · topo puxável ·
 refinamento e produto · Sustentação e reserva de capacidade · fila de triagem · publicação pendente · trava de artefato · pendências
 (a contagem) · fim do ciclo · sugestão. Termine com "seguir com a sugestão?".

@@ -61,7 +61,7 @@ EVIDÊNCIA (FT-<nnn>, <AAAA-MM-DD>):
 
 - [ ] Uma linha por cenário ✅; nenhum cenário aceito fora do CSV.
 - [ ] Os seis blocos na ordem, com o RESULTADO ESPERADO igual ao "Então".
-- [ ] Cobertura da HF (ou do UC): fluxo principal, cada FA e FE, negativos, limites, perfis sem permissão e
+- [ ] Cobertura da HF (ou do UC): fluxo básico, cada FA e FE, negativos, limites, perfis sem permissão e
   navegação ou desistência. A categoria sem cenário na ficha vai ao Em aberto do especificador; a verificação não
   cria cenário.
 
