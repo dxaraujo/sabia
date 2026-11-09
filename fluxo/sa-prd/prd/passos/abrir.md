@@ -3,14 +3,14 @@
 ---
 ## Entrada
 
-A pasta `.sabia/planejamento/epicos/EP-nn-<slug>/` com o `pitch.md` aprovado (Decisão: go).
+A pasta `.sabia/planejamento/epicos/EP-nn-<slug>/` com o `pitch.md` aprovado (Decisão: investir).
 
 ## Faça
 
 `prd.md` já existe → siga (retomada). Senão, crie `prd.md` pelo template `sa-prd/prd.md`: `# PRD — EP-nn <título>`,
 `**Aprovado:** —` logo abaixo, e as seções Problema · Objetivos e métricas · Atores · Requisitos · Não objetivos ·
 Decisões · Em aberto · Mudanças (com a linha `v1`). Problema, limite de investimento e não objetivos partem do `pitch.md`. As decisões
-de antes do go ficam no `pitch.md`, e o PRD as cita; os D-nn do `prd.md` continuam a numeração do pitch.
+de antes da decisão de investir ficam no `pitch.md`, e o PRD as cita; os D-nn do `prd.md` continuam a numeração do pitch.
 
 ## Saída
 
@@ -18,4 +18,4 @@ O `prd.md` aberto → passo `entender`.
 
 ## Pare se
 
-- `pitch.md` sem `Decisão: go` → "o PRD começa no go: `sa-refinar.moldar`" e pare.
+- `pitch.md` sem `Decisão: investir` → "o PRD começa ao investir: `sa-refinar.moldar`" e pare.

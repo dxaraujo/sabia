@@ -1,6 +1,6 @@
 ---
 {"fluxo": "prd", "dono": "sa-especificador",
- "quando": ["o PRD do épico depois do go no pitch.md: prd.md na pasta do épico, direto na branch base, proporcional ao tamanho, com a aprovação do P.O. gravada no topo; chamado pela sa-refinar.moldar no go ou direto", "escrever o PRD do EP-03", "aprovar o PRD do EP-03", "retomar o PRD do EP-03"],
+ "quando": ["o PRD do épico depois da decisão de investir no pitch.md: prd.md na pasta do épico, direto na branch base, proporcional ao tamanho, com a aprovação do P.O. gravada no topo; chamado pela sa-refinar.moldar ao investir ou direto", "escrever o PRD do EP-03", "aprovar o PRD do EP-03", "retomar o PRD do EP-03"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa", "elm-pela-sa-elm"],
  "passos": [
    {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao", "saidas": {"pedido de aprovação ('aprovar o PRD do EP-nn')": "aprovar"}},
@@ -18,7 +18,7 @@
 ---
 # PRD — o quê e por quê do épico
 
-Depois do go no `pitch.md`, o `prd.md` nasce em `.sabia/planejamento/epicos/EP-nn-<slug>/`, ao lado do pitch, direto
+Depois da decisão de investir no `pitch.md`, o `prd.md` nasce em `.sabia/planejamento/epicos/EP-nn-<slug>/`, ao lado do pitch, direto
 na branch base. Entender (fatos pela `sa-pesquisar.pesquisar`) → esclarecer (`sa-entrevistar.entrevistar`) → similares →
 escrever → validar (avisa) → aprovação do P.O. gravada no topo do `prd.md` → "seguir para o fatiamento?"
 (`sa-refinar.fatiar`). Sem MR e sem publicar: os requisitos sobem ao DOORS pelas fatias (`sa-especificar.elm` e
@@ -27,7 +27,7 @@ escrever → validar (avisa) → aprovação do P.O. gravada no topo do `prd.md`
 ## Entrada: vizinhos
 
 - fatia ou bug → `sa-refinar.detalhar` ("PRD é só do épico")
-- épico `a-moldar` (sem go) → `sa-refinar.moldar`
+- épico `a-moldar` (sem decisão de investir) → `sa-refinar.moldar`
 - épico `fatiado`, ou `em-especificacao` com o `prd.md` aprovado → `sa-prd.mudanca` ou `sa-refinar.fatiar` (pergunte qual)
 - sustentação → "PRD é só do épico" ■
 - sem pessoa presente (subagente) → "PRD é decisão de pessoa" ■

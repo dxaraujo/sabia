@@ -15,7 +15,7 @@
 # Reunião — a ATA da transcrição
 
 Opcional. A transcrição de uma reunião vira uma ATA aprovada em `.sabia/planejamento/atas/`, e as decisões dela vão à
-seção Decisões do documento do item: o `pitch.md` (antes do go), o `prd.md` ou a ficha. A transcrição nunca sai da
+seção Decisões do documento do item: o `pitch.md` (antes da decisão de investir), o `prd.md` ou a ficha. A transcrição nunca sai da
 máquina. Nada vai ao ELM aqui: a ATA sobe junto da publicação, se a `sa-elm.publicar` perguntar.
 
 Entrada: o item (`EP-nn` ou `FT-nnn`) não terminal e a transcrição em

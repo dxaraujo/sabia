@@ -10,9 +10,9 @@
 ## Tipos, ids, status, colunas
 - tipo ∈ {épico, fatia, bug, sustentação}. fatia e bug têm pai = EP-nn ou vazio. Séries: épico → EP-nn; fatia e bug → FT-nnn; sustentação → <categoria>-nnn (AT · IM · BD · IN · OP · EX). EWM: Defeito → bug, Item de Backlog → fatia.
 - Sem a linha "Próximos ids": próximo id = maior id da série no backlog.md + 1, lido depois do pull. "Vira épico": nasce a linha EP-nn com obs "veio de FT-nnn", e a FT fica "cancelada · virou EP-nn". O id nunca muda.
-- status: fatia e bug: nova → aceita → elegível → em-andamento → concluida, mais cancelada e adiada até <data>; em-revisao é derivado do MR aberto (não se grava). Épico: a-moldar → em-especificacao (go) → fatiado → concluido · cancelado; o épico fecha no merge da última fatia aberta (sa-desenvolver.encerrar). Sustentação: nova → em-andamento → concluida · cancelada. As colunas de WIP do acordos.md usam esses valores.
+- status: fatia e bug: nova → aceita → elegível → em-andamento → concluida, mais cancelada e adiada até <data>; em-revisao é derivado do MR aberto (não se grava). Épico: a-moldar → em-especificacao (investir) → fatiado → concluido · cancelado; o épico fecha no merge da última fatia aberta (sa-desenvolver.encerrar). Sustentação: nova → em-andamento → concluida · cancelada. As colunas de WIP do acordos.md usam esses valores.
 - prioridade ∈ {crítica, vazio}: crítica = expedite pela política do acordos.md; vazio = vale a ordem das linhas.
-- tamanho ∈ {P, M, G} (P = horas, M ≈ 1 dia, G = 2–3 dias; linha Tamanhos no acordos.md). Maior que G é épico; só o épico vai ao pitch e ao go/kill.
+- tamanho ∈ {P, M, G} (P = horas, M ≈ 1 dia, G = 2–3 dias; linha Tamanhos no acordos.md). Maior que G é épico; só o épico vai ao pitch e à decisão de investimento.
 - backlog.md: colunas id · título · tipo · status · prioridade · tamanho · responsável · pai · relator · ib · obs, mais as datas aceita_em · iniciada_em · concluida_em (AAAA-MM-DD). ib = só o número do IB. Sem coluna link (o corpo do item é achado pelo id) e sem coluna sprint.
 - Métrica de fluxo: lead time = concluida_em − iniciada_em; mais WIP e vazão por contagem. SLE opcional no acordos.md.
 - sprint-<nn>.md: uma linha por item e trabalho: Item · Trabalho (especificação | desenvolvimento | atendimento) · Responsável · Tarefas (ids do EWM com prefixo DEV · ESP · ATD numa coluna só). Sem Situação própria (lê o status do backlog.md). A reserva de capacidade consumida é a soma das linhas de atendimento.
@@ -21,7 +21,7 @@
 ## Gravação, documentos e MR
 - Estado (linhas do backlog.md e do sprint.md) vai num commit pequeno direto na branch base, por fluxo/commit-na-branch-base.md (fora da branch base oferece trocar; árvore suja para; pull --ff-only; commit só das linhas; push com o sim; volta à branch anterior). Requisito: a branch base aceita push (ex.: develop).
 - Documentos de planejamento (pitch.md, prd.md, ficha, arquivos de elm/) também vão direto na branch base, como na 2.0. A aprovação do P.O. (booleana produto) fica gravada no próprio documento: "Aprovado: <usuário> · <data>". MR só para código.
-- Épico: pasta .sabia/planejamento/epicos/EP-nn-<slug>/ nasce no shaping com pitch.md (Shape Up: problema · limite de investimento · solução em traços · riscos · não objetivos · go/kill). prd.md nasce no go. No kill, o épico fica cancelado e a pasta permanece. Decisões vão na seção Decisões do pitch.md (antes do go), do prd.md (depois) e da ficha (fatia). decisoes.md não existe.
+- Épico: pasta .sabia/planejamento/epicos/EP-nn-<slug>/ nasce no shaping com pitch.md (Shape Up: problema · limite de investimento · solução em traços · riscos · não objetivos · decisão de investimento). prd.md nasce ao investir. Ao cancelar, o épico fica cancelado e a pasta permanece. Decisões vão na seção Decisões do pitch.md (antes da decisão de investir), do prd.md (depois) e da ficha (fatia). decisoes.md não existe.
 
 ## Spec, requisitos e publicação
 - Refinamento (sa-refinar.detalhar, especificador + Dev): a ficha tem regras, cenários com id CT-nn e os artefatos afetados (requisitos tocados: <sigla>-<id> · inclui | altera | exclui · versão de referência). Vocabulário único: inclui · altera · exclui.
@@ -38,7 +38,7 @@
 - Verificação: sem http.sh, massa/ ou arquivo de requisições; o verificador exercita a aplicação direto (curl/navegador) e põe a evidência no MR; a asserção durável são os testes automatizados no CI. verificacao.md não existe (a evidência vai no MR).
 
 ## Desenvolvimento, revisão, autopilot
-- Booleana desenvolvedor = pode puxar item para desenvolvimento; revisor de MR = qualquer desenvolvedor ≠ autor (CODEOWNERS indica o dono). Cadastro, triagem e revisão humana por qualquer pessoa. especificador = publicar no ELM e aprovar arquivos de elm/. produto = go/kill, ordenar, aprovar PRD, pitch e ficha.
+- Booleana desenvolvedor = pode puxar item para desenvolvimento; revisor de MR = qualquer desenvolvedor ≠ autor (CODEOWNERS indica o dono). Cadastro, triagem e revisão humana por qualquer pessoa. especificador = publicar no ELM e aprovar arquivos de elm/. produto = decisão de investimento, ordenar, aprovar PRD, pitch e ficha.
 - Identidade = usuário do GitLab (usuario no equipe.json = autor do MR = @dono no CODEOWNERS); elm_login opcional, lido só pela sa-elm.
 - Autopilot: subagente em worktree .sabia/local/wt/<id>; a pessoa segue na branch base; várias tarefas em paralelo. No autopilot ficam liberados push da própria branch (sem --force), merge da branch base nela e abrir/atualizar o MR dela; merge do MR, ELM e rede seguem bloqueados. Disjuntor (teto do acordos.md ou 2 reprovações seguidas) grava em .sabia/local/loop-<id>.md e devolve à pessoa. Sem lote.
 - Sem rebase: a branch se atualiza só por merge da branch base.

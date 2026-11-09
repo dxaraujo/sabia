@@ -10,7 +10,7 @@ MRs, `status.md`, pitch, PRD, fichas e `elm/`.
 - MR esperando revisão → qualquer desenvolvedor ≠ autor, com o dono por área pelo CODEOWNERS (`sa-revisar.mr`).
 - MR aprovado com CI verde → o autor faz o merge (`sa-desenvolver.encerrar`).
 - Em aberto do `status.md` que bloqueia → quem tem `produto` responde, nas Decisões da ficha.
-- Documento sem `Aprovado: <usuário> · <data>` no topo: `pitch.md` esperando go/kill (`sa-refinar.moldar`), `prd.md`
+- Documento sem `Aprovado: <usuário> · <data>` no topo: `pitch.md` esperando decisão de investimento (`sa-refinar.moldar`), `prd.md`
   (`sa-prd.prd`) e ficha (`sa-refinar.detalhar`) → quem tem `produto`.
 - Arquivo de `elm/` sem aprovação → quem tem `especificador` (`sa-refinar.detalhar`).
 

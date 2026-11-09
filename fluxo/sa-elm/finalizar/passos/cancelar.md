@@ -7,7 +7,7 @@ O id do item e o caso.
 
 ## Faça
 
-1. **Cancelado** (status `cancelada` no `backlog.md`: `sa-triar.triar`, kill na `sa-refinar.moldar`,
+1. **Cancelado** (status `cancelada` no `backlog.md`: `sa-triar.triar`, cancelar na `sa-refinar.moldar`,
    `sa-refinar.ajustar`) → ofereça cancelar o IB e as tarefas abertas.
 2. **Virou épico** (obs `cancelada · virou EP-nn`, na `sa-desenvolver.iniciar`) → cancele as tarefas abertas,
    mantenha o IB e prepare a cópia do número dele para a coluna `ib` da linha `EP-nn` (mensagem `elm: ib do

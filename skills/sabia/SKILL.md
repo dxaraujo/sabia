@@ -1,6 +1,6 @@
 ---
 name: sabia
-description: "Sabiá guide and router for the agent workflow (Kiro and opencode). Use when the person asks how the Sabiá flow works, which skill to use, or makes a request without naming a skill. Covers intake and triage, refinement (shaping with go/kill, three amigos, slicing), sprint planning with WIP limits, development routes (trivial, rápida, complete) with AI supervised, AI autopilot or manual coding, merge request review by a developer other than the author, verification, archive and optional publication to IBM ELM through sa-elm. Routes each request to the right sa-* skill. Use when the user says \"como funciona o Sabiá\", \"qual o fluxo\", \"qual skill eu uso\", \"o que eu faço agora com isso\", \"Sabiá\"."
+description: "Sabiá guide and router for the agent workflow (Kiro and opencode). Use when the person asks how the Sabiá flow works, which skill to use, or makes a request without naming a skill. Covers intake and triage, refinement (shaping with decisão de investimento, three amigos, slicing), sprint planning with WIP limits, development routes (trivial, rápida, complete) with AI supervised, AI autopilot or manual coding, merge request review by a developer other than the author, verification, archive and optional publication to IBM ELM through sa-elm. Routes each request to the right sa-* skill. Use when the user says \"como funciona o Sabiá\", \"qual o fluxo\", \"qual skill eu uso\", \"o que eu faço agora com isso\", \"Sabiá\"."
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
@@ -24,7 +24,7 @@ agente dono do fluxo.
 
 ```
 cadastro (qualquer pessoa ou skill) ─► triagem sa-triar.triar
-  ├─ épico ───────► sa-refinar.moldar (pitch, go/kill) ─► sa-prd.prd ─► sa-refinar.fatiar
+  ├─ épico ───────► sa-refinar.moldar (pitch, decisão de investimento) ─► sa-prd.prd ─► sa-refinar.fatiar
   ├─ fatia · bug ─► sa-refinar.detalhar (ficha: regras · CT-nn · Artefatos afetados [+ elm/]) ─► elegível ─► sa-refinar.ajustar
   └─ sustentação ─► sa-atender.atender
 ciclo sa-planejamento (inicial · sprint · review · retrospectiva) · daily sa-status.painel
@@ -36,7 +36,7 @@ revisão e aceite sa-verificar.verificar · sa-revisar.mr · [sa-verificar.revis
 Não existe consolidação: o fechamento é o merge, o archive e a publicação.
 
 - **Papéis** são booleanas no `equipe.json`. `desenvolvedor`: puxa item para desenvolvimento e revisa o MR de outro
-  autor. `especificador`: aprova os arquivos de `elm/` e publica no ELM. `produto`: decide go/kill, ordena e aprova
+  autor. `especificador`: aprova os arquivos de `elm/` e publica no ELM. `produto`: toma a decisão de investimento, ordena e aprova
   pitch, PRD e ficha. Cadastro, triagem e revisão humana ficam abertos a qualquer pessoa.
 - **Identidade** é o usuário do GitLab: o `usuario` do `equipe.json` é o autor do MR e o `@dono` no CODEOWNERS. O
   `elm_login` é opcional e só a `sa-elm` o lê.
@@ -51,12 +51,12 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
   ou vazio. O próximo id é o maior da série no `backlog.md` + 1, lido depois do pull, e nunca muda: "vira épico" cria
   a linha `EP-nn` com a obs `veio de FT-nnn`, e a FT fica `cancelada · virou EP-nn`.
 - **Status.** Fatia e bug: `nova` → `aceita` → `elegivel` → `em-andamento` → `concluida`, mais `cancelada` e `adiada
-  até <data>`; `em-revisao` não se grava, vem do MR aberto. Épico: `a-moldar` → `em-especificacao` (go) → `fatiado` →
+  até <data>`; `em-revisao` não se grava, vem do MR aberto. Épico: `a-moldar` → `em-especificacao` (investir) → `fatiado` →
   `concluido` · `cancelado`; fecha no merge da última fatia aberta (`sa-desenvolver.encerrar`). Sustentação: `nova` →
   `em-andamento` → `concluida` · `cancelada`.
 - **Prioridade e tamanho.** `prioridade` ∈ {`crítica`, vazio}: crítica é o expedite, pela política do `acordos.md`;
   vazio segue a ordem das linhas. `tamanho` ∈ {`P`, `M`, `G`}: P = horas, M ≈ 1 dia, G = 2 a 3 dias. Maior que G é
-  épico, e só o épico vai ao pitch e ao go/kill.
+  épico, e só o épico vai ao pitch e à decisão de investimento.
 - **Trilhas.** Quem desenvolve escolhe pelo código: `trivial` (sem arquivo de spec, tudo no MR), `rapida` ou `completo`.
   O formato da spec vem do `formato_spec` do `agentes.json` (Kiro ou OpenSpec). A pasta da spec é `ft-<nnn>-<slug>`.
 - **Sustentação.** A categoria é confirmada antes de gravar a triagem e não se recategoriza depois. Quem atende puxa
@@ -68,7 +68,7 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
 
 | Quem | Aprova | Onde fica |
 |---|---|---|
-| `produto` (o P.O.) | go/kill, pitch, PRD e ficha | `Aprovado: <usuário> · <data>` no topo do documento; o que está em aberto bloqueia só o que depende dele |
+| `produto` (o P.O.) | decisão de investimento, pitch, PRD e ficha | `Aprovado: <usuário> · <data>` no topo do documento; o que está em aberto bloqueia só o que depende dele |
 | `especificador` | o arquivo inteiro de cada artefato em `elm/`; publica depois do merge (`sa-elm.publicar`) | `status: stable` e `verified` no frontmatter do arquivo de `elm/` |
 | um `desenvolvedor` ≠ autor | o MR (o CODEOWNERS indica o dono), com o CI verde e a evidência do verificador | o MR |
 | qualquer pessoa | a revisão humana, conforme o risco (`sa-verificar.revisao-humana`) | o MR |
@@ -122,8 +122,8 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 | instalar ou atualizar o Sabiá no projeto, os agentes, o formato da spec, "usa ELM?" · customizar ou descustomizar um passo ou template | `sa-setup` (`sa-setup.configurar` · `sa-setup.customizar`) |
 | onde parei · minha próxima · o estado de `<id>` · pendências (publicação pendente, travas de artefato) · lições aprendidas para a review · fechar a sessão | `sa-status` (`sa-status.painel` · `sa-status.item` · `sa-status.minha-proxima` · `sa-status.pendencias` · `sa-status.licoes-aprendidas` · `sa-status.fechar-sessao`) |
 | registrar uma demanda sem triar · triar a fila das linhas `nova` | `sa-triar` (`sa-triar.cadastrar` · `sa-triar.triar`) |
-| ideia nova, pitch, go/kill · refinamento conjunto, ficha, artefatos afetados e `elm/` da fatia · fatiar o épico · editar, dividir ou cancelar um item pronto | `sa-refinar` (`sa-refinar.moldar` · `sa-refinar.detalhar` · `sa-refinar.fatiar` · `sa-refinar.ajustar`) |
-| escrever o PRD do épico depois do go, ou mudar o PRD | `sa-prd` (`sa-prd.prd`) |
+| ideia nova, pitch, decisão de investimento · refinamento conjunto, ficha, artefatos afetados e `elm/` da fatia · fatiar o épico · editar, dividir ou cancelar um item pronto | `sa-refinar` (`sa-refinar.moldar` · `sa-refinar.detalhar` · `sa-refinar.fatiar` · `sa-refinar.ajustar`) |
+| escrever o PRD do épico depois da decisão de investir, ou mudar o PRD | `sa-prd` (`sa-prd.prd`) |
 | os arquivos de `elm/` da fatia · protótipo de tela e aprovação do cliente · ATA de reunião (transcrição em `.sabia/local/reunioes/`) · archive da spec depois do merge | `sa-especificar` (`sa-especificar.elm` · `sa-especificar.prototipo` · `sa-especificar.reuniao` · `sa-especificar.archive`) |
 | alinhar decisões em rodadas | `sa-entrevistar` (`sa-entrevistar.entrevistar`) |
 | planejamento inicial (`equipe.json`, `acordos.md`) · planejar a sprint, reabastecer, virada · review com curadoria das Regras aprendidas · retrospectiva | `sa-planejamento` (`sa-planejamento.inicial` · `sa-planejamento.sprint` · `sa-planejamento.review` · `sa-planejamento.retrospectiva`) |
@@ -143,7 +143,7 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 | `.sabia/sabia.md` | Resumo do fluxo · Projeto · Especificação · Comandos · Verificação de aceite · Sustentação · ELM · Desvios de toolkit · Tipos com skill de toolkit · Regras aprendidas (gravadas pela curadoria da review) |
 | `.sabia/config/` | `agentes.json` (as escolhas do projeto e a entrada do gerador), `elm/pa_<nome>.json` (da `sa-elm.setup`) e `elk/elk-<ambiente>.json` |
 | `.kiro/agents/` · `.opencode/agents/` | os 5 agentes gerados (e os de toolkit) |
-| `.sabia/planejamento/` | `backlog.md` (id · título · tipo · status · prioridade · tamanho · responsável · pai · relator · ib · obs · aceita_em · iniciada_em · concluida_em), `acordos.md`, `equipe.json`, `roadmap.md`, `sprints/<AAAA>/sprint-<nn>.md` (Item · Trabalho · Responsável · Tarefas), `fatias/FT-<nnn>-<slug>.md`, `epicos/EP-nn-<slug>/` (`pitch.md`; `prd.md` a partir do go), `prototipos/`, `atas/`, `sustentacao/<pasta>/` |
+| `.sabia/planejamento/` | `backlog.md` (id · título · tipo · status · prioridade · tamanho · responsável · pai · relator · ib · obs · aceita_em · iniciada_em · concluida_em), `acordos.md`, `equipe.json`, `roadmap.md`, `sprints/<AAAA>/sprint-<nn>.md` (Item · Trabalho · Responsável · Tarefas), `fatias/FT-<nnn>-<slug>.md`, `epicos/EP-nn-<slug>/` (`pitch.md`; `prd.md` a partir da decisão de investir), `prototipos/`, `atas/`, `sustentacao/<pasta>/` |
 | spec da fatia | `.kiro/specs/ft-<nnn>-<slug>/` ou `openspec/changes/ft-<nnn>-<slug>/`: `status.md`, `research.md`, os arquivos da trilha, `CT.csv` e, com ELM, `elm/`. No OpenSpec, a arquivada fica em `openspec/changes/archive/<AAAA-MM-DD>-ft-<nnn>-<slug>/` |
 | glossário · ADRs · bundle | GL no DOORS, onde há ELM; o `.sabia/glossario.md` é opcional. ADRs em `docs/adr/`, só para decisão que atravessa fatias. O bundle (chave `elm.bundle` do `agentes.json`, ex.: `docs/elm/<pa>/`) é cópia local e nunca é editado |
 | `.sabia/creditos/` | `<usuario>.csv` com os créditos do Kiro por sessão |

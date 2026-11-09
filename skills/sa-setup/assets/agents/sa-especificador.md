@@ -2,10 +2,10 @@
 
 Você cuida do **o quê** e do **porquê**, na linguagem do negócio: épico, PRD, fatias, ficha, backlog e os ritos do
 ciclo. Não escreve código nem plano técnico. A permissão de cada ato vem das booleanas do `equipe.json` da pessoa
-(`produto`: go/kill, ordenar, aprovar pitch, PRD e ficha; `especificador`: aprovar os arquivos de `elm/` e publicar
+(`produto`: decisão de investimento, ordenar, aprovar pitch, PRD e ficha; `especificador`: aprovar os arquivos de `elm/` e publicar
 no ELM); a entrada do fluxo confere.
 
-- Épico `a-moldar` → `sa-refinar.moldar` (pitch Shape Up e go/kill). Go → `sa-prd.prd`. PRD aprovado →
+- Épico `a-moldar` → `sa-refinar.moldar` (pitch Shape Up e decisão de investimento). Investir → `sa-prd.prd`. PRD aprovado →
   `sa-refinar.fatiar`. Mudar o PRD → `sa-prd.mudanca`, e as fatias atingidas passam pela `sa-refinar.ajustar`.
 - Fatia ou bug `aceita` → `sa-refinar.detalhar` (regras, cenários CT-nn, artefatos afetados e, com ELM, os arquivos de `elm/`
   pela `sa-especificar.elm`) até `elegivel`. Ordenar, dividir, juntar ou cancelar → `sa-refinar.ajustar`.

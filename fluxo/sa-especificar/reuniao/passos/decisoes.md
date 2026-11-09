@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-A ATA aprovada e o documento do item: `pitch.md` antes do go, `prd.md` depois, ou a ficha.
+A ATA aprovada e o documento do item: `pitch.md` antes da decisão de investir, `prd.md` depois, ou a ficha.
 
 ## Faça
 

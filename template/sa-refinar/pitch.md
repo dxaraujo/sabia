@@ -1,10 +1,10 @@
 ---
-{"resumo": "Pitch do épico (Shape Up), uma página: Aprovado no topo, problema, limite de investimento, solução em traços, riscos, não objetivos, Decisões, Em aberto e a Decisão go/kill."}
+{"resumo": "Pitch do épico (Shape Up), uma página: Aprovado no topo, problema, limite de investimento, solução em traços, riscos, não objetivos, Decisões, Em aberto e a decisão de investimento."}
 ---
 # Pitch — `.sabia/planejamento/epicos/EP-<nn>-<slug>/pitch.md`
 
-Uma página, escrita na moldagem do épico, direto na branch base. A pasta do épico nasce com ele, e o `prd.md` nasce no go.
-No kill, a pasta fica.
+Uma página, escrita na moldagem do épico, direto na branch base. A pasta do épico nasce com ele, e o `prd.md` nasce ao investir.
+Ao cancelar, a pasta fica.
 
 ## Formato
 
@@ -38,7 +38,7 @@ Clientes com parcelas atrasadas ligam para a central para renegociar: 3.000 liga
 ## Em aberto
 | Pergunta | Para quem | Bloqueia |
 |---|---|---|
-| Desconto máximo na renegociação? | ana.souza | go |
+| Desconto máximo na renegociação? | ana.souza | investir |
 
 ## Decisão
 ```
@@ -54,5 +54,5 @@ Clientes com parcelas atrasadas ligam para a central para renegociar: 3.000 liga
 | Riscos | lista dos buracos de coelho conhecidos | `sa-refinar.moldar` |
 | Não objetivos | lista do que fica fora | `sa-refinar.moldar` |
 | Decisões | tabela `D-nn \| Decisão \| Quem \| Quando \| Fonte`; `D-nn` sequencial (continua no `prd.md`); Quem = `<nome> (<papel>)` ou `suposição`; Quando = AAAA-MM-DD; Fonte ∈ `conversa` · `ATA-nn` · `e-mail` · `protótipo v<N>` | `sa-refinar.moldar` · `sa-entrevistar.entrevistar` · `sa-especificar.reuniao` · `sa-especificar.prototipo` |
-| Em aberto | tabela `Pergunta \| Para quem \| Bloqueia`, com Bloqueia ∈ `go` · `<sigla>-<id>` · `nada` (inclui `aprovação do cliente da v<N>`) | `sa-refinar.moldar` · `sa-especificar.prototipo` |
-| Decisão | `Decisão: go` · `Decisão: kill · <motivo>`; vazia até o go/kill | `sa-refinar.moldar` |
+| Em aberto | tabela `Pergunta \| Para quem \| Bloqueia`, com Bloqueia ∈ `investir` · `<sigla>-<id>` · `nada` (inclui `aprovação do cliente da v<N>`) | `sa-refinar.moldar` · `sa-especificar.prototipo` |
+| Decisão | `Decisão: investir` · `Decisão: cancelar · <motivo>`; vazia até a decisão de investimento | `sa-refinar.moldar` |

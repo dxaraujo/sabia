@@ -1,5 +1,5 @@
 {
- "geral": "Sabiá 2.1 · 7 disciplinas · 5 agentes (principais sa-desenvolvedor · sa-especificador; subagentes sa-pesquisador · sa-revisor · sa-verificador) · alvos Kiro e opencode\npapéis = booleanas no equipe.json · identidade = usuário do GitLab\n   qualquer pessoa ── cadastro · triagem · revisão humana\n   desenvolvedor ──── puxa para desenvolvimento · revisa MR de outro autor\n   especificador ──── aprova os arquivos de elm/ · publica no ELM\n   produto ────────── go/kill · ordena · aprova pitch, PRD e ficha\n\ndemanda ─► fluxo/cadastro.md (toda skill que cadastro · entrada direta: sa-triar.cadastrar)\n   │        tipo ∈ épico · fatia · bug · sustentação        id: EP-nn · FT-nnn · <categoria>-nnn\n   └─► 1 TRIAGEM ─────────── sa-triar.triar                       (qualquer pessoa)\n        ├─ épico ──────────► 2 REFINAMENTO   sa-refinar.moldar: pitch.md ─► go/kill (produto)\n        │                      └─ go ─► 4 ESPECIFICAÇÃO   sa-prd.prd: prd.md aprovado (produto)\n        │                               └─► sa-refinar.fatiar ─► fatias FT-nnn (pai EP-nn)\n        ├─ fatia · bug ────► 2 REFINAMENTO   sa-refinar.detalhar: ficha (regras · CT-nn · Artefatos afetados) [+ elm/] ─► elegível\n        │                      └─ sa-refinar.ajustar até alguém puxar\n        └─ sustentação ────► 7 SUSTENTAÇÃO   sa-atender.atender (quem atende puxa, dentro da reserva de capacidade)\n\n3 PLANEJAMENTO ────── sa-planejamento.inicial · .sprint (virada) · .review · .retrospectiva\n                      daily: sa-status.painel (WIP · vazão · idade · lead time · pendências de rastreio)\n5 DESENVOLVIMENTO ─── sa-desenvolver.iniciar ─► [sa-plano.plano: rápida · completo] ─► sa-desenvolver.codificar ─► MR\n                      quem codifica, ao assumir: IA supervisionada · IA autopilot (sa-desenvolvedor como subagente na worktree .sabia/local/wt/<id>) · manual\n6 REVISÃO E ACEITE ── sa-verificar.verificar · sa-revisar.mr (desenvolvedor ≠ autor) · [sa-verificar.revisao-humana, por risco]\n                      └─► sa-desenvolver.encerrar (merge) ─► sa-especificar.archive ─► Lições aprendidas ─► curadoria na review\n\nestado (linhas do backlog.md e do sprint-<nn>.md): commit pequeno direto na branch base · fluxo/commit-na-branch-base.md\ndocumentos (pitch.md · prd.md · ficha · elm/): direto na branch base, com 'Aprovado: <usuário> · <data>'\nMR: só para código (com o delta da spec, design e tasks)\n\n══════════════════ borda ══════════════════\nELM = sa-elm (DOORS + EWM). Só com ELM configurado; a skill do trabalho oferece e nunca trava.\n   assumir ──────────► sa-elm.item (tarefa DEV · ESP · ATD)\n   horas ────────────► sa-elm.horas (só por pergunta ou pedido)\n   concluir ─────────► sa-elm.finalizar\n   refinamento ──────► sa-elm.baixar (original do DOORS em elm/)\n   depois do merge ──► sa-elm.publicar (especificador; sem a booleana: 'Publicação: pendente')\nsem ELM: nenhuma oferta aparece · especificação vigente no repositório (OpenSpec: archive funde o delta · Kiro: .kiro/specs/)",
+ "geral": "Sabiá 2.1 · 7 disciplinas · 5 agentes (principais sa-desenvolvedor · sa-especificador; subagentes sa-pesquisador · sa-revisor · sa-verificador) · alvos Kiro e opencode\npapéis = booleanas no equipe.json · identidade = usuário do GitLab\n   qualquer pessoa ── cadastro · triagem · revisão humana\n   desenvolvedor ──── puxa para desenvolvimento · revisa MR de outro autor\n   especificador ──── aprova os arquivos de elm/ · publica no ELM\n   produto ────────── decisão de investimento · ordena · aprova pitch, PRD e ficha\n\ndemanda ─► fluxo/cadastro.md (toda skill que cadastro · entrada direta: sa-triar.cadastrar)\n   │        tipo ∈ épico · fatia · bug · sustentação        id: EP-nn · FT-nnn · <categoria>-nnn\n   └─► 1 TRIAGEM ─────────── sa-triar.triar                       (qualquer pessoa)\n        ├─ épico ──────────► 2 REFINAMENTO   sa-refinar.moldar: pitch.md ─► decisão de investimento (produto)\n        │                      └─ investir ─► 4 ESPECIFICAÇÃO   sa-prd.prd: prd.md aprovado (produto)\n        │                               └─► sa-refinar.fatiar ─► fatias FT-nnn (pai EP-nn)\n        ├─ fatia · bug ────► 2 REFINAMENTO   sa-refinar.detalhar: ficha (regras · CT-nn · Artefatos afetados) [+ elm/] ─► elegível\n        │                      └─ sa-refinar.ajustar até alguém puxar\n        └─ sustentação ────► 7 SUSTENTAÇÃO   sa-atender.atender (quem atende puxa, dentro da reserva de capacidade)\n\n3 PLANEJAMENTO ────── sa-planejamento.inicial · .sprint (virada) · .review · .retrospectiva\n                      daily: sa-status.painel (WIP · vazão · idade · lead time · pendências de rastreio)\n5 DESENVOLVIMENTO ─── sa-desenvolver.iniciar ─► [sa-plano.plano: rápida · completo] ─► sa-desenvolver.codificar ─► MR\n                      quem codifica, ao assumir: IA supervisionada · IA autopilot (sa-desenvolvedor como subagente na worktree .sabia/local/wt/<id>) · manual\n6 REVISÃO E ACEITE ── sa-verificar.verificar · sa-revisar.mr (desenvolvedor ≠ autor) · [sa-verificar.revisao-humana, por risco]\n                      └─► sa-desenvolver.encerrar (merge) ─► sa-especificar.archive ─► Lições aprendidas ─► curadoria na review\n\nestado (linhas do backlog.md e do sprint-<nn>.md): commit pequeno direto na branch base · fluxo/commit-na-branch-base.md\ndocumentos (pitch.md · prd.md · ficha · elm/): direto na branch base, com 'Aprovado: <usuário> · <data>'\nMR: só para código (com o delta da spec, design e tasks)\n\n══════════════════ borda ══════════════════\nELM = sa-elm (DOORS + EWM). Só com ELM configurado; a skill do trabalho oferece e nunca trava.\n   assumir ──────────► sa-elm.item (tarefa DEV · ESP · ATD)\n   horas ────────────► sa-elm.horas (só por pergunta ou pedido)\n   concluir ─────────► sa-elm.finalizar\n   refinamento ──────► sa-elm.baixar (original do DOORS em elm/)\n   depois do merge ──► sa-elm.publicar (especificador; sem a booleana: 'Publicação: pendente')\nsem ELM: nenhuma oferta aparece · especificação vigente no repositório (OpenSpec: archive funde o delta · Kiro: .kiro/specs/)",
  "principios": [
   [
    "O mercado é o padrão",
@@ -7,7 +7,7 @@
   ],
   [
    "Papéis são permissões",
-   "equipe.json com booleanas. desenvolvedor: puxa item para desenvolvimento e revisa MR de outro autor. especificador: aprova os arquivos de elm/ e publica no ELM. produto: go/kill, ordena, aprova pitch, PRD e ficha. Cadastro, triagem e revisão humana: qualquer pessoa. Nenhuma regra depende de senioridade."
+   "equipe.json com booleanas. desenvolvedor: puxa item para desenvolvimento e revisa MR de outro autor. especificador: aprova os arquivos de elm/ e publica no ELM. produto: decisão de investimento, ordena, aprova pitch, PRD e ficha. Cadastro, triagem e revisão humana: qualquer pessoa. Nenhuma regra depende de senioridade."
   ],
   [
    "Identidade = GitLab",
@@ -87,7 +87,7 @@
     ],
     [
      "Tamanho",
-     "tamanho ∈ {P, M, G}: P = horas, M ≈ 1 dia, G = 2–3 dias (linha Tamanhos do acordos.md). Maior que G é épico; só o épico vai ao pitch e ao go/kill."
+     "tamanho ∈ {P, M, G}: P = horas, M ≈ 1 dia, G = 2–3 dias (linha Tamanhos do acordos.md). Maior que G é épico; só o épico vai ao pitch e à decisão de investimento."
     ],
     [
      "Agora não",
@@ -110,8 +110,8 @@
   {
    "k": "refinamento",
    "nome": "Refinamento",
-   "resumo": "Mesma estrutura do mercado: Shape Up para o épico (pitch e go/kill) e refinamento conjunto para a fatia e o bug (ficha com regras, cenários e artefatos afetados). O Sabiá acrescenta os artefatos afetados com a versão de referência e, com ELM, a pasta elm/ com os artefatos brownfield alterados, aprovados pelo especificador. A ficha é aprovada pelo produto e fica 'elegivel'.",
-   "arvore": "item da triagem\n ├─ épico (a-moldar) ─► sa-refinar.moldar   (produto + Dev)\n │     .sabia/planejamento/epicos/EP-nn-<slug>/pitch.md, direto na branch base\n │     pitch: problema · limite de investimento · solução em traços · riscos · não objetivos · go/kill · Decisões\n │     ├─ kill (produto) ─► cancelado · obs 'não investir: <motivo>' · a pasta fica ─► fim\n │     └─ go (produto) ─► 'Aprovado: <usuário> · <data>' no pitch.md · em-especificacao\n │           ─► sa-prd.prd (Especificação): prd.md aprovado pelo produto\n │           ─► sa-refinar.fatiar   (especificador + Dev; fatos pela sa-pesquisar.pesquisar)\n │                 rascunho de fatias verticais P · M · G ─► produto aprova e ordena\n │                 ─► linhas FT-nnn 'aceita' · pai EP-nn · fichas ─► épico 'fatiado'\n │                 ─► oferece sa-refinar.detalhar\n ├─ fatia · bug (aceita) ─► sa-refinar.detalhar   (especificador + Dev [+ QA · UX])\n │     bug sem requisito tocado: o Dev sozinho; ficha curta: passos · atual · esperado · reproduzido?\n │     ficha: regras · cenários CT-nn · Artefatos afetados (<sigla>-<id> · inclui | altera | exclui · versão de referência)   ✚\n │     com ELM e artefatos afetados: sa-especificar.elm monta a pasta elm/ na pasta da spec, direto na branch base   ✚\n │        .kiro/specs/ft-<nnn>-<slug>/elm/ | openspec/changes/ft-<nnn>-<slug>/elm/\n │        autonomia da especificação: IA supervisionada · IA autopilot · manual (grava Especificação na ficha)\n │        sa-elm.baixar: original do DOORS ─► commit de referência (original + versão de referência)\n │        IA: edita e o especificador aprova o arquivo inteiro (HF · UC · REG · MSG · EL · GL)\n │        manual: altera no DOORS ─► 'alterei' ─► sincroniza (elm/, versão de referência, delta, Publicado) ─► aprova\n │        requisito novo: EP03-01-<tipo>-<slug>.md · id provisório <sigla>-<EP ou FT>-nn\n │        artefato já em elm/ de outra fatia ─► esta fica bloqueada até a outra ficar cancelada ou publicada\n │     ├─ dúvida grande ─► spike (sa-pesquisar.pesquisar) · sa-especificar.prototipo\n │     │                  · sa-especificar.reuniao (ATA) ─► volta ao detalhar\n │     ├─ regra sem fonte ─► sa-entrevistar.entrevistar com o produto ─► volta ao detalhar\n │     │                    em aberto bloqueia só o que depende dela\n │     ├─ maior que G ────► vira épico (EP-nn a-moldar · FT 'cancelada · virou EP-nn') ─► sa-refinar.moldar\n │     ├─ muitas regras ──► sa-refinar.ajustar (dividir, 'veio de FT-nnn')\n │     └─ ok ─► DoR (checklist do template da ficha) ─► produto aprova: 'Aprovado: <usuário> · <data>'\n │              ─► 'elegivel' (fluxo/commit-na-branch-base.md) ─► fim: entra na seleção (sa-planejamento.sprint)\n └─ sa-refinar.ajustar   até alguém puxar (status antes de em-andamento)\n       dividir · juntar ('veio de FT-nnn') · editar · cancelar fatia ou épico\n       ─► grava por fluxo/commit-na-branch-base.md ─► oferece seguir",
+   "resumo": "Mesma estrutura do mercado: Shape Up para o épico (pitch e decisão de investimento) e refinamento conjunto para a fatia e o bug (ficha com regras, cenários e artefatos afetados). O Sabiá acrescenta os artefatos afetados com a versão de referência e, com ELM, a pasta elm/ com os artefatos brownfield alterados, aprovados pelo especificador. A ficha é aprovada pelo produto e fica 'elegivel'.",
+   "arvore": "item da triagem\n ├─ épico (a-moldar) ─► sa-refinar.moldar   (produto + Dev)\n │     .sabia/planejamento/epicos/EP-nn-<slug>/pitch.md, direto na branch base\n │     pitch: problema · limite de investimento · solução em traços · riscos · não objetivos · decisão de investimento · Decisões\n │     ├─ cancelar (produto) ─► cancelado · obs 'não investir: <motivo>' · a pasta fica ─► fim\n │     └─ investir (produto) ─► 'Aprovado: <usuário> · <data>' no pitch.md · em-especificacao\n │           ─► sa-prd.prd (Especificação): prd.md aprovado pelo produto\n │           ─► sa-refinar.fatiar   (especificador + Dev; fatos pela sa-pesquisar.pesquisar)\n │                 rascunho de fatias verticais P · M · G ─► produto aprova e ordena\n │                 ─► linhas FT-nnn 'aceita' · pai EP-nn · fichas ─► épico 'fatiado'\n │                 ─► oferece sa-refinar.detalhar\n ├─ fatia · bug (aceita) ─► sa-refinar.detalhar   (especificador + Dev [+ QA · UX])\n │     bug sem requisito tocado: o Dev sozinho; ficha curta: passos · atual · esperado · reproduzido?\n │     ficha: regras · cenários CT-nn · Artefatos afetados (<sigla>-<id> · inclui | altera | exclui · versão de referência)   ✚\n │     com ELM e artefatos afetados: sa-especificar.elm monta a pasta elm/ na pasta da spec, direto na branch base   ✚\n │        .kiro/specs/ft-<nnn>-<slug>/elm/ | openspec/changes/ft-<nnn>-<slug>/elm/\n │        autonomia da especificação: IA supervisionada · IA autopilot · manual (grava Especificação na ficha)\n │        sa-elm.baixar: original do DOORS ─► commit de referência (original + versão de referência)\n │        IA: edita e o especificador aprova o arquivo inteiro (HF · UC · REG · MSG · EL · GL)\n │        manual: altera no DOORS ─► 'alterei' ─► sincroniza (elm/, versão de referência, delta, Publicado) ─► aprova\n │        requisito novo: EP03-01-<tipo>-<slug>.md · id provisório <sigla>-<EP ou FT>-nn\n │        artefato já em elm/ de outra fatia ─► esta fica bloqueada até a outra ficar cancelada ou publicada\n │     ├─ dúvida grande ─► spike (sa-pesquisar.pesquisar) · sa-especificar.prototipo\n │     │                  · sa-especificar.reuniao (ATA) ─► volta ao detalhar\n │     ├─ regra sem fonte ─► sa-entrevistar.entrevistar com o produto ─► volta ao detalhar\n │     │                    em aberto bloqueia só o que depende dela\n │     ├─ maior que G ────► vira épico (EP-nn a-moldar · FT 'cancelada · virou EP-nn') ─► sa-refinar.moldar\n │     ├─ muitas regras ──► sa-refinar.ajustar (dividir, 'veio de FT-nnn')\n │     └─ ok ─► DoR (checklist do template da ficha) ─► produto aprova: 'Aprovado: <usuário> · <data>'\n │              ─► 'elegivel' (fluxo/commit-na-branch-base.md) ─► fim: entra na seleção (sa-planejamento.sprint)\n └─ sa-refinar.ajustar   até alguém puxar (status antes de em-andamento)\n       dividir · juntar ('veio de FT-nnn') · editar · cancelar fatia ou épico\n       ─► grava por fluxo/commit-na-branch-base.md ─► oferece seguir",
    "regras": [
     [
      "Quem refina",
@@ -119,11 +119,11 @@
     ],
     [
      "Épico antes do PRD",
-     "Pitch de uma página (Shape Up) e go/kill do produto. A pasta EP-nn-<slug>/ nasce no shaping com o pitch.md, e o prd.md nasce no go. No kill, o épico fica 'cancelado' e a pasta permanece."
+     "Pitch de uma página (Shape Up) e decisão de investimento do produto. A pasta EP-nn-<slug>/ nasce no shaping com o pitch.md, e o prd.md nasce ao investir. Ao cancelar, o épico fica 'cancelado' e a pasta permanece."
     ],
     [
      "Status do épico",
-     "a-moldar → em-especificacao (go) → fatiado → concluido · cancelado. Fecha no merge da última fatia aberta (sa-desenvolver.encerrar)."
+     "a-moldar → em-especificacao (investir) → fatiado → concluido · cancelado. Fecha no merge da última fatia aberta (sa-desenvolver.encerrar)."
     ],
     [
      "Status da fatia e do bug",
@@ -147,7 +147,7 @@
     ],
     [
      "Decisões",
-     "Vão na seção Decisões do pitch.md (antes do go), do prd.md (depois) e da ficha (fatia), sempre em tabela D-nn | Decisão | Quem | Quando | Fonte. Não existe decisoes.md."
+     "Vão na seção Decisões do pitch.md (antes da decisão de investir), do prd.md (depois) e da ficha (fatia), sempre em tabela D-nn | Decisão | Quem | Quando | Fonte. Não existe decisoes.md."
     ],
     [
      "Fatia depois de elegível",
@@ -214,8 +214,8 @@
   {
    "k": "especificacao",
    "nome": "Especificação",
-   "resumo": "O épico ganha o PRD (sa-prd.prd) depois do go. A fatia é especificada na ficha e na pasta elm/ do refinamento, e o texto aprovado é copiado para o delta da spec no desenvolvimento. O delta sempre traz o texto completo dos requisitos tocados, com ou sem ELM. Depois do merge, o archive fecha a spec e oferece a publicação no DOORS.",
-   "arvore": "épico (go no pitch.md) ─► sa-prd.prd   (especificador escreve · produto aprova)\n   ler o existente só no trecho tocado: specs vigentes ─► bundle local ─► ELM ao vivo (leitura)\n   esclarecer: sa-entrevistar.entrevistar (até 5 perguntas por rodada, com recomendação)\n      regra de negócio: vale a decisão de uma pessoa, com quem e quando; o agente nunca inventa\n   prd.md: objetivos · métricas · requisitos com id · não objetivos · Decisões\n      id: <sigla>-<id do ELM> no existente · <sigla>-<EP ou FT>-nn provisório no novo   ✚\n      alteração: inclui · altera · exclui, por requisito, com a versão de referência   ✚\n   validar: sabia validar-spec (pendente; avisa, não trava)\n   produto aprova: 'Aprovado: <usuário> · <data>' no prd.md, direto na branch base ─► oferece sa-refinar.fatiar\n   mudança depois da aprovação: sa-prd.mudanca no mesmo prd.md (nova versão e nova aprovação)\n      ─► sa-refinar.ajustar nas fatias atingidas\nfatia ─► ficha e elm/ no sa-refinar.detalhar (Refinamento) · autonomia: IA supervisionada · IA autopilot · manual (direto no DOORS)\ndesenvolvimento ─► sa-plano.plano copia o texto aprovado para o delta, sem reescrever\n   delta = texto completo de cada requisito tocado, como se não houvesse ELM\n      OpenSpec: specs/<cap>/spec.md com ADDED · MODIFIED · REMOVED\n      Kiro: requirements.md ou bugfix.md com o bloco completo de cada requisito\n   texto precisa mudar ─► Em aberto ao especificador (com ELM, sa-especificar.elm) ─► sa-plano.replanejar recopia\n   DOORS mudou desde o commit de referência ─► especificador decide: sa-elm.baixar de novo e mesclar\ndepois do merge ─► sa-especificar.archive   (chamada pela sa-desenvolver.encerrar)\n   ├─ trivial ou sem delta ─► nada a arquivar ─► devolve\n   ├─ sem ELM ─► OpenSpec: openspec archive <ft> --yes (funde na especificação vigente)\n   │            Kiro: o vigente são as specs em .kiro/specs/ ─► devolve\n   └─ com ELM ─► OpenSpec: openspec archive <ft> --skip-specs --yes · 'publicar no DOORS?'\n         ├─ especificador ─► sa-elm.publicar ─► 'Publicação: publicada <data>' no status.md arquivado\n         │     confere a versão de cada artefato (mudou ─► avisa e pula) · cria os novos\n         │     artefato pulado ─► sa-especificar.elm refaz a mescla (fatia concluida · 'Publicação: pendente') ─► publica de novo\n         │     renomeia <id do ELM>-<tipo>-<slug>.md e troca o id provisório no PRD, nas fichas e no delta\n         │     ET as-built, onde o projeto mantém ET\n         └─ sem a booleana ─► 'Publicação: pendente' ─► sa-status.painel mostra ─► especificador roda sa-elm.publicar\nferramentas a pedido: sa-especificar.prototipo (vale com a aprovação do cliente) · sa-especificar.reuniao (ATA opcional)",
+   "resumo": "O épico ganha o PRD (sa-prd.prd) depois da decisão de investir. A fatia é especificada na ficha e na pasta elm/ do refinamento, e o texto aprovado é copiado para o delta da spec no desenvolvimento. O delta sempre traz o texto completo dos requisitos tocados, com ou sem ELM. Depois do merge, o archive fecha a spec e oferece a publicação no DOORS.",
+   "arvore": "épico (investir no pitch.md) ─► sa-prd.prd   (especificador escreve · produto aprova)\n   ler o existente só no trecho tocado: specs vigentes ─► bundle local ─► ELM ao vivo (leitura)\n   esclarecer: sa-entrevistar.entrevistar (até 5 perguntas por rodada, com recomendação)\n      regra de negócio: vale a decisão de uma pessoa, com quem e quando; o agente nunca inventa\n   prd.md: objetivos · métricas · requisitos com id · não objetivos · Decisões\n      id: <sigla>-<id do ELM> no existente · <sigla>-<EP ou FT>-nn provisório no novo   ✚\n      alteração: inclui · altera · exclui, por requisito, com a versão de referência   ✚\n   validar: sabia validar-spec (pendente; avisa, não trava)\n   produto aprova: 'Aprovado: <usuário> · <data>' no prd.md, direto na branch base ─► oferece sa-refinar.fatiar\n   mudança depois da aprovação: sa-prd.mudanca no mesmo prd.md (nova versão e nova aprovação)\n      ─► sa-refinar.ajustar nas fatias atingidas\nfatia ─► ficha e elm/ no sa-refinar.detalhar (Refinamento) · autonomia: IA supervisionada · IA autopilot · manual (direto no DOORS)\ndesenvolvimento ─► sa-plano.plano copia o texto aprovado para o delta, sem reescrever\n   delta = texto completo de cada requisito tocado, como se não houvesse ELM\n      OpenSpec: specs/<cap>/spec.md com ADDED · MODIFIED · REMOVED\n      Kiro: requirements.md ou bugfix.md com o bloco completo de cada requisito\n   texto precisa mudar ─► Em aberto ao especificador (com ELM, sa-especificar.elm) ─► sa-plano.replanejar recopia\n   DOORS mudou desde o commit de referência ─► especificador decide: sa-elm.baixar de novo e mesclar\ndepois do merge ─► sa-especificar.archive   (chamada pela sa-desenvolver.encerrar)\n   ├─ trivial ou sem delta ─► nada a arquivar ─► devolve\n   ├─ sem ELM ─► OpenSpec: openspec archive <ft> --yes (funde na especificação vigente)\n   │            Kiro: o vigente são as specs em .kiro/specs/ ─► devolve\n   └─ com ELM ─► OpenSpec: openspec archive <ft> --skip-specs --yes · 'publicar no DOORS?'\n         ├─ especificador ─► sa-elm.publicar ─► 'Publicação: publicada <data>' no status.md arquivado\n         │     confere a versão de cada artefato (mudou ─► avisa e pula) · cria os novos\n         │     artefato pulado ─► sa-especificar.elm refaz a mescla (fatia concluida · 'Publicação: pendente') ─► publica de novo\n         │     renomeia <id do ELM>-<tipo>-<slug>.md e troca o id provisório no PRD, nas fichas e no delta\n         │     ET as-built, onde o projeto mantém ET\n         └─ sem a booleana ─► 'Publicação: pendente' ─► sa-status.painel mostra ─► especificador roda sa-elm.publicar\nferramentas a pedido: sa-especificar.prototipo (vale com a aprovação do cliente) · sa-especificar.reuniao (ATA opcional)",
    "regras": [
     [
      "Onde mora o vigente",
@@ -475,12 +475,12 @@
   {
    "skill": "sa-refinar",
    "destino_skill": "nova",
-   "papel": "O refinamento do backlog. Tem quatro fluxos: moldar o épico (pitch do Shape Up e go/kill), detalhar a fatia ou o bug com o refinamento conjunto (regras, cenários CT-nn, artefatos afetados e a pasta elm/), fatiar o PRD aprovado e ajustar as fatias até alguém puxar. Qualquer pessoa conduz. Quem tem produto decide o go/kill, ordena e aprova pitch, ficha e fatias. Quem tem especificador aprova os arquivos de elm/. Tudo vai direto na branch base pela fluxo/commit-na-branch-base.md. Absorve a sa-fatiar. O PRD fica na sa-prd.",
+   "papel": "O refinamento do backlog. Tem quatro fluxos: moldar o épico (pitch do Shape Up e decisão de investimento), detalhar a fatia ou o bug com o refinamento conjunto (regras, cenários CT-nn, artefatos afetados e a pasta elm/), fatiar o PRD aprovado e ajustar as fatias até alguém puxar. Qualquer pessoa conduz. Quem tem produto decide a decisão de investimento, ordena e aprova pitch, ficha e fatias. Quem tem especificador aprova os arquivos de elm/. Tudo vai direto na branch base pela fluxo/commit-na-branch-base.md. Absorve a sa-fatiar. O PRD fica na sa-prd.",
    "fluxos": [
     {
      "fluxo": "moldar",
      "destino": "novo",
-     "resumo": "Épico a-moldar → pitch.md de uma página (problema · limite de investimento · solução em traços · riscos · não objetivos) → go/kill de quem tem produto → go: em-especificacao e 'seguir para o PRD?' (sa-prd.prd); kill: cancelado, pasta mantida.",
+     "resumo": "Épico a-moldar → pitch.md de uma página (problema · limite de investimento · solução em traços · riscos · não objetivos) → decisão de investimento de quem tem produto → investir: em-especificacao e 'seguir para o PRD?' (sa-prd.prd); cancelar: cancelado, pasta mantida.",
      "passos": [
       {
        "passo": "entrada",
@@ -489,17 +489,17 @@
       },
       {
        "passo": "pitch",
-       "texto": "Escreve .sabia/planejamento/epicos/EP-nn-<slug>/pitch.md, pelo template sa-refinar/pitch.md. A pasta nasce aqui. No topo, a linha 'Aprovado: —'. Seções, em uma página: Problema · Limite de investimento (<n> semanas) · Solução em traços · Riscos · Não objetivos · Decisões (as tomadas antes do go, em tabela D-nn | Decisão | Quem | Quando | Fonte) · Em aberto (pergunta · para quem · bloqueia) · Decisão (vazia até o passo decisao). As perguntas vão pela sa-entrevistar.entrevistar (até 5 por rodada, cada uma com recomendação), que busca os fatos pela sa-pesquisar. Vigente: specs arquivadas → bundle (docs/elm/<pa>/). Sem bundle, oferece a sa-elm.baixar. Bundle desatualizado (sincronizado_em anterior à última 'Publicação: publicada'): mostra a data e pergunta se baixa. Dúvida que só o cliente resolve: oferece a sa-especificar.prototipo, que devolve aqui. Regra sem fonte fica em aberto (trava decisao-da-pessoa). Ao fim de cada sessão, grava o pitch.md pela fluxo/commit-na-branch-base.md ('EP-nn pitch').",
+       "texto": "Escreve .sabia/planejamento/epicos/EP-nn-<slug>/pitch.md, pelo template sa-refinar/pitch.md. A pasta nasce aqui. No topo, a linha 'Aprovado: —'. Seções, em uma página: Problema · Limite de investimento (<n> semanas) · Solução em traços · Riscos · Não objetivos · Decisões (as tomadas antes da decisão de investir, em tabela D-nn | Decisão | Quem | Quando | Fonte) · Em aberto (pergunta · para quem · bloqueia) · Decisão (vazia até o passo decisao). As perguntas vão pela sa-entrevistar.entrevistar (até 5 por rodada, cada uma com recomendação), que busca os fatos pela sa-pesquisar. Vigente: specs arquivadas → bundle (docs/elm/<pa>/). Sem bundle, oferece a sa-elm.baixar. Bundle desatualizado (sincronizado_em anterior à última 'Publicação: publicada'): mostra a data e pergunta se baixa. Dúvida que só o cliente resolve: oferece a sa-especificar.prototipo, que devolve aqui. Regra sem fonte fica em aberto (trava decisao-da-pessoa). Ao fim de cada sessão, grava o pitch.md pela fluxo/commit-na-branch-base.md ('EP-nn pitch').",
        "destino": "novo"
       },
       {
        "passo": "decisao",
-       "texto": "O go/kill é de quem tem produto no equipe.json. Sem essa pessoa na sessão: mostra os nomes com produto e vai ao seguir (o épico fica a-moldar). Go: status em-especificacao; no pitch.md, 'Decisão: go' e, na linha do topo, 'Aprovado: <usuário> · <data>'. Kill: status cancelado, obs 'não investir: <motivo>'; no pitch.md, 'Decisão: kill · <motivo>' e, na linha do topo, 'Aprovado: <usuário> · <data>'; a pasta fica. Cabe em G (não é épico): nasce a fatia, já aceita, pela fluxo/cadastro.md, com 'veio de EP-nn', e o épico fica cancelado com 'virou FT-nnn'. Status, obs e pitch.md vão num commit pela fluxo/commit-na-branch-base.md ('EP-nn go' ou 'EP-nn kill').",
+       "texto": "A decisão de investimento é de quem tem produto no equipe.json. Sem essa pessoa na sessão: mostra os nomes com produto e vai ao seguir (o épico fica a-moldar). Investir: status em-especificacao; no pitch.md, 'Decisão: investir' e, na linha do topo, 'Aprovado: <usuário> · <data>'. Cancelar: status cancelado, obs 'não investir: <motivo>'; no pitch.md, 'Decisão: cancelar · <motivo>' e, na linha do topo, 'Aprovado: <usuário> · <data>'; a pasta fica. Cabe em G (não é épico): nasce a fatia, já aceita, pela fluxo/cadastro.md, com 'veio de EP-nn', e o épico fica cancelado com 'virou FT-nnn'. Status, obs e pitch.md vão num commit pela fluxo/commit-na-branch-base.md ('EP-nn investir' ou 'EP-nn cancelar').",
        "destino": "novo"
       },
       {
        "passo": "seguir",
-       "texto": "Go: oferece 'seguir para o PRD?' (sa-prd.prd, que cria o prd.md na pasta do épico) na mesma sessão. Kill: oferece moldar o próximo épico a-moldar, na ordem do backlog.md. Fatia do 'cabe em G': oferece 'seguir para o detalhar?' (sa-refinar.detalhar). Sem decisão: fim, com 'o pitch está na branch base; o go/kill é de <nomes com produto>'.",
+       "texto": "Investir: oferece 'seguir para o PRD?' (sa-prd.prd, que cria o prd.md na pasta do épico) na mesma sessão. Cancelar: oferece moldar o próximo épico a-moldar, na ordem do backlog.md. Fatia do 'cabe em G': oferece 'seguir para o detalhar?' (sa-refinar.detalhar). Sem decisão: fim, com 'o pitch está na branch base; a decisão de investimento é de <nomes com produto>'.",
        "destino": "novo"
       }
      ]
@@ -659,7 +659,7 @@
       },
       {
        "passo": "equipe",
-       "texto": "Propõe .sabia/planejamento/equipe.json com membros[] = {nome, usuario (usuário do GitLab: o autor do MR e o @dono no CODEOWNERS), elm_login (opcional, perguntado só se o sabia.md tem a seção ELM, lido só pela sa-elm), desenvolvedor, especificador, produto (booleanas), horas_semana, ausencias[{inicio, fim}] (AAAA-MM-DD), ativo}. Quem sai do time fica ativo: false e nunca é apagado. Valida contra o equipe.schema.json e avisa se nenhum membro ativo tem produto (ninguém aprovaria go/kill, PRD e ficha) ou se só um tem desenvolvedor (o revisor do MR precisa ser outro desenvolvedor). Grava junto com os acordos.",
+       "texto": "Propõe .sabia/planejamento/equipe.json com membros[] = {nome, usuario (usuário do GitLab: o autor do MR e o @dono no CODEOWNERS), elm_login (opcional, perguntado só se o sabia.md tem a seção ELM, lido só pela sa-elm), desenvolvedor, especificador, produto (booleanas), horas_semana, ausencias[{inicio, fim}] (AAAA-MM-DD), ativo}. Quem sai do time fica ativo: false e nunca é apagado. Valida contra o equipe.schema.json e avisa se nenhum membro ativo tem produto (ninguém aprovaria a decisão de investimento, PRD e ficha) ou se só um tem desenvolvedor (o revisor do MR precisa ser outro desenvolvedor). Grava junto com os acordos.",
        "destino": "muda"
       },
       {
@@ -886,7 +886,7 @@
      "passos": [
       {
        "passo": "entrada",
-       "texto": "Quem chama: a sa-refinar.moldar, a sa-refinar.detalhar, a sa-prd.prd (escrever, EL com tela), a sa-prd.mudanca ou um pedido direto ('tenho o protótipo do EP-03', 'o cliente respondeu a v2'). Vale para épico, fatia ou bug. Não existe → sa-triar.triar. Concluido, concluida, cancelado ou cancelada → diz e para. O documento do item é o pitch.md (épico em a-moldar), o prd.md (épico depois do go) ou a ficha. Resposta do cliente a uma versão já registrada → aprovacao.",
+       "texto": "Quem chama: a sa-refinar.moldar, a sa-refinar.detalhar, a sa-prd.prd (escrever, EL com tela), a sa-prd.mudanca ou um pedido direto ('tenho o protótipo do EP-03', 'o cliente respondeu a v2'). Vale para épico, fatia ou bug. Não existe → sa-triar.triar. Concluido, concluida, cancelado ou cancelada → diz e para. O documento do item é o pitch.md (épico em a-moldar), o prd.md (épico depois da decisão de investir) ou a ficha. Resposta do cliente a uma versão já registrada → aprovacao.",
        "destino": "muda"
       },
       {
@@ -933,7 +933,7 @@
       },
       {
        "passo": "decisoes",
-       "texto": "Cada decisão vira uma linha na tabela Decisões do documento do item (pitch.md antes do go, prd.md, ficha), com Fonte = ATA-<nn> [mm:ss]. O que ficou sem decisão vai ao Em aberto. Um commit leva a ATA e o documento, pelo fluxo/commit-na-branch-base.md ('<id> registrar ATA-<nn>').",
+       "texto": "Cada decisão vira uma linha na tabela Decisões do documento do item (pitch.md antes da decisão de investir, prd.md, ficha), com Fonte = ATA-<nn> [mm:ss]. O que ficou sem decisão vai ao Em aberto. Um commit leva a ATA e o documento, pelo fluxo/commit-na-branch-base.md ('<id> registrar ATA-<nn>').",
        "destino": "muda"
       },
       {
@@ -975,16 +975,16 @@
   {
    "skill": "sa-prd",
    "destino_skill": "muda",
-   "papel": "Skill do PRD do épico. Depois do go do P.O. no pitch.md (sa-refinar.moldar), escreve o prd.md direto na branch base, proporcional ao tamanho, e grava a aprovação do P.O. no próprio documento. Também muda o PRD aprovado e leva a mudança às fatias. Sem MR, sem [ESP] obrigatória e sem publicar: os requisitos sobem ao DOORS pelas fatias (sa-especificar.elm e sa-especificar.archive).",
+   "papel": "Skill do PRD do épico. Depois da decisão de investir do P.O. no pitch.md (sa-refinar.moldar), escreve o prd.md direto na branch base, proporcional ao tamanho, e grava a aprovação do P.O. no próprio documento. Também muda o PRD aprovado e leva a mudança às fatias. Sem MR, sem [ESP] obrigatória e sem publicar: os requisitos sobem ao DOORS pelas fatias (sa-especificar.elm e sa-especificar.archive).",
    "fluxos": [
     {
      "fluxo": "prd",
      "destino": "muda",
-     "resumo": "go no pitch.md → prd.md na pasta do épico → entender (sa-pesquisar) → esclarecer (sa-entrevistar) → similares → escrever → validar (avisa) → aprovação do P.O. gravada no prd.md → 'seguir para o fatiamento?' (sa-refinar.fatiar).",
+     "resumo": "investir no pitch.md → prd.md na pasta do épico → entender (sa-pesquisar) → esclarecer (sa-entrevistar) → similares → escrever → validar (avisa) → aprovação do P.O. gravada no prd.md → 'seguir para o fatiamento?' (sa-refinar.fatiar).",
      "passos": [
       {
        "passo": "entrada",
-       "texto": "Quem chama: a sa-refinar.moldar no go ('seguir para o PRD?') ou um pedido direto ('escrever o PRD do EP-03', 'aprovar o PRD do EP-03'). Usa o fluxo/entrada.md. Não existe → sa-triar.triar. Tipo diferente de épico → 'PRD é só do épico' e sa-refinar.detalhar. Em a-moldar (sem go) → sa-refinar.moldar. Concluido ou cancelado → diz e para. Fatiado, ou prd.md já aprovado → pergunta: sa-prd.mudanca ou 'seguir para o fatiamento?'. Segue com em-especificacao: prd.md sem aprovação → retoma; pedido de aprovação → aprovar. Sem pessoa presente (subagente) → 'PRD é decisão de pessoa' e para.",
+       "texto": "Quem chama: a sa-refinar.moldar ao investir ('seguir para o PRD?') ou um pedido direto ('escrever o PRD do EP-03', 'aprovar o PRD do EP-03'). Usa o fluxo/entrada.md. Não existe → sa-triar.triar. Tipo diferente de épico → 'PRD é só do épico' e sa-refinar.detalhar. Em a-moldar (sem decisão de investir) → sa-refinar.moldar. Concluido ou cancelado → diz e para. Fatiado, ou prd.md já aprovado → pergunta: sa-prd.mudanca ou 'seguir para o fatiamento?'. Segue com em-especificacao: prd.md sem aprovação → retoma; pedido de aprovação → aprovar. Sem pessoa presente (subagente) → 'PRD é decisão de pessoa' e para.",
        "destino": "muda"
       },
       {
@@ -994,7 +994,7 @@
       },
       {
        "passo": "abrir",
-       "texto": "Sem prd.md, cria .sabia/planejamento/epicos/EP-nn-<slug>/prd.md ao lado do pitch.md, pelo template sa-prd/prd.md, com '**Aprovado:** —' no topo. Seções: Problema · Objetivos e métricas · Atores · Requisitos · Não objetivos · Decisões · Em aberto · Mudanças (com a 1.0). Problema, limite de investimento e não objetivos partem do pitch.md. As decisões de antes do go ficam no pitch.md, e o PRD as cita.",
+       "texto": "Sem prd.md, cria .sabia/planejamento/epicos/EP-nn-<slug>/prd.md ao lado do pitch.md, pelo template sa-prd/prd.md, com '**Aprovado:** —' no topo. Seções: Problema · Objetivos e métricas · Atores · Requisitos · Não objetivos · Decisões · Em aberto · Mudanças (com a 1.0). Problema, limite de investimento e não objetivos partem do pitch.md. As decisões de antes da decisão de investir ficam no pitch.md, e o PRD as cita.",
        "destino": "novo"
       },
       {
@@ -1085,7 +1085,7 @@
      "passos": [
       {
        "passo": "entrada",
-       "texto": "Quem chama: a sa-refinar.moldar, a sa-refinar.detalhar, a sa-prd.prd, a sa-prd.mudanca, a sa-desenvolver.codificar (regra sem decisão) ou um pedido direto ('vamos alinhar o FT-031', 'responder o em aberto do EP-03'). Quem chama informa o item e o documento. Na chamada direta, o documento sai do id: pitch.md (épico em a-moldar), prd.md (épico depois do go) ou ficha (fatia ou bug). Sem pessoa presente (autopilot) → modo sem perguntas.",
+       "texto": "Quem chama: a sa-refinar.moldar, a sa-refinar.detalhar, a sa-prd.prd, a sa-prd.mudanca, a sa-desenvolver.codificar (regra sem decisão) ou um pedido direto ('vamos alinhar o FT-031', 'responder o em aberto do EP-03'). Quem chama informa o item e o documento. Na chamada direta, o documento sai do id: pitch.md (épico em a-moldar), prd.md (épico depois da decisão de investir) ou ficha (fatia ou bug). Sem pessoa presente (autopilot) → modo sem perguntas.",
        "destino": "novo"
       },
       {
@@ -1909,7 +1909,7 @@
       },
       {
        "passo": "cancelar",
-       "texto": "Entrada de quem cancela, em três casos. (1) Item com status 'cancelada' no backlog.md (sa-triar.triar, kill na sa-refinar.moldar, sa-refinar.ajustar): oferece cancelar o IB e as tarefas abertas. (2) Obs 'cancelada · virou EP-nn' (vira épico, na sa-desenvolver.iniciar): cancela as tarefas abertas, mantém o IB e copia o número dele para a coluna ib da linha EP-nn. (3) Item tirado da sprint (sa-planejamento.sprint, na virada): cancela a tarefa daquela sprint e mantém o IB.",
+       "texto": "Entrada de quem cancela, em três casos. (1) Item com status 'cancelada' no backlog.md (sa-triar.triar, cancelar na sa-refinar.moldar, sa-refinar.ajustar): oferece cancelar o IB e as tarefas abertas. (2) Obs 'cancelada · virou EP-nn' (vira épico, na sa-desenvolver.iniciar): cancela as tarefas abertas, mantém o IB e copia o número dele para a coluna ib da linha EP-nn. (3) Item tirado da sprint (sa-planejamento.sprint, na virada): cancela a tarefa daquela sprint e mantém o IB.",
        "destino": "novo"
       },
       {
@@ -2284,7 +2284,7 @@
       },
       {
        "passo": "esperando pessoa",
-       "texto": "MR esperando revisão → qualquer desenvolvedor ≠ autor, com o dono por área pelo CODEOWNERS (sa-revisar.mr). MR aprovado com CI verde → o autor faz o merge (sa-desenvolver.encerrar). Em aberto do status.md que bloqueia → quem tem produto responde, nas Decisões da ficha. Documento sem 'Aprovado: <usuário> · <data>': pitch.md esperando go/kill (sa-refinar.moldar), prd.md (sa-prd.prd) e ficha (sa-refinar.detalhar) → quem tem produto. Arquivo de elm/ sem aprovação → quem tem especificador (sa-refinar.detalhar).",
+       "texto": "MR esperando revisão → qualquer desenvolvedor ≠ autor, com o dono por área pelo CODEOWNERS (sa-revisar.mr). MR aprovado com CI verde → o autor faz o merge (sa-desenvolver.encerrar). Em aberto do status.md que bloqueia → quem tem produto responde, nas Decisões da ficha. Documento sem 'Aprovado: <usuário> · <data>': pitch.md esperando decisão de investimento (sa-refinar.moldar), prd.md (sa-prd.prd) e ficha (sa-refinar.detalhar) → quem tem produto. Arquivo de elm/ sem aprovação → quem tem especificador (sa-refinar.detalhar).",
        "destino": "muda"
       },
       {
@@ -2376,7 +2376,7 @@
       },
       {
        "passo": "mostrar e seguir",
-       "texto": "Mostra '🔀 <id> — <título> · <tipo> · <status> · branch de <usuario> · MR <estado> · <Fase>' e 'Próximo: <skill.fluxo> (<quem pode>)'. Quem pode sai das booleanas: desenvolvedor para sa-desenvolver.* e sa-revisar.mr; produto para go/kill e aprovações; especificador para sa-elm.publicar e elm/; triagem, cadastro e revisão humana são de qualquer pessoa. Se a pessoa não tem a booleana, diz quem tem (equipe.json) e para. Se tem, pergunta 'seguir agora?': com o sim, segue pela skill.fluxo na mesma sessão; sem o sim, termina.",
+       "texto": "Mostra '🔀 <id> — <título> · <tipo> · <status> · branch de <usuario> · MR <estado> · <Fase>' e 'Próximo: <skill.fluxo> (<quem pode>)'. Quem pode sai das booleanas: desenvolvedor para sa-desenvolver.* e sa-revisar.mr; produto para decisão de investimento e aprovações; especificador para sa-elm.publicar e elm/; triagem, cadastro e revisão humana são de qualquer pessoa. Se a pessoa não tem a booleana, diz quem tem (equipe.json) e para. Se tem, pergunta 'seguir agora?': com o sim, segue pela skill.fluxo na mesma sessão; sem o sim, termina.",
        "destino": "muda"
       }
      ]
@@ -2393,7 +2393,7 @@
       },
       {
        "passo": "coletar",
-       "texto": "Itens com branch <id> da pessoa e trabalho aberto (em-andamento, retrabalho, autopilot devolvido, MR aprovado para mergear). Se tem desenvolvedor, também os MRs de outros esperando revisão (primeiro aqueles em que ela é @dono no CODEOWNERS). Linhas da sprint aberta com Responsável igual à pessoa e item não terminal (especificação, desenvolvimento, atendimento). Itens sustentação com ela como responsável. Se tem produto, documentos esperando 'Aprovado:' e go/kill. Se tem especificador, elm/ sem aprovação e 'Publicação: pendente'.",
+       "texto": "Itens com branch <id> da pessoa e trabalho aberto (em-andamento, retrabalho, autopilot devolvido, MR aprovado para mergear). Se tem desenvolvedor, também os MRs de outros esperando revisão (primeiro aqueles em que ela é @dono no CODEOWNERS). Linhas da sprint aberta com Responsável igual à pessoa e item não terminal (especificação, desenvolvimento, atendimento). Itens sustentação com ela como responsável. Se tem produto, documentos esperando 'Aprovado:' e decisão de investimento. Se tem especificador, elm/ sem aprovação e 'Publicação: pendente'.",
        "destino": "muda"
       },
       {
@@ -2828,7 +2828,7 @@
      "passos": [
       {
        "passo": "description",
-       "texto": "Em inglês, até 1024 caracteres: 'Sabiá guide and router for the agent workflow (Kiro and opencode). Use when the person asks how the Sabiá flow works, which skill to use, or makes a request without naming a skill. Covers intake and triage, refinement (shaping with go/kill, three amigos, slicing), sprint planning with WIP limits, development routes (trivial, rápida, complete) in supervised or autopilot mode, merge request review by a developer other than the author, verification, archive and optional publication to IBM ELM through sa-elm. Routes each request to the right sa-* skill.'",
+       "texto": "Em inglês, até 1024 caracteres: 'Sabiá guide and router for the agent workflow (Kiro and opencode). Use when the person asks how the Sabiá flow works, which skill to use, or makes a request without naming a skill. Covers intake and triage, refinement (shaping with decisão de investimento, three amigos, slicing), sprint planning with WIP limits, development routes (trivial, rápida, complete) in supervised or autopilot mode, merge request review by a developer other than the author, verification, archive and optional publication to IBM ELM through sa-elm. Routes each request to the right sa-* skill.'",
        "destino": "muda"
       },
       {
@@ -2850,12 +2850,12 @@
      "passos": [
       {
        "passo": "fases",
-       "texto": "cadastro (fluxo/cadastro.md, qualquer pessoa ou skill) → triagem (sa-triar.triar) → refinamento (sa-refinar: moldar · detalhar · fatiar · ajustar; épico: pitch, go/kill e PRD pela sa-prd) → ciclo (sa-planejamento: seleção, reabastecimento, virada, review, retrospectiva) → desenvolvimento (sa-desenvolver: iniciar · codificar · encerrar) → MR e revisão (sa-revisar.mr) → verificação (sa-verificar) → merge → archive (sa-especificar.archive) e 'publicar no DOORS?' (sa-elm.publicar). Sustentação: sa-atender. Não existe consolidação: o fechamento é o merge, o archive e a publicação.",
+       "texto": "cadastro (fluxo/cadastro.md, qualquer pessoa ou skill) → triagem (sa-triar.triar) → refinamento (sa-refinar: moldar · detalhar · fatiar · ajustar; épico: pitch, decisão de investimento e PRD pela sa-prd) → ciclo (sa-planejamento: seleção, reabastecimento, virada, review, retrospectiva) → desenvolvimento (sa-desenvolver: iniciar · codificar · encerrar) → MR e revisão (sa-revisar.mr) → verificação (sa-verificar) → merge → archive (sa-especificar.archive) e 'publicar no DOORS?' (sa-elm.publicar). Sustentação: sa-atender. Não existe consolidação: o fechamento é o merge, o archive e a publicação.",
        "destino": "muda"
       },
       {
        "passo": "papéis",
-       "texto": "São booleanas no equipe.json. desenvolvedor: puxa item para desenvolvimento e revisa o MR de outro autor. especificador: aprova os arquivos de elm/ e publica no ELM. produto: decide go/kill, ordena e aprova pitch, PRD e ficha. Cadastro, triagem e revisão humana ficam abertos a qualquer pessoa. Não há regra por senioridade.",
+       "texto": "São booleanas no equipe.json. desenvolvedor: puxa item para desenvolvimento e revisa o MR de outro autor. especificador: aprova os arquivos de elm/ e publica no ELM. produto: toma a decisão de investimento, ordena e aprova pitch, PRD e ficha. Cadastro, triagem e revisão humana ficam abertos a qualquer pessoa. Não há regra por senioridade.",
        "destino": "muda"
       },
       {
@@ -2875,12 +2875,12 @@
       },
       {
        "passo": "status",
-       "texto": "Fatia e bug: nova → aceita → elegível → em-andamento → concluida, mais cancelada e 'adiada até <data>'. em-revisao não se grava: vem do MR aberto. Épico: a-moldar → em-especificacao (go) → fatiado → concluido · cancelado; fecha no merge da última fatia aberta (sa-desenvolver.encerrar). Sustentação: nova → em-andamento → concluida · cancelada.",
+       "texto": "Fatia e bug: nova → aceita → elegível → em-andamento → concluida, mais cancelada e 'adiada até <data>'. em-revisao não se grava: vem do MR aberto. Épico: a-moldar → em-especificacao (investir) → fatiado → concluido · cancelado; fecha no merge da última fatia aberta (sa-desenvolver.encerrar). Sustentação: nova → em-andamento → concluida · cancelada.",
        "destino": "novo"
       },
       {
        "passo": "prioridade e tamanho",
-       "texto": "prioridade ∈ {crítica, vazio}. crítica é o expedite, pela política do acordos.md; vazio segue a ordem das linhas. tamanho ∈ {P, M, G}: P = horas, M ≈ 1 dia, G = 2 a 3 dias. Maior que G é épico, e só o épico vai ao pitch e ao go/kill.",
+       "texto": "prioridade ∈ {crítica, vazio}. crítica é o expedite, pela política do acordos.md; vazio segue a ordem das linhas. tamanho ∈ {P, M, G}: P = horas, M ≈ 1 dia, G = 2 a 3 dias. Maior que G é épico, e só o épico vai ao pitch e à decisão de investimento.",
        "destino": "novo"
       },
       {
@@ -2907,7 +2907,7 @@
      "passos": [
       {
        "passo": "produto",
-       "texto": "O P.O. (booleana produto) decide go/kill e aprova o pitch, o PRD e a ficha, gravando no documento 'Aprovado: <usuário> · <data>'. O que estiver em aberto bloqueia só o que depende dele.",
+       "texto": "O P.O. (booleana produto) toma a decisão de investimento e aprova o pitch, o PRD e a ficha, gravando no documento 'Aprovado: <usuário> · <data>'. O que estiver em aberto bloqueia só o que depende dele.",
        "destino": "muda"
       },
       {
@@ -3028,12 +3028,12 @@
       },
       {
        "passo": "refinar → sa-refinar",
-       "texto": "Ideia nova, pitch, go/kill: sa-refinar.moldar. Refinamento conjunto, ficha, artefatos afetados e elm/ da fatia: sa-refinar.detalhar. Fatiar o épico: sa-refinar.fatiar. Editar, dividir ou cancelar um item pronto: sa-refinar.ajustar.",
+       "texto": "Ideia nova, pitch, decisão de investimento: sa-refinar.moldar. Refinamento conjunto, ficha, artefatos afetados e elm/ da fatia: sa-refinar.detalhar. Fatiar o épico: sa-refinar.fatiar. Editar, dividir ou cancelar um item pronto: sa-refinar.ajustar.",
        "destino": "novo"
       },
       {
        "passo": "PRD → sa-prd",
-       "texto": "Escrever o PRD do épico depois do go, ou mudar o PRD.",
+       "texto": "Escrever o PRD do épico depois da decisão de investir, ou mudar o PRD.",
        "destino": "muda"
       },
       {
@@ -3115,7 +3115,7 @@
       },
       {
        "passo": ".sabia/planejamento/",
-       "texto": "backlog.md (id · título · tipo · status · prioridade · tamanho · responsável · pai · relator · ib · obs · aceita_em · iniciada_em · concluida_em), acordos.md, equipe.json, roadmap.md, sprints/<pai>/sprint-<nn>.md (Item · Trabalho · Responsável · Tarefas), fatias/FT-<nnn>-<slug>.md, epicos/EP-nn-<slug>/ (pitch.md; prd.md a partir do go), prototipos/, atas/, sustentacao/<pasta>/.",
+       "texto": "backlog.md (id · título · tipo · status · prioridade · tamanho · responsável · pai · relator · ib · obs · aceita_em · iniciada_em · concluida_em), acordos.md, equipe.json, roadmap.md, sprints/<pai>/sprint-<nn>.md (Item · Trabalho · Responsável · Tarefas), fatias/FT-<nnn>-<slug>.md, epicos/EP-nn-<slug>/ (pitch.md; prd.md a partir da decisão de investir), prototipos/, atas/, sustentacao/<pasta>/.",
        "destino": "muda"
       },
       {
@@ -3401,7 +3401,7 @@
       },
       {
        "passo": "commit",
-       "texto": "git add só desses caminhos e commit pequeno com a mensagem do fluxo (ex.: 'backlog: triagem FT-031', 'backlog: refinamento FT-031', 'EP-04 go'). O id da tarefa do EWM entra na mensagem só se o acordos.md pedir (chave 'id no commit').",
+       "texto": "git add só desses caminhos e commit pequeno com a mensagem do fluxo (ex.: 'backlog: triagem FT-031', 'backlog: refinamento FT-031', 'EP-04 investir'). O id da tarefa do EWM entra na mensagem só se o acordos.md pedir (chave 'id no commit').",
        "destino": "muda"
       },
       {
@@ -3592,7 +3592,7 @@
   {
    "skill": "sa-especificar.especificar",
    "destino": "sai",
-   "nota": "O épico vai da sa-refinar.moldar (go) direto para a sa-prd.prd, sem linha de especificação no sprint.md."
+   "nota": "O épico vai da sa-refinar.moldar (investir) direto para a sa-prd.prd, sem linha de especificação no sprint.md."
   },
   {
    "skill": "sa-especificar.fatia",
@@ -3616,7 +3616,7 @@
   }
  ],
  "artefatos": {
-  "arvore_21": "<repo>/\n├── AGENTS.md                                  # do projeto: a sa-setup só lê, como fonte do sabia.md\n├── CODEOWNERS                                 # <padrão> @usuario (raiz, .gitlab/ ou docs/); mantido pelo time, a sa-setup sugere\n├── opencode.json                              # alvo opencode: instructions inclui .sabia/sabia.md (harness)\n├── .gitignore                                 # .sabia/local/ e <bundle>/explorar.html\n├── .gitattributes                             # .sabia/creditos/*.csv merge=union\n├── .gitlab/merge_request_templates/\n│   └── Default.md                             # template do MR: título <id> — <título> · O quê · Porquê · Evidência · Risco · Foco · Artefatos afetados\n├── docs/\n│   ├── adr/NNNN-<titulo>.md                   # ADR Nygard, só decisão transversal (chave adr)\n│   └── elm/<pa>/                              # bundle (só com ELM; chave bundle = rm.download do pa): só a sa-elm.baixar escreve\n│       ├── index.md · log.md                  # índice OKF do bundle\n│       ├── sync.md                            # sincronizado_em\n│       ├── explorar.html                      # sa-elm.visualizar (fora do git)\n│       └── <conceito>.md                      # um requisito oficial por arquivo, com envelope OKF\n├── openspec/                                  # formato_spec = openspec\n│   ├── specs/<cap>/spec.md                    # especificação vigente: só sem ELM (o archive funde o delta)\n│   └── changes/\n│       ├── ft-<nnn>-<slug>/                   # rápida e completo; trivial não tem pasta\n│       │   ├── proposal.md                    # Why · What Changes · Capabilities · Impact + Fatia e Trilha\n│       │   ├── specs/<cap>/spec.md            # delta ADDED/MODIFIED/REMOVED com o texto completo de cada requisito\n│       │   ├── design.md                      # só na trilha completo\n│       │   ├── tasks.md                       # ## 1. grupo / - [ ] 1.1 tarefa\n│       │   ├── research.md · status.md · CT.csv\n│       │   └── elm/                           # com ELM: um arquivo inteiro por artefato tocado (nasce no refinamento)\n│       └── archive/AAAA-MM-DD-ft-<nnn>-<slug>/  # mudança arquivada depois do merge (1ª fonte da busca do vigente)\n├── .kiro/                                     # alvo Kiro / formato_spec = kiro\n│   ├── steering/sabia.md                      # #[[file:.sabia/sabia.md]] (harness)\n│   ├── settings/                              # do Kiro (harness)\n│   ├── agents/sa-<nome>.json · <toolkit>-<agente>.json   # gerados (harness): os 5 agentes e os de toolkit\n│   └── specs/ft-<nnn>-<slug>/                 # rápida e completo; fica no lugar depois do merge (vigente sem ELM)\n│       ├── .config.kiro                       # specId · workflowType · specType (feature | bugfix)\n│       ├── requirements.md | bugfix.md        # fatia | bug, com o bloco completo de cada requisito tocado\n│       ├── design.md · tasks.md\n│       ├── research.md · status.md · CT.csv\n│       └── elm/                               # com ELM\n├── .opencode/agents/                          # gerados (harness)\n│   ├── sa-desenvolvedor.md · sa-especificador.md   # mode primary, modelo build\n│   ├── sa-pesquisador.md · sa-revisor.md      # mode subagent, só leitura\n│   ├── sa-verificador.md                      # mode subagent, só leitura + Executar, curl à URL de teste e CT.csv\n│   └── <toolkit>-<agente>.md                # mode subagent, permissões do dono do passo\n└── .sabia/\n    ├── sabia.md                               # steering: Configuração · Verificação de aceite · Sustentação · ELM · Desvios · Tipos · Regras aprendidas\n    ├── glossario.md                           # opcional: só sem GL no DOORS (chave glossario)\n    ├── creditos/<usuario>.csv                 # Kiro: uma linha por sessão (creditos.py)\n    ├── config/                                # harness: só a sessão sem agente escreve\n    │   ├── agentes.json                       # escolhas do projeto, entrada do gerador\n    │   ├── elm/pa_<nome>.json                 # conexão do MCP elm\n    │   └── elk/elk-<ambiente>.json            # conexão do MCP elk\n    ├── fluxo/ · template/                       # override esparso (harness)\n    ├── toolkits/<nome>/toolkit.json           # toolkit do projeto (opcional)\n    ├── local/                                 # fora do git\n    │   ├── wt/<id>/                           # worktree do autopilot\n    │   ├── loop-<id>.md                       # log do disjuntor do autopilot\n    │   ├── reunioes/<EP-nn|FT-nnn>-<AAAA-MM-DD>.<ext>   # transcrições\n    │   └── sustentacao/<ID>/                  # dados de cliente do atendimento\n    └── planejamento/                          # chave produto; gravado direto na branch base (fluxo/commit-na-branch-base.md)\n        ├── backlog.md                         # tabela única de 14 colunas; ordem das linhas = prioridade\n        ├── acordos.md                         # Item | Acordo: timebox, WIP, SLE, DoD, classes, reserva de capacidade, tamanhos, disjuntor, id no commit, CT no teste\n        ├── equipe.json                        # membros: usuario · booleanas · capacidade\n        ├── roadmap.md                         # opcional\n        ├── sprints/<AAAA>/sprint-<nn>.md       # Meta · Item · Trabalho · Responsável · Tarefas · Review · Retro\n        ├── fatias/FT-<nnn>-<slug>.md          # ficha (fatia e bug)\n        ├── epicos/EP-<nn>-<slug>/\n        │   ├── pitch.md                       # nasce no shaping (Shape Up) com go/kill\n        │   └── prd.md                         # nasce no go\n        ├── prototipos/<EP-nn|FT-nnn>-<slug>/v<N>/   # versões do protótipo\n        ├── atas/ATA-<nn>-<AAAA-MM-DD>-<assunto>.md   # opcional\n        └── sustentacao/<ID>-<slug>.md         # registro do item de Sustentação\n\n~/.sabia/framework/                            # instalação (fora do repositório)\n├── fluxo/entrada.md · cadastro.md · commit-na-branch-base.md   # passos comuns incluídos pelas skills\n├── fluxo/tipos.json                           # catálogo HF · UC · REG · MSG · EL · GL · ET · CT · ATA\n├── fluxo/travas.json                          # catálogo das travas\n├── template/<skill>/<arquivo>.md              # modelos (catálogo no esquema dos overrides)\n└── skills/sa-setup/assets/agents/perfis.json  # 2 modelos de permissão, os 5 agentes e o harness\n~/.sabia/toolkits/<nome>/toolkit.json          # toolkit do usuário",
+  "arvore_21": "<repo>/\n├── AGENTS.md                                  # do projeto: a sa-setup só lê, como fonte do sabia.md\n├── CODEOWNERS                                 # <padrão> @usuario (raiz, .gitlab/ ou docs/); mantido pelo time, a sa-setup sugere\n├── opencode.json                              # alvo opencode: instructions inclui .sabia/sabia.md (harness)\n├── .gitignore                                 # .sabia/local/ e <bundle>/explorar.html\n├── .gitattributes                             # .sabia/creditos/*.csv merge=union\n├── .gitlab/merge_request_templates/\n│   └── Default.md                             # template do MR: título <id> — <título> · O quê · Porquê · Evidência · Risco · Foco · Artefatos afetados\n├── docs/\n│   ├── adr/NNNN-<titulo>.md                   # ADR Nygard, só decisão transversal (chave adr)\n│   └── elm/<pa>/                              # bundle (só com ELM; chave bundle = rm.download do pa): só a sa-elm.baixar escreve\n│       ├── index.md · log.md                  # índice OKF do bundle\n│       ├── sync.md                            # sincronizado_em\n│       ├── explorar.html                      # sa-elm.visualizar (fora do git)\n│       └── <conceito>.md                      # um requisito oficial por arquivo, com envelope OKF\n├── openspec/                                  # formato_spec = openspec\n│   ├── specs/<cap>/spec.md                    # especificação vigente: só sem ELM (o archive funde o delta)\n│   └── changes/\n│       ├── ft-<nnn>-<slug>/                   # rápida e completo; trivial não tem pasta\n│       │   ├── proposal.md                    # Why · What Changes · Capabilities · Impact + Fatia e Trilha\n│       │   ├── specs/<cap>/spec.md            # delta ADDED/MODIFIED/REMOVED com o texto completo de cada requisito\n│       │   ├── design.md                      # só na trilha completo\n│       │   ├── tasks.md                       # ## 1. grupo / - [ ] 1.1 tarefa\n│       │   ├── research.md · status.md · CT.csv\n│       │   └── elm/                           # com ELM: um arquivo inteiro por artefato tocado (nasce no refinamento)\n│       └── archive/AAAA-MM-DD-ft-<nnn>-<slug>/  # mudança arquivada depois do merge (1ª fonte da busca do vigente)\n├── .kiro/                                     # alvo Kiro / formato_spec = kiro\n│   ├── steering/sabia.md                      # #[[file:.sabia/sabia.md]] (harness)\n│   ├── settings/                              # do Kiro (harness)\n│   ├── agents/sa-<nome>.json · <toolkit>-<agente>.json   # gerados (harness): os 5 agentes e os de toolkit\n│   └── specs/ft-<nnn>-<slug>/                 # rápida e completo; fica no lugar depois do merge (vigente sem ELM)\n│       ├── .config.kiro                       # specId · workflowType · specType (feature | bugfix)\n│       ├── requirements.md | bugfix.md        # fatia | bug, com o bloco completo de cada requisito tocado\n│       ├── design.md · tasks.md\n│       ├── research.md · status.md · CT.csv\n│       └── elm/                               # com ELM\n├── .opencode/agents/                          # gerados (harness)\n│   ├── sa-desenvolvedor.md · sa-especificador.md   # mode primary, modelo build\n│   ├── sa-pesquisador.md · sa-revisor.md      # mode subagent, só leitura\n│   ├── sa-verificador.md                      # mode subagent, só leitura + Executar, curl à URL de teste e CT.csv\n│   └── <toolkit>-<agente>.md                # mode subagent, permissões do dono do passo\n└── .sabia/\n    ├── sabia.md                               # steering: Configuração · Verificação de aceite · Sustentação · ELM · Desvios · Tipos · Regras aprendidas\n    ├── glossario.md                           # opcional: só sem GL no DOORS (chave glossario)\n    ├── creditos/<usuario>.csv                 # Kiro: uma linha por sessão (creditos.py)\n    ├── config/                                # harness: só a sessão sem agente escreve\n    │   ├── agentes.json                       # escolhas do projeto, entrada do gerador\n    │   ├── elm/pa_<nome>.json                 # conexão do MCP elm\n    │   └── elk/elk-<ambiente>.json            # conexão do MCP elk\n    ├── fluxo/ · template/                       # override esparso (harness)\n    ├── toolkits/<nome>/toolkit.json           # toolkit do projeto (opcional)\n    ├── local/                                 # fora do git\n    │   ├── wt/<id>/                           # worktree do autopilot\n    │   ├── loop-<id>.md                       # log do disjuntor do autopilot\n    │   ├── reunioes/<EP-nn|FT-nnn>-<AAAA-MM-DD>.<ext>   # transcrições\n    │   └── sustentacao/<ID>/                  # dados de cliente do atendimento\n    └── planejamento/                          # chave produto; gravado direto na branch base (fluxo/commit-na-branch-base.md)\n        ├── backlog.md                         # tabela única de 14 colunas; ordem das linhas = prioridade\n        ├── acordos.md                         # Item | Acordo: timebox, WIP, SLE, DoD, classes, reserva de capacidade, tamanhos, disjuntor, id no commit, CT no teste\n        ├── equipe.json                        # membros: usuario · booleanas · capacidade\n        ├── roadmap.md                         # opcional\n        ├── sprints/<AAAA>/sprint-<nn>.md       # Meta · Item · Trabalho · Responsável · Tarefas · Review · Retro\n        ├── fatias/FT-<nnn>-<slug>.md          # ficha (fatia e bug)\n        ├── epicos/EP-<nn>-<slug>/\n        │   ├── pitch.md                       # nasce no shaping (Shape Up) com decisão de investimento\n        │   └── prd.md                         # nasce ao investir\n        ├── prototipos/<EP-nn|FT-nnn>-<slug>/v<N>/   # versões do protótipo\n        ├── atas/ATA-<nn>-<AAAA-MM-DD>-<assunto>.md   # opcional\n        └── sustentacao/<ID>-<slug>.md         # registro do item de Sustentação\n\n~/.sabia/framework/                            # instalação (fora do repositório)\n├── fluxo/entrada.md · cadastro.md · commit-na-branch-base.md   # passos comuns incluídos pelas skills\n├── fluxo/tipos.json                           # catálogo HF · UC · REG · MSG · EL · GL · ET · CT · ATA\n├── fluxo/travas.json                          # catálogo das travas\n├── template/<skill>/<arquivo>.md              # modelos (catálogo no esquema dos overrides)\n└── skills/sa-setup/assets/agents/perfis.json  # 2 modelos de permissão, os 5 agentes e o harness\n~/.sabia/toolkits/<nome>/toolkit.json          # toolkit do usuário",
   "artefatos": [
    {
     "artefato": "backlog.md",
@@ -3668,7 +3668,7 @@
     "caminho": ".sabia/planejamento/epicos/EP-<nn>-<slug>/",
     "grupo": "especificação",
     "destino": "simplifica",
-    "como_fica_21": "Nasce no shaping (sa-refinar.moldar) com o pitch.md; o prd.md nasce no go. No kill, o épico fica cancelado e a pasta permanece. Só pitch.md e prd.md.",
+    "como_fica_21": "Nasce no shaping (sa-refinar.moldar) com o pitch.md; o prd.md nasce ao investir. Ao cancelar, o épico fica cancelado e a pasta permanece. Só pitch.md e prd.md.",
     "mercado": "Pasta de feature do Spec Kit",
     "motivo": "Decisão do épico de 07/11"
    },
@@ -3677,7 +3677,7 @@
     "caminho": ".sabia/planejamento/epicos/EP-<nn>-<slug>/pitch.md",
     "grupo": "especificação",
     "destino": "alinha ao mercado",
-    "como_fica_21": "Pitch do Shape Up: linha 'Aprovado: <usuario> · <data>' no topo (gravada na Decisão por quem tem produto) e as seções Problema · Limite de investimento · Solução em traços · Riscos · Não objetivos · Decisões (tabela D-nn) · Em aberto · Decisão ('go' | 'kill · <motivo>'). Decisões antes do go ficam aqui.",
+    "como_fica_21": "Pitch do Shape Up: linha 'Aprovado: <usuario> · <data>' no topo (gravada na Decisão por quem tem produto) e as seções Problema · Limite de investimento · Solução em traços · Riscos · Não objetivos · Decisões (tabela D-nn) · Em aberto · Decisão ('investir' | 'cancelar · <motivo>'). Decisões antes da decisão de investir ficam aqui.",
     "mercado": "Pitch do Shape Up",
     "motivo": "Decisão do épico; FPL-25, ART-7"
    },
@@ -3686,7 +3686,7 @@
     "caminho": ".sabia/planejamento/epicos/EP-<nn>-<slug>/prd.md",
     "grupo": "especificação",
     "destino": "simplifica",
-    "como_fica_21": "Nasce no go. Linha 'Aprovado: <usuario> · <data>' (P.O.) no topo. Seções Problema · Objetivos e métricas · Atores · Requisitos (blocos com id e ação) · Não objetivos · Decisões (tabela D-nn) · Em aberto · Mudanças (Versão | Data | O que mudou | Origem, pela sa-prd.mudanca, com nova aprovação). Sem índice OKF, sem ET inicial e sem CT.",
+    "como_fica_21": "Nasce ao investir. Linha 'Aprovado: <usuario> · <data>' (P.O.) no topo. Seções Problema · Objetivos e métricas · Atores · Requisitos (blocos com id e ação) · Não objetivos · Decisões (tabela D-nn) · Em aberto · Mudanças (Versão | Data | O que mudou | Origem, pela sa-prd.mudanca, com nova aprovação). Sem índice OKF, sem ET inicial e sem CT.",
     "mercado": "PRD",
     "motivo": "FPL-23/24, ART-11, FSP-11; decisões de ET e CT.csv"
    },
@@ -3695,7 +3695,7 @@
     "caminho": ".sabia/planejamento/epicos/<EP>-<slug>/decisoes.md",
     "grupo": "especificação",
     "destino": "funde",
-    "como_fica_21": "Não existe. As decisões vão na seção Decisões do pitch.md (antes do go), do prd.md (depois) e da ficha (fatia), com D-nn · Decisão · Quem · Quando · Fonte.",
+    "como_fica_21": "Não existe. As decisões vão na seção Decisões do pitch.md (antes da decisão de investir), do prd.md (depois) e da ficha (fatia), com D-nn · Decisão · Quem · Quando · Fonte.",
     "mercado": "Decisões dentro do documento",
     "motivo": "Decisão de 07/11; FPL-16, ART-7, FIM-9"
    },
@@ -4243,7 +4243,7 @@
     {
      "nome": "status",
      "significado": "Situação gravada do item. em-revisao é derivado do MR aberto e nunca se grava",
-     "preenche": "fatia/bug: nova (cadastro) → aceita (sa-triar.triar) → elegível (sa-refinar.detalhar; ficha com DoR e Aprovado) → em-andamento (sa-desenvolver.iniciar; sa-planejamento.sprint volta a elegível o que sai da sprint na virada) → concluida (sa-desenvolver.encerrar, no merge); cancelada (sa-triar.triar, sa-refinar.ajustar, ou quem descobre que virou épico); adiada até <data> (sa-triar.triar). Épico: a-moldar (cadastro ou sa-triar.triar) → em-especificacao (go em sa-refinar.moldar) → fatiado (sa-refinar.fatiar) → concluido (sa-desenvolver.encerrar, no merge da última fatia aberta); cancelado (kill em sa-refinar.moldar, ou sa-refinar.ajustar). Sustentação: nova (cadastro/sa-atender.atender) → em-andamento → concluida · cancelada (sa-atender.atender)",
+     "preenche": "fatia/bug: nova (cadastro) → aceita (sa-triar.triar) → elegível (sa-refinar.detalhar; ficha com DoR e Aprovado) → em-andamento (sa-desenvolver.iniciar; sa-planejamento.sprint volta a elegível o que sai da sprint na virada) → concluida (sa-desenvolver.encerrar, no merge); cancelada (sa-triar.triar, sa-refinar.ajustar, ou quem descobre que virou épico); adiada até <data> (sa-triar.triar). Épico: a-moldar (cadastro ou sa-triar.triar) → em-especificacao (investir em sa-refinar.moldar) → fatiado (sa-refinar.fatiar) → concluido (sa-desenvolver.encerrar, no merge da última fatia aberta); cancelado (cancelar em sa-refinar.moldar, ou sa-refinar.ajustar). Sustentação: nova (cadastro/sa-atender.atender) → em-andamento → concluida · cancelada (sa-atender.atender)",
      "valores": "fatia e bug: nova · aceita · elegível · em-andamento · concluida · cancelada · adiada até AAAA-MM-DD; épico: a-moldar · em-especificacao · fatiado · concluido · cancelado; sustentação: nova · em-andamento · concluida · cancelada"
     },
     {
@@ -4286,7 +4286,7 @@
      "nome": "obs",
      "significado": "Anotações; convenções fechadas separadas por ' · ', o resto é texto livre",
      "preenche": "quem causa a anotação",
-     "valores": "duplicada de <id> · falta: <pergunta> · para <relator> · motivo: <texto> · não investir: <motivo> (kill) · origem <id | chamado <n> | EWM <n> | review <AAAA>/Sprint <nn> | lint> (cadastrado a partir de outro item ou fonte: achado, desvio, DDL, desdobramento, verificação, review, importação, lint) · veio de <id>[ v<N>] (nasceu de outro: virar épico, dividir, juntar, mudança do PRD) · virou <id> · adiamento ignorado (<usuario>, AAAA-MM-DD) · reserva de capacidade estourada: <decisão> (<usuario>, AAAA-MM-DD)"
+     "valores": "duplicada de <id> · falta: <pergunta> · para <relator> · motivo: <texto> · não investir: <motivo> (cancelar) · origem <id | chamado <n> | EWM <n> | review <AAAA>/Sprint <nn> | lint> (cadastrado a partir de outro item ou fonte: achado, desvio, DDL, desdobramento, verificação, review, importação, lint) · veio de <id>[ v<N>] (nasceu de outro: virar épico, dividir, juntar, mudança do PRD) · virou <id> · adiamento ignorado (<usuario>, AAAA-MM-DD) · reserva de capacidade estourada: <decisão> (<usuario>, AAAA-MM-DD)"
     },
     {
      "nome": "aceita_em",
@@ -4297,7 +4297,7 @@
     {
      "nome": "iniciada_em",
      "significado": "Data da entrada em andamento (fatia/bug/sustentação: em-andamento; épico: em-especificacao). Início do lead time",
-     "preenche": "sa-desenvolver.iniciar · sa-atender.atender · sa-refinar.moldar (go)",
+     "preenche": "sa-desenvolver.iniciar · sa-atender.atender · sa-refinar.moldar (investir)",
      "valores": "AAAA-MM-DD · vazio"
     },
     {
@@ -4485,7 +4485,7 @@
     },
     {
      "nome": "membros[].produto",
-     "significado": "Pode dar go/kill, ordenar o backlog e aprovar pitch, PRD e ficha",
+     "significado": "Pode tomar a decisão de investimento, ordenar o backlog e aprovar pitch, PRD e ficha",
      "preenche": "sa-planejamento.inicial",
      "valores": "true · false"
     },
@@ -4634,11 +4634,11 @@
    "caminho": ".sabia/planejamento/epicos/EP-<nn>-<slug>/pitch.md",
    "formato": "md: '# EP-<nn> · <título>', '**Aprovado:** <usuario> · AAAA-MM-DD | —' logo abaixo do título (gravada na Decisão) e as seções abaixo, nesta ordem (Shape Up). Gravado direto na branch base.",
    "escrevem": "sa-refinar.moldar (pitch e Decisão; a Decisão exige a booleana produto) · sa-entrevistar.entrevistar (Decisões, Em aberto) · sa-especificar.reuniao e sa-especificar.prototipo (Decisões, Em aberto)",
-   "leem": "sa-prd.prd (pré-condição: go) · sa-status · sa-planejamento.sprint",
+   "leem": "sa-prd.prd (pré-condição: investir) · sa-status · sa-planejamento.sprint",
    "campos": [
     {
      "nome": "Aprovado",
-     "significado": "Quem tem produto registrou a Decisão (go ou kill), no topo do arquivo",
+     "significado": "Quem tem produto registrou a Decisão (investir ou cancelar), no topo do arquivo",
      "preenche": "sa-refinar.moldar (passo decisao)",
      "valores": "<usuario> · AAAA-MM-DD · —"
     },
@@ -4674,7 +4674,7 @@
     },
     {
      "nome": "Decisões",
-     "significado": "Decisões antes do go; os D-nn continuam no prd.md",
+     "significado": "Decisões antes da decisão de investir; os D-nn continuam no prd.md",
      "preenche": "sa-refinar.moldar · sa-entrevistar.entrevistar",
      "valores": "tabela D-nn | Decisão | Quem | Quando | Fonte; D-nn sequencial no arquivo; Quem = '<nome> (<papel>)' ou 'suposição'; Quando = AAAA-MM-DD; Fonte ∈ conversa · ATA-nn · e-mail · protótipo v<N>; os D-nn continuam no prd.md"
     },
@@ -4682,20 +4682,20 @@
      "nome": "Em aberto",
      "significado": "Perguntas sem decisão (inclui 'aprovação do cliente da v<N>')",
      "preenche": "sa-refinar.moldar · sa-especificar.prototipo",
-     "valores": "tabela Pergunta | Para quem | Bloqueia; Bloqueia ∈ go · <sigla>-<id> · nada"
+     "valores": "tabela Pergunta | Para quem | Bloqueia; Bloqueia ∈ investir · <sigla>-<id> · nada"
     },
     {
      "nome": "Decisão",
-     "significado": "O go/kill de quem tem produto. go → status em-especificacao e nasce o prd.md; kill → status cancelado, obs 'não investir: <motivo>', a pasta fica",
+     "significado": "A decisão de investimento de quem tem produto. investir → status em-especificacao e nasce o prd.md; cancelar → status cancelado, obs 'não investir: <motivo>', a pasta fica",
      "preenche": "sa-refinar.moldar (passo decisao)",
-     "valores": "'Decisão: go' | 'Decisão: kill · <motivo>'; vazia até o go/kill"
+     "valores": "'Decisão: investir' | 'Decisão: cancelar · <motivo>'; vazia até a decisão de investimento"
     }
    ]
   },
   {
    "arquivo": "prd.md",
    "caminho": ".sabia/planejamento/epicos/EP-<nn>-<slug>/prd.md",
-   "formato": "md: '# PRD — EP-<nn> <título>', '**Aprovado:** <usuario> · AAAA-MM-DD | —' logo abaixo do título e as seções abaixo. Nasce no go e é gravado direto na branch base. Cada mudança depois da aprovação (sa-prd.mudanca) ganha uma linha em Mudanças e uma nova aprovação.",
+   "formato": "md: '# PRD — EP-<nn> <título>', '**Aprovado:** <usuario> · AAAA-MM-DD | —' logo abaixo do título e as seções abaixo. Nasce ao investir e é gravado direto na branch base. Cada mudança depois da aprovação (sa-prd.mudanca) ganha uma linha em Mudanças e uma nova aprovação.",
    "escrevem": "sa-prd.prd · sa-prd.mudanca (tira a aprovação, Mudanças, reescreve) · sa-entrevistar.entrevistar (Decisões, Em aberto) · sa-especificar.reuniao (Decisões) · sa-elm.publicar (troca o id provisório pelo do ELM)",
    "leem": "sa-refinar.fatiar · sa-refinar.detalhar · sa-plano.plano · sa-status",
    "campos": [
@@ -4910,7 +4910,7 @@
      "nome": "espera",
      "significado": "Linha no Em aberto do item: 'aprovação do cliente da v<N>'",
      "preenche": "sa-especificar.prototipo",
-     "valores": "Bloqueia ∈ <sigla>-<id> · go · nada"
+     "valores": "Bloqueia ∈ <sigla>-<id> · investir · nada"
     }
    ]
   },

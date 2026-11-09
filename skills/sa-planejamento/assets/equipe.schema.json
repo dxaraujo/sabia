@@ -21,7 +21,7 @@
           "elm_login": {"type": "string", "minLength": 1, "description": "Login no ELM (opcional); só a sa-elm lê."},
           "desenvolvedor": {"type": "boolean", "description": "Puxa item para desenvolvimento e revisa MR de outro autor."},
           "especificador": {"type": "boolean", "description": "Aprova os arquivos de elm/ e publica no ELM."},
-          "produto": {"type": "boolean", "description": "Go/kill, ordena o backlog e aprova pitch, PRD e ficha."},
+          "produto": {"type": "boolean", "description": "Decisão de investimento, ordena o backlog e aprova pitch, PRD e ficha."},
           "horas_semana": {"type": "number", "minimum": 0},
           "ausencias": {
             "type": "array",

@@ -20,7 +20,7 @@ recomendação. Grava nas seções Decisões e Em aberto do documento do item. V
 quando; a lacuna de rotina vira suposição; o que fica em aberto bloqueia só o que depende dele.
 
 Entrada: o item e o documento, de quem chama. Na chamada direta, o documento sai do id: `pitch.md` (épico em
-`a-moldar`), `prd.md` (épico depois do go) ou a ficha (fatia ou bug).
+`a-moldar`), `prd.md` (épico depois da decisão de investir) ou a ficha (fatia ou bug).
 
 ## Entrada: vizinhos
 

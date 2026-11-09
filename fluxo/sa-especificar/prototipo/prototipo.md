@@ -14,7 +14,7 @@
 
 Opcional. Registra a versão `v<N>` do protótipo que o cliente vê, um conjunto de arquivos só com dado fictício, em
 `.sabia/planejamento/prototipos/<id>-<slug>/v<N>/`, e grava a resposta do cliente no documento do item: o `pitch.md`
-(épico em `a-moldar`), o `prd.md` (épico depois do go) ou a ficha (fatia ou bug). Não condiciona o PRD: só a EL
+(épico em `a-moldar`), o `prd.md` (épico depois da decisão de investir) ou a ficha (fatia ou bug). Não condiciona o PRD: só a EL
 depende dele.
 
 ## Entrada: vizinhos

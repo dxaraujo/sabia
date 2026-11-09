@@ -13,8 +13,8 @@ Desenvolvido por Daniel Xavier Araújo.
 ```
 demanda ─► cadastro (fluxo/cadastro.md; entrada direta sa-triar.cadastrar)   tipo ∈ épico · fatia · bug · sustentação
    └─► TRIAGEM ───────── sa-triar.triar                                    (qualquer pessoa)
-        ├─ épico ──────► REFINAMENTO sa-refinar.moldar: pitch.md ─► go/kill (produto)
-        │                  └─ go ─► ESPECIFICAÇÃO sa-prd.prd: prd.md aprovado ─► sa-refinar.fatiar ─► FT-nnn
+        ├─ épico ──────► REFINAMENTO sa-refinar.moldar: pitch.md ─► decisão de investimento (produto)
+        │                  └─ investir ─► ESPECIFICAÇÃO sa-prd.prd: prd.md aprovado ─► sa-refinar.fatiar ─► FT-nnn
         ├─ fatia · bug ► REFINAMENTO sa-refinar.detalhar: ficha (regras · CT-nn · Artefatos afetados) [+ elm/] ─► elegível
         │                  └─ sa-refinar.ajustar até alguém puxar
         └─ sustentação ► SUSTENTAÇÃO sa-atender.atender (AT · IM · BD · IN · OP · EX, dentro da reserva de capacidade)
@@ -66,8 +66,8 @@ Fontes no fim deste arquivo.
 | `sa-setup` | `configurar` · `customizar` | configura o projeto na sessão sem agente: alvos, comandos, branch_base, formato da spec, "usa ELM?", toolkits e os 5 agentes; customiza um passo ou template |
 | `sa-status` | `painel` · `item` · `minha-proxima` · `pendencias` · `licoes-aprendidas` · `fechar-sessao` | painel só leitura (WIP, vazão, idade, lead time, pendências de rastreio), estado de um `<id>`, a próxima tarefa e os créditos da sessão |
 | `sa-triar` | `cadastrar` · `triar` | cadastro sem triar e triagem da fila `nova`: duplicado, falta informação, adiar, cancelar, aceitar |
-| `sa-refinar` | `moldar` · `detalhar` · `fatiar` · `ajustar` | pitch e go/kill do épico; refinamento conjunto da fatia (ficha com regras, `CT-nn` e artefatos afetados, e `elm/` com ELM); fatiamento do PRD; ajuste do item pronto |
-| `sa-prd` | `prd` · `mudanca` | PRD do épico depois do go, aprovado pelo produto no próprio documento |
+| `sa-refinar` | `moldar` · `detalhar` · `fatiar` · `ajustar` | pitch e decisão de investimento do épico; refinamento conjunto da fatia (ficha com regras, `CT-nn` e artefatos afetados, e `elm/` com ELM); fatiamento do PRD; ajuste do item pronto |
+| `sa-prd` | `prd` · `mudanca` | PRD do épico depois da decisão de investir, aprovado pelo produto no próprio documento |
 | `sa-especificar` | `elm` · `prototipo` · `reuniao` · `archive` | arquivos de `elm/` da fatia, protótipo de tela, ATA de reunião e archive da spec depois do merge |
 | `sa-entrevistar` | `entrevistar` | alinhamento em rodadas de até 5 perguntas, cada uma com recomendação |
 | `sa-desenvolver` | `iniciar` · `codificar` · `encerrar` | assume a tarefa num passo (tamanho, trilha e autonomia), codifica com TDD e backpressure até o MR, faz o merge e fecha |

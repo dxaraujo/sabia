@@ -13,7 +13,7 @@ A coleta e a pessoa.
 - Linhas da sprint aberta com Responsável igual à pessoa e item não terminal (especificação, desenvolvimento,
   atendimento).
 - Itens sustentação com ela como responsável.
-- Com `produto`: documentos esperando `Aprovado:` e go/kill.
+- Com `produto`: documentos esperando `Aprovado:` e decisão de investimento.
 - Com `especificador`: `elm/` sem aprovação e `Publicação: pendente`.
 
 ## Saída

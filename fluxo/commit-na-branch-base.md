@@ -23,7 +23,7 @@ precisa aceitar push (ex.: `develop`).
 4. **Escrever.** Leia o `backlog.md` já atualizado (o próximo id se calcula aqui) e escreva só as linhas e os
    arquivos do fluxo.
 5. **Commit.** `git add` só desses caminhos e um commit pequeno com a mensagem do fluxo (ex.: `backlog: triagem
-   FT-031`, `backlog: refinamento FT-031`, `EP-04 go`). O id da tarefa do EWM entra na mensagem só se o `acordos.md`
+   FT-031`, `backlog: refinamento FT-031`, `EP-04 investir`). O id da tarefa do EWM entra na mensagem só se o `acordos.md`
    pedir (chave `id no commit`).
 6. **Push.** Mostre `git show --stat` e pergunte "publico na `<branch_base>`?". Sim: `git push` (nunca `--force`). Push
    recusado porque a branch base andou: desfaça só o próprio commit (`git reset --keep HEAD~1`), volte ao Atualizar,

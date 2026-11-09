@@ -32,7 +32,7 @@ prioridade `crítica` é expedite. Célula sem valor fica vazia. Toda escrita va
 | `ib` | só o número do IB no EWM · vazio | `sa-elm.item` · `sa-elm.importar-backlog` |
 | `obs` | convenções abaixo, separadas por ` · `; o resto é texto livre | quem causa a anotação |
 | `aceita_em` | AAAA-MM-DD: o item sai de `nova` (fatia e bug: `aceita`; épico: `a-moldar`) | `sa-triar.triar` · `sa-atender.atender` · `sa-refinar.fatiar` |
-| `iniciada_em` | AAAA-MM-DD: início do lead time (fatia, bug e sustentação: `em-andamento`; épico: `em-especificacao`) | `sa-desenvolver.iniciar` · `sa-atender.atender` · `sa-refinar.moldar` (go) |
+| `iniciada_em` | AAAA-MM-DD: início do lead time (fatia, bug e sustentação: `em-andamento`; épico: `em-especificacao`) | `sa-desenvolver.iniciar` · `sa-atender.atender` · `sa-refinar.moldar` (investir) |
 | `concluida_em` | AAAA-MM-DD; lead time = `concluida_em` − `iniciada_em` | `sa-desenvolver.encerrar` · `sa-atender.atender` |
 
 ## Status
@@ -40,7 +40,7 @@ prioridade `crítica` é expedite. Célula sem valor fica vazia. Toda escrita va
 | Tipo | Máquina | Quem grava |
 |---|---|---|
 | fatia e bug | `nova` → `aceita` → `elegivel` → `em-andamento` → `concluida`; mais `cancelada` e `adiada até AAAA-MM-DD` | `nova`: o cadastro · `aceita`: `sa-triar.triar` (ou `sa-refinar.fatiar`) · `elegivel`: `sa-refinar.detalhar` (DoR completa e ficha aprovada) · `em-andamento`: `sa-desenvolver.iniciar` · `concluida`: `sa-desenvolver.encerrar` · `cancelada`: `sa-triar.triar` ou `sa-refinar.ajustar` · `adiada`: `sa-triar.triar` |
-| épico | `a-moldar` → `em-especificacao` → `fatiado` → `concluido`; mais `cancelado` | `a-moldar`: o cadastro · `em-especificacao`: go na `sa-refinar.moldar` · `fatiado`: `sa-refinar.fatiar` · `concluido`: `sa-desenvolver.encerrar`, no merge da última fatia aberta · `cancelado`: kill na `sa-refinar.moldar` ou `sa-refinar.ajustar` |
+| épico | `a-moldar` → `em-especificacao` → `fatiado` → `concluido`; mais `cancelado` | `a-moldar`: o cadastro · `em-especificacao`: investir na `sa-refinar.moldar` · `fatiado`: `sa-refinar.fatiar` · `concluido`: `sa-desenvolver.encerrar`, no merge da última fatia aberta · `cancelado`: cancelar na `sa-refinar.moldar` ou `sa-refinar.ajustar` |
 | sustentação | `nova` → `em-andamento` → `concluida`; mais `cancelada` | `sa-atender.atender` |
 
 `em-revisao` é derivado do MR aberto e nunca se grava. A elegível que perde um item da DoR volta a `aceita`. Na
@@ -53,7 +53,7 @@ virada, o item que sai da sprint e estava `em-andamento` volta a `elegivel` (`sa
 | `duplicada de <id>` | duplicado cancelado na triagem |
 | `falta: <pergunta> · para <relator>` | triagem sem informação suficiente; o item fica `nova` |
 | `motivo: <texto>` | recusa, adiamento ou cancelamento |
-| `não investir: <motivo>` | kill do épico |
+| `não investir: <motivo>` | cancelar do épico |
 | `origem <id \| chamado <n> \| EWM <n> \| review <AAAA>/Sprint <nn> \| lint>` | item cadastrado a partir de outro item ou fonte (achado, desvio, DDL, desdobramento, verificação, review, importação, lint) |
 | `veio de <id>[ v<N>]` | nasceu de outro: virar épico, dividir, juntar, mudança do PRD |
 | `virou <id>` | a linha antiga de uma troca de série ou de uma junção |

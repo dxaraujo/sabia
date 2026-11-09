@@ -12,7 +12,7 @@ A pasta `.sabia/planejamento/prototipos/<id>-<slug>/` e o documento do item.
 2. **Dado fictício.** Mostre o que o protótipo traz (telas, campos com valor de exemplo) e pergunte se todo dado é
    fictício.
 3. **Registrar.** Com o "sim": mova os arquivos para `prototipos/<id>-<slug>/v<N>/` e acrescente no Em aberto do
-   documento a linha `aprovação do cliente da v<N> | cliente | <ids das EL> (ou go, no pitch; ou nada)`. O commit dos
+   documento a linha `aprovação do cliente da v<N> | cliente | <ids das EL> (ou investir, no pitch; ou nada)`. O commit dos
    arquivos e do documento é o do passo `gravar` (`<id> protótipo v<N>`).
 4. **Sem arquivo novo.** Uma versão com `aprovação do cliente da v<N>` no Em aberto → passo `aprovacao`. Nenhuma →
    diga "ponha os arquivos da versão em `.sabia/planejamento/prototipos/<id>-<slug>/`" e devolva.

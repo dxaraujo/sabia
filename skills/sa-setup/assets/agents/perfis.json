@@ -61,7 +61,7 @@
       }
     },
     "sa-especificador": {
-      "descricao": "Sabiá specifier and product owner — shapes epics (pitch, go/kill), writes and approves the PRD, slices epics into vertical slices (fatias), details a slice into its card (rules, CT-nn scenarios, affected artifacts) with the elm/ files when the project uses ELM, keeps the backlog ordered, runs the alignment interview, prototypes and meeting minutes, and the sprint rituals (planning, review, retrospective). Facts come from the sa-pesquisador subagent; decisions come from people. Never writes code.",
+      "descricao": "Sabiá specifier and product owner — shapes epics (pitch, decisão de investimento), writes and approves the PRD, slices epics into vertical slices (fatias), details a slice into its card (rules, CT-nn scenarios, affected artifacts) with the elm/ files when the project uses ELM, keeps the backlog ordered, runs the alignment interview, prototypes and meeting minutes, and the sprint rituals (planning, review, retrospective). Facts come from the sa-pesquisador subagent; decisions come from people. Never writes code.",
       "mode": "primary",
       "permissao": "build",
       "skills": ["sa-refinar", "sa-prd", "sa-especificar", "sa-entrevistar", "sa-planejamento", "sa-triar", "sa-status",
