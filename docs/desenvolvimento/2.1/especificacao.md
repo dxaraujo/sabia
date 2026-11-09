@@ -737,17 +737,17 @@ Regras comuns, incluídas no início de cada um dos outros onze fluxos: pré-con
 3. **autopilot** — No autopilot da sa-desenvolver, o ELM fica bloqueado e a sa-elm não roda. A pergunta do ELM é feita quando a pessoa retoma o item.
 4. **escrita** — Toda escrita mostra a prévia e espera o 'sim' (ask nos principais sa-desenvolvedor e sa-especificador; deny nos subagentes e no autopilot). É idempotente: se o id já está gravado no Sabiá, não cria de novo. Nunca apaga. A exclusão de requisito vira roteiro manual (sa-elm.publicar), e a remoção de horas só acontece a pedido.
 5. **leitura** — Qualquer skill pode ler o ELM para buscar o vigente (elm_ler_req, elm_buscar_req, elm_ler_wi e o bundle pelo MCP local). Escrever no ELM e baixar dele só pela sa-elm.
-6. **identidade** — Quem age no ELM é o elm_login da pessoa no equipe.json. Sem elm_login, vale o usuario (o usuário do GitLab). A credencial fica em ~/.config/mcp-elm/elm.properties, e o agente não lê esse arquivo.
+6. **identidade** — Quem age no ELM é o elm_login da pessoa no equipe.json. Sem elm_login, vale o usuario (o usuário do GitLab). A credencial fica nas variáveis ELM_SERVER, ELM_USER e ELM_PASSWORD do MCP, e o agente não as lê.
 7. **onde os ids moram** — O id do IB vai na coluna ib do backlog.md, só o número. O id da tarefa vai na coluna Tarefas da linha Item · Trabalho do sprint-<nn>.md aberto, com o prefixo (DEV 123 · ESP 456 · ATD 789, separados por ' · '). Nenhum id vai no status.md, na ficha ou no registro. Toda gravação no repositório segue o fluxo/commit-na-branch-base.md.
 8. **títulos** — Tarefa: '[<DEV|ESP|ATD>] <id> <título do backlog.md>'. IB: '[<id>] <título>'. Cada trabalho tem a sua tarefa: desenvolvimento → DEV, especificação → ESP, atendimento → ATD (as seis categorias da Sustentação usam ATD).
-9. **erros do MCP** — entrada → corrige pelo schema e tenta mais uma vez. nao_encontrado → pergunta o id. credencial → pede que a pessoa confira o elm.properties. indisponivel → tenta mais uma vez; se falhar de novo, diz e devolve. Se um id criado no ELM não puder ser gravado no repositório, mostra o id para a pessoa gravar.
+9. **erros do MCP** — entrada → corrige pelo schema e tenta mais uma vez. nao_encontrado → pergunta o id. credencial → pede que a pessoa confira as variáveis do MCP. indisponivel → tenta mais uma vez; se falhar de novo, diz e devolve. Se um id criado no ELM não puder ser gravado no repositório, mostra o id para a pessoa gravar.
 10. **fim** — Volta ao fluxo da sa-elm que incluiu as regras.
 
 ### sa-elm.setup
 Configura o ELM só como dados. Grava o pa e devolve à sa-setup a chave elm, o texto da seção ELM e as regras ELM dos agentes, que a sa-setup aplica antes de regenerar os agentes. Roda na sessão sem agente.
 
 1. **entrada** — Chamada pela sa-setup.configurar quando a resposta a 'usa ELM?' é sim, ou direto ('setup do ELM', 'atualizar o pa'). Roda na sessão sem agente, porque o harness dos agentes nega .sabia/config. Dentro de um agente sa-*, diz isso e para. Em atualização, lê o pa existente e mostra só o que muda.
-2. **MCP e credencial** — Confere o MCP elm (vem com o power no Kiro; no opencode, o sabia instalar o instala de forma global) e o ~/.config/mcp-elm/elm.properties. Se faltar algum, diz o comando de instalação ou o que preencher e devolve à sa-setup com elm: false, sem travar.
+2. **MCP e credencial** — Confere o MCP elm (vem com o power no Kiro; no opencode, o sabia instalar o instala de forma global) e as variáveis ELM_SERVER, ELM_USER e ELM_PASSWORD. Se faltar algum, diz o comando de instalação ou o que preencher e devolve à sa-setup com elm: false, sem travar.
 3. **montar o pa** — Roda o elm_setup_descobrir e segue o roteiro de montagem: project area, time e categoria, tipos (IB, tarefa e, opcional, Defeito), campos obrigatórios e o backlog do produto (a iteração que a importação usa). Não tem bloco do ETM nem IBs de estrutura (Sustentação, Manutenção, categoria), e as tarefas são só DEV · ESP · ATD.
 4. **ET** — Pergunta se o projeto mantém ET (sim | não). Com sim, a ET é só as-built e é publicada na finalização do desenvolvimento, pela sa-elm.publicar.
 5. **GL** — Com ELM, o glossário é o GL do DOORS. Avisa a sa-setup para não oferecer o glossario.md.
@@ -1786,7 +1786,7 @@ Leem: gerador da sa-setup · compilador (agente por fluxo)
 | Campo | Significado | Valores | Preenche |
 |---|---|---|---|
 | `harness` | Caminhos que nenhum agente escreve (deny de edição) | .kiro/agents/** · .kiro/settings/** · .kiro/steering/sabia.md · .opencode/** · opencode.json · .sabia/config/** · .sabia/fluxo/** · .sabia/template/** | framework |
-| `segredos` | Padrões negados à leitura e à escrita | .env* · *.pem · *.key · id_rsa* · elm.properties | framework |
+| `segredos` | Padrões negados à leitura e à escrita | .env* · *.pem · *.key · id_rsa* | framework |
 | `modelos.build` | Modelo de permissão dos principais (sa-desenvolvedor, sa-especificador), sem restrição por pasta | {read: allow, edit: allow fora do harness (.kiro/specs/** e openspec/** liberados), bash: {allow: build/test/git leitura/commit, ask: git push da própria branch sem --force · git merge origin/<branch_base> · curl/wget à URL de teste, deny: git push --force* · git push --force-with-lease* · git rebase* · destrutivos}, mcp: {allow: gitlabpr leitura, ask: criar/atualizar MR · mesclar MR}} | framework |
 | `modelos.leitura` | Modelo só leitura (sa-pesquisador, sa-revisor; base do sa-verificador) | {read: allow, edit: deny, bash: só leitura (git log/diff/show, grep, ls), mcp: só leitura} | framework |
 | `agentes.<nome>` | Os 5 agentes | {descricao (inglês), permissao: build \| leitura, mode: primary \| subagent, skills: [], subagentes: []}; sa-desenvolvedor {build, primary, sa-desenvolver · sa-plano · sa-revisar.mr · sa-verificar.revisao-humana · sa-atender · sa-especificar.archive, chama sa-pesquisador · sa-revisor · sa-verificador} · sa-especificador {build, primary, sa-refinar · sa-prd · sa-especificar · sa-entrevistar · sa-planejamento, chama sa-pesquisador} · sa-pesquisador {leitura, subagent, sa-pesquisar} · sa-revisor {leitura, subagent, sa-revisar.revisar} · sa-verificador {leitura, subagent, sa-verificar.verificar}; nos dois principais também sa-triar · sa-status · sabia · sa-elm (menos setup) | framework |
@@ -1863,7 +1863,7 @@ Leem: MCP elm · sa-elm.* (pré-condição)
 
 | Campo | Significado | Valores | Preenche |
 |---|---|---|---|
-| `credencial e servidor` | Conexão (segredo fora do arquivo, no elm.properties) | conforme mcp-elm | sa-elm.setup |
+| `credencial e servidor` | Conexão (segredo fora do arquivo, nas variáveis de ambiente do MCP) | conforme mcp-elm | sa-elm.setup |
 | `ccm (EWM)` | Projeto, ccm.backlog, tipos (IB, tarefa, defeito), campos e links | conforme mcp-elm | sa-elm.setup |
 | `tarefas por prefixo` | Tipo e título das tarefas | DEV · ESP · ATD | sa-elm.setup |
 | `horas` | Lançamento de horas | conforme mcp-elm | sa-elm.setup |
@@ -2030,7 +2030,7 @@ agente de toolkit (agentes[], ligado em passos[].agente) ─► subagente do don
 2 modelos de permissão
 ├─ build   (sa-desenvolvedor · sa-especificador; sem restrição por pasta)
 │    ler ──────── allow
-│                 deny: segredos (**/.env*, **/*.pem, **/*.key, ~/.ssh, ~/.aws, ~/.config/mcp-*)
+│                 deny: segredos (**/.env*, **/*.pem, **/*.key, ~/.ssh, ~/.aws)
 │    editar ───── allow: workspace (código, .kiro/specs/**, openspec/**, .sabia/planejamento/**,
 │                        .sabia/sabia.md, .sabia/creditos/**)
 │                 deny (harness): .kiro/agents · .kiro/settings · .kiro/steering/sabia.md · .opencode

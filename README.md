@@ -104,7 +104,7 @@ sessão sem agente: sa-setup e sa-elm.setup (as únicas que gravam o harness)
 
 | Modelo | Ler | Editar | Comandos | MCP |
 |---|---|---|---|---|
-| `build` | tudo, menos segredos (`.env*`, `*.pem`, `*.key`, `~/.ssh`, `~/.aws`, `~/.config/mcp-*`) | tudo, menos o harness: `.kiro/agents`, `.kiro/settings`, `.kiro/steering/sabia.md`, `.opencode`, `opencode.json`, `.sabia/config`, `.sabia/fluxo`, `.sabia/template` | allow; ask: `git push`, `git merge`, `curl`, `wget`; deny: `rebase`, `--force`, `reset --hard`, `clean -f`, `--no-verify`, `sudo`, `kubectl`, `helm`, `terraform apply` | GitLab: leitura allow, abrir e mesclar MR ask; ELM pelas regras da `sa-elm.setup` |
+| `build` | tudo, menos segredos (`.env*`, `*.pem`, `*.key`, `~/.ssh`, `~/.aws`) | tudo, menos o harness: `.kiro/agents`, `.kiro/settings`, `.kiro/steering/sabia.md`, `.opencode`, `opencode.json`, `.sabia/config`, `.sabia/fluxo`, `.sabia/template` | allow; ask: `git push`, `git merge`, `curl`, `wget`; deny: `rebase`, `--force`, `reset --hard`, `clean -f`, `--no-verify`, `sudo`, `kubectl`, `helm`, `terraform apply` | GitLab: leitura allow, abrir e mesclar MR ask; ELM pelas regras da `sa-elm.setup` |
 | `leitura` | tudo, menos segredos | deny | só leitura (`git status/diff/log/show`, `grep`, `ls`) | só leitura |
 
 No Kiro, os agentes levam só os nomes de capability; os limites por caminho e URL vão no prompt. Detalhes em
@@ -207,15 +207,15 @@ ficha; o `CT.csv` da verificação) e `ATA`. Artefato novo: id provisório `<sig
   o que não tem tradução.
 - Kiro Web não lê `~/.kiro`: os agentes do projeto aparecem lá, mas sem as skills do power — use a IDE ou o CLI.
 - MCPs do próprio power (o `mcp.json` os sobe com `uvx`): [`mcp-gitlabpr`](https://pypi.org/project/mcp-gitlabpr/),
-  que lista, lê, abre e mescla os MRs — credencial em `~/.config/mcp-gitlabpr/gitlabpr.properties` (`url` e
-  `token`); sem ela, o fluxo entrega título e descrição do MR, e a pessoa o abre; e
+  que lista, lê, abre e mescla os MRs — credencial nas variáveis de ambiente `GITLAB_API_URL` e
+  `GITLAB_API_TOKEN`; sem ela, o fluxo entrega título e descrição do MR, e a pessoa o abre; e
   [`mcp-elm`](https://pypi.org/project/mcp-elm/), que também consulta o bundle local. O código e os schemas públicos (como o
   [`pa.schema.json`](https://dxaraujo.github.io/mcps/elm/pa.schema.json)) estão em
   [`dxaraujo/mcps`](https://github.com/dxaraujo/mcps).
 - Opcional: logs do ELK na Sustentação, pelo [`mcp-elk`](https://pypi.org/project/mcp-elk/), que fica fora do Sabiá. Instale o servidor na
   ferramenta com o nome `elk`, grave `.sabia/config/elk/elk-<ambiente>.json` e acrescente `"elk"` em `agentes.<agente>.mcp` de quem atende
   (`sa-desenvolvedor` e `sa-especificador`), na `sa-setup`.
-- Opcional: IBM ELM — credencial em `~/.config/mcp-elm/elm.properties` e o `pa` gerado pela `sa-elm.setup`; MCP de
+- Opcional: IBM ELM — credencial nas variáveis de ambiente `ELM_SERVER`, `ELM_USER` e `ELM_PASSWORD` e o `pa` gerado pela `sa-elm.setup`; MCP de
   consulta ao banco (somente leitura); MCP de browser/Playwright para verificar frontend.
 - Toolkits da stack do projeto (opcional — sem eles os agentes dependem do steering e do código vizinho).
 

@@ -154,7 +154,7 @@ class Agentes(Base):
                          "opencode.json", ".sabia/config/agentes.json", ".sabia/fluxo/sa-plano/plano/passos/x.md", ".sabia/template/sa-plano/plano.md",
                          ".sabia/local/wt/ft-001/.kiro/agents/x.json", ".env", "mod/.env.local", "certs/x.pem"):
                 self.assertEqual(oc(p["edit"], alvo), "deny", (nome, alvo))
-            for alvo in (".env", "api/.env.prod", "~/.ssh/id_rsa", "conf/elm.properties"):
+            for alvo in (".env", "api/.env.prod", "~/.ssh/id_rsa"):
                 self.assertEqual(oc(p["read"], alvo), "deny", (nome, alvo))
             self.assertEqual(oc(p["read"], "src/main/App.java"), "allow")
             for cmd, e in (("mvn -q test", "allow"), ("git commit -m x", "allow"), ("git push origin ft-001", "ask"),

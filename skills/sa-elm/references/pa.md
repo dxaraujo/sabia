@@ -34,8 +34,8 @@ transição ou o lançamento de horas. Por isso aqui não vale "padrão sem perg
 
 ## 0. Credencial e project areas
 
-`elm_status(projeto)` (sem `pa`, `faltando` vem preenchido: normal). Erro `credencial` → peça o
-`~/.config/mcp-elm/elm.properties` (`server`, `user`, `password`) e pare. Pergunte um trecho do nome da PA do EWM e se
+`elm_status(projeto)` (sem `pa`, `faltando` vem preenchido: normal). Erro `credencial` → peça as
+variáveis `ELM_SERVER`, `ELM_USER` e `ELM_PASSWORD` no `env` do MCP e pare. Pergunte um trecho do nome da PA do EWM e se
 o DOORS Next usa o mesmo nome (ou qual) → `elm_setup_descobrir(ccm, rm)`. Mostre as PAs achadas e confirme. Não há
 bloco do ETM: os casos de teste ficam no `CT.csv`.
 

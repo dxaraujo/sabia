@@ -35,7 +35,7 @@ Toda tool devolve `{"ok": true, "dados": {…}}` ou `{"ok": false, "erro": {"cod
 |---|---|
 | `entrada` | o parâmetro (`campo`) está errado: corrija pelo schema e tente mais uma vez; persistindo, mostre o `detalhe` e devolva |
 | `nao_encontrado` | mostre o id e pergunte; nunca troque de id por conta própria. Com `campo: "bundle"`: não há bundle → busque no ELM ao vivo e ofereça a `sa-elm.baixar` |
-| `credencial` | peça que a pessoa confira o `~/.config/mcp-elm/elm.properties` (o agente não lê esse arquivo) |
+| `credencial` | peça que a pessoa confira as variáveis `ELM_SERVER`, `ELM_USER` e `ELM_PASSWORD` do MCP (o agente não as lê) |
 | `indisponivel` | tente mais uma vez; falhou de novo → diga e devolva |
 | `config` | o `pa` está incompleto: diga o campo e ofereça a `sa-elm.setup` |
 | `permissao` · `precondicao` | mostre o atributo ou o campo; pergunte o valor, nunca chute. Com `campo: "indice"`: indexe (`elm_indexar_local`) e rode de novo |
