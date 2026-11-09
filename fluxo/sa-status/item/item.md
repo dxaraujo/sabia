@@ -1,6 +1,6 @@
 ---
 {"fluxo": "item", "dono": "sa-desenvolvedor",
- "quando": ["porta de entrada do item: recebe '<id>' (EP, FT, AT…, ib ou tarefa do EWM), mostra o estado e diz a skill.fluxo dona, com 'seguir agora?'", "<id>", "vamos trabalhar na FT-031", "pegar a AT-012", "retomar a FT-031"],
+ "quando": ["consulta do item: recebe '<id>' (EP, FT, AT…, ib ou tarefa do EWM), mostra o estado e diz a skill.fluxo dona, com 'seguir agora?'", "<id>", "vamos trabalhar na FT-031", "pegar a AT-012", "retomar a FT-031"],
  "travas_gerais": ["elm-pela-sa-elm"],
  "passos": [
    {"id": "inicio", "saidas": {"sem .sabia/sabia.md": "fim"}},

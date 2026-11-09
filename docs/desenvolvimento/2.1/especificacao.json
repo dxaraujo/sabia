@@ -2205,7 +2205,7 @@
   {
    "skill": "sa-status",
    "destino_skill": "muda",
-   "papel": "Painel somente leitura do fluxo e porta de entrada do item. Faz a daily: WIP, vazão, lead time, idade contra o SLE, fila de triagem, topo puxável, MRs esperando pessoa, Sustentação com prazo, reserva de capacidade, autopilot devolvido, 'Publicação: pendente' e a trava de precedência de artefato. Recebe '<id>' e 'minha próxima' (vindos da sa-iniciar), mostra o estado e oferece seguir com a skill dona. Também lista as pendências de rastreio, junta as lições aprendidas para a review e fecha a sessão. Só o fechar-sessao grava arquivo, e o EWM fica para a sa-elm.",
+   "papel": "Painel somente leitura do fluxo e consulta do item. Faz a daily: WIP, vazão, lead time, idade contra o SLE, fila de triagem, topo puxável, MRs esperando pessoa, Sustentação com prazo, reserva de capacidade, autopilot devolvido, 'Publicação: pendente' e a trava de precedência de artefato. Recebe '<id>' e 'minha próxima' (vindos da sa-iniciar), mostra o estado e oferece seguir com a skill dona. Também lista as pendências de rastreio, junta as lições aprendidas para a review e fecha a sessão. Só o fechar-sessao grava arquivo, e o EWM fica para a sa-elm.",
    "fluxos": [
     {
      "fluxo": "painel",

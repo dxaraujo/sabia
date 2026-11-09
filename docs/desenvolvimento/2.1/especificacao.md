@@ -860,7 +860,7 @@ Igual à 2.0: o elm_explorar_local gera o explorar.html offline a partir do índ
 4. **saída** — '🗺️ Bundle · documentos · chunks · galáxias · links · <caminho>', e encerra.
 
 ## sa-status
-Painel somente leitura do fluxo e porta de entrada do item. Faz a daily: WIP, vazão, lead time, idade contra o SLE, fila de triagem, topo puxável, MRs esperando pessoa, Sustentação com prazo, reserva de capacidade, autopilot devolvido, 'Publicação: pendente' e a trava de precedência de artefato. Recebe '<id>' e 'minha próxima' (vindos da sa-iniciar), mostra o estado e oferece seguir com a skill dona. Também lista as pendências de rastreio, junta as lições aprendidas para a review e fecha a sessão. Só o fechar-sessao grava arquivo, e o EWM fica para a sa-elm.
+Painel somente leitura do fluxo e consulta do item. Faz a daily: WIP, vazão, lead time, idade contra o SLE, fila de triagem, topo puxável, MRs esperando pessoa, Sustentação com prazo, reserva de capacidade, autopilot devolvido, 'Publicação: pendente' e a trava de precedência de artefato. Recebe '<id>' e 'minha próxima' (vindos da sa-iniciar), mostra o estado e oferece seguir com a skill dona. Também lista as pendências de rastreio, junta as lições aprendidas para a review e fecha a sessão. Só o fechar-sessao grava arquivo, e o EWM fica para a sa-elm.
 
 ### sa-status.painel
 Coleta (backlog.md e sprint da branch base, branches <id>, status.md, MR, tasks.md, acordos, equipe, Sustentação, autopilot, publicação, trava) → métricas → seções → sugestão → 'seguir com a sugestão?'. Não grava nada.
