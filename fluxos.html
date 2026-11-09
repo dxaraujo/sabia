@@ -1099,7 +1099,7 @@
   ┌────────────────────────┐
   │ 8 devolver             │──▶ ⇒ passa a sa-refinar.ajustar  (fatia atingida e o pedido direto: seguir para o ajuste da…)
   └────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-prd.prd"><summary><code>sa-prd.prd</code> <span>11 passos</span><small>o PRD do épico depois do go no pitch.md: prd.md na pasta do épico, direto na branch base, proporcional ao tamanho, com a aprovação do P.O. gravada no topo; chamado pela sa-refinar.moldar no go ou direto; escrever o PRD do EP-03; aprovar o PRD do EP-03; retomar o PRD do EP-03</small></summary>
+  <details class="fluxo" id="sa-prd.prd"><summary><code>sa-prd.prd</code> <span>11 passos</span><small>o PRD do épico depois da decisão de investir no pitch.md: prd.md na pasta do épico, direto na branch base, proporcional ao tamanho, com a aprovação do P.O. gravada no topo; chamado pela sa-refinar.moldar ao investir ou direto; escrever o PRD do EP-03; aprovar o PRD do EP-03; retomar o PRD do EP-03</small></summary>
   <pre class="cod grafo">sa-prd.prd   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa, elm-pela-sa-elm
 
   ┌────────────────────────┐
@@ -1276,7 +1276,7 @@
   ┌──────────────────────────┐
   │ 6 proximos               │──▶ ⇒ passa a sa-refinar.detalhar  (detalhar a primeira)
   └──────────────────────────┘    ■ fim  (não)</pre></details>
-  <details class="fluxo" id="sa-refinar.moldar"><summary><code>sa-refinar.moldar</code> <span>6 passos</span><small>épico a-moldar: pitch.md de uma página (Shape Up) e go/kill de quem tem produto; moldar o EP-04; ideia nova grande; pitch do épico; go ou kill do EP-04</small></summary>
+  <details class="fluxo" id="sa-refinar.moldar"><summary><code>sa-refinar.moldar</code> <span>6 passos</span><small>épico a-moldar: pitch.md de uma página (Shape Up) e decisão de investimento de quem tem produto; moldar o EP-04; ideia nova grande; pitch do épico; investir ou cancelar o EP-04</small></summary>
   <pre class="cod grafo">sa-refinar.moldar   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa, aprovacao-no-documento, aprovacao-do-cliente, elm-pela-sa-elm
 
   ┌──────────────────────────┐
@@ -1296,9 +1296,9 @@
   └────────────┬─────────────┘
                ▼
   ┌──────────────────────────┐
-  │ 5 seguir                 │──▶ ⇒ passa a sa-prd.prd  (go: seguir para o PRD)
+  │ 5 seguir                 │──▶ ⇒ passa a sa-prd.prd  (investir: seguir para o PRD)
   └────────────┬─────────────┘    ⇒ passa a sa-refinar.detalhar  (cabe em G: seguir para o detalhar)
-                                  ↑ volta a entrada  (kill: moldar o próximo épico a-moldar)
+                                  ↑ volta a entrada  (cancelar: moldar o próximo épico a-moldar)
                                   ■ fim  (sem decisão, ou não)
                ▼
   ┌──────────────────────────┐
@@ -1626,7 +1626,7 @@
   ┌────────────────────────┐
   │ 5 nada                 │
   └────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-status.painel"><summary><code>sa-status.painel</code> <span>22 passos</span><small>daily, só leitura: WIP, vazão, lead time, idade, expedite, MRs esperando pessoa, topo puxável, refinamento, Sustentação e reserva de capacidade, fila de triagem, publicação pendente, trava de artefato e a sugestão; status; painel; bom dia; onde parei; como está a sprint</small></summary>
+  <details class="fluxo" id="sa-status.painel"><summary><code>sa-status.painel</code> <span>22 passos</span><small>daily, só leitura: WIP, vazão, lead time, idade, urgente, MRs esperando pessoa, topo puxável, refinamento, Sustentação e reserva de capacidade, fila de triagem, publicação pendente, trava de artefato e a sugestão; status; painel; bom dia; onde parei; como está a sprint</small></summary>
   <pre class="cod grafo">sa-status.painel   dono sa-desenvolvedor   travas elm-pela-sa-elm
 
   ┌──────────────────────────┐
@@ -1678,7 +1678,7 @@
   └────────────┬─────────────┘
                ▼
   ┌──────────────────────────┐
-  │ 13 expedite              │
+  │ 13 urgente               │
   └────────────┬─────────────┘
                ▼
   ┌──────────────────────────┐
