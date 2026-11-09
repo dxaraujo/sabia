@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-A sobra e a folga (passo `capacidade`) e o `backlog.md` da base.
+A sobra e a folga (passo `capacidade`) e o `backlog.md` da branch base.
 
 ## Faça
 

@@ -7,7 +7,7 @@
    {"id": "rascunho", "chama": "sa-pesquisar.pesquisar"},
    {"id": "perguntar", "saidas": {"ajuste pedido: repita até o ok": "perguntar", "conceito do PRD que muda": "→ sa-prd.mudanca", "sem quem tem produto na sessão": "fim"}},
    {"id": "gravar"},
-   {"id": "gravar-na-base", "de": "gravar-na-base"},
+   {"id": "commit-na-branch-base", "de": "commit-na-branch-base"},
    {"id": "proximos", "saidas": {"detalhar a primeira": "→ sa-refinar.detalhar", "não": "fim"}}
  ]}
 ---
@@ -16,7 +16,7 @@
 O especificador propõe as fatias com o Dev, com os fatos do código pela `sa-pesquisar`; quem tem `produto` aprova e
 ordena. As fatias nascem `aceita`, com ficha (Objetivo, artefatos afetados e os cenários do PRD que cobrem), num commit, e o
 épico vai para `fatiado`. Cada uma ainda passa pelo detalhar para chegar a `pronta`. Aceita épico em
-`em-especificacao` com o `prd.md` na base aprovado (`**Aprovado:** <usuario> · AAAA-MM-DD` de quem tem `produto`).
+`em-especificacao` com o `prd.md` na branch base aprovado (`**Aprovado:** <usuario> · AAAA-MM-DD` de quem tem `produto`).
 
 ## Regras
 

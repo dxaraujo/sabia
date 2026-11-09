@@ -12,14 +12,14 @@ O item `concluida` ou `cancelada`, sem commit ainda (passo `finalizar`).
    - Defeito, mudança ou outro item de Sustentação → captura comum (passo `captura`) com `origem <ID>` na `obs`.
 2. Lição, se houver, numa linha da seção Lições do registro: lição · regra proposta. A resposta que se repete também
    vira lição. As lições vão para a curadoria na `sa-planejamento.review` (agente `sa-especificador`).
-3. O commit `<ID> concluir` pela gravação comum (passo `gravar-na-base`) leva o registro, o `backlog.md` e as
+3. O commit `<ID> concluir` pelo commit direto na branch base (passo `commit-na-branch-base`) leva o registro, o `backlog.md` e as
    capturas.
 4. Ofereça "seguir para a próxima?".
 
 ## Saída
 
-Desdobramento → passo `captura`, um por item; depois, o commit no passo `gravar-na-base`. Nada → passo
-`gravar-na-base`. Depois do commit, o fluxo termina.
+Desdobramento → passo `captura`, um por item; depois, o commit no passo `commit-na-branch-base`. Nada → passo
+`commit-na-branch-base`. Depois do commit, o fluxo termina.
 
 ## Pare se
 

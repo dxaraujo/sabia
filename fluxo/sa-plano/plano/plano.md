@@ -14,7 +14,7 @@
    {"id": "aprovar", "saidas": {"ajuste pedido por quem desenvolve": "escrever"}},
    {"id": "seguir", "saidas": {"IA supervisionada ou IA autopilot": "→ sa-desenvolver.codificar", "manual: Retomar gravado, sessão encerrada até o 'terminei'": "fim"}},
    {"id": "captura", "de": "captura"},
-   {"id": "gravar", "de": "gravar-na-base"}
+   {"id": "gravar", "de": "commit-na-branch-base"}
  ]}
 ---
 # Plano — decidir o como antes de codar
@@ -27,7 +27,7 @@ e registra. Modelos: o padrão `sa-plano/plano.md` e o padrão `sa-plano/researc
 Deste fluxo: item `em-andamento`, branch `<id>`, pasta da spec com `status.md`, trilha rápida ou completo e Fase `—`.
 O manual segue as regras da IA supervisionada: a pessoa está presente.
 
-Os passos `captura` e `gravar` são a captura comum e a gravação comum na base: outros passos os incluem e voltam.
+Os passos `captura` e `gravar` são a captura comum e o commit direto na branch base: outros passos os incluem e voltam.
 
 ## Entrada: vizinhos
 

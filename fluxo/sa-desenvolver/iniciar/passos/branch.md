@@ -1,9 +1,9 @@
 ---
-{"resumo": "Cria a branch <id> a partir da base: na sessão (IA supervisionada e manual) ou numa worktree (autopilot)."}
+{"resumo": "Cria a branch <id> a partir da branch base: na sessão (IA supervisionada e manual) ou numa worktree (autopilot)."}
 ---
 ## Entrada
 
-O autonomia escolhida, o `prefixo_branch` e a `base` do `agentes.json` e o `slug` da ficha.
+O autonomia escolhida, o `prefixo_branch` e a `branch_base` do `agentes.json` e o `slug` da ficha.
 
 ## Faça
 
@@ -11,9 +11,9 @@ Volta da virada (branch `<id>` publicada, do mesmo responsável) → `git fetch`
 `git worktree add .sabia/local/wt/<id> <branch>`), sem criar outra; siga.
 
 1. Sugira a branch `<prefixo_branch>ft-<nnn>-<slug>` e espere o ok (a pessoa pode trocar o nome).
-2. IA supervisionada e manual: `git fetch` e `git switch -c <branch> origin/<base>`.
-3. IA autopilot: `git worktree add -b <branch> .sabia/local/wt/<id> origin/<base>`; a pessoa continua na base.
-4. Sem remoto, a branch sai da base local.
+2. IA supervisionada e manual: `git fetch` e `git switch -c <branch> origin/<branch_base>`.
+3. IA autopilot: `git worktree add -b <branch> .sabia/local/wt/<id> origin/<branch_base>`; a pessoa continua na branch base.
+4. Sem remoto, a branch sai da branch base local.
 
 ## Saída
 

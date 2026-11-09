@@ -8,7 +8,7 @@
    {"id": "captura", "de": "captura", "saidas": {"mais um pedido novo": "captura"}},
    {"id": "regras-aprendidas", "chama": "sa-status.licoes"},
    {"id": "gravar"},
-   {"id": "gravar-na-base", "de": "gravar-na-base"},
+   {"id": "commit-na-branch-base", "de": "commit-na-branch-base"},
    {"id": "seguir", "saidas": {"sim": "→ sa-planejamento.retrospectiva"}}
  ]}
 ---

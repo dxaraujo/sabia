@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-A lista do passo `filtro` e o `backlog.md` da base.
+A lista do passo `filtro` e o `backlog.md` da branch base.
 
 ## Faça
 

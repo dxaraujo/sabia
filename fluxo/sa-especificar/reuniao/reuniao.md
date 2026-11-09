@@ -8,7 +8,7 @@
    {"id": "escrever"},
    {"id": "aprovar", "saidas": {"ajuste pedido": "escrever", "sem o \"sim\" (o rascunho fica em .sabia/local/reunioes/)": "devolver"}},
    {"id": "decisoes"},
-   {"id": "gravar", "de": "gravar-na-base"},
+   {"id": "gravar", "de": "commit-na-branch-base"},
    {"id": "devolver", "saidas": {"outra transcrição sem ATA": "transcricao", "decisão muda um prd.md aprovado": "→ sa-prd.mudanca", "decisão muda o texto do elm/ de uma fatia": "→ sa-especificar.elm"}}
  ]}
 ---

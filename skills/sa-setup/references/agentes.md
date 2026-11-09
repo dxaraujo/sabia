@@ -33,7 +33,7 @@ Esquema fechado; chave desconhecida faz o gerador parar.
 | `sabia` | `"<versão>"` | a versão do Sabiá com que o projeto foi configurado; diferente da instalada → aviso |
 | `formato_spec` | `"kiro"` \| `"openspec"` | o formato da spec (`.kiro/specs/` ou `openspec/changes/`) |
 | `produto` | `".sabia/planejamento"` | a pasta do produto |
-| `base` | `"<branch>"` | a branch base, sem `origin/` |
+| `branch_base` | `"<branch>"` | a branch base, sem `origin/` |
 | `prefixo_branch` | `"<prefixo>"` | o prefixo da branch de trabalho |
 | `glossario` | `".sabia/glossario.md"` \| `null` | o glossário opcional (só sem GL do DOORS) |
 | `adr` | `"docs/adr"` \| `null` | os ADRs opcionais |
@@ -63,7 +63,7 @@ as skills que roda e os subagentes que chama. O `sa-verificador` tem as liberaç
   `--force-with-lease`, `reset --hard`, `--no-verify` e destrutivos em deny; GitLab: leitura allow, escrita ask.
 - **leitura:** ler allow, editar deny, comandos e MCP só de leitura.
 - **autopilot** (o `sa-desenvolvedor` como subagente na worktree): o push da própria branch (sem `--force`), o merge
-  da base nela e abrir ou atualizar o MR dela; merge do MR, ELM e rede bloqueados.
+  da branch base nela e abrir ou atualizar o MR dela; merge do MR, ELM e rede bloqueados.
 
 ## Saída
 
@@ -82,10 +82,10 @@ do `sa-<nome>.md`:
 
 - **Delta do override**, no agente que roda a skill do passo: passo trocado (leia o `.sabia/fluxo/…` no lugar do da
   skill), passo inserido (o arquivo e depois de qual) e passo removido. Padrão trocado vai a todos os agentes.
-- **Recusa** (código 1): arquivo que não é passo nem padrão do Sabiá; cópia sem `base`; operação que não é `inserir`
+- **Recusa** (código 1): arquivo que não é passo nem padrão do Sabiá; cópia sem `branch_base`; operação que não é `inserir`
   nem `remover`; `remover` de passo com trava; `inserir` com id inválido, repetido, `depois` inexistente ou sem o
   arquivo.
-- **Aviso:** a `base` da cópia difere do original atual → compare e funda à mão.
+- **Aviso:** a `branch_base` da cópia difere do original atual → compare e funda à mão.
 - **Toolkit:** `skills[].papeis` e `steering[].papeis` mapeiam 1:1 (desenvolvedor → `sa-desenvolvedor`,
   especificador e produto → `sa-especificador`, pesquisador → `sa-pesquisador`, revisor → `sa-revisor`, verificador →
   `sa-verificador`). Tipos HF, UC, REG, MSG e EL → `sa-especificador`; ET as-built → `sa-desenvolvedor`; rubricas →

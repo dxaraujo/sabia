@@ -17,8 +17,8 @@ A tabela aprovada e ordenada no passo `perguntar`.
 
 ## Saída
 
-Linhas, fichas e a linha do épico prontas → passo `gravar-na-base`.
+Linhas, fichas e a linha do épico prontas → passo `commit-na-branch-base`.
 
 ## Pare se
 
-Nenhuma condição própria: as paradas da gravação são as do passo `gravar-na-base`.
+Nenhuma condição própria: as paradas da gravação são as do passo `commit-na-branch-base`.

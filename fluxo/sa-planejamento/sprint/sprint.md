@@ -12,7 +12,7 @@
    {"id": "meta"},
    {"id": "proposta", "saidas": {"ajuste": "proposta", "sem o ok, ou sem a booleana produto": "fim"}},
    {"id": "gravar"},
-   {"id": "gravar-na-base", "de": "gravar-na-base"},
+   {"id": "commit-na-branch-base", "de": "commit-na-branch-base"},
    {"id": "seguir", "chama": "sa-elm.iteracao", "saidas": {"sim": "→ sa-desenvolver.iniciar"}}
  ]}
 ---

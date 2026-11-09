@@ -13,7 +13,7 @@ O item de Sustentação `nova` ou `em-andamento` (passos `entrada` ou `registrar
    (o % do `acordos.md`). Dentro da reserva, ou com prioridade `crítica` (expedite), siga.
 4. Reserva estourada → mostre o estouro. Decide quem tem `produto` no `equipe.json`: puxar assim mesmo ou esperar. A
    decisão vai na `obs`: `reserva estourada: <decisão> (<usuario>, AAAA-MM-DD)`, gravada com o passo `assumir` (ou
-   logo, pela gravação comum, se a decisão é esperar).
+   logo, pelo commit direto na branch base, se a decisão é esperar).
 
 ## Saída
 

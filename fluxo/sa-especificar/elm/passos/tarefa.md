@@ -9,7 +9,7 @@ A fatia ou o bug, o `sprint-<nn>.md` aberto (se houver) e a chave `elm` do `agen
 
 1. **Sprint.** Sem a linha `<id> · especificação` no `sprint-<nn>.md` aberto, pergunte "acrescento a linha de
    especificação na sprint?". Sim: Item `<id>`, Trabalho `especificação`, Responsável = o `usuario` da pessoa,
-   Tarefas vazio; grave pela gravação comum na base (passo `gravar`, commit `backlog: especificação <id>`) e volte
+   Tarefas vazio; grave pelo commit direto na branch base (passo `gravar`, commit `backlog: especificação <id>`) e volte
    aqui. Sem sprint aberta ou sem o "sim": siga.
 2. **ELM.** Pergunte "quer criar o item no ELM?". Sim → `sa-elm.item` com a tarefa `ESP`. A resposta não muda o
    fluxo.

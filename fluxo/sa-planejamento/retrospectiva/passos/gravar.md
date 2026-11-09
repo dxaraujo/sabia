@@ -7,12 +7,12 @@ A Retro, a linha Números e a folga revista.
 
 ## Faça
 
-Mostre a `## Retro` e a mudança do `acordos.md`, se houve. Com o "ok", grave pelo passo `gravar-na-base`, commit
+Mostre a `## Retro` e a mudança do `acordos.md`, se houve. Com o "ok", grave pelo passo `commit-na-branch-base`, commit
 `<AAAA>/Sprint <nn>: retrospectiva`.
 
 ## Saída
 
-Com o "ok" → passo `gravar-na-base`.
+Com o "ok" → passo `commit-na-branch-base`.
 
 ## Pare se
 

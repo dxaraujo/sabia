@@ -15,7 +15,7 @@
    {"id": "fora-da-sprint"},
    {"id": "idade-acima-do-sle"},
    {"id": "epico-sem-fechar"},
-   {"id": "backlog-fora-da-base"},
+   {"id": "backlog-fora-da-branch-base"},
    {"id": "dado-de-cliente"},
    {"id": "mostrar"}
  ]}

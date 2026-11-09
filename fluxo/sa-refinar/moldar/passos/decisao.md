@@ -21,7 +21,7 @@ O go/kill é de quem tem `produto` no `equipe.json`. Sem essa pessoa na sessão:
 
 ## Saída
 
-Go, kill ou sem quem tem `produto` → passo `gravar-na-base`, com o `pitch.md` e a linha do épico. Cabe em G → passo
+Go, kill ou sem quem tem `produto` → passo `commit-na-branch-base`, com o `pitch.md` e a linha do épico. Cabe em G → passo
 `captura`.
 
 ## Pare se

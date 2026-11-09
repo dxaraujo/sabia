@@ -11,7 +11,7 @@
    {"id": "ligar"},
    {"id": "ata"},
    {"id": "marcar"},
-   {"id": "gravar", "de": "gravar-na-base"},
+   {"id": "gravar", "de": "commit-na-branch-base"},
    {"id": "devolver", "chama": "sa-elm.baixar"}
  ]}
 ---

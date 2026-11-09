@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-Os arquivos de `elm/` com commit de base (ou novos), a ficha (Regras, Cenários, Decisões, Em aberto) e a linha
+Os arquivos de `elm/` com commit de referência (ou novos), a ficha (Regras, Cenários, Decisões, Em aberto) e a linha
 Especificação da ficha.
 
 ## Faça
@@ -16,12 +16,12 @@ arquivo desse tipo sai pela skill, com o fluxo e o padrão do tipo; na volta, co
 - **IA supervisionada.** O especificador edita, com o Dev, o arquivo inteiro no estado depois da mudança. Regra sem
   fonte vai à `sa-entrevistar.entrevistar`, nunca ao texto.
 - **IA autopilot.** O `sa-especificador` como subagente edita sem perguntas: o que não tem fonte vai ao Em aberto da
-  ficha com a recomendação. O subagente não fala com o ELM e não grava na base: devolve os arquivos, e a sessão da
+  ficha com a recomendação. O subagente não fala com o ELM e não grava na branch base: devolve os arquivos, e a sessão da
   pessoa grava.
 - **Manual.** Não edite. Diga "altere no DOORS `<ids>`; avise com `alterei FT-nnn`" e encerre.
 - **Exclui.** O texto fica como veio; a linha Ação diz exclui.
 
-Cada sessão grava pela gravação comum na base (passo `gravar`, commit `FT-nnn elm: edita <ids>`) e volta aqui; a
+Cada sessão grava pelo commit direto na branch base (passo `gravar`, commit `FT-nnn elm: edita <ids>`) e volta aqui; a
 edição pode levar várias sessões.
 
 ## Saída

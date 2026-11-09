@@ -7,7 +7,7 @@ O `acordos.md`. Só com `Id no commit: sim`.
 
 ## Faça
 
-Commit da branch `<id>` (`git log origin/<base>..origin/<id>`) sem o id da tarefa que está na coluna Tarefas da
+Commit da branch `<id>` (`git log origin/<branch_base>..origin/<id>`) sem o id da tarefa que está na coluna Tarefas da
 sprint → o dono da branch corrige na próxima mensagem (`sa-desenvolver.codificar`). Item sem tarefa na sprint não é
 cobrado.
 

@@ -27,4 +27,4 @@ O item registrado. Atender agora → passo `puxar`. Só registrar → o fluxo te
 ## Pare se
 
 - Pedido que muda o código: capturado como bug ou fatia, para a triagem → pare.
-- A gravação na base parou (passo `gravar-na-base`) → mostre o que gravaria e pare.
+- A gravação na branch base parou (passo `commit-na-branch-base`) → mostre o que gravaria e pare.

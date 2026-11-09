@@ -7,7 +7,7 @@
    {"id": "versao"},
    {"id": "editar"},
    {"id": "aprovar", "travas": ["aprovacao-no-documento"], "saidas": {"ajuste pedido": "editar"}},
-   {"id": "gravar", "de": "gravar-na-base"},
+   {"id": "gravar", "de": "commit-na-branch-base"},
    {"id": "fatias", "saidas": {"nenhuma fatia concluida atingida": "devolver"}},
    {"id": "capturar", "de": "captura"},
    {"id": "devolver", "saidas": {"fatia atingida e o pedido direto: seguir para o ajuste das fatias": "→ sa-refinar.ajustar"}}

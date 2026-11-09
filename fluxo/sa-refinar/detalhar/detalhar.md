@@ -10,9 +10,9 @@
    {"id": "elm", "chama": "sa-especificar.elm"},
    {"id": "duvidas", "chama": ["sa-pesquisar.pesquisar", "sa-especificar.prototipo", "sa-especificar.reuniao"], "saidas": {"resposta que muda regras ou cenários": "regras", "muitas regras ou mais que G, com corte possível: dividir": "→ sa-refinar.ajustar", "mais que G sem corte: vira épico": "captura"}},
    {"id": "ficha"},
-   {"id": "gravar-na-base", "de": "gravar-na-base"},
+   {"id": "commit-na-branch-base", "de": "commit-na-branch-base"},
    {"id": "seguir", "saidas": {"virou épico: seguir no moldar": "→ sa-refinar.moldar", "refinar o próximo": "entrada", "não": "fim"}},
-   {"id": "captura", "de": "captura", "saidas": {"linha do épico preparada, com a fatia cancelada": "gravar-na-base"}}
+   {"id": "captura", "de": "captura", "saidas": {"linha do épico preparada, com a fatia cancelada": "commit-na-branch-base"}}
  ]}
 ---
 # Detalhar — refinamento conjunto na fatia e no bug

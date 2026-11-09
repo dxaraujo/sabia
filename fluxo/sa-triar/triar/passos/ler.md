@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O que a pessoa trouxe (pedido em texto, número do EWM, id do `backlog.md` ou nada) e o `backlog.md` da base, lido
+O que a pessoa trouxe (pedido em texto, número do EWM, id do `backlog.md` ou nada) e o `backlog.md` da branch base, lido
 pela entrada comum. Na volta do passo `encaminhar`, o próximo item.
 
 ## Faça

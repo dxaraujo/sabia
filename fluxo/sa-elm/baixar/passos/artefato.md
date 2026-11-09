@@ -17,4 +17,4 @@ Segue para o passo `saida`.
 
 ## Pare se
 
-- Nunca grave o arquivo em `elm/` aqui: quem grava e faz o commit de base é a `sa-especificar.elm`.
+- Nunca grave o arquivo em `elm/` aqui: quem grava e faz o commit de referência é a `sa-especificar.elm`.

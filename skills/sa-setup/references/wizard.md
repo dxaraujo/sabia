@@ -177,7 +177,7 @@ Duas mensagens: a proposta (Status `⏸️ ainda não rodado`) e, depois do `ok`
 | # | Item | Valor | Status | Fonte |
 |---|---|---|---|---|
 | 1 | Branch base | `<branch>` | ✅ | 🔍 <sinal: origin/HEAD · destino dos merges · única remota> |
-| 2 | Push na base | o estado e os documentos de planejamento vão direto nela | <✅ aceita | ⚠️ protegida — diga outra base> | 🔍 |
+| 2 | Push na branch base | o estado e os documentos de planejamento vão direto nela | <✅ aceita | ⚠️ protegida — diga outra branch base> | 🔍 |
 | 3 | Prefixo das branches | `<prefixo>` | ✅ | 🔍 <branches remotas> |
 | 4 | Padrão de commit | `<padrão>` (o id do WI só com "Id no commit: sim" no `acordos.md`) | ✅ | 🔍 <git log> |
 | 5 | MR | <MCP `gitlabpr` | entregar título e descrição> | <✅ respondeu | ⏸️ sem rede — testo de novo na etapa 9 | ❌ sem credencial> | 🔍 |
@@ -239,10 +239,10 @@ cartões dela e devolve os dados; a linha 3 mostra o `pa` que ela gravou.
 
 | # | Skill | Para quê | Origem | Toolkit | Papéis | Autor | Stack |
 |---|---|---|---|---|---|---|---|
-| 1 | `<nome da skill>` | <início da description> | <projeto | usuário | power `<nome>`> | <`<nome>` 🔍 detectado | `<nome>` · tipo `<tipo>` (sugerido) | `<nome>` ↳ customiza `<base>` <versão> | —> | <`<skills[].papeis>` | —> | <`<autor.nome>` (<autor.area>) | —> | <`<stack>` 🔍 casa | `<stack>` | —> |
+| 1 | `<nome da skill>` | <início da description> | <projeto | usuário | power `<nome>`> | <`<nome>` 🔍 detectado | `<nome>` · tipo `<tipo>` (sugerido) | `<nome>` ↳ customiza `<branch_base>` <versão> | —> | <`<skills[].papeis>` | —> | <`<autor.nome>` (<autor.area>) | —> | <`<stack>` 🔍 casa | `<stack>` | —> |
 
-(se há toolkit com `customiza`) Logo abaixo da tabela, uma linha por cópia: `↳ <cópia> customiza <base> <versão>, por <autor.nome> (<autor.area>): <mudanças>`
-— com a base também presente, `<base>` fica fora (substituído pela cópia); base mais nova que a versão da cópia → ⚠️.
+(se há toolkit com `customiza`) Logo abaixo da tabela, uma linha por cópia: `↳ <cópia> customiza <branch_base> <versão>, por <autor.nome> (<autor.area>): <mudanças>`
+— com a branch base também presente, `<branch_base>` fica fora (substituído pela cópia); base mais nova que a versão da cópia → ⚠️.
 
 (só se alguma skill traz `passo`) Desvios de toolkit — a skill assume um passo do Sabiá que aceita desvio; ligados na próxima etapa:
 
@@ -283,7 +283,7 @@ Na mesma mensagem do W5, antes da pergunta; também no C4 ("o que este projeto m
 ### 🔀 Fluxos — o que este projeto customizou
 | # | Ponto | Mudança | Arquivo | Base |
 |---|---|---|---|---|
-| 1 | `<skill>.<fluxo>.<passo> | <skill>/<nome>.md>` | <trocado | inserido depois de `<passo>` | removido | padrão trocado> | `<.sabia/fluxo/… | .sabia/padrao/…>` | <✅ igual à do Sabiá instalado | ⚠️ a base mudou desde a cópia — compare e funda à mão | ➖ inserido ou removido | ❌ <sem `base` | não é passo nem padrão do Sabiá> — o gerador recusa> |
+| 1 | `<skill>.<fluxo>.<passo> | <skill>/<nome>.md>` | <trocado | inserido depois de `<passo>` | removido | padrão trocado> | `<.sabia/fluxo/… | .sabia/padrao/…>` | <✅ igual à do Sabiá instalado | ⚠️ a base mudou desde a cópia — compare e funda à mão | ➖ inserido ou removido | ❌ <sem `branch_base` | não é passo nem padrão do Sabiá> — o gerador recusa> |
 
 Nada customizado → a linha `| — | o Sabiá como vem | — | — | ➖ |`. Para mudar: "customizar …", "descustomizar …".
 ```
@@ -340,7 +340,7 @@ primeiro. Depois de um ajuste, mostre o cartão de novo antes de pedir o "ok" do
 | 2 | só leitura (`sa-pesquisador`, `sa-revisor`) | 🟢 ler · 🔴 editar · comandos e MCP só de leitura | 📐 fixo |
 | 3 | `sa-verificador` | só leitura + 🟢 Executar, curl na URL de teste e o `CT.csv` | 📐 fixo |
 | 4 | ELM | <🟢 leitura · 🟡 escrita nos principais · 🔴 nos subagentes e no autopilot | ➖ sem ELM> | <🧩 | ➖> |
-| 5 | Autopilot | 🟢 push da própria branch, merge da base nela, abrir ou atualizar o MR · 🔴 merge do MR, ELM e rede | 📐 fixo |
+| 5 | Autopilot | 🟢 push da própria branch, merge da branch base nela, abrir ou atualizar o MR · 🔴 merge do MR, ELM e rede | 📐 fixo |
 | 6 | Executar · URL de teste | <`<comando>` · `<url>` | `<job e parâmetros>` · ➖> | <🔍 | 🙋> |
 | 7 | Backpressure | trecho tocado a cada alteração · suíte completa antes do MR · baseline do CI | 📐 fixo |
 | 8 | Disjuntor do autopilot | no `acordos.md` (`sa-planejamento.inicial`) | 📐 |
@@ -462,10 +462,10 @@ Achei o ponto assim — confira.
 
 | # | Forma | O que acontece |
 |---|---|---|
-| 1 | trocar o passo | cópia inteira em `.sabia/fluxo/<skill>/<fluxo>/passos/<passo>.md`, com a `base`, para você editar |
+| 1 | trocar o passo | cópia inteira em `.sabia/fluxo/<skill>/<fluxo>/passos/<passo>.md`, com a `branch_base`, para você editar |
 | 2 | inserir um passo depois deste | `.sabia/fluxo/<skill>/<fluxo>/passos/<novo>.md` com as quatro seções + `inserir` no `<fluxo>.md` do projeto |
 | 3 | remover o passo | <`remover` no `<fluxo>.md` do projeto | ➖ não removível — trava `<id>`> |
-| 4 | trocar o padrão `<skill>/<nome>.md` | <cópia em `.sabia/padrao/<skill>/<nome>.md`, com a `base` | ➖ o passo não usa padrão> |
+| 4 | trocar o padrão `<skill>/<nome>.md` | <cópia em `.sabia/padrao/<skill>/<nome>.md`, com a `branch_base` | ➖ o passo não usa padrão> |
 
 As travas do fluxo continuam valendo em qualquer forma.
 

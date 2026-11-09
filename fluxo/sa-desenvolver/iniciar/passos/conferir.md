@@ -1,9 +1,9 @@
 ---
-{"resumo": "Confere sprint ou expedite, DoR, WIP, trava de artefato e o registro publicado na base antes de assumir."}
+{"resumo": "Confere sprint ou expedite, DoR, WIP, trava de artefato e o registro publicado na branch base antes de assumir."}
 ---
 ## Entrada
 
-O item da entrada comum (fatia ou bug, sem branch `<id>` publicada ou com a branch que voltou na virada), a linha dele no `backlog.md` da base, o
+O item da entrada comum (fatia ou bug, sem branch `<id>` publicada ou com a branch que voltou na virada), a linha dele no `backlog.md` da branch base, o
 `sprint-<nn>.md` aberto (o de maior chave), o `acordos.md` e a ficha `.sabia/planejamento/fatias/FT-nnn-<slug>.md`.
 
 ## Faça
@@ -20,8 +20,8 @@ O item da entrada comum (fatia ou bug, sem branch `<id>` publicada ou com a bran
 4. **Trava de artefato.** Só com ELM. Um `<sigla>-<id>` com `altera` ou `exclui` nos artefatos afetados da ficha está no `elm/` de
    outra fatia que não está `cancelada` nem com `Publicação: publicada` (a que gravou o `elm/` primeiro tem a
    precedência) → "FT-<x> tem o mesmo `<sigla>-<id>`; espere ela ser publicada ou cancelada" e pare.
-5. **Registro publicado.** `git fetch` e confira que a linha do item e a ficha estão em `origin/<base>`. Só no local →
-   peça antes o push pelo passo `gravar`. Sem remoto, vale a base local.
+5. **Registro publicado.** `git fetch` e confira que a linha do item e a ficha estão em `origin/<branch_base>`. Só no local →
+   peça antes o push pelo passo `gravar`. Sem remoto, vale a branch base local.
 
 ## Saída
 

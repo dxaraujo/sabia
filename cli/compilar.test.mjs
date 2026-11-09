@@ -193,7 +193,7 @@ test("passo compartilhado: corpo de fluxo/entrada.md, linha do papel e da branch
   assert.match(g, /│ 1 entrada \[desenvolvedor\] +│──▶ ↪ vizinhos \(diga e pare\): sa-b\.x · ■ bloqueada aguardando troca\n/);
 });
 
-test("passo compartilhado além da entrada (captura, gravar-na-base): só o arquivo comum, sem papel, branch nem vizinhos", () => {
+test("passo compartilhado além da entrada (captura, commit-na-branch-base): só o arquivo comum, sem papel, branch nem vizinhos", () => {
   const fw = fixture({ "fluxo/captura.md": passo("Captura comum."),
     "fluxo/sa-a/a/a.md": mestre({ fluxo: "a", dono: "sa-um", passos: [{ id: "ini" }, { id: "capturar", de: "captura" }, { id: "rev" }] }) });
   assert.deepEqual(validar(carregar(fw)), []);

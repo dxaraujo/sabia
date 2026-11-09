@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O ajuste gravado no passo `gravar-na-base`, ou a parada sem gravar.
+O ajuste gravado no passo `commit-na-branch-base`, ou a parada sem gravar.
 
 ## Faça
 

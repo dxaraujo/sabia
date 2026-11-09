@@ -14,7 +14,7 @@ pergunta e sem a linha Especificação na ficha).
    Grave `Especificação: <autonomia>` no cabeçalho da ficha. É independente da autonomia da codificação.
 2. **Chame a `sa-especificar.elm`** com o especificador presente e a autonomia. Ela monta a pasta `elm/` dentro da pasta da
    spec (`.kiro/specs/ft-<nnn>-<slug>/elm/` ou `openspec/changes/ft-<nnn>-<slug>/elm/`, pelo `formato_spec`), aplica
-   a trava de artefato, baixa os originais e grava o commit de base, direto na base.
+   a trava de artefato, baixa os originais e grava o commit de referência, direto na branch base.
    - IA supervisionada ou IA autopilot: edita, e o especificador aprova cada arquivo inteiro (HF, UC, REG, MSG, EL, GL).
    - Manual: o especificador altera direto no DOORS, e a skill encerra a especificação nesta sessão; na volta
      (`alterei`), ela sincroniza e segue para a aprovação.

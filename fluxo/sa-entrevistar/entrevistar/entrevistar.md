@@ -8,7 +8,7 @@
    {"id": "rodadas", "saidas": {"resposta abriu ramos, ou a fronteira não está vazia": "rodadas"}},
    {"id": "registrar"},
    {"id": "linguagem", "saidas": {"chamada por outra skill (ela grava junto com o documento dela)": "devolver"}},
-   {"id": "gravar", "de": "gravar-na-base"},
+   {"id": "gravar", "de": "commit-na-branch-base"},
    {"id": "devolver"}
  ]}
 ---

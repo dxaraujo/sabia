@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-A sprint e o `backlog.md` da base.
+A sprint e o `backlog.md` da branch base.
 
 ## Faça
 

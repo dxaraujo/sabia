@@ -29,6 +29,6 @@
 ---
 # Painel do fluxo
 
-Coleta (backlog e sprint da base, branches `<id>`, `status.md`, MR, `tasks.md`, acordos, equipe, Sustentação,
+Coleta (backlog e sprint da branch base, branches `<id>`, `status.md`, MR, `tasks.md`, acordos, equipe, Sustentação,
 autopilot, publicação, trava) → métricas → seções → sugestão → "seguir com a sugestão?". Não grava nada. Os passos
 de coleta valem também para os outros fluxos da skill.

@@ -7,7 +7,7 @@
    {"id": "comparar"},
    {"id": "achados", "saidas": {"nenhum a registrar": "gravar"}},
    {"id": "captura", "de": "captura"},
-   {"id": "gravar", "de": "gravar-na-base"},
+   {"id": "gravar", "de": "commit-na-branch-base"},
    {"id": "encerrar", "saidas": {"sim: seguir para a triagem": "→ sa-triar.triar"}}
  ]}
 ---

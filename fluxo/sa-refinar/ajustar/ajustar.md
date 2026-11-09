@@ -12,7 +12,7 @@
    {"id": "cancelar-fatia", "saidas": {"cancelamento pronto": "gravar"}},
    {"id": "cancelar-epico", "saidas": {"fatia em-andamento": "seguir", "cancelamento pronto": "gravar"}},
    {"id": "gravar"},
-   {"id": "gravar-na-base", "de": "gravar-na-base"},
+   {"id": "commit-na-branch-base", "de": "commit-na-branch-base"},
    {"id": "seguir", "chama": "sa-elm.finalizar", "saidas": {"mais um ajuste": "previa", "não": "fim"}},
    {"id": "captura", "de": "captura", "saidas": {"linhas novas preparadas": "gravar"}}
  ]}

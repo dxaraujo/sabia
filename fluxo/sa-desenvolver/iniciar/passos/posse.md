@@ -1,5 +1,5 @@
 ---
-{"resumo": "Posse na base: em-andamento, responsável, iniciada_em, tamanho corrigido e a linha da sprint, num commit pequeno."}
+{"resumo": "Posse na branch base: em-andamento, responsável, iniciada_em, tamanho corrigido e a linha da sprint, num commit pequeno."}
 ---
 ## Entrada
 
@@ -17,9 +17,9 @@ As escolhas do passo `assumir` e o `usuario` da sessão no `equipe.json`.
 
 ## Saída
 
-Posse gravada na base → passo `branch`.
+Posse gravada na branch base → passo `branch`.
 
 ## Pare se
 
 - Outra pessoa pegou o item.
-- A gravação na base parou (fora da base sem o "sim", árvore suja, pull ou push recusado duas vezes).
+- A gravação na branch base parou (fora da branch base sem o "sim", árvore suja, pull ou push recusado duas vezes).

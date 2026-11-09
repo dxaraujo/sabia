@@ -37,7 +37,7 @@ está na worktree `.sabia/local/wt/<id>`.
 
 ## Regras
 
-- Nunca marque aceito sem evidência. Nunca altere código, `status.md` nem a base, e não faça commit: quem chamou
+- Nunca marque aceito sem evidência. Nunca altere código, `status.md` nem a branch base, e não faça commit: quem chamou
   leva a prova ao MR e faz as capturas.
 - Nunca use produção nem dado real de pessoa. Banco só em consulta, pelo MCP de banco.
 - Evidência com dado real não sai da máquina: no relatório vai só um resumo, sem identificar pessoas.

@@ -7,7 +7,7 @@
    {"id": "tarefas", "saidas": {"divergências listadas": "corrigir"}},
    {"id": "artefatos", "saidas": {"o especificador quer baixar de novo e mesclar (pedido direto)": "→ sa-especificar.elm", "seguir": "devolver"}},
    {"id": "corrigir", "chama": "sa-elm.finalizar", "saidas": {"corrigir o id na linha": "gravar", "nada a gravar": "devolver"}},
-   {"id": "gravar", "de": "gravar-na-base"},
+   {"id": "gravar", "de": "commit-na-branch-base"},
    {"id": "devolver"}
  ]}
 ---

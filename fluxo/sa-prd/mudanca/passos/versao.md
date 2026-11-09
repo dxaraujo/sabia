@@ -10,7 +10,7 @@ O `prd.md` aprovado e o pedido de mudança, com a origem.
 1. **Aprovação.** `**Aprovado:** —` no topo.
 2. **Mudanças.** Linha nova `v<N> | <AAAA-MM-DD> | <o que mudou> | <origem>`, com `v<N>` = a maior + 1 e a origem ∈
    pedido · `ATA-nn` · `protótipo v<N>` · `FT-nnn`.
-3. **Gravar.** Pela gravação comum na base (passo `gravar`, commit `EP-nn PRD v<N> em mudança`), e volte aqui.
+3. **Gravar.** Pelo commit direto na branch base (passo `gravar`, commit `EP-nn PRD v<N> em mudança`), e volte aqui.
 
 ## Saída
 

@@ -11,7 +11,7 @@ FT-<nnn> — <título>
 <motivo, da Entrada e do Objetivo da ficha> · Ficha: [FT-<nnn>](<caminho da ficha>) · Spec: <pasta da spec | trivial: sem pasta>
 
 ## Prova
-- CI: <pipeline do último commit: verde | vermelho | sem CI: suíte local verde> (baseline: último pipeline da base)
+- CI: <pipeline do último commit: verde | vermelho | sem CI: suíte local verde> (baseline: último pipeline da branch base)
 - Revisão do agente (sa-revisor, rubrica C): <VEREDITO> · achados aceitos: <[R1], … | nenhum> · descartados: <motivo | nenhum>
 - Verificação (sa-verificador):
   | CT-nn | Resultado | Esperado × obtido | Evidência |

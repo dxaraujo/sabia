@@ -32,6 +32,6 @@ publicado: manual <AAAA-MM-DD>   # só na especificação manual
 - **Corpo sem cabeçalho:** sem título `#` nem linhas de aprovação, tipo ou ação; começa no primeiro rótulo do padrão.
 - **Sem título Markdown no corpo:** as partes são rótulos em negrito (`**Narrativa:**`, `**1. <contexto>**`), para o
   mesmo texto servir ao bloco do `prd.md`, ao delta (dentro do `### Requirement:`) e ao DOORS.
-- **Commit de base:** o original, antes de qualquer edição; o git mostra a diferença contra ele.
+- **Commit de referência:** o original, antes de qualquer edição; o git mostra a diferença contra ele.
 - **Um artefato, uma fatia:** duas fatias não têm o mesmo artefato em `elm/` ao mesmo tempo; a segunda espera a
   primeira ficar cancelada ou com `Publicação: publicada`.

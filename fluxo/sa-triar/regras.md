@@ -12,7 +12,7 @@ Corpo da fatia e do bug: o padrão `sa-refinar/ficha.md` (só a seção Entrada)
 
 - Triar não começa nada: não cria branch, pasta de spec nem `status.md`, não grava no `sprint-<nn>.md` e não fala
   com o ELM (só oferece ler o WI pela `sa-elm.item`).
-- O `backlog.md` e os corpos só mudam na base, pela gravação comum. O id nunca muda nem se reaproveita.
+- O `backlog.md` e os corpos só mudam por commit direto na branch base. O id nunca muda nem se reaproveita.
 - Nunca invente dado de work item, regra ou comportamento esperado: sem fonte e sem pessoa, fica `falta: …`.
 - Trilha (trivial · rápida · completo) e autonomia (IA supervisionada · IA autopilot · manual) não são da triagem: são de
   quem puxa.

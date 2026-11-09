@@ -44,7 +44,7 @@ Documentos para continuar o desenvolvimento da 2.0 em outra máquina. Eles valem
 
 - **O Sabiá não tem usuários:** sem migração, sem compatibilidade, sem citar versões anteriores nem "antes era" nos
   docs e nas skills.
-- **Explicação não é pedido de mudança:** a base é o fluxo de hoje. A decisão de desenho é da pessoa.
+- **Explicação não é pedido de mudança:** a branch base é o fluxo de hoje. A decisão de desenho é da pessoa.
 - **Épico × fatia na especificação:**
   - o épico publica no GATE do PRD e nunca reabre depois do fatiamento;
   - a fatia aceita mudança enquanto a [ESP] FT está aberta e publica na conclusão;

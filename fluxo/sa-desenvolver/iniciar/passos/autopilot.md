@@ -1,5 +1,5 @@
 ---
-{"resumo": "Lança o sa-desenvolvedor como subagente na worktree com o id, a trilha e o teto do disjuntor; a pessoa fica livre na base."}
+{"resumo": "Lança o sa-desenvolvedor como subagente na worktree com o id, a trilha e o teto do disjuntor; a pessoa fica livre na branch base."}
 ---
 ## Entrada
 
@@ -12,10 +12,10 @@ O item com autonomia IA autopilot, a worktree `.sabia/local/wt/<id>` e a linha D
 2. O subagente roda a `sa-plano.plano` (rápida e completo) e depois a `sa-desenvolver.codificar`, até o MR aberto.
    Os comandos rodam sempre como `cd .sabia/local/wt/<id> && <comando>`, e os arquivos são acessados pelo caminho da
    worktree.
-3. Liberado ao subagente: push da própria branch (sem `--force`), `git merge origin/<base>` nela e abrir ou
-   atualizar o MR dela. Bloqueado: merge do MR, ELM e rede. Ele não grava na base.
+3. Liberado ao subagente: push da própria branch (sem `--force`), `git merge origin/<branch_base>` nela e abrir ou
+   atualizar o MR dela. Bloqueado: merge do MR, ELM e rede. Ele não grava na branch base.
 4. Os contadores ficam em `.sabia/local/loop-<id>.md`, pelo padrão `sa-desenvolver/loop.md`.
-5. Diga à pessoa que ela está livre na base e pode puxar outro item: várias tarefas em paralelo, sem lote.
+5. Diga à pessoa que ela está livre na branch base e pode puxar outro item: várias tarefas em paralelo, sem lote.
 
 ## Saída
 

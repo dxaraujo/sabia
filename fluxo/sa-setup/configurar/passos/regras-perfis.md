@@ -17,7 +17,7 @@ Mostre, sem perguntas:
    `CT.csv`.
 4. **ELM** (`elm.regras` do `agentes.json`): só com `elm` diferente de `false`.
 5. **Autopilot** (o `sa-desenvolvedor` como subagente na worktree): liberados o push da própria branch (sem
-   `--force`), o merge da base nela e abrir ou atualizar o MR dela; merge do MR, ELM e rede continuam bloqueados.
+   `--force`), o merge da branch base nela e abrir ou atualizar o MR dela; merge do MR, ELM e rede continuam bloqueados.
 
 ## Saída
 

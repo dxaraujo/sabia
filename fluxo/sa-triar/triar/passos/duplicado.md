@@ -1,5 +1,5 @@
 ---
-{"resumo": "Procura o mesmo pedido no backlog.md da base, nas fichas e nos registros; o mesmo de um aberto não vira linha nova, e o de um terminal vira item novo com origem."}
+{"resumo": "Procura o mesmo pedido no backlog.md da branch base, nas fichas e nos registros; o mesmo de um aberto não vira linha nova, e o de um terminal vira item novo com origem."}
 ---
 ## Entrada
 
@@ -7,7 +7,7 @@ O item lido no passo `ler`.
 
 ## Faça
 
-Procure o mesmo pedido no `backlog.md` da base (título parecido, `ib` igual, `obs`; inclusive as canceladas), nas
+Procure o mesmo pedido no `backlog.md` da branch base (título parecido, `ib` igual, `obs`; inclusive as canceladas), nas
 fichas (`.sabia/planejamento/fatias/`) e nos registros (`.sabia/planejamento/sustentacao/`). Achou → mostre a linha
 e pergunte "é o mesmo?".
 

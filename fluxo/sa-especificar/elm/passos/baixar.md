@@ -18,7 +18,7 @@ As linhas livres dos artefatos afetados (passo `trava`) que ainda não têm arqu
 
 ## Saída
 
-Os originais gravados, ainda sem commit → passo `base`.
+Os originais gravados, ainda sem commit → passo `referencia`.
 
 ## Pare se
 

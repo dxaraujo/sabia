@@ -3,7 +3,7 @@
 ---
 # Pitch — `.sabia/planejamento/epicos/EP-<nn>-<slug>/pitch.md`
 
-Uma página, escrita na moldagem do épico, direto na base. A pasta do épico nasce com ele, e o `prd.md` nasce no go.
+Uma página, escrita na moldagem do épico, direto na branch base. A pasta do épico nasce com ele, e o `prd.md` nasce no go.
 No kill, a pasta fica.
 
 ## Formato

@@ -13,7 +13,7 @@ O `formato_spec` do `agentes.json` e o `<nnn>` e o `<slug>` da ficha, em minúsc
 2. **Criar.** A pasta da spec ainda não existe → ela nasce aqui só com `elm/`; a `sa-desenvolver.iniciar` a
    reaproveita depois.
 3. **Retomada.** Para cada linha dos artefatos afetados com inclui, altera ou exclui, diga onde o arquivo está: sem arquivo ou sem
-   commit de base → passo `baixar`; editado sem a linha Aprovado → passo `conferir` antes de aprovar; aprovado →
+   commit de referência → passo `baixar`; editado sem a linha Aprovado → passo `conferir` antes de aprovar; aprovado →
    nada a fazer.
 
 ## Saída

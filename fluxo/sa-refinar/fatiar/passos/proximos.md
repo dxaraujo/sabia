@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-As fatias gravadas no passo `gravar-na-base`.
+As fatias gravadas no passo `commit-na-branch-base`.
 
 ## Faça
 

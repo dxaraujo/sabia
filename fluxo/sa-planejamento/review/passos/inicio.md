@@ -8,7 +8,7 @@
 ## Faça
 
 A sprint é a aberta (o `sprint-<nn>.md` de maior chave), ou a última fechada se a pessoa pedir. Leia o `backlog.md`
-da base para o status e as datas dos itens.
+da branch base para o status e as datas dos itens.
 
 ## Saída
 

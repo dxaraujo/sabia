@@ -11,7 +11,7 @@ Siga os passos `sa-prd.prd.similares`, `sa-prd.prd.escrever` e `sa-prd.prd.valid
 
 - Os ids ficam estáveis; requisito novo ganha o próximo id provisório do `prd.md`.
 - Requisito que sai fica com `**Ação:** exclui`, e o id nunca é reaproveitado.
-- Grave a cada rodada pela gravação comum na base (passo `gravar`, commit `EP-nn prd v<N>: <o quê>`), e volte aqui.
+- Grave a cada rodada pelo commit direto na branch base (passo `gravar`, commit `EP-nn prd v<N>: <o quê>`), e volte aqui.
 
 ## Saída
 

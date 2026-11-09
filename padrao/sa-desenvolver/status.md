@@ -34,7 +34,7 @@
 |---|---|---|
 
 <!-- Pergunta ao especificador ou ao P.O., ou dependência (ex.: BD-nnn da DDL). Para quem ∈ especificador · P.O. ·
-     <usuario>. Bloqueia ∈ tarefa N.M · MR · nada. No autopilot, o que gravaria na base entra aqui como
+     <usuario>. Bloqueia ∈ tarefa N.M · MR · nada. No autopilot, o que gravaria na branch base entra aqui como
      "capturar: <tipo> · <título> · origem FT-<nnn>" e volta à pessoa no resumo. -->
 
 ## Lições

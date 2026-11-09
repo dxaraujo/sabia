@@ -28,7 +28,7 @@
 | Folga | `<n>%` da capacidade, em itens, para o atendimento | `sa-planejamento.sprint`, `sa-atender.atender` |
 | Tamanhos | `P` · `M` · `G` com o que cada um vale (editável) | `sa-triar.triar`, `sa-refinar.detalhar` |
 | Disjuntor | `tentativas <n> · tempo <n> h · custo <n> créditos`; 2 reprovações seguidas disparam sempre | `sa-desenvolver.codificar` (autopilot) |
-| Id no commit | `sim` · `não` | gravação comum na base, `sa-status.pendencias` |
+| Id no commit | `sim` · `não` | commit direto na branch base, `sa-status.pendencias` |
 | CT no teste | `sim` · `não` (a marca `<FT-nnn> CT-nn` no teste automatizado) | `sa-desenvolver.codificar`, `sa-status.pendencias` |
 
 Cria: `sa-planejamento.inicial`. Ajusta: `sa-planejamento.retrospectiva` (com o "ok" de quem tem `produto`).

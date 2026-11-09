@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-`.sabia/planejamento/acordos.md` e `equipe.json` da base.
+`.sabia/planejamento/acordos.md` e `equipe.json` da branch base.
 
 ## Faça
 

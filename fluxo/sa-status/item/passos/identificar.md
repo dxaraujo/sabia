@@ -8,7 +8,7 @@ O que a pessoa disse e a coleta.
 ## Faça
 
 Procure, nesta ordem:
-1. o id no `backlog.md` da base;
+1. o id no `backlog.md` da branch base;
 2. o número na coluna `ib`;
 3. a tarefa (`DEV 123`, `ESP 456`, `ATD 789` ou só o número) na coluna Tarefas dos `sprint-<nn>.md`.
 

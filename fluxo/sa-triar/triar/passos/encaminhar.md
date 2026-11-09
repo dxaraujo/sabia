@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-A linha gravada no passo `gravar-na-base`, ou o id existente do passo `duplicado`.
+A linha gravada no passo `commit-na-branch-base`, ou o id existente do passo `duplicado`.
 
 ## Faça
 

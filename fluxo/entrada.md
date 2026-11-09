@@ -21,10 +21,10 @@ saída do passo `entrada` no mestre que casa com o estado vence a frase do caso.
 
 Senão, nesta ordem; o primeiro caso que casar decide:
 
-1. **Existe?** Rode `git fetch` e leia o `backlog.md` da base (com a base local atrás do remoto, o de
-   `origin/<base>`; sem rede, o local). Id do Sabiá → a linha dele. Número do EWM → a linha com esse número na
+1. **Existe?** Rode `git fetch` e leia o `backlog.md` da branch base (com a branch base local atrás do remoto, o de
+   `origin/<branch_base>`; sem rede, o local). Id do Sabiá → a linha dele. Número do EWM → a linha com esse número na
    coluna `ib`. Tarefa do EWM → a linha do `sprint-<nn>.md` que a tem em Tarefas e, por ela, o item. Fatia ou bug
-   com branch `<id>`: o `status.md` dela (Fase) completa o estado, mas o status vem da linha da base. Pedido em
+   com branch `<id>`: o `status.md` dela (Fase) completa o estado, mas o status vem da linha da branch base. Pedido em
    texto ou id fora do `backlog.md` → pergunte "não está registrado: capturo agora?". Com o "sim", rode a captura
    comum (a linha nasce `nova`; épico, `a-moldar`) e siga só se os vizinhos deste fluxo aceitam esse status; senão
    diga "capturado `<id>`; a triagem é pela `sa-triar.triar`" e pare. Nunca invente dado de work item: o EWM (pela
@@ -35,7 +35,7 @@ Senão, nesta ordem; o primeiro caso que casar decide:
 3. **Adiada?** Só fatia e bug. `adiada até <data>` com a data no futuro → avise ("adiada até `<data>`: `<motivo da
    obs>`") e pergunte "seguir mesmo assim?". Sim: acrescente na `obs` `adiamento ignorado (<usuario>, AAAA-MM-DD)`, e
    o status volta a `aceita`. Não: pare. Data já passada: o status volta a `aceita` sem perguntar. A correção grava
-   pela gravação comum na base junto com a próxima gravação do fluxo (ou logo, se o fluxo não grava estado).
+   pelo commit direto na branch base junto com a próxima gravação do fluxo (ou logo, se o fluxo não grava estado).
 4. **É deste fluxo?** O estado do item (tipo, status da linha e, na fatia em andamento, a Fase do `status.md` ou o MR
    aberto, que dá o `em-revisao` derivado) casa com uma linha dos vizinhos → linha com a dona: "`<id>` está
    `<estado>`: entre pela `<skill.fluxo>`" (com o agente dela, quando é outro) e pare; linha terminada em ■: diga a

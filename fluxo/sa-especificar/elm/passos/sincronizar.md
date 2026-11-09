@@ -3,13 +3,12 @@
 ---
 ## Entrada
 
-O "alterei FT-nnn" (nesta ou em outra sessão), a ficha com Especificação `manual` e os arquivos de `elm/` com commit
-de base.
+O "alterei FT-nnn" (nesta ou em outra sessão), a ficha com Especificação `manual` e os arquivos de `elm/` com commit de referência.
 
 ## Faça
 
 1. **Baixar.** Para cada artefato afetado, peça à `sa-elm.baixar` (modo artefato) o texto atual e o `modificado_em`
-   e regrave o arquivo de `elm/`: o diff contra o commit de base mostra o que mudou.
+   e regrave o arquivo de `elm/`: o diff contra o commit de referência mostra o que mudou.
 2. **Por ação.** Altera: atualize a versão de referência na linha dos artefatos afetados. Inclui: pergunte o id do ELM que o
    especificador criou, baixe, renomeie para `<id do ELM>-<TIPO>-<slug>.md` e troque o id provisório nos artefatos afetados e no
    `prd.md` do épico pai. Exclui: pergunte se foi para a lixeira do DOORS.
@@ -17,7 +16,7 @@ de base.
    ADDED · MODIFIED · REMOVED; Kiro, `requirements.md` (no bug, `bugfix.md`) com o bloco completo de cada requisito.
 4. **Publicado.** Em cada arquivo, `publicado: manual <AAAA-MM-DD>` no frontmatter, para a `sa-elm.publicar` não
    reenviar.
-5. **Gravar.** Pela gravação comum na base (passo `gravar`, commit `FT-nnn elm: sincroniza <ids>`), e volte aqui.
+5. **Gravar.** Pelo commit direto na branch base (passo `gravar`, commit `FT-nnn elm: sincroniza <ids>`), e volte aqui.
 
 ## Saída
 

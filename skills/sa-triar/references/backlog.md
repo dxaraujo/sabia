@@ -2,7 +2,7 @@
 
 Uma tabela única, uma linha por item, com o título `# Backlog`. A ordem das linhas é a prioridade: o topo é o
 próximo a puxar. A captura acrescenta no fim, quem tem a booleana `produto` reordena (`sa-refinar.ajustar`), e a
-prioridade `crítica` é expedite. Célula sem valor fica vazia. Toda escrita vai direto na base, pela gravação comum
+prioridade `crítica` é expedite. Célula sem valor fica vazia. Toda escrita vai por commit direto na branch base
 (commit pequeno, push com o "sim"). O corpo do item é achado pelo id: não há coluna de link nem de sprint.
 
 ```markdown
@@ -63,5 +63,5 @@ virada, o item que sai da sprint e estava `em-andamento` volta a `pronta` (`sa-p
 ## Id estável
 
 O id nunca muda. Troca de série (fatia ou bug ↔ épico ou sustentação, ou outra categoria) é linha nova com
-`veio de <id>`, e a antiga fica `cancelada` com `virou <novo id>`. Push recusado porque a base andou: o id se
-recalcula na gravação comum.
+`veio de <id>`, e a antiga fica `cancelada` com `virou <novo id>`. Push recusado porque a branch base andou: o id se
+recalcula no commit direto na branch base.

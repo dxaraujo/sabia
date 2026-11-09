@@ -12,8 +12,8 @@ Cada ajuste confirmado vai num commit, com as linhas do `backlog.md`, as fichas 
 
 ## Saída
 
-O commit preparado → passo `gravar-na-base`.
+O commit preparado → passo `commit-na-branch-base`.
 
 ## Pare se
 
-Nenhuma condição própria: as paradas da gravação são as do passo `gravar-na-base`.
+Nenhuma condição própria: as paradas da gravação são as do passo `commit-na-branch-base`.

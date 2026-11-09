@@ -1,6 +1,6 @@
 ---
 {"fluxo": "prd", "dono": "sa-especificador",
- "quando": ["o PRD do épico depois do go no pitch.md: prd.md na pasta do épico, direto na base, proporcional ao tamanho, com a aprovação do P.O. gravada no topo; chamado pela sa-refinar.moldar no go ou direto", "escrever o PRD do EP-03", "aprovar o PRD do EP-03", "retomar o PRD do EP-03"],
+ "quando": ["o PRD do épico depois do go no pitch.md: prd.md na pasta do épico, direto na branch base, proporcional ao tamanho, com a aprovação do P.O. gravada no topo; chamado pela sa-refinar.moldar no go ou direto", "escrever o PRD do EP-03", "aprovar o PRD do EP-03", "retomar o PRD do EP-03"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa", "elm-pela-sa-elm"],
  "passos": [
    {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao", "saidas": {"pedido de aprovação ('aprovar o PRD do EP-nn')": "aprovar"}},
@@ -12,14 +12,14 @@
    {"id": "escrever", "chama": "sa-especificar.prototipo"},
    {"id": "validar", "saidas": {"achado que é decisão de negócio": "esclarecer"}},
    {"id": "aprovar", "travas": ["aprovacao-no-documento"], "saidas": {"ajuste pedido": "escrever"}},
-   {"id": "gravar", "de": "gravar-na-base"},
+   {"id": "gravar", "de": "commit-na-branch-base"},
    {"id": "concluir", "chama": "sa-elm.finalizar", "saidas": {"seguir para o fatiamento": "→ sa-refinar.fatiar"}}
  ]}
 ---
 # PRD — o quê e por quê do épico
 
 Depois do go no `pitch.md`, o `prd.md` nasce em `.sabia/planejamento/epicos/EP-nn-<slug>/`, ao lado do pitch, direto
-na base. Entender (fatos pela `sa-pesquisar.pesquisar`) → esclarecer (`sa-entrevistar.entrevistar`) → similares →
+na branch base. Entender (fatos pela `sa-pesquisar.pesquisar`) → esclarecer (`sa-entrevistar.entrevistar`) → similares →
 escrever → validar (avisa) → aprovação do P.O. gravada no topo do `prd.md` → "seguir para o fatiamento?"
 (`sa-refinar.fatiar`). Sem MR e sem publicar: os requisitos sobem ao DOORS pelas fatias (`sa-especificar.elm` e
 `sa-especificar.archive`).

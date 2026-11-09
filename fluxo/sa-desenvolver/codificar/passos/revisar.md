@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-A branch com a suíte verde e o diff contra `origin/<base>`.
+A branch com a suíte verde e o diff contra `origin/<branch_base>`.
 
 ## Faça
 

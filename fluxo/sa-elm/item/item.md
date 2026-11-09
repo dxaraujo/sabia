@@ -9,7 +9,7 @@
    {"id": "tarefa"},
    {"id": "gravar-ids", "saidas": {"ids prontos": "gravar"}},
    {"id": "ib-em-lote"},
-   {"id": "gravar", "de": "gravar-na-base", "saidas": {"gravado": "devolver"}},
+   {"id": "gravar", "de": "commit-na-branch-base", "saidas": {"gravado": "devolver"}},
    {"id": "ler-wi", "saidas": {"lido": "devolver"}},
    {"id": "comentar"},
    {"id": "devolver"}

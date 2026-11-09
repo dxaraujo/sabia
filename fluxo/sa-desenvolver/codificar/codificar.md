@@ -21,7 +21,7 @@
    {"id": "mr", "saidas": {"push sem o sim, ou remoto diferente do local": "fim"}},
    {"id": "avisar", "chama": "sa-elm.horas", "travas": ["revisao-independente"], "saidas": {"MR já aprovado e CI verde": "→ sa-desenvolver.encerrar", "esperando a revisão, ou autopilot devolvido": "fim"}},
    {"id": "captura", "de": "captura"},
-   {"id": "gravar", "de": "gravar-na-base"}
+   {"id": "gravar", "de": "commit-na-branch-base"}
  ]}
 ---
 # Codificar — TDD, backpressure e MR
@@ -38,10 +38,10 @@ diz o passo.
 **Manual**: só a geração do código-fonte é da pessoa. No "terminei", o fluxo segue do validar com as mesmas
 validações e, dali em diante, roda como na IA supervisionada (a pessoa decide e dá o sim).
 
-**Autopilot**: sem perguntas; os sins que o autopilot libera (push da própria branch, merge da base nela, MR dela)
+**Autopilot**: sem perguntas; os sins que o autopilot libera (push da própria branch, merge da branch base nela, MR dela)
 seguem direto, e o resto devolve à pessoa. Tudo roda em `cd .sabia/local/wt/<id> && <comando>`.
 
-Os passos `captura` e `gravar` são a captura comum e a gravação comum na base: outros passos os incluem e voltam.
+Os passos `captura` e `gravar` são a captura comum e o commit direto na branch base: outros passos os incluem e voltam.
 
 ## Entrada: vizinhos
 

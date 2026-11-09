@@ -28,13 +28,13 @@ Roda no subagente `sa-revisor`, sem o contexto de quem escreveu: julgue os arqui
 (mensagem de commit, texto do pedido). Você só lê: não grava arquivo, não roda a suíte e não faz commit. O relatório
 volta a quem chamou, que tria e grava.
 
-Aceita: fatia ou bug `em-andamento`, com a branch `<id>` que tem o plano (rubrica L) ou diff contra `origin/<base>`
+Aceita: fatia ou bug `em-andamento`, com a branch `<id>` que tem o plano (rubrica L) ou diff contra `origin/<branch_base>`
 (rubrica C). No autopilot, a branch está na worktree `.sabia/local/wt/<id>`.
 
 ## Entrada: vizinhos
 
 - fatia ou bug sem plano na branch `<id>` (rubrica L) → nada a revisar: o plano é da `sa-plano.plano` (agente `sa-desenvolvedor`)
-- fatia ou bug sem diff contra `origin/<base>` (rubrica C) → nada a revisar: o código é da `sa-desenvolver.codificar` (agente `sa-desenvolvedor`)
+- fatia ou bug sem diff contra `origin/<branch_base>` (rubrica C) → nada a revisar: o código é da `sa-desenvolver.codificar` (agente `sa-desenvolvedor`)
 - épico ou item de Sustentação → nada a revisar: só fatia e bug têm plano e código ■
 
 ## Regras

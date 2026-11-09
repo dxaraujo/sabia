@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-A sprint anterior (a de maior chave) e o `backlog.md` da base. Sem sprint anterior, este passo não faz nada.
+A sprint anterior (a de maior chave) e o `backlog.md` da branch base. Sem sprint anterior, este passo não faz nada.
 
 ## Faça
 

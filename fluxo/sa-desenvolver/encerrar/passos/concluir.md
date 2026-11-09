@@ -1,9 +1,9 @@
 ---
-{"resumo": "concluida e concluida_em na base; na última fatia aberta do épico fatiado, o épico concluido no mesmo commit."}
+{"resumo": "concluida e concluida_em na branch base; na última fatia aberta do épico fatiado, o épico concluido no mesmo commit."}
 ---
 ## Entrada
 
-A data do merge e a linha do item no `backlog.md` da base.
+A data do merge e a linha do item no `backlog.md` da branch base.
 
 ## Faça
 
@@ -14,8 +14,8 @@ A data do merge e a linha do item no `backlog.md` da base.
 
 ## Saída
 
-Concluída na base → passo `finalizar`.
+Concluída na branch base → passo `finalizar`.
 
 ## Pare se
 
-- A gravação na base parou → mostre o que gravaria; o resto segue na próxima sessão pela entrada (item mergeado).
+- A gravação na branch base parou → mostre o que gravaria; o resto segue na próxima sessão pela entrada (item mergeado).

@@ -8,7 +8,7 @@ Valem em todos os fluxos da skill.
 - **Só leitura**: nenhum fluxo grava arquivo, branch nem ELM, salvo a `sa-status.fechar-sessao` (Retomar, `tasks.md`
   e o CSV de créditos, com o "ok"). O EWM é da `sa-elm`.
 - **Coleta única**: todos os fluxos leem pela coleta da `sa-status.painel` (do `sa-status.painel.backlog-e-sprint` ao
-  `sa-status.painel.trava-de-artefato`), sempre da base remota depois do `git fetch --quiet`. Sem rede, a base local,
+  `sa-status.painel.trava-de-artefato`), sempre da branch base remota depois do `git fetch --quiet`. Sem rede, a branch base local,
   com o aviso "dados locais".
 - **Pasta da spec** pelo `formato_spec` do `agentes.json`: Kiro `.kiro/specs/ft-<nnn>-<slug>/`; OpenSpec
   `openspec/changes/ft-<nnn>-<slug>/` (arquivada: `openspec/changes/archive/*-ft-<nnn>-<slug>/`). A trilha trivial não

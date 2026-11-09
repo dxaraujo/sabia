@@ -8,7 +8,7 @@
    {"id": "so-os-novos"},
    {"id": "mapear"},
    {"id": "captura", "de": "captura"},
-   {"id": "gravar", "de": "gravar-na-base"},
+   {"id": "gravar", "de": "commit-na-branch-base"},
    {"id": "seguir", "saidas": {"sim: seguir para a triagem": "→ sa-triar.triar"}}
  ]}
 ---

@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-`git ls-files` da base.
+`git ls-files` da branch base.
 
 ## Faça
 

@@ -28,8 +28,7 @@ A pessoa faz o trabalho; a IA ajuda quando ela pede.
 ## Saída
 
 A pessoa declara resolvido, ou o pedido foi retirado → passo `finalizar`. Pedido que muda o código, ou categoria
-errada → passo `fora-do-escopo`. A sessão termina antes de resolver → commit `<ID> registrar sessão` do registro pela
-gravação comum (passo `gravar-na-base`), e o fluxo termina.
+errada → passo `fora-do-escopo`. A sessão termina antes de resolver → commit `<ID> registrar sessão` do registro pelo commit direto na branch base (passo `commit-na-branch-base`), e o fluxo termina.
 
 ## Pare se
 

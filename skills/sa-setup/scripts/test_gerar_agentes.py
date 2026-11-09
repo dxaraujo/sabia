@@ -63,7 +63,7 @@ class Base(unittest.TestCase):
         (self.projeto / ".sabia/sabia.md").write_text(SABIA_MD)
         self.velho_home, os.environ["HOME"] = os.environ.get("HOME"), str(self.home)
         self.cfg = {"alvos": ["kiro", "opencode"], "sabia": json.loads((REPO / "plugin.json").read_text())["version"], "formato_spec": "kiro", "produto": ".sabia/planejamento",
-                    "base": "develop", "prefixo_branch": "feature/", "glossario": "docs/glossario.md", "adr": "docs/adr",
+                    "branch_base": "develop", "prefixo_branch": "feature/", "glossario": "docs/glossario.md", "adr": "docs/adr",
                     "elm": ELM, "toolkits": {}, "passos": [], "agentes": {}}
 
     def tearDown(self):
@@ -255,7 +255,7 @@ class Agentes(Base):
                             ({"agentes": {"desenvolvedor": {}}}, "agente desconhecido desenvolvedor"),
                             ({"agentes": {"sa-revisor": {"ler": []}}}, r"agentes.sa-revisor: chave fora do esquema \['ler'\]"),
                             ({"elm": True}, "elm: false ou"), ({"elm": {"pa": "x", "regras": {"pergunta": []}}}, "elm: false ou"),
-                            ({"formato_spec": "markdown"}, "formato_spec"), ({"base": ""}, r"falta \['base'\]")):
+                            ({"formato_spec": "markdown"}, "formato_spec"), ({"branch_base": ""}, r"falta \['branch_base'\]")):
             with self.assertRaisesRegex(ValueError, erro, msg=mudar):
                 g.gerar(self.projeto, {**self.cfg, **mudar}, REPO)
 

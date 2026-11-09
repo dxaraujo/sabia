@@ -8,7 +8,7 @@ Pedido direto ("monta o planejamento", "acordos do time", "rever a equipe"), a o
 
 ## Faça
 
-Leia `.sabia/planejamento/equipe.json` e `.sabia/planejamento/acordos.md` da base, se existem. Com os dois, mostre os
+Leia `.sabia/planejamento/equipe.json` e `.sabia/planejamento/acordos.md` da branch base, se existem. Com os dois, mostre os
 dois e pergunte só o que mudou. Sem um deles, siga para montar o que falta. Pergunte também se o pedido é só rever a
 equipe e os acordos (aí o fluxo termina depois da gravação, sem o roadmap).
 
@@ -18,4 +18,4 @@ O que muda na equipe e nos acordos → passo `equipe`. Nada mudou nos dois → p
 
 ## Pare se
 
-Sem `.sabia/planejamento/` na base → "rode a `sa-setup.configurar`" e pare.
+Sem `.sabia/planejamento/` na branch base → "rode a `sa-setup.configurar`" e pare.

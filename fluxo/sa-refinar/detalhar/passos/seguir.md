@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-A ficha e a linha gravadas no passo `gravar-na-base`, ou o épico nascido no vira épico.
+A ficha e a linha gravadas no passo `commit-na-branch-base`, ou o épico nascido no vira épico.
 
 ## Faça
 

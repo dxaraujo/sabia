@@ -12,7 +12,7 @@ O resultado do passo `decisao`, já gravado.
 | go | "seguir para o PRD?" (`sa-prd.prd`, que cria o `prd.md` na pasta do épico) |
 | kill | moldar o próximo épico `a-moldar`, na ordem do `backlog.md` |
 | cabe em G | "seguir para o detalhar?" (`sa-refinar.detalhar`, com a fatia nova) |
-| sem decisão | "o pitch está na base; o go/kill é de <nomes com `produto`>" |
+| sem decisão | "o pitch está na branch base; o go/kill é de <nomes com `produto`>" |
 
 ## Saída
 

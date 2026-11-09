@@ -4,7 +4,7 @@
 # Ficha — `.sabia/planejamento/fatias/FT-<nnn>-<slug>.md`
 
 Toda fatia e todo bug têm ficha. Nasce curta na captura (só a Entrada), cresce no detalhar e é editável até alguém
-puxar (status `em-andamento`). Fica direto na base. Seção sem conteúdo fica só com o título.
+puxar (status `em-andamento`). Fica direto na branch base. Seção sem conteúdo fica só com o título.
 
 ## Formato
 

@@ -8,7 +8,7 @@
    {"id": "cenarios", "chama": "sa-verificar.verificar"},
    {"id": "decisao", "saidas": {"nenhum ❌ adiado": "entrega"}},
    {"id": "captura", "de": "captura"},
-   {"id": "gravar-na-base", "de": "gravar-na-base"},
+   {"id": "commit-na-branch-base", "de": "commit-na-branch-base"},
    {"id": "entrega"}
  ]}
 ---

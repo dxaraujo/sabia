@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O `backlog.md` da base, na ordem das linhas.
+O `backlog.md` da branch base, na ordem das linhas.
 
 ## Faça
 

@@ -6,7 +6,7 @@
    {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao", "saidas": {"resposta do cliente a uma versão já registrada": "aprovacao"}},
    {"id": "registrar", "saidas": {"nenhum arquivo novo e nenhuma versão aguardando o cliente": "devolver"}},
    {"id": "aprovacao", "travas": ["aprovacao-do-cliente"], "saidas": {"ajuste com a versão nova já na pasta": "registrar"}},
-   {"id": "gravar", "de": "gravar-na-base"},
+   {"id": "gravar", "de": "commit-na-branch-base"},
    {"id": "devolver", "saidas": {"aprovado e a EL muda num prd.md já aprovado": "→ sa-prd.mudanca"}}
  ]}
 ---

@@ -61,9 +61,8 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
   O formato da spec vem do `formato_spec` do `agentes.json` (Kiro ou OpenSpec). A pasta da spec é `ft-<nnn>-<slug>`.
 - **Sustentação.** A categoria é confirmada antes de gravar a triagem e não se recategoriza depois. Quem atende puxa
   dentro da folga reservada. A IA auxilia, e a pessoa declara o item resolvido (`sa-atender.atender`).
-- **Estado na base.** As linhas do `backlog.md` e do `sprint-<nn>.md` vão num commit pequeno direto na base, pela
-  gravação comum na base. Os documentos de planejamento (`pitch.md`, `prd.md`, ficha, arquivos de `elm/`) também vão
-  direto na base. MR só existe para código.
+- **Estado na branch base.** As linhas do `backlog.md` e do `sprint-<nn>.md` vão num commit pequeno por commit direto na branch base na branch base. Os documentos de planejamento (`pitch.md`, `prd.md`, ficha, arquivos de `elm/`) também vão
+  direto na branch base. MR só existe para código.
 
 ## Aprovações
 
@@ -74,7 +73,7 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
 | um `desenvolvedor` ≠ autor | o MR (o CODEOWNERS indica o dono), com o CI verde e a evidência do verificador | o MR |
 | qualquer pessoa | a revisão humana, conforme o risco (`sa-verificar.revisao-humana`) | o MR |
 
-O autor faz o merge com a aprovação e o CI verde. Não há rebase: a branch se atualiza só por merge da base.
+O autor faz o merge com a aprovação e o CI verde. Não há rebase: a branch se atualiza só por merge da branch base.
 
 ## Autonomia
 
@@ -88,9 +87,7 @@ trabalho. Codificação e especificação têm autonomias independentes.
 - **Especificação** (só com ELM, ao detalhar a fatia com artefatos afetados, na `sa-refinar.detalhar`; campo Especificação da
   ficha): IA supervisionada, IA autopilot ou manual (o especificador altera direto no DOORS e avisa "alterei"; a skill
   sincroniza).
-- **Autopilot:** o `sa-desenvolvedor` roda como subagente na worktree `.sabia/local/wt/<id>` enquanto a pessoa segue na
-  base; várias tarefas podem correr em paralelo. Ficam liberados o push da própria branch (sem `--force`), o merge da
-  base nela e abrir ou atualizar o MR dela. Merge do MR, ELM e rede continuam bloqueados. O autopilot leva até o MR,
+- **Autopilot:** o `sa-desenvolvedor` roda como subagente na worktree `.sabia/local/wt/<id>` enquanto a pessoa segue na branch base; várias tarefas podem correr em paralelo. Ficam liberados o push da própria branch (sem `--force`), o merge da branch base nela e abrir ou atualizar o MR dela. Merge do MR, ELM e rede continuam bloqueados. O autopilot leva até o MR,
   que passa pela mesma revisão humana. Não existe lote.
 - **Disjuntor:** dispara pelo teto do `acordos.md` ou por 2 reprovações seguidas, grava em `.sabia/local/loop-<id>.md`
   e devolve o item à pessoa.
@@ -187,8 +184,8 @@ Um toolkit não cria tipo; num tipo desviável (⇢), a skill dele escreve o art
 - **Sim da pessoa:** push, merge, `curl`, `wget`, escrita no GitLab e escrita no ELM passam pelo ask dos principais
   `sa-desenvolvedor` e `sa-especificador`; nos subagentes e no autopilot, o que não é liberado é deny. `rebase`,
   `--force`, `--force-with-lease`, `reset --hard` e `--no-verify` ficam em deny.
-- **Gravar na base:** estado e documentos de planejamento vão pela gravação comum na base. O código vai por MR, na
-  branch `<id>`, atualizada só por merge da base.
+- **Gravar na branch base:** estado e documentos de planejamento vão pelo commit direto na branch base. O código vai por MR, na
+  branch `<id>`, atualizada só por merge da branch base.
 - **MCPs:** o MR só pelo `gitlabpr`, nunca pelo `gh` nem pelo `glab`. O ELM só pelo MCP `elm`, e toda escrita no ELM
   passa pela `sa-elm`. Busca do vigente: specs arquivadas → bundle → ELM ao vivo.
 - **Dado de cliente** nunca vai para o git: fica em `.sabia/local/`. O agente não executa em ambiente de cliente nem

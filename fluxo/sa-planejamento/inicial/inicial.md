@@ -6,8 +6,8 @@
    {"id": "inicio", "saidas": {"equipe e acordos existem e nada mudou": "roadmap"}},
    {"id": "equipe"},
    {"id": "acordos"},
-   {"id": "gravar-na-base", "de": "gravar-na-base", "saidas": {"pedido de rever a equipe e os acordos": "seguir", "gravou o roadmap": "seguir"}},
-   {"id": "roadmap", "saidas": {"roadmap com o ok": "gravar-na-base"}},
+   {"id": "commit-na-branch-base", "de": "commit-na-branch-base", "saidas": {"pedido de rever a equipe e os acordos": "seguir", "gravou o roadmap": "seguir"}},
+   {"id": "roadmap", "saidas": {"roadmap com o ok": "commit-na-branch-base"}},
    {"id": "seguir", "saidas": {"sim": "→ sa-planejamento.sprint"}}
  ]}
 ---

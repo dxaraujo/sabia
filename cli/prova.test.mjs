@@ -56,7 +56,7 @@ function projeto(nome, { tipos, elm = {}, toolkits = {}, passos = [] }, extra = 
   return escrever(path.join(raiz, nome), {
     ".sabia/sabia.md": `# Sabiá — ${nome}\n\n## Projeto\n\n| Item | Valor |\n|---|---|\n| Tipos · stack · módulos | \`${tipos}\` |\n\n## ELM\n\n| Item | Valor |\n|---|---|\n${linhas}`,
     ".sabia/config/agentes.json": { sabia: VERSAO_FW, alvos: ["kiro", "opencode"], formato_spec: "kiro", produto: ".sabia/planejamento",
-      base: "develop", prefixo_branch: "", glossario: ".sabia/glossario.md", adr: "docs/adr", elm: false, toolkits, passos, agentes: {} },
+      branch_base: "develop", prefixo_branch: "", glossario: ".sabia/glossario.md", adr: "docs/adr", elm: false, toolkits, passos, agentes: {} },
     ...extra,
   });
 }

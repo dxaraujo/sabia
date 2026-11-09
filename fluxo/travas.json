@@ -1,13 +1,13 @@
 {
   "$comment": "Catálogo fechado das travas do Sabiá. O gerador escreve o texto curto de cada trava no índice do prompt do agente; o corpo dos passos nunca as repete. Nenhuma é liberável (liberavel_por vazio); o formato prevê liberavel_por: [\"projeto\"] e {\"liberar\": [...], \"motivo\", \"por\"} no mestre do projeto.",
   "travas": {
-    "sim-da-pessoa": {"texto": "push, merge e escrita no ELM e no GitLab só com o \"sim\" da pessoa; no autopilot, só o push da própria branch (sem --force), o merge da base nela e abrir ou atualizar o MR dela dispensam o sim; merge do MR, ELM e rede seguem bloqueados", "liberavel_por": []},
+    "sim-da-pessoa": {"texto": "push, merge e escrita no ELM e no GitLab só com o \"sim\" da pessoa; no autopilot, só o push da própria branch (sem --force), o merge da branch base nela e abrir ou atualizar o MR dela dispensam o sim; merge do MR, ELM e rede seguem bloqueados", "liberavel_por": []},
     "backpressure": {"texto": "nada é dado como pronto nem vai ao MR sem o validar verde (compila, testes passam, lint e cobertura pelo gate): o trecho tocado a cada alteração, a suíte completa antes do MR e o CI do MR", "liberavel_por": []},
     "revisao-independente": {"texto": "o MR é revisado e aprovado por um desenvolvedor que não é o autor; o CODEOWNERS indica o dono da área", "liberavel_por": []},
     "aceite-independente": {"texto": "quem implementou não verifica: a verificação roda no subagente sa-verificador, de contexto isolado", "liberavel_por": []},
     "pr-lido-por-pessoa": {"texto": "merge só com o MR aprovado por uma pessoa e o CI verde; o autopilot nunca faz merge", "liberavel_por": []},
     "toolkit-sem-commit": {"texto": "o toolkit devolve código e testes, sem commit, push nem MR", "liberavel_por": []},
-    "sem-force": {"texto": "nunca --force nem --force-with-lease; a branch se atualiza só por merge da base, nunca por rebase", "liberavel_por": []},
+    "sem-force": {"texto": "nunca --force nem --force-with-lease; a branch se atualiza só por merge da branch base, nunca por rebase", "liberavel_por": []},
     "decisao-da-pessoa": {"texto": "nunca invente regra, valor ou ator: sem fonte e sem a decisão de uma pessoa, fica em aberto", "liberavel_por": []},
     "aprovacao-do-cliente": {"texto": "o protótipo só vale aprovado pelo cliente, numa linha de Decisões do pitch.md, do prd.md ou da ficha, com quem (nome e papel), data, versão vN e evidência (ATA ou e-mail); nunca deduzida nem dada por quem especifica", "liberavel_por": []},
     "aprovacao-no-documento": {"texto": "pitch, PRD e ficha só valem com 'Aprovado: <usuário> · <data>' de quem tem produto, no topo do documento; arquivo de elm/ só vale aprovado por quem tem especificador", "liberavel_por": []},

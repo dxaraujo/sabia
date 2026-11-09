@@ -9,7 +9,7 @@ Tudo o que os passos montaram e os dados do passo `elm`.
 
 1. Grave o `.sabia/config/agentes.json` no esquema do
    [agentes.md](~/.sabia/framework/skills/sa-setup/references/agentes.md): `alvos`, `sabia` (a versão instalada),
-   `formato_spec`, `produto`, `base`, `prefixo_branch`, `glossario`, `adr`, `elm` (`false` ou `{pa, bundle, regras}`),
+   `formato_spec`, `produto`, `branch_base`, `prefixo_branch`, `glossario`, `adr`, `elm` (`false` ou `{pa, bundle, regras}`),
    `toolkits`, `passos` e `agentes.<agente>.{modelo, mcp, skills, subagentes}`.
 2. `uv run --no-project python <pasta desta skill>/scripts/gerar_agentes.py --projeto <raiz>` sem `--gravar` imprime
    a tabela dos agentes (é a do cartão W8). Diferente do combinado → corrija o `agentes.json` e rode de novo.

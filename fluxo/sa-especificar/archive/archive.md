@@ -5,7 +5,7 @@
  "passos": [
    {"id": "entrada", "de": "entrada", "papel": "desenvolvedor", "branch": "nao", "saidas": {"fatia ou bug concluida, com o MR do item mergeado": "arquivar"}},
    {"id": "arquivar", "saidas": {"sem pasta da spec (trilha trivial) ou sem delta": "devolver", "spec já arquivada (OpenSpec), ou com a linha Publicação no status.md": "publicar"}},
-   {"id": "gravar", "de": "gravar-na-base"},
+   {"id": "gravar", "de": "commit-na-branch-base"},
    {"id": "publicar", "chama": "sa-elm.publicar"},
    {"id": "devolver"}
  ]}

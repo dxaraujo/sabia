@@ -9,7 +9,7 @@
    {"id": "horas", "chama": "sa-elm.horas"},
    {"id": "creditos"},
    {"id": "commit", "saidas": {"na branch <id>, ou sem o ok": "retomada"}},
-   {"id": "gravar-na-base", "de": "gravar-na-base"},
+   {"id": "commit-na-branch-base", "de": "commit-na-branch-base"},
    {"id": "retomada"}
  ]}
 ---

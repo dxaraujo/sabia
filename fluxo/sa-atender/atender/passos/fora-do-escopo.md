@@ -17,7 +17,7 @@ errada.
 
 ## Saída
 
-Item novo capturado. Categoria errada → o commit pela gravação comum (passo `gravar-na-base`), e o fluxo termina. O
+Item novo capturado. Categoria errada → o commit pelo commit direto na branch base (passo `commit-na-branch-base`), e o fluxo termina. O
 item segue → passo `finalizar` quando a pessoa declarar resolvido.
 
 ## Pare se

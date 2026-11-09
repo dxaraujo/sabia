@@ -8,11 +8,11 @@
    {"id": "puxar", "saidas": {"reserva estourada, sem quem tem produto na sessão ou com a decisão de esperar": "fim"}},
    {"id": "assumir", "chama": "sa-elm.item"},
    {"id": "executar", "chama": "sa-pesquisar.pesquisar", "saidas": {"a sessão termina antes de resolver (commit '<ID> registrar sessão')": "fim", "resolvido ou retirado, nada fora do escopo": "finalizar"}},
-   {"id": "fora-do-escopo", "saidas": {"categoria errada: o item ficou 'cancelada · virou <novo id>'": "gravar-na-base"}},
+   {"id": "fora-do-escopo", "saidas": {"categoria errada: o item ficou 'cancelada · virou <novo id>'": "commit-na-branch-base"}},
    {"id": "finalizar", "chama": "sa-elm.finalizar"},
-   {"id": "desdobramentos", "saidas": {"nenhum desdobramento": "gravar-na-base"}},
+   {"id": "desdobramentos", "saidas": {"nenhum desdobramento": "commit-na-branch-base"}},
    {"id": "captura", "de": "captura"},
-   {"id": "gravar-na-base", "de": "gravar-na-base"}
+   {"id": "commit-na-branch-base", "de": "commit-na-branch-base"}
  ]}
 ---
 # Atender — Sustentação sem perder o rastro
@@ -22,7 +22,7 @@ Um fluxo só para as seis categorias da Sustentação: AT (Atendimento) · IM (I
 pedido aqui; quem atende puxa dentro da reserva, faz o trabalho com a IA só como auxílio e declara resolvido.
 
 Entra um id (`AT-`, `IM-`, `BD-`, `IN-`, `OP-` ou `EX-nnn`) ou um pedido em texto. Pedido em texto, ou id que não
-existe, vai para o passo `registrar`. O estado vai na base pela gravação comum (passo `gravar-na-base`).
+existe, vai para o passo `registrar`. O estado vai por commit direto na branch base (passo `commit-na-branch-base`).
 
 Leia antes o `.sabia/sabia.md` (seção Sustentação: Categoria · Descrição · Exemplo). Sem ele, ofereça a
 `sa-setup.configurar` e pare.
@@ -36,7 +36,7 @@ Aceita: item de Sustentação `nova` ou `em-andamento`.
 ## Arquivos
 
 - `.sabia/planejamento/sustentacao/<ID>-<slug>.md` — o registro, no padrão `sa-atender/registro.md`. Gravado direto
-  na base.
+  na branch base.
 - A linha do item no `backlog.md` e a linha `atendimento` no `sprint-<nn>.md` aberto.
 - `.sabia/local/sustentacao/<ID>/` — extrações, telas e respostas com dado real. Fora do git.
 

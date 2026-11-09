@@ -32,7 +32,7 @@ Proporcional ao tamanho. Cada requisito é um bloco na seção Requisitos:
 - **Sem ET:** a ET é só as-built, no `design.md` da fatia.
 - Nunca invente regra, valor ou ator: sem fonte, vai ao Em aberto (`Pergunta | Para quem | Bloqueia`).
 
-Grave a cada rodada pela gravação comum na base (passo `gravar`, commit `EP-nn prd: <o quê>`), e volte aqui.
+Grave a cada rodada pelo commit direto na branch base (passo `gravar`, commit `EP-nn prd: <o quê>`), e volte aqui.
 
 ## Saída
 

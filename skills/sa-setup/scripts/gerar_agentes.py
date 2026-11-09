@@ -35,7 +35,7 @@ AGENTE_DO_PAPEL = {p: a for a, ps in PAPEIS_DO_AGENTE.items() for p in ps}
 ALIAS_PASSO = {"sa-codificar.codificar.tarefa": "sa-desenvolver.codificar.tarefa"}
 # a regra da sa-elm.setup (passo dados): nos subagentes só a leitura do ELM, sem o sync e sem reindexar o bundle
 ELM_SO_PRIMARIOS = ["elm/elm_sync", "elm/elm_indexar_local"]
-CHAVES = {"alvos", "sabia", "formato_spec", "produto", "base", "prefixo_branch", "glossario", "adr", "elm", "toolkits",
+CHAVES = {"alvos", "sabia", "formato_spec", "produto", "branch_base", "prefixo_branch", "glossario", "adr", "elm", "toolkits",
           "passos", "agentes"}
 CHAVES_AGENTE = {"modelo", "mcp", "skills", "subagentes"}
 LEITURA_OC = ("glob", "grep", "list", "lsp", "todoread", "todowrite")
@@ -398,7 +398,7 @@ def validar(cfg, perfis):
     erros = []
     if fora := sorted(set(cfg) - CHAVES):
         erros.append(f"chave fora do esquema {fora}")
-    if falta := [k for k in ("produto", "base") if not isinstance(cfg.get(k), str) or not cfg[k]]:
+    if falta := [k for k in ("produto", "branch_base") if not isinstance(cfg.get(k), str) or not cfg[k]]:
         erros.append(f"falta {falta}")
     if cfg.get("formato_spec", "kiro") not in ("kiro", "openspec"):
         erros.append(f"formato_spec {cfg['formato_spec']!r}: use kiro ou openspec")
@@ -434,7 +434,7 @@ def verificacao(projeto):
 def valores_do(projeto, cfg):
     executar, urls = verificacao(projeto)
     um = lambda v: [v] if v is not None else None
-    return {"BASE": [cfg["base"]], "PREFIXO_BRANCH": [cfg.get("prefixo_branch", "")], "PRODUTO": [cfg["produto"]],
+    return {"BASE": [cfg["branch_base"]], "PREFIXO_BRANCH": [cfg.get("prefixo_branch", "")], "PRODUTO": [cfg["produto"]],
             "GLOSSARIO": um(cfg.get("glossario")), "ADR": um(cfg.get("adr")), "BUNDLE": um((cfg.get("elm") or {}).get("bundle")),
             "EXECUTAR": executar, "URL_TESTE": urls}
 

@@ -20,7 +20,7 @@ O que os passos anteriores levantaram: regras, cenários, Não muda, artefatos a
 
 ## Saída
 
-A ficha e a linha prontas para gravar → passo `gravar-na-base`.
+A ficha e a linha prontas para gravar → passo `commit-na-branch-base`.
 
 ## Pare se
 

@@ -11,7 +11,7 @@ Qualquer id criado ou lido no ELM.
 - **Tarefa**: coluna Tarefas da linha Item · Trabalho do `sprint-<nn>.md` aberto, com o prefixo, separadas por
   ` · ` (`DEV 123 · ESP 456 · ATD 789`).
 - Nenhum id vai no `status.md`, na ficha ou no registro de Sustentação.
-- Toda gravação no repositório vai pela gravação comum na base (commit pequeno, push com o "sim").
+- Toda gravação no repositório vai pelo commit direto na branch base (commit pequeno, push com o "sim").
 
 ## Saída
 

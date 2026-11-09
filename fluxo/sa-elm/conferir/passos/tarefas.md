@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O `sprint-<nn>.md` aberto e o `backlog.md` da base.
+O `sprint-<nn>.md` aberto e o `backlog.md` da branch base.
 
 ## Faça
 

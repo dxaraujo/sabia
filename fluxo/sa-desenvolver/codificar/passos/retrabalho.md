@@ -1,5 +1,5 @@
 ---
-{"resumo": "MR aberto com thread não resolvida, CI vermelho ou conflito: Fase retrabalho, achados 'corrige' viram tarefas [R<n>] e conflito sai por merge da base."}
+{"resumo": "MR aberto com thread não resolvida, CI vermelho ou conflito: Fase retrabalho, achados 'corrige' viram tarefas [R<n>] e conflito sai por merge da branch base."}
 ---
 ## Entrada
 
@@ -14,7 +14,7 @@ Sem MR aberto, ou MR sem thread aberta, CI verde e sem conflito → nada a fazer
 2. Cada achado triado como `corrige` na `sa-revisar.mr` vira uma tarefa `[R<n>]` no `tasks.md`; no trivial, corrija
    direto. Os outros destinos já saíram na triagem do revisor.
 3. CI vermelho: a falha vira tarefa (sem o MCP do Jenkins, a pessoa informa a falha).
-4. Conflito: `git merge origin/<base>` (fora do autopilot com o "sim"), resolva e rode o backpressure do trecho.
+4. Conflito: `git merge origin/<branch_base>` (fora do autopilot com o "sim"), resolva e rode o backpressure do trecho.
    Nunca rebase.
 5. No fim, o mesmo MR é atualizado (passo `mr`).
 

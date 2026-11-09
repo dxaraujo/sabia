@@ -1,5 +1,5 @@
 ---
-{"resumo": "Assume o item num commit '<ID> iniciar' na base: em-andamento, responsável e iniciada_em no backlog, o Responsável no registro e a linha atendimento no sprint aberto; oferece o item no ELM."}
+{"resumo": "Assume o item num commit '<ID> iniciar' na branch base: em-andamento, responsável e iniciada_em no backlog, o Responsável no registro e a linha atendimento no sprint aberto; oferece o item no ELM."}
 ---
 ## Entrada
 
@@ -11,7 +11,7 @@ O item puxado (passo `puxar`) e o usuário da sessão.
    `usuario` da equipe.
 2. Responsável de outra pessoa → mostre de quem é e só assuma com o "sim"; registre a troca na Atividade do registro.
 3. Já `em-andamento` com a mesma pessoa (retomada) → nada a gravar; siga.
-4. Grave pela gravação comum (passo `gravar-na-base`), num commit `<ID> iniciar`:
+4. Grave pelo commit direto na branch base (passo `commit-na-branch-base`), num commit `<ID> iniciar`:
    - no `backlog.md`: status `em-andamento`, `responsável` = `usuario`, `iniciada_em` = hoje e a `obs` da reserva,
      se houve;
    - no registro: o Responsável;
@@ -26,4 +26,4 @@ O item `em-andamento` com a pessoa → passo `executar`.
 ## Pare se
 
 - Fora do `equipe.json`, ou responsável de outra pessoa sem o "sim" → a frase do caso e pare.
-- A gravação na base parou → mostre o que gravaria e pare.
+- A gravação na branch base parou → mostre o que gravaria e pare.

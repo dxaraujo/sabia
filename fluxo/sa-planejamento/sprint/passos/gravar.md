@@ -14,11 +14,11 @@ A proposta com o "ok".
 2. **`backlog.md`**: os itens que a virada tirou da sprint (`em-andamento` → `pronta`).
 3. **`roadmap.md`**, só se existe: pergunte "atualizar o roadmap?" e, com o sim, atualize a Previsão pela vazão.
 4. Mensagem: `<AAAA>/Sprint <nn>: planejamento` (ou `: reabastecimento`). Grave tudo num commit só, pelo passo
-   `gravar-na-base`.
+   `commit-na-branch-base`.
 
 ## Saída
 
-Os arquivos e a mensagem → passo `gravar-na-base`.
+Os arquivos e a mensagem → passo `commit-na-branch-base`.
 
 ## Pare se
 

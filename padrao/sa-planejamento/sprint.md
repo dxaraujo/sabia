@@ -44,4 +44,4 @@
 
 Escrevem: `sa-planejamento.sprint` (cabeçalho, meta, folga, linhas, virada) · a skill que puxa um item fora da seleção
 (a linha que falta) · `sa-elm.item` (Tarefas) · `sa-planejamento.review` (Review) · `sa-planejamento.retrospectiva`
-(Retro). Toda escrita vai direto na base.
+(Retro). Toda escrita vai direto na branch base.

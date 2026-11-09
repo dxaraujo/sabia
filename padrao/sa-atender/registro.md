@@ -3,8 +3,7 @@
 ---
 # Registro de Sustentação
 
-`.sabia/planejamento/sustentacao/<ID>-<slug>.md`, o mesmo formato para as seis categorias. Gravado direto na base,
-pela gravação comum. Não tem status: a situação está no `backlog.md`. Dado de cliente nunca entra: fica em
+`.sabia/planejamento/sustentacao/<ID>-<slug>.md`, o mesmo formato para as seis categorias. Gravado por commit direto na branch base. Não tem status: a situação está no `backlog.md`. Dado de cliente nunca entra: fica em
 `.sabia/local/sustentacao/<ID>/`, fora do git.
 
 ```markdown

@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O `prd.md` aprovado do épico (requisitos, cenários e Decisões), na base.
+O `prd.md` aprovado do épico (requisitos, cenários e Decisões), na branch base.
 
 ## Faça
 

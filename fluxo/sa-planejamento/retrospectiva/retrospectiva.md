@@ -9,7 +9,7 @@
    {"id": "fechar"},
    {"id": "folga"},
    {"id": "gravar"},
-   {"id": "gravar-na-base", "de": "gravar-na-base"},
+   {"id": "commit-na-branch-base", "de": "commit-na-branch-base"},
    {"id": "seguir", "saidas": {"sim": "→ sa-planejamento.sprint"}}
  ]}
 ---

@@ -16,5 +16,5 @@
   skill do toolkit.
 - Nunca culpe pessoas: a regra é sobre o contexto e o processo.
 
-Grava: só a `sa-planejamento.review`, pela gravação comum na base. A `sa-setup` regrava o `.sabia/sabia.md`
+Grava: só a `sa-planejamento.review`, pelo commit direto na branch base. A `sa-setup` regrava o `.sabia/sabia.md`
 preservando esta seção. Leem: todos os agentes (steering), `sa-plano.plano` e a rubrica da `sa-revisar.revisar`.

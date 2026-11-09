@@ -1,5 +1,5 @@
 ---
-{"resumo": "Captura comum: o único jeito de registrar item; grava o tipo, a linha e o corpo mínimo na base e volta a quem incluiu."}
+{"resumo": "Captura comum: o único jeito de registrar item; grava o tipo, a linha e o corpo mínimo na branch base e volta a quem incluiu."}
 ---
 ## Entrada
 
@@ -13,10 +13,10 @@ gravar na mesma gravação os campos que já decidiu (status `aceita`, tamanho, 
    `IN` · `OP` · `EX`, da seção Sustentação do `sabia.md`), que define a série. Sem tipo, pergunte à pessoa com a
    recomendação: trabalho sem mudança no repositório é sustentação; defeito é bug; o resto que cabe em G é fatia;
    maior que G é épico.
-2. **Duplicado.** Busca leve no `backlog.md` da base (título parecido ou `ib` igual, inclusive canceladas). Achou
+2. **Duplicado.** Busca leve no `backlog.md` da branch base (título parecido ou `ib` igual, inclusive canceladas). Achou
    um aberto → mostre e pergunte "é o mesmo?"; com o "sim", não crie e devolva o id existente. Achou um terminal →
    crie o novo com `origem <id>` na `obs`.
-3. **Id.** Lido depois do pull da gravação comum na base: próximo id = maior id da série no `backlog.md` + 1,
+3. **Id.** Lido depois do pull do commit direto na branch base: próximo id = maior id da série no `backlog.md` + 1,
    contando as canceladas. Séries: épico → `EP-nn`; fatia e bug → `FT-nnn`; sustentação → `<categoria>-nnn`. O id
    nunca muda: troca de série é linha nova com `veio de <id>`, e a antiga fica `cancelada` com `virou <novo id>`.
    Push recusado: o id se recalcula.
@@ -30,8 +30,8 @@ gravar na mesma gravação os campos que já decidiu (status `aceita`, tamanho, 
    `sa-atender/registro.md`, com o cabeçalho Categoria · Origem · Pedido por · Prazo · Responsável e a seção Pedido.
    Épico: só a linha. `slug` = título em kebab-case, sem acento, até 5 palavras. Dado de cliente nunca vai ao git:
    fica em `.sabia/local/sustentacao/<ID>/`.
-6. **Gravar.** Pela gravação comum na base (`backlog: captura <id>`), ou junto com as linhas de quem incluiu, num
-   commit só. No autopilot não grave: siga a regra do autopilot da gravação comum na base.
+6. **Gravar.** Pelo commit direto na branch base (`backlog: captura <id>`), ou junto com as linhas de quem incluiu, num
+   commit só. No autopilot não grave: siga a regra do autopilot do commit direto na branch base.
 
 ## Saída
 
@@ -40,5 +40,5 @@ gravar na mesma gravação os campos que já decidiu (status `aceita`, tamanho, 
 
 ## Pare se
 
-- A gravação na base parou (fora da base sem o "sim", árvore suja, pull ou push recusado duas vezes) → mostre o que
+- A gravação na branch base parou (fora da branch base sem o "sim", árvore suja, pull ou push recusado duas vezes) → mostre o que
   gravaria e volte a quem incluiu sem o id.

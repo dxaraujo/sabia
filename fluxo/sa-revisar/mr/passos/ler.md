@@ -11,7 +11,7 @@ O MR aberto da branch `<id>` e a pessoa que pode revisar (passo `revisor`).
    os conflitos e as threads abertas. Sem o MCP, a pessoa informa o estado do MR.
 2. CI do último commit pelo MCP do Jenkins; sem ele, o estado do pipeline mostrado no MR.
 3. `git fetch origin <id>`, sem checkout e sem commit.
-4. Já são achados: Prova sem o bloco 🔎 da verificação do agente, CI vermelho e conflito com a base.
+4. Já são achados: Prova sem o bloco 🔎 da verificação do agente, CI vermelho e conflito com a branch base.
 5. MR em Draft: avise que o autor ainda não pediu revisão e só siga com o "sim".
 
 ## Saída

@@ -19,7 +19,7 @@ desenvolvedor que não é o autor e lido por uma pessoa antes do merge.
   `sa-verificador`. A `sa-setup` e a `sa-elm.setup` rodam na sessão sem agente.
 - Papéis são booleanas no `.sabia/planejamento/equipe.json` (`desenvolvedor` · `especificador` · `produto`). A
   identidade é o usuário do GitLab.
-- O estado (`backlog.md`, `sprint-<nn>.md`) e os documentos de planejamento vão direto na base; o código, a spec da
+- O estado (`backlog.md`, `sprint-<nn>.md`) e os documentos de planejamento vão direto na branch base; o código, a spec da
   fatia e o `status.md`, na branch `<id>`.
 - Nada inventado: sem fonte e sem a decisão de uma pessoa, fica em aberto. Nunca apague nem afrouxe teste.
 - Dado de cliente nunca vai para o git: fica em `.sabia/local/`.

@@ -15,7 +15,7 @@ A branch verificada, com lições e as-built, o resumo da revisão do agente e o
    2. push da branch (com o "sim"; liberado no autopilot);
    3. conferência no remoto: `git fetch` e `git rev-parse HEAD` = `git rev-parse origin/<branch>`;
    4. MR pelo `gitlabpr`: já existe (retrabalho) → o push o atualizou, atualize a descrição; senão
-      `gitlab_criar_mr` (destino `<base>`, `remover_origem: true`: o MR já nasce com "apagar a branch de origem após o
+      `gitlab_criar_mr` (destino `<branch_base>`, `remover_origem: true`: o MR já nasce com "apagar a branch de origem após o
       merge" marcado). Sem o MCP, a pessoa abre o MR com essa opção marcada e passa o link.
 3. No `status.md`: Fase `pr-aberto`, MR `!<iid> <url>` e o Retomar; commit e push.
 

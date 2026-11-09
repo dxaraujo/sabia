@@ -5,7 +5,7 @@
  "passos": [
    {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao", "saidas": {"pedido em texto, ou sem texto (pergunte o que registrar)": "capturar"}},
    {"id": "capturar", "de": "captura"},
-   {"id": "gravar-na-base", "de": "gravar-na-base"},
+   {"id": "commit-na-branch-base", "de": "commit-na-branch-base"},
    {"id": "seguir", "saidas": {"fatia ou bug nova: triar agora": "→ sa-triar.triar", "mais um item": "capturar", "não": "fim"}}
  ]}
 ---

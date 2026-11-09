@@ -25,7 +25,7 @@ DESENVOLVIMENTO ──── sa-desenvolver.iniciar ─► [sa-plano.plano] ─�
 REVISÃO E ACEITE ─── sa-verificar.verificar · sa-revisar.mr (desenvolvedor ≠ autor) · [sa-verificar.revisao-humana]
                      └─► sa-desenvolver.encerrar (merge) ─► sa-especificar.archive ─► [sa-elm.publicar]
 
-estado (backlog.md · sprint-<nn>.md) e documentos (pitch · prd · ficha · elm/): commit pequeno direto na base
+estado (backlog.md · sprint-<nn>.md) e documentos (pitch · prd · ficha · elm/): commit pequeno direto na branch base
 MR: só para código, com o delta da spec, o design e as tasks
 ELM (borda, só com ELM configurado): sa-elm — a skill do trabalho oferece e nunca trava
 ```
@@ -63,7 +63,7 @@ Fontes no fim deste arquivo.
 | Skill | Fluxos | Função |
 |---|---|---|
 | `sabia` | — | guia e roteador: disciplinas, papéis, aprovações, autonomia e qual skill usar |
-| `sa-setup` | `configurar` · `customizar` | configura o projeto na sessão sem agente: alvos, comandos, base, formato da spec, "usa ELM?", toolkits e os 5 agentes; customiza um passo ou padrão |
+| `sa-setup` | `configurar` · `customizar` | configura o projeto na sessão sem agente: alvos, comandos, branch_base, formato da spec, "usa ELM?", toolkits e os 5 agentes; customiza um passo ou padrão |
 | `sa-status` | `painel` · `item` · `minha-proxima` · `pendencias` · `licoes` · `fechar-sessao` | painel só leitura (WIP, vazão, idade, lead time, pendências de rastreio), estado de um `<id>`, a próxima tarefa e os créditos da sessão |
 | `sa-triar` | `capturar` · `triar` | captura sem triar e triagem da fila `nova`: duplicado, falta informação, adiar, cancelar, aceitar |
 | `sa-refinar` | `moldar` · `detalhar` · `fatiar` · `ajustar` | pitch e go/kill do épico; refinamento conjunto da fatia (ficha com regras, `CT-nn` e artefatos afetados, e `elm/` com ELM); fatiamento do PRD; ajuste do item pronto |
@@ -79,7 +79,7 @@ Fontes no fim deste arquivo.
 | `sa-elm` | `regras` · `setup` · `item` · `finalizar` · `horas` · `importar-backlog` · `publicar` · `iteracao` · `conferir` · `lint` · `baixar` · `visualizar` | tudo o que fala com o IBM ELM (DOORS Next e EWM) |
 
 Arquivos comuns em [`fluxo/`](fluxo/): `entrada.md` (pré-condição do papel e da branch), `captura.md` (o único
-mecanismo de captura, que grava o tipo), `gravar-na-base.md` (commit pequeno de estado direto na base),
+mecanismo de captura, que grava o tipo), `commit-na-branch-base.md` (commit pequeno de estado direto na branch base),
 `travas.json` e `tipos.json` (catálogo fechado de artefatos). Padrões dos documentos em [`padrao/`](padrao/).
 
 ## Agentes
@@ -117,10 +117,10 @@ Especificação e codificação têm autonomias independentes.
 
 | | IA supervisionada | IA autopilot | manual |
 |---|---|---|---|
-| **Codificação** (`sa-desenvolver.iniciar`; campo Autonomia do `status.md`) | o `sa-desenvolvedor` na sessão da pessoa | o `sa-desenvolvedor` como subagente na worktree `.sabia/local/wt/<id>`; a pessoa segue na base e pode puxar outro item | só a geração do código-fonte é da pessoa; no "terminei", o fluxo segue da validação com as mesmas checagens |
+| **Codificação** (`sa-desenvolver.iniciar`; campo Autonomia do `status.md`) | o `sa-desenvolvedor` na sessão da pessoa | o `sa-desenvolvedor` como subagente na worktree `.sabia/local/wt/<id>`; a pessoa segue na branch base e pode puxar outro item | só a geração do código-fonte é da pessoa; no "terminei", o fluxo segue da validação com as mesmas checagens |
 | **Especificação** (só com ELM; `sa-refinar.detalhar`; campo Especificação da ficha) | o `sa-especificador` edita o arquivo inteiro de `elm/` com o especificador | o `sa-especificador` como subagente edita sem perguntas; o que não tem fonte vai ao Em aberto, e o especificador aprova | o especificador altera direto no DOORS e avisa "alterei"; a skill sincroniza `elm/`, os artefatos afetados e o delta |
 
-No autopilot ficam liberados o push da própria branch (sem `--force`), o merge da base nela e abrir ou atualizar o
+No autopilot ficam liberados o push da própria branch (sem `--force`), o merge da branch base nela e abrir ou atualizar o
 MR dela; merge do MR, ELM e rede seguem bloqueados. O disjuntor (teto do `acordos.md` ou 2 reprovações seguidas)
 grava `.sabia/local/loop-<id>.md` e devolve o item à pessoa. O MR passa pela mesma revisão humana.
 
@@ -151,7 +151,7 @@ power são ignorados. Por isso a `sa-setup` grava no projeto, a partir de `skill
 | Arquivo | O quê |
 |---|---|
 | `.sabia/sabia.md` (e o ponteiro `.kiro/steering/sabia.md` ou a entrada no `opencode.json`) | o steering do fluxo: resumo, Projeto, Especificação, Comandos, Verificação de aceite, Sustentação, ELM, Desvios de toolkit, Tipos com skill de toolkit e Regras aprendidas |
-| `.sabia/config/agentes.json` | as escolhas do projeto (alvos, `formato_spec`, pasta do produto, base, prefixo da branch, ELM, toolkits, desvios e extras por agente) — a entrada do gerador |
+| `.sabia/config/agentes.json` | as escolhas do projeto (alvos, `formato_spec`, pasta do produto, branch_base, prefixo da branch, ELM, toolkits, desvios e extras por agente) — a entrada do gerador |
 | `.sabia/config/elm/pa_<nome>.json` · `.sabia/config/elk/elk-<ambiente>.json` | a project area do ELM (da `sa-elm.setup`) e a configuração do ELK |
 | `.kiro/agents/sa-*.json` · `.opencode/agents/sa-*.md` | os 5 agentes (e os de toolkit), gerados pelo `gerar_agentes.py` |
 | `.sabia/fluxo/` · `.sabia/padrao/` (só ao customizar) | override esparso de um passo ou padrão; nenhum agente escreve |
@@ -189,7 +189,7 @@ Sem ELM configurado, nenhuma oferta aparece.
 |---|---|---|
 | setup | `sa-elm.setup` | produz o `pa`, a chave `elm` do `agentes.json`, a seção ELM do `sabia.md` e as regras dos agentes; a `sa-setup` aplica |
 | assumir · horas · concluir | `sa-elm.item` · `sa-elm.horas` · `sa-elm.finalizar` | o IB e a tarefa `DEV` · `ESP` · `ATD` no EWM; horas só por pergunta ou pedido |
-| refinamento | `sa-elm.baixar` | o original do DOORS em `elm/` da fatia, com o commit de base (original + versão de referência) |
+| refinamento | `sa-elm.baixar` | o original do DOORS em `elm/` da fatia, com o commit de referência (original + versão de referência) |
 | depois do merge | `sa-elm.publicar` | do especificador: confere a versão de cada artefato (mudou → avisa e pula), cria os novos e troca o id provisório pelo do ELM |
 | a pedido | `sa-elm.importar-backlog` · `iteracao` · `conferir` · `lint` · `visualizar` | importar do EWM, iteração, "o DOORS mudou?", lint do bundle e visualização offline |
 
@@ -202,7 +202,7 @@ ficha; o `CT.csv` da verificação) e `ATA`. Artefato novo: id provisório `<sig
 ## Pré-requisitos
 
 - Uma das ferramentas: Kiro IDE 1.x ou Kiro CLI 2.32+ no motor V3 (`--agent-engine v3`, obrigatório; na V2 o agente
-  dá "Mode not found") ou opencode; repositório git no GitLab, com a base aceitando push (ex.: `develop`); e `uv`
+  dá "Mode not found") ou opencode; repositório git no GitLab, com a branch base aceitando push (ex.: `develop`); e `uv`
   para os scripts da setup e da `sa-status`. No opencode, a proteção por agente é menor que no Kiro: o gerador lista
   o que não tem tradução.
 - Kiro Web não lê `~/.kiro`: os agentes do projeto aparecem lá, mas sem as skills do power — use a IDE ou o CLI.

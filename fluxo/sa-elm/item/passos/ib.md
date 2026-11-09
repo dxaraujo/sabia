@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O id do Sabiá e a linha dele no `backlog.md` da base.
+O id do Sabiá e a linha dele no `backlog.md` da branch base.
 
 ## Faça
 

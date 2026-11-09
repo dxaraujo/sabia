@@ -1,5 +1,5 @@
 ---
-{"resumo": "Propõe o commit do que está pronto na branch atual; na Sustentação, vai pela gravação comum na base."}
+{"resumo": "Propõe o commit do que está pronto na branch atual; na Sustentação, vai pelo commit direto na branch base."}
 ---
 ## Entrada
 
@@ -12,12 +12,12 @@ na branch atual. A mensagem segue o padrão do `.sabia/sabia.md`; o id da tarefa
 Grave com o "ok" e ofereça o push da própria branch (com o sim, sem `--force`). O estado do `backlog.md` e do
 `sprint-<nn>.md` não é gravado aqui.
 
-Na Sustentação, sem branch: o registro e o CSV de créditos vão pelo passo `gravar-na-base`, commit
+Na Sustentação, sem branch: o registro e o CSV de créditos vão pelo passo `commit-na-branch-base`, commit
 `<ID> registrar sessão`.
 
 ## Saída
 
-Na branch `<id>`, ou sem o "ok" → passo `retomada`. Sustentação → passo `gravar-na-base`.
+Na branch `<id>`, ou sem o "ok" → passo `retomada`. Sustentação → passo `commit-na-branch-base`.
 
 ## Pare se
 

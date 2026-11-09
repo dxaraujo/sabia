@@ -10,7 +10,7 @@
    {"id": "ligar-artefatos"},
    {"id": "ib", "saidas": {"feito": "devolver"}},
    {"id": "cancelar", "saidas": {"vira épico: copiar o ib para a linha EP-nn": "gravar", "demais casos": "devolver"}},
-   {"id": "gravar", "de": "gravar-na-base"},
+   {"id": "gravar", "de": "commit-na-branch-base"},
    {"id": "devolver"}
  ]}
 ---

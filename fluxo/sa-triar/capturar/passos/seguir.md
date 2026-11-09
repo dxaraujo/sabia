@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O item gravado nos passos `capturar` e `gravar-na-base`.
+O item gravado nos passos `capturar` e `commit-na-branch-base`.
 
 ## Faça
 

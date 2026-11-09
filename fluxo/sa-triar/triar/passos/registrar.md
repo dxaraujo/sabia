@@ -1,5 +1,5 @@
 ---
-{"resumo": "Prepara a linha e o corpo do item com a triagem aplicada; o item novo nasce pela captura comum, e tudo vai num commit por item na base."}
+{"resumo": "Prepara a linha e o corpo do item com a triagem aplicada; o item novo nasce pela captura comum, e tudo vai num commit por item na branch base."}
 ---
 ## Entrada
 
@@ -35,8 +35,8 @@ Mensagem do commit: `backlog: triagem <id>`. Não toque no ELM nem no `sprint-<n
 
 ## Saída
 
-Item novo ou troca de série → passo `captura`. Item que já está no `backlog.md` → passo `gravar-na-base`.
+Item novo ou troca de série → passo `captura`. Item que já está no `backlog.md` → passo `commit-na-branch-base`.
 
 ## Pare se
 
-Nenhuma condição própria: as paradas da gravação são as do passo `gravar-na-base`.
+Nenhuma condição própria: as paradas da gravação são as do passo `commit-na-branch-base`.

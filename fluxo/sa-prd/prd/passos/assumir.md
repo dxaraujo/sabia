@@ -14,7 +14,7 @@ aberto, se houver.
    pessoa, Tarefas vazio). Siga com qualquer resposta.
 3. **ELM.** Com ELM, "quer criar o item no ELM?"; sim → `sa-elm.item` com a tarefa `ESP`. A resposta não muda o
    fluxo.
-4. **Gravar.** Tudo pela gravação comum na base (passo `gravar`, commit `backlog: especificação EP-nn`), e volte aqui.
+4. **Gravar.** Tudo pelo commit direto na branch base (passo `gravar`, commit `backlog: especificação EP-nn`), e volte aqui.
 
 ## Saída
 

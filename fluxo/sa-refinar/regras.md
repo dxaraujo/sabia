@@ -1,5 +1,5 @@
 ---
-{"resumo": "Regras comuns aos fluxos da sa-refinar: tudo direto na base, aprovação no documento, decisões de pessoas e o id estável."}
+{"resumo": "Regras comuns aos fluxos da sa-refinar: tudo direto na branch base, aprovação no documento, decisões de pessoas e o id estável."}
 ---
 # Regras comuns da `sa-refinar`
 
@@ -12,7 +12,7 @@ Ficha da fatia e do bug: o padrão `sa-refinar/ficha.md`. Pitch do épico: o pad
 - Qualquer pessoa conduz. Quem tem `produto` no `equipe.json` decide o go/kill, ordena e aprova pitch, ficha e
   fatias; quem tem `especificador` aprova os arquivos de `elm/`. Sem essa pessoa na sessão, mostre os nomes com a
   booleana e não grave a decisão.
-- Linhas do `backlog.md`, pitch, ficha e arquivos de `elm/` vão direto na base, pela gravação comum, com a
+- Linhas do `backlog.md`, pitch, ficha e arquivos de `elm/` vão por commit direto na branch base, com a
   aprovação no topo do próprio documento: `**Aprovado:** <usuario> · AAAA-MM-DD`. Qualquer mudança depois do
   Aprovado volta a linha para `**Aprovado:** —` até a nova aprovação.
 - Decisões vão na seção Decisões do documento (pitch antes do go, PRD depois, ficha na fatia), sempre em tabela

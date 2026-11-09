@@ -24,12 +24,12 @@ chaves nesta ordem e estes padrões quando o time não diz outro valor:
 - **Id no commit**: `sim` ou `não` (o id da tarefa do EWM na mensagem do commit).
 - **CT no teste**: `sim` ou `não` (a marca `<FT-nnn> CT-nn` do cenário no teste automatizado).
 
-Mostre o `equipe.json` e o `acordos.md` juntos. Com o "ok", grave os dois pelo passo `gravar-na-base`, commit
+Mostre o `equipe.json` e o `acordos.md` juntos. Com o "ok", grave os dois pelo passo `commit-na-branch-base`, commit
 `planejamento: equipe e acordos`.
 
 ## Saída
 
-Com o "ok" → passo `gravar-na-base`. Ajuste → a proposta de novo.
+Com o "ok" → passo `commit-na-branch-base`. Ajuste → a proposta de novo.
 
 ## Pare se
 

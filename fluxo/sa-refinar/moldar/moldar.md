@@ -6,9 +6,9 @@
    {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao", "saidas": {"ideia grande em texto, ainda não registrada: captura como épico": "captura"}},
    {"id": "pitch", "chama": ["sa-entrevistar.entrevistar", "sa-especificar.prototipo", "sa-elm.baixar"]},
    {"id": "decisao", "saidas": {"cabe em G: nasce a fatia": "captura"}},
-   {"id": "gravar-na-base", "de": "gravar-na-base", "saidas": {"gravou o épico capturado na entrada": "pitch"}},
+   {"id": "commit-na-branch-base", "de": "commit-na-branch-base", "saidas": {"gravou o épico capturado na entrada": "pitch"}},
    {"id": "seguir", "saidas": {"go: seguir para o PRD": "→ sa-prd.prd", "cabe em G: seguir para o detalhar": "→ sa-refinar.detalhar", "kill: moldar o próximo épico a-moldar": "entrada", "sem decisão, ou não": "fim"}},
-   {"id": "captura", "de": "captura", "saidas": {"linha preparada": "gravar-na-base"}}
+   {"id": "captura", "de": "captura", "saidas": {"linha preparada": "commit-na-branch-base"}}
  ]}
 ---
 # Moldar — pitch e go/kill do épico
