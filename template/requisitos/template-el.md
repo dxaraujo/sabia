@@ -59,7 +59,7 @@ no Em aberto.
 - **Nada inventado:** campo ou ação sem história de usuário, regra ou D-nn que a sustente → Em aberto.
 - **Ícone de grid:** habilitado quando o perfil pode e nenhuma regra impede; desabilitado quando o perfil pode mas uma
   regra impede naquele registro; oculto quando a ação nunca vale para o perfil. Tooltip nos dois estados.
-- **Componente reutilizável** (modal, grid comum) tem EL própria, citada com **Conforme** EL-<id>.
+- **Componente reutilizável** (modal, grid comum) tem EL própria, citada pelo link EL-<id> <título>.
 - **Referência só para baixo:** REG, MSG, GL e outra EL, nunca a HF (a HF aponta a EL na linha Telas).
 - Nome técnico (coluna, tabela) não entra. Só dado fictício; nenhuma imagem no corpo.
 - Seção sem conteúdo sai, menos Protótipos e Estados.

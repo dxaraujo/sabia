@@ -15,9 +15,9 @@ O mesmo corpo serve ao bloco do `prd.md` e ao arquivo de `elm/`.
 
 **Fluxo básico:**
 
-1. O sistema <ação>. **Conforme** REG-<id>
-2. O sistema <ação>. **Conforme** UC-<id> (FA01)
-3. O sistema <ação>. **Conforme** MSG-<id> (FE01)
+1. O sistema <ação>. REG-<id> <título>
+2. O sistema <ação>. UC-<id> <título> (FA01)
+3. O sistema <ação>. MSG-<id> <título> (FE01)
 4. Caso de uso encerrado.
 
 **Fluxos alternativos:**   <!-- só se houver -->
@@ -40,7 +40,7 @@ O mesmo corpo serve ao bloco do `prd.md` e ao arquivo de `elm/`.
 ```
 
 - **Título:** o nome do caso de uso diz o objetivo; não há campo Objetivo.
-- **Passo:** uma ação, do ator ou do sistema, com o **Conforme** da REG, da MSG ou do UC incluído e o desvio `(FA01)` ou
+- **Passo:** uma ação, do ator ou do sistema, com o link da REG, da MSG ou do UC incluído, sem prefixo, e o desvio `(FA01)` ou
   `(FE01)` no próprio passo. O fluxo básico termina em "Caso de uso encerrado".
 - **FA e FE:** o título é só a condição, como fato, porque mais de um passo pode desviar para ele; a última linha diz onde
   volta ("Volta ao passo N", "Volta ao passo seguinte ao do desvio") ou "Caso de uso encerrado". A variação é um FA; não há

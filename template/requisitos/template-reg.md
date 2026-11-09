@@ -10,10 +10,10 @@ Uma regra, testável, com os valores. O mesmo corpo serve ao bloco do `prd.md` e
 
 **Validação:** o sistema verifica se:
 
-- <condição>. **Conforme** REG-<id>, e;
+- <condição>. REG-<id> <título>, e;
 - <condição>.
 
-**Ação:** <o que acontece>. **Conforme** MSG-<id>
+**Ação:** <o que acontece>. MSG-<id> <título>
 ```
 
 Regra simples é uma frase declarativa com os valores, sem blocos: `Uma turma tem no máximo **40** inscrições **Confirmadas**.`
@@ -23,7 +23,7 @@ O rótulo do bloco é a categoria da regra:
 | Bloco | Forma |
 |---|---|
 | **Validação:** | o sistema verifica se (itens ligados por "e;" ou "ou;"), seguido da **Ação:** |
-| **Cálculo:** | fórmula com unidades, arredondamento e um exemplo numérico |
+| **Cálculo:** | fórmula ou tabela de casos; unidades, arredondamento e exemplo numérico quando se aplicarem |
 | **Permissão:** | tabela perfil × operação |
 | **Status:** | tabela de transições: de · para · quem · condição |
 | **Abrangência:** | tabela perfil × o que vê |
@@ -32,14 +32,14 @@ O rótulo do bloco é a categoria da regra:
 - **Condição positiva:** a condição diz o que dispara a Ação, como o negócio fala. Não inverta a lógica.
 - **Declarativa:** o bloco diz só como a regra é avaliada e o que acontece. O que o processo faz depois (lista de espera,
   reenvio, aviso) fica na HF ou no UC.
-- **Atômica:** uma regra por REG. Várias validações ("N° Validação") são várias REG, citadas entre si com **Conforme**.
+- **Atômica:** uma regra por REG. Várias validações ("N° Validação") são várias REG, citadas entre si pelo link.
 - **Fonte** obrigatória, em `sources` do frontmatter (`sa-elm/elm-arquivo.md`); no `prd.md`, na linha do bloco. Sem fonte, a
   regra não entra: vai ao Em aberto. A exceção também vem da fonte; a que a fonte não diz vai ao Em aberto.
 - **Nomes técnicos:** só com a linha REG com dados técnicos = `sim` na seção Especificação do `.sabia/sabia.md`,
   entre parênteses no próprio item, na forma original (`(TB_TURMA.QT_VAGAS)`). Com `não`, só o rótulo que o
   usuário vê.
 - **Mensagem:** pelo id da MSG, na Ação; o texto mora na MSG.
-- **Referência:** com **Conforme** no item em que se aplica, só para baixo: REG, MSG e GL, nunca a HF, a EL ou a ET que
+- **Referência:** o link do artefato, sem prefixo, no item em que se aplica, só para baixo: REG, MSG e GL, nunca a HF, a EL ou a ET que
   usam a regra. Existente no ELM → link para o arquivo; novo → só o id provisório.
 - Bloco sem conteúdo sai.
 

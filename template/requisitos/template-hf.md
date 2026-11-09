@@ -17,12 +17,12 @@ Um comportamento observável, com o valor para quem o usa. O mesmo corpo serve a
 
 **Fluxo básico:**
 
-1. <passo>. **Conforme** REG-<id>
-2. <passo>. **Conforme** MSG-<id> (FA01) (FE01)
+1. <passo>. REG-<id> <título>
+2. <passo>. MSG-<id> <título> (FA01) (FE01)
 
 **Fluxos alternativos:**   <!-- só se houver -->
 
-FA01 · <condição, como fato>: <o que acontece>. **Conforme** HF-<id>
+FA01 · <condição, como fato>: <o que acontece>. HF-<id> <título>
 
 **Fluxos de exceção:**   <!-- só se houver -->
 
@@ -64,11 +64,11 @@ FE01 · <condição>: <o que acontece>.
 - **Então verificável**, com os valores.
 - **Perfil** que muda o comportamento: critérios separados por perfil, com o que ele não vê nem faz.
 - **Escopo:** ação que navega para outra tela ou tem regra complexa vira HF própria; aqui fica só quem a vê, quando
-  fica habilitada e o **Conforme**. HF grande (abas com grids, filtros por aba, mais de 6 FA, mais de 15 cenários)
+  fica habilitada e a referência. HF grande (abas com grids, filtros por aba, mais de 6 FA, mais de 15 cenários)
   se desmembra em HF mãe (acesso, abas, ordenação, paginação) e filhas.
 - Nenhum componente de tela, caminho de arquivo, classe ou SQL. Botões, campos e mensagens entre aspas; perfis e
   status em negrito.
-- **Regra:** citada uma vez, com **Conforme**, no passo em que é aplicada; não há tabela de regras no fim.
+- **Regra:** citada uma vez, pelo link e sem prefixo, no passo em que é aplicada; não há tabela de regras no fim.
 - **Desvio:** `(FA01)` ou `(FE01)` no passo em que acontece. O título do FA e do FE é só a condição, porque mais de um passo pode desviar para ele.
 - **Quebra de linha:** linhas seguidas do mesmo bloco terminam com ` \`; sem isso, o ELM junta tudo numa linha.
 - **Referência só para baixo:** REG, EL, MSG, GL e UC, nunca a ET. O que já existe no ELM leva link para o arquivo
@@ -86,4 +86,4 @@ FE01 · <condição>: <o que acontece>.
 - [ ] Sem termo vago: superlativo, linguagem subjetiva (fácil, amigável), pronome sem referente, "etc.", "entre
   outros", "se possível", "quando for o caso". O termo vago vai ao Em aberto com a pergunta do valor.
 - [ ] Nenhum componente de tela nem nome técnico.
-- [ ] Toda REG está citada com **Conforme** no passo em que é aplicada.
+- [ ] Toda REG está citada no passo em que é aplicada.

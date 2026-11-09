@@ -25,7 +25,7 @@ SELECT …
 | Campo | Tipo | Valor vem de | Observação |
 |---|---|---|---|
 | <ID_INSCRICAO> | NUMBER | Sequence | <SQ_INSCRICAO.NEXTVAL> |
-**Conforme** REG-<id>
+REG-<id> <título>
 
 ### Validações
 | V-nn | Validação | Lógica | Mensagem | Regra |
