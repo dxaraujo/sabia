@@ -199,6 +199,9 @@ números (`tirar 3,5`, `pôr 7`, `nenhuma skill`, `as mesmas do sa-<outro>`).
 A skill confirmada vai ao `agentes.json` pela fonte (`skill://~/.sabia/toolkits/<toolkit>/skills/<skill>/SKILL.md`);
 a skill de um tipo, ligada também pelo `tipos`, não se repete.
 
+Fora da setup, `sabia toolkits ligar <nome>` faz o mesmo sem modelo, ligando cada skill aos agentes dos seus papéis, e
+`sabia toolkits desligar <nome>` desfaz; os dois regeneram os agentes e as seções do `sabia.md`.
+
 Num projeto 100% Spring Batch, o normal é o desenvolvedor receber as skills de batch e Java, e não as de REST ou
 de frontend — mas quem decide é a pessoa.
 

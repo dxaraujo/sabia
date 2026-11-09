@@ -76,7 +76,7 @@
       "subagentes": []
     },
     "sa-revisor": {
-      "descricao": "Sabiá independent reviewer, read-only, isolated context — reviews a plan (review criteria L) or a diff (rubric C: spec, standards and security axes kept apart) with the toolkit rubrics and the learned rules, gathers evidence for every item and returns the report to the caller. Writes nothing and never commits.",
+      "descricao": "Sabiá independent reviewer, read-only, isolated context — reviews a plan (review criteria L) or a diff (review criteria C: spec, standards and security axes kept apart) with the toolkit review criteria and the learned rules, gathers evidence for every item and returns the report to the caller. Writes nothing and never commits.",
       "mode": "subagent",
       "permissao": "leitura",
       "skills": ["sa-revisar"],

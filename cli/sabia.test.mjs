@@ -426,12 +426,55 @@ test("toolkits: sem subcomando lista; apelidos ls, i, rm e toolkit; idempotente;
   assert.equal(r.erro, 'sabia: comando desconhecido "toolkits baixar" — veja sabia -h');
 });
 
+test("toolkits ligar e desligar: agentes.json pelo manifesto, sabia.md e restauração quando o gerador recusa", async () => {
+  const proj = escrever(path.join(raiz, "proj"), {
+    ".sabia/config/agentes.json": { produto: "p", branch_base: "main", agentes: { "sa-revisor": { skills: ["skill://~/outra/SKILL.md"] } } },
+    ".sabia/sabia.md": "## Desvios de toolkit\n\nIntro.\n\nNenhum.\n\n## Tipos com skill de toolkit\n\nIntro.\n\nNenhum.\n\n## Regras aprendidas\n\n- r\n",
+  });
+  escrever(path.join(home, ".sabia/toolkits/alfa"), {
+    ".origem.json": { sha: "abc" },
+    "toolkit.json": { nome: "alfa", versao: "1.2.0", skills: [
+      { caminho: "skills/job/SKILL.md", papeis: ["desenvolvedor", "revisor"], passo: { passo: "sa-desenvolver.codificar.tarefa", para: "criar job", agente: "alfa-job" } },
+      { caminho: "skills/teste/SKILL.md", papeis: ["verificador"] }] },
+  });
+  const cwd = process.cwd();
+  process.chdir(proj);
+  try {
+    const f = ".sabia/config/agentes.json", ler = () => JSON.parse(fs.readFileSync(f, "utf8"));
+    s.ctx.exec = (cmd, args) => { chamadas.push([cmd, ...args].join(" "));
+      return { status: 0, stdout: "tabela\n\nTipos com skill de toolkit (seção do sabia.md):\n| Tipo |\n|---|\n| `REG` |\naviso: olhe isto\n", stderr: "" }; };
+    await s.mudarToolkits(["alfa"], { sim: true }, true);
+    let c = ler();
+    assert.deepEqual(c.toolkits.alfa, { pasta: "~/.sabia/toolkits/alfa", versao: "1.2.0", sha: "abc" });
+    assert.deepEqual(c.passos, [{ toolkit: "alfa", skill: "skills/job/SKILL.md", agente: true }]);
+    assert.deepEqual(c.agentes["sa-verificador"].skills, ["skill://~/.sabia/toolkits/alfa/skills/teste/SKILL.md"]);
+    assert.equal(c.agentes["sa-revisor"].skills.length, 2);
+    assert.match(chamadas.at(-1), /^uv run --no-project python .*gerar_agentes\.py --projeto .* --gravar$/);
+    let md = fs.readFileSync(".sabia/sabia.md", "utf8");
+    assert.match(md, /Intro\.\n\n\| Passo \| Toolkit[^]*`alfa` 1\.2\.0 \| criar job \| `job` \| `alfa-job` \|\n\n## Tipos/);
+    assert.match(md, /\| `REG` \|\n\n## Regras aprendidas\n\n- r/);
+    assert.ok(saida.includes("olhe isto"));
+
+    await s.mudarToolkits(["alfa"], { sim: true }, false);
+    c = ler();
+    assert.ok(!c.toolkits.alfa && !c.passos.length && !c.agentes["sa-verificador"].skills.length);
+    assert.deepEqual(c.agentes["sa-revisor"].skills, ["skill://~/outra/SKILL.md"]);
+
+    const antes = fs.readFileSync(f, "utf8");
+    s.ctx.exec = () => ({ status: 1, stdout: "", stderr: "recusado" });
+    await assert.rejects(s.mudarToolkits(["alfa"], { sim: true }, true), /restaurado:\nrecusado/);
+    assert.equal(fs.readFileSync(f, "utf8"), antes);
+    await assert.rejects(s.mudarToolkits(["beta"], { sim: true }, true), /beta não está instalado/);
+    await assert.rejects(s.mudarToolkits(["alfa"], { sim: true }, false), /não está ligado/);
+  } finally { process.chdir(cwd); }
+});
+
 test("<cmd> -h mostra a ajuda do comando e nunca executa; -v a versão; as flags curtas", async () => {
   assert.equal((await rodar(["instalar", "-h"])).codigo, 0);
   assert.match(logs.at(-1), /^uso:\n {2}sabia instalar — instala o Sabiá[\s\S]*-y, --sim/);
   assert.ok(!fs.existsSync(path.join(home, ".sabia")) && !chamadas.length);
   assert.equal((await rodar(["toolkits", "-h"])).codigo, 0);
-  assert.equal(logs.at(-1).match(/^ {2}sabia toolkits/gm).length, 4);
+  assert.equal(logs.at(-1).match(/^ {2}sabia toolkits/gm).length, 6);
   assert.equal((await rodar(["-v"])).codigo, 0);
   assert.equal(logs.at(-1), JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8")).version);
   assert.equal((await rodar([])).codigo, 0);
