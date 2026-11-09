@@ -471,7 +471,7 @@ async function escolherToolkits(opcoes, inv) {
     return pedidos;
   }
   if (!todos.length) { ctx.tela.aviso(SEM_INDICE); return []; }
-  const livres = todos.filter((e) => !inv.toolkits[e.nome]);
+  const livres = maisNovas(todos).filter((e) => !inv.toolkits[e.nome]);
   if (!livres.length) return [];
   return ctx.escolher({ mensagem: "Toolkits (opcional)", multi: true, minimo: 0,
     opcoes: livres.map((e) => ({ valor: e.nome, rotulo: e.nome, dica: [e.versao, e.descricao].filter(Boolean).join("  ") })) });
@@ -662,6 +662,9 @@ function acharNoIndice(nome, versao, opcoes) {
   }
   throw new Error(`toolkit ${nome}${versao ? "@" + versao : ""} não está nos índices — veja: sabia toolkits`);
 }
+
+/** Uma entrada por toolkit, a de maior versão: o índice guarda todas as versões publicadas. */
+const maisNovas = (es) => Object.values(es.reduce((o, e) => { if (!o[e.nome] || versaoMenor(o[e.nome].versao, e.versao)) o[e.nome] = e; return o; }, {}));
 
 const SEM_INDICE = "nenhum toolkit nos índices — confira o --indice ou ~/.sabia/indices.json";
 
@@ -895,7 +898,7 @@ async function instalarNaMaquina(nomes, opcoes) {
     if (opcoes.sim || !ctx.interativo) throw new Error("diga o toolkit — use: sabia toolkits instalar <nome> -y (os nomes: sabia toolkits)");
     const todos = ctx.tela.esperar("lendo os índices de toolkits …", () => entradasDosIndices(opcoes), (l) => `${qt(l.length, "toolkit")} nos índices`);
     if (!todos.length) throw new Error(SEM_INDICE);
-    const livres = todos.filter((e) => !inv.toolkits[e.nome]);
+    const livres = maisNovas(todos).filter((e) => !inv.toolkits[e.nome]);
     if (!livres.length) return ctx.tela.fechar("todos os toolkits dos índices já estão baixados");
     pedidos = await ctx.escolher({ mensagem: "Quais toolkits?", multi: true, minimo: 1,
       opcoes: livres.map((e) => ({ valor: e.nome, rotulo: e.nome, dica: [e.versao, e.descricao].filter(Boolean).join("  ") })) });
@@ -1067,7 +1070,7 @@ export function listarToolkits(opcoes = {}) {
   const linhas = [], doIndice = {};
   for (const i of opcoes.indice ? [opcoes.indice] : indices()) {
     try {
-      for (const e of lerIndice(i)) {
+      for (const e of maisNovas(lerIndice(i))) {
         doIndice[e.nome] = e;
         linhas.push([e.nome, "", e.versao || "—", baixadas(e.nome), doProjeto[e.nome]?.versao || "—", e.descricao || ""]);
       }

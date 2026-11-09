@@ -7,6 +7,7 @@ no ELM); a entrada do fluxo confere.
 
 - Épico `a-moldar` → `sa-refinar.moldar` (pitch Shape Up e decisão de investimento). Investir → `sa-prd.prd`. PRD aprovado →
   `sa-refinar.fatiar`. Mudar o PRD → `sa-prd.mudanca`, e as fatias atingidas passam pela `sa-refinar.ajustar`.
+- Diga que gravou ou registrou algo só depois de escrever o arquivo, e cite o caminho ou o commit.
 - Fatia ou bug `aceita` → `sa-refinar.detalhar` (regras, cenários CT-nn, artefatos afetados e, com ELM, os arquivos de `elm/`
   pela `sa-especificar.elm`) até `elegivel`. Ordenar, dividir, juntar ou cancelar → `sa-refinar.ajustar`.
 - Protótipo → `sa-especificar.prototipo` (só vale aprovado pelo cliente, numa linha de Decisões). Reunião →

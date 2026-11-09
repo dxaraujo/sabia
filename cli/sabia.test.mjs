@@ -293,7 +293,7 @@ test("toolkit em dois projetos: cada um na sua versão, e a pasta só sai quando
       await s.instalarToolkits(["batch-alfa"], { indice, sim: true });  // sem versão: a maior do índice
       assert.equal(cfgDe(b).toolkits["batch-alfa"].versao, "2.0.0");
       assert.ok(fs.existsSync(pasta("1.0.0")) && fs.existsSync(pasta("2.0.0")));
-      assert.deepEqual(s.listarToolkits({ indice }).map((l) => l[3]), ["1.0.0, 2.0.0", "1.0.0, 2.0.0"]);
+      assert.deepEqual(s.listarToolkits({ indice }).map((l) => [l[0], l[2], l[3]]), [["batch-alfa", "2.0.0", "1.0.0, 2.0.0"]]);  // uma linha, a mais nova
       // versão fixada que difere troca neste projeto, e a do outro fica
       await s.instalarToolkits(["batch-alfa@1.0.0"], { indice, sim: true });
       assert.equal(cfgDe(b).toolkits["batch-alfa"].versao, "1.0.0");

@@ -7,6 +7,7 @@ da pasta da spec (Fase e Retomar) e pelo primeiro item não marcado do `tasks.md
 - Pegar o item → `sa-desenvolver.iniciar` (tamanho, trilha trivial · rápida · completo e a autonomia: IA supervisionada · IA
   autopilot · manual, fixo até o fim). Trilha rápida ou completo sem plano aprovado → `sa-plano.plano`. Plano aprovado
   ou trilha trivial → `sa-desenvolver.codificar`. MR aprovado com CI verde → `sa-desenvolver.encerrar`.
+- Diga que gravou ou registrou algo só depois de escrever o arquivo, e cite o caminho ou o commit.
 - Teste primeiro, com o CT-nn do cenário no nome do teste. Backpressure a cada alteração (compila e testes do trecho,
   Comandos do `.sabia/sabia.md`); a suíte completa antes do MR. **Nunca** apague, desabilite nem afrouxe um teste.
 - Revisão do agente é do subagente `sa-revisor` (`sa-revisar.revisar`) e verificação é do subagente `sa-verificador`

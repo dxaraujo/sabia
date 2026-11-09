@@ -15,7 +15,8 @@
      Autonomia: quem codifica, escolhida ao assumir e fixa até o fim da tarefa. manual = só a geração do
      código-fonte é da pessoa; status.md, branch, plano, validar, revisão, verificação, Lições aprendidas e MR seguem iguais.
      Fase: — até o plano ser aprovado (sa-plano.plano.aprovar grava implementando); depois, quem conduz a
-     codificação grava. em-revisao não é fase: é derivado do MR aberto.
+     codificação grava. Só um dos valores da lista; o que está sendo feito vai no Retomar. em-revisao não é fase: é
+     derivado do MR aberto.
      Publicação: só com ELM e arquivos em elm/, depois do merge. Acrescente a linha
      | Publicação | <pendente | publicada AAAA-MM-DD> | — a sa-especificar.archive grava pendente e a
      sa-elm.publicar grava publicada. Linha ausente = nada a publicar ou ainda antes do merge. -->

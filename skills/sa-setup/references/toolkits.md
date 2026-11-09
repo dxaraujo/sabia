@@ -35,7 +35,8 @@ e quais verificações a `sa-verificar` usa para executar os cenários de aceite
 ## Onde procurar (nesta ordem)
 
 1. **Usuário (CLI `sabia`):** `~/.sabia/toolkits/*/*/toolkit.json` (uma pasta por versão) — baixados por `sabia toolkits instalar`, com a
-   origem (índice, url, ref, sha e versão) em `.origem.json`
+   origem (índice, url, ref, sha e versão) em `.origem.json`. O índice guarda todas as versões publicadas, uma entrada por
+   versão; a lista mostra a mais nova, e `@versão` instala qualquer uma delas
 2. **Projeto:** `.sabia/toolkits/*/toolkit.json` (o toolkit do próprio projeto, versionado)
 3. **Powers instalados:** `~/.kiro/powers/installed/*/toolkit.json` (um toolkit pode ser distribuído como power;
    não achou nada ali → `~/.kiro/powers/**/toolkit.json`)
