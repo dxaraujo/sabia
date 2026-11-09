@@ -1,5 +1,5 @@
 ---
-{"resumo": "Corpo da história de usuário (HF): narrativa, gatilho e telas, fluxo básico com FA e FE, critérios Gherkin por contexto (um Quando por cenário, todo fluxo coberto) e as regras aplicáveis."}
+{"resumo": "Corpo da história de usuário (HF): narrativa, gatilho e telas, fluxo básico com FA e FE, critérios Gherkin por contexto (um Quando por cenário, todo fluxo coberto), com a regra citada onde é aplicada."}
 ---
 # História de usuário (HF)
 
@@ -18,7 +18,7 @@ Um comportamento observável, com o valor para quem o usa. O mesmo corpo serve a
 
 **Fluxo básico:**
 
-1. <passo>
+1. <passo>. **Conforme** REG-<id>
 2. <passo>
 
 **Fluxos alternativos:**
@@ -56,12 +56,6 @@ FE01: <condição>: <o que acontece>.
 | perfil | visibilidade |
 |---|---|
 | **<Perfil A>** | <visível> |
-
-**Regras de negócio aplicáveis:**
-
-| Regra | Descrição |
-|---|---|
-| REG-<id> <título> | <uma linha> |
 ```
 
 - **Cenário:** um comportamento e um **Quando**. Dois Quando são dois cenários. Declarativo: o quê, não clique a
@@ -76,6 +70,7 @@ FE01: <condição>: <o que acontece>.
   se desmembra em HF mãe (acesso, abas, ordenação, paginação) e filhas.
 - Nenhum componente de tela, caminho de arquivo, classe ou SQL. Botões, campos e mensagens entre aspas; perfis e
   status em negrito.
+- **Regra:** citada com **Conforme** no passo do fluxo ou no critério em que é aplicada; não há tabela de regras no fim.
 - **Referência só para baixo:** REG, EL, MSG, GL e UC, nunca a ET. O que já existe no ELM leva link para o arquivo
   dele (`[REG-2087 <título>](2087-REG-<slug>.md)`); o novo, só o id provisório (`REG-EP03-02`). Na publicação, a REG
   entra em embed na história de usuário.
@@ -90,4 +85,4 @@ FE01: <condição>: <o que acontece>.
 - [ ] Sem termo vago: superlativo, linguagem subjetiva (fácil, amigável), pronome sem referente, "etc.", "entre
   outros", "se possível", "quando for o caso". O termo vago vai ao Em aberto com a pergunta do valor.
 - [ ] Nenhum componente de tela nem nome técnico.
-- [ ] Toda REG citada nos critérios está em Regras de negócio aplicáveis.
+- [ ] Toda REG está citada com **Conforme** no passo ou no critério em que é aplicada.
