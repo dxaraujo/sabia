@@ -6,6 +6,7 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { afterEach, beforeEach, test } from "node:test";
 import * as s from "./sabia.mjs";
+import { statusDoProjeto } from "./status.mjs";
 
 let raiz, home, chamadas, respostas, saida, escolhas, logs;
 
@@ -550,6 +551,43 @@ test("toolkits no projeto: instalar liga pelo manifesto, escreve o sabia.md e vo
     assert.equal(fs.readFileSync(path.join(proj, ".sabia/config/agentes.json"), "utf8"), antes);
     await assert.rejects(s.instalarToolkits(["beta"], { indice, sim: true }), /beta não está nos índices/);
   });
+});
+
+test("status: JSON estável com sprint, sem responsável, não iniciados, em andamento e MRs pelo GitLab", async () => {
+  const proj = escrever(path.join(raiz, "st"), {
+    ".sabia/planejamento/backlog.md": "# Backlog\n\n| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | obs | aceita_em | iniciada_em | concluida_em |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n"
+      + "| FT-001 | Um | fatia | elegivel |  | P |  |  | a |  |  |  |  |  |\n| FT-002 | Dois | fatia | em-andamento |  | M | ana |  | a |  |  |  | 2026-11-01 |  |\n| FT-003 | Três | fatia | concluida |  | M | ana |  | a |  |  |  |  | 2026-11-02 |\n",
+    ".sabia/planejamento/sprints/2026/sprint-02.md": "# 2026/Sprint 02 · 2026-11-01 → 2026-11-13\n\n**Meta:** Entregar\n\n## Itens\n\n| Item | Trabalho | Responsável | Tarefas |\n|---|---|---|---|\n| FT-001 | desenvolvimento | — | — |\n| FT-002 | desenvolvimento | ana | — |\n| FT-003 | desenvolvimento | — | — |\n",
+    ".sabia/planejamento/sprints/2026/sprint-01.md": "# 2026/Sprint 01 · 2026-10-01 → 2026-10-13\n",
+  });
+  const agora = new Date("2026-11-09T12:00:00Z");
+  delete process.env.GITLAB_API_URL;
+  let r = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora });
+  assert.equal(r.versao, 1);
+  assert.deepEqual(r.sprint, { chave: "2026/Sprint 02", inicio: "2026-11-01", fim: "2026-11-13", meta: "Entregar", aberta: true });
+  assert.deepEqual(r.por_status, { elegivel: 1, "em-andamento": 1, concluida: 1 });
+  assert.deepEqual(r.sem_responsavel, [{ id: "FT-001", titulo: "Um", trabalho: "desenvolvimento", status: "elegivel" }]);
+  assert.deepEqual(r.nao_iniciados, [{ id: "FT-001", titulo: "Um", status: "elegivel" }]);
+  assert.deepEqual(r.em_andamento, [{ id: "FT-002", titulo: "Dois", responsavel: "ana", iniciada_em: "2026-11-01", idade_dias: 8 }]);
+  assert.deepEqual(r.mrs_aguardando, { disponivel: false, motivo: "defina GITLAB_API_URL e GITLAB_API_TOKEN", itens: [] });
+  // sprint vencida: o estado continua, sem as listas da sprint
+  r = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora: new Date("2026-12-01T00:00:00Z") });
+  assert.equal(r.sprint.aberta, false);
+  assert.deepEqual(r.sem_responsavel, []);
+  // o GitLab: o token vai pela entrada do curl, nunca nos argumentos
+  process.env.GITLAB_API_URL = "https://gl.exemplo/"; process.env.GITLAB_API_TOKEN = "segredo";
+  try {
+    const vistos = [];
+    const exec = (cmd, args, o = {}) => { vistos.push({ cmd, args, o });
+      return cmd === "git" ? { status: 0, stdout: "git@gl.exemplo:time/app.git\n" } : { status: 0, stdout: JSON.stringify([{ iid: 7, title: "T", author: { username: "ana" }, source_branch: "ft-002", web_url: "u", created_at: "c", draft: false }]) }; };
+    r = statusDoProjeto({ projeto: proj, exec, agora });
+    assert.deepEqual(r.mrs_aguardando, { disponivel: true, motivo: null, itens: [{ iid: 7, titulo: "T", autor: "ana", branch: "ft-002", url: "u", criado_em: "c", rascunho: false }] });
+    assert.ok(vistos[1].args.at(-1).startsWith("https://gl.exemplo/api/v4/projects/time%2Fapp/merge_requests"));
+    assert.ok(!vistos[1].args.join(" ").includes("segredo") && vistos[1].o.input.includes("segredo"));
+    r = statusDoProjeto({ projeto: proj, exec: (c) => (c === "git" ? { status: 0, stdout: "https://gl.exemplo/time/app.git" } : { status: 22, stderr: "401" }), agora });
+    assert.deepEqual(r.mrs_aguardando, { disponivel: false, motivo: "GitLab: 401", itens: [] });
+  } finally { delete process.env.GITLAB_API_URL; delete process.env.GITLAB_API_TOKEN; }
+  assert.throws(() => statusDoProjeto({ projeto: raiz, exec: s.ctx.exec }), /backlog\.md não existe/);
 });
 
 test("<cmd> -h mostra a ajuda do comando e nunca executa; -v a versão; as flags curtas", async () => {

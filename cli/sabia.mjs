@@ -11,6 +11,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { AGENTE_DO_PAPEL, baseDe as baseDaCopia, ganchoDe, gerarProjeto } from "./agentes.mjs";
+import { statusDoProjeto } from "./status.mjs";
 import { carregar, compilar, versaoMenor, grafoAscii, LEGENDA, partes, temDesvio, validarToolkitFonte } from "./compilar.mjs";
 
 const VERSAO = JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8")).version;
@@ -1330,6 +1331,7 @@ const USO = [
   ["sabia toolkits instalar", "instala no projeto: baixa, liga e regenera os agentes", `[${TK} …] [-y] [--indice <url-git|pasta>]   (apelido i; sem nome, no projeto: as versões dele; fora de um projeto, só baixa)`],
   ["sabia toolkits atualizar", "leva os toolkits do projeto à última versão", "[<nome> …] [-y] [--indice <url-git|pasta>]   (sem nome: todos os do projeto)"],
   ["sabia toolkits remover", "tira do projeto; a versão sai da máquina se ninguém mais usar", "[<nome>[@versao] …] [-y]   (apelido rm; fora de um projeto: apaga da máquina)"],
+  ["sabia status", "o estado do fluxo em JSON, para bots e scripts (só lê)", "[--projeto <pasta>]"],
   ["sabia agentes gerar", "gera os agentes do projeto; sem --gravar, só mostra o que muda", "[--gravar] [-a kiro,opencode] [--projeto <pasta>] [--config <arquivo>] [--framework <pasta>]"],
   ["sabia agentes base <id>", "a base de uma cópia: o sha do passo ou do template", "<sa-x.f.p | sa-x/nome.md | requisitos/template-<tipo>.md | ~/.sabia/toolkits/…> [--framework <pasta>]"],
   ["sabia rota <arquivo>", "explica a rota de um arquivo", "o passo com desvio de toolkit, o dono, o toolkit, o motivo e as travas\n" +
@@ -1396,6 +1398,7 @@ const COMANDOS = {
   "toolkits instalar": instalarToolkits,
   "toolkits atualizar": atualizarToolkits,
   "toolkits remover": removerToolkits,
+  status: (_, o) => { ctx.log(JSON.stringify(statusDoProjeto({ projeto: o.projeto, exec: ctx.exec }), null, 2)); },
   agentes: ([sub, id], o) => {
     if (sub === "gerar") ctx.log(gerarProjeto({ projeto: o.projeto, config: o.config, alvo: o.alvo, framework: o.framework, gravar: o.gravar }).texto);
     else if (sub === "base" && id) ctx.log(baseDaCopia(id, o.framework));

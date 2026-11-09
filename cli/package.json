@@ -9,7 +9,8 @@
   "files": [
     "sabia.mjs",
     "compilar.mjs",
-    "agentes.mjs"
+    "agentes.mjs",
+    "status.mjs"
   ],
   "engines": {
     "node": ">=18"

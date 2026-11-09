@@ -276,12 +276,12 @@ test("o repo real compila nos dois alvos e todo link da saída resolve", () => {
   }
 });
 
-test("desvio no repo: a tarefa da codificação por para e arquivos; HF, UC, REG, MSG e EL no PRD e em elm/; ATA na reunião; ET no as-built; CT no CT.csv", () => {
+test("desvio no repo: a tarefa da codificação por para e arquivos; HF, UC, REG, MSG, EL, RF e RNF no PRD e em elm/; ATA na reunião; ET no as-built; CT no CT.csv", () => {
   const m = carregar(REPO), p = (q) => { const [s, f, id] = q.split("."); return m.fluxos[`${s}.${f}`].passos.find((x) => x.id === id); };
   assert.equal(p("sa-desenvolver.codificar.tarefa").desvio, true);
   for (const q of ["sa-prd.prd.escrever", "sa-especificar.elm.editar"]) {
     assert.ok(!p(q).desvio, q);
-    assert.deepEqual(p(q).tipos, ["HF", "UC", "REG", "MSG", "EL"], q);
+    assert.deepEqual(p(q).tipos, ["HF", "UC", "REG", "MSG", "EL", "RF", "RNF"], q);
   }
   assert.deepEqual(p("sa-especificar.reuniao.escrever").tipos, ["ATA"]);
   assert.deepEqual(p("sa-desenvolver.codificar.as-built").tipos, ["ET"]);
