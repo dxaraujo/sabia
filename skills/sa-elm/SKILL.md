@@ -4,7 +4,7 @@ description: "IBM ELM utility of the Sabiá flow, through the elm MCP: DOORS Nex
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.25"
+  version: "2.1.26"
 ---
 
 # sa-elm — utilitário do ELM
