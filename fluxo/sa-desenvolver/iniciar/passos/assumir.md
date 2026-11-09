@@ -1,17 +1,18 @@
 ---
-{"resumo": "Assumir a tarefa num passo só: quem pega confirma o tamanho, a trilha e a autonomia da codificação."}
+{"resumo": "Assumir a tarefa num passo só: quem pega confirma o tamanho, a trilha, a autonomia, o nome da branch e, com ELM, se cria o item."}
 ---
 ## Entrada
 
-O item conferido, a ficha (Regras, Cenários `CT-nn`, artefatos afetados) e o código do trecho tocado.
+O item conferido, a ficha (Regras, Cenários `CT-nn`, artefatos afetados), o código do trecho tocado e as chaves
+`prefixo_branch` e `elm` do `agentes.json`.
 
 ## Faça
 
 **Volta da virada** (branch `<id>` publicada): tamanho, trilha e autonomia são os já escolhidos (Trilha e Autonomia do
 `status.md`; no trivial, sem `status.md`, confirme só a autonomia): mostre e siga.
 
-Senão, leia o código do trecho tocado e mostre, de uma vez, as três escolhas com a recomendação; quem pega confirma ou
-corrige:
+Senão, leia o código do trecho tocado e mostre, de uma vez, as escolhas abaixo com a recomendação; quem pega confirma ou
+corrige. Vale para qualquer autonomia: a IA autopilot só começa no passo `autopilot`, e até lá as perguntas seguem com a pessoa.
 
 1. **Tamanho**: o triado (`P` = horas · `M` ≈ 1 dia · `G` = 2–3 dias, linha Tamanhos do `acordos.md`). O corrigido
    vai à linha do `backlog.md` no commit da atribuição.
@@ -28,10 +29,12 @@ corrige:
    - `IA autopilot` — o `sa-desenvolvedor` como subagente na worktree `.sabia/local/wt/<id>`;
    - `manual` — só a geração do código-fonte é da pessoa; `status.md`, branch e plano seguem como sempre.
    A autonomia vale até o fim da tarefa: não troca no meio.
+4. **Branch**: o nome sugerido, `<prefixo_branch>ft-<nnn>-<slug>` (quem pega pode trocar).
+5. **ELM** (só com a chave `elm`): "quer criar o item no ELM?". A resposta é executada no passo `elm`.
 
 ## Saída
 
-Tamanho, trilha e autonomia confirmados → passo `atribuicao`.
+Todas as escolhas confirmadas → passo `atribuicao`.
 
 ## Pare se
 

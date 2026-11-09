@@ -3,11 +3,12 @@
 ---
 ## Entrada
 
-O item assumido: título, tamanho, trilha, autonomia, branch e pasta.
+O item assumido: título, tamanho, trilha, autonomia, branch, pasta e, com ELM, a tarefa criada ou a recusa.
 
 ## Faça
 
-1. Mostre `🚦 FT-nnn — <título> · <tamanho> · <trilha> · <autonomia> · <branch> · <pasta | sem pasta>`.
+1. Mostre `🚦 FT-nnn — <título> · <tamanho> · <trilha> · <autonomia> · <branch> · <pasta | sem pasta>`, com
+   ` · ELM: <tarefa | não>` no fim quando houver a chave `elm`.
 2. Pela autonomia:
    - **IA supervisionada**: ofereça "seguir?" na mesma sessão, para a `sa-plano.plano` (rápida e completo) ou a
      `sa-desenvolver.codificar` (trivial).

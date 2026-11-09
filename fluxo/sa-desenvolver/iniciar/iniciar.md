@@ -7,7 +7,7 @@
    {"id": "conferir", "travas": ["artefato-exclusivo"], "saidas": {"aceita sem o sim de quem puxa: refinar antes": "→ sa-refinar.detalhar", "fora da sprint sem prioridade crítica, trava de artefato ou registro só local sem o push": "fim"}},
    {"id": "assumir", "saidas": {"maior que G: vira épico, sem branch": "→ sa-refinar.moldar"}},
    {"id": "atribuicao", "saidas": {"outra pessoa pegou o item, ou a gravação na branch base parou": "fim"}},
-   {"id": "branch", "saidas": {"sem o ok da branch": "fim"}},
+   {"id": "branch"},
    {"id": "pasta"},
    {"id": "push"},
    {"id": "elm", "chama": "sa-elm.item"},
