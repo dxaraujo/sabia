@@ -219,7 +219,7 @@
   │ 11 gravar                  │
   └────────────────────────────┘</pre></details>
   <details class="fluxo" id="sa-desenvolver.iniciar"><summary><code>sa-desenvolver.iniciar</code> <span>12 passos</span><small>assumir uma fatia ou um bug para desenvolvimento: tamanho, trilha e autonomia num passo só, atribuição na branch base, branch &lt;id&gt; e pasta da spec; vamos trabalhar na FT-031; pegar a FT-031; próxima; corrigir o defeito 4567; puxar o topo da sprint</small></summary>
-  <pre class="cod grafo">sa-desenvolver.iniciar   dono sa-desenvolvedor   travas sim-da-pessoa, elm-pela-sa-elm
+  <pre class="cod grafo">sa-desenvolver.iniciar   dono sa-desenvolvedor   travas sim-da-pessoa, decisao-da-pessoa, elm-pela-sa-elm
 
   ┌────────────────────────────┐
   │ 1 entrada [desenvolvedor]  │──▶ ↪ vizinhos (diga e pare): sa-atender.atender · ■ tipo épico · sa-triar.triar · sa-desenvolver.codificar
@@ -239,7 +239,7 @@
   └─────────────┬──────────────┘
                 ▼
   ┌────────────────────────────┐
-  │ 5 branch                   │──▶ ■ fim  (sem o ok da branch)
+  │ 5 branch                   │
   └─────────────┬──────────────┘
                 ▼
   ┌────────────────────────────┐
@@ -977,7 +977,7 @@
                ▼
   ┌──────────────────────────┐
   │ 8 proposta               │──▶ ↺ proposta  (ajuste)
-  └────────────┬─────────────┘    ■ fim  (sem o ok, ou sem a booleana produto)
+  └────────────┬─────────────┘    ■ fim  (sem o ok, ou sem a booleana produto e sem a anuência)
                ▼
   ┌──────────────────────────┐
   │ 9 gravar                 │
