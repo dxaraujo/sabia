@@ -4,7 +4,7 @@ description: "Cycle rituals of the Sabiá flow with written policies (Kanban wit
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.20"
+  version: "2.1.21"
 ---
 
 # sa-planejamento — Os ritos do ciclo
