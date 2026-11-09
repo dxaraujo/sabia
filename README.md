@@ -4,9 +4,9 @@
 
 O agente escreve muito código e rápido. O que limita o resultado é o alinhamento antes e a verificação depois. O Sabiá
 conduz cada demanda por sete disciplinas — triagem, refinamento, planejamento, especificação, desenvolvimento,
-revisão e aceite, sustentação — com Kanban e WIP, Shape Up no épico, três amigos na fatia, TDD e MR revisado por
+revisão e aceite, sustentação — com Kanban e WIP, Shape Up no épico, refinamento conjunto na fatia, TDD e MR revisado por
 outro desenvolvedor. Do Sabiá fica só o que dá produtividade ou preserva o rastreio de requisitos; o resto segue o
-mercado. Com IBM ELM, o DOORS Next é o registro oficial; sem ELM, a spec viva fica no repositório.
+mercado. Com IBM ELM, o DOORS Next é o registro oficial; sem ELM, a especificação vigente fica no repositório.
 
 Desenvolvido por Daniel Xavier Araújo.
 
@@ -19,7 +19,7 @@ demanda ─► captura (fluxo/captura.md; entrada direta sa-triar.capturar)   ti
         │                  └─ sa-refinar.ajustar até alguém puxar
         └─ sustentação ► SUSTENTAÇÃO sa-atender.atender (AT · IM · BD · IN · OP · EX, dentro da folga)
 
-PLANEJAMENTO ─────── sa-planejamento.inicial · .sprint · .review · .retrospectiva · inspeção diária sa-status.painel
+PLANEJAMENTO ─────── sa-planejamento.inicial · .sprint · .review · .retrospectiva · daily sa-status.painel
 DESENVOLVIMENTO ──── sa-desenvolver.iniciar ─► [sa-plano.plano] ─► sa-desenvolver.codificar ─► MR
                      rota: trivial · rápida · completo       modo: IA supervisionada · IA autopilot · manual
 REVISÃO E ACEITE ─── sa-verificar.verificar · sa-revisar.mr (desenvolvedor ≠ autor) · [sa-verificar.revisao-humana]
@@ -40,7 +40,7 @@ estação; a ficha ao lado mostra papel, agente, arquivos, chamadas ao ELM e as 
 |---|---|---|
 | 1 | Alinhar antes de escrever: entrevista em rodadas, com resposta recomendada; fatos o agente busca, decisões a pessoa toma | Matt Pocock (`grilling`), Anthropic (entrevista → spec), Dex Horthy (QRSPI), Andrej Karpathy (modelos não pedem esclarecimento) |
 | 2 | Cerimônia do tamanho do trabalho | Birgitta Böckeler ("marreta para quebrar noz"), Anthropic ("se o diff cabe numa frase, pule o plano"), Horthy (~40% *oneshot*), Spec Kit |
-| 3 | Spec é registro de decisão, sem caminho de arquivo; o que dura é glossário, ADR e — aqui — o ELM ou a spec viva | Pocock (`to-spec`), Böckeler (*spec-anchored*), Kent Beck e Martin Fowler (aprender durante a implementação) |
+| 3 | Spec é registro de decisão, sem caminho de arquivo; o que dura é glossário, ADR e — aqui — o ELM ou a especificação vigente | Pocock (`to-spec`), Böckeler (*spec-anchored*), Kent Beck e Martin Fowler (aprender durante a implementação) |
 | 4 | Linguagem ubíqua num glossário usado no PRD, nos testes e no código | Pocock (`domain-modeling`), DDD |
 | 5 | Fatias verticais (*tracer bullets*) que cabem numa janela de contexto nova, com critérios falsificáveis | Pocock (`to-tickets`), Horthy ("modelos amam planos horizontais"), Anthropic (uma funcionalidade por vez), Geoffrey Huntley (um item por loop) |
 | 6 | Pesquisar → planejar → implementar, com compactação em arquivo e revisão humana do plano | Horthy (*Advanced Context Engineering*), Boris Cherny (comece no plan mode) |
@@ -48,8 +48,8 @@ estação; a ficha ao lado mostra papel, agente, arquivos, chamadas ao ELM e as 
 | 8 | Teste primeiro, vermelho → verde, nos pontos de teste combinados | Beck, Simon Willison (*red/green TDD*), Karpathy ("dê critérios de sucesso, peça os testes primeiro"), Pocock (`tdd`) |
 | 9 | Backpressure: compilar, testes e lint a cada passo; evidência em vez de afirmação | Huntley, Anthropic, Cherny ("dê ao agente como verificar o trabalho"), Willison ("first run the tests") |
 | 10 | Proteger o oráculo: teste não se apaga nem se afrouxa | Anthropic (*long-running harnesses*), Beck ("o gênio trapaceando"), Karpathy (`autoresearch`) |
-| 11 | Gerador ≠ avaliador; revisão em contexto limpo e em eixos separados; avaliador cético mas sem caçar gosto | Anthropic (*harness design*), Pocock (`code-review`), Cherny |
-| 12 | Contexto limpo por fatia e estado em disco | Horthy (zona burra acima de ~40%), Pocock (*smart zone*), Huntley, Anthropic (*context engineering*) |
+| 11 | Gerador ≠ avaliador; revisão em contexto isolado e em eixos separados; avaliador cético mas sem caçar gosto | Anthropic (*harness design*), Pocock (`code-review`), Cherny |
+| 12 | Contexto isolado por fatia e estado em disco | Horthy (zona burra acima de ~40%), Pocock (*smart zone*), Huntley, Anthropic (*context engineering*) |
 | 13 | Slider de autonomia: IA supervisionada, IA autopilot ou manual, escolhido por item por quem desenvolve; WIP limitado pela revisão humana | Karpathy ("Iron Man suits"), Pocock (AFK/HITL), Addy Osmani (*orchestration tax*), DORA 2025 |
 | 14 | Leia o código: MRs pequenos, com caminho de leitura e evidência | Horthy ("read the dang code"), Willison, Osmani (*comprehension debt*), Thoughtworks Radar vol. 34 |
 | 15 | Aprendizado composto: cada correção muda o ambiente — checagem determinística primeiro | Mitchell Hashimoto (*engineer the harness*), Cherny, Pocock (`retro`), Fowler (*guides & sensors*) |
@@ -63,10 +63,10 @@ Fontes no fim deste arquivo.
 | Skill | Fluxos | Função |
 |---|---|---|
 | `sabia` | — | guia e roteador: disciplinas, papéis, aprovações, autonomia e qual skill usar |
-| `sa-setup` | `configurar` · `customizar` | configura o projeto na sessão padrão: alvos, comandos, base, formato da spec, "usa ELM?", toolkits e os 5 agentes; customiza um passo ou padrão |
+| `sa-setup` | `configurar` · `customizar` | configura o projeto na sessão sem agente: alvos, comandos, base, formato da spec, "usa ELM?", toolkits e os 5 agentes; customiza um passo ou padrão |
 | `sa-status` | `painel` · `item` · `minha-proxima` · `pendencias` · `licoes` · `fechar-sessao` | painel só leitura (WIP, vazão, idade, lead time, pendências de rastreio), estado de um `<id>`, a próxima tarefa e os créditos da sessão |
 | `sa-triar` | `capturar` · `triar` | captura sem triar e triagem da fila `nova`: duplicado, falta informação, adiar, cancelar, aceitar |
-| `sa-refinar` | `moldar` · `detalhar` · `fatiar` · `ajustar` | pitch e go/kill do épico; três amigos da fatia (ficha com regras, `CT-nn` e artefatos afetados, e `elm/` com ELM); fatiamento do PRD; ajuste do item pronto |
+| `sa-refinar` | `moldar` · `detalhar` · `fatiar` · `ajustar` | pitch e go/kill do épico; refinamento conjunto da fatia (ficha com regras, `CT-nn` e artefatos afetados, e `elm/` com ELM); fatiamento do PRD; ajuste do item pronto |
 | `sa-prd` | `prd` · `mudanca` | PRD do épico depois do go, aprovado pelo produto no próprio documento |
 | `sa-especificar` | `elm` · `prototipo` · `reuniao` · `archive` | arquivos de `elm/` da fatia, protótipo de tela, ATA de reunião e archive da spec depois do merge |
 | `sa-entrevistar` | `entrevistar` | alinhamento em rodadas de até 5 perguntas, cada uma com recomendação |
@@ -89,17 +89,17 @@ Cinco agentes por função, gerados pela `sa-setup` a partir do
 `.kiro/agents/sa-<nome>.json` e `.opencode/agents/sa-<nome>.md`. Nunca se editam à mão.
 
 ```
-primários (a pessoa escolhe ao abrir a sessão; a pré-condição de cada skill confere a booleana do equipe.json)
+principais (a pessoa escolhe ao abrir a sessão; a pré-condição de cada skill confere a booleana do equipe.json)
 ├─ sa-desenvolvedor   build · sa-desenvolver · sa-plano · sa-revisar.mr · sa-verificar.revisao-humana · sa-atender · sa-especificar.archive
 │    chama sa-pesquisador · sa-revisor · sa-verificador · ele mesmo no autopilot
 ├─ sa-especificador   build · sa-refinar · sa-prd · sa-especificar · sa-entrevistar · sa-planejamento (inclui o produto)
 │    chama sa-pesquisador
 └─ nos dois: sa-triar · sa-status · sabia · ofertas da sa-elm
-subagentes (contexto limpo)
+subagentes (contexto isolado)
 ├─ sa-pesquisador     só leitura ── sa-pesquisar
 ├─ sa-revisor         só leitura ── sa-revisar.revisar + rubricas do toolkit + Regras aprendidas
 └─ sa-verificador     só leitura + Executar do sabia.md, curl/wget só à URL de teste e o CT.csv ── sa-verificar.verificar
-sessão padrão: sa-setup e sa-elm.setup (as únicas que gravam o harness)
+sessão sem agente: sa-setup e sa-elm.setup (as únicas que gravam o harness)
 ```
 
 | Modelo | Ler | Editar | Comandos | MCP |
@@ -139,8 +139,8 @@ OpenSpec. Fica em `formato_spec` no `agentes.json` e na seção Especificação 
 
 Rápida e completo têm também `research.md`, `status.md` e `CT.csv`. O delta traz sempre o texto completo dos
 requisitos tocados (OpenSpec: ADDED/MODIFIED/REMOVED; Kiro: o bloco completo de cada requisito). Depois do merge, o
-archive: sem ELM, o OpenSpec funde o delta na spec viva (`openspec/specs/`) e, no Kiro, o vigente são as specs em
-`.kiro/specs/`; com ELM, a `sa-elm.publicar` sobe os arquivos de `elm/` ao DOORS conferindo a versão lida, ou o
+archive: sem ELM, o OpenSpec funde o delta na especificação vigente (`openspec/specs/`) e, no Kiro, o vigente são as specs em
+`.kiro/specs/`; com ELM, a `sa-elm.publicar` sobe os arquivos de `elm/` ao DOORS conferindo a versão de referência, ou o
 archive grava "Publicação: pendente" para o especificador.
 
 ## O que a setup instala no projeto
@@ -189,7 +189,7 @@ Sem ELM configurado, nenhuma oferta aparece.
 |---|---|---|
 | setup | `sa-elm.setup` | produz o `pa`, a chave `elm` do `agentes.json`, a seção ELM do `sabia.md` e as regras dos agentes; a `sa-setup` aplica |
 | assumir · horas · concluir | `sa-elm.item` · `sa-elm.horas` · `sa-elm.finalizar` | o IB e a tarefa `DEV` · `ESP` · `ATD` no EWM; horas só por pergunta ou pedido |
-| refinamento | `sa-elm.baixar` | o original do DOORS em `elm/` da fatia, com o commit de base (original + versão lida) |
+| refinamento | `sa-elm.baixar` | o original do DOORS em `elm/` da fatia, com o commit de base (original + versão de referência) |
 | depois do merge | `sa-elm.publicar` | do especificador: confere a versão de cada artefato (mudou → avisa e pula), cria os novos e troca o id provisório pelo do ELM |
 | a pedido | `sa-elm.importar-backlog` · `iteracao` · `conferir` · `lint` · `visualizar` | importar do EWM, iteração, "o DOORS mudou?", lint do bundle e visualização offline |
 
@@ -230,7 +230,7 @@ ficha; o `CT.csv` da verificação) e `ATA`. Artefato novo: id provisório `<sig
    travas): `sabia rota <arquivo>`, ou `sabia rota <spec>/tasks.md#2.1` (pelos arquivos que a tarefa cita; sem casar,
    mostra o texto dela e os `para` dos desvios); o fluxo resolvido no projeto (tabela, grafo ASCII e Mermaid):
    `sabia rota --fluxo <skill.fluxo>`.
-2. No projeto, na sessão padrão, peça **"configurar o Sabiá"** e confirme as propostas (os padrões vêm marcados; uma
+2. No projeto, na sessão sem agente, peça **"configurar o Sabiá"** e confirme as propostas (os padrões vêm marcados; uma
    confirmação por bloco).
 3. Abra a sessão no `sa-especificador` ou no `sa-desenvolvedor` e comece: **"nova demanda: …"** (a `sa-triar`
    registra e tria), **"minha próxima tarefa"** ou **"onde está a FT-031?"** (a `sa-status` mostra o estado e oferece

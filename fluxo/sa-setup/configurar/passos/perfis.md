@@ -11,14 +11,14 @@ Um cartão por agente (W6), nesta ordem, com o que vem do `perfis.json`:
 
 | Agente | Modo | Skills |
 |---|---|---|
-| `sa-desenvolvedor` | primário | `sa-desenvolver`, `sa-plano`, `sa-revisar.mr`, `sa-verificar.revisao-humana`, `sa-atender` e a `sa-especificar.archive` que a `sa-desenvolver.encerrar` chama |
-| `sa-especificador` | primário | `sa-refinar`, `sa-prd`, `sa-especificar`, `sa-entrevistar`, `sa-planejamento` (inclui as funções de produto) |
+| `sa-desenvolvedor` | principal | `sa-desenvolver`, `sa-plano`, `sa-revisar.mr`, `sa-verificar.revisao-humana`, `sa-atender` e a `sa-especificar.archive` que a `sa-desenvolver.encerrar` chama |
+| `sa-especificador` | principal | `sa-refinar`, `sa-prd`, `sa-especificar`, `sa-entrevistar`, `sa-planejamento` (inclui as funções de produto) |
 | `sa-pesquisador` | subagente | `sa-pesquisar` |
 | `sa-revisor` | subagente | `sa-revisar.revisar`, com as rubricas do toolkit |
 | `sa-verificador` | subagente | `sa-verificar.verificar`, com o texto `verificacao` do toolkit |
 
-Nos dois primários: `sa-triar`, `sa-status`, `sabia` e as ofertas da `sa-elm`. A `sa-setup` e a `sa-elm.setup` ficam
-na sessão padrão. A pessoa só marca os extras por agente: skills de toolkit, a tool de banco e os agentes do projeto
+Nos dois principais: `sa-triar`, `sa-status`, `sabia` e as ofertas da `sa-elm`. A `sa-setup` e a `sa-elm.setup` ficam
+na sessão sem agente. A pessoa só marca os extras por agente: skills de toolkit, a tool de banco e os agentes do projeto
 (como subagentes), que vêm desmarcados e com o "para quê". O modelo é o padrão da ferramenta; a pessoa troca se
 quiser.
 

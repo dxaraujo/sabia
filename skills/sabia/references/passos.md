@@ -43,7 +43,7 @@ No `toolkit.json`, `passo.passo` é o id do passo no formato `skill.fluxo.passo`
 - **Com agente:** o dono delega e confere.
   1. Manda um briefing curto, com o contrato do passo: a tarefa, o `design.md`, o `research.md`, os pontos de teste e
      os Comandos do `.sabia/sabia.md`.
-  2. O subagente trabalha em contexto limpo e devolve o que fez (arquivos e resumo).
+  2. O subagente trabalha em contexto isolado e devolve o que fez (arquivos e resumo).
   3. O dono confere o contrato e segue o fluxo. Fora do contrato → devolve uma vez com o que falta; de novo fora →
      registra em Desvios do `status.md`.
 

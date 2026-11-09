@@ -11,7 +11,7 @@ O fluxo que incluiu as regras.
 2. Leia a chave `elm` do `.sabia/config/agentes.json`. `elm: false`, sem o
    `.sabia/config/elm/pa_<nome>.json` do `elm.pa` ou sem o MCP `elm` nesta sessão → o resultado é "ELM não
    configurado": diga isso em uma linha.
-3. O MCP respondeu erro `config` → mostre o campo que falta e ofereça a `sa-elm.setup` (na sessão padrão). O
+3. O MCP respondeu erro `config` → mostre o campo que falta e ofereça a `sa-elm.setup` (na sessão sem agente). O
    resultado também é "ELM não configurado".
 
 ## Saída

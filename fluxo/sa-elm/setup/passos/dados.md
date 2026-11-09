@@ -14,8 +14,8 @@ Monte, sem gravar:
    `elm_horas`, `elm_buscar_req`, `elm_ler_req`, `elm_*_local`, `elm_indexar_local`, `elm_explorar_local`,
    `elm_sync`). `ask`: as de escrita (`elm_criar_wi`, `elm_atualizar_wi`, `elm_transicao`, `elm_comentar`,
    `elm_anexo`, `elm_lancar_horas`, `elm_remover_horas`, `elm_ligar`, `elm_publicar_req`, `elm_iteracao`).
-   `deny`: `elm_setup_descobrir` e `elm_backlog` (só nesta sessão padrão). O gerador aplica assim: leitura
-   `allow` em todos; escrita `ask` nos primários `sa-desenvolvedor` e `sa-especificador`; escrita, `elm_sync` e
+   `deny`: `elm_setup_descobrir` e `elm_backlog` (só nesta sessão sem agente). O gerador aplica assim: leitura
+   `allow` em todos; escrita `ask` nos principais `sa-desenvolvedor` e `sa-especificador`; escrita, `elm_sync` e
    `elm_indexar_local` `deny` nos subagentes e no autopilot.
 2. O `bundle` da chave `elm`: o `rm.download` do `pa` (ex.: `docs/elm/<pa>/`).
 3. Seção ELM do `sabia.md`: `pa: <nome>` · `ET as-built: sim | não` ·

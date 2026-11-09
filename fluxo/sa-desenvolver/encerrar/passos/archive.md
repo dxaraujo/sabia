@@ -9,7 +9,7 @@ O item concluído na base e a pasta da spec (`formato_spec` do `agentes.json`).
 
 1. Trivial (sem pasta da spec) → nada a arquivar; siga.
 2. Rápida e completo: chame a `sa-especificar.archive` na base; ela volta para cá. Ela faz:
-   - sem ELM: no OpenSpec, `openspec archive ft-<nnn>-<slug> --yes` funde o delta na spec viva; no Kiro, as specs
+   - sem ELM: no OpenSpec, `openspec archive ft-<nnn>-<slug> --yes` funde o delta na especificação vigente; no Kiro, as specs
      em `.kiro/specs/` continuam sendo o vigente;
    - com ELM: no OpenSpec, `openspec archive ft-<nnn>-<slug> --skip-specs --yes`, e a pergunta "publicar no DOORS?".
      Quem tem `especificador` roda a `sa-elm.publicar`; sem a booleana, grava `Publicação: pendente` no `status.md`

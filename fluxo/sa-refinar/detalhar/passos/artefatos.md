@@ -1,5 +1,5 @@
 ---
-{"resumo": "Lista os requisitos tocados, um por linha, com inclui, altera ou exclui e a versão lida do bundle; sem requisito, 'nenhum requisito'."}
+{"resumo": "Lista os requisitos tocados, um por linha, com inclui, altera ou exclui e a versão de referência do bundle; sem requisito, 'nenhum requisito'."}
 ---
 ## Entrada
 
@@ -9,7 +9,7 @@ Regras e cenários dos passos anteriores; na fatia de épico, os artefatos afeta
 
 1. **Vigente**: specs arquivadas, depois o bundle (`docs/elm/<pa>/`). Sem bundle, ofereça a `sa-elm.baixar`. Bundle
    desatualizado (`sincronizado_em` anterior à última `Publicação: publicada`): mostre a data e pergunte se baixa.
-2. **Uma linha por requisito tocado**: `<sigla>-<id> · inclui | altera | exclui · versão lida <AAAA-MM-DDTHH:MM>`,
+2. **Uma linha por requisito tocado**: `<sigla>-<id> · inclui | altera | exclui · versão de referência <AAAA-MM-DDTHH:MM>`,
    com `<sigla>` ∈ `HF` · `REG` · `EL` · `GL`.
    - Existente: `<sigla>-<id do ELM>`; a versão é o `modificado_em` do DOORS no bundle.
    - Novo: id provisório `<sigla>-<EPnn | FTnnn>-nn` (o do PRD na fatia de épico; o da própria fatia no item

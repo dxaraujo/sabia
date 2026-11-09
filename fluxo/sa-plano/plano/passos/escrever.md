@@ -16,7 +16,7 @@ O delta, o `research.md`, as decisões, a rota (`status.md`), o tipo (fatia ou b
    | completo | `requirements.md` → `design.md` → `tasks.md` | `proposal.md` + delta + `design.md` + `tasks.md` |
 
 2. Completo: uma parte por vez, com o passo `revisar` entre elas.
-3. `design.md`: os títulos fixos do formato, Decisões técnicas e o Contrato de pronto (Cenário `CT-nn` · Como
+3. `design.md`: os títulos fixos do formato, Decisões técnicas e os critérios de pronto (Cenário `CT-nn` · Como
    executar · Esperado · Onde verificar).
 4. `tasks.md`: uma tarefa por comportamento, teste primeiro, comando de pronto e o `CT-nn`; no Kiro com
    `_Requirements: N.M_`, no OpenSpec com `- [ ] 1.1`. Refatoração preparatória entra como tarefa. A última tarefa é

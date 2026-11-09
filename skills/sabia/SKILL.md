@@ -10,7 +10,7 @@ metadata:
 # Sabiá — guia e roteador do fluxo
 
 Alinhar antes e verificar depois. O agente escreve muito código rápido; o que limita o resultado é o alinhamento antes
-e a verificação depois. O vigente fica no DOORS quando o projeto tem ELM; sem ELM, fica na spec viva do repositório
+e a verificação depois. O vigente fica no DOORS quando o projeto tem ELM; sem ELM, fica na especificação vigente do repositório
 (OpenSpec: `openspec/specs/`; Kiro: `.kiro/specs/`). Este guia não grava nada: explica e manda cada pedido para a
 skill certa (tabela [O que dizer](#o-que-dizer)).
 
@@ -27,7 +27,7 @@ captura (qualquer pessoa ou skill) ─► triagem sa-triar.triar
   ├─ épico ───────► sa-refinar.moldar (pitch, go/kill) ─► sa-prd.prd ─► sa-refinar.fatiar
   ├─ fatia · bug ─► sa-refinar.detalhar (ficha: regras · CT-nn · Artefatos afetados [+ elm/]) ─► pronta ─► sa-refinar.ajustar
   └─ sustentação ─► sa-atender.atender
-ciclo sa-planejamento (inicial · sprint · review · retrospectiva) · inspeção diária sa-status.painel
+ciclo sa-planejamento (inicial · sprint · review · retrospectiva) · daily sa-status.painel
 desenvolvimento sa-desenvolver.iniciar ─► [sa-plano.plano] ─► sa-desenvolver.codificar ─► MR
 revisão e aceite sa-verificar.verificar · sa-revisar.mr · [sa-verificar.revisao-humana] ─► sa-desenvolver.encerrar (merge)
   ─► sa-especificar.archive ─► "publicar no DOORS?" sa-elm.publicar
@@ -40,11 +40,11 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
   pitch, PRD e ficha. Captura, triagem e revisão humana ficam abertos a qualquer pessoa.
 - **Identidade** é o usuário do GitLab: o `usuario` do `equipe.json` é o autor do MR e o `@dono` no CODEOWNERS. O
   `elm_login` é opcional e só a `sa-elm` o lê.
-- **Agentes.** A pessoa abre a sessão num dos dois primários: `sa-desenvolvedor` (desenvolvimento, plano, MR, revisão humana,
+- **Agentes.** A pessoa abre a sessão num dos dois principais: `sa-desenvolvedor` (desenvolvimento, plano, MR, revisão humana,
   Sustentação e archive) ou `sa-especificador` (refinamento, PRD, especificação, entrevista e planejamento; inclui as
   funções de produto). Triagem, status, este guia e as ofertas da `sa-elm` rodam nos dois. Pesquisa, revisão do agente e
-  verificação rodam nos subagentes `sa-pesquisador`, `sa-revisor` e `sa-verificador`, de contexto limpo. A
-  `sa-setup` e a `sa-elm.setup` rodam na sessão padrão. A booleana do `equipe.json` continua conferida na
+  verificação rodam nos subagentes `sa-pesquisador`, `sa-revisor` e `sa-verificador`, de contexto isolado. A
+  `sa-setup` e a `sa-elm.setup` rodam na sessão sem agente. A booleana do `equipe.json` continua conferida na
   pré-condição de cada skill.
 - **Tipos e ids.** `tipo` ∈ {`épico`, `fatia`, `bug`, `sustentação`}. Séries: épico → `EP-nn`; fatia e bug →
   `FT-nnn`; sustentação → `<categoria>-nnn` (`AT` · `IM` · `BD` · `IN` · `OP` · `EX`). Fatia e bug têm `pai` `EP-nn`
@@ -104,12 +104,12 @@ trabalho. Codificação e especificação têm modos independentes.
 4. **Verificação acima de geração** — backpressure em camadas: o trecho tocado a cada alteração e a suíte completa uma
    vez antes do MR, com baseline do CI. A asserção que dura são os testes automatizados, marcados com o `CT-nn`.
 5. **Gerador ≠ avaliador** — a revisão do agente pelo `sa-revisor` tem três eixos: spec · padrões · segurança. O aceite é
-   do `sa-verificador`, de contexto limpo.
+   do `sa-verificador`, de contexto isolado.
 6. **Estado em disco** — o estado vive no `status.md`, no `research.md` e no plano. Na mesma tarefa, segue na mesma
    sessão; para outra tarefa, sugere sessão nova.
 7. **Autonomia gradual** — por item, escolhida por quem desenvolve, com disjuntor.
 8. **Rastreio leve** — os artefatos afetados ficam na ficha, e o texto completo dos requisitos fica no delta. Com ELM, a pasta `elm/`
-   da fatia é a fonte da publicação no DOORS depois do merge, conferindo a versão. Sem ELM, a spec viva fica no
+   da fatia é a fonte da publicação no DOORS depois do merge, conferindo a versão. Sem ELM, a especificação vigente fica no
    repositório.
 9. **Aprendizado composto** — a lição nasce na seção Lições do `status.md` ou do registro de Sustentação. Na review do
    ciclo, as escolhidas entram nas Regras aprendidas do `sabia.md`.
@@ -125,7 +125,7 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 | instalar ou atualizar o Sabiá no projeto, os agentes, o formato da spec, "usa ELM?" · customizar ou descustomizar um passo ou padrão | `sa-setup` (`sa-setup.configurar` · `sa-setup.customizar`) |
 | onde parei · minha próxima · o estado de `<id>` · pendências (publicação pendente, travas de artefato) · lições para a review · fechar a sessão | `sa-status` (`sa-status.painel` · `sa-status.item` · `sa-status.minha-proxima` · `sa-status.pendencias` · `sa-status.licoes` · `sa-status.fechar-sessao`) |
 | registrar uma demanda sem triar · triar a fila das linhas `nova` | `sa-triar` (`sa-triar.capturar` · `sa-triar.triar`) |
-| ideia nova, pitch, go/kill · três amigos, ficha, artefatos afetados e `elm/` da fatia · fatiar o épico · editar, dividir ou cancelar um item pronto | `sa-refinar` (`sa-refinar.moldar` · `sa-refinar.detalhar` · `sa-refinar.fatiar` · `sa-refinar.ajustar`) |
+| ideia nova, pitch, go/kill · refinamento conjunto, ficha, artefatos afetados e `elm/` da fatia · fatiar o épico · editar, dividir ou cancelar um item pronto | `sa-refinar` (`sa-refinar.moldar` · `sa-refinar.detalhar` · `sa-refinar.fatiar` · `sa-refinar.ajustar`) |
 | escrever o PRD do épico depois do go, ou mudar o PRD | `sa-prd` (`sa-prd.prd`) |
 | os arquivos de `elm/` da fatia · protótipo de tela e aprovação do cliente · ATA de reunião (transcrição em `.sabia/local/reunioes/`) · archive da spec depois do merge | `sa-especificar` (`sa-especificar.elm` · `sa-especificar.prototipo` · `sa-especificar.reuniao` · `sa-especificar.archive`) |
 | alinhar decisões em rodadas | `sa-entrevistar` (`sa-entrevistar.entrevistar`) |
@@ -184,7 +184,7 @@ Um toolkit não cria tipo; num tipo desviável (⇢), a skill dele escreve o art
   pare a fase.
 - **Nada inventado:** tabela, coluna, regra e id se confirmam no código, no banco (só leitura) ou no ELM. Regra de
   negócio é decisão de uma pessoa, registrada com quem e quando.
-- **Sim da pessoa:** push, merge, `curl`, `wget`, escrita no GitLab e escrita no ELM passam pelo ask dos primários
+- **Sim da pessoa:** push, merge, `curl`, `wget`, escrita no GitLab e escrita no ELM passam pelo ask dos principais
   `sa-desenvolvedor` e `sa-especificador`; nos subagentes e no autopilot, o que não é liberado é deny. `rebase`,
   `--force`, `--force-with-lease`, `reset --hard` e `--no-verify` ficam em deny.
 - **Gravar na base:** estado e documentos de planejamento vão pela gravação comum na base. O código vai por MR, na

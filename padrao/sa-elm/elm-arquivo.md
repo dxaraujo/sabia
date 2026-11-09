@@ -27,8 +27,7 @@ publicado: manual <AAAA-MM-DD>   # só na especificação manual
 - **sources:** de onde veio: D-nn da tabela Decisões do documento do item, ATA com o minuto da fala, requisito pelo
   id. No altera e no exclui, o próprio requisito.
 - **publicado:** só na especificação manual, quando o texto já está no DOORS; a publicação não reenvia.
-- **Ação e versão lida** moram nos artefatos afetados da ficha (`<sigla>-<id> · inclui | altera | exclui · versão lida`). A versão
-  lida é o `modificado_em` do DOORS no download; `—` no novo. A publicação compara e, se mudou, avisa e pula.
+- **Ação e versão de referência** moram nos artefatos afetados da ficha (`<sigla>-<id> · inclui | altera | exclui · versão de referência`). A versão de referência é o `modificado_em` do DOORS no download; `—` no novo. A publicação compara e, se mudou, avisa e pula.
 - **Ao DOORS sobe só o corpo:** a publicação tira o frontmatter.
 - **Corpo sem cabeçalho:** sem título `#` nem linhas de aprovação, tipo ou ação; começa no primeiro rótulo do padrão.
 - **Sem título Markdown no corpo:** as partes são rótulos em negrito (`**Narrativa:**`, `**1. <contexto>**`), para o

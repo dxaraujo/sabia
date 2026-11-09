@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-A sessão padrão.
+A sessão sem agente.
 
 ## Faça
 

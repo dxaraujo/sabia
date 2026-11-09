@@ -9,7 +9,7 @@ Qualquer escrita no ELM que o fluxo fará.
 
 - **Prévia e "sim".** Antes de escrever, mostre `Ação (criar | atualizar | transição | ligar | lançar | sem
   mudança) | Alvo | Título` e espere o "sim" (um "sim" por lote). Nomes e números do EWM ou do DOORS, nunca ids
-  internos. A escrita é `ask` nos primários `sa-desenvolvedor` e `sa-especificador` e `deny` nos subagentes e no
+  internos. A escrita é `ask` nos principais `sa-desenvolvedor` e `sa-especificador` e `deny` nos subagentes e no
   autopilot.
 - **Idempotente.** Id já gravado no Sabiá (coluna `ib`, coluna Tarefas) → use esse e não crie de novo. Sem id,
   procure uma criação interrompida pelo título (`elm_listar_wi` com `titulo_prefixo`, `elm_buscar_req`); achou →

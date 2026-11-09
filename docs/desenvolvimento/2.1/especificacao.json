@@ -1,9 +1,9 @@
 {
- "geral": "Sabiá 2.1 · 7 disciplinas · 5 agentes (primários sa-desenvolvedor · sa-especificador; subagentes sa-pesquisador · sa-revisor · sa-verificador) · alvos Kiro e opencode\npapéis = booleanas no equipe.json · identidade = usuário do GitLab\n   qualquer pessoa ── captura · triagem · revisão humana\n   desenvolvedor ──── puxa para desenvolvimento · revisa MR de outro autor\n   especificador ──── aprova os arquivos de elm/ · publica no ELM\n   produto ────────── go/kill · ordena · aprova pitch, PRD e ficha\n\ndemanda ─► fluxo/captura.md (toda skill que captura · entrada direta: sa-triar.capturar)\n   │        tipo ∈ épico · fatia · bug · sustentação        id: EP-nn · FT-nnn · <categoria>-nnn\n   └─► 1 TRIAGEM ─────────── sa-triar.triar                       (qualquer pessoa)\n        ├─ épico ──────────► 2 REFINAMENTO   sa-refinar.moldar: pitch.md ─► go/kill (produto)\n        │                      └─ go ─► 4 ESPECIFICAÇÃO   sa-prd.prd: prd.md aprovado (produto)\n        │                               └─► sa-refinar.fatiar ─► fatias FT-nnn (pai EP-nn)\n        ├─ fatia · bug ────► 2 REFINAMENTO   sa-refinar.detalhar: ficha (regras · CT-nn · Artefatos afetados) [+ elm/] ─► pronta\n        │                      └─ sa-refinar.ajustar até alguém puxar\n        └─ sustentação ────► 7 SUSTENTAÇÃO   sa-atender.atender (quem atende puxa, dentro da folga)\n\n3 PLANEJAMENTO ────── sa-planejamento.inicial · .sprint (virada) · .review · .retrospectiva\n                      inspeção diária: sa-status.painel (WIP · vazão · idade · lead time · pendências de rastreio)\n5 DESENVOLVIMENTO ─── sa-desenvolver.iniciar ─► [sa-plano.plano: rápida · completo] ─► sa-desenvolver.codificar ─► MR\n                      quem codifica, ao assumir: IA supervisionada · IA autopilot (sa-desenvolvedor como subagente na worktree .sabia/local/wt/<id>) · manual\n6 REVISÃO E ACEITE ── sa-verificar.verificar · sa-revisar.mr (desenvolvedor ≠ autor) · [sa-verificar.revisao-humana, por risco]\n                      └─► sa-desenvolver.encerrar (merge) ─► sa-especificar.archive ─► Lições ─► curadoria na review\n\nestado (linhas do backlog.md e do sprint-<nn>.md): commit pequeno direto na base · fluxo/gravar-na-base.md\ndocumentos (pitch.md · prd.md · ficha · elm/): direto na base, com 'Aprovado: <usuário> · <data>'\nMR: só para código (com o delta da spec, design e tasks)\n\n══════════════════ borda ══════════════════\nELM = sa-elm (DOORS + EWM). Só com ELM configurado; a skill do trabalho oferece e nunca trava.\n   assumir ──────────► sa-elm.item (tarefa DEV · ESP · ATD)\n   horas ────────────► sa-elm.horas (só por pergunta ou pedido)\n   concluir ─────────► sa-elm.finalizar\n   refinamento ──────► sa-elm.baixar (original do DOORS em elm/)\n   depois do merge ──► sa-elm.publicar (especificador; sem a booleana: 'Publicação: pendente')\nsem ELM: nenhuma oferta aparece · spec viva no repositório (OpenSpec: archive funde o delta · Kiro: .kiro/specs/)",
+ "geral": "Sabiá 2.1 · 7 disciplinas · 5 agentes (principais sa-desenvolvedor · sa-especificador; subagentes sa-pesquisador · sa-revisor · sa-verificador) · alvos Kiro e opencode\npapéis = booleanas no equipe.json · identidade = usuário do GitLab\n   qualquer pessoa ── captura · triagem · revisão humana\n   desenvolvedor ──── puxa para desenvolvimento · revisa MR de outro autor\n   especificador ──── aprova os arquivos de elm/ · publica no ELM\n   produto ────────── go/kill · ordena · aprova pitch, PRD e ficha\n\ndemanda ─► fluxo/captura.md (toda skill que captura · entrada direta: sa-triar.capturar)\n   │        tipo ∈ épico · fatia · bug · sustentação        id: EP-nn · FT-nnn · <categoria>-nnn\n   └─► 1 TRIAGEM ─────────── sa-triar.triar                       (qualquer pessoa)\n        ├─ épico ──────────► 2 REFINAMENTO   sa-refinar.moldar: pitch.md ─► go/kill (produto)\n        │                      └─ go ─► 4 ESPECIFICAÇÃO   sa-prd.prd: prd.md aprovado (produto)\n        │                               └─► sa-refinar.fatiar ─► fatias FT-nnn (pai EP-nn)\n        ├─ fatia · bug ────► 2 REFINAMENTO   sa-refinar.detalhar: ficha (regras · CT-nn · Artefatos afetados) [+ elm/] ─► pronta\n        │                      └─ sa-refinar.ajustar até alguém puxar\n        └─ sustentação ────► 7 SUSTENTAÇÃO   sa-atender.atender (quem atende puxa, dentro da folga)\n\n3 PLANEJAMENTO ────── sa-planejamento.inicial · .sprint (virada) · .review · .retrospectiva\n                      daily: sa-status.painel (WIP · vazão · idade · lead time · pendências de rastreio)\n5 DESENVOLVIMENTO ─── sa-desenvolver.iniciar ─► [sa-plano.plano: rápida · completo] ─► sa-desenvolver.codificar ─► MR\n                      quem codifica, ao assumir: IA supervisionada · IA autopilot (sa-desenvolvedor como subagente na worktree .sabia/local/wt/<id>) · manual\n6 REVISÃO E ACEITE ── sa-verificar.verificar · sa-revisar.mr (desenvolvedor ≠ autor) · [sa-verificar.revisao-humana, por risco]\n                      └─► sa-desenvolver.encerrar (merge) ─► sa-especificar.archive ─► Lições ─► curadoria na review\n\nestado (linhas do backlog.md e do sprint-<nn>.md): commit pequeno direto na base · fluxo/gravar-na-base.md\ndocumentos (pitch.md · prd.md · ficha · elm/): direto na base, com 'Aprovado: <usuário> · <data>'\nMR: só para código (com o delta da spec, design e tasks)\n\n══════════════════ borda ══════════════════\nELM = sa-elm (DOORS + EWM). Só com ELM configurado; a skill do trabalho oferece e nunca trava.\n   assumir ──────────► sa-elm.item (tarefa DEV · ESP · ATD)\n   horas ────────────► sa-elm.horas (só por pergunta ou pedido)\n   concluir ─────────► sa-elm.finalizar\n   refinamento ──────► sa-elm.baixar (original do DOORS em elm/)\n   depois do merge ──► sa-elm.publicar (especificador; sem a booleana: 'Publicação: pendente')\nsem ELM: nenhuma oferta aparece · especificação vigente no repositório (OpenSpec: archive funde o delta · Kiro: .kiro/specs/)",
  "principios": [
   [
    "O mercado é o padrão",
-   "Do Sabiá fica só o que dá produtividade ou preserva o rastreio de requisitos (brownfield). O resto segue o mercado: Kanban com WIP, Shape Up no épico, três amigos, TDD e MR com revisão."
+   "Do Sabiá fica só o que dá produtividade ou preserva o rastreio de requisitos (brownfield). O resto segue o mercado: Kanban com WIP, Shape Up no épico, refinamento conjunto, TDD e MR com revisão."
   ],
   [
    "Papéis são permissões",
@@ -19,7 +19,7 @@
   ],
   [
    "Sem ELM, funciona",
-   "Sem ELM configurado, as ofertas do ELM não aparecem. A spec viva fica no repositório: no OpenSpec, o archive funde o delta; no Kiro, o vigente são as specs em .kiro/specs/."
+   "Sem ELM configurado, as ofertas do ELM não aparecem. A especificação vigente fica no repositório: no OpenSpec, o archive funde o delta; no Kiro, o vigente são as specs em .kiro/specs/."
   ],
   [
    "Estado na base",
@@ -31,7 +31,7 @@
   ],
   [
    "Rastreio leve",
-   "A ficha tem os artefatos afetados (<sigla>-<id> · inclui | altera | exclui · versão lida). A pasta elm/ guarda o arquivo inteiro de cada artefato alterado. O delta traz o texto completo dos requisitos tocados. A publicação no DOORS vem depois do merge e confere a versão."
+   "A ficha tem os artefatos afetados (<sigla>-<id> · inclui | altera | exclui · versão de referência). A pasta elm/ guarda o arquivo inteiro de cada artefato alterado. O delta traz o texto completo dos requisitos tocados. A publicação no DOORS vem depois do merge e confere a versão."
   ],
   [
    "Quem puxa decide",
@@ -110,8 +110,8 @@
   {
    "k": "refinamento",
    "nome": "Refinamento",
-   "resumo": "Mesma estrutura do mercado: Shape Up para o épico (pitch e go/kill) e três amigos para a fatia e o bug (ficha com regras, cenários e artefatos afetados). O Sabiá acrescenta os artefatos afetados com a versão lida e, com ELM, a pasta elm/ com os artefatos brownfield alterados, aprovados pelo especificador. A ficha é aprovada pelo produto e fica 'pronta'.",
-   "arvore": "item da triagem\n ├─ épico (a-moldar) ─► sa-refinar.moldar   (produto + Dev)\n │     .sabia/planejamento/epicos/EP-nn-<slug>/pitch.md, direto na base\n │     pitch: problema · apetite · solução em traços · riscos · não objetivos · go/kill · Decisões\n │     ├─ kill (produto) ─► cancelado · obs 'não investir: <motivo>' · a pasta fica ─► fim\n │     └─ go (produto) ─► 'Aprovado: <usuário> · <data>' no pitch.md · em-especificacao\n │           ─► sa-prd.prd (Especificação): prd.md aprovado pelo produto\n │           ─► sa-refinar.fatiar   (especificador + Dev; fatos pela sa-pesquisar.pesquisar)\n │                 rascunho de fatias verticais P · M · G ─► produto aprova e ordena\n │                 ─► linhas FT-nnn 'aceita' · pai EP-nn · fichas ─► épico 'fatiado'\n │                 ─► oferece sa-refinar.detalhar\n ├─ fatia · bug (aceita) ─► sa-refinar.detalhar   (especificador + Dev [+ QA · UX])\n │     bug sem requisito tocado: o Dev sozinho; ficha curta: passos · atual · esperado · reproduzido?\n │     ficha: regras · cenários CT-nn · Artefatos afetados (<sigla>-<id> · inclui | altera | exclui · versão lida)   ✚\n │     com ELM e artefatos afetados: sa-especificar.elm monta a pasta elm/ na pasta da spec, direto na base   ✚\n │        .kiro/specs/ft-<nnn>-<slug>/elm/ | openspec/changes/ft-<nnn>-<slug>/elm/\n │        modo da especificação: IA supervisionada · IA autopilot · manual (grava Especificação na ficha)\n │        sa-elm.baixar: original do DOORS ─► commit de base (original + versão lida)\n │        IA: edita e o especificador aprova o arquivo inteiro (HF · UC · REG · MSG · EL · GL)\n │        manual: altera no DOORS ─► 'alterei' ─► sincroniza (elm/, versão lida, delta, Publicado) ─► aprova\n │        requisito novo: EP03-01-<tipo>-<slug>.md · id provisório <sigla>-<EP ou FT>-nn\n │        artefato já em elm/ de outra fatia ─► esta fica bloqueada até a outra ficar cancelada ou publicada\n │     ├─ dúvida grande ─► spike (sa-pesquisar.pesquisar) · sa-especificar.prototipo\n │     │                  · sa-especificar.reuniao (ATA) ─► volta ao detalhar\n │     ├─ regra sem fonte ─► sa-entrevistar.entrevistar com o produto ─► volta ao detalhar\n │     │                    em aberto bloqueia só o que depende dela\n │     ├─ maior que G ────► vira épico (EP-nn a-moldar · FT 'cancelada · virou EP-nn') ─► sa-refinar.moldar\n │     ├─ muitas regras ──► sa-refinar.ajustar (dividir, 'veio de FT-nnn')\n │     └─ ok ─► DoR (checklist do template da ficha) ─► produto aprova: 'Aprovado: <usuário> · <data>'\n │              ─► 'pronta' (fluxo/gravar-na-base.md) ─► fim: entra na seleção (sa-planejamento.sprint)\n └─ sa-refinar.ajustar   até alguém puxar (status antes de em-andamento)\n       dividir · juntar ('veio de FT-nnn') · editar · cancelar fatia ou épico\n       ─► grava por fluxo/gravar-na-base.md ─► oferece seguir",
+   "resumo": "Mesma estrutura do mercado: Shape Up para o épico (pitch e go/kill) e refinamento conjunto para a fatia e o bug (ficha com regras, cenários e artefatos afetados). O Sabiá acrescenta os artefatos afetados com a versão de referência e, com ELM, a pasta elm/ com os artefatos brownfield alterados, aprovados pelo especificador. A ficha é aprovada pelo produto e fica 'pronta'.",
+   "arvore": "item da triagem\n ├─ épico (a-moldar) ─► sa-refinar.moldar   (produto + Dev)\n │     .sabia/planejamento/epicos/EP-nn-<slug>/pitch.md, direto na base\n │     pitch: problema · limite de investimento · solução em traços · riscos · não objetivos · go/kill · Decisões\n │     ├─ kill (produto) ─► cancelado · obs 'não investir: <motivo>' · a pasta fica ─► fim\n │     └─ go (produto) ─► 'Aprovado: <usuário> · <data>' no pitch.md · em-especificacao\n │           ─► sa-prd.prd (Especificação): prd.md aprovado pelo produto\n │           ─► sa-refinar.fatiar   (especificador + Dev; fatos pela sa-pesquisar.pesquisar)\n │                 rascunho de fatias verticais P · M · G ─► produto aprova e ordena\n │                 ─► linhas FT-nnn 'aceita' · pai EP-nn · fichas ─► épico 'fatiado'\n │                 ─► oferece sa-refinar.detalhar\n ├─ fatia · bug (aceita) ─► sa-refinar.detalhar   (especificador + Dev [+ QA · UX])\n │     bug sem requisito tocado: o Dev sozinho; ficha curta: passos · atual · esperado · reproduzido?\n │     ficha: regras · cenários CT-nn · Artefatos afetados (<sigla>-<id> · inclui | altera | exclui · versão de referência)   ✚\n │     com ELM e artefatos afetados: sa-especificar.elm monta a pasta elm/ na pasta da spec, direto na base   ✚\n │        .kiro/specs/ft-<nnn>-<slug>/elm/ | openspec/changes/ft-<nnn>-<slug>/elm/\n │        modo da especificação: IA supervisionada · IA autopilot · manual (grava Especificação na ficha)\n │        sa-elm.baixar: original do DOORS ─► commit de base (original + versão de referência)\n │        IA: edita e o especificador aprova o arquivo inteiro (HF · UC · REG · MSG · EL · GL)\n │        manual: altera no DOORS ─► 'alterei' ─► sincroniza (elm/, versão de referência, delta, Publicado) ─► aprova\n │        requisito novo: EP03-01-<tipo>-<slug>.md · id provisório <sigla>-<EP ou FT>-nn\n │        artefato já em elm/ de outra fatia ─► esta fica bloqueada até a outra ficar cancelada ou publicada\n │     ├─ dúvida grande ─► spike (sa-pesquisar.pesquisar) · sa-especificar.prototipo\n │     │                  · sa-especificar.reuniao (ATA) ─► volta ao detalhar\n │     ├─ regra sem fonte ─► sa-entrevistar.entrevistar com o produto ─► volta ao detalhar\n │     │                    em aberto bloqueia só o que depende dela\n │     ├─ maior que G ────► vira épico (EP-nn a-moldar · FT 'cancelada · virou EP-nn') ─► sa-refinar.moldar\n │     ├─ muitas regras ──► sa-refinar.ajustar (dividir, 'veio de FT-nnn')\n │     └─ ok ─► DoR (checklist do template da ficha) ─► produto aprova: 'Aprovado: <usuário> · <data>'\n │              ─► 'pronta' (fluxo/gravar-na-base.md) ─► fim: entra na seleção (sa-planejamento.sprint)\n └─ sa-refinar.ajustar   até alguém puxar (status antes de em-andamento)\n       dividir · juntar ('veio de FT-nnn') · editar · cancelar fatia ou épico\n       ─► grava por fluxo/gravar-na-base.md ─► oferece seguir",
    "regras": [
     [
      "Quem refina",
@@ -139,7 +139,7 @@
     ],
     [
      "Pasta elm/",
-     "Só com ELM e só os artefatos brownfield alterados, um arquivo inteiro por artefato, montados pela sa-especificar.elm (chamada pela sa-refinar.detalhar). O commit de base guarda o original e a versão lida, e o git mostra a diferença. É a fonte da publicação. Modo da especificação (IA supervisionada · IA autopilot · manual), perguntado no detalhar e fixo até o fim: no manual, o especificador altera direto no DOORS e a skill sincroniza na volta; a sa-elm.publicar não reenvia esses artefatos."
+     "Só com ELM e só os artefatos brownfield alterados, um arquivo inteiro por artefato, montados pela sa-especificar.elm (chamada pela sa-refinar.detalhar). O commit de base guarda o original e a versão de referência, e o git mostra a diferença. É a fonte da publicação. Modo da especificação (IA supervisionada · IA autopilot · manual), perguntado no detalhar e fixo até o fim: no manual, o especificador altera direto no DOORS e a skill sincroniza na volta; a sa-elm.publicar não reenvia esses artefatos."
     ],
     [
      "Trava de artefato",
@@ -166,8 +166,8 @@
   {
    "k": "planejamento",
    "nome": "Planejamento",
-   "resumo": "Ciclo com políticas escritas no acordos.md, seleção pela vazão, puxada com sinal de WIP e inspeção diária pela sa-status. O Sabiá acrescenta as pendências de rastreio. A virada acontece no planejamento da sprint seguinte. O ELM fica fora do rito: é só utilitário.",
-   "arvore": "sa-planejamento.inicial   (o time)\n   equipe.json: usuario (GitLab) · desenvolvedor · especificador · produto · elm_login (opcional)\n   acordos.md: timebox · WIP por coluna (valores de status) · DoD · classes de serviço (crítica = expedite)\n               · folga % · Tamanhos · disjuntor · id no commit · CT no teste · SLE (opcional)\n   roadmap.md ─► oferece sa-planejamento.sprint\nsa-planejamento.sprint   (Devs + produto) · início do ciclo ou reabastecimento\n   ├─ virada: a sprint anterior tem itens em aberto ou em andamento? ─► migrar? (produto)\n   │     ├─ migra ─► linha no sprint-<nn>.md novo\n   │     └─ não ──► volta ao backlog (branch, ficha e pasta ficam)\n   │               com ELM: sa-elm.finalizar cancela a tarefa · o IB permanece\n   ├─ capacidade: vazão (concluídas por ciclo) − folga\n   ├─ seleção na ordem do backlog.md; item sem ficha pronta entra como especificação\n   └─ grava sprint-<nn>.md por fluxo/gravar-na-base.md\n         Item · Trabalho (especificação | desenvolvimento | atendimento) · Responsável · Tarefas\n         ELM, só a pedido: sa-elm.iteracao ─► oferece puxar o topo (sa-desenvolver.iniciar)\nexecução: puxa o topo com sinal de WIP   (membro do time)\n   ├─ desenvolvimento ─► sa-desenvolver.iniciar · atendimento ─► sa-atender.atender\n   │   especificação ─► sa-refinar.detalhar ou sa-prd.prd\n   └─ urgente ─► prioridade 'crítica': expedite pela política, sem aprovação\ninspeção diária ─ sa-status.painel (só leitura)\n   WIP por coluna · vazão · idade (hoje − iniciada_em) · lead time · SLE · folga × atendimento\n   └─ pendências de rastreio   ✚\n         Publicação: pendente · artefato de elm/ travado · CT sem teste · commit sem id (se o acordos.md pede)\nfim do timebox\n   ├─ sa-planejamento.review: stakeholders quando disponíveis; não trava\n   │     └─ regras candidatas (Lições das fatias e da Sustentação) ─► quais entram em Regras aprendidas?\n   │          grava no .sabia/sabia.md (regra · origem FT/AT · data) ─► oferece sa-planejamento.retrospectiva\n   └─ sa-planejamento.retrospectiva: melhorias ─► acordos.md ─► fim\n         itens em aberto ficam para a virada do próximo sa-planejamento.sprint",
+   "resumo": "Ciclo com políticas escritas no acordos.md, seleção pela vazão, puxada com sinal de WIP e daily pela sa-status. O Sabiá acrescenta as pendências de rastreio. A virada acontece no planejamento da sprint seguinte. O ELM fica fora do rito: é só utilitário.",
+   "arvore": "sa-planejamento.inicial   (o time)\n   equipe.json: usuario (GitLab) · desenvolvedor · especificador · produto · elm_login (opcional)\n   acordos.md: timebox · WIP por coluna (valores de status) · DoD · classes de serviço (crítica = expedite)\n               · folga % · Tamanhos · disjuntor · id no commit · CT no teste · SLE (opcional)\n   roadmap.md ─► oferece sa-planejamento.sprint\nsa-planejamento.sprint   (Devs + produto) · início do ciclo ou reabastecimento\n   ├─ virada: a sprint anterior tem itens em aberto ou em andamento? ─► migrar? (produto)\n   │     ├─ migra ─► linha no sprint-<nn>.md novo\n   │     └─ não ──► volta ao backlog (branch, ficha e pasta ficam)\n   │               com ELM: sa-elm.finalizar cancela a tarefa · o IB permanece\n   ├─ capacidade: vazão (concluídas por ciclo) − folga\n   ├─ seleção na ordem do backlog.md; item sem ficha pronta entra como especificação\n   └─ grava sprint-<nn>.md por fluxo/gravar-na-base.md\n         Item · Trabalho (especificação | desenvolvimento | atendimento) · Responsável · Tarefas\n         ELM, só a pedido: sa-elm.iteracao ─► oferece puxar o topo (sa-desenvolver.iniciar)\nexecução: puxa o topo com sinal de WIP   (membro do time)\n   ├─ desenvolvimento ─► sa-desenvolver.iniciar · atendimento ─► sa-atender.atender\n   │   especificação ─► sa-refinar.detalhar ou sa-prd.prd\n   └─ urgente ─► prioridade 'crítica': expedite pela política, sem aprovação\ndaily ─ sa-status.painel (só leitura)\n   WIP por coluna · vazão · idade (hoje − iniciada_em) · lead time · SLE · folga × atendimento\n   └─ pendências de rastreio   ✚\n         Publicação: pendente · artefato de elm/ travado · CT sem teste · commit sem id (se o acordos.md pede)\nfim do timebox\n   ├─ sa-planejamento.review: stakeholders quando disponíveis; não trava\n   │     └─ regras candidatas (Lições das fatias e da Sustentação) ─► quais entram em Regras aprendidas?\n   │          grava no .sabia/sabia.md (regra · origem FT/AT · data) ─► oferece sa-planejamento.retrospectiva\n   └─ sa-planejamento.retrospectiva: melhorias ─► acordos.md ─► fim\n         itens em aberto ficam para a virada do próximo sa-planejamento.sprint",
    "regras": [
     [
      "Políticas",
@@ -215,11 +215,11 @@
    "k": "especificacao",
    "nome": "Especificação",
    "resumo": "O épico ganha o PRD (sa-prd.prd) depois do go. A fatia é especificada na ficha e na pasta elm/ do refinamento, e o texto aprovado é copiado para o delta da spec no desenvolvimento. O delta sempre traz o texto completo dos requisitos tocados, com ou sem ELM. Depois do merge, o archive fecha a spec e oferece a publicação no DOORS.",
-   "arvore": "épico (go no pitch.md) ─► sa-prd.prd   (especificador escreve · produto aprova)\n   ler o existente só no trecho tocado: specs vigentes ─► bundle local ─► ELM ao vivo (leitura)\n   esclarecer: sa-entrevistar.entrevistar (até 5 perguntas por rodada, com recomendação)\n      regra de negócio: vale a decisão de uma pessoa, com quem e quando; o agente nunca inventa\n   prd.md: objetivos · métricas · requisitos com id · não objetivos · Decisões\n      id: <sigla>-<id do ELM> no existente · <sigla>-<EP ou FT>-nn provisório no novo   ✚\n      alteração: inclui · altera · exclui, por requisito, com a versão lida   ✚\n   validar: sabia validar-spec (pendente; avisa, não trava)\n   produto aprova: 'Aprovado: <usuário> · <data>' no prd.md, direto na base ─► oferece sa-refinar.fatiar\n   mudança depois da aprovação: sa-prd.mudanca no mesmo prd.md (nova versão e nova aprovação)\n      ─► sa-refinar.ajustar nas fatias atingidas\nfatia ─► ficha e elm/ no sa-refinar.detalhar (Refinamento) · modo: IA supervisionada · IA autopilot · manual (direto no DOORS)\ndesenvolvimento ─► sa-plano.plano copia o texto aprovado para o delta, sem reescrever\n   delta = texto completo de cada requisito tocado, como se não houvesse ELM\n      OpenSpec: specs/<cap>/spec.md com ADDED · MODIFIED · REMOVED\n      Kiro: requirements.md ou bugfix.md com o bloco completo de cada requisito\n   texto precisa mudar ─► Em aberto ao especificador (com ELM, sa-especificar.elm) ─► sa-plano.replanejar recopia\n   DOORS mudou desde o commit de base ─► especificador decide: sa-elm.baixar de novo e mesclar\ndepois do merge ─► sa-especificar.archive   (chamada pela sa-desenvolver.encerrar)\n   ├─ trivial ou sem delta ─► nada a arquivar ─► devolve\n   ├─ sem ELM ─► OpenSpec: openspec archive <ft> --yes (funde na spec viva)\n   │            Kiro: o vigente são as specs em .kiro/specs/ ─► devolve\n   └─ com ELM ─► OpenSpec: openspec archive <ft> --skip-specs --yes · 'publicar no DOORS?'\n         ├─ especificador ─► sa-elm.publicar ─► 'Publicação: publicada <data>' no status.md arquivado\n         │     confere a versão de cada artefato (mudou ─► avisa e pula) · cria os novos\n         │     artefato pulado ─► sa-especificar.elm refaz a mescla (fatia concluida · 'Publicação: pendente') ─► publica de novo\n         │     renomeia <id do ELM>-<tipo>-<slug>.md e troca o id provisório no PRD, nas fichas e no delta\n         │     ET as-built, onde o projeto mantém ET\n         └─ sem a booleana ─► 'Publicação: pendente' ─► sa-status.painel mostra ─► especificador roda sa-elm.publicar\nferramentas a pedido: sa-especificar.prototipo (vale com a aprovação do cliente) · sa-especificar.reuniao (ATA opcional)",
+   "arvore": "épico (go no pitch.md) ─► sa-prd.prd   (especificador escreve · produto aprova)\n   ler o existente só no trecho tocado: specs vigentes ─► bundle local ─► ELM ao vivo (leitura)\n   esclarecer: sa-entrevistar.entrevistar (até 5 perguntas por rodada, com recomendação)\n      regra de negócio: vale a decisão de uma pessoa, com quem e quando; o agente nunca inventa\n   prd.md: objetivos · métricas · requisitos com id · não objetivos · Decisões\n      id: <sigla>-<id do ELM> no existente · <sigla>-<EP ou FT>-nn provisório no novo   ✚\n      alteração: inclui · altera · exclui, por requisito, com a versão de referência   ✚\n   validar: sabia validar-spec (pendente; avisa, não trava)\n   produto aprova: 'Aprovado: <usuário> · <data>' no prd.md, direto na base ─► oferece sa-refinar.fatiar\n   mudança depois da aprovação: sa-prd.mudanca no mesmo prd.md (nova versão e nova aprovação)\n      ─► sa-refinar.ajustar nas fatias atingidas\nfatia ─► ficha e elm/ no sa-refinar.detalhar (Refinamento) · modo: IA supervisionada · IA autopilot · manual (direto no DOORS)\ndesenvolvimento ─► sa-plano.plano copia o texto aprovado para o delta, sem reescrever\n   delta = texto completo de cada requisito tocado, como se não houvesse ELM\n      OpenSpec: specs/<cap>/spec.md com ADDED · MODIFIED · REMOVED\n      Kiro: requirements.md ou bugfix.md com o bloco completo de cada requisito\n   texto precisa mudar ─► Em aberto ao especificador (com ELM, sa-especificar.elm) ─► sa-plano.replanejar recopia\n   DOORS mudou desde o commit de base ─► especificador decide: sa-elm.baixar de novo e mesclar\ndepois do merge ─► sa-especificar.archive   (chamada pela sa-desenvolver.encerrar)\n   ├─ trivial ou sem delta ─► nada a arquivar ─► devolve\n   ├─ sem ELM ─► OpenSpec: openspec archive <ft> --yes (funde na especificação vigente)\n   │            Kiro: o vigente são as specs em .kiro/specs/ ─► devolve\n   └─ com ELM ─► OpenSpec: openspec archive <ft> --skip-specs --yes · 'publicar no DOORS?'\n         ├─ especificador ─► sa-elm.publicar ─► 'Publicação: publicada <data>' no status.md arquivado\n         │     confere a versão de cada artefato (mudou ─► avisa e pula) · cria os novos\n         │     artefato pulado ─► sa-especificar.elm refaz a mescla (fatia concluida · 'Publicação: pendente') ─► publica de novo\n         │     renomeia <id do ELM>-<tipo>-<slug>.md e troca o id provisório no PRD, nas fichas e no delta\n         │     ET as-built, onde o projeto mantém ET\n         └─ sem a booleana ─► 'Publicação: pendente' ─► sa-status.painel mostra ─► especificador roda sa-elm.publicar\nferramentas a pedido: sa-especificar.prototipo (vale com a aprovação do cliente) · sa-especificar.reuniao (ATA opcional)",
    "regras": [
     [
      "Onde mora o vigente",
-     "Com ELM, no DOORS. Sem ELM, na spec viva do repositório (OpenSpec: openspec/specs; Kiro: .kiro/specs/)."
+     "Com ELM, no DOORS. Sem ELM, na especificação vigente do repositório (OpenSpec: openspec/specs; Kiro: .kiro/specs/)."
     ],
     [
      "Formato da spec",
@@ -243,7 +243,7 @@
     ],
     [
      "Modo da especificação",
-     "Só com ELM: IA supervisionada · IA autopilot · manual, na ficha (Especificação), fixo até o fim e independente do modo da codificação. Manual: o especificador altera no DOORS; na volta ('alterei'), a skill baixa para o elm/ (diff contra o commit de base), atualiza a versão lida, grava o delta completo e marca '**Publicado:** manual'. Sem ELM, não há pergunta."
+     "Só com ELM: IA supervisionada · IA autopilot · manual, na ficha (Especificação), fixo até o fim e independente do modo da codificação. Manual: o especificador altera no DOORS; na volta ('alterei'), a skill baixa para o elm/ (diff contra o commit de base), atualiza a versão de referência, grava o delta completo e marca '**Publicado:** manual'. Sem ELM, não há pergunta."
     ],
     [
      "Publicação",
@@ -475,12 +475,12 @@
   {
    "skill": "sa-refinar",
    "destino_skill": "nova",
-   "papel": "O refinamento do backlog. Tem quatro fluxos: moldar o épico (pitch do Shape Up e go/kill), detalhar a fatia ou o bug com os três amigos (regras, cenários CT-nn, artefatos afetados e a pasta elm/), fatiar o PRD aprovado e ajustar as fatias até alguém puxar. Qualquer pessoa conduz. Quem tem produto decide o go/kill, ordena e aprova pitch, ficha e fatias. Quem tem especificador aprova os arquivos de elm/. Tudo vai direto na base pela fluxo/gravar-na-base.md. Absorve a sa-fatiar. O PRD fica na sa-prd.",
+   "papel": "O refinamento do backlog. Tem quatro fluxos: moldar o épico (pitch do Shape Up e go/kill), detalhar a fatia ou o bug com o refinamento conjunto (regras, cenários CT-nn, artefatos afetados e a pasta elm/), fatiar o PRD aprovado e ajustar as fatias até alguém puxar. Qualquer pessoa conduz. Quem tem produto decide o go/kill, ordena e aprova pitch, ficha e fatias. Quem tem especificador aprova os arquivos de elm/. Tudo vai direto na base pela fluxo/gravar-na-base.md. Absorve a sa-fatiar. O PRD fica na sa-prd.",
    "fluxos": [
     {
      "fluxo": "moldar",
      "destino": "novo",
-     "resumo": "Épico a-moldar → pitch.md de uma página (problema · apetite · solução em traços · riscos · não objetivos) → go/kill de quem tem produto → go: em-especificacao e 'seguir para o PRD?' (sa-prd.prd); kill: cancelado, pasta mantida.",
+     "resumo": "Épico a-moldar → pitch.md de uma página (problema · limite de investimento · solução em traços · riscos · não objetivos) → go/kill de quem tem produto → go: em-especificacao e 'seguir para o PRD?' (sa-prd.prd); kill: cancelado, pasta mantida.",
      "passos": [
       {
        "passo": "entrada",
@@ -489,7 +489,7 @@
       },
       {
        "passo": "pitch",
-       "texto": "Escreve .sabia/planejamento/epicos/EP-nn-<slug>/pitch.md, pelo padrão sa-refinar/pitch.md. A pasta nasce aqui. No topo, a linha 'Aprovado: —'. Seções, em uma página: Problema · Apetite (<n> semanas) · Solução em traços · Riscos · Não objetivos · Decisões (as tomadas antes do go, em tabela D-nn | Decisão | Quem | Quando | Fonte) · Em aberto (pergunta · para quem · bloqueia) · Decisão (vazia até o passo decisao). As perguntas vão pela sa-entrevistar.entrevistar (até 5 por rodada, cada uma com recomendação), que busca os fatos pela sa-pesquisar. Vigente: specs arquivadas → bundle (docs/elm/<pa>/). Sem bundle, oferece a sa-elm.baixar. Bundle desatualizado (sincronizado_em anterior à última 'Publicação: publicada'): mostra a data e pergunta se baixa. Dúvida que só o cliente resolve: oferece a sa-especificar.prototipo, que devolve aqui. Regra sem fonte fica em aberto (trava decisao-da-pessoa). Ao fim de cada sessão, grava o pitch.md pela fluxo/gravar-na-base.md ('EP-nn pitch').",
+       "texto": "Escreve .sabia/planejamento/epicos/EP-nn-<slug>/pitch.md, pelo padrão sa-refinar/pitch.md. A pasta nasce aqui. No topo, a linha 'Aprovado: —'. Seções, em uma página: Problema · Limite de investimento (<n> semanas) · Solução em traços · Riscos · Não objetivos · Decisões (as tomadas antes do go, em tabela D-nn | Decisão | Quem | Quando | Fonte) · Em aberto (pergunta · para quem · bloqueia) · Decisão (vazia até o passo decisao). As perguntas vão pela sa-entrevistar.entrevistar (até 5 por rodada, cada uma com recomendação), que busca os fatos pela sa-pesquisar. Vigente: specs arquivadas → bundle (docs/elm/<pa>/). Sem bundle, oferece a sa-elm.baixar. Bundle desatualizado (sincronizado_em anterior à última 'Publicação: publicada'): mostra a data e pergunta se baixa. Dúvida que só o cliente resolve: oferece a sa-especificar.prototipo, que devolve aqui. Regra sem fonte fica em aberto (trava decisao-da-pessoa). Ao fim de cada sessão, grava o pitch.md pela fluxo/gravar-na-base.md ('EP-nn pitch').",
        "destino": "novo"
       },
       {
@@ -507,7 +507,7 @@
     {
      "fluxo": "detalhar",
      "destino": "novo",
-     "resumo": "Três amigos (especificador ou P.O. com o Dev, e QA ou UX se houver), pouco antes de alguém puxar: regras e exemplos viram a ficha com cenários CT-nn, os artefatos afetados e, com ELM, a pasta elm/ dos artefatos tocados, no modo da especificação escolhido (IA supervisionada · IA autopilot · manual no DOORS). Com a DoR completa, a linha vai para pronta. Curto no bug e no P.",
+     "resumo": "Refinamento conjunto (especificador ou P.O. com o Dev, e QA ou UX se houver), pouco antes de alguém puxar: regras e exemplos viram a ficha com cenários CT-nn, os artefatos afetados e, com ELM, a pasta elm/ dos artefatos tocados, no modo da especificação escolhido (IA supervisionada · IA autopilot · manual no DOORS). Com a DoR completa, a linha vai para pronta. Curto no bug e no P.",
      "passos": [
       {
        "passo": "entrada",
@@ -526,7 +526,7 @@
       },
       {
        "passo": "artefatos",
-       "texto": "Lista os requisitos tocados, um por linha: '<sigla>-<id> · inclui | altera | exclui · versão lida <AAAA-MM-DDTHH:MM>'. Requisito existente: <sigla>-<id do ELM>; a versão é o modificado_em do DOORS no bundle. Requisito novo: id provisório <sigla>-<EPnn | FTnnn>-nn (o do PRD na fatia de épico; o da própria fatia no item avulso), sem versão. Sem requisito tocado: 'nenhum requisito'. Sem ELM, o <sigla>-<EP | FT>-nn é o id definitivo e não há versão lida. Vigente: specs arquivadas → bundle. Sem bundle, oferece a sa-elm.baixar. Bundle desatualizado (sincronizado_em anterior à última 'Publicação: publicada'): mostra a data e pergunta se baixa.",
+       "texto": "Lista os requisitos tocados, um por linha: '<sigla>-<id> · inclui | altera | exclui · versão de referência <AAAA-MM-DDTHH:MM>'. Requisito existente: <sigla>-<id do ELM>; a versão é o modificado_em do DOORS no bundle. Requisito novo: id provisório <sigla>-<EPnn | FTnnn>-nn (o do PRD na fatia de épico; o da própria fatia no item avulso), sem versão. Sem requisito tocado: 'nenhum requisito'. Sem ELM, o <sigla>-<EP | FT>-nn é o id definitivo e não há versão de referência. Vigente: specs arquivadas → bundle. Sem bundle, oferece a sa-elm.baixar. Bundle desatualizado (sincronizado_em anterior à última 'Publicação: publicada'): mostra a data e pergunta se baixa.",
        "destino": "novo"
       },
       {
@@ -573,7 +573,7 @@
       },
       {
        "passo": "gravar",
-       "texto": "Grava pela fluxo/gravar-na-base.md, num commit ('backlog: fatiamento EP-nn'). Cada fatia ganha uma linha logo abaixo da do épico, na ordem do P.O.: id FT-nnn (maior da série + 1, lido depois do pull), tipo fatia, status aceita, aceita_em, tamanho, pai EP-nn, relator do épico, ib vazia. Cada fatia ganha também a ficha (padrão sa-refinar/ficha.md), com Objetivo, artefatos afetados (sem versão lida, que entra no detalhar), os cenários do PRD que ela cobre (os CT-nn se numeram no detalhar) e 'Aprovado: <usuário> · <data>' do P.O. O épico vai para fatiado.",
+       "texto": "Grava pela fluxo/gravar-na-base.md, num commit ('backlog: fatiamento EP-nn'). Cada fatia ganha uma linha logo abaixo da do épico, na ordem do P.O.: id FT-nnn (maior da série + 1, lido depois do pull), tipo fatia, status aceita, aceita_em, tamanho, pai EP-nn, relator do épico, ib vazia. Cada fatia ganha também a ficha (padrão sa-refinar/ficha.md), com Objetivo, artefatos afetados (sem versão de referência, que entra no detalhar), os cenários do PRD que ela cobre (os CT-nn se numeram no detalhar) e 'Aprovado: <usuário> · <data>' do P.O. O épico vai para fatiado.",
        "destino": "muda"
       },
       {
@@ -820,7 +820,7 @@
     {
      "fluxo": "elm",
      "destino": "muda",
-     "resumo": "Só com ELM. Prepara o texto oficial que a fatia muda. Para cada artefato afetado (HF, UC, REG, MSG, EL, GL), baixa o original do DOORS pela sa-elm, grava um commit de base (original + versão lida) na pasta elm/ da spec e, pelo modo da ficha (Especificação), edita o arquivo inteiro (IA supervisionada ou IA autopilot) ou, no manual, sincroniza o que o especificador alterou direto no DOORS. O especificador aprova. O git mostra a diferença. É a fonte da publicação e o texto que a sa-plano copia para o delta. Substitui a sa-especificar.fatia da 2.0: sem MR, sem revisão P e sem publicar (no manual, o DOORS já tem o texto).",
+     "resumo": "Só com ELM. Prepara o texto oficial que a fatia muda. Para cada artefato afetado (HF, UC, REG, MSG, EL, GL), baixa o original do DOORS pela sa-elm, grava um commit de base (original + versão de referência) na pasta elm/ da spec e, pelo modo da ficha (Especificação), edita o arquivo inteiro (IA supervisionada ou IA autopilot) ou, no manual, sincroniza o que o especificador alterou direto no DOORS. O especificador aprova. O git mostra a diferença. É a fonte da publicação e o texto que a sa-plano copia para o delta. Substitui a sa-especificar.fatia da 2.0: sem MR, sem revisão P e sem publicar (no manual, o DOORS já tem o texto).",
      "passos": [
       {
        "passo": "entrada",
@@ -844,12 +844,12 @@
       },
       {
        "passo": "baixar",
-       "texto": "Altera e exclui: pede à sa-elm.baixar (modo artefato) o texto inteiro, o título e o modificado_em pelo id e grava elm/<id do ELM>-<tipo>-<slug>.md com o frontmatter (type, title do DOORS, status: draft, sources com o próprio requisito) e o corpo. Inclui: cria EP<nn>-<nn>-<tipo>-<slug>.md ou FT<nnn>-<nn>-<tipo>-<slug>.md (ex.: EP03-01-REG-limite-saque.md), com o frontmatter em status: draft e o id provisório <sigla>-EP<nn>-<nn> ou <sigla>-FT<nnn>-<nn> (ex.: REG-EP03-01). Na fatia de épico, o id é o mesmo do prd.md. A versão lida também vai à linha dos artefatos afetados da ficha.",
+       "texto": "Altera e exclui: pede à sa-elm.baixar (modo artefato) o texto inteiro, o título e o modificado_em pelo id e grava elm/<id do ELM>-<tipo>-<slug>.md com o frontmatter (type, title do DOORS, status: draft, sources com o próprio requisito) e o corpo. Inclui: cria EP<nn>-<nn>-<tipo>-<slug>.md ou FT<nnn>-<nn>-<tipo>-<slug>.md (ex.: EP03-01-REG-limite-saque.md), com o frontmatter em status: draft e o id provisório <sigla>-EP<nn>-<nn> ou <sigla>-FT<nnn>-<nn> (ex.: REG-EP03-01). Na fatia de épico, o id é o mesmo do prd.md. A versão de referência também vai à linha dos artefatos afetados da ficha.",
        "destino": "novo"
       },
       {
        "passo": "base",
-       "texto": "Grava um commit só com os originais baixados, antes de qualquer edição, pelo fluxo/gravar-na-base.md ('FT-nnn elm: original <ids>'). O git mostra a diferença contra esse commit, e a versão lida é conferida contra ele. O arquivo novo (inclui) não tem commit de base.",
+       "texto": "Grava um commit só com os originais baixados, antes de qualquer edição, pelo fluxo/gravar-na-base.md ('FT-nnn elm: original <ids>'). O git mostra a diferença contra esse commit, e a versão de referência é conferida contra ele. O arquivo novo (inclui) não tem commit de base.",
        "destino": "novo"
       },
       {
@@ -859,12 +859,12 @@
       },
       {
        "passo": "sincronizar",
-       "texto": "Só no manual, na volta ('alterei', nesta ou em outra sessão). Para cada artefato afetado, pede à sa-elm.baixar (modo artefato) o texto atual e o modificado_em e regrava o arquivo de elm/: o diff contra o commit de base mostra o que mudou. Altera: atualiza a Versão lida no arquivo e na linha dos artefatos afetados. Inclui: pede o id do ELM que o especificador criou, baixa, renomeia para <id do ELM>-<tipo>-<slug>.md e troca o id provisório nos artefatos afetados e no prd.md do épico pai. Exclui: pergunta se foi para a lixeira. Grava o delta com o texto completo na pasta da spec (OpenSpec: specs/<cap>/spec.md com ADDED · MODIFIED · REMOVED; Kiro: requirements.md, bugfix.md no bug) e a linha '**Publicado:** manual <AAAA-MM-DD>' em cada arquivo, para a sa-elm.publicar não reenviar. Commit pelo fluxo/gravar-na-base.md ('FT-nnn elm: sincroniza <ids>') e segue para o aprovar; o conferir não roda, porque o arquivo já é o DOORS.",
+       "texto": "Só no manual, na volta ('alterei', nesta ou em outra sessão). Para cada artefato afetado, pede à sa-elm.baixar (modo artefato) o texto atual e o modificado_em e regrava o arquivo de elm/: o diff contra o commit de base mostra o que mudou. Altera: atualiza a Versão de referência no arquivo e na linha dos artefatos afetados. Inclui: pede o id do ELM que o especificador criou, baixa, renomeia para <id do ELM>-<tipo>-<slug>.md e troca o id provisório nos artefatos afetados e no prd.md do épico pai. Exclui: pergunta se foi para a lixeira. Grava o delta com o texto completo na pasta da spec (OpenSpec: specs/<cap>/spec.md com ADDED · MODIFIED · REMOVED; Kiro: requirements.md, bugfix.md no bug) e a linha '**Publicado:** manual <AAAA-MM-DD>' em cada arquivo, para a sa-elm.publicar não reenviar. Commit pelo fluxo/gravar-na-base.md ('FT-nnn elm: sincroniza <ids>') e segue para o aprovar; o conferir não roda, porque o arquivo já é o DOORS.",
        "destino": "novo"
       },
       {
        "passo": "conferir",
-       "texto": "Antes de aprovar e em toda retomada (menos no arquivo com '**Publicado:** manual'), pede à sa-elm.baixar a versão atual de cada altera e exclui, sem gravar, e compara com a Versão lida do commit de base. Se mudou, mostra o que mudou no DOORS, e o especificador escolhe. Mesclar: novo commit de base com o original atual e a nova Versão lida, com a edição reaplicada por cima. Seguir: a sa-elm.publicar vai avisar e pular aquele artefato.",
+       "texto": "Antes de aprovar e em toda retomada (menos no arquivo com '**Publicado:** manual'), pede à sa-elm.baixar a versão atual de cada altera e exclui, sem gravar, e compara com a Versão de referência do commit de base. Se mudou, mostra o que mudou no DOORS, e o especificador escolhe. Mesclar: novo commit de base com o original atual e a nova Versão de referência, com a edição reaplicada por cima. Seguir: a sa-elm.publicar vai avisar e pular aquele artefato.",
        "destino": "novo"
       },
       {
@@ -955,7 +955,7 @@
       },
       {
        "passo": "arquivar",
-       "texto": "Segue o fluxo/gravar-na-base.md: base atualizada → comando → commit 'FT-nnn archive' → push com o sim. OpenSpec sem ELM: openspec archive ft-<nnn>-<slug> --yes, que funde o delta na spec viva. OpenSpec com ELM: openspec archive ft-<nnn>-<slug> --skip-specs --yes, porque a spec viva é o DOORS. Kiro: a pasta fica em .kiro/specs/, que é o vigente, e nada se move.",
+       "texto": "Segue o fluxo/gravar-na-base.md: base atualizada → comando → commit 'FT-nnn archive' → push com o sim. OpenSpec sem ELM: openspec archive ft-<nnn>-<slug> --yes, que funde o delta na especificação vigente. OpenSpec com ELM: openspec archive ft-<nnn>-<slug> --skip-specs --yes, porque a especificação vigente é o DOORS. Kiro: a pasta fica em .kiro/specs/, que é o vigente, e nada se move.",
        "destino": "novo"
       },
       {
@@ -994,7 +994,7 @@
       },
       {
        "passo": "abrir",
-       "texto": "Sem prd.md, cria .sabia/planejamento/epicos/EP-nn-<slug>/prd.md ao lado do pitch.md, pelo padrão sa-prd/prd.md, com '**Aprovado:** —' no topo. Seções: Problema · Objetivos e métricas · Atores · Requisitos · Não objetivos · Decisões · Em aberto · Mudanças (com a 1.0). Problema, apetite e não objetivos partem do pitch.md. As decisões de antes do go ficam no pitch.md, e o PRD as cita.",
+       "texto": "Sem prd.md, cria .sabia/planejamento/epicos/EP-nn-<slug>/prd.md ao lado do pitch.md, pelo padrão sa-prd/prd.md, com '**Aprovado:** —' no topo. Seções: Problema · Objetivos e métricas · Atores · Requisitos · Não objetivos · Decisões · Em aberto · Mudanças (com a 1.0). Problema, limite de investimento e não objetivos partem do pitch.md. As decisões de antes do go ficam no pitch.md, e o PRD as cita.",
        "destino": "novo"
       },
       {
@@ -1009,7 +1009,7 @@
       },
       {
        "passo": "similares",
-       "texto": "Para cada requisito proposto, o vigente da busca define a ação. Inclui: requisito novo, com id provisório <sigla>-EP<nn>-<nn> (ex.: REG-EP03-01). Altera ou exclui: requisito existente, com <sigla>-<id do ELM> (sem ELM, o id da spec viva). Registra o impacto de cada altera e exclui. O existente só reutilizado é citado pelo id, sem ação. A versão lida fica para os artefatos afetados da ficha.",
+       "texto": "Para cada requisito proposto, o vigente da busca define a ação. Inclui: requisito novo, com id provisório <sigla>-EP<nn>-<nn> (ex.: REG-EP03-01). Altera ou exclui: requisito existente, com <sigla>-<id do ELM> (sem ELM, o id da especificação vigente). Registra o impacto de cada altera e exclui. O existente só reutilizado é citado pelo id, sem ação. A versão de referência fica para os artefatos afetados da ficha.",
        "destino": "muda"
       },
       {
@@ -1348,7 +1348,7 @@
       },
       {
        "passo": "archive",
-       "texto": "Rápida e completo: chama sa-especificar.archive na base, e ela volta para cá. Sem ELM: no OpenSpec, 'openspec archive <ft> --yes' funde o delta na spec viva; no Kiro, as specs em .kiro/specs/ continuam sendo o vigente. Com ELM: no OpenSpec, 'openspec archive <ft> --skip-specs --yes', e depois a pergunta 'publicar no DOORS?'. Quem tem a booleana especificador roda sa-elm.publicar; sem ela, o archive grava 'Publicação: pendente' no status.md arquivado. Trivial: não há spec, nada a arquivar.",
+       "texto": "Rápida e completo: chama sa-especificar.archive na base, e ela volta para cá. Sem ELM: no OpenSpec, 'openspec archive <ft> --yes' funde o delta na especificação vigente; no Kiro, as specs em .kiro/specs/ continuam sendo o vigente. Com ELM: no OpenSpec, 'openspec archive <ft> --skip-specs --yes', e depois a pergunta 'publicar no DOORS?'. Quem tem a booleana especificador roda sa-elm.publicar; sem ela, o archive grava 'Publicação: pendente' no status.md arquivado. Trivial: não há spec, nada a arquivar.",
        "destino": "muda"
       },
       {
@@ -1382,7 +1382,7 @@
       },
       {
        "passo": "ler",
-       "texto": "Lê o status.md (rota e autonomia), a ficha (regras, cenários CT-nn, artefatos afetados com a versão lida, linha Aprovado), o elm/ da pasta (com ELM), o prd.md do épico pai, o Projeto e as Regras aprendidas do .sabia/sabia.md e o steering de tecnologia e estrutura. O manual segue as regras da IA supervisionada: a pessoa está presente.",
+       "texto": "Lê o status.md (rota e autonomia), a ficha (regras, cenários CT-nn, artefatos afetados com a versão de referência, linha Aprovado), o elm/ da pasta (com ELM), o prd.md do épico pai, o Projeto e as Regras aprendidas do .sabia/sabia.md e o steering de tecnologia e estrutura. O manual segue as regras da IA supervisionada: a pessoa está presente.",
        "destino": "muda"
       },
       {
@@ -1402,12 +1402,12 @@
       },
       {
        "passo": "delta",
-       "texto": "Copia para o delta, sem reescrever, o texto completo de cada requisito tocado, com <sigla>-<id>, inclui · altera · exclui e a versão lida. OpenSpec: specs/<cap>/spec.md com ADDED (inclui), MODIFIED (altera) e REMOVED (exclui). Kiro: requirements.md (bugfix.md no bug da rápida) com o bloco completo de cada requisito. A fonte, com ELM, é o arquivo aprovado em elm/; sem ELM, é o vigente da spec viva com as regras aprovadas da ficha, sem mudar o sentido. Se o delta já existe (sincronização da especificação manual), mantém o texto e só o põe no arquivo da rota (Kiro: bugfix.md na rápida do bug, requirements.md nas outras). Se quem desenvolve acha que o texto precisa mudar, registra Em aberto ao especificador e não edita.",
+       "texto": "Copia para o delta, sem reescrever, o texto completo de cada requisito tocado, com <sigla>-<id>, inclui · altera · exclui e a versão de referência. OpenSpec: specs/<cap>/spec.md com ADDED (inclui), MODIFIED (altera) e REMOVED (exclui). Kiro: requirements.md (bugfix.md no bug da rápida) com o bloco completo de cada requisito. A fonte, com ELM, é o arquivo aprovado em elm/; sem ELM, é o vigente da especificação vigente com as regras aprovadas da ficha, sem mudar o sentido. Se o delta já existe (sincronização da especificação manual), mantém o texto e só o põe no arquivo da rota (Kiro: bugfix.md na rápida do bug, requirements.md nas outras). Se quem desenvolve acha que o texto precisa mudar, registra Em aberto ao especificador e não edita.",
        "destino": "novo"
       },
       {
        "passo": "escrever",
-       "texto": "Escreve pela matriz rota × formato (formato_spec do agentes.json). Rápida fatia: no Kiro, Quick Spec (requirements.md, design.md e tasks.md numa passada, sem portões); no OpenSpec, proposal.md + delta + tasks.md. Rápida bug: no Kiro, Bugfix Spec (bugfix.md, design.md, tasks.md); no OpenSpec, proposal.md + delta MODIFIED + tasks.md. Completo: no Kiro, requirements.md → design.md → tasks.md; no OpenSpec, proposal.md + delta + design.md + tasks.md; nos dois, uma parte por vez, com o passo revisar entre elas. proposal.md: porquê · o que muda · rota · link da ficha. design.md no Kiro com os títulos exigidos (Overview · Architecture · Components and Interfaces · Data Models · Error Handling · Testing Strategy) mais Decisões técnicas; no OpenSpec, Context · Goals/Non-Goals · Decisions · Risks/Trade-offs. Nos dois, um Contrato de pronto (Cenário CT-nn · Como executar · Esperado · Onde verificar). tasks.md: uma tarefa por comportamento, teste primeiro, comando de pronto e CT-nn; no Kiro com _Requirements: N.M_, no OpenSpec com '- [ ] 1.1'. Refatoração preparatória entra como tarefa. A última tarefa é a suíte completa. Aplica as Regras aprendidas. Se o plano mostra que a fatia passa de G, para e oferece 'vira épico', como no passo rota e autonomia da sa-desenvolver.iniciar.",
+       "texto": "Escreve pela matriz rota × formato (formato_spec do agentes.json). Rápida fatia: no Kiro, Quick Spec (requirements.md, design.md e tasks.md numa passada, sem portões); no OpenSpec, proposal.md + delta + tasks.md. Rápida bug: no Kiro, Bugfix Spec (bugfix.md, design.md, tasks.md); no OpenSpec, proposal.md + delta MODIFIED + tasks.md. Completo: no Kiro, requirements.md → design.md → tasks.md; no OpenSpec, proposal.md + delta + design.md + tasks.md; nos dois, uma parte por vez, com o passo revisar entre elas. proposal.md: porquê · o que muda · rota · link da ficha. design.md no Kiro com os títulos exigidos (Overview · Architecture · Components and Interfaces · Data Models · Error Handling · Testing Strategy) mais Decisões técnicas; no OpenSpec, Context · Goals/Non-Goals · Decisions · Risks/Trade-offs. Nos dois, os critérios de pronto (Cenário CT-nn · Como executar · Esperado · Onde verificar). tasks.md: uma tarefa por comportamento, teste primeiro, comando de pronto e CT-nn; no Kiro com _Requirements: N.M_, no OpenSpec com '- [ ] 1.1'. Refatoração preparatória entra como tarefa. A última tarefa é a suíte completa. Aplica as Regras aprendidas. Se o plano mostra que a fatia passa de G, para e oferece 'vira épico', como no passo rota e autonomia da sa-desenvolver.iniciar.",
        "destino": "muda"
       },
       {
@@ -1493,7 +1493,7 @@
   {
    "skill": "sa-revisar",
    "destino_skill": "muda",
-   "papel": "Revisão de plano e de código. O fluxo revisar é o revisor independente. Roda no subagente sa-revisor, com contexto limpo e só leitura, e usa as rubricas do toolkit com a rubrica L (plano da fatia) ou C (código, nos eixos spec · padrões · segurança). Quem chama: sa-plano.plano, sa-plano.replanejar, sa-desenvolver.codificar e sa-revisar.mr. O fluxo mr é a revisão humana oficial do MR de código, feita por qualquer desenvolvedor ≠ autor, em linha no sa-desenvolvedor. Não há rubrica P nem MR de documento: pitch, PRD e ficha vão direto na base, com a aprovação gravada no próprio documento.",
+   "papel": "Revisão de plano e de código. O fluxo revisar é o revisor independente. Roda no subagente sa-revisor, com contexto isolado e só leitura, e usa as rubricas do toolkit com a rubrica L (plano da fatia) ou C (código, nos eixos spec · padrões · segurança). Quem chama: sa-plano.plano, sa-plano.replanejar, sa-desenvolver.codificar e sa-revisar.mr. O fluxo mr é a revisão humana oficial do MR de código, feita por qualquer desenvolvedor ≠ autor, em linha no sa-desenvolvedor. Não há rubrica P nem MR de documento: pitch, PRD e ficha vão direto na base, com a aprovação gravada no próprio documento.",
    "fluxos": [
     {
      "fluxo": "revisar",
@@ -1569,7 +1569,7 @@
   {
    "skill": "sa-verificar",
    "destino_skill": "muda",
-   "papel": "Aceite contra a spec. O fluxo verificar é o verificador, o subagente sa-verificador, com contexto limpo e o texto verificacao do toolkit. Ele exercita a aplicação direto (curl, navegador, job) contra os cenários CT-nn, devolve o bloco 🔎 a quem chamou e grava o CT.csv, do qual é o único escritor. Quem chama: sa-desenvolver.codificar, antes do MR, e sa-verificar.revisao-humana. O fluxo revisao-humana é a revisão humana, feita só quando o risco pede, por qualquer pessoa, sobre o MR aberto. A asserção durável são os testes automatizados no CI. Não existem http.sh, massa/, arquivo de requisições nem verificacao.md: a prova vai no MR.",
+   "papel": "Aceite contra a spec. O fluxo verificar é o verificador, o subagente sa-verificador, com contexto isolado e o texto verificacao do toolkit. Ele exercita a aplicação direto (curl, navegador, job) contra os cenários CT-nn, devolve o bloco 🔎 a quem chamou e grava o CT.csv, do qual é o único escritor. Quem chama: sa-desenvolver.codificar, antes do MR, e sa-verificar.revisao-humana. O fluxo revisao-humana é a revisão humana, feita só quando o risco pede, por qualquer pessoa, sobre o MR aberto. A asserção durável são os testes automatizados no CI. Não existem http.sh, massa/, arquivo de requisições nem verificacao.md: a prova vai no MR.",
    "fluxos": [
     {
      "fluxo": "verificar",
@@ -1679,7 +1679,7 @@
       },
       {
        "passo": "executar",
-       "texto": "A pessoa faz o trabalho, e a IA ajuda quando ela pede. Regras vigentes: specs arquivadas → spec viva → bundle, em leitura local. Sem bundle, ou com bundle desatualizado, oferece a sa-elm.baixar; sem ELM, não oferece. Código: pela sa-pesquisar.pesquisar (subagente sa-pesquisador), com o pedido e um escopo fechado; ela devolve fatos. Banco só por MCP de consulta, em leitura; sem o MCP, o agente escreve a SQL e a pessoa roda. Logs pelo MCP elk, se configurado. Rascunho de resposta só se a pessoa pedir; quem envia é a pessoa. Script, deploy, DDL e comando em ambiente são da pessoa (IM · BD · IN · OP · EX), e a Atividade registra o que foi feito · onde · resultado. Dado de cliente fica em .sabia/local/sustentacao/<ID>/, fora do git; no registro ficam só a consulta, a contagem, o caminho e um resumo anônimo. Regra que ninguém decidiu fica em aberto ao P.O. (na Atividade) e para só o que depende dela. Especificador, P.O. ou o time entram quando a pessoa chama. Sessão que termina antes de resolver fecha com o commit '<ID> registrar sessão' do registro.md.",
+       "texto": "A pessoa faz o trabalho, e a IA ajuda quando ela pede. Regras vigentes: specs arquivadas → especificação vigente → bundle, em leitura local. Sem bundle, ou com bundle desatualizado, oferece a sa-elm.baixar; sem ELM, não oferece. Código: pela sa-pesquisar.pesquisar (subagente sa-pesquisador), com o pedido e um escopo fechado; ela devolve fatos. Banco só por MCP de consulta, em leitura; sem o MCP, o agente escreve a SQL e a pessoa roda. Logs pelo MCP elk, se configurado. Rascunho de resposta só se a pessoa pedir; quem envia é a pessoa. Script, deploy, DDL e comando em ambiente são da pessoa (IM · BD · IN · OP · EX), e a Atividade registra o que foi feito · onde · resultado. Dado de cliente fica em .sabia/local/sustentacao/<ID>/, fora do git; no registro ficam só a consulta, a contagem, o caminho e um resumo anônimo. Regra que ninguém decidiu fica em aberto ao P.O. (na Atividade) e para só o que depende dela. Especificador, P.O. ou o time entram quando a pessoa chama. Sessão que termina antes de resolver fecha com o commit '<ID> registrar sessão' do registro.md.",
        "destino": "muda"
       },
       {
@@ -1728,7 +1728,7 @@
       },
       {
        "passo": "escrita",
-       "texto": "Toda escrita mostra a prévia e espera o 'sim' (ask nos primários sa-desenvolvedor e sa-especificador; deny nos subagentes e no autopilot). É idempotente: se o id já está gravado no Sabiá, não cria de novo. Nunca apaga. A exclusão de requisito vira roteiro manual (sa-elm.publicar), e a remoção de horas só acontece a pedido.",
+       "texto": "Toda escrita mostra a prévia e espera o 'sim' (ask nos principais sa-desenvolvedor e sa-especificador; deny nos subagentes e no autopilot). É idempotente: se o id já está gravado no Sabiá, não cria de novo. Nunca apaga. A exclusão de requisito vira roteiro manual (sa-elm.publicar), e a remoção de horas só acontece a pedido.",
        "destino": "novo"
       },
       {
@@ -1766,11 +1766,11 @@
     {
      "fluxo": "setup",
      "destino": "novo",
-     "resumo": "Configura o ELM só como dados. Grava o pa e devolve à sa-setup a chave elm, o texto da seção ELM e as regras ELM dos agentes, que a sa-setup aplica antes de regenerar os agentes. Roda na sessão padrão.",
+     "resumo": "Configura o ELM só como dados. Grava o pa e devolve à sa-setup a chave elm, o texto da seção ELM e as regras ELM dos agentes, que a sa-setup aplica antes de regenerar os agentes. Roda na sessão sem agente.",
      "passos": [
       {
        "passo": "entrada",
-       "texto": "Chamada pela sa-setup.configurar quando a resposta a 'usa ELM?' é sim, ou direto ('setup do ELM', 'atualizar o pa'). Roda na sessão padrão, porque o harness dos agentes nega .sabia/config. Dentro de um agente sa-*, diz isso e para. Em atualização, lê o pa existente e mostra só o que muda.",
+       "texto": "Chamada pela sa-setup.configurar quando a resposta a 'usa ELM?' é sim, ou direto ('setup do ELM', 'atualizar o pa'). Roda na sessão sem agente, porque o harness dos agentes nega .sabia/config. Dentro de um agente sa-*, diz isso e para. Em atualização, lê o pa existente e mostra só o que muda.",
        "destino": "novo"
       },
       {
@@ -1805,7 +1805,7 @@
       },
       {
        "passo": "dados",
-       "texto": "Monta, sem gravar, o que a sa-setup vai aplicar: (1) a chave elm do agentes.json, {pa: '<nome>', bundle: '<rm.download do pa>', regras: {allow, ask, deny}}, em que as regras são as dos agentes (leitura allow em todos; escrita ask nos primários sa-desenvolvedor e sa-especificador; deny nos subagentes e no autopilot); (2) o texto da seção ELM do sabia.md: pa, 'ET as-built: sim | não', 'Bundle desatualizado após: <n> dias', os títulos das tarefas DEV · ESP · ATD e o roteiro manual do DOORS Next.",
+       "texto": "Monta, sem gravar, o que a sa-setup vai aplicar: (1) a chave elm do agentes.json, {pa: '<nome>', bundle: '<rm.download do pa>', regras: {allow, ask, deny}}, em que as regras são as dos agentes (leitura allow em todos; escrita ask nos principais sa-desenvolvedor e sa-especificador; deny nos subagentes e no autopilot); (2) o texto da seção ELM do sabia.md: pa, 'ET as-built: sim | não', 'Bundle desatualizado após: <n> dias', os títulos das tarefas DEV · ESP · ATD e o roteiro manual do DOORS Next.",
        "destino": "novo"
       },
       {
@@ -2000,12 +2000,12 @@
       },
       {
        "passo": "fonte",
-       "texto": "A fonte é a pasta elm/ da spec da fatia (openspec/changes/archive/<AAAA-MM-DD>-ft-<nnn>-<slug>/elm/ ou .kiro/specs/ft-<nnn>-<slug>/elm/), com um arquivo inteiro por artefato (HF, UC, REG, MSG, EL, GL), cada um com a aprovação do especificador. Onde a seção ELM do sabia.md diz 'ET as-built: sim', a ET sai das seções Components and Interfaces · Data Models · Decisões técnicas do design.md da spec. Arquivo com '**Publicado:** manual' fica de fora da prévia e conta como publicado. A ação (inclui · altera · exclui) e a versão lida vêm dos artefatos afetados da ficha.",
+       "texto": "A fonte é a pasta elm/ da spec da fatia (openspec/changes/archive/<AAAA-MM-DD>-ft-<nnn>-<slug>/elm/ ou .kiro/specs/ft-<nnn>-<slug>/elm/), com um arquivo inteiro por artefato (HF, UC, REG, MSG, EL, GL), cada um com a aprovação do especificador. Onde a seção ELM do sabia.md diz 'ET as-built: sim', a ET sai das seções Components and Interfaces · Data Models · Decisões técnicas do design.md da spec. Arquivo com '**Publicado:** manual' fica de fora da prévia e conta como publicado. A ação (inclui · altera · exclui) e a versão de referência vêm dos artefatos afetados da ficha.",
        "destino": "novo"
       },
       {
        "passo": "conferir a versão",
-       "texto": "Para cada altera e cada exclui, lê o modificado_em atual no DOORS. Se for diferente da versão lida, avisa e pula aquele artefato. O resto segue.",
+       "texto": "Para cada altera e cada exclui, lê o modificado_em atual no DOORS. Se for diferente da versão de referência, avisa e pula aquele artefato. O resto segue.",
        "destino": "novo"
       },
       {
@@ -2084,7 +2084,7 @@
       },
       {
        "passo": "artefatos",
-       "texto": "Para cada arquivo de elm/ da fatia, compara o modificado_em atual no DOORS com a versão lida nos artefatos afetados. Se mudou, mostra o DOORS atual contra o commit de base. O especificador decide: baixar de novo e mesclar (sa-especificar.elm, passo conferir) ou seguir.",
+       "texto": "Para cada arquivo de elm/ da fatia, compara o modificado_em atual no DOORS com a versão de referência nos artefatos afetados. Se mudou, mostra o DOORS atual contra o commit de base. O especificador decide: baixar de novo e mesclar (sa-especificar.elm, passo conferir) ou seguir.",
        "destino": "novo"
       },
       {
@@ -2138,7 +2138,7 @@
       },
       {
        "passo": "pré-condição",
-       "texto": "Segue a sa-elm.regras. Sem ELM, diz que a spec viva fica no repositório e que não há bundle, e devolve. Com pa incompleto (erro config), oferece a sa-elm.setup.",
+       "texto": "Segue a sa-elm.regras. Sem ELM, diz que a especificação vigente fica no repositório e que não há bundle, e devolve. Com pa incompleto (erro config), oferece a sa-elm.setup.",
        "destino": "muda"
       },
       {
@@ -2168,7 +2168,7 @@
       },
       {
        "passo": "saída",
-       "texto": "Modo bundle: '🔄 ELM · baixados <n> · bundle de <data>'. Modo artefato: devolve a quem chamou o texto, o título e a versão lida (modificado_em), sem gravar.",
+       "texto": "Modo bundle: '🔄 ELM · baixados <n> · bundle de <data>'. Modo artefato: devolve a quem chamou o texto, o título e a versão de referência (modificado_em), sem gravar.",
        "destino": "muda"
       }
      ]
@@ -2205,7 +2205,7 @@
   {
    "skill": "sa-status",
    "destino_skill": "muda",
-   "papel": "Painel somente leitura do fluxo e porta de entrada do item. Faz a inspeção diária: WIP, vazão, lead time, idade contra o SLE, fila de triagem, topo puxável, MRs esperando pessoa, Sustentação com prazo, folga, autopilot devolvido, 'Publicação: pendente' e a trava de precedência de artefato. Recebe '<id>' e 'minha próxima' (vindos da sa-iniciar), mostra o estado e oferece seguir com a skill dona. Também lista as pendências de rastreio, junta as lições para a review e fecha a sessão. Só o fechar-sessao grava arquivo, e o EWM fica para a sa-elm.",
+   "papel": "Painel somente leitura do fluxo e porta de entrada do item. Faz a daily: WIP, vazão, lead time, idade contra o SLE, fila de triagem, topo puxável, MRs esperando pessoa, Sustentação com prazo, folga, autopilot devolvido, 'Publicação: pendente' e a trava de precedência de artefato. Recebe '<id>' e 'minha próxima' (vindos da sa-iniciar), mostra o estado e oferece seguir com a skill dona. Também lista as pendências de rastreio, junta as lições para a review e fecha a sessão. Só o fechar-sessao grava arquivo, e o EWM fica para a sa-elm.",
    "fluxos": [
     {
      "fluxo": "painel",
@@ -2569,7 +2569,7 @@
   {
    "skill": "sa-setup",
    "destino_skill": "muda",
-   "papel": "Wizard que instala o Sabiá no projeto. Roda na sessão padrão, porque grava o harness que os agentes negam. Escreve o .sabia/sabia.md, o agentes.json, a pasta do produto, os toolkits, o template do MR e os 5 agentes (primários sa-desenvolvedor e sa-especificador; subagentes sa-pesquisador, sa-revisor e sa-verificador) nos formatos do opencode e do Kiro. Decide o formato da spec (formato_spec). Do ELM, só pergunta 'usa ELM?', chama a sa-elm.setup e aplica os dados que ela devolve. Também customiza fluxos e padrões.",
+   "papel": "Wizard que instala o Sabiá no projeto. Roda na sessão sem agente, porque grava o harness que os agentes negam. Escreve o .sabia/sabia.md, o agentes.json, a pasta do produto, os toolkits, o template do MR e os 5 agentes (principais sa-desenvolvedor e sa-especificador; subagentes sa-pesquisador, sa-revisor e sa-verificador) nos formatos do opencode e do Kiro. Decide o formato da spec (formato_spec). Do ELM, só pergunta 'usa ELM?', chama a sa-elm.setup e aplica os dados que ela devolve. Também customiza fluxos e padrões.",
    "fluxos": [
     {
      "fluxo": "configurar",
@@ -2578,7 +2578,7 @@
      "passos": [
       {
        "passo": "entrada",
-       "texto": "Pedido 'configurar o Sabiá' (inicial) ou 'atualizar a configuração'. Também pode ser chamada depois de uma sa-elm.setup direta, para aplicar os dados do ELM. Roda na sessão padrão. Dentro de um agente sa-*, diz para abrir a sessão padrão e para.",
+       "texto": "Pedido 'configurar o Sabiá' (inicial) ou 'atualizar a configuração'. Também pode ser chamada depois de uma sa-elm.setup direta, para aplicar os dados do ELM. Roda na sessão sem agente. Dentro de um agente sa-*, diz para abrir a sessão sem agente e para.",
        "destino": "muda"
       },
       {
@@ -2648,7 +2648,7 @@
       },
       {
        "passo": "perfis",
-       "texto": "Mostra o cartão dos 5 agentes fixos. Primários, escolhidos pela pessoa ao abrir a sessão: sa-desenvolvedor (sa-desenvolver, sa-plano, sa-revisar.mr, sa-verificar.revisao-humana, sa-atender e a sa-especificar.archive que a sa-desenvolver.encerrar chama) e sa-especificador (sa-refinar, sa-prd, sa-especificar, sa-entrevistar, sa-planejamento; inclui as funções de produto). Nos dois: sa-triar, sa-status, sabia e as ofertas da sa-elm. Subagentes: sa-pesquisador (sa-pesquisar), sa-revisor (sa-revisar.revisar, com as rubricas do toolkit) e sa-verificador (sa-verificar.verificar, com o texto verificacao do toolkit). sa-setup e sa-elm.setup ficam na sessão padrão. A pessoa só marca os extras por agente: skills de toolkit, a tool de banco e os agentes do projeto, que vêm desmarcados e com o 'para quê'.",
+       "texto": "Mostra o cartão dos 5 agentes fixos. Principais, escolhidos pela pessoa ao abrir a sessão: sa-desenvolvedor (sa-desenvolver, sa-plano, sa-revisar.mr, sa-verificar.revisao-humana, sa-atender e a sa-especificar.archive que a sa-desenvolver.encerrar chama) e sa-especificador (sa-refinar, sa-prd, sa-especificar, sa-entrevistar, sa-planejamento; inclui as funções de produto). Nos dois: sa-triar, sa-status, sabia e as ofertas da sa-elm. Subagentes: sa-pesquisador (sa-pesquisar), sa-revisor (sa-revisar.revisar, com as rubricas do toolkit) e sa-verificador (sa-verificar.verificar, com o texto verificacao do toolkit). sa-setup e sa-elm.setup ficam na sessão sem agente. A pessoa só marca os extras por agente: skills de toolkit, a tool de banco e os agentes do projeto, que vêm desmarcados e com o 'para quê'.",
        "destino": "muda"
       },
       {
@@ -2725,7 +2725,7 @@
      "passos": [
       {
        "passo": "entrada",
-       "texto": "Pedido 'customizar o passo X', 'trocar o padrão Y' ou 'descustomizar'. Roda na sessão padrão, porque .sabia/fluxo e .sabia/padrao estão no harness.",
+       "texto": "Pedido 'customizar o passo X', 'trocar o padrão Y' ou 'descustomizar'. Roda na sessão sem agente, porque .sabia/fluxo e .sabia/padrao estão no harness.",
        "destino": "muda"
       },
       {
@@ -2833,7 +2833,7 @@
       },
       {
        "passo": "tese",
-       "texto": "Alinhar antes e verificar depois. O vigente fica no DOORS quando o projeto tem ELM. Sem ELM, fica na spec viva do repositório (OpenSpec: openspec/specs/; Kiro: .kiro/specs/).",
+       "texto": "Alinhar antes e verificar depois. O vigente fica no DOORS quando o projeto tem ELM. Sem ELM, fica na especificação vigente do repositório (OpenSpec: openspec/specs/; Kiro: .kiro/specs/).",
        "destino": "muda"
       },
       {
@@ -2865,7 +2865,7 @@
       },
       {
        "passo": "agentes",
-       "texto": "A pessoa abre a sessão num dos dois agentes primários: sa-desenvolvedor (desenvolvimento, plano, MR, revisão humana e Sustentação) ou sa-especificador (refinamento, PRD, especificação, entrevista e planejamento; inclui as funções de produto). Triagem, status, o guia e as ofertas da sa-elm rodam nos dois. Pesquisa, revisão do agente e verificação rodam nos subagentes sa-pesquisador, sa-revisor e sa-verificador, de contexto limpo. A booleana do equipe.json continua conferida na pré-condição de cada skill.",
+       "texto": "A pessoa abre a sessão num dos dois agentes principais: sa-desenvolvedor (desenvolvimento, plano, MR, revisão humana e Sustentação) ou sa-especificador (refinamento, PRD, especificação, entrevista e planejamento; inclui as funções de produto). Triagem, status, o guia e as ofertas da sa-elm rodam nos dois. Pesquisa, revisão do agente e verificação rodam nos subagentes sa-pesquisador, sa-revisor e sa-verificador, de contexto isolado. A booleana do equipe.json continua conferida na pré-condição de cada skill.",
        "destino": "novo"
       },
       {
@@ -2976,7 +2976,7 @@
       },
       {
        "passo": "gerador ≠ avaliador",
-       "texto": "A revisão do agente pelo subagente sa-revisor tem três eixos: spec · padrões · segurança. O aceite é do subagente sa-verificador, de contexto limpo.",
+       "texto": "A revisão do agente pelo subagente sa-revisor tem três eixos: spec · padrões · segurança. O aceite é do subagente sa-verificador, de contexto isolado.",
        "destino": "muda"
       },
       {
@@ -2991,7 +2991,7 @@
       },
       {
        "passo": "rastreio leve",
-       "texto": "Os artefatos afetados ficam na ficha, e o texto completo dos requisitos fica no delta. Com ELM, a pasta elm/ da fatia é a fonte da publicação no DOORS depois do merge, conferindo a versão. Sem ELM, a spec viva fica no repositório.",
+       "texto": "Os artefatos afetados ficam na ficha, e o texto completo dos requisitos fica no delta. Com ELM, a pasta elm/ da fatia é a fonte da publicação no DOORS depois do merge, conferindo a versão. Sem ELM, a especificação vigente fica no repositório.",
        "destino": "muda"
       },
       {
@@ -3028,7 +3028,7 @@
       },
       {
        "passo": "refinar → sa-refinar",
-       "texto": "Ideia nova, pitch, go/kill: sa-refinar.moldar. Três amigos, ficha, artefatos afetados e elm/ da fatia: sa-refinar.detalhar. Fatiar o épico: sa-refinar.fatiar. Editar, dividir ou cancelar um item pronto: sa-refinar.ajustar.",
+       "texto": "Ideia nova, pitch, go/kill: sa-refinar.moldar. Refinamento conjunto, ficha, artefatos afetados e elm/ da fatia: sa-refinar.detalhar. Fatiar o épico: sa-refinar.fatiar. Editar, dividir ou cancelar um item pronto: sa-refinar.ajustar.",
        "destino": "novo"
       },
       {
@@ -3211,7 +3211,7 @@
       },
       {
        "passo": "sim da pessoa",
-       "texto": "push, merge, curl, wget, escrita no GitLab e escrita no ELM passam pelo ask dos primários sa-desenvolvedor e sa-especificador; nos subagentes e no autopilot, o que não é liberado é deny. rebase, --force, --force-with-lease, reset --hard e --no-verify ficam em deny.",
+       "texto": "push, merge, curl, wget, escrita no GitLab e escrita no ELM passam pelo ask dos principais sa-desenvolvedor e sa-especificador; nos subagentes e no autopilot, o que não é liberado é deny. rebase, --force, --force-with-lease, reset --hard e --no-verify ficam em deny.",
        "destino": "muda"
       },
       {
@@ -3433,7 +3433,7 @@
       },
       {
        "passo": "sim-da-pessoa",
-       "texto": "Push, merge e escrita no ELM e no GitLab só com o 'sim' da pessoa (ask nos primários sa-desenvolvedor e sa-especificador). No autopilot, só três ações dispensam o sim: o push da própria branch (sem --force), o merge da base nela e abrir ou atualizar o MR dela. Merge do MR, ELM e rede seguem bloqueados.",
+       "texto": "Push, merge e escrita no ELM e no GitLab só com o 'sim' da pessoa (ask nos principais sa-desenvolvedor e sa-especificador). No autopilot, só três ações dispensam o sim: o push da própria branch (sem --force), o merge da base nela e abrir ou atualizar o MR dela. Merge do MR, ELM e rede seguem bloqueados.",
        "destino": "muda"
       },
       {
@@ -3448,7 +3448,7 @@
       },
       {
        "passo": "aceite-independente",
-       "texto": "Quem implementou não verifica: a verificação roda no subagente sa-verificador, de contexto limpo.",
+       "texto": "Quem implementou não verifica: a verificação roda no subagente sa-verificador, de contexto isolado.",
        "destino": "muda"
       },
       {
@@ -3612,11 +3612,11 @@
   {
    "skill": "7 agentes por papel (papeis.json)",
    "destino": "funde",
-   "nota": "Substituídos por 5 agentes por função (perfis.json): primários sa-desenvolvedor e sa-especificador, subagentes sa-pesquisador, sa-revisor e sa-verificador, gerados nos formatos do opencode e do Kiro. Sai o orquestrador."
+   "nota": "Substituídos por 5 agentes por função (perfis.json): principais sa-desenvolvedor e sa-especificador, subagentes sa-pesquisador, sa-revisor e sa-verificador, gerados nos formatos do opencode e do Kiro. Sai o orquestrador."
   }
  ],
  "artefatos": {
-  "arvore_21": "<repo>/\n├── AGENTS.md                                  # do projeto: a sa-setup só lê, como fonte do sabia.md\n├── CODEOWNERS                                 # <padrão> @usuario (raiz, .gitlab/ ou docs/); mantido pelo time, a sa-setup sugere\n├── opencode.json                              # alvo opencode: instructions inclui .sabia/sabia.md (harness)\n├── .gitignore                                 # .sabia/local/ e <bundle>/explorar.html\n├── .gitattributes                             # .sabia/creditos/*.csv merge=union\n├── .gitlab/merge_request_templates/\n│   └── Default.md                             # template do MR: título <id> — <título> · O quê · Porquê · Prova · Risco · Foco · Artefatos afetados\n├── docs/\n│   ├── adr/NNNN-<titulo>.md                   # ADR Nygard, só decisão transversal (chave adr)\n│   └── elm/<pa>/                              # bundle (só com ELM; chave bundle = rm.download do pa): só a sa-elm.baixar escreve\n│       ├── index.md · log.md                  # índice OKF do bundle\n│       ├── sync.md                            # sincronizado_em\n│       ├── explorar.html                      # sa-elm.visualizar (fora do git)\n│       └── <conceito>.md                      # um requisito oficial por arquivo, com envelope OKF\n├── openspec/                                  # formato_spec = openspec\n│   ├── specs/<cap>/spec.md                    # spec viva: só sem ELM (o archive funde o delta)\n│   └── changes/\n│       ├── ft-<nnn>-<slug>/                   # rápida e completo; trivial não tem pasta\n│       │   ├── proposal.md                    # Why · What Changes · Capabilities · Impact + Fatia e Rota\n│       │   ├── specs/<cap>/spec.md            # delta ADDED/MODIFIED/REMOVED com o texto completo de cada requisito\n│       │   ├── design.md                      # só na rota completo\n│       │   ├── tasks.md                       # ## 1. grupo / - [ ] 1.1 tarefa\n│       │   ├── research.md · status.md · CT.csv\n│       │   └── elm/                           # com ELM: um arquivo inteiro por artefato tocado (nasce no refinamento)\n│       └── archive/AAAA-MM-DD-ft-<nnn>-<slug>/  # mudança arquivada depois do merge (1ª fonte da busca do vigente)\n├── .kiro/                                     # alvo Kiro / formato_spec = kiro\n│   ├── steering/sabia.md                      # #[[file:.sabia/sabia.md]] (harness)\n│   ├── settings/                              # do Kiro (harness)\n│   ├── agents/sa-<nome>.json · <toolkit>-<agente>.json   # gerados (harness): os 5 agentes e os de toolkit\n│   └── specs/ft-<nnn>-<slug>/                 # rápida e completo; fica no lugar depois do merge (vigente sem ELM)\n│       ├── .config.kiro                       # specId · workflowType · specType (feature | bugfix)\n│       ├── requirements.md | bugfix.md        # fatia | bug, com o bloco completo de cada requisito tocado\n│       ├── design.md · tasks.md\n│       ├── research.md · status.md · CT.csv\n│       └── elm/                               # com ELM\n├── .opencode/agents/                          # gerados (harness)\n│   ├── sa-desenvolvedor.md · sa-especificador.md   # mode primary, modelo build\n│   ├── sa-pesquisador.md · sa-revisor.md      # mode subagent, só leitura\n│   ├── sa-verificador.md                      # mode subagent, só leitura + Executar, curl à URL de teste e CT.csv\n│   └── <toolkit>-<agente>.md                # mode subagent, permissões do dono do passo\n└── .sabia/\n    ├── sabia.md                               # steering: Configuração · Verificação de aceite · Sustentação · ELM · Desvios · Tipos · Regras aprendidas\n    ├── glossario.md                           # opcional: só sem GL no DOORS (chave glossario)\n    ├── creditos/<usuario>.csv                 # Kiro: uma linha por sessão (creditos.py)\n    ├── config/                                # harness: só a sessão padrão escreve\n    │   ├── agentes.json                       # escolhas do projeto, entrada do gerador\n    │   ├── elm/pa_<nome>.json                 # conexão do MCP elm\n    │   └── elk/elk-<ambiente>.json            # conexão do MCP elk\n    ├── fluxo/ · padrao/                       # override esparso (harness)\n    ├── toolkits/<nome>/toolkit.json           # toolkit do projeto (opcional)\n    ├── local/                                 # fora do git\n    │   ├── wt/<id>/                           # worktree do autopilot\n    │   ├── loop-<id>.md                       # log do disjuntor do autopilot\n    │   ├── reunioes/<EP-nn|FT-nnn>-<AAAA-MM-DD>.<ext>   # transcrições\n    │   └── sustentacao/<ID>/                  # dados de cliente do atendimento\n    └── planejamento/                          # chave produto; gravado direto na base (fluxo/gravar-na-base.md)\n        ├── backlog.md                         # tabela única de 14 colunas; ordem das linhas = prioridade\n        ├── acordos.md                         # Item | Acordo: timebox, WIP, SLE, DoD, classes, folga, tamanhos, disjuntor, id no commit, CT no teste\n        ├── equipe.json                        # membros: usuario · booleanas · capacidade\n        ├── roadmap.md                         # opcional\n        ├── sprints/<AAAA>/sprint-<nn>.md       # Meta · Item · Trabalho · Responsável · Tarefas · Review · Retro\n        ├── fatias/FT-<nnn>-<slug>.md          # ficha (fatia e bug)\n        ├── epicos/EP-<nn>-<slug>/\n        │   ├── pitch.md                       # nasce no shaping (Shape Up) com go/kill\n        │   └── prd.md                         # nasce no go\n        ├── prototipos/<EP-nn|FT-nnn>-<slug>/v<N>/   # versões do protótipo\n        ├── atas/ATA-<nn>-<AAAA-MM-DD>-<assunto>.md   # opcional\n        └── sustentacao/<ID>-<slug>.md         # registro do item de Sustentação\n\n~/.sabia/framework/                            # instalação (fora do repositório)\n├── fluxo/entrada.md · captura.md · gravar-na-base.md   # passos comuns incluídos pelas skills\n├── fluxo/tipos.json                           # catálogo HF · UC · REG · MSG · EL · GL · ET · CT · ATA\n├── fluxo/travas.json                          # catálogo das travas\n├── padrao/<skill>/<arquivo>.md              # modelos (catálogo no esquema dos overrides)\n└── skills/sa-setup/assets/agents/perfis.json  # 2 modelos de permissão, os 5 agentes e o harness\n~/.sabia/toolkits/<nome>/toolkit.json          # toolkit do usuário",
+  "arvore_21": "<repo>/\n├── AGENTS.md                                  # do projeto: a sa-setup só lê, como fonte do sabia.md\n├── CODEOWNERS                                 # <padrão> @usuario (raiz, .gitlab/ ou docs/); mantido pelo time, a sa-setup sugere\n├── opencode.json                              # alvo opencode: instructions inclui .sabia/sabia.md (harness)\n├── .gitignore                                 # .sabia/local/ e <bundle>/explorar.html\n├── .gitattributes                             # .sabia/creditos/*.csv merge=union\n├── .gitlab/merge_request_templates/\n│   └── Default.md                             # template do MR: título <id> — <título> · O quê · Porquê · Prova · Risco · Foco · Artefatos afetados\n├── docs/\n│   ├── adr/NNNN-<titulo>.md                   # ADR Nygard, só decisão transversal (chave adr)\n│   └── elm/<pa>/                              # bundle (só com ELM; chave bundle = rm.download do pa): só a sa-elm.baixar escreve\n│       ├── index.md · log.md                  # índice OKF do bundle\n│       ├── sync.md                            # sincronizado_em\n│       ├── explorar.html                      # sa-elm.visualizar (fora do git)\n│       └── <conceito>.md                      # um requisito oficial por arquivo, com envelope OKF\n├── openspec/                                  # formato_spec = openspec\n│   ├── specs/<cap>/spec.md                    # especificação vigente: só sem ELM (o archive funde o delta)\n│   └── changes/\n│       ├── ft-<nnn>-<slug>/                   # rápida e completo; trivial não tem pasta\n│       │   ├── proposal.md                    # Why · What Changes · Capabilities · Impact + Fatia e Rota\n│       │   ├── specs/<cap>/spec.md            # delta ADDED/MODIFIED/REMOVED com o texto completo de cada requisito\n│       │   ├── design.md                      # só na rota completo\n│       │   ├── tasks.md                       # ## 1. grupo / - [ ] 1.1 tarefa\n│       │   ├── research.md · status.md · CT.csv\n│       │   └── elm/                           # com ELM: um arquivo inteiro por artefato tocado (nasce no refinamento)\n│       └── archive/AAAA-MM-DD-ft-<nnn>-<slug>/  # mudança arquivada depois do merge (1ª fonte da busca do vigente)\n├── .kiro/                                     # alvo Kiro / formato_spec = kiro\n│   ├── steering/sabia.md                      # #[[file:.sabia/sabia.md]] (harness)\n│   ├── settings/                              # do Kiro (harness)\n│   ├── agents/sa-<nome>.json · <toolkit>-<agente>.json   # gerados (harness): os 5 agentes e os de toolkit\n│   └── specs/ft-<nnn>-<slug>/                 # rápida e completo; fica no lugar depois do merge (vigente sem ELM)\n│       ├── .config.kiro                       # specId · workflowType · specType (feature | bugfix)\n│       ├── requirements.md | bugfix.md        # fatia | bug, com o bloco completo de cada requisito tocado\n│       ├── design.md · tasks.md\n│       ├── research.md · status.md · CT.csv\n│       └── elm/                               # com ELM\n├── .opencode/agents/                          # gerados (harness)\n│   ├── sa-desenvolvedor.md · sa-especificador.md   # mode primary, modelo build\n│   ├── sa-pesquisador.md · sa-revisor.md      # mode subagent, só leitura\n│   ├── sa-verificador.md                      # mode subagent, só leitura + Executar, curl à URL de teste e CT.csv\n│   └── <toolkit>-<agente>.md                # mode subagent, permissões do dono do passo\n└── .sabia/\n    ├── sabia.md                               # steering: Configuração · Verificação de aceite · Sustentação · ELM · Desvios · Tipos · Regras aprendidas\n    ├── glossario.md                           # opcional: só sem GL no DOORS (chave glossario)\n    ├── creditos/<usuario>.csv                 # Kiro: uma linha por sessão (creditos.py)\n    ├── config/                                # harness: só a sessão sem agente escreve\n    │   ├── agentes.json                       # escolhas do projeto, entrada do gerador\n    │   ├── elm/pa_<nome>.json                 # conexão do MCP elm\n    │   └── elk/elk-<ambiente>.json            # conexão do MCP elk\n    ├── fluxo/ · padrao/                       # override esparso (harness)\n    ├── toolkits/<nome>/toolkit.json           # toolkit do projeto (opcional)\n    ├── local/                                 # fora do git\n    │   ├── wt/<id>/                           # worktree do autopilot\n    │   ├── loop-<id>.md                       # log do disjuntor do autopilot\n    │   ├── reunioes/<EP-nn|FT-nnn>-<AAAA-MM-DD>.<ext>   # transcrições\n    │   └── sustentacao/<ID>/                  # dados de cliente do atendimento\n    └── planejamento/                          # chave produto; gravado direto na base (fluxo/gravar-na-base.md)\n        ├── backlog.md                         # tabela única de 14 colunas; ordem das linhas = prioridade\n        ├── acordos.md                         # Item | Acordo: timebox, WIP, SLE, DoD, classes, folga, tamanhos, disjuntor, id no commit, CT no teste\n        ├── equipe.json                        # membros: usuario · booleanas · capacidade\n        ├── roadmap.md                         # opcional\n        ├── sprints/<AAAA>/sprint-<nn>.md       # Meta · Item · Trabalho · Responsável · Tarefas · Review · Retro\n        ├── fatias/FT-<nnn>-<slug>.md          # ficha (fatia e bug)\n        ├── epicos/EP-<nn>-<slug>/\n        │   ├── pitch.md                       # nasce no shaping (Shape Up) com go/kill\n        │   └── prd.md                         # nasce no go\n        ├── prototipos/<EP-nn|FT-nnn>-<slug>/v<N>/   # versões do protótipo\n        ├── atas/ATA-<nn>-<AAAA-MM-DD>-<assunto>.md   # opcional\n        └── sustentacao/<ID>-<slug>.md         # registro do item de Sustentação\n\n~/.sabia/framework/                            # instalação (fora do repositório)\n├── fluxo/entrada.md · captura.md · gravar-na-base.md   # passos comuns incluídos pelas skills\n├── fluxo/tipos.json                           # catálogo HF · UC · REG · MSG · EL · GL · ET · CT · ATA\n├── fluxo/travas.json                          # catálogo das travas\n├── padrao/<skill>/<arquivo>.md              # modelos (catálogo no esquema dos overrides)\n└── skills/sa-setup/assets/agents/perfis.json  # 2 modelos de permissão, os 5 agentes e o harness\n~/.sabia/toolkits/<nome>/toolkit.json          # toolkit do usuário",
   "artefatos": [
    {
     "artefato": "backlog.md",
@@ -3677,7 +3677,7 @@
     "caminho": ".sabia/planejamento/epicos/EP-<nn>-<slug>/pitch.md",
     "grupo": "especificação",
     "destino": "alinha ao mercado",
-    "como_fica_21": "Pitch do Shape Up: linha 'Aprovado: <usuario> · <data>' no topo (gravada na Decisão por quem tem produto) e as seções Problema · Apetite · Solução em traços · Riscos · Não objetivos · Decisões (tabela D-nn) · Em aberto · Decisão ('go' | 'kill · <motivo>'). Decisões antes do go ficam aqui.",
+    "como_fica_21": "Pitch do Shape Up: linha 'Aprovado: <usuario> · <data>' no topo (gravada na Decisão por quem tem produto) e as seções Problema · Limite de investimento · Solução em traços · Riscos · Não objetivos · Decisões (tabela D-nn) · Em aberto · Decisão ('go' | 'kill · <motivo>'). Decisões antes do go ficam aqui.",
     "mercado": "Pitch do Shape Up",
     "motivo": "Decisão do épico; FPL-25, ART-7"
    },
@@ -3776,7 +3776,7 @@
     "caminho": "frontmatter dos conceitos",
     "grupo": "especificação",
     "destino": "simplifica",
-    "como_fica_21": "Fica só no bundle, como formato do download. Os arquivos de elm/ têm um cabeçalho curto (Tipo · Ação · Versão lida · Aprovado).",
+    "como_fica_21": "Fica só no bundle, como formato do download. Os arquivos de elm/ têm um cabeçalho curto (Tipo · Ação · Versão de referência · Aprovado).",
     "mercado": "não existe",
     "motivo": "A publicação sai de elm/"
    },
@@ -3790,12 +3790,12 @@
     "motivo": "FCF-13, IMP-20"
    },
    {
-    "artefato": "spec viva",
+    "artefato": "especificação vigente",
     "caminho": "openspec/specs/<cap>/spec.md",
     "grupo": "especificação",
     "destino": "novo",
     "como_fica_21": "Só no OpenSpec sem ELM: openspec archive <ft> --yes funde o delta. Com ELM, o vigente é o DOORS (archive com --skip-specs).",
-    "mercado": "Spec viva do OpenSpec",
+    "mercado": "Especificação vigente do OpenSpec",
     "motivo": "Decisão de publicação"
    },
    {
@@ -4127,7 +4127,7 @@
     "caminho": ".sabia/config/elm/pa_<nome>.json",
     "grupo": "configuração",
     "destino": "simplifica",
-    "como_fica_21": "Muda de .kiro/config/elm/ para .sabia/config/elm/, gravado pela sa-elm.setup na sessão padrão. Tarefas DEV · ESP · ATD, sem bloco do ETM. O MCP procura em .sabia/config/elm, depois em .kiro/config/elm e em .kiro/config/sdd.",
+    "como_fica_21": "Muda de .kiro/config/elm/ para .sabia/config/elm/, gravado pela sa-elm.setup na sessão sem agente. Tarefas DEV · ESP · ATD, sem bloco do ETM. O MCP procura em .sabia/config/elm, depois em .kiro/config/elm e em .kiro/config/sdd.",
     "mercado": "não existe",
     "motivo": "Decisão de .sabia/config; FCF-08"
    },
@@ -4546,7 +4546,7 @@
    "arquivo": "ficha da fatia",
    "caminho": ".sabia/planejamento/fatias/FT-<nnn>-<slug>.md (fatia e bug)",
    "formato": "md: '# FT-<nnn> · <título>', '**Aprovado:** <usuario> · AAAA-MM-DD | —' logo abaixo do título, a linha de cabeçalho (Tipo · Pai · Especificação, esta só com ELM e artefatos afetados com inclui, altera ou exclui) e as seções abaixo, nesta ordem. Uma seção sem conteúdo fica só com o título. Gravada direto na base e editável até alguém puxar (status em-andamento).",
-   "escrevem": "fluxo/captura.md (cabeçalho e Entrada mínima) · sa-triar.triar (Entrada) · sa-refinar.detalhar (Especificação, Regras, Cenários, Não muda, artefatos afetados, Em aberto, Decisões, DoR, Aprovado) · sa-especificar.elm (versão lida e id nos artefatos afetados, na sincronização do manual) · sa-refinar.fatiar (Objetivo, artefatos afetados, Pai) · sa-refinar.ajustar · sa-entrevistar.entrevistar (Decisões, Em aberto) · sa-elm.publicar (troca o id provisório nos artefatos afetados)",
+   "escrevem": "fluxo/captura.md (cabeçalho e Entrada mínima) · sa-triar.triar (Entrada) · sa-refinar.detalhar (Especificação, Regras, Cenários, Não muda, artefatos afetados, Em aberto, Decisões, DoR, Aprovado) · sa-especificar.elm (versão de referência e id nos artefatos afetados, na sincronização do manual) · sa-refinar.fatiar (Objetivo, artefatos afetados, Pai) · sa-refinar.ajustar · sa-entrevistar.entrevistar (Decisões, Em aberto) · sa-elm.publicar (troca o id provisório nos artefatos afetados)",
    "leem": "sa-desenvolver.iniciar (DoR) · sa-plano.plano · sa-desenvolver.codificar · sa-revisar.revisar · sa-verificar.verificar · sa-especificar.elm (Especificação) · sa-status",
    "campos": [
     {
@@ -4607,7 +4607,7 @@
      "nome": "Artefatos afetados",
      "significado": "Requisitos tocados, um por linha, ou a linha 'nenhum requisito'",
      "preenche": "sa-refinar.detalhar · sa-refinar.fatiar",
-     "valores": "'<sigla>-<id> · inclui | altera | exclui · versão lida <modificado_em do DOORS | —>'; <sigla> ∈ HF · UC · REG · MSG · EL · GL; <id> = id do ELM ou provisório <EP|FT>nn-nn (ex.: REG-EP03-01); versão '—' no requisito novo e sem ELM"
+     "valores": "'<sigla>-<id> · inclui | altera | exclui · versão de referência <modificado_em do DOORS | —>'; <sigla> ∈ HF · UC · REG · MSG · EL · GL; <id> = id do ELM ou provisório <EP|FT>nn-nn (ex.: REG-EP03-01); versão '—' no requisito novo e sem ELM"
     },
     {
      "nome": "Em aberto",
@@ -4649,7 +4649,7 @@
      "valores": "texto"
     },
     {
-     "nome": "Apetite",
+     "nome": "Limite de investimento",
      "significado": "Tempo que se aceita investir",
      "preenche": "sa-refinar.moldar",
      "valores": "<n> semanas"
@@ -5019,7 +5019,7 @@
     },
     {
      "nome": "<cap>",
-     "significado": "Capability; um requisito vive em uma só. Requisito existente na spec viva mantém a <cap> de lá; o novo usa o slug do épico (pai) ou o da fatia sem pai",
+     "significado": "Capability; um requisito vive em uma só. Requisito existente na especificação vigente mantém a <cap> de lá; o novo usa o slug do épico (pai) ou o da fatia sem pai",
      "preenche": "sa-plano.plano",
      "valores": "kebab-case"
     }
@@ -5304,7 +5304,7 @@
   {
    "arquivo": "elm/ (pasta e arquivo de artefato)",
    "caminho": "<pasta da spec>/elm/<id do ELM>-<TIPO>-<slug>.md (existente) · <pasta da spec>/elm/<EP|FT><nn>-<nn>-<TIPO>-<slug>.md (novo, ex.: EP03-01-REG-teto-do-desconto.md)",
-   "formato": "md, um arquivo inteiro por artefato tocado: o frontmatter type · title (igual ao do DOORS) · status (draft | stable) · verified (na aprovação) · sources, na especificação manual publicado: manual AAAA-MM-DD, e o corpo inteiro do artefato, sem título Markdown; o id vai no nome do arquivo, e a ação e a versão lida, nos artefatos afetados da ficha. Só com ELM, nascido no refinamento e gravado direto na base. Commit de base (original + versão lida) antes da edição, para o git mostrar a diferença. Duas fatias não têm o mesmo artefato em elm/ ao mesmo tempo (trava artefato-exclusivo): a segunda fica bloqueada até a primeira ficar cancelada ou com 'Publicação: publicada'; a sa-status mostra o bloqueio",
+   "formato": "md, um arquivo inteiro por artefato tocado: o frontmatter type · title (igual ao do DOORS) · status (draft | stable) · verified (na aprovação) · sources, na especificação manual publicado: manual AAAA-MM-DD, e o corpo inteiro do artefato, sem título Markdown; o id vai no nome do arquivo, e a ação e a versão de referência, nos artefatos afetados da ficha. Só com ELM, nascido no refinamento e gravado direto na base. Commit de base (original + versão de referência) antes da edição, para o git mostrar a diferença. Duas fatias não têm o mesmo artefato em elm/ ao mesmo tempo (trava artefato-exclusivo): a segunda fica bloqueada até a primeira ficar cancelada ou com 'Publicação: publicada'; a sa-status mostra o bloqueio",
    "escrevem": "sa-especificar.elm (chamada pela sa-refinar.detalhar.elm ou direto: grava o original que a sa-elm.baixar devolve, faz o commit de base, edita (no manual, sincroniza do DOORS e marca Publicado) e aprova; aceita também a fatia concluida com 'Publicação: pendente' para refazer a mescla do artefato que a publicação pulou) · sa-elm.publicar (renomeia o novo e troca o id provisório no prd.md, nas fichas e no delta, no mesmo commit)",
    "leem": "sa-plano.plano (copia para o delta) · sa-elm.publicar (fonte; pula o Publicado) · sa-especificar.archive (tudo Publicado → publicada) · sa-especificar.elm e sa-elm.conferir (DOORS atual × commit de base) · sa-status",
    "campos": [
@@ -5327,7 +5327,7 @@
      "valores": "inclui · altera · exclui"
     },
     {
-     "nome": "Versão lida",
+     "nome": "Versão de referência",
      "significado": "modificado_em do artefato no DOORS na hora do download; a sa-elm.publicar compara e, se mudou, avisa e pula",
      "preenche": "sa-especificar.elm",
      "valores": "data-hora ISO do DOORS · — (novo)"
@@ -5347,7 +5347,7 @@
    ]
   },
   {
-   "arquivo": "spec viva",
+   "arquivo": "especificação vigente",
    "caminho": "openspec/specs/<cap>/spec.md (só OpenSpec sem ELM)",
    "formato": "md do OpenSpec: '# <cap> Specification' · '## Purpose' · '## Requirements' com '### Requirement:' e '#### Scenario:'",
    "escrevem": "sa-especificar.archive (openspec archive ft-<nnn>-<slug> --yes funde o delta)",
@@ -5494,7 +5494,7 @@
    "arquivo": "agentes.json",
    "caminho": ".sabia/config/agentes.json (harness)",
    "formato": "json",
-   "escrevem": "sa-setup (sessão padrão; aplica a chave elm que a sa-elm.setup produz)",
+   "escrevem": "sa-setup (sessão sem agente; aplica a chave elm que a sa-elm.setup produz)",
    "leem": "gerador da sa-setup · sa-setup (atualização) · fluxo/gravar-na-base.md (base) · todas as skills (produto, formato_spec, caminhos)",
    "campos": [
     {
@@ -5598,7 +5598,7 @@
     },
     {
      "nome": "modelos.build",
-     "significado": "Modelo de permissão dos primários (sa-desenvolvedor, sa-especificador), sem restrição por pasta",
+     "significado": "Modelo de permissão dos principais (sa-desenvolvedor, sa-especificador), sem restrição por pasta",
      "preenche": "framework",
      "valores": "{read: allow, edit: allow fora do harness (.kiro/specs/** e openspec/** liberados), bash: {allow: build/test/git leitura/commit, ask: git push da própria branch sem --force · git merge origin/<base> · curl/wget à URL de teste, deny: git push --force* · git push --force-with-lease* · git rebase* · destrutivos}, mcp: {allow: gitlabpr leitura, ask: criar/atualizar MR · mesclar MR}}"
     },
@@ -5612,7 +5612,7 @@
      "nome": "agentes.<nome>",
      "significado": "Os 5 agentes",
      "preenche": "framework",
-     "valores": "{descricao (inglês), permissao: build | leitura, mode: primary | subagent, skills: [], subagentes: []}; sa-desenvolvedor {build, primary, sa-desenvolver · sa-plano · sa-revisar.mr · sa-verificar.revisao-humana · sa-atender · sa-especificar.archive, chama sa-pesquisador · sa-revisor · sa-verificador} · sa-especificador {build, primary, sa-refinar · sa-prd · sa-especificar · sa-entrevistar · sa-planejamento, chama sa-pesquisador} · sa-pesquisador {leitura, subagent, sa-pesquisar} · sa-revisor {leitura, subagent, sa-revisar.revisar} · sa-verificador {leitura, subagent, sa-verificar.verificar}; nos dois primários também sa-triar · sa-status · sabia · sa-elm (menos setup)"
+     "valores": "{descricao (inglês), permissao: build | leitura, mode: primary | subagent, skills: [], subagentes: []}; sa-desenvolvedor {build, primary, sa-desenvolver · sa-plano · sa-revisar.mr · sa-verificar.revisao-humana · sa-atender · sa-especificar.archive, chama sa-pesquisador · sa-revisor · sa-verificador} · sa-especificador {build, primary, sa-refinar · sa-prd · sa-especificar · sa-entrevistar · sa-planejamento, chama sa-pesquisador} · sa-pesquisador {leitura, subagent, sa-pesquisar} · sa-revisor {leitura, subagent, sa-revisar.revisar} · sa-verificador {leitura, subagent, sa-verificar.verificar}; nos dois principais também sa-triar · sa-status · sabia · sa-elm (menos setup)"
     },
     {
      "nome": "agentes.sa-verificador.liberacoes",
@@ -5776,7 +5776,7 @@
    "arquivo": "pa_<nome>.json",
    "caminho": ".sabia/config/elm/pa_<nome>.json (harness)",
    "formato": "json no schema do mcp-elm",
-   "escrevem": "sa-elm.setup (sessão padrão)",
+   "escrevem": "sa-elm.setup (sessão sem agente)",
    "leem": "MCP elm · sa-elm.* (pré-condição)",
    "campos": [
     {
@@ -5815,7 +5815,7 @@
    "arquivo": "elk-<ambiente>.json",
    "caminho": ".sabia/config/elk/elk-<ambiente>.json (harness)",
    "formato": "json no schema do mcp-elk",
-   "escrevem": "a pessoa, na sessão padrão (o Sabiá só fixa o caminho)",
+   "escrevem": "a pessoa, na sessão sem agente (o Sabiá só fixa o caminho)",
    "leem": "MCP elk (procura em .sabia/config/elk, depois em .kiro/config/elk e em .kiro/config/sdd)",
    "campos": [
     {
@@ -6146,7 +6146,7 @@
      "nome": "texto",
      "significado": "Regra curta",
      "preenche": "framework",
-     "valores": "sim-da-pessoa: commit, push, merge e escrita no ELM e no GitLab só com o sim (ask nos primários); no autopilot, só push da própria branch, merge da base nela e o MR dela · backpressure: trecho tocado a cada tarefa, suíte completa antes do MR, baseline do último pipeline da base · revisao-independente: MR aprovado por 1 desenvolvedor ≠ autor · aceite-independente: quem implementou não verifica (sa-verificador) · pr-lido-por-pessoa: merge só depois de uma pessoa ler o MR · toolkit-sem-commit · sem-force: nunca --force nem --force-with-lease; a branch se atualiza só por merge da base · decisao-da-pessoa · aprovacao-do-cliente: protótipo vale só com D-nn do cliente · artefato-elm-exclusivo: dois itens abertos não alteram o mesmo artefato de elm/"
+     "valores": "sim-da-pessoa: commit, push, merge e escrita no ELM e no GitLab só com o sim (ask nos principais); no autopilot, só push da própria branch, merge da base nela e o MR dela · backpressure: trecho tocado a cada tarefa, suíte completa antes do MR, baseline do último pipeline da base · revisao-independente: MR aprovado por 1 desenvolvedor ≠ autor · aceite-independente: quem implementou não verifica (sa-verificador) · pr-lido-por-pessoa: merge só depois de uma pessoa ler o MR · toolkit-sem-commit · sem-force: nunca --force nem --force-with-lease; a branch se atualiza só por merge da base · decisao-da-pessoa · aprovacao-do-cliente: protótipo vale só com D-nn do cliente · artefato-elm-exclusivo: dois itens abertos não alteram o mesmo artefato de elm/"
     },
     {
      "nome": "liberavel_por",
@@ -6193,7 +6193,7 @@
    ]
   }
  ],
- "agentes": "5 agentes · fonte: perfis.json (2 modelos de permissão + 5 agentes) + agentes.json do projeto\n   ─► gerador da sa-setup ─► .kiro/agents/sa-<nome>.json e .opencode/agents/sa-<nome>.md\nprimários (a pessoa escolhe ao abrir a sessão; a pré-condição da skill confere a booleana)\n├─ sa-desenvolvedor   (mode primary · build)\n│    skills: sa-desenvolver · sa-plano · sa-revisar.mr · sa-verificar.revisao-humana · sa-atender · sa-especificar.archive\n│    chama: sa-pesquisador · sa-revisor · sa-verificador\n│    └─ autopilot (o próprio sa-desenvolvedor como subagente na worktree .sabia/local/wt/<id>, sem a pessoa)\n│          allow: push da própria branch (sem --force) · merge da base nela · abrir/atualizar o MR dela\n│          deny: merge do MR · ELM · rede (curl, wget) · todo o resto que era ask\n├─ sa-especificador   (mode primary · build · inclui as funções de produto)\n│    skills: sa-refinar · sa-prd · sa-especificar · sa-entrevistar · sa-planejamento\n│    chama: sa-pesquisador\n└─ nos dois: sa-triar · sa-status · sabia · ofertas da sa-elm\nsubagentes (contexto limpo, chamados por um primário)\n├─ sa-pesquisador   (só leitura) ── sa-pesquisar.pesquisar\n├─ sa-revisor       (só leitura) ── sa-revisar.revisar + rubricas do toolkit\n└─ sa-verificador   (só leitura + liberações) ── sa-verificar.verificar + verificacao do toolkit\n      allow: comandos Executar do sabia.md (sobe a aplicação) · curl/wget só à URL de teste\n             · editar só <pasta da spec>/CT.csv\nagente de toolkit (agentes[], ligado em passos[].agente) ─► subagente do dono do passo, com as permissões dele\n\n2 modelos de permissão\n├─ build   (sa-desenvolvedor · sa-especificador; sem restrição por pasta)\n│    ler ──────── allow\n│                 deny: segredos (**/.env*, **/*.pem, **/*.key, ~/.ssh, ~/.aws, ~/.config/mcp-*)\n│    editar ───── allow: workspace (código, .kiro/specs/**, openspec/**, .sabia/planejamento/**,\n│                        .sabia/sabia.md, .sabia/creditos/**)\n│                 deny (harness): .kiro/agents · .kiro/settings · .kiro/steering/sabia.md · .opencode\n│                        · opencode.json · .sabia/config · .sabia/fluxo · .sabia/padrao\n│    comandos ─── allow\n│                 ask: git push · git merge · curl · wget\n│                 deny: git rebase · push --force / --force-with-lease · reset --hard · clean -f\n│                       · --no-verify · sudo · kubectl · helm · terraform apply\n│    MCP ──────── GitLab: leitura allow · escrita ask (abrir MR, comentar, merge)\n│                 ELM (regras da sa-elm.setup, só com ELM): leitura allow · escrita ask\n│                 elk (logs) · banco (só a tool de consulta): leitura allow\n└─ só leitura   (sa-pesquisador · sa-revisor; base do sa-verificador)\n     ler ──────── allow · segredos deny\n     editar ───── deny\n     comandos ─── só leitura (git status · diff · log · show · grep · ls-files) · resto deny\n     MCP ──────── só leitura (GitLab · ELM · elk · banco) · escrita deny\nquem a pessoa é: usuario do equipe.json = usuário do GitLab; a pré-condição da skill confere a booleana\nquem grava o harness: sa-setup.configurar e sa-elm.setup, na sessão padrão, fora dos 5 agentes\n   sa-elm.setup só produz dados (pa em .sabia/config/elm/pa_<nome>.json, chave elm do agentes.json,\n   seção ELM do sabia.md, regras ELM dos agentes); a sa-setup aplica e regenera os agentes\nKiro: só nomes de capability em tools (sem toolsSettings); limites por caminho e URL no prompt",
+ "agentes": "5 agentes · fonte: perfis.json (2 modelos de permissão + 5 agentes) + agentes.json do projeto\n   ─► gerador da sa-setup ─► .kiro/agents/sa-<nome>.json e .opencode/agents/sa-<nome>.md\nprimários (a pessoa escolhe ao abrir a sessão; a pré-condição da skill confere a booleana)\n├─ sa-desenvolvedor   (mode primary · build)\n│    skills: sa-desenvolver · sa-plano · sa-revisar.mr · sa-verificar.revisao-humana · sa-atender · sa-especificar.archive\n│    chama: sa-pesquisador · sa-revisor · sa-verificador\n│    └─ autopilot (o próprio sa-desenvolvedor como subagente na worktree .sabia/local/wt/<id>, sem a pessoa)\n│          allow: push da própria branch (sem --force) · merge da base nela · abrir/atualizar o MR dela\n│          deny: merge do MR · ELM · rede (curl, wget) · todo o resto que era ask\n├─ sa-especificador   (mode primary · build · inclui as funções de produto)\n│    skills: sa-refinar · sa-prd · sa-especificar · sa-entrevistar · sa-planejamento\n│    chama: sa-pesquisador\n└─ nos dois: sa-triar · sa-status · sabia · ofertas da sa-elm\nsubagentes (contexto isolado, chamados por um principal)\n├─ sa-pesquisador   (só leitura) ── sa-pesquisar.pesquisar\n├─ sa-revisor       (só leitura) ── sa-revisar.revisar + rubricas do toolkit\n└─ sa-verificador   (só leitura + liberações) ── sa-verificar.verificar + verificacao do toolkit\n      allow: comandos Executar do sabia.md (sobe a aplicação) · curl/wget só à URL de teste\n             · editar só <pasta da spec>/CT.csv\nagente de toolkit (agentes[], ligado em passos[].agente) ─► subagente do dono do passo, com as permissões dele\n\n2 modelos de permissão\n├─ build   (sa-desenvolvedor · sa-especificador; sem restrição por pasta)\n│    ler ──────── allow\n│                 deny: segredos (**/.env*, **/*.pem, **/*.key, ~/.ssh, ~/.aws, ~/.config/mcp-*)\n│    editar ───── allow: workspace (código, .kiro/specs/**, openspec/**, .sabia/planejamento/**,\n│                        .sabia/sabia.md, .sabia/creditos/**)\n│                 deny (harness): .kiro/agents · .kiro/settings · .kiro/steering/sabia.md · .opencode\n│                        · opencode.json · .sabia/config · .sabia/fluxo · .sabia/padrao\n│    comandos ─── allow\n│                 ask: git push · git merge · curl · wget\n│                 deny: git rebase · push --force / --force-with-lease · reset --hard · clean -f\n│                       · --no-verify · sudo · kubectl · helm · terraform apply\n│    MCP ──────── GitLab: leitura allow · escrita ask (abrir MR, comentar, merge)\n│                 ELM (regras da sa-elm.setup, só com ELM): leitura allow · escrita ask\n│                 elk (logs) · banco (só a tool de consulta): leitura allow\n└─ só leitura   (sa-pesquisador · sa-revisor; base do sa-verificador)\n     ler ──────── allow · segredos deny\n     editar ───── deny\n     comandos ─── só leitura (git status · diff · log · show · grep · ls-files) · resto deny\n     MCP ──────── só leitura (GitLab · ELM · elk · banco) · escrita deny\nquem a pessoa é: usuario do equipe.json = usuário do GitLab; a pré-condição da skill confere a booleana\nquem grava o harness: sa-setup.configurar e sa-elm.setup, na sessão sem agente, fora dos 5 agentes\n   sa-elm.setup só produz dados (pa em .sabia/config/elm/pa_<nome>.json, chave elm do agentes.json,\n   seção ELM do sabia.md, regras ELM dos agentes); a sa-setup aplica e regenera os agentes\nKiro: só nomes de capability em tools (sem toolsSettings); limites por caminho e URL no prompt",
  "pendencias": [
   [
    "MCP do Jenkins (CI/CD)",
@@ -6202,7 +6202,7 @@
   ],
   [
    "sabia validar-spec (CLI)",
-   "Validador de forma e ligações da spec nos dois formatos (Kiro e OpenSpec): notação <sigla>-<id> e id provisório <sigla>-<EP ou FT>-nn, artefatos afetados (inclui · altera · exclui · versão lida), CT-nn, seções obrigatórias e arquivos de elm/. A skill chama, avisa e não trava. O conteúdo fica com a revisão.",
+   "Validador de forma e ligações da spec nos dois formatos (Kiro e OpenSpec): notação <sigla>-<id> e id provisório <sigla>-<EP ou FT>-nn, artefatos afetados (inclui · altera · exclui · versão de referência), CT-nn, seções obrigatórias e arquivos de elm/. A skill chama, avisa e não trava. O conteúdo fica com a revisão.",
    "a construir"
   ],
   [
@@ -6227,7 +6227,7 @@
   ],
   [
    "ELM como toolkit",
-   "Tirar o ELM do núcleo: a sa-elm, a coluna ib do backlog.md, a pasta elm/ e a marca 'Publicação' viriam do toolkit. Sem o toolkit, o Sabiá funciona com a spec viva no repositório.",
+   "Tirar o ELM do núcleo: a sa-elm, a coluna ib do backlog.md, a pasta elm/ e a marca 'Publicação' viriam do toolkit. Sem o toolkit, o Sabiá funciona com a especificação vigente no repositório.",
    "2.2"
   ]
  ]

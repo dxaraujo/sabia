@@ -12,8 +12,8 @@ A fatia ou o bug `concluida`, o `formato_spec` e a chave `elm` do `agentes.json`
 3. **Kiro.** A pasta fica em `.kiro/specs/ft-<nnn>-<slug>/`, que é o vigente; nada se move → passo `publicar`.
 4. **OpenSpec.** Pela gravação comum na base (passo `gravar`), com o comando no lugar do Escrever dela, depois do
    pull:
-   - sem ELM: `openspec archive ft-<nnn>-<slug> --yes`, que funde o delta na spec viva (`openspec/specs/`);
-   - com ELM: `openspec archive ft-<nnn>-<slug> --skip-specs --yes`, porque a spec viva é o DOORS.
+   - sem ELM: `openspec archive ft-<nnn>-<slug> --yes`, que funde o delta na especificação vigente (`openspec/specs/`);
+   - com ELM: `openspec archive ft-<nnn>-<slug> --skip-specs --yes`, porque a especificação vigente é o DOORS.
 
    Commit `FT-nnn archive`.
 

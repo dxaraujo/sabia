@@ -1,5 +1,5 @@
 ---
-{"resumo": "Pitch do épico (Shape Up), uma página: Aprovado no topo, problema, apetite, solução em traços, riscos, não objetivos, Decisões, Em aberto e a Decisão go/kill."}
+{"resumo": "Pitch do épico (Shape Up), uma página: Aprovado no topo, problema, limite de investimento, solução em traços, riscos, não objetivos, Decisões, Em aberto e a Decisão go/kill."}
 ---
 # Pitch — `.sabia/planejamento/epicos/EP-<nn>-<slug>/pitch.md`
 
@@ -16,7 +16,7 @@ No kill, a pasta fica.
 ## Problema
 Clientes com parcelas atrasadas ligam para a central para renegociar: 3.000 ligações por mês, 12 minutos cada.
 
-## Apetite
+## Limite de investimento
 6 semanas
 
 ## Solução em traços
@@ -49,7 +49,7 @@ Clientes com parcelas atrasadas ligam para a central para renegociar: 3.000 liga
 |---|---|---|
 | Aprovado | `<usuario> · AAAA-MM-DD` de quem tem `produto`, gravado com a Decisão · `—` | `sa-refinar.moldar` |
 | Problema | quem sofre, quando e quanto custa hoje | `sa-refinar.moldar` |
-| Apetite | `<n> semanas`: o tempo que se aceita investir | `sa-refinar.moldar` |
+| Limite de investimento | `<n> semanas`: o tempo que se aceita investir | `sa-refinar.moldar` |
 | Solução em traços | lista dos elementos da solução, sem detalhe | `sa-refinar.moldar` |
 | Riscos | lista dos buracos de coelho conhecidos | `sa-refinar.moldar` |
 | Não objetivos | lista do que fica fora | `sa-refinar.moldar` |

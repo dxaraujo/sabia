@@ -263,7 +263,7 @@ Ligar ao projeto — um toolkit de tipo por linha (marcado o detectado; desmarca
 |---|---|---|---|
 | <[✅] | [ ]> | <n> | `<toolkit>` <versão> <🔍 detectado | (sugerido)> | `<sigla>` · … |
 
-Agentes do projeto (podem virar subagentes dos agentes primários):
+Agentes do projeto (podem virar subagentes dos agentes principais):
 
 | # | Agente | Para quê | Status |
 |---|---|---|---|
@@ -294,7 +294,7 @@ Nada customizado → a linha `| — | o Sabiá como vem | — | — | ➖ |`. Pa
 ## 🧭 Etapa 6 de 9 · Agentes — <n> de 5 · `sa-<nome>`
 `●●●●●◉○○○` <o agente em uma frase: ex. "leva a fatia de pronta ao merge">
 
-**Já vem do perfil:** <as skills do agente no `perfis.json`> · <primário | subagente>
+**Já vem do perfil:** <as skills do agente no `perfis.json`> · <principal | subagente>
 
 | | # | Skill extra | Para quê · origem |
 |---|---|---|---|
@@ -305,7 +305,7 @@ Nada customizado → a linha `| — | o Sabiá como vem | — | — | ➖ |`. Pa
 | <[✅] | [ ]> | <n> | `<servidor>/<tool>` | 🟢 só consulta |
 | <[✅] | [ ]> | <n> | `<servidor de browser>` | 🟢 servidor inteiro (só `sa-verificador`, projeto `frontend`) |
 
-(só nos primários) subagentes: os do perfil, `[✅]` fixos, e os agentes do projeto, desmarcados
+(só nos principais) subagentes: os do perfil, `[✅]` fixos, e os agentes do projeto, desmarcados
 | | # | Subagente | Para quê |
 |---|---|---|---|
 | [✅] | <n> | `sa-revisor` | revisão do agente e revisão do plano |
@@ -339,7 +339,7 @@ primeiro. Depois de um ajuste, mostre o cartão de novo antes de pedir o "ok" do
 | 1 | build (`sa-desenvolvedor`, `sa-especificador`) | 🟢 ler e editar · 🔴 harness e segredos · 🟡 push, merge, curl, wget · 🔴 rebase, `--force`, `reset --hard`, `--no-verify` · GitLab 🟢 leitura 🟡 escrita | 📐 fixo |
 | 2 | só leitura (`sa-pesquisador`, `sa-revisor`) | 🟢 ler · 🔴 editar · comandos e MCP só de leitura | 📐 fixo |
 | 3 | `sa-verificador` | só leitura + 🟢 Executar, curl na URL de teste e o `CT.csv` | 📐 fixo |
-| 4 | ELM | <🟢 leitura · 🟡 escrita nos primários · 🔴 nos subagentes e no autopilot | ➖ sem ELM> | <🧩 | ➖> |
+| 4 | ELM | <🟢 leitura · 🟡 escrita nos principais · 🔴 nos subagentes e no autopilot | ➖ sem ELM> | <🧩 | ➖> |
 | 5 | Autopilot | 🟢 push da própria branch, merge da base nela, abrir ou atualizar o MR · 🔴 merge do MR, ELM e rede | 📐 fixo |
 | 6 | Executar · URL de teste | <`<comando>` · `<url>` | `<job e parâmetros>` · ➖> | <🔍 | 🙋> |
 | 7 | Backpressure | trecho tocado a cada alteração · suíte completa antes do MR · baseline do CI | 📐 fixo |

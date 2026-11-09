@@ -14,7 +14,7 @@
 # Moldar — pitch e go/kill do épico
 
 Shape Up antes do PRD: o épico `a-moldar` ganha o `pitch.md` de uma página na pasta
-`.sabia/planejamento/epicos/EP-nn-<slug>/` (problema, apetite, solução em traços, riscos, não objetivos), e quem tem
+`.sabia/planejamento/epicos/EP-nn-<slug>/` (problema, limite de investimento, solução em traços, riscos, não objetivos), e quem tem
 `produto` decide go ou kill. Go: `em-especificacao` e o PRD (`sa-prd.prd`). Kill: `cancelado`, e a pasta fica.
 Aceita épico em `a-moldar`.
 

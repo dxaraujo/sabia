@@ -17,6 +17,6 @@
 ---
 # Setup — o ELM como dados para a sa-setup
 
-Roda na sessão padrão (sem agente `sa-*`): o harness dos agentes nega `.sabia/config`. Só produz dados: grava o
+Roda na sessão sem agente `sa-*`: o harness dos agentes nega `.sabia/config`. Só produz dados: grava o
 `pa` e devolve à `sa-setup.configurar` a chave `elm` do `agentes.json` (com o `bundle`), o texto da seção ELM do
 `sabia.md` e as regras ELM dos agentes. Quem aplica e regenera os agentes é a `sa-setup`. Roteiro do `pa`: [pa.md](~/.sabia/framework/skills/sa-elm/references/pa.md).

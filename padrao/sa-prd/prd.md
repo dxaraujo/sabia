@@ -51,7 +51,7 @@
 
 - **Aprovado:** de quem tem `produto`, logo abaixo do título. Mudança depois da aprovação tira a linha (volta a `—`),
   ganha uma linha em Mudanças e pede a aprovação de novo.
-- **Id do requisito:** existente = `<sigla>-<id do ELM>` (sem ELM, o id da spec viva); novo = provisório
+- **Id do requisito:** existente = `<sigla>-<id do ELM>` (sem ELM, o id da especificação vigente); novo = provisório
   `<sigla>-EP<nn>-<nn>` (ex.: `REG-EP03-01`), trocado pelo id do ELM na publicação da fatia. O id nunca é
   reaproveitado; o que sai fica com Ação exclui.
 - **Requisito só citado** (o existente que não muda) vai no texto pelo id, sem bloco.

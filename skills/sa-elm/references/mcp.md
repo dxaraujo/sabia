@@ -13,8 +13,8 @@ Toda tool devolve `{"ok": true, "dados": {…}}` ou `{"ok": false, "erro": {"cod
 | Operação | Tool | Tipo |
 |---|---|---|
 | conferir a conexão e o `pa` | `elm_status` | leitura |
-| descobrir a PA para montar o `pa` | `elm_setup_descobrir` | só na sessão padrão |
-| backlog do produto (`ccm.backlog`) | `elm_backlog` | só na sessão padrão |
+| descobrir a PA para montar o `pa` | `elm_setup_descobrir` | só na sessão sem agente |
+| backlog do produto (`ccm.backlog`) | `elm_backlog` | só na sessão sem agente |
 | ler · listar work items | `elm_ler_wi(id)` · `elm_listar_wi(iteracao, dono, tipo, pai, titulo_prefixo, estado)` | leitura |
 | criar · atualizar (pai, iteração, campos) | `elm_criar_wi` · `elm_atualizar_wi` | escrita |
 | assumir · concluir · reabrir · cancelar | `elm_transicao(id, alvo)` | escrita |
@@ -54,8 +54,7 @@ a `sa-elm.setup`.
   (`[REG-2087 <título>](2087-REG-<slug>.md)`) → `[REG-2087 <título>](2087)`; requisito novo citado → o id provisório
   como texto, até ganhar o id. Os tipos
   da coluna Embute do catálogo (as regras citadas por uma história) vão em `embutir`; o resto fica hyperlink.
-- **Depois de publicar**: `elm_ler_req(<id>)` devolve o `modificado_em` novo, que o próximo `altera` usa como versão
-  lida.
+- **Depois de publicar**: `elm_ler_req(<id>)` devolve o `modificado_em` novo, que o próximo `altera` usa como versão de referência.
 
 ## O que o MCP não grava (roteiro manual)
 

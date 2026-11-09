@@ -1,5 +1,5 @@
 ---
-{"resumo": "Sem prd.md, cria-o ao lado do pitch.md pelo padrão sa-prd/prd.md, com Aprovado: — no topo e Problema, apetite e não objetivos do pitch."}
+{"resumo": "Sem prd.md, cria-o ao lado do pitch.md pelo padrão sa-prd/prd.md, com Aprovado: — no topo e Problema, limite de investimento e não objetivos do pitch."}
 ---
 ## Entrada
 
@@ -9,7 +9,7 @@ A pasta `.sabia/planejamento/epicos/EP-nn-<slug>/` com o `pitch.md` aprovado (De
 
 `prd.md` já existe → siga (retomada). Senão, crie `prd.md` pelo padrão `sa-prd/prd.md`: `# PRD — EP-nn <título>`,
 `**Aprovado:** —` logo abaixo, e as seções Problema · Objetivos e métricas · Atores · Requisitos · Não objetivos ·
-Decisões · Em aberto · Mudanças (com a linha `v1`). Problema, apetite e não objetivos partem do `pitch.md`. As decisões
+Decisões · Em aberto · Mudanças (com a linha `v1`). Problema, limite de investimento e não objetivos partem do `pitch.md`. As decisões
 de antes do go ficam no `pitch.md`, e o PRD as cita; os D-nn do `prd.md` continuam a numeração do pitch.
 
 ## Saída

@@ -38,7 +38,7 @@ no Em aberto.
 
 | Botão | Componente | Habilitado quando | Efeito |
 |---|---|---|---|
-| "<Pesquisar>" | Button (primário) | <sempre> | <lista os eventos do filtro> |
+| "<Pesquisar>" | Button (principal) | <sempre> | <lista os eventos do filtro> |
 
 **Estados:**
 

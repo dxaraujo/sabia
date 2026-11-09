@@ -1,16 +1,16 @@
 ---
-{"resumo": "Copia para o delta, sem reescrever, o texto completo de cada requisito tocado, com id, ação e versão lida."}
+{"resumo": "Copia para o delta, sem reescrever, o texto completo de cada requisito tocado, com id, ação e versão de referência."}
 ---
 ## Entrada
 
-Os artefatos afetados da ficha (`<sigla>-<id>` · inclui | altera | exclui · versão lida), os arquivos aprovados de `elm/` (com
-ELM) ou a spec viva com as regras aprovadas da ficha (sem ELM).
+Os artefatos afetados da ficha (`<sigla>-<id>` · inclui | altera | exclui · versão de referência), os arquivos aprovados de `elm/` (com
+ELM) ou a especificação vigente com as regras aprovadas da ficha (sem ELM).
 
 ## Faça
 
-1. Para cada requisito tocado, copie o texto completo, sem reescrever, com `<sigla>-<id>`, a ação e a versão lida.
+1. Para cada requisito tocado, copie o texto completo, sem reescrever, com `<sigla>-<id>`, a ação e a versão de referência.
    Do arquivo de `elm/`, só o corpo, sem o frontmatter.
-   Fonte: com ELM, o arquivo aprovado em `elm/`; sem ELM, o vigente da spec viva com as regras aprovadas da ficha,
+   Fonte: com ELM, o arquivo aprovado em `elm/`; sem ELM, o vigente da especificação vigente com as regras aprovadas da ficha,
    sem mudar o sentido.
 2. OpenSpec: `specs/<cap>/spec.md` com `## ADDED Requirements` (inclui), `## MODIFIED Requirements` (altera) e
    `## REMOVED Requirements` (exclui, com Reason e Migration).

@@ -20,7 +20,7 @@
 # Elm — o texto oficial que a fatia muda
 
 Só com ELM. Para cada artefato afetado da ficha (HF, UC, REG, MSG, EL, GL), o original do DOORS vem pela `sa-elm.baixar` para
-`<pasta da spec>/elm/`, num commit de base (original + versão lida), antes de qualquer edição. Depois, pelo modo da
+`<pasta da spec>/elm/`, num commit de base (original + versão de referência), antes de qualquer edição. Depois, pelo modo da
 linha Especificação da ficha, o arquivo inteiro é editado (IA supervisionada ou IA autopilot) ou, no manual, o
 especificador altera direto no DOORS e a skill sincroniza na volta ("alterei"). O especificador aprova cada arquivo,
 e o git mostra a diferença contra o commit de base. O `elm/` é a fonte da publicação (`sa-elm.publicar`, depois do

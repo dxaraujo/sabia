@@ -9,7 +9,7 @@ O épico `a-moldar` (linha e `obs`; o `veio de FT-nnn` traz a ficha de origem) e
 
 1. **Pasta.** `.sabia/planejamento/epicos/EP-nn-<slug>/` nasce aqui, com o `pitch.md` pelo padrão
    `sa-refinar/pitch.md` e a linha `**Aprovado:** —` no topo. Na retomada, siga do que já está escrito.
-2. **Seções**, em uma página: Problema · Apetite (`<n> semanas`) · Solução em traços · Riscos · Não objetivos ·
+2. **Seções**, em uma página: Problema · Limite de investimento (`<n> semanas`) · Solução em traços · Riscos · Não objetivos ·
    Decisões (as tomadas antes do go) · Em aberto (pergunta · para quem · bloqueia) · Decisão (vazia até o passo
    `decisao`).
 3. **Perguntas** pela `sa-entrevistar.entrevistar`: até 5 por rodada, cada uma com a recomendação; os fatos do código

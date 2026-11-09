@@ -10,13 +10,13 @@ inclusion: always
 ## Resumo do fluxo
 
 Este repositório usa o fluxo **Sabiá** (skills `sa-*`): alinhar antes, verificar depois. Fatias verticais
-pequenas, teste primeiro com backpressure, revisão e verificação do agente, em contexto limpo, MR revisado por um
+pequenas, teste primeiro com backpressure, revisão e verificação do agente, em contexto isolado, MR revisado por um
 desenvolvedor que não é o autor e lido por uma pessoa antes do merge.
 
 - Como funciona e qual skill usar: `sabia`. Demanda nova: `sa-triar`. Onde parei ou minha próxima: `sa-status`.
-- Agentes primários: `sa-desenvolvedor` (desenvolvimento, plano, MR, revisão humana e Sustentação) e `sa-especificador`
+- Agentes principais: `sa-desenvolvedor` (desenvolvimento, plano, MR, revisão humana e Sustentação) e `sa-especificador`
   (refinamento, PRD, especificação, entrevista e planejamento). Subagentes: `sa-pesquisador`, `sa-revisor` e
-  `sa-verificador`. A `sa-setup` e a `sa-elm.setup` rodam na sessão padrão.
+  `sa-verificador`. A `sa-setup` e a `sa-elm.setup` rodam na sessão sem agente.
 - Papéis são booleanas no `.sabia/planejamento/equipe.json` (`desenvolvedor` · `especificador` · `produto`). A
   identidade é o usuário do GitLab.
 - O estado (`backlog.md`, `sprint-<nn>.md`) e os documentos de planejamento vão direto na base; o código, a spec da

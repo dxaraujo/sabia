@@ -7,7 +7,7 @@ Um pedido: "customizar o passo X", "trocar o padrão Y", "o que este projeto mud
 
 ## Faça
 
-1. Dentro de um agente `sa-*` → diga que roda na sessão padrão, porque `.sabia/fluxo/` e `.sabia/padrao/` são
+1. Dentro de um agente `sa-*` → diga que roda na sessão sem agente, porque `.sabia/fluxo/` e `.sabia/padrao/` são
    harness, e pare.
 2. Sem `.sabia/config/agentes.json` → o projeto não está configurado: ofereça a `sa-setup.configurar`.
 3. "O que este projeto mudou?" → mostre o bloco Fluxos (W5-F) e, por linha, o diff contra o original (passo ou

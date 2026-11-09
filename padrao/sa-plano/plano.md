@@ -61,7 +61,7 @@ Na rápida, que não tem `design.md`, as Decisões técnicas vão numa seção `
 
 ### Requirement: <sigla>-<id> <título>
 <texto completo do requisito, copiado do aprovado>
-<!-- versão lida: <data-hora ISO do DOORS | —> -->
+<!-- versão de referência: <data-hora ISO do DOORS | —> -->
 
 #### Scenario: CT-nn <título>
 - **WHEN** <gatilho>
@@ -83,9 +83,9 @@ Na rápida, que não tem `design.md`, as Decisões técnicas vão numa seção `
   renomear é altera.
 - `<sigla>` ∈ HF · UC · REG · MSG · EL · GL; `<id>` = id do ELM, ou o provisório `<EP|FT>nn-nn` no requisito novo (sem ELM, o
   provisório é o definitivo).
-- `<cap>` em kebab-case; um requisito vive numa só. Requisito existente na spec viva mantém a `<cap>` de lá; o novo
+- `<cap>` em kebab-case; um requisito vive numa só. Requisito existente na especificação vigente mantém a `<cap>` de lá; o novo
   usa o slug do épico pai, ou o da fatia sem pai.
-- O texto é copiado, sem reescrever, do arquivo aprovado de `elm/` (com ELM) ou da spec viva com as regras
+- O texto é copiado, sem reescrever, do arquivo aprovado de `elm/` (com ELM) ou da especificação vigente com as regras
   aprovadas da ficha (sem ELM).
 
 ## `requirements.md` (Kiro, fatia)
@@ -103,7 +103,7 @@ FT-<nnn> — <título>. <o comportamento que a fatia entrega, em 2–3 frases.> 
 ## Requirements
 
 ### Requirement 1: <sigla>-<id> <título>
-**Ação:** <inclui | altera | exclui> · **Versão lida:** <data-hora ISO | —>
+**Ação:** <inclui | altera | exclui> · **Versão de referência:** <data-hora ISO | —>
 **User Story:** Como <ator>, quero <…>, para <…>.
 <!-- HF: a User Story; REG, EL, GL: o corpo do tipo, completo. Requisito sem DOORS: só o título. -->
 
@@ -185,7 +185,7 @@ Kiro (completo e Quick Spec):
 
 ## Testing Strategy
 - Pontos de teste: <o mais alto possível, pela interface pública>
-- Contrato de pronto:
+- Critérios de pronto:
 
 | Cenário | Como executar | Esperado | Onde verificar |
 |---|---|---|---|
@@ -209,13 +209,13 @@ OpenSpec (só completo):
 
 ## Decisions
 - <decisão> — <motivo>; <consequência> (<ADR NNNN | local>)
-<!-- contratos e dados; o Contrato de pronto (Cenário CT-nn · Como executar · Esperado · Onde verificar) também aqui -->
+<!-- contratos e dados; os critérios de pronto (Cenário CT-nn · Como executar · Esperado · Onde verificar) também aqui -->
 
 ## Risks / Trade-offs
 - <risco> → <mitigação>
 ```
 
-O Esperado do Contrato de pronto repete o "Então" do cenário palavra por palavra (texto, rótulo, mensagem); o valor
+O Esperado dos critérios de pronto repete o "Então" do cenário palavra por palavra (texto, rótulo, mensagem); o valor
 interno que o produz vai em Data Models. A decisão que atravessa fatias vira ADR no MR; a local fica aqui. Onde o
 projeto mantém ET (`ET as-built: sim` na seção ELM do `sabia.md`), Components and Interfaces, Data Models e Decisões
 técnicas (OpenSpec: Decisions) formam a ET publicada; a codificação os ajusta ao que foi feito antes do MR.

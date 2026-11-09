@@ -1,5 +1,5 @@
 ---
-{"resumo": "Entrada do configurar: inicial, atualização ou aplicar os dados de uma sa-elm.setup; sempre na sessão padrão."}
+{"resumo": "Entrada do configurar: inicial, atualização ou aplicar os dados de uma sa-elm.setup; sempre na sessão sem agente."}
 ---
 ## Entrada
 
@@ -8,7 +8,7 @@ toolkit", ou a passagem da `sa-elm.setup` chamada direto, com os dados do ELM pa
 
 ## Faça
 
-1. Dentro de um agente `sa-*` → diga que a `sa-setup` roda na sessão padrão, porque grava o harness que os
+1. Dentro de um agente `sa-*` → diga que a `sa-setup` roda na sessão sem agente, porque grava o harness que os
    agentes negam, e pare.
 2. Leia o [wizard.md](~/.sabia/framework/skills/sa-setup/references/wizard.md) antes da primeira mensagem.
 3. Raiz do repositório: `git rev-parse --show-toplevel`. Sem git → avise que o fluxo depende de branch e MR.
@@ -17,7 +17,7 @@ toolkit", ou a passagem da `sa-elm.setup` chamada direto, com os dados do ELM pa
 
 ## Saída
 
-Sessão padrão → passo `pre-checagem`. Dentro de um agente → fim.
+Sessão sem agente → passo `pre-checagem`. Dentro de um agente → fim.
 
 ## Pare se
 

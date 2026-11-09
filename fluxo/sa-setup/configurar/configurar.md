@@ -38,7 +38,7 @@
 Instalação e atualização numa sequência só: com `.sabia/config/agentes.json` no projeto, cada passo mostra o que
 está gravado e só pergunta o que muda. Pergunta "usa ELM?" e, com sim, chama a `sa-elm.setup` e aplica os dados que
 ela devolve. Decide o `formato_spec`, grava o `.sabia/sabia.md` com seções fechadas (Projeto e Comandos por mescla) e gera os
-5 agentes (primários `sa-desenvolvedor` e `sa-especificador`; subagentes `sa-pesquisador`, `sa-revisor` e
+5 agentes (principais `sa-desenvolvedor` e `sa-especificador`; subagentes `sa-pesquisador`, `sa-revisor` e
 `sa-verificador`) nos formatos do opencode e do Kiro.
 
 Os passos de `projeto` a `autonomia` só montam a configuração e mostram; nada que a ferramenta carrega é gravado

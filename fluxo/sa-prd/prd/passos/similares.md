@@ -13,14 +13,14 @@ a ação recomendada:
 | Vigente | Ação | Id |
 |---|---|---|
 | nenhum | inclui | provisório `<sigla>-EP<nn>-<nn>` (ex.: `REG-EP03-01`), sequencial no `prd.md` |
-| o mesmo, e muda | altera | `<sigla>-<id do ELM>` (sem ELM, o id da spec viva) |
-| deixa de valer | exclui | `<sigla>-<id do ELM>` (sem ELM, o id da spec viva) |
+| o mesmo, e muda | altera | `<sigla>-<id do ELM>` (sem ELM, o id da especificação vigente) |
+| deixa de valer | exclui | `<sigla>-<id do ELM>` (sem ELM, o id da especificação vigente) |
 | o mesmo, sem mudar | — (só citado) | `<sigla>-<id do ELM>` |
 
 - **Impacto.** Para cada altera e exclui, quem cita o requisito (a HF que embute a REG, a EL da tela) e se muda
   também: muda → linha própria; não muda → só citado no texto.
 - A decisão da pessoa vai à tabela Decisões do `prd.md`.
-- A versão lida não fica no PRD: entra nos artefatos afetados da ficha, no detalhar.
+- A versão de referência não fica no PRD: entra nos artefatos afetados da ficha, no detalhar.
 
 ## Saída
 

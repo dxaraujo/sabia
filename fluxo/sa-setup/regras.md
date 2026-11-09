@@ -3,9 +3,9 @@
 ---
 # Regras comuns da `sa-setup`
 
-Roda na **sessão padrão** da ferramenta (Kiro ou opencode, sem agente `sa-*`): grava o harness que os agentes negam
+Roda na **sessão sem agente** da ferramenta (Kiro ou opencode, sem agente `sa-*`): grava o harness que os agentes negam
 (`.kiro/agents`, `.kiro/settings`, `.kiro/steering/sabia.md`, `.opencode`, `opencode.json`, `.sabia/config`,
-`.sabia/fluxo`, `.sabia/padrao`). Dentro de um agente `sa-*` → diga para abrir a sessão padrão e pare.
+`.sabia/fluxo`, `.sabia/padrao`). Dentro de um agente `sa-*` → diga para abrir a sessão sem agente e pare.
 
 - **Voz do wizard:** português do Brasil em tudo que a pessoa lê, qualquer que seja o idioma da ferramenta. Entre
   uma ferramenta e outra, no máximo uma linha `🔎 <o que está fazendo>…`. Toda mensagem é um cartão de
