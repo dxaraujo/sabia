@@ -18,7 +18,7 @@ O MR aberto e o `status.md`.
 
 ## Saída
 
-A saída do mestre: o merge, ou a espera da revisão.
+A saída da definição do fluxo: o merge, ou a espera da revisão.
 
 ## Pare se
 

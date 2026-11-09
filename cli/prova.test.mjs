@@ -29,12 +29,12 @@ function escrever(base, arquivos) {
   return base;
 }
 
-/** O toolkit sintético "casa": HF → a skill casa, com o fluxo e o padrão do tipo como arquivos da pasta, e um item de rubrica. */
+/** O toolkit sintético "casa": HF → a skill casa, com o fluxo e o padrão do tipo como arquivos da pasta, e um item de critério de revisão. */
 const casa = () => escrever(path.join(raiz, "fontes/casa"), {
   "toolkit.json": { nome: "casa", versao: "1.0.0", descricao: "toolkit fictício de especificação", autor: { nome: "Ana Exemplo", area: "Equipe Alfa" },
     "tipos-de-projeto": ["backend", "frontend"], skills: [{ caminho: "skills/casa/SKILL.md", papeis: ["especificador"] }],
     tipos: { HF: { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md", padrao: "padrao/padrao-hf.md" } },
-    rubricas: [{ id: "EX1", tipo: "HF", verificacao: "Toda HF cita a tela de origem", severidade: "IMPORTANTE" }], requer: { sabia: "2.1.0" } },
+    criterios_revisao: [{ id: "EX1", tipo: "HF", verificacao: "Toda HF cita a tela de origem", severidade: "IMPORTANTE" }], requer: { sabia: "2.1.0" } },
   "skills/casa/SKILL.md": "---\nname: casa\ndescription: HF da casa\n---\n# casa — histórias\n\nSiga o fluxo e o padrão do tipo.\n",
   "fluxo/fluxo-hf.md": "# Fluxo HF\n\nEscreva as HF e confira.\n",
   "padrao/padrao-hf.md": "# Padrão HF\n",
@@ -96,7 +96,7 @@ before(async () => {
 
 after(() => fs.rmSync(raiz, { recursive: true, force: true }));
 
-test("prova: o framework compilado nos dois alvos tem o catálogo e o grafo de cada fluxo igual ao do mestre", () => {
+test("prova: o framework compilado nos dois alvos tem o catálogo e o grafo de cada fluxo igual ao da definição do fluxo", () => {
   assert.ifError(falhaInstalar);
   const m = carregar(path.join(home, ".sabia/framework"));
   for (const [alvo, skills] of [["opencode", path.join(home, ".config/opencode/skills")], ["kiro", path.join(home, ".kiro/powers/installed/sabia/skills")]]) {

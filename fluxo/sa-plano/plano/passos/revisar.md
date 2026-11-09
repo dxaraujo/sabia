@@ -1,5 +1,5 @@
 ---
-{"resumo": "'Quer revisar agora?': sa-revisar.revisar com a rubrica L no sa-revisor e a triagem dos achados."}
+{"resumo": "'Quer revisar agora?': sa-revisar.revisar com os critérios de revisão L no sa-revisor e a triagem dos achados."}
 ---
 ## Entrada
 
@@ -8,7 +8,7 @@ A parte escrita (completo) ou o plano inteiro (rápida).
 ## Faça
 
 1. No completo, ao fim de cada parte; na rápida, uma vez no fim. Pergunte "quer revisar agora?".
-2. Sim → chame a `sa-revisar.revisar` (rubrica L) no subagente `sa-revisor`.
+2. Sim → chame a `sa-revisar.revisar` (critérios de revisão L) no subagente `sa-revisor`.
 3. Achados triados: `corrige` → ajusta o plano; `volta-spec` → Em aberto ao especificador; regra sem decisão → Em
    aberto ao P.O.
 4. No autopilot, não pergunte: rode a análise no completo e pule na rápida. 2 reprovações seguidas disparam o

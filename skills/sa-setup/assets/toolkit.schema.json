@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/dxaraujo/sabia/main/skills/sa-setup/assets/toolkit.schema.json",
   "title": "Toolkit do Sabiá",
-  "description": "Manifesto de um toolkit: skills (e opcionalmente steering, comandos, agentes, tipos e rubricas) para um tipo de projeto ou stack, mantido fora do fluxo Sabiá e descoberto pela skill sa-setup. Três perguntas por skill: quem (papeis), onde (stack e deteccao) e em que passo (passo).",
+  "description": "Manifesto de um toolkit: skills (e opcionalmente steering, comandos, agentes, tipos e critérios de revisão) para um tipo de projeto ou stack, mantido fora do fluxo Sabiá e descoberto pela skill sa-setup. Três perguntas por skill: quem (papeis), onde (stack e deteccao) e em que passo (passo).",
   "type": "object",
   "required": [
     "nome",
@@ -144,7 +144,7 @@
               "passo": {
                 "type": "string",
                 "pattern": "^sa-[a-z]+\\.[a-z][a-z-]*\\.[a-z][a-z-]*$",
-                "description": "O id do passo do Sabiá que aceita desvio (\"desvio\": true no mestre), ex.: sa-desenvolver.codificar.tarefa. O dono do fluxo é o agente que recebe o desvio. Um tipo do catálogo (HF, REG…) vai por tipos, não por aqui."
+                "description": "O id do passo do Sabiá que aceita desvio (\"desvio\": true na definição do fluxo), ex.: sa-desenvolver.codificar.tarefa. O dono do fluxo é o agente que recebe o desvio. Um tipo do catálogo (HF, REG…) vai por tipos, não por aqui."
               },
               "para": {
                 "type": "string",
@@ -242,9 +242,9 @@
         }
       }
     },
-    "rubricas": {
+    "criterios_revisao": {
       "type": "array",
-      "description": "Opcional: itens de rubrica que o toolkit acrescenta à revisão (vão no prompt do revisor); não troca nenhum item do Sabiá, e o id não pode repetir um da rubrica do Sabiá nem de outro toolkit do projeto.",
+      "description": "Opcional: itens de critério de revisão que o toolkit acrescenta à revisão (vão no prompt do revisor); não troca nenhum item do Sabiá, e o id não pode repetir um dos critérios de revisão do Sabiá nem de outro toolkit do projeto.",
       "items": {
         "type": "object",
         "required": [

@@ -15,7 +15,7 @@ O plano aprovado e a autonomia (`status.md`).
 
 ## Saída
 
-A saída do mestre pela autonomia.
+A saída da definição do fluxo pela autonomia.
 
 ## Pare se
 

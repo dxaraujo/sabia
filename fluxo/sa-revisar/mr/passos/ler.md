@@ -16,7 +16,7 @@ O MR aberto da branch `<id>` e a pessoa que pode revisar (passo `revisor`).
 
 ## Saída
 
-O MR lido e os primeiros achados → passo `rubrica`.
+O MR lido e os primeiros achados → passo `criterios-revisao`.
 
 ## Pare se
 

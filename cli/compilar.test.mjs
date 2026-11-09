@@ -72,7 +72,7 @@ test("skill de 1 fluxo: SKILL.md com regras, fluxo, tabela, travas, arquivos e o
   assert.ok(fs.existsSync(path.join(st, "skills/sa-a/references/padrao/modelo.md")));
 });
 
-test("grafo: references/<fluxo>/grafo.md gerado do mestre e o link logo abaixo da tabela", () => {
+test("grafo: references/<fluxo>/grafo.md gerado da definição do fluxo e o link logo abaixo da tabela", () => {
   const st = compilar(fixture(), path.join(raiz, "st"), { base: BASE });
   const g = out(st, "sa-a/references/a/grafo.md");
   assert.match(g, /^# Grafo de sa-a\.a\n\n```\nsa-a\.a   dono sa-um   travas sim-da-pessoa\n/);
@@ -141,7 +141,7 @@ test("tipos: catálogo validado (sigla, cria, padrão, elm, depois sem ciclo) e 
   assert.match(t, /\| `XX` \(pendente\) \|/);
   assert.match(t, /\[`sa-a\/modelo\.md`\]\(~\/\.config\/opencode\/skills\/sa-a\/references\/padrao\/modelo\.md\)/);
   assert.match(t, /^\| `CT` \| Caso \| .* \| — \| não \|/m);
-  assert.doesNotMatch(t, /Rubrica/);
+  assert.doesNotMatch(t, /Critérios? de revisão/);
   const e = validar(carregar(fixture(tipos({ ...ok, GL: { ...ok.GL, cria: ["sa-a.a"], padrao: "sa-a/nao.md", depois: ["HF"] } })))).join("\n");
   for (const rx of [/tipo GL: cria sa-a\.a não é passo/, /tipo GL: padrão sa-a\/nao\.md inexistente/, /ciclo no "depois"/]) assert.match(e, rx);
   assert.doesNotMatch(e, /tipo CT/);
@@ -302,7 +302,7 @@ function casa(mudar = {}) {
   return escrever(path.join(raiz, "casa"), {
     "toolkit.json": { nome: "casa", versao: "1.0.0", descricao: "toolkit fictício", autor: { nome: "Ana Exemplo", area: "Equipe Alfa" },
       "tipos-de-projeto": ["backend"], skills: [{ caminho: "skills/casa/SKILL.md", papeis: ["especificador"] }], tipos: { HF: hf, ATA: { skill: hf.skill, fluxo: hf.fluxo } },
-      rubricas: [{ id: "EX1", tipo: "HF", verificacao: "Toda HF cita o campo de origem", severidade: "IMPORTANTE" }], requer: { sabia: "2.1.0" }, ...mudar },
+      criterios_revisao: [{ id: "EX1", tipo: "HF", verificacao: "Toda HF cita o campo de origem", severidade: "IMPORTANTE" }], requer: { sabia: "2.1.0" }, ...mudar },
     "skills/casa/SKILL.md": skill("casa", "# casa"), "fluxo/fluxo-hf.md": "# Fluxo HF\n", "padrao/padrao-hf.md": "# Padrão HF\n",
   });
 }
@@ -317,19 +317,19 @@ function fwToolkit() {
     "fluxo/sa-prd/prd/passos/escrever.md": passo("Escreve."),
     "fluxo/sa-desenvolver/codificar/codificar.md": mestre({ fluxo: "codificar", dono: "sa-desenvolvedor", passos: [{ id: "as-built" }] }),
     "fluxo/sa-desenvolver/codificar/passos/as-built.md": passo("As-built."),
-    "padrao/sa-revisar/rubricas.md": "---\n{\"resumo\": \"r\"}\n---\n| # | V | S |\n|---|---|---|\n| C2 | x | B |\n",
+    "padrao/sa-revisar/criterios-revisao.md": "---\n{\"resumo\": \"r\"}\n---\n| # | V | S |\n|---|---|---|\n| C2 | x | B |\n",
     "fluxo/tipos.json": { tipos: { HF: tipo(["sa-prd.prd.escrever"]), ATA: tipo(["sa-prd.prd.escrever"]), GL: tipo(["sa-prd.prd.escrever"], []),
       ET: tipo(["sa-desenvolver.codificar.as-built", "sa-prd.prd.escrever"]) } },
   });
 }
 
-test("toolkit: tipo → skill do toolkit com fluxo e padrão da pasta; recusa tipo fora, não desviável, pendente, forma \"<tk>.<fluxo>\", rubrica e requer", () => {
+test("toolkit: tipo → skill do toolkit com fluxo e padrão da pasta; recusa tipo fora, não desviável, pendente, forma \"<tk>.<fluxo>\", critérios de revisão e requer", () => {
   const FW = fwToolkit();
   const erros = (mudar, fw = FW) => { const r = validarToolkitFonte(fw, casa(mudar)).join("\n"); fs.rmSync(path.join(raiz, "casa"), { recursive: true }); return r; };
   const hf = { skill: "skills/casa/SKILL.md", fluxo: "fluxo/fluxo-hf.md" };
   assert.equal(erros({}), "");
-  const e = erros({ tipos: { GL: hf, XX: hf, ATA: "casa.ata" }, rubricas: [{ id: "C2", verificacao: "repete a do Sabiá", severidade: "BLOQUEANTE" }], requer: { sabia: "9.0.0" } });
-  for (const rx of [/tipo GL: não é desviável/, /tipo XX: fora do catálogo/, /tipo ATA: use \{"skill", "fluxo", "padrao"\}/, /rubrica C2: repetida ou já do Sabiá/, /requer o Sabiá 9\.0\.0/]) assert.match(e, rx);
+  const e = erros({ tipos: { GL: hf, XX: hf, ATA: "casa.ata" }, criterios_revisao: [{ id: "C2", verificacao: "repete a do Sabiá", severidade: "BLOQUEANTE" }], requer: { sabia: "9.0.0" } });
+  for (const rx of [/tipo GL: não é desviável/, /tipo XX: fora do catálogo/, /tipo ATA: use \{"skill", "fluxo", "padrao"\}/, /critério de revisão C2: repetida ou já do Sabiá/, /requer o Sabiá 9\.0\.0/]) assert.match(e, rx);
   assert.match(erros({ tipos: { HF: { ...hf, skill: "skills/outra/SKILL.md" } } }), /tipo HF: a skill skills\/outra\/SKILL\.md não está em skills/);
   assert.match(erros({ tipos: { HF: { ...hf, fluxo: "fluxo/nao.md" } } }), /tipo HF: falta o fluxo fluxo\/nao\.md na pasta do toolkit/);
   assert.match(erros({ tipos: { HF: { ...hf, padrao: "../fora.md" } } }), /tipo HF: falta o padrao \.\.\/fora\.md na pasta do toolkit/);
@@ -346,9 +346,9 @@ test("toolkit: tipo → skill do toolkit com fluxo e padrão da pasta; recusa ti
   assert.match(erros({ skills: [{ caminho: hf.skill, papeis: ["revisor"] }] }), /tipo HF: .*papel especificador ou produto.*\n.*tipo ATA: .*papel especificador ou produto/);
   // tipo desviável ainda pendente no Sabiá instalado
   const fw = escrever(path.join(raiz, "fw-pend"), { "fluxo/tipos.json": { tipos: { HF: { desviavel: ["sa-prd.prd.escrever"], pendente: true } } } });
-  assert.match(erros({ tipos: { HF: hf }, rubricas: [] }, fw), /tipo HF: pendente no Sabiá instalado/);
-  const r = erros({ rubricas: [{ id: "EX1", tipo: "HF" }, { id: "ex2", verificacao: "v", severidade: "ALTA" }] });
-  for (const rx of [/rubrica EX1: sem verificacao/, /rubrica EX1: severidade ""/, /rubrica ex2: id como EX1/, /rubrica ex2: severidade "ALTA"/]) assert.match(r, rx);
+  assert.match(erros({ tipos: { HF: hf }, criterios_revisao: [] }, fw), /tipo HF: pendente no Sabiá instalado/);
+  const r = erros({ criterios_revisao: [{ id: "EX1", tipo: "HF" }, { id: "ex2", verificacao: "v", severidade: "ALTA" }] });
+  for (const rx of [/critério de revisão EX1: sem verificacao/, /critério de revisão EX1: severidade ""/, /critério de revisão ex2: id como EX1/, /critério de revisão ex2: severidade "ALTA"/]) assert.match(r, rx);
 });
 
 test("package.json#files leva todo módulo local que o sabia.mjs importa", () => {

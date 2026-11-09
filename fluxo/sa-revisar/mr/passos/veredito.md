@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-Os achados (passo `rubrica`).
+Os achados (passo `criterios-revisao`).
 
 ## Faça
 

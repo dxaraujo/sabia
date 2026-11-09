@@ -1,13 +1,13 @@
 ---
-{"resumo": "Rubricas de revisão L (plano da fatia) e C (código, eixos spec · padrões · segurança), com severidades, destinos, fechos e o formato do relatório."}
+{"resumo": "Critérios de revisão L (plano da fatia) e C (código, eixos spec · padrões · segurança), com severidades, destinos, fechos e o formato do relatório."}
 ---
-# Rubricas de revisão do Sabiá
+# Critérios de revisão de revisão do Sabiá
 
 Cada item tem severidade. Só o **BLOQUEANTE** reprova. **IMPORTANTE** e **SUGESTÃO** não reprovam: a pessoa tria
 cada um. Todo achado tem **evidência** (`arquivo:linha`, comando com a saída ou "procurado em X, não encontrado"), a
 **correção** esperada e o **destino** sugerido. Achado sem evidência não é achado.
 
-As Regras aprendidas do `.sabia/sabia.md` valem como itens extras da rubrica a que se referem. Os itens de rubrica de
+As Regras aprendidas do `.sabia/sabia.md` valem como itens extras dos critérios de revisão a que se referem. Os itens de critério de revisão de
 um toolkit (no prompt do revisor e na seção Tipos com skill de toolkit do `sabia.md`) também só se somam: nenhum
 troca, afrouxa ou dispensa um item daqui.
 
@@ -109,7 +109,7 @@ ambiente, sem BLOQUEANTE).
 <1–2 frases: o que foi revisado e a impressão geral>
 
 ## Achados
-<!-- Rubrica C: uma tabela por eixo (spec, padrões, segurança). -->
+<!-- Critérios de revisão C: uma tabela por eixo (spec, padrões, segurança). -->
 | # | Severidade | Achado | Evidência | Correção | Origem | Destino |
 |---|---|---|---|---|---|---|
 

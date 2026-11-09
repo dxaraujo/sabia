@@ -7,9 +7,9 @@ Os achados e as verificações (passo `evidencia`).
 
 ## Faça
 
-1. Monte o relatório no formato do padrão `sa-revisar/rubricas.md`: uma linha por achado, com # · severidade
+1. Monte o relatório no formato do padrão `sa-revisar/criterios-revisao.md`: uma linha por achado, com # · severidade
    (BLOQUEANTE · IMPORTANTE · SUGESTÃO) · achado · evidência · correção · origem (L: plano · ficha · PRD; C:
-   código · ambiente) · destino sugerido (corrige · adia · volta-plano · volta-spec · descarta). Na rubrica C, uma
+   código · ambiente) · destino sugerido (corrige · adia · volta-plano · volta-spec · descarta). Nos critérios de revisão C, uma
    tabela por eixo.
 2. A última linha é exata. L: `ANALISE: OK` ou `ANALISE: AJUSTAR`. C: `VEREDITO: APROVADO`, `VEREDITO: REVISAR` ou
    `VEREDITO: AMBIENTE`. Só o BLOQUEANTE reprova. C3 sem rodar por ambiente → `VEREDITO: AMBIENTE`, nunca

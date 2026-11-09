@@ -1,7 +1,7 @@
 """Gera os 5 agentes do Sabiá e os agentes de toolkit a partir de assets/agents/perfis.json (os modelos de permissão e
 os agentes), dos prompts assets/agents/sa-<nome>.md e do .sabia/config/agentes.json do projeto, para cada alvo: kiro
 (.kiro/agents/<nome>.json, só nomes de capability em tools; os limites por caminho e URL vão no prompt) e opencode
-(.opencode/agents/<nome>.md, com mode e permission). Lê os mestres dos fluxos no framework instalado
+(.opencode/agents/<nome>.md, com mode e permission). Lê as definições dos fluxos no framework instalado
 (~/.sabia/framework/fluxo/, ou --framework) e o override do projeto (.sabia/fluxo/, .sabia/padrao/): o agente dono de
 cada fluxo recebe no prompt só o que o projeto mudou (o delta), e todo agente a regra de chamada entre fluxos.
 
@@ -88,7 +88,7 @@ def sha12(arquivo):
 
 
 def ler_fluxos(fw):
-    """Os mestres do framework instalado: {"sa-x.f": {skill, fluxo, dono, passos, dir}}. Sem fluxo/, vazio (o gerar() recusa)."""
+    """As definições do framework instalado: {"sa-x.f": {skill, fluxo, dono, passos, dir}}. Sem fluxo/, vazio (o gerar() recusa)."""
     out = {}
     for m in sorted((fw / "fluxo").glob("*/*/*.md")) if (fw / "fluxo").is_dir() else []:
         if m.stem == m.parent.name:
@@ -233,11 +233,11 @@ def fonte_toolkits(projeto, cfg, fw, fluxos):
     """Tipos, rubricas, verificacao e steering dos toolkits do projeto: devolve {agente: {"linhas", "skills"}} e as
     linhas da seção do sabia.md. Tipo → o dono do passo de desvio (a skill com um papel dele em papeis); rubricas →
     sa-revisor; verificacao → sa-verificador; steering → os agentes dos papeis. O Sabiá não compila conteúdo de toolkit.
-    O mesmo tipo ou item de rubrica em dois toolkits → ValueError."""
+    O mesmo tipo ou item de critério de revisão em dois toolkits → ValueError."""
     ler = lambda f: json.loads(f.read_text(encoding="utf-8")) if f.is_file() else {}
     catalogo = ler(fw / "fluxo/tipos.json").get("tipos", {})
-    rub = fw / "padrao/sa-revisar/rubricas.md"
-    de = {f"rubrica {r}": "Sabiá" for r in (re.findall(r"^\| ([A-Z]\d+) \|", rub.read_text(encoding="utf-8"), re.M) if rub.is_file() else [])}
+    rub = fw / "padrao/sa-revisar/criterios-revisao.md"
+    de = {f"critério de revisão {r}": "Sabiá" for r in (re.findall(r"^\| ([A-Z]\d+) \|", rub.read_text(encoding="utf-8"), re.M) if rub.is_file() else [])}
     erros, por_agente, por_passo, extras, rubricas, tab_tipos, tab_rubricas = [], {}, {}, {}, [], [], []
     fonte_toolkits.originais = {}  # padrao-<tipo>.md → o padrão do toolkit, para a base da cópia do projeto
     dono = lambda c: fluxos[".".join(c.split(".")[:2])]["dono"]
@@ -290,10 +290,10 @@ def fonte_toolkits(projeto, cfg, fw, fluxos):
                 if f"skill://{pasta}/{q['skill']}" not in sks:
                     sks.append(f"skill://{pasta}/{q['skill']}")
             tab_tipos.append(f"| `{sg}` | `{pasta}/{q['skill']}` | {(fl + ' com ' + pd if fl and pd else fl or pd) or '—'} | {versao} | {', '.join(f'`{c}`' for c in criam)} |")
-        for r in man.get("rubricas", []):
+        for r in man.get("criterios_revisao", []):
             if not (r.get("id") and r.get("verificacao") and r.get("severidade") in ("BLOQUEANTE", "IMPORTANTE", "SUGESTÃO")):
-                erros.append(f"toolkit {nome}: rubrica {r.get('id', '?')}: precisa de id, verificacao e severidade (BLOQUEANTE, IMPORTANTE ou SUGESTÃO)")
-            elif meu(f"rubrica {r['id']}", nome):
+                erros.append(f"toolkit {nome}: critério de revisão {r.get('id', '?')}: precisa de id, verificacao e severidade (BLOQUEANTE, IMPORTANTE ou SUGESTÃO)")
+            elif meu(f"critério de revisão {r['id']}", nome):
                 rubricas.append(f"`{r['id']}`{' (' + r['tipo'] + ')' if r.get('tipo') else ''} {r['severidade']} — {r['verificacao']} (toolkit `{nome}`)")
                 tab_rubricas.append(f"| `{r['id']}` | {r.get('tipo') or '—'} | {r['severidade']} | {r['verificacao']} | {versao} |")
         if man.get("verificacao"):
@@ -314,13 +314,13 @@ def fonte_toolkits(projeto, cfg, fw, fluxos):
               " depois volte ao passo. Os demais tipos seguem o passo. O catálogo, a revisão e a aprovação continuam do Sabiá.")
     if rubricas:
         por_agente.setdefault("sa-revisor", {"linhas": [], "skills": []})["linhas"].append(
-            "Itens de rubrica dos toolkits (acrescentam aos da rubrica do artefato; nenhum troca um item do Sabiá): " + "; ".join(rubricas) + ".")
+            "Itens de critério de revisão dos toolkits (acrescentam aos dos critérios de revisão do artefato; nenhum troca um item do Sabiá): " + "; ".join(rubricas) + ".")
     for ag, ls in extras.items():
         por_agente.setdefault(ag, {"linhas": [], "skills": []})["linhas"] += ls
     # a seção Tipos com skill de toolkit do sabia.md: o que vale na sessão sem agente
     tabela = []
     for cab, linhas in (("| Tipo | Skill | Fluxo e padrão | Toolkit | Passo de desvio |\n|---|---|---|---|---|", tab_tipos),
-                        ("| Item de rubrica | Tipo | Severidade | Verificação | Toolkit |\n|---|---|---|---|---|", tab_rubricas)):
+                        ("| Item de critério de revisão | Tipo | Severidade | Verificação | Toolkit |\n|---|---|---|---|---|", tab_rubricas)):
         if linhas:
             tabela += ([""] if tabela else []) + cab.split("\n") + linhas
     return por_agente, tabela
@@ -663,7 +663,7 @@ def gerar(projeto: Path, cfg: dict, framework=None) -> dict:
     fw = Path(framework or "~/.sabia/framework").expanduser()
     fluxos = ler_fluxos(fw)
     if not fluxos:
-        raise ValueError(f"{fw} não tem os fluxos (fluxo/ ausente ou sem mestres): rode `sabia instalar` ou passe --framework")
+        raise ValueError(f"{fw} não tem os fluxos (fluxo/ ausente ou sem definições de fluxo): rode `sabia instalar` ou passe --framework")
     gerar.avisos, gerar.tabela_tipos = [], []
     tk, gerar.tabela_tipos = fonte_toolkits(projeto, cfg, fw, fluxos)
     delta, padroes, gerar.avisos = override(projeto, fw, fluxos, fonte_toolkits.originais)

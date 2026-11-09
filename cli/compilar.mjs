@@ -31,7 +31,7 @@ export const PAPEIS_DO_AGENTE = { "sa-desenvolvedor": ["desenvolvedor"], "sa-esp
 /** Id antigo de passo com desvio → o id que vale (o toolkit pode ainda trazer o antigo). */
 export const ALIAS_PASSO = { "sa-codificar.codificar.tarefa": "sa-desenvolver.codificar.tarefa" };
 
-/** As linhas "- <estado> → <destino>" da seção Entrada: vizinhos do corpo do mestre (null sem a seção). */
+/** As linhas "- <estado> → <destino>" da seção Entrada: vizinhos do corpo da definição do fluxo (null sem a seção). */
 function vizinhos(corpo, pulo) {
   const ls = corpo.split("\n"), i = ls.findIndex((l) => l.trim() === VIZINHOS);
   if (i < 0) return null;
@@ -95,7 +95,7 @@ const sob = (raiz, f) => path.resolve(f).startsWith(path.resolve(raiz) + path.se
 
 /**
  * Erros do toolkit na pasta `tk` contra o Sabiá `fw`: requer, tipos (o tipo vai para uma skill do toolkit, com o fluxo e
- * o padrão do tipo, arquivos da pasta lidos pelo caminho) e rubricas. O Sabiá não compila conteúdo de toolkit.
+ * o padrão do tipo, arquivos da pasta lidos pelo caminho) e critérios de revisão. O Sabiá não compila conteúdo de toolkit.
  */
 export function validarToolkitFonte(fw, tk) {
   const m = carregar(fw), man = json(path.join(tk, "toolkit.json")), erros = [];
@@ -118,13 +118,13 @@ export function validarToolkitFonte(fw, tk) {
     for (const k of ["fluxo", "padrao"].filter((k) => k in q))
       if (!relativo(q[k]) || !sob(tk, path.join(tk, q[k])) || !fs.statSync(path.join(tk, q[k]), { throwIfNoEntry: false })?.isFile()) erros.push(`tipo ${sg}: falta o ${k} ${q[k]} na pasta do toolkit`);
   }
-  const doSabia = new Set([...(m.padroes["sa-revisar"]?.find((p) => p.nome === "rubricas.md")?.corpo || "").matchAll(/^\| ([A-Z]\d+) \|/gm)].map((r) => r[1]));
-  const ids = (man.rubricas || []).map((r) => r.id);
-  for (const r of man.rubricas || []) {
-    if (!/^[A-Z]+\d+$/.test(r.id ?? "")) erros.push(`rubrica ${r.id ?? "?"}: id como EX1 (maiúsculas e número)`);
-    else if (doSabia.has(r.id) || ids.filter((x) => x === r.id).length > 1) erros.push(`rubrica ${r.id}: repetida ou já do Sabiá (o toolkit só acrescenta itens)`);
-    if (!String(r.verificacao ?? "").trim()) erros.push(`rubrica ${r.id ?? "?"}: sem verificacao`);
-    if (!["BLOQUEANTE", "IMPORTANTE", "SUGESTÃO"].includes(r.severidade)) erros.push(`rubrica ${r.id ?? "?"}: severidade "${r.severidade ?? ""}" (use BLOQUEANTE, IMPORTANTE ou SUGESTÃO)`);
+  const doSabia = new Set([...(m.padroes["sa-revisar"]?.find((p) => p.nome === "criterios-revisao.md")?.corpo || "").matchAll(/^\| ([A-Z]\d+) \|/gm)].map((r) => r[1]));
+  const ids = (man.criterios_revisao || []).map((r) => r.id);
+  for (const r of man.criterios_revisao || []) {
+    if (!/^[A-Z]+\d+$/.test(r.id ?? "")) erros.push(`critério de revisão ${r.id ?? "?"}: id como EX1 (maiúsculas e número)`);
+    else if (doSabia.has(r.id) || ids.filter((x) => x === r.id).length > 1) erros.push(`critério de revisão ${r.id}: repetida ou já do Sabiá (o toolkit só acrescenta itens)`);
+    if (!String(r.verificacao ?? "").trim()) erros.push(`critério de revisão ${r.id ?? "?"}: sem verificacao`);
+    if (!["BLOQUEANTE", "IMPORTANTE", "SUGESTÃO"].includes(r.severidade)) erros.push(`critério de revisão ${r.id ?? "?"}: severidade "${r.severidade ?? ""}" (use BLOQUEANTE, IMPORTANTE ou SUGESTÃO)`);
   }
   return erros;
 }
@@ -178,24 +178,24 @@ export function validar(m) {
 
   for (const [q, fl] of Object.entries(m.fluxos)) {
     const { d } = fl;
-    if (!d.passos?.length || d.fluxo !== fl.fluxo || !d.dono) e(fl.arq, 2, "mestre sem fluxo/dono/passos (ou fluxo ≠ nome da pasta)");
+    if (!d.passos?.length || d.fluxo !== fl.fluxo || !d.dono) e(fl.arq, 2, "definição sem fluxo/dono/passos (ou fluxo ≠ nome da pasta)");
     else if (Object.keys(m.subag).length && !m.subag[d.dono]) e(fl.arq, 2, `dono ${d.dono} não é agente do perfis.json (${Object.keys(m.subag).join(", ")})`);
     if (porSkill[fl.skill].length > 1 && !(Array.isArray(d.quando) ? d.quando.length : String(d.quando || "").trim()))
       e(fl.arq, 2, `falta "quando" (a skill ${fl.skill} tem ${porSkill[fl.skill].length} fluxos)`);
     const ids = fl.passos.map((x) => x.id);
     const orfaos = fs.existsSync(path.join(path.dirname(fl.arq), "passos"))
       ? mds(path.join(path.dirname(fl.arq), "passos")).map((f) => f.slice(0, -3)).filter((x) => !ids.includes(x)) : [];
-    for (const o of orfaos) e(fl.arq, 2, `passo ${o} órfão (tem arquivo, não está no mestre)`);
+    for (const o of orfaos) e(fl.arq, 2, `passo ${o} órfão (tem arquivo, não está na definição do fluxo)`);
     for (const t of d.travas_gerais || []) if (!m.travas[t]) e(fl.arq, 2, `trava ${t} fora do catálogo`);
     if (fl.passos.some((x) => x.de === "entrada") && !fl.vizinhos?.length)
-      e(fl.arq, 2, `passo entrada sem a seção "${VIZINHOS}" no corpo do mestre (uma linha "- <estado> → <dona>" por vizinho)`);
+      e(fl.arq, 2, `passo entrada sem a seção "${VIZINHOS}" no corpo da definição do fluxo (uma linha "- <estado> → <dona>" por vizinho)`);
     for (const v of fl.vizinhos || []) {
       const alvos = v.destino ? [...v.destino.matchAll(ID)].map((r) => r[1]) : [];
       if (!alvos.length && !v.destino?.endsWith("■")) { e(fl.arq, v.n, 'vizinho fora do formato "- <estado> → `sa-x.f[.p]`" ou "- <estado> → <frase> ■"'); continue; }
       for (const q2 of alvos) {
         const r = resolverId(m, q2);
         if (!r) continue;  // o id inexistente já sai na varredura do texto
-        if (r.fl === fl) e(fl.arq, v.n, `vizinho → ${q2}: é deste fluxo → declare como saída do passo entrada ("saidas" no mestre)`);
+        if (r.fl === fl) e(fl.arq, v.n, `vizinho → ${q2}: é deste fluxo → declare como saída do passo entrada ("saidas" na definição do fluxo)`);
         else if (!m.subag[r.fl.d.dono]) e(fl.arq, v.n, `vizinho → ${q2}: o dono ${r.fl.d.dono} não é agente do perfis.json`);
         else if (r.passo && r.fl.d.dono !== d.dono) e(fl.arq, v.n, `vizinho → ${q2}: passo de outro agente (${r.fl.d.dono}) → use o fluxo (${r.fl.skill}.${r.fl.fluxo})`);
         else if (r.fl.d.dono !== d.dono && !(v.estado + " → " + v.destino).includes("agente `" + r.fl.d.dono + "`")) e(fl.arq, v.n, `vizinho → ${q2}: dono ${r.fl.d.dono} é outro agente → acrescente "(agente \`${r.fl.d.dono}\`)" na linha`);
@@ -426,7 +426,7 @@ de artefato, \`.sabia/padrao/requisitos/padrao-<tipo>.md\`, no lugar do padrão 
 caminho; não liste a pasta (a busca não vê pastas ocultas). Com agente do Sabiá, o prompt lista também os passos inseridos
 e removidos nos fluxos de que ele é dono. Num passo ⇢, o desvio de toolkit sai pela skill dele: o agente dono a tem no
 prompt; sem agente, valem a seção **Desvios de toolkit** (desvio por passo) e a **Tipos com skill de toolkit** (desvio por
-tipo, com a skill, o fluxo e o padrão do tipo, arquivos do toolkit lidos pelo caminho, e os itens de rubrica que ele
+tipo, com a skill, o fluxo e o padrão do tipo, arquivos do toolkit lidos pelo caminho, e os itens de critério de revisão que ele
 acrescenta à revisão) do \`.sabia/sabia.md\`.
 `;
 

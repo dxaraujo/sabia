@@ -18,7 +18,7 @@ O item assumido: título, tamanho, trilha, autonomia, branch e pasta.
 
 ## Saída
 
-A saída do mestre pela autonomia e pela trilha.
+A saída da definição do fluxo pela autonomia e pela trilha.
 
 ## Pare se
 

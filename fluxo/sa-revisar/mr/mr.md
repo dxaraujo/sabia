@@ -6,7 +6,7 @@
    {"id": "entrada", "de": "entrada", "papel": "desenvolvedor", "branch": "nao"},
    {"id": "revisor", "saidas": {"a pessoa é o autor do MR ou não tem a booleana desenvolvedor": "fim"}},
    {"id": "ler"},
-   {"id": "rubrica", "chama": "sa-revisar.revisar"},
+   {"id": "criterios-revisao", "chama": "sa-revisar.revisar"},
    {"id": "veredito", "saidas": {"nenhum achado com destino adia": "entrega"}},
    {"id": "captura", "de": "captura"},
    {"id": "commit-na-branch-base", "de": "commit-na-branch-base"},
@@ -15,7 +15,7 @@
 ---
 # MR — revisão oficial do MR de código
 
-Um desenvolvedor que não é o autor revisa o MR com o apoio da `sa-revisar.revisar` (rubrica C), tria os achados no
+Um desenvolvedor que não é o autor revisa o MR com o apoio da `sa-revisar.revisar` (critérios de revisão C), tria os achados no
 próprio MR e aprova. Vale para qualquer autonomia (IA supervisionada, IA autopilot ou manual). Não há merge direto: o
 merge é do autor, pela `sa-desenvolver.encerrar`. A escrita no GitLab (threads, aprovação) é sempre com o "sim".
 

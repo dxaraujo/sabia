@@ -17,7 +17,7 @@ A sprint nunca é pré-condição. Cada fluxo grava o próprio responsável, e o
 
 **Chamado por outro fluxo** (em linha, como subagente ou pelo autopilot) → pule este passo inteiro: quem chamou já
 entrou. A passagem (a saída `→ skill.fluxo` de outro fluxo, que a pessoa aceita) não é chamada: a entrada roda. Uma
-saída do passo `entrada` no mestre que casa com o estado vence a frase do caso.
+saída do passo `entrada` na definição do fluxo que casa com o estado vence a frase do caso.
 
 Senão, nesta ordem; o primeiro caso que casar decide:
 
@@ -55,7 +55,7 @@ Senão, nesta ordem; o primeiro caso que casar decide:
 ## Saída
 
 Item registrado, deste fluxo, com a pessoa certa e na branch certa → o próximo da lista, ou o passo que uma saída do
-passo `entrada` no mestre indica para aquele estado.
+passo `entrada` na definição do fluxo indica para aquele estado.
 
 ## Pare se
 

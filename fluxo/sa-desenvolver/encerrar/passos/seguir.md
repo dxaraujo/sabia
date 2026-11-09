@@ -14,7 +14,7 @@ O resultado do merge, da conclusão, do archive e da publicação.
 
 ## Saída
 
-A saída do mestre: a próxima, ou o fim.
+A saída da definição do fluxo: a próxima, ou o fim.
 
 ## Pare se
 

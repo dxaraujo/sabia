@@ -7,7 +7,7 @@ Os agentes são **gerados**, nunca editados à mão. O script [gerar_agentes.py]
 | `perfis.json` | [../assets/agents/perfis.json](../assets/agents/perfis.json) | harness, segredos, os 2 modelos de permissão, a condicional banco e os 5 agentes |
 | `sa-<nome>.md` | [../assets/agents/](../assets/agents/) | o prompt de cada um dos 5 agentes |
 | `agentes.json` | `.sabia/config/agentes.json` (projeto, versionado) | as escolhas do projeto |
-| mestres dos fluxos e `tipos.json` | o framework instalado (`~/.sabia/framework`; `--framework` troca) | o dono de cada fluxo, os passos com desvio e o passo que cria cada tipo |
+| definições dos fluxos e `tipos.json` | o framework instalado (`~/.sabia/framework`; `--framework` troca) | o dono de cada fluxo, os passos com desvio e o passo que cria cada tipo |
 | override | `.sabia/fluxo/` e `.sabia/padrao/` (projeto, esparso; harness) | o delta no prompt do agente que roda a skill do passo |
 
 ```bash
@@ -88,7 +88,7 @@ do `sa-<nome>.md`:
 - **Aviso:** a `branch_base` da cópia difere do original atual → compare e funda à mão.
 - **Toolkit:** `skills[].papeis` e `steering[].papeis` mapeiam 1:1 (desenvolvedor → `sa-desenvolvedor`,
   especificador e produto → `sa-especificador`, pesquisador → `sa-pesquisador`, revisor → `sa-revisor`, verificador →
-  `sa-verificador`). Tipos HF, UC, REG, MSG e EL → `sa-especificador`; ET as-built → `sa-desenvolvedor`; rubricas →
+  `sa-verificador`). Tipos HF, UC, REG, MSG e EL → `sa-especificador`; ET as-built → `sa-desenvolvedor`; critérios de revisão →
   `sa-revisor`; `verificacao` → `sa-verificador`. O desvio da codificação é `sa-desenvolver.codificar.tarefa`. Um
   agente de toolkit (`agentes[]`, ligado em `passos[].agente`) vira subagente do dono do passo, em
   `.kiro/agents/<toolkit>-<agente>.json` e `.opencode/agents/<toolkit>-<agente>.md`, com as permissões dele. Ver

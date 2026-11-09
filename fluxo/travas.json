@@ -1,5 +1,5 @@
 {
-  "$comment": "Catálogo fechado das travas do Sabiá. O gerador escreve o texto curto de cada trava no índice do prompt do agente; o corpo dos passos nunca as repete. Nenhuma é liberável (liberavel_por vazio); o formato prevê liberavel_por: [\"projeto\"] e {\"liberar\": [...], \"motivo\", \"por\"} no mestre do projeto.",
+  "$comment": "Catálogo fechado das travas do Sabiá. O gerador escreve o texto curto de cada trava no índice do prompt do agente; o corpo dos passos nunca as repete. Nenhuma é liberável (liberavel_por vazio); o formato prevê liberavel_por: [\"projeto\"] e {\"liberar\": [...], \"motivo\", \"por\"} na definição do fluxo do projeto.",
   "travas": {
     "sim-da-pessoa": {"texto": "push, merge e escrita no ELM e no GitLab só com o \"sim\" da pessoa; no autopilot, só o push da própria branch (sem --force), o merge da branch base nela e abrir ou atualizar o MR dela dispensam o sim; merge do MR, ELM e rede seguem bloqueados", "liberavel_por": []},
     "backpressure": {"texto": "nada é dado como pronto nem vai ao MR sem o validar verde (compila, testes passam, lint e cobertura pelo gate): o trecho tocado a cada alteração, a suíte completa antes do MR e o CI do MR", "liberavel_por": []},

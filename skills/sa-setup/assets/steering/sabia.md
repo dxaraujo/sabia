@@ -103,15 +103,15 @@ imprime.
 | `<sigla>` | `~/.sabia/toolkits/<toolkit>/skills/<skill>/SKILL.md` | `<fluxo>` <com o padrão `<padrão>`> <ou — (as references da skill)> | `<nome>` <versão> | `<id do passo>` |
 <nenhum — sem toolkit com `tipos`>
 
-| Item de rubrica | Tipo | Severidade | Verificação | Toolkit |
+| Item de critério de revisão | Tipo | Severidade | Verificação | Toolkit |
 |---|---|---|---|---|
 | `<id>` | `<sigla>` | <BLOQUEANTE · IMPORTANTE · SUGESTÃO> | <verificação> | `<nome>` <versão> |
-<nenhum — sem toolkit com `rubricas`>
+<nenhum — sem toolkit com `criterios_revisao`>
 
 ## Regras aprendidas
 
 Gravadas pela curadoria da `sa-planejamento.review`; a `sa-setup` as preserva ao regravar este arquivo. O revisor as
-cobra como itens da rubrica; o plano as respeita. Uma por linha:
+cobra como itens dos critérios de revisão; o plano as respeita. Uma por linha:
 `- <regra> · origem <FT-nnn | AT-nnn…> · AAAA-MM-DD`.
 
 <!-- Nenhuma regra ainda. -->

@@ -1,9 +1,9 @@
 ---
-{"resumo": "Só na rubrica C: o C3 vem do pipeline do último commit da branch contra o baseline da branch base (MCP do Jenkins), ou da saída do validar de quem chamou, ou do resultado que a pessoa informa; falha de ambiente dá AMBIENTE."}
+{"resumo": "Só nos critérios de revisão C: o C3 vem do pipeline do último commit da branch contra o baseline da branch base (MCP do Jenkins), ou da saída do validar de quem chamou, ou do resultado que a pessoa informa; falha de ambiente dá AMBIENTE."}
 ---
 ## Entrada
 
-A rubrica C e a branch `<id>` (passo `escopo`). Na rubrica L, pule este passo.
+Os critérios de revisão C e a branch `<id>` (passo `escopo`). Nos critérios de revisão L, pule este passo.
 
 ## Faça
 

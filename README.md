@@ -73,7 +73,7 @@ Fontes no fim deste arquivo.
 | `sa-desenvolver` | `iniciar` · `codificar` · `encerrar` | assume a tarefa num passo (tamanho, trilha e autonomia), codifica com TDD e backpressure até o MR, faz o merge e fecha |
 | `sa-plano` | `plano` · `replanejar` | `research.md`, design e tasks; copia o texto aprovado para o delta sem reescrever |
 | `sa-pesquisar` | `pesquisar` | pesquisa neutra e só leitura no `sa-pesquisador`; devolve fatos com arquivo:linha |
-| `sa-revisar` | `revisar` · `mr` | revisão do agente, independente (rubrica L do plano, C do código) e revisão do MR de outro autor |
+| `sa-revisar` | `revisar` · `mr` | revisão do agente, independente (critérios de revisão L do plano, C do código) e revisão do MR de outro autor |
 | `sa-verificar` | `verificar` · `revisao-humana` | aceite de ponta a ponta com a evidência no MR e o `CT.csv`; revisão humana por risco |
 | `sa-atender` | `atender` | Sustentação: um fluxo para as seis categorias |
 | `sa-elm` | `regras` · `setup` · `item` · `finalizar` · `horas` · `importar-backlog` · `publicar` · `iteracao` · `conferir` · `lint` · `baixar` · `visualizar` | tudo o que fala com o IBM ELM (DOORS Next e EWM) |
@@ -97,7 +97,7 @@ principais (a pessoa escolhe ao abrir a sessão; a pré-condição de cada skill
 └─ nos dois: sa-triar · sa-status · sabia · ofertas da sa-elm
 subagentes (contexto isolado)
 ├─ sa-pesquisador     só leitura ── sa-pesquisar
-├─ sa-revisor         só leitura ── sa-revisar.revisar + rubricas do toolkit + Regras aprendidas
+├─ sa-revisor         só leitura ── sa-revisar.revisar + critérios de revisão do toolkit + Regras aprendidas
 └─ sa-verificador     só leitura + Executar do sabia.md, curl/wget só à URL de teste e o CT.csv ── sa-verificar.verificar
 sessão sem agente: sa-setup e sa-elm.setup (as únicas que gravam o harness)
 ```
@@ -171,7 +171,7 @@ detecta o tipo do projeto e **propõe, agente por agente**, as skills a ligar.
 | `skills[].papeis` · `steering[].papeis` | 1:1: `desenvolvedor` → `sa-desenvolvedor` · `especificador` e `produto` → `sa-especificador` · `pesquisador` → `sa-pesquisador` · `revisor` → `sa-revisor` · `verificador` → `sa-verificador` |
 | `skills[].passo` | desvio de um passo do Sabiá pelo id; hoje a tarefa da codificação, `sa-desenvolver.codificar.tarefa`, no prompt do agente dono |
 | `tipos` | a skill que escreve um tipo desviável do catálogo: `HF`, `UC`, `REG`, `MSG`, `EL` e `ATA` → `sa-especificador`; `ET` as-built → `sa-desenvolvedor`; `CT` (linhas do `CT.csv`) → `sa-verificador` |
-| `rubricas` | itens que se somam à revisão do `sa-revisor` |
+| `criterios_revisao` | itens que se somam à revisão do `sa-revisor` |
 | `verificacao` | texto de apoio ao `sa-verificador` |
 | `agentes[]` | subagente do dono do passo, com as permissões dele |
 | `requer` | versão mínima do Sabiá (`{"sabia": ">=2.1"}`) |
@@ -254,7 +254,7 @@ as permissões usam comandos simples.
 
 **Prova do núcleo**, só com fixtures sintéticas (`node --test` em `cli/` e `python3 -m unittest` em
 `skills/sa-setup/scripts/`): o framework deste repositório validado, compilado e instalado no Kiro e no opencode, com
-o grafo de cada fluxo igual ao do mestre e todo link da saída resolvido; um projeto front+back com um toolkit de
+o grafo de cada fluxo igual ao da definição do fluxo e todo link da saída resolvido; um projeto front+back com um toolkit de
 especificação (HF ⇢ a skill dele, com o fluxo e o padrão do tipo) e um passo do Sabiá trocado no projeto; e um
 projeto batch com o desvio da tarefa de job ao agente do toolkit. Nos dois, os 5 agentes são gerados pelo
 `gerar_agentes.py` sobre a instalação, e a `sabia rota` mostra o desvio e a origem de cada passo.

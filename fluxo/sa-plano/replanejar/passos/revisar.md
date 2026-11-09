@@ -1,5 +1,5 @@
 ---
-{"resumo": "'Quer revisar agora?' sobre a parte alterada: sa-revisar.revisar com a rubrica L no sa-revisor."}
+{"resumo": "'Quer revisar agora?' sobre a parte alterada: sa-revisar.revisar com os critérios de revisão L no sa-revisor."}
 ---
 ## Entrada
 
@@ -7,7 +7,7 @@ A parte alterada do plano.
 
 ## Faça
 
-1. Pergunte "quer revisar agora?" sobre a parte alterada. Sim → chame a `sa-revisar.revisar` (rubrica L) no
+1. Pergunte "quer revisar agora?" sobre a parte alterada. Sim → chame a `sa-revisar.revisar` (critérios de revisão L) no
    subagente `sa-revisor`.
 2. Achados triados como no plano: `corrige` → ajusta; `volta-spec` → Em aberto ao especificador; regra sem decisão →
    Em aberto ao P.O.

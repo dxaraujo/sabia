@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-A rubrica, a entrada dela (passo `escopo`) e, na C, o C3 (passo `ci`).
+Os critérios de revisão, a entrada dela (passo `escopo`) e, na C, o C3 (passo `ci`).
 
 ## Faça
 
@@ -20,7 +20,7 @@ A rubrica, a entrada dela (passo `escopo`) e, na C, o C3 (passo `ci`).
 
 ## Saída
 
-Os achados, cada um com evidência, e o resultado de cada item da rubrica → passo `relatorio`.
+Os achados, cada um com evidência, e o resultado de cada item dos critérios de revisão → passo `relatorio`.
 
 ## Pare se
 

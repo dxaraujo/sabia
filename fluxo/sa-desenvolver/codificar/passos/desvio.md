@@ -20,7 +20,7 @@ o resumo.
 
 ## Saída
 
-Tratado → a próxima tarefa livre; o caso arquitetural → a saída do mestre.
+Tratado → a próxima tarefa livre; o caso arquitetural → a saída da definição do fluxo.
 
 ## Pare se
 

@@ -12,7 +12,7 @@ FT-<nnn> — <título>
 
 ## Evidência
 - CI: <pipeline do último commit: verde | vermelho | sem CI: suíte local verde> (baseline: último pipeline da branch base)
-- Revisão do agente (sa-revisor, rubrica C): <VEREDITO> · achados aceitos: <[R1], … | nenhum> · descartados: <motivo | nenhum>
+- Revisão do agente (sa-revisor, critérios de revisão C): <VEREDITO> · achados aceitos: <[R1], … | nenhum> · descartados: <motivo | nenhum>
 - Verificação (sa-verificador):
   | CT-nn | Resultado | Esperado × obtido | Evidência |
   |---|---|---|---|

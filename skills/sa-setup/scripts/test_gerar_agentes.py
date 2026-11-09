@@ -114,7 +114,7 @@ class Base(unittest.TestCase):
         man = {"nome": nome, "versao": "1.0.0", "skills": [{"caminho": sk, "papeis": list(papeis)}],
                "tipos": tipos or {"HF": {"skill": sk, "fluxo": "fluxo/fluxo-hf.md", "padrao": "padrao/padrao-hf.md"},
                                   "ATA": {"skill": sk, "fluxo": "fluxo/fluxo-reuniao.md"}},
-               "rubricas": [{"id": "EX1", "tipo": "HF", "verificacao": "Toda HF cita o campo de origem", "severidade": "IMPORTANTE"}] if rubricas is None else rubricas,
+               "criterios_revisao": [{"id": "EX1", "tipo": "HF", "verificacao": "Toda HF cita o campo de origem", "severidade": "IMPORTANTE"}] if rubricas is None else rubricas,
                **(extra or {})}
         (pasta / "toolkit.json").write_text(json.dumps(man))
         return {nome: {"pasta": f"~/.sabia/toolkits/{nome}", "versao": "1.0.0"}}
@@ -396,7 +396,7 @@ class Toolkits(Base):
             "| Tipo | Skill | Fluxo e padrão | Toolkit | Passo de desvio |", "|---|---|---|---|---|",
             f"| `HF` | `{pasta}/skills/casa/SKILL.md` | `{pasta}/fluxo/fluxo-hf.md` com o padrão `{pasta}/padrao/padrao-hf.md` | `casa` 1.0.0 | `sa-prd.prd.escrever`, `sa-especificar.elm.editar` |",
             f"| `ATA` | `{pasta}/skills/casa/SKILL.md` | `{pasta}/fluxo/fluxo-reuniao.md` | `casa` 1.0.0 | `sa-especificar.reuniao.escrever` |", "",
-            "| Item de rubrica | Tipo | Severidade | Verificação | Toolkit |", "|---|---|---|---|---|",
+            "| Item de critério de revisão | Tipo | Severidade | Verificação | Toolkit |", "|---|---|---|---|---|",
             "| `EX1` | HF | IMPORTANTE | Toda HF cita o campo de origem | `casa` 1.0.0 |"])
         # só a skill, com as references dentro
         e = self.gerar(toolkits=self.casa(HF={"skill": "skills/casa/SKILL.md"}))["sa-especificador"]

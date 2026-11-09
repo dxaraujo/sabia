@@ -626,7 +626,7 @@ export function validarToolkit(pasta, nomeEsperado = null, fw = null) {
       else if (!g.x.desvio) erros.push(`passo de ${s.caminho}: ${s.passo.passo} não aceita desvio de toolkit${g.x.tipos ? ` (o tipo ${g.x.tipos.join(", ")} vai por \`tipos\`)` : ""}`);
     }
   }
-  if (ganchos && (m.tipos || m.rubricas || m.requer)) {
+  if (ganchos && (m.tipos || m.criterios_revisao || m.requer)) {
     try { erros.push(...validarToolkitFonte(fw, pasta)); } catch (e) { erros.push(e.message); }
   }
   for (const s of m.steering || []) existe(s.caminho, "steering");

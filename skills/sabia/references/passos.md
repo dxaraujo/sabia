@@ -18,7 +18,7 @@ O Sabiá é o fluxo; os toolkits são extensões dos agentes dele. Um toolkit aj
 | `desenvolvedor` | `sa-desenvolvedor` |
 | `especificador` · `produto` | `sa-especificador` |
 | `pesquisador` | `sa-pesquisador` |
-| `revisor` | `sa-revisor` (recebe também as `rubricas`) |
+| `revisor` | `sa-revisor` (recebe também as `criterios_revisao`) |
 | `verificador` | `sa-verificador` (recebe também o texto `verificacao`) |
 
 O Sabiá define o dono (o agente que roda a skill do passo), o contrato de saída e o que continua sendo dele: revisão,
@@ -28,7 +28,7 @@ toolkit** do `.sabia/sabia.md` (gravada pela `sa-setup`), que vale também na se
 compilação: a skill instalada só marca o gancho (⇢ na tabela do fluxo) no passo com desvio, e o desvio vem do projeto.
 
 No `toolkit.json`, `passo.passo` é o id do passo no formato `skill.fluxo.passo`, com o `para` e, opcionais, os
-`arquivos` (globs) e o `agente`. Só vale em passo com `"desvio": true` no mestre — hoje o da tabela abaixo.
+`arquivos` (globs) e o `agente`. Só vale em passo com `"desvio": true` na definição do fluxo — hoje o da tabela abaixo.
 
 ## Os passos
 
@@ -69,6 +69,6 @@ com o padrão do tipo, lidos pelo caminho na pasta do toolkit, ou, sem eles, as 
   `status.md`.
 - **Padrão do núcleo:** o toolkit não troca padrão do Sabiá. A cópia do projeto em
   `.sabia/padrao/requisitos/padrao-<tipo>.md` vale sobre o padrão em vigor do tipo, do Sabiá ou do toolkit.
-- **Continua do Sabiá:** o catálogo (sigla, arquivo, ELM), a revisão (o toolkit só acrescenta itens de rubrica), a
+- **Continua do Sabiá:** o catálogo (sigla, arquivo, ELM), a revisão (o toolkit só acrescenta itens de critério de revisão), a
   aprovação e a publicação (`sa-elm.publicar`).
-- **Colisão:** dois toolkits do projeto no mesmo tipo ou no mesmo id de rubrica → o gerador recusa e não grava nada.
+- **Colisão:** dois toolkits do projeto no mesmo tipo ou no mesmo id de critérios de revisão → o gerador recusa e não grava nada.
