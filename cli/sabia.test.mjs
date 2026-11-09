@@ -341,6 +341,14 @@ test("toolkit: quem clona baixa as versões do projeto; opencode tem a cópia po
   assert.ok(!fs.existsSync(path.join(home, ".sabia/toolkits/batch-alfa")));
 });
 
+test("toolkit já registrado no inventário sem a lista de versões continua instalável", async () => {
+  const indice = indiceDe([{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./batch-alfa" } }]);
+  toolkit(path.join(indice, "batch-alfa"));
+  const inv = s.lerInventario(); inv.toolkits["batch-alfa"] = { versao: "0.9.0", alvos: {} }; s.gravarInventario(inv);
+  assert.deepEqual(await s.baixarToolkit("batch-alfa", { indice }), { nome: "batch-alfa", versao: "1.0.0" });
+  assert.ok(s.lerInventario().toolkits["batch-alfa"].versoes["1.0.0"]);
+});
+
 test("toolkit sem acesso ao índice: usa a maior versão baixada e avisa; recusado continua recusado", async () => {
   const indice = indiceDe([{ nome: "batch-alfa", versao: "1.0.0", fonte: { caminho: "./batch-alfa" } }]);
   toolkit(path.join(indice, "batch-alfa"));

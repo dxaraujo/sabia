@@ -718,8 +718,8 @@ function gravarToolkit({ e, pasta, sha, m, destino, mudou }) {
   const origem = { indice: e.indice || null, url: e.url, ref: e.ref || null, subpasta: e.indice ? null : e.subpasta || null, sha, versao: m.versao };
   fs.writeFileSync(path.join(destino, ".origem.json"), JSON.stringify(origem, null, 2) + "\n");
   const inv = lerInventario();
-  const t = (inv.toolkits[m.nome] ||= { versoes: {} });
-  t.versoes[m.versao] = { ...t.versoes[m.versao], sha, fonte: e.url };
+  const t = (inv.toolkits[m.nome] ||= {}), versoes = (t.versoes ||= {});
+  versoes[m.versao] = { ...versoes[m.versao], sha, fonte: e.url };
   gravarInventario(inv);
   return { nome: m.nome, versao: m.versao };
 }
