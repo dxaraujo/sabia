@@ -9,7 +9,8 @@ A fatia e o id do requisito (`<sigla>-<id>`).
 
 1. Trava `artefato-exclusivo`: outra fatia aberta tem o mesmo artefato no `elm/` dela (nem cancelada nem com
    `Publicação: publicada`) → diga qual e devolva sem baixar (a `sa-status` mostra a trava).
-2. Livre → `elm_ler_req(<id>)`: o texto inteiro, o título e o `modificado_em`.
+2. Livre → `elm_ler_req(<id>)`: o texto inteiro, o título e o `modificado_em`. ELM indisponível ou sem permissão → devolva o
+   motivo a quem chamou, sem pedir valor à pessoa.
 
 ## Saída
 

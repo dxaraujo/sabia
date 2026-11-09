@@ -13,6 +13,7 @@ arquivo desse tipo sai pela skill, com o fluxo e o template do tipo; na volta, c
 `sa-elm/elm-arquivo.md`. Os outros tipos seguem o template do tipo (`requisitos/template-hf.md`, `requisitos/template-uc.md`, `requisitos/template-reg.md`,
 `requisitos/template-msg.md`, `requisitos/template-el.md`, `requisitos/template-gl.md`).
 
+- **Status.** O arquivo editado passa a `status: draft`; o diff contra o commit de referência fica só com isso e o conteúdo.
 - **IA supervisionada.** O especificador edita, com o Dev, o arquivo inteiro no estado depois da mudança. Regra sem
   fonte vai à `sa-entrevistar.entrevistar`, nunca ao texto.
 - **IA autopilot.** O `sa-especificador` como subagente edita sem perguntas: o que não tem fonte vai ao Em aberto da

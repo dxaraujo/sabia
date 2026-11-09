@@ -22,8 +22,9 @@ publicado: manual <AAAA-MM-DD>   # só na especificação manual
   GL, o termo.
 - **type:** o tipo do DOORS da sigla, na configuração do ELM do projeto (`rm.artefatos`).
 - **title:** igual ao título do DOORS.
-- **status:** `draft` na escrita; `stable` na aprovação, por quem tem `especificador`, com o `verified`. Editado
-  depois de aprovado, volta a `draft` e perde o `verified`.
+- **status:** `stable` no commit de referência, sem `verified`: é o texto vigente, que ninguém aprovou neste fluxo. `draft` na
+  edição e no artefato novo. Na aprovação, por quem tem `especificador`, `stable` com o `verified`. Editado depois de
+  aprovado, volta a `draft` e perde o `verified`.
 - **sources:** de onde veio: D-nn da tabela Decisões do documento do item, ATA com o minuto da fala, requisito pelo
   id. No altera e no exclui, o próprio requisito.
 - **publicado:** só na especificação manual, quando o texto já está no DOORS; a publicação não reenvia.

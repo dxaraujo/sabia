@@ -9,7 +9,7 @@ o `equipe.json`.
 ## Faça
 
 1. **Sem ELM** (sem a chave `elm` no `agentes.json`) → passo `devolver`.
-2. **O que publicar.** Os arquivos de `elm/` aprovados (`status: stable`) e sem `publicado: manual` e, com `ET as-built: sim`, a ET
+2. **O que publicar.** Os arquivos de `elm/` aprovados (`status: stable` e `verified`) e sem `publicado: manual` e, com `ET as-built: sim`, a ET
    as-built do `design.md`. Arquivo de `elm/` sem aprovação → avise e deixe de fora.
 3. **Já publicado.** Tudo com `publicado: manual` e nada mais a publicar → a linha `Publicação: publicada
    <AAAA-MM-DD>` no `status.md`, pelo commit direto na branch base (passo `gravar`, commit `FT-nnn publicação`), sem a
