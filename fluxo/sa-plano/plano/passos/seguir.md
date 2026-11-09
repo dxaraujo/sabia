@@ -7,7 +7,8 @@ O plano aprovado e a autonomia (`status.md`).
 
 ## Faça
 
-1. IA supervisionada: ofereça "seguir para `sa-desenvolver.codificar`?" na mesma sessão.
+1. IA supervisionada: ofereça "seguir para `sa-desenvolver.codificar`?" na mesma sessão, em pergunta própria: aprovar
+   não implica seguir.
 2. Manual: grave no Retomar `codificação manual; avise quando terminar`, faça commit e push da branch (com o "sim") e
    encerre a sessão. Na volta ("terminei", nesta ou em outra sessão), a `sa-desenvolver.codificar` segue do que vem
    depois da codificação (validar).

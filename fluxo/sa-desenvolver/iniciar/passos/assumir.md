@@ -13,6 +13,7 @@ O item conferido, a ficha (Regras, Cenários `CT-nn`, artefatos afetados), o có
 
 Senão, leia o código do trecho tocado e mostre, de uma vez, as escolhas abaixo com a recomendação; quem pega confirma ou
 corrige. Vale para qualquer autonomia: a IA autopilot só começa no passo `autopilot`, e até lá as perguntas seguem com a pessoa.
+Em cada escolha, mostre a recomendada e as outras opções, com o que muda em cada uma:
 
 1. **Tamanho**: o triado (`P` = horas · `M` ≈ 1 dia · `G` = 2–3 dias, linha Tamanhos do `acordos.md`). O corrigido
    vai à linha do `backlog.md` no commit da atribuição.

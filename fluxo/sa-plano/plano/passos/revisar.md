@@ -7,7 +7,8 @@ A parte escrita (completo) ou o plano inteiro (rápida).
 
 ## Faça
 
-1. No completo, ao fim de cada parte; na rápida, uma vez no fim. Pergunte "quer revisar agora?".
+1. No completo, ao fim de cada parte; na rápida, uma vez no fim. Pergunte "quer revisar agora?". Só essa pergunta: a
+   resposta não aprova o plano.
 2. Sim → chame a `sa-revisar.revisar` (critérios de revisão L) no subagente `sa-revisor`.
 3. Achados triados: `corrige` → ajusta o plano; `volta-spec` → Em aberto ao especificador; regra sem decisão → Em
    aberto ao P.O.

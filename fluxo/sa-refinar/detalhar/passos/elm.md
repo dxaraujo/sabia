@@ -10,9 +10,14 @@ Os artefatos afetados do passo `artefatos`; na volta da especificação manual (
 Sem ELM (sem a chave `elm` no `agentes.json`), ou artefatos afetados sem `inclui`, `altera` ou `exclui` → pule este passo (sem
 pergunta e sem a linha Especificação na ficha).
 
-1. **Autonomia da especificação**, perguntada uma vez e fixa até o fim dela: IA supervisionada · IA autopilot · manual.
-   Grave `Especificação: <autonomia>` no cabeçalho da ficha. É independente da autonomia da codificação.
-2. **Chame a `sa-especificar.elm`** com o especificador presente e a autonomia. Ela monta a pasta `elm/` dentro da pasta da
+1. **Escolhas da especificação**, num bloco só e antes de chamar a skill; cada uma fica aberta até a resposta da pessoa:
+   - **Autonomia**, fixa até o fim da especificação e independente da autonomia da codificação; mostre a recomendada e as
+     outras: `IA supervisionada` (o agente edita e o especificador aprova cada arquivo) · `IA autopilot` (o subagente edita
+     sem perguntas) · `manual` (o especificador altera direto no DOORS).
+   - **Sprint**: com sprint aberta sem a linha da especificação, "acrescento a linha de especificação na sprint?".
+   - **ELM**: "quer criar o item no ELM?". O ELM fora do ar não dispensa a pergunta.
+   Grave `Especificação: <autonomia>` no cabeçalho da ficha só com a resposta explícita.
+2. **Chame a `sa-especificar.elm`** com o especificador presente, a autonomia e as respostas de sprint e ELM. Ela monta a pasta `elm/` dentro da pasta da
    spec (`.kiro/specs/ft-<nnn>-<slug>/elm/` ou `openspec/changes/ft-<nnn>-<slug>/elm/`, pelo `formato_spec`), aplica
    a trava de artefato, baixa os originais e grava o commit de referência, direto na branch base.
    - IA supervisionada ou IA autopilot: edita, e o especificador aprova cada arquivo inteiro (HF, UC, REG, MSG, EL, GL).

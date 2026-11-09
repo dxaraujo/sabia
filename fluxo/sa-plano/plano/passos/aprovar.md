@@ -8,7 +8,7 @@ O plano escrito e revisado.
 ## Faça
 
 1. Fora do autopilot, mostre o resumo `🧭 FT-nnn — <trilha> · <arquivos> · <n> tarefas · decisões · Em aberto` e
-   quem desenvolve aprova (ou pede ajuste).
+   quem desenvolve aprova (ou pede ajuste). A aprovação é uma pergunta própria, sem juntar com a revisão ou com o seguir.
 2. No autopilot, o subagente aprova e registra `plano aprovado no autopilot` no Retomar; a pessoa vê o plano no MR.
 3. No `status.md`: Fase `implementando` e o Retomar `Próximo: sa-desenvolver.codificar`.
 4. Commit dos arquivos do plano na branch e push (com o "sim"; liberado no autopilot).

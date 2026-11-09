@@ -15,7 +15,7 @@ Rodada 2 · ramo: exceções · faltam ~5 decisões depois desta
 
 1 · Tentativas contam por usuário ou por IP?
     Contexto: o login registra só o usuário (LoginService.java:42).
-    Recomendo: por usuário — é o que o dado atual permite.
+    Recomendo: por usuário — é o que o dado atual permite. Outra opção: por IP.
 2 · O que a tela mostra para a conta bloqueada?
     Recomendo: a mensagem já usada no desbloqueio manual.
 
@@ -24,7 +24,9 @@ Rodada 2 · ramo: exceções · faltam ~5 decisões depois desta
 
 - Pergunte só regra de negócio e decisão sem fonte. A regra de negócio é decidida por quem tem `produto` ou pelo
   cliente em reunião.
-- Resposta vaga ("tanto faz") → vale a recomendação, com a pessoa como Quem, e diga isso.
+- Resposta vaga ("tanto faz") → vale a recomendação, com a pessoa como Quem, e diga isso. Pergunta ignorada não é
+  resposta vaga.
+- Resposta por número: só os números citados estão respondidos; os outros continuam abertos e voltam na próxima rodada.
 - Resposta que abre ramos → nova rodada.
 - Fronteira vazia → resuma e peça a confirmação do entendimento. "Chega" → o resto vai ao Em aberto.
 - Sem pessoa presente → não pergunte: tudo sem fonte vai ao Em aberto com a recomendação.

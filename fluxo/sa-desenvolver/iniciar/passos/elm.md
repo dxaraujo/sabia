@@ -12,6 +12,7 @@ Este passo roda na sessão da pessoa, mesmo com a autonomia IA autopilot: o suba
 1. Sem ELM (`elm` = `false`) → não pergunte; siga.
 2. Com ELM e sem a resposta do `assumir` (volta da virada) → pergunte "quer criar o item no ELM?".
 3. Sim → chame a `sa-elm.item` (tarefa `DEV`), que volta para cá. Não → siga.
+4. O ELM fora do ar não dispensa a pergunta: com o sim e sem resposta do ELM, avise que ficou pendente e siga.
 
 ## Saída
 

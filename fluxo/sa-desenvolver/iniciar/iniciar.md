@@ -1,7 +1,7 @@
 ---
 {"fluxo": "iniciar", "dono": "sa-desenvolvedor",
  "quando": ["assumir uma fatia ou um bug para desenvolvimento: tamanho, trilha e autonomia num passo só, atribuição na branch base, branch <id> e pasta da spec", "vamos trabalhar na FT-031", "pegar a FT-031", "próxima", "corrigir o defeito 4567", "puxar o topo da sprint"],
- "travas_gerais": ["sim-da-pessoa", "elm-pela-sa-elm"],
+ "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa", "elm-pela-sa-elm"],
  "passos": [
    {"id": "entrada", "de": "entrada", "papel": "desenvolvedor", "branch": "nao", "saidas": {"pedido em texto ou defeito sem id": "cadastro"}},
    {"id": "conferir", "travas": ["artefato-exclusivo"], "saidas": {"aceita sem o sim de quem puxa: refinar antes": "→ sa-refinar.detalhar", "fora da sprint sem prioridade crítica, trava de artefato ou registro só local sem o push": "fim"}},
