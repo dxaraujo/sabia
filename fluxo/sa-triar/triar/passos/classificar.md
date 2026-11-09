@@ -18,10 +18,12 @@ O item aceito no passo `decidir`.
 
    | Tipo | Campos |
    |---|---|
-   | bug | passos · atual · esperado · reproduzido (`sim` · `não` · `detalhe insuficiente`); reproduza só quando é barato |
+   | bug | passos · atual · esperado · reproduzido (`sim` · `não` · `detalhe insuficiente`); reproduza só quando é barato · requisito (se souber) |
    | fatia | pedido · quem pediu · requisito (se souber) |
    | sustentação | pedido · pedido por · prazo |
    | épico | só a linha |
+
+   `requisito (se souber)` vai à linha Requisito citado da Entrada, mesmo como `não sei`.
 
 6. **Troca de série.** O tipo novo tem série diferente da do id que o item já tem (fatia ou bug ↔ épico ou
    sustentação, ou outra categoria): nasce a linha da série certa, com `veio de <id>` na `obs`, e a antiga fica

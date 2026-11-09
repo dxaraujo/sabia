@@ -10,7 +10,8 @@ O que os passos anteriores levantaram: regras, cenários, Não muda, artefatos a
 1. **Ficha** `.sabia/planejamento/fatias/FT-nnn-<slug>.md`, pelo template `sa-refinar/ficha.md`: título, a linha
    Aprovado, o cabeçalho (Tipo · Pai · Especificação) e as seções Entrada · Objetivo · Regras · Cenários · Não
    muda · Artefatos afetados · Em aberto · Decisões · DoR. Seção vazia fica só com o título.
-2. **DoR** (avisa, não trava): marque cada item do checklist do template.
+2. **DoR** (avisa, não trava): marque cada item do checklist do template. Requisito que Regras, Decisões ou Não muda
+   dizem mudar não convive com `nenhum requisito`: deixe o item sem marcar e mostre a divergência.
 3. **Aprovação**: só quem tem `produto` aprova; mostre a ficha e peça o "sim". Aprovado →
    `**Aprovado:** <usuario> · AAAA-MM-DD`. Qualquer mudança depois do Aprovado volta a linha para `**Aprovado:** —`
    até a nova aprovação. Sem essa pessoa na sessão: mostre os nomes com `produto`.
