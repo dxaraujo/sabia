@@ -10,7 +10,8 @@
     "sabia.mjs",
     "compilar.mjs",
     "agentes.mjs",
-    "status.mjs"
+    "status.mjs",
+    "kanban.mjs"
   ],
   "engines": {
     "node": ">=18"
