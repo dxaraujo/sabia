@@ -4,20 +4,22 @@
 import fs from "node:fs";
 import path from "node:path";
 
+const VERSAO_SABIA = JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8")).version;
 const TERMINAIS = ["concluida", "concluido", "cancelada", "cancelado"];
 const NAO_INICIADO = ["aceita", "elegivel"];
-// A Fase do status.md da branch manda no status efetivo do item em andamento: `revisando`, `pr-aberto` ou
-// `retrabalho` o colocam em `em-revisao`; qualquer outra fase (ou o `—`/ausência de status.md) o mantém em
-// `em-andamento`. Só sem Fase se consulta o MR aberto do GitLab.
-const FASES_REVISAO = ["revisando", "pr-aberto", "retrabalho"];
-// Os status que cada tipo pode ter (`backlog.md`), para as colunas do quadro. `em-revisao` é derivado do MR aberto e nunca se grava.
-const MAQUINAS = {
-  fatia: ["nova", "aceita", "elegivel", "em-andamento", "concluida", "adiada", "cancelada"],
-  bug: ["nova", "aceita", "elegivel", "em-andamento", "concluida", "adiada", "cancelada"],
-  "épico": ["a-moldar", "em-especificacao", "fatiado", "concluido", "cancelado"],
-  "sustentação": ["nova", "em-andamento", "concluida", "cancelada"],
-};
-const ORDEM = ["a-moldar", "em-especificacao", "fatiado", "nova", "aceita", "elegivel", "em-andamento", "em-revisao", "adiada", "concluida", "concluido", "cancelada", "cancelado"];
+// As colunas padrão do quadro, na ordem do fluxo: [id, nome]. Os ids são do framework: os status do `backlog.md`
+// (concluido e cancelado, do épico, caem em concluida e cancelada) e, no lugar do `em-andamento`, as fases do
+// `status.md` da branch (FASES; `iniciada` é o em-andamento sem Fase). O projeto troca só a ordem, o nome e
+// `oculta`, no CONFIG_KANBAN.
+export const CONFIG_KANBAN = ".sabia/config/kanban.json";
+const FASES = ["iniciada", "implementando", "revisando", "verificando", "pr-aberto", "retrabalho"];
+const COLUNAS = [["nova", "Nova"], ["a-moldar", "A moldar"], ["em-especificacao", "Em especificação"], ["fatiado", "Fatiado"],
+  ["aceita", "Aceita"], ["elegivel", "Elegível"],
+  ["iniciada", "Iniciada"], ["implementando", "Em desenvolvimento"], ["revisando", "Revisão do agente"], ["verificando", "Verificação do agente"],
+  ["pr-aberto", "Aguardando aprovação do MR"], ["retrabalho", "Retrabalho"],
+  ["adiada", "Adiada"], ["concluida", "Concluída"], ["cancelada", "Cancelada"]];
+// As colunas que cada status do WIP do `acordos.md` conta. `em-revisao` é derivado (MR aberto) e nunca se grava.
+const WIP = { "em-andamento": ["Em andamento", ["iniciada", "implementando", "revisando", "verificando"]], "em-revisao": ["MR em revisão", ["pr-aberto", "retrabalho"]] };
 const celulas = (l) => l.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((c) => c.trim());
 const semValor = (x) => !x || x === "—";
 /** `adiada até <data>` ocupa uma coluna só (`adiada`); o resto fica como está no backlog. */
@@ -41,7 +43,8 @@ function sprintAberta(raiz, hoje) {
   const texto = fs.readFileSync(path.join(dir, arqs.at(-1)), "utf8");
   const c = texto.match(/^# (\d{4}\/Sprint \d+) · (\d{4}-\d{2}-\d{2}) → (\d{4}-\d{2}-\d{2})/m);
   if (!c) return null;
-  return { chave: c[1], inicio: c[2], fim: c[3], meta: texto.match(/^\*\*Meta:\*\* (.*)$/m)?.[1] ?? null, aberta: hoje <= c[3], itens: tabela(texto, "Item") };
+  const reserva = texto.match(/^\*\*Reserva de capacidade:\*\* (\d+)/m);
+  return { chave: c[1], inicio: c[2], fim: c[3], meta: texto.match(/^\*\*Meta:\*\* (.*)$/m)?.[1] ?? null, reserva: reserva ? +reserva[1] : null, aberta: hoje <= c[3], itens: tabela(texto, "Item") };
 }
 
 function mrsAbertos(raiz, exec) {
@@ -79,9 +82,8 @@ function acordosDe(raiz) {
   return { wip: Object.keys(wip).length ? wip : null, sle: s ? { percentual: +s[1], dias: +s[2] } : null };
 }
 
-/** Os campos do status.md da fatia (a pasta da spec, na branch): Fase, MR, Trilha e Autonomia. A Fase sai no
- *  vocabulário de hoje: o template antigo dizia `aguardando-aprovacao-pr` (hoje `pr-aberto`) e `bloqueada (de: <fase>)`
- *  (hoje a própria fase, com o bloqueio no campo Bloqueio). */
+/** Os campos do status.md da fatia (a pasta da spec, na branch): Fase, MR, Trilha e Autonomia, e as linhas do
+ *  Em aberto que bloqueiam (Bloqueia diferente de `nada`). */
 function lerStatusMd(texto) {
   const l = Object.fromEntries(tabela(texto, "Campo").map((x) => [x.Campo, x.Valor]));
   const v = (k) => semValor(l[k]) ? null : l[k];
@@ -90,17 +92,9 @@ function lerStatusMd(texto) {
     const m = l.MR.match(/!(\d+)\s+(\S+)/);
     mr = m ? { iid: +m[1], url: m[2] } : { iid: null, url: l.MR };
   }
-  return { fase: normalizarFase(v("Fase")), trilha: v("Trilha"), autonomia: v("Autonomia"), mr };
-}
-
-/** A Fase do status.md no vocabulário de hoje. O template antigo usava `aguardando-aprovacao-pr` (o MR aberto,
- *  hoje `pr-aberto`) e `bloqueada (de: <fase>)` (a fase continua, com o motivo no campo Bloqueio); sem tradução,
- *  a fase vem como está. */
-function normalizarFase(f) {
-  if (!f) return null;
-  const m = f.match(/^bloqueada\s*\(de:\s*([^)]+)\)$/);
-  if (m) return m[1].trim();
-  return f === "aguardando-aprovacao-pr" ? "pr-aberto" : f;
+  const bloqueios = tabela(texto, "Pergunta").filter((x) => !semValor(x.Pergunta) && !semValor(x.Bloqueia) && x.Bloqueia !== "nada")
+    .map((x) => ({ pergunta: x.Pergunta, para: x["Para quem"] || null, bloqueia: x.Bloqueia }));
+  return { fase: v("Fase"), trilha: v("Trilha"), autonomia: v("Autonomia"), mr, bloqueios };
 }
 
 /** O status.md do item: a worktree `.sabia/local/wt/<id>` (a branch pode não estar publicada), a branch
@@ -143,14 +137,22 @@ function statusDaBranch(raiz, exec, id) {
   return null;
 }
 
-/** As colunas do quadro: os status que os tipos da sprint podem ter, mais os do WIP (o derivado incluso) e os inesperados, na ordem canônica. */
-function colunasDoQuadro(tipos, efetivos, wip) {
-  const conj = new Set(efetivos);
-  for (const t of tipos) for (const s of MAQUINAS[t] ?? []) conj.add(s);
-  for (const s of Object.keys(wip ?? {})) conj.add(s);
-  const cols = ORDEM.filter((s) => conj.has(s));
-  for (const s of [...conj].sort()) if (!cols.includes(s)) cols.push(s);
-  return cols;
+/** As colunas do quadro: as padrão do framework com a ordem, o nome e `oculta` do CONFIG_KANBAN do projeto. Id que o
+ *  framework não conhece é ignorado, a coluna que falta entra no fim e as do em andamento ficam sempre juntas. */
+function colunasDoProjeto(raiz) {
+  const f = path.join(raiz, CONFIG_KANBAN), padrao = new Map(COLUNAS);
+  let cfg = null, erro = null;
+  if (fs.existsSync(f)) try { cfg = JSON.parse(fs.readFileSync(f, "utf8")); } catch (e) { erro = e.message; }
+  const vistos = new Set();
+  const lista = [...(Array.isArray(cfg?.colunas) ? cfg.colunas : []), ...COLUNAS.map(([id]) => ({ id }))]
+    .filter((c) => padrao.has(c?.id) && !vistos.has(c.id) && vistos.add(c.id))
+    .map((c) => ({ id: c.id, nome: typeof c.nome === "string" && c.nome.trim() ? c.nome.trim() : padrao.get(c.id), oculta: c.oculta === true, grupo: FASES.includes(c.id) }));
+  const i = lista.findIndex((c) => c.grupo);
+  return {
+    colunas: [...lista.slice(0, i), ...lista.filter((c) => c.grupo), ...lista.slice(i).filter((c) => !c.grupo)],
+    grupo: typeof cfg?.grupo === "string" && cfg.grupo.trim() ? cfg.grupo.trim() : "Em andamento",
+    config: { arquivo: CONFIG_KANBAN, do_projeto: Boolean(cfg), erro },
+  };
 }
 
 /** O estado do fluxo. `agora` e `exec` são parâmetros para o teste. */
@@ -159,71 +161,112 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
   if (!fs.existsSync(f)) throw new Error(`${f} não existe: rode na raiz de um projeto com o Sabiá configurado`);
   const backlog = tabela(fs.readFileSync(f, "utf8"), "id"), porId = Object.fromEntries(backlog.map((l) => [l.id, l]));
   const hoje = agora.toISOString().slice(0, 10), sprint = sprintAberta(raiz, hoje);
-  const dias = (d) => Math.floor((Date.parse(hoje) - Date.parse(d)) / 86400000);
+  const dias = (d, ate = hoje) => Math.floor((Date.parse(ate) - Date.parse(d)) / 86400000);
+  const plural = (n, um, varios) => `${n} ${n === 1 ? um : varios}`;
   const porStatus = {};
   for (const l of backlog) porStatus[l.status] = (porStatus[l.status] ?? 0) + 1;
   const itens = sprint?.aberta ? sprint.itens.map((x) => ({ ...x, linha: porId[x.Item] })).filter((x) => x.linha && !TERMINAIS.includes(x.linha.status)) : [];
 
   // o quadro: os MRs abertos (o GitLab, quando disponível), os acordos e o status.md dos itens em andamento
-  const mrs = mrsAbertos(raiz, exec), acordos = acordosDe(raiz);
+  const mrs = mrsAbertos(raiz, exec), acordos = acordosDe(raiz), { colunas, grupo, config } = colunasDoProjeto(raiz);
   const mdCache = {};
   const mdDe = (id) => (id in mdCache ? mdCache[id] : (mdCache[id] = statusDaBranch(raiz, exec, id)));
   const mrGitlabDe = (id) => mrs.disponivel ? (mrs.itens.find((x) => (x.branch ?? "").toLowerCase() === id.toLowerCase() && !x.rascunho) ?? null) : null;
-  const revisaoDe = (id) => {
-    const fase = mdDe(id)?.fase;
-    if (fase) return FASES_REVISAO.includes(fase) ? { origem: "status.md" } : null;
-    return mrGitlabDe(id) ? { origem: "gitlab" } : null;
+  // a coluna do item: o status do backlog; no em-andamento, a Fase do status.md da branch (ela manda), e sem
+  // Fase o MR aberto no GitLab (pr-aberto) ou `iniciada`
+  const colunaDe = (l) => {
+    const st = statusColuna(l.status) || "sem-dados";
+    if (st !== "em-andamento") return { concluido: "concluida", cancelado: "cancelada" }[st] ?? st;
+    const fase = mdDe(l.id)?.fase;
+    return FASES.includes(fase) ? fase : mrGitlabDe(l.id) ? "pr-aberto" : "iniciada";
   };
-  const statusEfetivo = (l) => (l.status === "em-andamento" && revisaoDe(l.id) ? "em-revisao" : statusColuna(l.status));
-  // o WIP conta só fatia e bug (os status do `acordos.md` são os deles)
-  const wip = {};
-  if (acordos.wip) for (const [st, limite] of Object.entries(acordos.wip)) wip[st] = { atual: backlog.filter((l) => (l.tipo === "fatia" || l.tipo === "bug") && statusEfetivo(l) === st).length, limite };
+  const devolvido = (id) => [id, id.toLowerCase()].some((n) => {
+    const a = path.join(raiz, ".sabia/local", `loop-${n}.md`);
+    return fs.existsSync(a) && /^Devolvido:/m.test(fs.readFileSync(a, "utf8"));
+  });
 
-  const tipos = new Set(sprint?.itens.map((x) => porId[x.Item]?.tipo).filter(Boolean));
-  const cards = (sprint?.itens ?? []).map((x) => {
-    const l = porId[x.Item] ?? null;
-    const emAndamento = l?.status === "em-andamento";
-    const md = emAndamento ? mdDe(x.Item) : null;
-    const mrG = emAndamento ? mrGitlabDe(x.Item) : null;
-    const efetivo = l ? statusEfetivo(l) : "sem-dados";
-    const avisos = [];
+  // os cards: o backlog inteiro, mais as linhas da sprint que não estão nele; `na_sprint` separa a sprint
+  const linhas = sprint?.itens ?? [];
+  const cards = [...backlog, ...[...new Set(linhas.map((x) => x.Item))].filter((id) => !porId[id]).map((id) => ({ id, status: "sem-dados" }))].map((l) => {
+    const daSprint = linhas.filter((x) => x.Item === l.id);
+    const st = statusColuna(l.status) || "sem-dados", terminal = TERMINAIS.includes(st), andando = st === "em-andamento";
+    const md = andando ? mdDe(l.id) : null, mrG = andando ? mrGitlabDe(l.id) : null;
+    const idade = !terminal && l.iniciada_em ? dias(l.iniciada_em) : null;
+    const adiadaAte = l.status?.match(/^adiada até (\d{4}-\d{2}-\d{2})$/)?.[1] ?? null;
+    // os avisos: o que o acordos.md e o fluxo do sa-status pedem para olhar; `critico` pede ação já, `atencao` acompanha
+    const avisos = [], aviso = (tipo, nivel, mensagem) => avisos.push({ tipo, nivel, mensagem });
+    if (l.prioridade === "crítica" && !terminal) aviso("urgente", "critico", "urgente: prioridade crítica, vai ao topo");
+    if (acordos.sle && andando && idade > acordos.sle.dias) aviso("sle", "critico", `idade ${idade} dias, acima do SLE de ${acordos.sle.dias} dias`);
+    if (andando && devolvido(l.id)) aviso("devolvido", "critico", "devolvido pelo autopilot: o dono resolve e relança");
+    for (const b of md?.bloqueios ?? []) aviso("bloqueio", "critico", `em aberto bloqueia ${b.bloqueia}: ${b.pergunta}${b.para ? ` (para ${b.para})` : ""}`);
     if (mrG?.atualizado_em) {
-      const h = (agora - new Date(mrG.atualizado_em)) / 3600000;
-      if (h > 24) avisos.push({ tipo: "mr-parado", mensagem: `MR !${mrG.iid} parado: sem atualização há ${Math.floor(h / 24)} dia${Math.floor(h / 24) === 1 ? "" : "s"}` });
+      const d = Math.floor((agora - new Date(mrG.atualizado_em)) / 86400000);
+      if (d >= 1) aviso("mr-parado", "atencao", `MR !${mrG.iid} parado: sem atualização há ${plural(d, "dia", "dias")}`);
     }
-    if (acordos.sle && ["fatia", "bug", "sustentação"].includes(l?.tipo) && l?.status === "em-andamento" && l.iniciada_em && dias(l.iniciada_em) > acordos.sle.dias)
-      avisos.push({ tipo: "sle", mensagem: `idade ${dias(l.iniciada_em)} dias, acima do SLE de ${acordos.sle.dias} dias` });
+    if (md?.fase === "retrabalho") aviso("retrabalho", "atencao", "retrabalho: o dono retoma no mesmo MR");
+    if (adiadaAte && adiadaAte < hoje) aviso("adiamento-vencido", "atencao", `adiamento vencido em ${adiadaAte}: volta à triagem`);
+    const falta = st === "nova" ? l.obs?.match(/falta: ([^·]+)/)?.[1].trim() : null;
+    if (falta) aviso("falta-informacao", "atencao", `falta: ${falta}`);
+    if (sprint?.aberta && !terminal) {
+      for (const x of daSprint) if (semValor(x["Responsável"])) aviso("sem-responsavel", "atencao", `sem responsável na sprint (${x.Trabalho})`);
+      if (andando && !daSprint.length) aviso("fora-da-sprint", "atencao", "em andamento sem linha na sprint aberta");
+    }
     return {
-      id: x.Item,
-      titulo: l?.["título"] ?? null,
-      tipo: l?.tipo ?? null,
-      responsavel: semValor(x["Responsável"]) ? null : x["Responsável"],
-      trabalho: x.Trabalho ?? null,
-      tarefas: semValor(x.Tarefas) ? null : x.Tarefas,
-      status: statusColuna(l?.status) ?? "sem-dados",
-      status_efetivo: efetivo,
-      iniciada_em: l?.iniciada_em || null,
-      idade_dias: l?.iniciada_em ? dias(l.iniciada_em) : null,
+      id: l.id,
+      titulo: l["título"] || null,
+      tipo: l.tipo || null,
+      status: st,
+      coluna: colunaDe(l),
       fase: md?.fase ?? null,
+      na_sprint: daSprint.length > 0,
+      sprint: daSprint.map((x) => ({ trabalho: x.Trabalho ?? null, responsavel: semValor(x["Responsável"]) ? null : x["Responsável"], tarefas: semValor(x.Tarefas) ? null : x.Tarefas })),
+      responsavel: (semValor(l["responsável"]) ? daSprint.map((x) => x["Responsável"]).find((r) => !semValor(r)) : l["responsável"]) ?? null,
+      prioridade: l.prioridade || null,
+      tamanho: l.tamanho || null,
+      pai: l.pai || null,
+      ib: l.ib || null,
+      iniciada_em: l.iniciada_em || null,
+      concluida_em: l.concluida_em || null,
+      idade_dias: idade,
+      lead_time_dias: l.iniciada_em && l.concluida_em ? dias(l.iniciada_em, l.concluida_em) : null,
       trilha: md?.trilha ?? null,
       autonomia: md?.autonomia ?? null,
       mr: mrG ? { iid: mrG.iid, url: mrG.url } : (md?.mr ?? null),
-      revisao: emAndamento ? revisaoDe(x.Item) : null,
-      adiada_ate: l?.status?.match(/^adiada até (\d{4}-\d{2}-\d{2})$/)?.[1] ?? null,
+      adiada_ate: adiadaAte,
       avisos,
     };
   });
+  // status fora dos do framework (erro de digitação, linha da sprint fora do backlog): a coluna entra no fim
+  for (const c of cards) if (!colunas.some((x) => x.id === c.coluna)) colunas.push({ id: c.coluna, nome: c.coluna === "sem-dados" ? "Fora do backlog" : c.coluna, oculta: false, grupo: false });
+
+  // o WIP conta só fatia e bug (os status do `acordos.md` são os deles), no backlog inteiro
+  const wip = Object.entries(acordos.wip ?? {}).map(([status, limite]) => {
+    const [nome, cols] = WIP[status] ?? [colunas.find((c) => c.id === status)?.nome ?? status, [status]];
+    return { status, nome, colunas: cols, atual: cards.filter((c) => (c.tipo === "fatia" || c.tipo === "bug") && cols.includes(c.coluna)).length, limite };
+  });
+  // os alertas do quadro: a configuração inválida, o WIP estourado, a reserva de capacidade e o fim do ciclo
+  const alertas = [];
+  if (config.erro) alertas.push({ tipo: "config", nivel: "critico", mensagem: `${CONFIG_KANBAN} inválido (${config.erro}): o quadro usa o padrão` });
+  for (const w of wip) if (w.atual > w.limite) alertas.push({ tipo: "wip", nivel: "critico", mensagem: `WIP estourado em ${w.nome}: ${w.atual} de ${w.limite}` });
+  const atendimentos = linhas.filter((x) => x.Trabalho === "atendimento").length;
+  if (sprint?.reserva != null && atendimentos > sprint.reserva) alertas.push({ tipo: "reserva", nivel: "atencao", mensagem: `reserva de capacidade estourada: ${atendimentos} de ${plural(sprint.reserva, "item", "itens")} de atendimento` });
+  if (sprint && hoje >= sprint.fim) {
+    const abertos = plural(cards.filter((c) => c.na_sprint && !TERMINAIS.includes(c.status)).length, "item em aberto", "itens em aberto");
+    alertas.push({ tipo: "fim-do-ciclo", nivel: "atencao", mensagem: hoje === sprint.fim ? `último dia da sprint: ${abertos}` : `sprint encerrada em ${sprint.fim}: ${abertos} para a virada` });
+  }
 
   return {
-    versao: 2,
+    versao: 3,
+    sabia: VERSAO_SABIA,
+    projeto: path.basename(raiz),
     gerado_em: agora.toISOString(),
-    sprint: sprint && { chave: sprint.chave, inicio: sprint.inicio, fim: sprint.fim, meta: sprint.meta, aberta: sprint.aberta },
+    sprint: sprint && { chave: sprint.chave, inicio: sprint.inicio, fim: sprint.fim, meta: sprint.meta, reserva: sprint.reserva, aberta: sprint.aberta },
     por_status: porStatus,
     sem_responsavel: itens.filter((x) => semValor(x["Responsável"])).map((x) => ({ id: x.Item, titulo: x.linha["título"], trabalho: x.Trabalho, status: x.linha.status })),
     nao_iniciados: itens.filter((x) => x.Trabalho === "desenvolvimento" && NAO_INICIADO.includes(x.linha.status)).map((x) => ({ id: x.Item, titulo: x.linha["título"], status: x.linha.status })),
     em_andamento: backlog.filter((l) => l.status === "em-andamento").map((l) => ({ id: l.id, titulo: l["título"], responsavel: semValor(l["responsável"]) ? null : l["responsável"],
       iniciada_em: l.iniciada_em || null, idade_dias: l.iniciada_em ? dias(l.iniciada_em) : null })),
     mrs_aguardando: mrs,
-    quadro: { colunas: colunasDoQuadro(tipos, cards.map((c) => c.status_efetivo), acordos.wip), itens: cards, wip, sle: acordos.sle },
+    quadro: { config, grupo, colunas, itens: cards, wip, sle: acordos.sle, alertas },
   };
 }

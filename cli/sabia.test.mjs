@@ -619,8 +619,10 @@ test("status: JSON estável com sprint, sem responsável, não iniciados, em and
   const agora = new Date("2026-11-09T12:00:00Z");
   delete process.env.GITLAB_API_URL;
   let r = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora });
-  assert.equal(r.versao, 2);
-  assert.deepEqual(r.sprint, { chave: "2026/Sprint 02", inicio: "2026-11-01", fim: "2026-11-13", meta: "Entregar", aberta: true });
+  assert.equal(r.versao, 3);
+  assert.equal(r.projeto, "st");
+  assert.match(r.sabia, /^\d+\.\d+\.\d+/);  // a versão do Sabiá que gerou
+  assert.deepEqual(r.sprint, { chave: "2026/Sprint 02", inicio: "2026-11-01", fim: "2026-11-13", meta: "Entregar", reserva: null, aberta: true });
   assert.deepEqual(r.por_status, { elegivel: 1, "em-andamento": 2, concluida: 1 });
   assert.deepEqual(r.sem_responsavel, [{ id: "FT-001", titulo: "Um", trabalho: "desenvolvimento", status: "elegivel" }]);
   assert.deepEqual(r.nao_iniciados, [{ id: "FT-001", titulo: "Um", status: "elegivel" }]);
@@ -628,26 +630,33 @@ test("status: JSON estável com sprint, sem responsável, não iniciados, em and
     { id: "FT-002", titulo: "Dois", responsavel: "ana", iniciada_em: "2026-11-01", idade_dias: 8 },
     { id: "FT-004", titulo: "Quatro", responsavel: "bia", iniciada_em: null, idade_dias: null }]);
   assert.deepEqual(r.mrs_aguardando, { disponivel: false, motivo: "defina GITLAB_API_URL e GITLAB_API_TOKEN", itens: [] });
-  // o quadro: colunas na ordem canônica (fatia, sem acordos) e os cards da sprint com o status do backlog;
-  // a pr-aberto da FT-004 já entra em em-revisao pelo status.md (o GitLab não está disponível)
-  assert.deepEqual(r.quadro.colunas, ["nova", "aceita", "elegivel", "em-andamento", "em-revisao", "adiada", "concluida", "cancelada"]);
+  // o quadro: as colunas padrão do framework (os status do backlog e, no lugar do em-andamento, as fases) e um card
+  // por item do backlog, na coluna dele; a pr-aberto da FT-004 vem do status.md (o GitLab não está disponível)
+  assert.deepEqual(r.quadro.config, { arquivo: ".sabia/config/kanban.json", do_projeto: false, erro: null });
+  assert.equal(r.quadro.grupo, "Em andamento");
+  assert.deepEqual(r.quadro.colunas.map((c) => c.id), ["nova", "a-moldar", "em-especificacao", "fatiado", "aceita", "elegivel",
+    "iniciada", "implementando", "revisando", "verificando", "pr-aberto", "retrabalho", "adiada", "concluida", "cancelada"]);
+  assert.deepEqual(r.quadro.colunas.filter((c) => c.grupo).map((c) => c.nome), ["Iniciada", "Em desenvolvimento", "Revisão do agente", "Verificação do agente", "Aguardando aprovação do MR", "Retrabalho"]);
   assert.equal(r.quadro.itens.length, 4);
   const c2 = r.quadro.itens.find((c) => c.id === "FT-002");
   assert.equal(c2.status, "em-andamento");
-  assert.equal(c2.status_efetivo, "em-andamento");  // Fase — no status.md: mantém em-andamento
+  assert.equal(c2.coluna, "iniciada");  // Fase — no status.md
   assert.equal(c2.responsavel, "ana");
   assert.equal(c2.fase, null);
-  assert.equal(c2.revisao, null);
+  assert.equal(c2.na_sprint, true);
+  assert.deepEqual(c2.sprint, [{ trabalho: "desenvolvimento", responsavel: "ana", tarefas: null }]);
   const c4 = r.quadro.itens.find((c) => c.id === "FT-004");
-  assert.equal(c4.status_efetivo, "em-revisao");  // Fase pr-aberto no status.md
-  assert.equal(c4.fase, "pr-aberto");
-  assert.deepEqual(c4.revisao, { origem: "status.md" });
+  assert.equal(c4.coluna, "pr-aberto");  // Fase pr-aberto no status.md
   assert.deepEqual(c4.mr, { iid: 99, url: "https://gl.exemplo/time/app/-/merge_requests/99" });
-  assert.deepEqual(r.quadro.wip, {});
+  assert.deepEqual(r.quadro.itens.find((c) => c.id === "FT-001").avisos, [{ tipo: "sem-responsavel", nivel: "atencao", mensagem: "sem responsável na sprint (desenvolvimento)" }]);
+  assert.equal(r.quadro.itens.find((c) => c.id === "FT-003").lead_time_dias, null);
+  assert.deepEqual(r.quadro.wip, []);
+  assert.deepEqual(r.quadro.alertas, []);
   // sprint vencida: o estado continua, sem as listas da sprint
   r = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora: new Date("2026-12-01T00:00:00Z") });
   assert.equal(r.sprint.aberta, false);
   assert.deepEqual(r.sem_responsavel, []);
+  assert.deepEqual(r.quadro.alertas, [{ tipo: "fim-do-ciclo", nivel: "atencao", mensagem: "sprint encerrada em 2026-11-13: 3 itens em aberto para a virada" }]);
   // o GitLab: o token vai pela entrada do curl, nunca nos argumentos
   process.env.GITLAB_API_URL = "https://gl.exemplo/"; process.env.GITLAB_API_TOKEN = "segredo";
   try {
@@ -658,66 +667,99 @@ test("status: JSON estável com sprint, sem responsável, não iniciados, em and
     assert.deepEqual(r.mrs_aguardando, { disponivel: true, motivo: null, itens: [{ iid: 7, titulo: "T", autor: "ana", branch: "ft-002", url: "u", criado_em: "c", atualizado_em: "2026-11-09T09:00:00Z", rascunho: false }] });
     assert.ok(vistos[1].args.at(-1).startsWith("https://gl.exemplo/api/v4/projects/time%2Fapp/merge_requests"));
     assert.ok(!vistos[1].args.join(" ").includes("segredo") && vistos[1].o.input.includes("segredo"));
-    // FT-002 (Fase —): o MR aberto da branch → em-revisao pelo GitLab;
-    // FT-004 (Fase pr-aberto): o status.md manda mesmo com o GitLab disponível
-    assert.equal(r.quadro.itens.find((c) => c.id === "FT-002").status_efetivo, "em-revisao");
-    assert.deepEqual(r.quadro.itens.find((c) => c.id === "FT-002").revisao, { origem: "gitlab" });
-    assert.equal(r.quadro.itens.find((c) => c.id === "FT-004").status_efetivo, "em-revisao");
-    assert.deepEqual(r.quadro.itens.find((c) => c.id === "FT-004").revisao, { origem: "status.md" });
-    assert.ok(r.quadro.colunas.includes("em-revisao"));
+    // FT-002 (Fase —): o MR aberto da branch a leva para pr-aberto; na FT-004 o status.md manda
+    assert.equal(r.quadro.itens.find((c) => c.id === "FT-002").coluna, "pr-aberto");
+    assert.deepEqual(r.quadro.itens.find((c) => c.id === "FT-002").mr, { iid: 7, url: "u" });
+    assert.equal(r.quadro.itens.find((c) => c.id === "FT-004").coluna, "pr-aberto");
     assert.deepEqual(r.quadro.itens.find((c) => c.id === "FT-002").avisos, []);
     // MR parado (atualizado há 2 dias) → o aviso do marco de um dia
     const execParado = (cmd, args, o = {}) => (cmd === "git" ? { status: 0, stdout: "git@gl.exemplo:time/app.git\n" }
       : { status: 0, stdout: JSON.stringify([{ iid: 7, title: "T", author: { username: "ana" }, source_branch: "ft-002", web_url: "u", created_at: "c", updated_at: "2026-11-07T09:00:00Z", draft: false }]) });
     r = statusDoProjeto({ projeto: proj, exec: execParado, agora });
-    assert.deepEqual(r.quadro.itens.find((c) => c.id === "FT-002").avisos, [{ tipo: "mr-parado", mensagem: "MR !7 parado: sem atualização há 2 dias" }]);
+    assert.deepEqual(r.quadro.itens.find((c) => c.id === "FT-002").avisos, [{ tipo: "mr-parado", nivel: "atencao", mensagem: "MR !7 parado: sem atualização há 2 dias" }]);
     r = statusDoProjeto({ projeto: proj, exec: (c) => (c === "git" ? { status: 0, stdout: "https://gl.exemplo/time/app.git" } : { status: 22, stderr: "401" }), agora });
     assert.deepEqual(r.mrs_aguardando, { disponivel: false, motivo: "GitLab: 401", itens: [] });
   } finally { delete process.env.GITLAB_API_URL; delete process.env.GITLAB_API_TOKEN; }
   assert.throws(() => statusDoProjeto({ projeto: raiz, exec: s.ctx.exec }), /backlog\.md não existe/);
 });
 
-test("status: quadro lê acordos (WIP/SLE), o status.md da branch e avisa do SLE", async () => {
+test("status: quadro lê acordos (WIP/SLE), o status.md da branch, os avisos dos acordos e o kanban.json do projeto", async () => {
   const proj = escrever(path.join(raiz, "st-q"), {
     ".sabia/planejamento/backlog.md": "# Backlog\n\n| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | obs | aceita_em | iniciada_em | concluida_em |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n"
       + "| FT-001 | Um | fatia | em-andamento |  | M | ana |  | a |  |  |  | 2026-10-20 |  |\n"
-      + "| AT-001 | Contas | sustentação | em-andamento |  |  |  |  | a |  |  |  |  |  |\n",
+      + "| AT-001 | Contas | sustentação | em-andamento |  |  |  |  | a |  |  |  |  |  |\n"
+      + "| FT-002 | Dois | bug | em-andamento | crítica | P | bia |  | a |  |  |  | 2026-11-08 |  |\n"
+      + "| FT-003 | Três | fatia | adiada até 2026-11-01 |  | P |  |  | a |  |  |  |  |  |\n"
+      + "| FT-004 | Quatro | fatia | nova |  |  |  |  | a |  | falta: qual tela · para ana |  |  |  |\n"
+      + "| EP-01 | Épico | épico | concluido |  |  |  |  | a |  |  |  | 2026-10-01 | 2026-10-11 |\n",
     ".sabia/planejamento/acordos.md": "# Acordos\n\n| Item | Acordo |\n|---|---|\n| Timebox | 2 semanas |\n| WIP | em-andamento: 1 · em-revisao: 2 |\n| SLE | 85% em até 5 dias |\n",
-    ".sabia/planejamento/sprints/2026/sprint-01.md": "# 2026/Sprint 01 · 2026-11-02 → 2026-11-13\n\n**Meta:** Entregar\n\n## Itens\n\n| Item | Trabalho | Responsável | Tarefas |\n|---|---|---|---|\n| FT-001 | desenvolvimento | ana | — |\n| AT-001 | atendimento | — | — |\n",
-    // a worktree do item, com o status.md da spec (Fase revisando → em-revisao; o status.md manda, GitLab disponível ou não)
-    ".sabia/local/wt/ft-001/.kiro/specs/ft-001-um/status.md": "# Status\n\n| Campo | Valor |\n|---|---|\n| Fase | revisando |\n| MR | !12 https://gl.exemplo/time/app/-/merge_requests/12 |\n| Trilha | completo |\n| Autonomia | IA supervisionada |\n",
+    ".sabia/planejamento/sprints/2026/sprint-01.md": "# 2026/Sprint 01 · 2026-11-02 → 2026-11-13\n\n**Meta:** Entregar\n\n**Reserva de capacidade:** 0 itens (0%)\n\n## Itens\n\n| Item | Trabalho | Responsável | Tarefas |\n|---|---|---|---|\n| FT-001 | desenvolvimento | ana | — |\n| AT-001 | atendimento | — | — |\n",
+    // a worktree do item, com o status.md da spec: a Fase dá a coluna e o Em aberto que bloqueia vira aviso
+    ".sabia/local/wt/ft-001/.kiro/specs/ft-001-um/status.md": "# Status\n\n| Campo | Valor |\n|---|---|\n| Fase | retrabalho |\n| MR | !12 https://gl.exemplo/time/app/-/merge_requests/12 |\n| Trilha | completo |\n| Autonomia | IA supervisionada |\n\n## Em aberto\n\n| Pergunta | Para quem | Bloqueia |\n|---|---|---|\n| Qual o limite? | P.O. | MR |\n| E a cor? | P.O. | nada |\n",
+    ".sabia/local/loop-ft-002.md": "# Loop\n\nDevolvido: teto de tentativas\n",
   });
   delete process.env.GITLAB_API_URL;
-  const r = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora: new Date("2026-11-09T12:00:00Z") });
-  // o WIP conta só fatia e bug, pelo status efetivo: a FT-001 saiu de em-andamento para em-revisao (Fase revisando)
-  assert.deepEqual(r.quadro.wip, { "em-andamento": { atual: 0, limite: 1 }, "em-revisao": { atual: 1, limite: 2 } });
+  const agora = new Date("2026-11-09T12:00:00Z");
+  const r = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora });
+  // o WIP conta só fatia e bug, pelas colunas de cada status: a FT-002 em andamento (2 de 1) e a FT-001 com o MR em revisão
+  assert.deepEqual(r.quadro.wip, [
+    { status: "em-andamento", nome: "Em andamento", colunas: ["iniciada", "implementando", "revisando", "verificando"], atual: 1, limite: 1 },
+    { status: "em-revisao", nome: "MR em revisão", colunas: ["pr-aberto", "retrabalho"], atual: 1, limite: 2 }]);
   assert.deepEqual(r.quadro.sle, { percentual: 85, dias: 5 });
-  // colunas: fatia + sustentação + o derivado (o WIP dele abre a coluna)
-  assert.deepEqual(r.quadro.colunas, ["nova", "aceita", "elegivel", "em-andamento", "em-revisao", "adiada", "concluida", "cancelada"]);
-  const c1 = r.quadro.itens.find((c) => c.id === "FT-001");
-  assert.equal(c1.status, "em-andamento");
-  assert.equal(c1.status_efetivo, "em-revisao");  // Fase revisando no status.md
-  assert.equal(c1.fase, "revisando");
+  assert.equal(r.sprint.reserva, 0);
+  // os alertas do quadro: a reserva de capacidade (1 linha de atendimento contra 0)
+  assert.deepEqual(r.quadro.alertas, [{ tipo: "reserva", nivel: "atencao", mensagem: "reserva de capacidade estourada: 1 de 0 itens de atendimento" }]);
+  const de = (id) => r.quadro.itens.find((c) => c.id === id), tipos = (id) => de(id).avisos.map((a) => `${a.nivel}:${a.tipo}`);
+  const c1 = de("FT-001");
+  assert.equal(c1.coluna, "retrabalho");
+  assert.equal(c1.fase, "retrabalho");
   assert.equal(c1.trilha, "completo");
   assert.equal(c1.autonomia, "IA supervisionada");
   assert.deepEqual(c1.mr, { iid: 12, url: "https://gl.exemplo/time/app/-/merge_requests/12" });
-  assert.deepEqual(c1.revisao, { origem: "status.md" });
-  assert.deepEqual(c1.avisos, [{ tipo: "sle", mensagem: "idade 20 dias, acima do SLE de 5 dias" }]);
-  const c2 = r.quadro.itens.find((c) => c.id === "AT-001");
+  assert.deepEqual(c1.avisos, [
+    { tipo: "sle", nivel: "critico", mensagem: "idade 20 dias, acima do SLE de 5 dias" },
+    { tipo: "bloqueio", nivel: "critico", mensagem: "em aberto bloqueia MR: Qual o limite? (para P.O.)" },
+    { tipo: "retrabalho", nivel: "atencao", mensagem: "retrabalho: o dono retoma no mesmo MR" }]);
+  // urgente (prioridade crítica), devolvido pelo autopilot e em andamento fora da sprint
+  assert.deepEqual(tipos("FT-002"), ["critico:urgente", "critico:devolvido", "atencao:fora-da-sprint"]);
+  assert.equal(de("FT-002").na_sprint, false);
+  assert.deepEqual(tipos("FT-003"), ["atencao:adiamento-vencido"]);
+  assert.equal(de("FT-003").coluna, "adiada");
+  assert.deepEqual(de("FT-004").avisos, [{ tipo: "falta-informacao", nivel: "atencao", mensagem: "falta: qual tela" }]);
+  const c2 = de("AT-001");
   assert.equal(c2.tipo, "sustentação");
-  assert.equal(c2.status_efetivo, "em-andamento");
-  assert.equal(c2.idade_dias, null);  // sustentação não tem iniciada_em
+  assert.equal(c2.coluna, "iniciada");
+  assert.equal(c2.idade_dias, null);  // sem iniciada_em
+  assert.deepEqual(tipos("AT-001"), ["atencao:sem-responsavel"]);
+  // o épico concluido cai na coluna concluida, com o lead time
+  assert.equal(de("EP-01").coluna, "concluida");
+  assert.equal(de("EP-01").lead_time_dias, 10);
+  // o kanban.json do projeto: ordem, nome e oculta; id desconhecido sai, a coluna que falta entra no fim e as do
+  // em andamento ficam juntas, na ordem em que o projeto as pôs
+  escrever(proj, { ".sabia/config/kanban.json": JSON.stringify({ grupo: "Fazendo", colunas: [
+    { id: "elegivel", nome: "Pronta" }, { id: "retrabalho" }, { id: "nova", oculta: true }, { id: "inventada", nome: "X" }, { id: "implementando", nome: "Codando" }] }) });
+  const q = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora }).quadro;
+  assert.deepEqual(q.config, { arquivo: ".sabia/config/kanban.json", do_projeto: true, erro: null });
+  assert.equal(q.grupo, "Fazendo");
+  assert.deepEqual(q.colunas.map((c) => c.id), ["elegivel", "retrabalho", "implementando", "iniciada", "revisando", "verificando", "pr-aberto", "nova",
+    "a-moldar", "em-especificacao", "fatiado", "aceita", "adiada", "concluida", "cancelada"]);
+  assert.deepEqual(q.colunas.slice(0, 3).map((c) => c.nome), ["Pronta", "Retrabalho", "Codando"]);
+  assert.equal(q.colunas.find((c) => c.id === "nova").oculta, true);
+  // JSON inválido: o quadro usa o padrão e avisa
+  escrever(proj, { ".sabia/config/kanban.json": "{ colunas: " });
+  const ruim = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora }).quadro;
+  assert.equal(ruim.colunas[0].id, "nova");
+  assert.equal(ruim.alertas[0].tipo, "config");
   // sem acordos.md: WIP vazio e sem SLE
   fs.rmSync(path.join(proj, ".sabia/planejamento/acordos.md"));
-  const s2 = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora: new Date("2026-11-09T12:00:00Z") });
-  assert.deepEqual(s2.quadro.wip, {});
+  const s2 = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora });
+  assert.deepEqual(s2.quadro.wip, []);
   assert.equal(s2.quadro.sle, null);
-  assert.equal(s2.quadro.itens.find((c) => c.id === "FT-001").avisos.length, 0);
+  assert.ok(!s2.quadro.itens.find((c) => c.id === "FT-001").avisos.some((a) => a.tipo === "sle"));
 });
 
-test("status: a Fase no vocabulário antigo e a spec na branch base", async () => {
-  // o status.md pode usar o vocabulário do template antigo (aguardando-aprovacao-pr, bloqueada (de: <fase>))
-  // e a spec pode viver na branch base (o projeto a grava nela até o merge), sem branch do item
+test("status: a spec na branch base, sem branch do item", async () => {
+  // a spec pode viver na branch base (o projeto a grava nela até o merge), sem branch do item
   const proj = escrever(path.join(raiz, "st-fase"), {
     ".sabia/planejamento/backlog.md": "# Backlog\n\n| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | obs | aceita_em | iniciada_em | concluida_em |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n"
       + "| FT-004 | Quatro | fatia | em-andamento |  | M | bia |  | a |  |  |  |  |  |\n",
@@ -729,20 +771,18 @@ test("status: a Fase no vocabulário antigo e a spec na branch base", async () =
     // ["-C", raiz, rev-parse|ls-tree|show, ...]: a branch do item não existe; a spec só está na base
     if (args[2] === "rev-parse") return git[args[5]] ?? { status: 1 };
     if (args[2] === "ls-tree") return /ft-004/i.test(args[5] ?? "") ? { status: 1 } : { status: 0, stdout: ".kiro/specs/ft-004-quatro/status.md\n" };
-    if (args[2] === "show") return { status: 0, stdout: "# Status\n\n| Campo | Valor |\n|---|---|\n| Fase | aguardando-aprovacao-pr |\n| MR | !215 https://gl.exemplo/app/-/merge_requests/215 |\n" };
+    if (args[2] === "show") return { status: 0, stdout: "# Status\n\n| Campo | Valor |\n|---|---|\n| Fase | pr-aberto |\n| MR | !215 https://gl.exemplo/app/-/merge_requests/215 |\n" };
     return { status: 1 };
   };
   delete process.env.GITLAB_API_URL;
   const r = statusDoProjeto({ projeto: proj, exec, agora: new Date("2026-11-09T12:00:00Z") });
   const c = r.quadro.itens.find((x) => x.id === "FT-004");
-  // aguardando-aprovacao-pr (template antigo) → pr-aberto (hoje): em-revisao pela Fase, sem o GitLab
   assert.equal(c.fase, "pr-aberto");
-  assert.equal(c.status_efetivo, "em-revisao");
-  assert.deepEqual(c.revisao, { origem: "status.md" });
+  assert.equal(c.coluna, "pr-aberto");
   assert.deepEqual(c.mr, { iid: 215, url: "https://gl.exemplo/app/-/merge_requests/215" });
 });
 
-test("kanban: a página exibe as colunas, os cards, os avisos de marco e o JSON embutido; o servidor serve tudo", async () => {
+test("kanban: a página leva o tema, a versão e o JSON da sabia status; o servidor lê o projeto a cada carga e fecha", async () => {
   const proj = escrever(path.join(raiz, "st-k"), {
     ".sabia/planejamento/backlog.md": "# Backlog\n\n| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | obs | aceita_em | iniciada_em | concluida_em |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n"
       + "| FT-001 | Um | fatia | em-andamento |  | M | ana |  | a |  |  |  | 2026-11-08 |  |\n"
@@ -767,43 +807,36 @@ test("kanban: a página exibe as colunas, os cards, os avisos de marco e o JSON 
         { iid: 13, title: "T2", author: { username: "bia" }, source_branch: "ft-004", web_url: "https://gl.exemplo/time/app/-/merge_requests/13", created_at: "2026-11-10T08:00:00Z", updated_at: "2026-11-10T09:00:00Z", draft: false },
       ]) };
     q = await abrirQuadro({ projeto: proj, exec, log: (x) => logs.push(String(x)), agora });
-    assert.match(logs.at(-1), /^http:\/\/127\.0\.0\.1:\d+\/$/);  // a URL vai para o log
+    assert.match(logs.at(-1), /^Quadro Kanban do projeto st-k \(Ctrl\+C encerra\):\n\n {2}http:\/\/127\.0\.0\.1:\d+\/\n$/);  // a URL sozinha na linha
     const html = await (await fetch(q.url)).text();
-    assert.match(html, /<title>Quadro · 2026\/Sprint 02<\/title>/);
+    assert.match(html, /<title>Quadro · st-k<\/title>/);
     assert.match(html, /data-sobria="sobria-sabia"/);
-    assert.match(html, /data-modo="escuro"/);  // o escuro do tema, no CSS e no script do toggle
-    // as colunas com texto legível; o em andamento se abre nas fases (cada card vai na coluna da sua fase)
-    const secoes = [...html.matchAll(/<section class="coluna[^"]*">[\s\S]*?<\/section>/g)].map((m) => m[0]);
-    const de = (rotulo) => secoes.find((x) => x.includes(`<h2>${rotulo}</h2>`));
-    assert.ok(de("Em Andamento") && de("Em desenvolvimento") && de("Em Verificação") && de("Em Revisão")
-      && de("Aguardando aprovação do PR") && de("Retrabalho") && de("Elegível") && de("Em especificação"));
-    assert.match(de("Em desenvolvimento"), /FT-001/);  // Fase implementando no status.md (manda mesmo com MR aberto)
-    assert.ok(!de("Em Andamento").includes("FT-001"));
-    assert.match(de("Em Revisão"), /FT-004/);  // sem status.md: o MR aberto no GitLab
-    assert.match(de("Elegível"), /FT-002/);
-    assert.match(de("Em especificação"), /EP-01/);
-    assert.match(de("Em Andamento"), /AT-001/);
-    // a situação do em-andamento vem do status.md da branch
-    assert.match(de("Em desenvolvimento"), /Trilha<\/b> completo/);
-    assert.match(de("Em desenvolvimento"), /Autonomia<\/b> IA supervisionada/);
-    // o marco estourado: o MR parado há mais de um dia, com o destaque distinto
-    const aviso = de("Em desenvolvimento").match(/<article class="cartao aviso[^"]*">[\s\S]*?<\/article>/)[0];
-    assert.match(aviso, /MR !12 parado: sem atualização há 2 dias/);
-    // o WIP por coluna, contra o limite do acordos.md (em-andamento conta o FT-001; em-revisao, o FT-004)
-    assert.match(de("Em Andamento"), /class="wip"[^>]*>1\/1<\/span>/);
-    assert.match(de("Em Revisão"), /class="wip"[^>]*>1\/2<\/span>/);
-    // o JSON do `sabia status` embutido na página (as chaves seguem as de máquina; os rótulos são da página)
-    const embutido = JSON.parse(html.match(/<script id="quadro" type="application\/json">([\s\S]*?)<\/script>/)[1]);
-    assert.equal(embutido.versao, 2);
+    assert.match(html, /data-modo/);  // o claro/escuro do tema
+    assert.match(html, new RegExp(`<span class="ver">${s.VERSAO.replaceAll(".", "\\.")}</span>`));  // a versão no topo
+    assert.match(html, new RegExp(`<span>Sabiá ${s.VERSAO.replaceAll(".", "\\.")}</span>`));  // e no rodapé
+    assert.match(html, /<code>\.sabia\/config\/kanban\.json<\/code>/);  // onde gravar o JSON copiado
+    // a página desenha no navegador só o JSON da `sabia status` embutido nela
+    const embutido = JSON.parse(html.match(/<script id="dados" type="application\/json">([\s\S]*?)<\/script>/)[1]);
+    assert.equal(embutido.versao, 3);
     assert.equal(embutido.quadro.itens.length, 5);
-    assert.equal(embutido.quadro.itens.find((c) => c.id === "FT-001").status_efetivo, "em-andamento");
-    assert.equal(embutido.quadro.itens.find((c) => c.id === "FT-001").fase, "implementando");
-    assert.deepEqual(embutido.quadro.itens.find((c) => c.id === "FT-004").revisao, { origem: "gitlab" });
+    const de = (id) => embutido.quadro.itens.find((c) => c.id === id);
+    assert.equal(de("FT-001").coluna, "implementando");  // a Fase do status.md manda, mesmo com MR aberto
+    assert.equal(de("FT-004").coluna, "pr-aberto");  // sem status.md: o MR aberto no GitLab
+    assert.equal(de("AT-001").coluna, "iniciada");
+    assert.equal(de("EP-01").coluna, "em-especificacao");
+    assert.deepEqual(de("FT-001").avisos, [{ tipo: "mr-parado", nivel: "atencao", mensagem: "MR !12 parado: sem atualização há 2 dias" }]);
+    assert.deepEqual(embutido.quadro.wip.map((w) => `${w.status} ${w.atual}/${w.limite}`), ["em-andamento 1/1", "em-revisao 1/2"]);
     // os outros caminhos: o JSON cru, o 404 e o método
     const dados = await (await fetch(q.url + "dados.json")).json();
     assert.deepEqual(dados, statusDoProjeto({ projeto: proj, exec, agora }));
     assert.equal((await fetch(q.url + "outro")).status, 404);
     assert.equal((await fetch(q.url, { method: "POST" })).status, 405);
+    // cada carga lê o projeto de novo: o kanban.json gravado depois de o servidor subir já vale
+    escrever(proj, { ".sabia/config/kanban.json": JSON.stringify({ colunas: [{ id: "concluida", nome: "Feito" }] }) });
+    assert.deepEqual((await (await fetch(q.url + "dados.json")).json()).quadro.colunas[0], { id: "concluida", nome: "Feito", oculta: false, grupo: false });
+    // o sinal de vida: a conexão fica aberta até o servidor fechar
+    const vivo = await fetch(q.url + "vivo");
+    assert.equal(vivo.headers.get("content-type"), "text/event-stream");
     q.fechar();
     await q.fechou;  // o evento close: o servidor parou de escutar
     await assert.rejects(fetch(q.url));

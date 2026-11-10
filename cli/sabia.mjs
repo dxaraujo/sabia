@@ -1340,7 +1340,8 @@ const USO = [
   ["sabia toolkits atualizar", "leva os toolkits do projeto à última versão", "[<nome> …] [-y] [--indice <url-git|pasta>]   (sem nome: todos os do projeto)"],
   ["sabia toolkits remover", "tira do projeto; a versão sai da máquina se ninguém mais usar", "[<nome>[@versao] …] [-y]   (apelido rm; fora de um projeto: apaga da máquina)"],
   ["sabia status", "o estado do fluxo em JSON, para bots e scripts (só lê)", "[--projeto <pasta>]"],
-  ["sabia kanban", "o quadro Kanban da sprint aberta numa página local (tema Sabiá; serve o JSON da `sabia status`)", "[--projeto <pasta>] [--porta <n>]"],
+  ["sabia kanban", "o quadro Kanban do projeto numa página local: mostra o link, e Ctrl+C encerra (desenha o JSON da `sabia status`)", "[--projeto <pasta>] [--porta <n>] (padrão: 4780; ocupada, uma livre)\n" +
+    "      as colunas (ordem, nome, oculta) vêm de .sabia/config/kanban.json, que a própria página gera"],
   ["sabia agentes gerar", "gera os agentes do projeto; sem --gravar, só mostra o que muda", "[--gravar] [-a kiro,opencode] [--projeto <pasta>] [--config <arquivo>] [--framework <pasta>]"],
   ["sabia agentes base <id>", "a base de uma cópia: o sha do passo ou do template", "<sa-x.f.p | sa-x/nome.md | requisitos/template-<tipo>.md | ~/.sabia/toolkits/…> [--framework <pasta>]"],
   ["sabia rota <arquivo>", "explica a rota de um arquivo", "o passo com desvio de toolkit, o dono, o toolkit, o motivo e as travas\n" +
