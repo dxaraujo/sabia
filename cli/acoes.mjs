@@ -121,11 +121,12 @@ export function preparar(raiz, acao, { usuario, agora = new Date() }) {
     exige(true);
     if (!sprint?.aberta) throw new Error("não há sprint aberta: planeje pela sa-planejamento.sprint");
     if (terminal) throw new Error(`${item.id} está ${item.status}`);
-    const trabalho = acao.trabalho || (["fatia", "bug"].includes(item.tipo) && item.status !== "elegivel" ? "especificação" : PRINCIPAL[item.tipo]);
+    const trabalho = acao.trabalho || (["fatia", "bug"].includes(item.tipo) && item.status !== "elegivel" ? "especificação" : PRINCIPAL[item.tipo] ?? "especificação");
     if (!TRABALHOS.includes(trabalho)) throw new Error("trabalho inválido");
     if (abertas.some((x) => x.Trabalho === trabalho)) throw new Error(`${item.id} já tem a tarefa de ${trabalho} na sprint`);
     const resp = limpo(acao.responsavel, 60) || "—";
     out.arquivos[sprint.arquivo] = editarTabela(ler(sprint.arquivo), "Item", (ls) => [...ls, { Item: item.id, Trabalho: trabalho, "Responsável": resp, Tarefas: "", iniciada_em: "", concluida_em: "" }]);
+    if (semValor(item.status)) naLinha((l) => { l.status = "nova"; });  // sem status, entra como nova
     out.commit = `${sprint.chave}: reabastecimento`;
   } else if (acao.tipo === "para-backlog") {
     exige(false);

@@ -899,7 +899,8 @@ test("kanban que grava: impedir, liberar, cancelar, sprint ↔ backlog, concluir
       + "| EP-01 | Épico | épico | fatiado | | | | | a | | | | 2026-10-01 | |\n"
       + "| FT-001 | Um | fatia | em-andamento | | M | ana | EP-01 | a | | | | 2026-10-02 | |\n"
       + "| FT-002 | Dois | fatia | elegivel | | P | | EP-01 | a | | | | 2026-10-03 | |\n"
-      + "| FT-003 | Três | bug | aceita | | P | | | a | | | nota | 2026-10-04 | |\n",
+      + "| FT-003 | Três | bug | aceita | | P | | | a | | | nota | 2026-10-04 | |\n"
+      + "| FT-004 | Quatro | fatia | | | | | | a | | | | 2026-10-05 | |\n",
     ".sabia/planejamento/equipe.json": JSON.stringify({ membros: [{ nome: "Ana Souza", usuario: "ana", produto: false, ativo: true }, { nome: "Bia Lima", usuario: "bia", produto: true, ativo: true }] }),
     ".sabia/planejamento/sprints/2026/sprint-01.md": "# 2026/Sprint 01 · 2026-11-02 → 2026-11-13\n\n## Itens\n\n| Item | Trabalho | Responsável | Tarefas | iniciada_em | concluida_em |\n|---|---|---|---|---|---|\n| FT-001 | especificação | bia | | 2026-11-02 | 2026-11-03 |\n| FT-001 | desenvolvimento | ana | DEV 77 | 2026-11-04 | |\n| FT-002 | desenvolvimento | — | | | |\n\n## Review\n",
     ".sabia/sabia.md": "# Sabiá\n\n## Regras aprendidas\n\nUma por linha.\n\n<!-- Nenhuma regra ainda. -->\n\n## Outra\n",
@@ -949,6 +950,13 @@ test("kanban que grava: impedir, liberar, cancelar, sprint ↔ backlog, concluir
   assert.ok(sp(m).includes("| FT-003 | especificação | ana |  |  |  |\n\n## Review"));  // aceita: a tarefa é de especificação
   assert.equal(m.commit, "2026/Sprint 01: reabastecimento");
   assert.throws(() => preparar(proj, { tipo: "para-sprint", id: "FT-002" }, { usuario: bia, agora }), /já tem a tarefa de desenvolvimento/);
+  // o item sem status entra na sprint como nova: o quadro o mostra na raia Nova, com o aviso, e a entrada grava o status
+  const semStatus = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora }).quadro.itens.find((c) => c.id === "FT-004");
+  assert.equal(semStatus.coluna, "nova");
+  assert.deepEqual(semStatus.avisos.map((a) => a.tipo), ["sem-status"]);
+  m = preparar(proj, { tipo: "para-sprint", id: "FT-004" }, { usuario: bia, agora });
+  assert.match(linha(bk(m), "FT-004"), /^\| FT-004 \| Quatro \| fatia \| nova \|/);
+  assert.ok(sp(m).includes("| FT-004 | especificação | — |"));
   // cancelar a última fatia aberta: a pasta da spec sai e o épico fecha (havia uma concluída)
   m = preparar(proj, { tipo: "cancelar", id: "FT-002", motivo: "fora do escopo" }, { usuario: bia, agora });
   assert.match(linha(bk(m), "FT-002"), /\| cancelada \|.*\| fora do escopo · desde 2026-11-09 \|/);

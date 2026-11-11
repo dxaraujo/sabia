@@ -214,7 +214,7 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date(), usuar
   // a coluna do item: o status do backlog; no em-andamento, a Fase do status.md da branch (ela manda), e sem
   // Fase o MR aberto no GitLab (pr-aberto) ou `iniciada`
   const colunaDe = (l) => {
-    const st = statusColuna(l.status) || "sem-dados";
+    const st = statusColuna(l.status) || (l.id in porId ? "nova" : "sem-dados");
     if (st !== "em-andamento") return st;
     const fase = mdDe(l.id)?.fase;
     return FASES.includes(fase) ? fase : mrGitlabDe(l.id) ? "pr-aberto" : "iniciada";
@@ -228,12 +228,14 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date(), usuar
   const linhas = sprint?.itens ?? [];
   const cards = [...backlog, ...[...new Set(linhas.map((x) => x.Item))].filter((id) => !porId[id]).map((id) => ({ id, status: "sem-dados" }))].map((l) => {
     const daSprint = linhas.filter((x) => x.Item === l.id);
-    const st = statusColuna(l.status) || "sem-dados", terminal = TERMINAIS.includes(st), andando = st === "em-andamento";
+    const semStatus = l.id in porId && semValor(l.status);
+    const st = statusColuna(l.status) || (semStatus ? "nova" : "sem-dados"), terminal = TERMINAIS.includes(st), andando = st === "em-andamento";
     const md = andando ? mdDe(l.id) : null, mrG = andando ? mrGitlabDe(l.id) : null;
     const inicio = inicioDe(l), idade = !terminal && inicio ? dias(inicio) : null;
     const motivo = st === "impedida" || st === "cancelada" ? lerMotivo(l.motivo) : null, desde = data(motivo?.desde);
     // os avisos: o que o acordos.json e o fluxo do sa-status pedem para olhar; `critico` pede ação já, `atencao` acompanha
     const avisos = [], aviso = (tipo, nivel, mensagem) => avisos.push({ tipo, nivel, mensagem });
+    if (semStatus) aviso("sem-status", "atencao", "sem status no backlog: vale como nova");
     if (l.prioridade === "crítica" && !terminal) aviso("urgente", "critico", "urgente: prioridade crítica, vai ao topo");
     if (acordos.sle && andando && idade > acordos.sle.dias) aviso("sle", "critico", `idade ${idade} dias, acima do SLE de ${acordos.sle.dias} dias`);
     if (andando && devolvido(l.id)) aviso("devolvido", "critico", "devolvido pelo autopilot: o dono resolve e relança");

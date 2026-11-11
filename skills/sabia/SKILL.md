@@ -4,7 +4,7 @@ description: "Sabiá guide and router for the agent workflow (Kiro and opencode)
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.33"
+  version: "2.1.34"
 ---
 
 # Sabiá — guia e roteador do fluxo
