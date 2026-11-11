@@ -14,10 +14,12 @@ Os tipos e módulos do passo `projeto`.
 3. Monte a tabela `## Comandos` do `.sabia/sabia.md` (Ação × módulo) por mescla: é o steering que o Kiro sempre
    carrega (o Kiro não lê o `AGENTS.md`). É a base do backpressure em camadas: o trecho tocado a cada alteração e a
    suíte completa antes do MR.
-4. **CI.** Pergunte "o projeto tem CI cujo resultado um MCP configurado aqui consegue ler?". Sim: qual MCP e qual tool
-   devolve o resultado do pipeline de um commit; confira que a tool existe no agente. Grave a linha
-   `**CI:** MCP <nome> — <tool>` logo abaixo da tabela. Não, ou não sabe: `**CI:** não há`. Sem CI declarado, o fluxo
-   vale igual: a validação é a suíte completa local.
+4. **CI.** Pergunte "há um MCP de CI configurado, que lê o resultado do pipeline?". Sim: qual MCP, qual tool e como
+   usar (o que passar: job, branch ou commit; o que ela devolve). Confira que a tool existe no agente e, com o "ok",
+   chame-a uma vez para o último pipeline da branch base. Grave logo abaixo da tabela a linha
+   `**CI:** MCP <nome> — <tool> · como usar: <...>`. Não, ou não sabe: `**CI:** não há`. Os passos que precisam do
+   pipeline (baseline, validar, revisão do MR e merge) usam esse MCP do jeito gravado; sem CI declarado, o fluxo vale
+   igual, com a suíte completa local.
 
 ## Saída
 

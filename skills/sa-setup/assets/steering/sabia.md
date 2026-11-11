@@ -48,7 +48,10 @@ desenvolvedor que não é o autor e lido por uma pessoa antes do merge.
 Base do backpressure em camadas: o trecho tocado a cada alteração, a suíte completa antes do MR e, quando o projeto
 tem CI que um MCP lê, o pipeline do MR.
 
-**CI:** `<não há | MCP <nome> — <tool que devolve o resultado do pipeline de um commit>>`
+**CI:** `<não há | MCP <nome> — <tool> · como usar: <o que passar (job, branch ou commit) e o que ela devolve>>`
+
+Com CI, os passos que precisam do resultado do pipeline (baseline, validar, revisão do MR, merge) o leem por esse MCP,
+do jeito descrito aqui.
 
 | Ação | `<módulo>` |
 |---|---|
