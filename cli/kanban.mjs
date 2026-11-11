@@ -217,8 +217,6 @@ dialog label.linha{display:flex;align-items:flex-start;gap:8px;font-weight:400;c
 dialog :is(input[type="text"],input[type="date"],textarea,select){width:100%;padding:8px 10px;border:0;border-radius:var(--r-sm);background:var(--suave);color:var(--title);font:400 14px/20px var(--body)}
 dialog select{height:36px;font-weight:400}
 dialog textarea{min-height:64px;resize:vertical}
-dialog .licao{display:grid;grid-template-columns:auto 1fr;gap:6px 8px;align-items:start}
-dialog .licao small{grid-column:2;color:var(--muted);font-size:12px;line-height:16px}
 dialog .erro{color:var(--critico);font-size:13px;font-weight:500}
 dialog .nota{font-size:13px;color:var(--muted)}
 dialog .botoes{display:flex;justify-content:flex-end;gap:8px;margin-top:4px}
@@ -326,7 +324,6 @@ function cliente() {
     if (c.pode && SP[0]?.aberta && abertasDe(c).length) a.push(["para-backlog", "Devolver ao backlog"]);
     if (c.pode && !term && !imp) a.push(["impedir", "Impedir"]);
     if (c.pode && imp) a.push(["liberar", "Liberar"]);
-    if (c.pode && c.status === "em-andamento" && (c.tipo === "fatia" || c.tipo === "bug")) a.push(["concluir", c.mesclado ? "Concluir (MR mesclado)" : "Concluir"]);
     if (c.pode && !term) a.push(["cancelar", "Cancelar"]);
     return a;
   }
@@ -476,7 +473,7 @@ function cliente() {
   let menuDe = null;
   // o modal de cada ação: mostra o que vai mudar, pede o que falta e só grava com a confirmação
   const modal = $("#modal"), porId = (id) => Q.itens.find((c) => c.id === id);
-  const ROTULO = { impedir: "Impedir", liberar: "Liberar", cancelar: "Cancelar o item", "para-sprint": "Levar para a sprint", "para-backlog": "Devolver ao backlog", concluir: "Concluir", ordenar: "Mudar a prioridade" };
+  const ROTULO = { impedir: "Impedir", liberar: "Liberar", cancelar: "Cancelar o item", "para-sprint": "Levar para a sprint", "para-backlog": "Devolver ao backlog", ordenar: "Mudar a prioridade" };
   function abrir(tipo, c, extra = {}) {
     const hoje = D.gerado_em.slice(0, 10), m = c.motivo, sp = SP[0];
     let campos = "";
@@ -494,13 +491,6 @@ function cliente() {
         + '<p class="nota">O status não muda: o item continua <b>' + esc(col(c.coluna)?.nome ?? c.coluna) + "</b> e aparece nessa raia.</p>";
     } else if (tipo === "para-backlog") campos = '<p class="nota">As tarefas abertas do item saem da ' + esc(sp.chave) + (c.status === "em-andamento" ? ", e ele volta a " + esc(col(c.tipo === "sustentação" ? "nova" : "elegivel")?.nome ?? "elegível") : "")
       + ". O início e a tarefa do EWM ficam anotados na obs do item.</p>";
-    else if (tipo === "concluir") campos = (c.mesclado ? '<p class="nota">MR !' + c.mesclado.iid + " mesclado" + (c.mesclado.em ? " em " + dataBr(c.mesclado.em) : "") + '.</p><input type="hidden" name="mesclado_em" value="' + esc(c.mesclado.em ?? "") + '">'
-      : '<label class="linha"><input type="checkbox" name="confirmo" required>O MR deste item já foi mesclado</label>')
-      + "<p><b>Lições aprendidas → Regras aprendidas do .sabia/sabia.md</b></p>"
-      + (c.licoes.length ? c.licoes.map((l, k) => '<div class="licao"><input type="checkbox" name="usar' + k + '" aria-label="Levar a regra ' + (k + 1) + '"><textarea name="regra' + k + '" maxlength="240" aria-label="Regra ' + (k + 1) + '">' + esc(l.regra ?? l.licao) + "</textarea><small>Lição: "
-        + esc(l.licao) + (l.origem ? " · " + esc(l.origem) : "") + "</small></div>").join("") : '<p class="nota">O status.md do item não tem lições.</p>')
-      + '<label>Outra regra (opcional)<textarea name="outra" maxlength="240" placeholder="Uma frase curta e imperativa"></textarea></label>'
-      + '<p class="nota">Marque as que valem como regra do projeto e ajuste o texto. As não marcadas ficam só no status.md.</p>';
     else if (tipo === "ordenar") campos = '<p class="nota">' + esc(c.id) + (extra.antes ? " passa para antes de " + esc(extra.antes) : extra.depois ? " passa para depois de " + esc(extra.depois) : " vai para o fim") + " na ordem do backlog.</p>";
     modal.innerHTML = '<form method="dialog"><h2 id="modal-titulo">' + ROTULO[tipo] + '</h2><p class="sub">' + esc(c.id) + " · " + esc(c.titulo ?? "") + "</p>" + campos
       + '<p class="erro" role="alert" hidden></p><div class="botoes"><button type="button" class="btn" data-fechar>Voltar</button><button type="submit" class="btn pri">Gravar e enviar</button></div></form>';
@@ -509,8 +499,7 @@ function cliente() {
     f.addEventListener("submit", async (e) => {
       e.preventDefault();
       const d = new FormData(f), acao = { tipo, id: c.id, ...extra };
-      for (const k of ["motivo", "por", "ate", "responsavel", "mesclado_em"]) if (d.get(k)) acao[k] = d.get(k);
-      if (tipo === "concluir") { acao.confirmo = d.has("confirmo"); acao.regras = [...c.licoes.map((_, k) => (d.has("usar" + k) ? d.get("regra" + k) : "")), d.get("outra")].filter((x) => x && x.trim()); }
+      for (const k of ["motivo", "por", "ate", "responsavel"]) if (d.get(k)) acao[k] = d.get(k);
       const botao = f.querySelector('[type="submit"]');
       botao.disabled = true; botao.textContent = "Gravando…"; erro.hidden = true;
       try {
@@ -579,8 +568,9 @@ function cliente() {
     const r = el.getBoundingClientRect();
     return { el, id: el.dataset.id, depois: e.clientX > r.left + r.width / 2 };
   };
-  // arrastar o card: a raia de destino diz a ação (Backlog devolve, Impedido impede, Cancelada cancela, Concluída
-  // conclui; do Backlog para a sprint leva; do Impedido para fora libera; dentro do Backlog muda a prioridade)
+  // arrastar o card: a raia de destino diz a ação (Backlog devolve, Impedido impede, Cancelada cancela; do Backlog
+  // para a raia do status leva para a sprint; do Impedido para fora libera; dentro do Backlog muda a prioridade).
+  // Concluir não é do quadro: é da sa-desenvolver.encerrar
   let cardArr = null;
   const limparAlvo = () => quadro.querySelectorAll(".alvo,.antes-de").forEach((e) => e.classList.remove("alvo", "antes-de"));
   const alvoCard = (e) => {
@@ -595,7 +585,6 @@ function cliente() {
     if (para === "backlog") return ok("para-backlog");
     if (para === "impedida") return ok("impedir");
     if (para === "cancelada") return ok("cancelar");
-    if (para === "concluida") return ok("concluir");
     // do Backlog para a sprint o item entra com o status que já tem: só a raia desse status o recebe
     return de === "backlog" ? (para === cardArr.coluna ? ok("para-sprint") : null) : cardArr.status === "impedida" ? ok("liberar") : null;
   };

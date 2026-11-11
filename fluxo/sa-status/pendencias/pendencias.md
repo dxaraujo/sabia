@@ -10,6 +10,7 @@
    {"id": "commit-sem-id"},
    {"id": "ct-sem-teste"},
    {"id": "mr-mergeado-sem-concluir"},
+   {"id": "fechamento-pendente"},
    {"id": "mr-com-tarefas-pendentes"},
    {"id": "item-sem-ficha"},
    {"id": "atribuicao-e-status"},

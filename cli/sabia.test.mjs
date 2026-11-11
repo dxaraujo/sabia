@@ -636,8 +636,8 @@ test("status: JSON estável com sprint, sem responsável, não iniciados, em and
   assert.deepEqual(r.quadro.config, { arquivo: ".sabia/config/kanban.json", do_projeto: false, erro: null });
   assert.equal(r.quadro.grupo, "Em andamento");
   assert.deepEqual(r.quadro.colunas.map((c) => c.id), ["backlog", "nova", "a-moldar", "em-especificacao", "fatiado", "aceita", "elegivel",
-    "iniciada", "implementando", "revisando", "verificando", "pr-aberto", "retrabalho", "concluida", "impedida", "cancelada"]);
-  assert.deepEqual(r.quadro.colunas.filter((c) => c.grupo).map((c) => c.nome), ["Iniciada", "Em desenvolvimento", "Revisão do agente", "Verificação do agente", "Aguardando aprovação do MR", "Retrabalho"]);
+    "iniciada", "implementando", "revisando", "verificando", "pr-aberto", "retrabalho", "encerramento", "concluida", "impedida", "cancelada"]);
+  assert.deepEqual(r.quadro.colunas.filter((c) => c.grupo).map((c) => c.nome), ["Iniciada", "Em desenvolvimento", "Revisão do agente", "Verificação do agente", "Aguardando aprovação do MR", "Retrabalho", "Aguardando encerramento"]);
   assert.equal(r.quadro.itens.length, 4);
   const c2 = r.quadro.itens.find((c) => c.id === "FT-002");
   assert.equal(c2.status, "em-andamento");
@@ -766,7 +766,7 @@ test("status: quadro lê acordos (WIP/SLE), o status.md da branch, os avisos dos
   const q = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora }).quadro;
   assert.deepEqual(q.config, { arquivo: ".sabia/config/kanban.json", do_projeto: true, erro: null });
   assert.equal(q.grupo, "Fazendo");
-  assert.deepEqual(q.colunas.map((c) => c.id), ["elegivel", "retrabalho", "implementando", "iniciada", "revisando", "verificando", "pr-aberto", "nova",
+  assert.deepEqual(q.colunas.map((c) => c.id), ["elegivel", "retrabalho", "implementando", "iniciada", "revisando", "verificando", "pr-aberto", "encerramento", "nova",
     "backlog", "a-moldar", "em-especificacao", "fatiado", "aceita", "concluida", "impedida", "cancelada"]);
   assert.deepEqual(q.colunas.slice(0, 3).map((c) => c.nome), ["Pronta", "Retrabalho", "Codando"]);
   assert.equal(q.colunas.find((c) => c.id === "nova").oculta, true);
@@ -814,8 +814,14 @@ test("status: a spec na branch base, sem branch do item", async () => {
   delete process.env.GITLAB_API_URL;
   const r = statusDoProjeto({ projeto: proj, exec, agora: new Date("2026-11-09T12:00:00Z") });
   const c = r.quadro.itens.find((x) => x.id === "FT-004");
+  // a spec só chega à branch base pelo merge: Fase pr-aberto sem branch do item é MR mesclado, à espera da
+  // sa-desenvolver.encerrar; sai do WIP e não vira concluída sozinho
   assert.equal(c.fase, "pr-aberto");
-  assert.equal(c.coluna, "pr-aberto");
+  assert.equal(c.status, "em-andamento");
+  assert.equal(c.coluna, "encerramento");
+  assert.deepEqual(c.mesclado, { iid: 215, url: "https://gl.exemplo/app/-/merge_requests/215", em: null, origem: "git" });
+  assert.deepEqual(c.avisos.map((a) => a.mensagem), ["falta concluir o item: MR !215 mesclado (sa-desenvolver.encerrar)"]);
+  assert.deepEqual(c.falta, ["concluir o item: MR !215 mesclado (sa-desenvolver.encerrar)"]);
   assert.deepEqual(c.mr, { iid: 215, url: "https://gl.exemplo/app/-/merge_requests/215" });
 });
 
@@ -936,14 +942,20 @@ test("kanban que grava: impedir, liberar, cancelar, sprint ↔ backlog, concluir
   m = preparar(proj, { tipo: "cancelar", id: "FT-001", motivo: "desistimos" }, { usuario: ana, agora });
   assert.deepEqual(m.remover, [path.join(".kiro/specs", "ft-001-um")]);
   assert.match(m.avisos[0], /feche o MR/);
-  // concluir: o backlog, a tarefa de desenvolvimento e as regras escolhidas no sabia.md
-  assert.throws(() => preparar(proj, { tipo: "concluir", id: "FT-001" }, { usuario: ana, agora }), /confirme que o MR foi mesclado/);
-  m = preparar(proj, { tipo: "concluir", id: "FT-001", mesclado_em: "2026-11-08", regras: ["Filtrar pelo período antes de paginar", " "] }, { usuario: ana, agora });
-  assert.match(linha(bk(m), "FT-001"), /\| concluida \|.*\| 2026-10-02 \| 2026-11-08 \|$/);
-  assert.ok(sp(m).includes("| FT-001 | desenvolvimento | ana | DEV 77 | 2026-11-04 | 2026-11-08 |"));
-  assert.equal(m.arquivos[".sabia/sabia.md"], "# Sabiá\n\n## Regras aprendidas\n\nUma por linha.\n\n- Filtrar pelo período antes de paginar · origem FT-001 · 2026-11-09\n\n## Outra\n");
-  assert.equal(linha(bk(m), "EP-01"), linha(original, "EP-01"));  // ainda há fatia aberta: o épico não fecha
-  aplicar(m);
+  // concluir não é do quadro: a sa-desenvolver.encerrar conclui, arquiva e publica
+  assert.throws(() => preparar(proj, { tipo: "concluir", id: "FT-001" }, { usuario: ana, agora }), /ação desconhecida/);
+  // o item concluído com algo por fechar segue em Aguardando encerramento, e o card diz o que falta; sem pendência, vai a Concluída
+  escrever(proj, { ".sabia/planejamento/backlog.md": fs.readFileSync(path.join(proj, ".sabia/planejamento/backlog.md"), "utf8").replace("| FT-001 | Um | fatia | em-andamento |", "| FT-001 | Um | fatia | concluida |"),
+    ".kiro/specs/ft-001-um/status.md": "| Campo | Valor |\n|---|---|\n| Fase | pr-aberto |\n| Publicação | pendente |\n", ".sabia/local/wt/ft-001/x": "x" });
+  let fech = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora }).quadro.itens.find((c) => c.id === "FT-001");
+  assert.equal(fech.coluna, "encerramento");
+  assert.deepEqual(fech.falta, ["publicar no ELM (sa-elm.publicar)", "remover a worktree (sa-desenvolver.encerrar)"]);
+  assert.deepEqual(fech.avisos.map((a) => a.mensagem), ["falta publicar no ELM (sa-elm.publicar)", "falta remover a worktree (sa-desenvolver.encerrar)"]);
+  fs.rmSync(path.join(proj, ".sabia/local/wt"), { recursive: true });
+  escrever(proj, { ".kiro/specs/ft-001-um/status.md": "| Campo | Valor |\n|---|---|\n| Publicação | publicada 2026-11-09 |\n" });
+  fech = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora }).quadro.itens.find((c) => c.id === "FT-001");
+  assert.equal(fech.coluna, "concluida");
+  assert.deepEqual(fech.avisos, []);
   // levar para a sprint (só produto) e devolver a que não começou
   assert.throws(() => preparar(proj, { tipo: "para-sprint", id: "FT-003" }, { usuario: ana, agora }), /de quem tem produto/);
   m = preparar(proj, { tipo: "para-sprint", id: "FT-003", responsavel: "ana" }, { usuario: bia, agora });

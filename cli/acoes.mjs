@@ -1,12 +1,13 @@
 // O que o quadro Kanban grava: as mudanças de situação da `sa-status.situacao` (impedir, liberar, cancelar, devolver
-// ao backlog), a entrada na sprint, a conclusão do item já mesclado (com as Regras aprendidas) e a ordem do backlog.
+// ao backlog), a entrada na sprint e a ordem do backlog. A conclusão não: é da `sa-desenvolver.encerrar`, que também
+// faz o archive, a publicação e a worktree.
 // Cada ação altera os `.md` do projeto e vai num commit direto na branch base, com push, como o
 // `fluxo/commit-na-branch-base.md`: só na branch base, com a árvore limpa, depois do pull.
 import fs from "node:fs";
 import path from "node:path";
 import { celulas, semValor, lerMotivo, tabela, sprintsDe, gitlab } from "./status.mjs";
 
-const BACKLOG = ".sabia/planejamento/backlog.md", SABIA_MD = ".sabia/sabia.md";
+const BACKLOG = ".sabia/planejamento/backlog.md";
 const TERMINAIS = ["concluida", "concluido", "cancelada", "cancelado"], IMPEDIDOS = ["impedida", "impedido"];
 const PRINCIPAL = { fatia: "desenvolvimento", bug: "desenvolvimento", "sustentação": "atendimento", "épico": "especificação" };
 // o texto da pessoa vai para dentro de uma célula de tabela: sem barra vertical, sem quebra de linha e sem o
@@ -151,30 +152,6 @@ export function preparar(raiz, acao, { usuario, agora = new Date() }) {
     });
     out.commit = `${item.id} devolver ao backlog`;
     if (abertas.some((x) => !semValor(x.Tarefas))) out.avisos.push("com ELM, cancele a tarefa do item pela sa-elm.finalizar");
-  } else if (acao.tipo === "concluir") {
-    exige(false);
-    if (!["fatia", "bug"].includes(item.tipo) || item.status !== "em-andamento") throw new Error(`só se conclui pelo quadro a fatia ou o bug em andamento; ${item.id} está ${item.status}`);
-    const em = ehData(acao.mesclado_em) ? acao.mesclado_em : hoje;
-    if (!acao.mesclado_em && acao.confirmo !== true) throw new Error("confirme que o MR foi mesclado");
-    naLinha((l, ls) => { l.status = "concluida"; l.concluida_em = em; fecharEpico(ls); });
-    const dev = linhas.find((x) => x.Trabalho === "desenvolvimento" && !ehData(x.concluida_em));
-    if (dev && "concluida_em" in dev) out.arquivos[sprint.arquivo] = editarTabela(ler(sprint.arquivo), "Item", (ls) => { ls.find((x) => x.Item === item.id && x.Trabalho === "desenvolvimento" && !ehData(x.concluida_em)).concluida_em = em; });
-    // as lições escolhidas e editadas no quadro viram Regras aprendidas do .sabia/sabia.md
-    const regras = (acao.regras ?? []).map((r) => limpo(r, 240)).filter(Boolean);
-    if (regras.length) {
-      if (!fs.existsSync(path.join(raiz, SABIA_MD))) throw new Error(`${SABIA_MD} não existe`);
-      const ls = ler(SABIA_MD).split("\n"), i = ls.findIndex((l) => /^## Regras aprendidas\s*$/.test(l));
-      if (i < 0) throw new Error(`${SABIA_MD} não tem a seção Regras aprendidas`);
-      let fim = ls.findIndex((l, k) => k > i && /^## /.test(l));
-      if (fim < 0) fim = ls.length;
-      const secao = ls.slice(i, fim).filter((l) => !/^<!-- Nenhuma regra ainda\. -->$/.test(l.trim()));
-      while (secao.at(-1)?.trim() === "") secao.pop();
-      const novas = regras.map((r) => `- ${r} · origem ${item.id} · ${hoje}`);
-      if (!/^- /.test(secao.at(-1) ?? "")) secao.push("");
-      out.arquivos[SABIA_MD] = [...ls.slice(0, i), ...secao, ...novas, "", ...ls.slice(fim)].join("\n");
-    }
-    out.commit = `${item.id} concluir`;
-    out.avisos.push("falta o archive da spec e a worktree: rode a sa-desenvolver.encerrar se o projeto usa OpenSpec, ELM ou autopilot");
   } else if (acao.tipo === "ordenar") {
     exige(true);
     for (const ref of [acao.antes, acao.depois]) if (ref && (ref === item.id || !itens.some((l) => l.id === ref))) throw new Error(`${ref} não serve de referência para a ordem`);

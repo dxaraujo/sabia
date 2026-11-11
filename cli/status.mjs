@@ -14,10 +14,14 @@ const NAO_INICIADO = ["aceita", "elegivel"];
 // escolhida nela, que ainda não começou. O projeto troca só a ordem, o nome e `oculta`, no CONFIG_KANBAN.
 export const CONFIG_KANBAN = ".sabia/config/kanban.json";
 const FASES = ["iniciada", "implementando", "revisando", "verificando", "pr-aberto", "retrabalho"];
+// As raias do grupo Em andamento: as fases e a derivada `encerramento`, do item que espera a `sa-desenvolver.encerrar`
+// terminar: o MR já entrou na branch base e falta concluir, ou está concluído com algo por fechar (archive,
+// publicação, worktree). O card diz o que falta.
+const GRUPO = [...FASES, "encerramento"];
 const COLUNAS = [["backlog", "Backlog"], ["nova", "Nova"], ["a-moldar", "A moldar"], ["em-especificacao", "Em especificação"], ["fatiado", "Fatiado"],
   ["aceita", "Aceita"], ["elegivel", "Elegível"],
   ["iniciada", "Iniciada"], ["implementando", "Em desenvolvimento"], ["revisando", "Revisão do agente"], ["verificando", "Verificação do agente"],
-  ["pr-aberto", "Aguardando aprovação do MR"], ["retrabalho", "Retrabalho"],
+  ["pr-aberto", "Aguardando aprovação do MR"], ["retrabalho", "Retrabalho"], ["encerramento", "Aguardando encerramento"],
   ["concluida", "Concluída"], ["impedida", "Impedido"], ["cancelada", "Cancelada"]];
 // As colunas que cada status do WIP do `acordos.json` conta. `em-revisao` é derivado (MR aberto) e nunca se grava.
 const WIP = { "em-andamento": ["Em andamento", ["iniciada", "implementando", "revisando", "verificando"]], "em-revisao": ["MR em revisão", ["pr-aberto", "retrabalho"]] };
@@ -126,8 +130,7 @@ function lerStatusMd(texto) {
   }
   const bloqueios = tabela(texto, "Pergunta").filter((x) => !semValor(x.Pergunta) && !semValor(x.Bloqueia) && x.Bloqueia !== "nada")
     .map((x) => ({ pergunta: x.Pergunta, para: x["Para quem"] || null, bloqueia: x.Bloqueia }));
-  const licoes = tabela(texto, "Lição").filter((x) => !semValor(x["Lição"])).map((x) => ({ licao: x["Lição"], origem: semValor(x.Origem) ? null : x.Origem, regra: semValor(x["Regra proposta"]) ? null : x["Regra proposta"] }));
-  return { fase: v("Fase"), trilha: v("Trilha"), autonomia: v("Autonomia"), mr, bloqueios, licoes };
+  return { fase: v("Fase"), trilha: v("Trilha"), autonomia: v("Autonomia"), publicacao: v("Publicação"), mr, bloqueios };
 }
 
 /** O status.md do item: a worktree `.sabia/local/wt/<id>` (a branch pode não estar publicada), a branch
@@ -143,7 +146,7 @@ function statusDaBranch(raiz, exec, id) {
       for (const d of fs.readdirSync(dir)) {
         if (!d.toLowerCase().startsWith(pref)) continue;
         const f = path.join(dir, d, "status.md");
-        if (fs.existsSync(f)) return lerStatusMd(fs.readFileSync(f, "utf8"));
+        if (fs.existsSync(f)) return { ...lerStatusMd(fs.readFileSync(f, "utf8")), origem: "worktree" };
       }
     }
   }
@@ -153,7 +156,7 @@ function statusDaBranch(raiz, exec, id) {
     const f = (arq.stdout ?? "").trim().split("\n").find((l) => l.endsWith("/status.md") && l.split("/").at(-2)?.toLowerCase().startsWith(pref));
     if (!f) continue;
     const s = exec("git", ["-C", raiz, "show", `origin/${nome}:${f}`]);
-    if (s.status === 0) return lerStatusMd(s.stdout);
+    if (s.status === 0) return { ...lerStatusMd(s.stdout), origem: "branch", ref: `origin/${nome}` };
   }
   // sem branch do item: a pasta da spec na branch base, quando a spec é a do id (o projeto pode gravá-la
   // nela até o merge — a fase só vale se o item está em andamento, o que quem chama garante)
@@ -165,9 +168,23 @@ function statusDaBranch(raiz, exec, id) {
     const f = (arq.stdout ?? "").trim().split("\n").find((l) => l.endsWith("/status.md") && l.split("/").at(-2)?.toLowerCase().startsWith(pref));
     if (!f) continue;
     const s = exec("git", ["-C", raiz, "show", `${cabeca}:${f}`]);
-    if (s.status === 0) return lerStatusMd(s.stdout);
+    if (s.status === 0) return { ...lerStatusMd(s.stdout), origem: "base" };
   }
   return null;
+}
+
+/** O que falta fechar num item concluído, pelos arquivos da branch base: a spec do OpenSpec fora de `archive/`, a
+ *  linha `Publicação: pendente` do status.md (com ELM) e a worktree do autopilot que ficou. */
+function fechamentoDe(raiz, id) {
+  const pref = id.toLowerCase() + "-", falta = [], ler = (f) => { try { return lerStatusMd(fs.readFileSync(f, "utf8")); } catch { return null; } };
+  const dirs = (d) => (fs.existsSync(d) ? fs.readdirSync(d) : []);
+  const os = path.join(raiz, "openspec/changes");
+  if (dirs(os).some((d) => d.toLowerCase().startsWith(pref))) falta.push("arquivar a spec (sa-desenvolver.encerrar)");
+  const status = [...dirs(path.join(os, "archive")).filter((d) => d.toLowerCase().includes(pref)).map((d) => path.join(os, "archive", d)),
+    ...dirs(path.join(raiz, ".kiro/specs")).filter((d) => d.toLowerCase().startsWith(pref)).map((d) => path.join(raiz, ".kiro/specs", d))].map((d) => ler(path.join(d, "status.md")));
+  if (status.some((m) => m?.publicacao?.startsWith("pendente"))) falta.push("publicar no ELM (sa-elm.publicar)");
+  if ([id, id.toLowerCase()].some((n) => fs.existsSync(path.join(raiz, ".sabia/local/wt", n)))) falta.push("remover a worktree (sa-desenvolver.encerrar)");
+  return falta;
 }
 
 /** As colunas do quadro: as padrão do framework com a ordem, o nome e `oculta` do CONFIG_KANBAN do projeto. Id que o
@@ -179,7 +196,7 @@ function colunasDoProjeto(raiz) {
   const vistos = new Set();
   const lista = [...(Array.isArray(cfg?.colunas) ? cfg.colunas : []), ...COLUNAS.map(([id]) => ({ id }))]
     .filter((c) => padrao.has(c?.id) && !vistos.has(c.id) && vistos.add(c.id))
-    .map((c) => ({ id: c.id, nome: typeof c.nome === "string" && c.nome.trim() ? c.nome.trim() : padrao.get(c.id), oculta: c.oculta === true, grupo: FASES.includes(c.id) }));
+    .map((c) => ({ id: c.id, nome: typeof c.nome === "string" && c.nome.trim() ? c.nome.trim() : padrao.get(c.id), oculta: c.oculta === true, grupo: GRUPO.includes(c.id) }));
   const i = lista.findIndex((c) => c.grupo);
   return {
     colunas: [...lista.slice(0, i), ...lista.filter((c) => c.grupo), ...lista.slice(i).filter((c) => !c.grupo)],
@@ -213,9 +230,30 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date(), usuar
   const mrGitlabDe = (id) => mrs.disponivel ? (mrs.itens.find((x) => (x.branch ?? "").toLowerCase() === id.toLowerCase() && !x.rascunho) ?? null) : null;
   // a coluna do item: o status do backlog; no em-andamento, a Fase do status.md da branch (ela manda), e sem
   // Fase o MR aberto no GitLab (pr-aberto) ou `iniciada`
+  // o MR do item já entrou na branch base e a sa-desenvolver.encerrar não rodou: pelo GitLab (MR merged) ou, sem
+  // ele, pelo git, quando a Fase é pr-aberto e a branch do item está contida na base ou já não existe (o status.md
+  // só chega à base pelo merge)
+  let baseRef;
+  const refBase = () => {
+    if (baseRef !== undefined) return baseRef;
+    let nome = null;
+    try { nome = JSON.parse(fs.readFileSync(path.join(raiz, ".sabia/config/agentes.json"), "utf8")).branch_base ?? null; } catch { /* sem agentes.json, vale o origin/HEAD */ }
+    return (baseRef = [nome && `origin/${nome}`, "origin/HEAD"].filter(Boolean).find((r) => exec("git", ["-C", raiz, "rev-parse", "--verify", "--quiet", r]).status === 0) ?? null);
+  };
+  const mescladoDe = (l) => {
+    const g = mesclados.find((x) => (x.branch ?? "").toLowerCase() === l.id.toLowerCase());
+    if (g) return { iid: g.iid, url: g.url, em: g.mesclado_em?.slice(0, 10) ?? null, origem: "gitlab" };
+    const md = mdDe(l.id);
+    if (md?.fase !== "pr-aberto" || mrGitlabDe(l.id)) return null;
+    if (md.origem === "base") return { iid: md.mr?.iid ?? null, url: md.mr?.url ?? null, em: null, origem: "git" };
+    return md.origem === "branch" && refBase() && exec("git", ["-C", raiz, "merge-base", "--is-ancestor", md.ref, refBase()]).status === 0
+      ? { iid: md.mr?.iid ?? null, url: md.mr?.url ?? null, em: null, origem: "git" } : null;
+  };
   const colunaDe = (l) => {
     const st = statusColuna(l.status) || (l.id in porId ? "nova" : "sem-dados");
+    if (st === "concluida" && (l.tipo === "fatia" || l.tipo === "bug") && fechamentoDe(raiz, l.id).length) return "encerramento";
     if (st !== "em-andamento") return st;
+    if (mescladoDe(l)) return "encerramento";
     const fase = mdDe(l.id)?.fase;
     return FASES.includes(fase) ? fase : mrGitlabDe(l.id) ? "pr-aberto" : "iniciada";
   };
@@ -244,8 +282,11 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date(), usuar
       const d = Math.floor((agora - new Date(mrG.atualizado_em)) / 86400000);
       if (d >= acordos.alertas.mr_parado_dias) aviso("mr-parado", "atencao", `MR !${mrG.iid} parado: sem atualização há ${plural(d, "dia", "dias")}`);
     }
-    const mesclado = andando ? (mesclados.find((x) => (x.branch ?? "").toLowerCase() === l.id.toLowerCase()) ?? null) : null;
-    if (mesclado) aviso("mesclado", "atencao", `MR !${mesclado.iid} mesclado: falta registrar a conclusão`);
+    const mesclado = andando ? mescladoDe(l) : null;
+    // o que falta para encerrar, dito no card: concluir (o MR já foi mesclado) ou, já concluído, o que sobrou do fechamento
+    const fechamento = st === "concluida" && (l.tipo === "fatia" || l.tipo === "bug") ? fechamentoDe(raiz, l.id) : [];
+    const faltaEncerrar = mesclado ? [`concluir o item: ${mesclado.iid ? `MR !${mesclado.iid}` : "MR"} mesclado (sa-desenvolver.encerrar)`] : fechamento;
+    for (const f of faltaEncerrar) aviso("encerramento", "atencao", `falta ${f}`);
     // quem pode mudar a situação: quem tem produto, ou o responsável da tarefa em curso (sem tarefa em curso, o do item)
     const emCurso = daSprint.find((x) => data(x.iniciada_em) && !data(x.concluida_em) && !semValor(x["Responsável"]))?.["Responsável"] ?? (semValor(l["responsável"]) ? null : l["responsável"]);
     if (md?.fase === "retrabalho") aviso("retrabalho", "atencao", "retrabalho: o dono retoma no mesmo MR");
@@ -283,8 +324,8 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date(), usuar
       autonomia: md?.autonomia ?? null,
       mr: mrG ? { iid: mrG.iid, url: mrG.url } : (md?.mr ?? null),
       motivo,
-      mesclado: mesclado && { iid: mesclado.iid, url: mesclado.url, em: mesclado.mesclado_em?.slice(0, 10) ?? null },
-      licoes: md?.licoes ?? [],
+      mesclado,
+      falta: faltaEncerrar,
       pode: Boolean(usuario && (usuario.produto || (emCurso && emCurso === usuario.usuario))),
       impedida_dias: st === "impedida" && desde ? dias(desde) : null,
       avisos,

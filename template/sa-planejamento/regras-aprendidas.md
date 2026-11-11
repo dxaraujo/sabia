@@ -16,6 +16,5 @@
   skill do toolkit.
 - Nunca culpe pessoas: a regra é sobre o contexto e o processo.
 
-Gravam, pelo commit direto na branch base: a `sa-planejamento.review` (a curadoria do ciclo) e o Quadro Kanban, quando a
-pessoa conclui um item por ele e escolhe as lições que viram regra. A `sa-setup` regrava o `.sabia/sabia.md`
+Grava: só a `sa-planejamento.review`, pelo commit direto na branch base. A `sa-setup` regrava o `.sabia/sabia.md`
 preservando esta seção. Leem: todos os agentes (steering), `sa-plano.plano` e os critérios de revisão da `sa-revisar.revisar`.
