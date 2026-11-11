@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fluxos · Sabiá</title>
-<meta name="description" content="Os fluxos do Sabiá 2.1.11, cada um com o grafo gerado do mestre: passos, chamadas, travas e saídas.">
+<meta name="description" content="Os fluxos do Sabiá 2.1.28, cada um com o grafo gerado do mestre: passos, chamadas, travas e saídas.">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500;600&display=swap">
@@ -17,14 +17,14 @@
 <div class="wrap">
   <div class="top">
     <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá</span></a>
-    <span class="ver">2.1.11 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
+    <span class="ver">2.1.28 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
     <span class="autor">Desenvolvido por <b>Daniel Xavier Araújo</b></span>
     <a class="gh" href="https://github.com/dxaraujo/sabia">GitHub</a>
   </div>
   <nav class="tabs" aria-label="Páginas">
-    <a href="index.html">Início</a><a href="como-funciona.html">Como funciona</a><a href="fluxos.html" aria-current="page">Fluxos</a><a href="papeis.html">Papéis e agentes</a><a href="arquivos.html">Arquivos</a><a href="ciclo.html">Ciclo da fatia</a><a href="toolkits.html">Toolkits</a><a href="elm.html">IBM ELM</a><a href="aprovacoes.html">Aprovações e travas</a><a href="glossario.html">Termos e glossário</a><a href="arquitetura.html">Arquitetura</a>
+    <a href="index.html">Início</a><a href="como-funciona.html">Como funciona</a><a href="fluxos.html" aria-current="page">Fluxos</a><a href="papeis.html">Papéis e agentes</a><a href="arquivos.html">Arquivos</a><a href="ciclo.html">Ciclo da fatia</a><a href="kanban.html">Quadro Kanban</a><a href="toolkits.html">Toolkits</a><a href="elm.html">IBM ELM</a><a href="aprovacoes.html">Aprovações e travas</a><a href="glossario.html">Termos e glossário</a><a href="arquitetura.html">Arquitetura</a>
   </nav>
-  <header class="sign page"><h1>Fluxos</h1><p class="lead">Os 48 fluxos das 15 skills do Sabiá, cada um com o grafo que o compilador gera do mestre. É o mesmo arquivo que a skill instalada traz em <code>references/&lt;fluxo&gt;/grafo.md</code> e o que o <code>sabia rota --fluxo</code> mostra, já com o que o projeto mudou.</p>
+  <header class="sign page"><h1>Fluxos</h1><p class="lead">Os 49 fluxos das 15 skills do Sabiá, cada um com o grafo que o compilador gera do mestre. É o mesmo arquivo que a skill instalada traz em <code>references/&lt;fluxo&gt;/grafo.md</code> e o que o <code>sabia rota --fluxo</code> mostra, já com o que o projeto mudou.</p>
   <nav class="indice" aria-label="Skills"><a href="#sa-atender">sa-atender</a><a href="#sa-desenvolver">sa-desenvolver</a><a href="#sa-elm">sa-elm</a><a href="#sa-entrevistar">sa-entrevistar</a><a href="#sa-especificar">sa-especificar</a><a href="#sa-pesquisar">sa-pesquisar</a><a href="#sa-planejamento">sa-planejamento</a><a href="#sa-plano">sa-plano</a><a href="#sa-prd">sa-prd</a><a href="#sa-refinar">sa-refinar</a><a href="#sa-revisar">sa-revisar</a><a href="#sa-setup">sa-setup</a><a href="#sa-status">sa-status</a><a href="#sa-triar">sa-triar</a><a href="#sa-verificar">sa-verificar</a></nav>
   <div class="bands" aria-hidden="true"><i></i><i></i><i></i></div></header>
 
@@ -948,7 +948,7 @@
   <pre class="cod grafo">sa-planejamento.sprint   dono sa-especificador   travas sim-da-pessoa, decisao-da-pessoa, elm-pela-sa-elm
 
   ┌──────────────────────────┐
-  │ 1 inicio                 │──▶ ⇒ passa a sa-planejamento.inicial  (sem equipe.json ou acordos.md)
+  │ 1 inicio                 │──▶ ⇒ passa a sa-planejamento.inicial  (sem equipe.json ou acordos.json)
   └────────────┬─────────────┘    ↓ capacidade  (reabastecimento)
                ▼
   ┌──────────────────────────┐
@@ -1509,7 +1509,7 @@
   └────────────────────────┘</pre></details>
 </section>
 
-<section id="sa-status"><div class="lead-sec"><h2>sa-status</h2><p>6 fluxos · dono <code>sa-desenvolvedor</code></p></div>
+<section id="sa-status"><div class="lead-sec"><h2>sa-status</h2><p>7 fluxos · dono <code>sa-desenvolvedor</code></p></div>
   <details class="fluxo" id="sa-status.fechar-sessao"><summary><code>sa-status.fechar-sessao</code> <span>8 passos</span><small>ao encerrar uma sessão num item: Retomar, tasks.md, horas (sa-elm), créditos do Kiro no CSV da pessoa, commit com ok e a frase de retomada; fechar a sessão; encerrar por hoje</small></summary>
   <pre class="cod grafo">sa-status.fechar-sessao   dono sa-desenvolvedor   travas sim-da-pessoa, sem-force, elm-pela-sa-elm
 
@@ -1544,7 +1544,7 @@
   ┌──────────────────────────┐
   │ 8 retomada               │
   └──────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-status.item"><summary><code>sa-status.item</code> <span>10 passos</span><small>consulta do item: recebe '&lt;id&gt;' (EP, FT, AT…, ib ou tarefa do EWM), mostra o estado e diz a skill.fluxo dona, com 'seguir agora?'; &lt;id&gt;; vamos trabalhar na FT-031; pegar a AT-012; retomar a FT-031</small></summary>
+  <details class="fluxo" id="sa-status.item"><summary><code>sa-status.item</code> <span>11 passos</span><small>consulta do item: recebe '&lt;id&gt;' (EP, FT, AT…, ib ou tarefa do EWM), mostra o estado e diz a skill.fluxo dona, com 'seguir agora?'; &lt;id&gt;; vamos trabalhar na FT-031; pegar a AT-012; retomar a FT-031</small></summary>
   <pre class="cod grafo">sa-status.item   dono sa-desenvolvedor   travas elm-pela-sa-elm
 
   ┌──────────────────────────┐
@@ -1564,27 +1564,31 @@
   └────────────┬─────────────┘
                ▼
   ┌──────────────────────────┐
-  │ 5 triagem-e-refinamento  │──▶ ↓ mostrar-e-seguir  (casou)
+  │ 5 impedida               │──▶ ↓ mostrar-e-seguir  (impedido)
   └────────────┬─────────────┘
                ▼
   ┌──────────────────────────┐
-  │ 6 desenvolvimento        │──▶ ↓ mostrar-e-seguir  (casou)
+  │ 6 triagem-e-refinamento  │──▶ ↓ mostrar-e-seguir  (casou)
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 7 desenvolvimento        │──▶ ↓ mostrar-e-seguir  (casou)
   └────────────┬─────────────┘    ■ fim  (trava de artefato)
                ▼
   ┌──────────────────────────┐
-  │ 7 epico                  │──▶ ↓ mostrar-e-seguir  (casou)
+  │ 8 epico                  │──▶ ↓ mostrar-e-seguir  (casou)
   └────────────┬─────────────┘
                ▼
   ┌──────────────────────────┐
-  │ 8 sustentacao            │
+  │ 9 sustentacao            │
   └────────────┬─────────────┘
                ▼
   ┌──────────────────────────┐
-  │ 9 mostrar-e-seguir       │──▶ ■ fim  (seguiu ou terminou)
+  │ 10 mostrar-e-seguir      │──▶ ■ fim  (seguiu ou terminou)
   └────────────┬─────────────┘
                ▼
   ┌──────────────────────────┐
-  │ 10 fora-do-sabia         │
+  │ 11 fora-do-sabia         │
   └──────────────────────────┘</pre></details>
   <details class="fluxo" id="sa-status.licoes-aprendidas"><summary><code>sa-status.licoes-aprendidas</code> <span>4 passos</span><small>junta, só leitura, as Lições aprendidas das fatias e da Sustentação concluídas no ciclo, cruzadas com as Regras aprendidas, para a curadoria da review; lições do ciclo</small></summary>
   <pre class="cod grafo">sa-status.licoes-aprendidas   dono sa-desenvolvedor   travas —
@@ -1626,7 +1630,7 @@
   ┌────────────────────────┐
   │ 5 nada                 │
   └────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-status.painel"><summary><code>sa-status.painel</code> <span>22 passos</span><small>daily, só leitura: WIP, vazão, lead time, idade, urgente, MRs esperando pessoa, topo puxável, refinamento, Sustentação e reserva de capacidade, fila de triagem, publicação pendente, trava de artefato e a sugestão; status; painel; bom dia; onde parei; como está a sprint</small></summary>
+  <details class="fluxo" id="sa-status.painel"><summary><code>sa-status.painel</code> <span>23 passos</span><small>daily, só leitura: WIP, vazão, lead time, idade, urgente, impedidos, MRs esperando pessoa, topo puxável, refinamento, Sustentação e reserva de capacidade, fila de triagem, publicação pendente, trava de artefato e a sugestão; status; painel; bom dia; onde parei; como está a sprint</small></summary>
   <pre class="cod grafo">sa-status.painel   dono sa-desenvolvedor   travas elm-pela-sa-elm
 
   ┌──────────────────────────┐
@@ -1682,41 +1686,45 @@
   └────────────┬─────────────┘
                ▼
   ┌──────────────────────────┐
-  │ 14 fila-de-triagem       │
+  │ 14 impedidos             │
   └────────────┬─────────────┘
                ▼
   ┌──────────────────────────┐
-  │ 15 esperando-pessoa      │
+  │ 15 fila-de-triagem       │
   └────────────┬─────────────┘
                ▼
   ┌──────────────────────────┐
-  │ 16 retrabalho            │
+  │ 16 esperando-pessoa      │
   └────────────┬─────────────┘
                ▼
   ┌──────────────────────────┐
-  │ 17 topo-puxavel          │
+  │ 17 retrabalho            │
   └────────────┬─────────────┘
                ▼
   ┌──────────────────────────┐
-  │ 18 refinamento-e-produto │
+  │ 18 topo-puxavel          │
   └────────────┬─────────────┘
                ▼
   ┌──────────────────────────┐
-  │ 19 reserva-capacidade    │
+  │ 19 refinamento-e-produto │
   └────────────┬─────────────┘
                ▼
   ┌──────────────────────────┐
-  │ 20 fim-do-ciclo          │
+  │ 20 reserva-capacidade    │
   └────────────┬─────────────┘
                ▼
   ┌──────────────────────────┐
-  │ 21 sugestao              │
+  │ 21 fim-do-ciclo          │
   └────────────┬─────────────┘
                ▼
   ┌──────────────────────────┐
-  │ 22 mostrar               │──▶ ⇄ chama sa-status.pendencias
+  │ 22 sugestao              │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 23 mostrar               │──▶ ⇄ chama sa-status.pendencias
   └──────────────────────────┘</pre></details>
-  <details class="fluxo" id="sa-status.pendencias"><summary><code>sa-status.pendencias</code> <span>15 passos</span><small>pendências de rastreio e de consistência, lista fechada, cada uma com destino; nenhuma trava; pendências; rastreio</small></summary>
+  <details class="fluxo" id="sa-status.pendencias"><summary><code>sa-status.pendencias</code> <span>17 passos</span><small>pendências de rastreio e de consistência, lista fechada, cada uma com destino; nenhuma trava; pendências; rastreio</small></summary>
   <pre class="cod grafo">sa-status.pendencias   dono sa-desenvolvedor   travas elm-pela-sa-elm
 
   ┌────────────────────────────────┐
@@ -1732,52 +1740,98 @@
   └───────────────┬────────────────┘
                   ▼
   ┌────────────────────────────────┐
-  │ 4 commit-sem-id                │
+  │ 4 acordos-invalido             │
   └───────────────┬────────────────┘
                   ▼
   ┌────────────────────────────────┐
-  │ 5 ct-sem-teste                 │
+  │ 5 commit-sem-id                │
   └───────────────┬────────────────┘
                   ▼
   ┌────────────────────────────────┐
-  │ 6 mr-mergeado-sem-concluir     │
+  │ 6 ct-sem-teste                 │
   └───────────────┬────────────────┘
                   ▼
   ┌────────────────────────────────┐
-  │ 7 mr-com-tarefas-pendentes     │
+  │ 7 mr-mergeado-sem-concluir     │
   └───────────────┬────────────────┘
                   ▼
   ┌────────────────────────────────┐
-  │ 8 item-sem-ficha               │
+  │ 8 mr-com-tarefas-pendentes     │
   └───────────────┬────────────────┘
                   ▼
   ┌────────────────────────────────┐
-  │ 9 atribuicao-e-status          │
+  │ 9 item-sem-ficha               │
   └───────────────┬────────────────┘
                   ▼
   ┌────────────────────────────────┐
-  │ 10 fora-da-sprint              │
+  │ 10 atribuicao-e-status         │
   └───────────────┬────────────────┘
                   ▼
   ┌────────────────────────────────┐
-  │ 11 idade-acima-do-sle          │
+  │ 11 impedida-sem-motivo         │
   └───────────────┬────────────────┘
                   ▼
   ┌────────────────────────────────┐
-  │ 12 epico-sem-fechar            │
+  │ 12 fora-da-sprint              │
   └───────────────┬────────────────┘
                   ▼
   ┌────────────────────────────────┐
-  │ 13 backlog-fora-da-branch-base │
+  │ 13 idade-acima-do-sle          │
   └───────────────┬────────────────┘
                   ▼
   ┌────────────────────────────────┐
-  │ 14 dado-de-cliente             │
+  │ 14 epico-sem-fechar            │
   └───────────────┬────────────────┘
                   ▼
   ┌────────────────────────────────┐
-  │ 15 mostrar                     │
+  │ 15 backlog-fora-da-branch-base │
+  └───────────────┬────────────────┘
+                  ▼
+  ┌────────────────────────────────┐
+  │ 16 dado-de-cliente             │
+  └───────────────┬────────────────┘
+                  ▼
+  ┌────────────────────────────────┐
+  │ 17 mostrar                     │
   └────────────────────────────────┘</pre></details>
+  <details class="fluxo" id="sa-status.situacao"><summary><code>sa-status.situacao</code> <span>8 passos</span><small>mudar a situação de um item, por quem tem produto ou é o responsável da tarefa em curso: impedir (algo de fora impede o item; pode ter data), liberar o impedido, cancelar um item em andamento ou devolver ao backlog no meio da sprint; a FT-031 está impedida: ambiente fora do ar; adiar a FT-040 até 20/11; liberar a FT-031; cancelar a FT-034, que está em andamento; devolver a FT-036 ao backlog</small></summary>
+  <pre class="cod grafo">sa-status.situacao   dono sa-desenvolvedor   travas sim-da-pessoa, decisao-da-pessoa, elm-pela-sa-elm
+
+  ┌──────────────────────────┐
+  │ 1 identificar            │──▶ ■ fim  (não registrado, terminal ou sem permissão)
+  └────────────┬─────────────┘    ■ fim  (cancelar um item que ainda não começou: é do fluxo dono d…)
+                                  ↓ impedir  (impedir)
+                                  ↓ liberar  (liberar)
+                                  ↓ cancelar  (cancelar em andamento)
+                                  ↓ devolver  (devolver ao backlog)
+               ▼
+  ┌──────────────────────────┐
+  │ 2 impedir                │──▶ ↓ gravar  (impedimento pronto)
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 3 liberar                │──▶ ↓ gravar  (liberação pronta)
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 4 cancelar               │──▶ ↓ gravar  (cancelamento pronto)
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 5 devolver               │──▶ ↓ gravar  (devolução pronta)
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 6 gravar                 │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 7 commit-na-branch-base  │
+  └────────────┬─────────────┘
+               ▼
+  ┌──────────────────────────┐
+  │ 8 seguir                 │──▶ ⇄ chama sa-elm.finalizar
+  └──────────────────────────┘</pre></details>
 </section>
 
 <section id="sa-triar"><div class="lead-sec"><h2>sa-triar</h2><p>2 fluxos · dono <code>sa-especificador</code></p></div>
@@ -1807,7 +1861,6 @@
   │ 1 entrada [nenhuma]      │──▶ ↪ vizinhos (diga e pare): sa-refinar.ajustar · sa-desenvolver.codificar · sa-refinar.moldar · sa-prd.prd · sa-atender.atender
   └────────────┬─────────────┘    ■ fim  (sem .sabia/planejamento/backlog.md na branch base: diga '…)
                                   ↓ ler  (pedido em texto, número do EWM ou nada informado (não é o…)
-                                  ↓ ler  (fatia ou bug em adiada até &lt;data&gt; (retriagem: o adiamento…)
                ▼
   ┌──────────────────────────┐
   │ 2 ler                    │──▶ ⇄ chama sa-elm.item
@@ -1905,7 +1958,7 @@
   └────────────────────────┘</pre></details>
 </section>
 
-<div class="proxima"><a href="papeis.html">Próxima: Papéis e agentes</a></div>  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.11, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
+<div class="proxima"><a href="papeis.html">Próxima: Papéis e agentes</a></div>  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.28, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
 </div>
 </body>
 </html>

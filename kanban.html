@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR" data-sobria="sobria-sabia">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quadro Kanban · Sabiá</title>
+<meta name="description" content="O sabia kanban abre o quadro do projeto no navegador: raias, cards com avisos, lista por sprint e colunas ajustáveis.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="sabia.css">
+<link rel="stylesheet" href="tema.css">
+<script src="tema.js"></script>
+<style>a.ph-step{text-decoration:none}</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá</span></a>
+    <span class="ver">2.1.28 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
+    <span class="autor">Desenvolvido por <b>Daniel Xavier Araújo</b></span>
+    <a class="gh" href="https://github.com/dxaraujo/sabia">GitHub</a>
+  </div>
+  <nav class="tabs" aria-label="Páginas">
+    <a href="index.html">Início</a><a href="como-funciona.html">Como funciona</a><a href="fluxos.html">Fluxos</a><a href="papeis.html">Papéis e agentes</a><a href="arquivos.html">Arquivos</a><a href="ciclo.html">Ciclo da fatia</a><a href="kanban.html" aria-current="page">Quadro Kanban</a><a href="toolkits.html">Toolkits</a><a href="elm.html">IBM ELM</a><a href="aprovacoes.html">Aprovações e travas</a><a href="glossario.html">Termos e glossário</a><a href="arquitetura.html">Arquitetura</a>
+  </nav>
+  <header class="sign page"><h1>Quadro Kanban</h1><p class="lead">O <code>sabia kanban</code> abre o quadro do projeto no navegador. Ele desenha o mesmo estado que o <code>sabia status</code> devolve em JSON, lido do <code>backlog.md</code>, das sprints, dos acordos e do <code>status.md</code> de cada fatia: dá para acompanhar o dia a dia sem abrir os arquivos.</p><div class="bands" aria-hidden="true"><i></i><i></i><i></i></div></header>
+<style>
+.fig{margin:14px 0 6px}
+.fig img{display:block;width:100%;height:auto;border-radius:var(--r);box-shadow:var(--raised)}
+.fig figcaption{margin-top:8px;font-size:13px;color:var(--muted)}
+#kanban h3{font-size:19px;margin:30px 0 10px}
+#kanban h3:first-child{margin-top:0}
+#kanban ul{margin:8px 0 0;padding-left:20px}
+#kanban li{margin:4px 0}
+#kanban pre.cod{font:400 13px/1.55 var(--mono);background:var(--soft);color:var(--title);padding:14px 16px;border-radius:var(--r);overflow-x:auto;margin:12px 0}
+#kanban kbd{font:500 12px/1 var(--mono);padding:2px 5px;border-radius:var(--r-xs);background:var(--soft);color:var(--title)}
+</style>
+<section id="kanban">
+    <h3>Como abrir</h3>
+    <pre class="cod">npx sabia kanban                     # na raiz do projeto; mostra o link e fica no ar
+npx sabia kanban --projeto ../outro  # outro projeto
+npx sabia kanban --porta 5000        # padrão: 4780 (ocupada, usa uma livre)</pre>
+    <p class="phnote">O comando sobe um servidor local e escreve o link no terminal; é só clicar. Cada vez que a página carrega, ele lê o projeto de novo. Com <kbd>Ctrl</kbd>+<kbd>C</kbd> o servidor fecha e a página avisa que o quadro foi encerrado. Nada sai da máquina, e a página só lê.</p>
+
+    <h3>O quadro</h3>
+    <figure class="fig"><img src="img/kanban-quadro.png" width="1760" height="980" alt="Quadro Kanban com as raias Backlog, Nova, Pronta para puxar, Em andamento, Impedido e Concluída, e cards com bolinhas de aviso" loading="lazy"><figcaption>A sprint atual, com o Em andamento recolhido numa raia só.</figcaption></figure>
+    <ul>
+      <li><b>Raias:</b> Backlog (o que ainda não entrou na sprint escolhida), os status do <code>backlog.md</code>, o grupo Em andamento, Impedido, Concluída e Cancelada.</li>
+      <li><b>Sprint:</b> o combo do topo lista as sprints, da atual para a primeira.</li>
+      <li><b>Card:</b> id e tipo (a cor é do tipo: fatia, bug, épico, sustentação), título, o nome da pessoa (do <code>equipe.json</code>), tamanho, idade, MR, pai, IB e as tarefas do EWM.</li>
+      <li><b>Filtros:</b> por tipo, só com aviso, e por texto (id, título ou responsável).</li>
+    </ul>
+
+    <h3>Em andamento, fase a fase</h3>
+    <figure class="fig"><img src="img/kanban-andamento.png" width="1760" height="980" alt="O grupo Em andamento aberto, com as raias Iniciada, Em desenvolvimento, Revisão do agente, Verificação do agente, Aguardando aprovação do MR e Retrabalho" loading="lazy"><figcaption>O grupo aberto: cada raia é uma Fase do <code>status.md</code> da fatia.</figcaption></figure>
+    <p class="phnote">O grupo recolhe e expande pela seta. Aberto, mostra onde cada item está: Iniciada (sem Fase ainda), Em desenvolvimento, Revisão do agente, Verificação do agente, Aguardando aprovação do MR e Retrabalho. No topo dele fica o WIP contra o limite do <code>acordos.json</code>.</p>
+
+    <h3>Avisos</h3>
+    <p class="phnote">A bolinha no card diz que há algo para olhar, e a lista embaixo diz o quê. Os avisos do quadro inteiro aparecem ao lado da meta da sprint.</p>
+    <div class="scroll"><table><thead><tr><th>Onde</th><th>Vermelho · crítico</th><th>Âmbar · atenção</th></tr></thead><tbody>
+ <tr><td>Card</td><td>urgente (prioridade crítica) · idade acima do SLE · impedido há mais dias que o limite dos acordos · devolvido pelo autopilot · Em aberto que bloqueia</td><td>MR parado · retrabalho · impedimento com a data vencida · <code>falta:</code> na triagem · sem responsável na sprint · em andamento fora da sprint</td></tr>
+ <tr><td>Quadro</td><td>WIP estourado · <code>acordos.json</code> ou <code>kanban.json</code> inválido</td><td>reserva de capacidade estourada · fim do ciclo</td></tr>
+    </tbody></table></div>
+    <p class="phnote">Os limites vêm do <code>acordos.json</code>: <code>wip</code>, <code>sle</code>, <code>alertas.mr_parado_dias</code> e <code>alertas.impedimento_dias</code>. O item impedido mostra o motivo, quem impede, há quantos dias e o status anterior.</p>
+
+    <h3>Lista por sprint</h3>
+    <figure class="fig"><img src="img/kanban-lista.png" width="1760" height="980" alt="Lista com a tabela do backlog e a tabela da sprint, uma linha por tarefa, com início, fim e lead time" loading="lazy"><figcaption>A vista Lista: o backlog e, em cada sprint, uma linha por tarefa.</figcaption></figure>
+    <p class="phnote">O botão Lista troca o quadro por tabelas: primeiro o backlog, depois uma tabela por sprint, da atual para a primeira. Na sprint, cada linha é uma tarefa (especificação, desenvolvimento ou atendimento), com o responsável, o início, o fim e o lead time daquele trabalho.</p>
+
+    <h3>As colunas do projeto</h3>
+    <figure class="fig"><img src="img/kanban-colunas.png" width="1760" height="620" alt="Menu de uma coluna com Renomear, Mover e Ocultar, e a barra que avisa das colunas alteradas com o botão Copiar JSON" loading="lazy"><figcaption>Depois de mexer nas colunas, o quadro oferece o JSON para gravar no projeto.</figcaption></figure>
+    <ul>
+      <li>Arraste uma raia pelo cabeçalho para mudar a ordem, dê dois cliques no nome para renomear, ou use o menu dos três pontos (renomear, mover, ocultar).</li>
+      <li>A mudança vale só no seu navegador até você gravar. O botão <b>Copiar JSON</b> copia a configuração; cole em <code>.sabia/config/kanban.json</code> e faça o commit, e ela passa a valer para o time.</li>
+      <li>Sem esse arquivo, o quadro usa as colunas padrão do Sabiá.</li>
+    </ul>
+    <pre class="cod">{
+  "grupo": "Em andamento",
+  "colunas": [
+    { "id": "backlog", "nome": "Backlog" },
+    { "id": "nova", "nome": "Nova" },
+    { "id": "aceita", "nome": "Aceita", "oculta": true },
+    { "id": "elegivel", "nome": "Pronta para puxar" },
+    { "id": "implementando", "nome": "Em desenvolvimento" },
+    { "id": "impedida", "nome": "Impedido" },
+    { "id": "concluida", "nome": "Concluída" }
+  ]
+}</pre>
+    <p class="phnote">Os <code>id</code> são do Sabiá; o projeto escolhe a ordem, o nome e o que oculta. A coluna que faltar no arquivo entra no fim, e as do Em andamento ficam sempre juntas.</p>
+
+    <h3>Temas</h3>
+    <figure class="fig"><img src="img/kanban-sabia-escuro.png" width="1760" height="980" alt="O quadro na paleta Sabiá, modo escuro, com o cabeçalho de cada card na cor do tipo" loading="lazy"><figcaption>A paleta Sabiá no modo escuro: o cabeçalho do card leva a cor do tipo.</figcaption></figure>
+    <p class="phnote">O quadro usa o mesmo tema deste site: as paletas Sóbria e Sabiá, em claro e escuro, pelos botões do topo. Na Sóbria, o card é branco com um filete na cor do tipo; na Sabiá, o cabeçalho do card leva a cor.</p>
+
+    <h3>De onde vem cada informação</h3>
+    <div class="scroll"><table><thead><tr><th>No quadro</th><th>Vem de</th></tr></thead><tbody>
+ <tr><td>raia do item, motivo do impedimento, prioridade, tamanho, pai, IB</td><td><code>backlog.md</code> (status e <code>motivo</code>)</td></tr>
+ <tr><td>raia dentro do Em andamento, trilha, autonomia, MR, Em aberto que bloqueia</td><td><code>status.md</code> da fatia, na branch</td></tr>
+ <tr><td>sprints, tarefas, responsável da tarefa, início, fim e lead time</td><td><code>sprints/&lt;AAAA&gt;/sprint-&lt;nn&gt;.md</code></td></tr>
+ <tr><td>WIP, SLE e limites dos avisos</td><td><code>acordos.json</code></td></tr>
+ <tr><td>nome das pessoas</td><td><code>equipe.json</code></td></tr>
+ <tr><td>MR aberto e MR parado</td><td>GitLab, com <code>GITLAB_API_URL</code> e <code>GITLAB_API_TOKEN</code> (opcional)</td></tr>
+ <tr><td>ordem, nome e colunas ocultas</td><td><code>.sabia/config/kanban.json</code></td></tr>
+    </tbody></table></div>
+    <div class="proxima"><a href="toolkits.html">Próxima: Toolkits</a></div></section>
+  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.28, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
+</div>
+</body>
+</html>
