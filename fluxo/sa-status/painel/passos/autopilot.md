@@ -7,7 +7,7 @@
 
 ## Faça
 
-Para cada `.sabia/local/loop-<id>.md` com a linha `Devolvido:` (teto do `acordos.md` ou 2 reprovações seguidas),
+Para cada `.sabia/local/loop-<id>.md` com a linha `Devolvido:` (teto do `acordos.json` ou 2 reprovações seguidas),
 marque o item como `devolvido pelo autopilot → <dono> resolve e relança (sa-desenvolver.iniciar)`. As worktrees em
 autopilot aparecem em andamento.
 

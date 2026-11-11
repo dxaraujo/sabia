@@ -1,9 +1,9 @@
 ---
-{"resumo": "Com 'CT no teste: sim': CT-nn do CT.csv que não aparece nos testes alterados pela branch."}
+{"resumo": "Com ct_no_teste: true: CT-nn do CT.csv que não aparece nos testes alterados pela branch."}
 ---
 ## Entrada
 
-O `acordos.md`. Só com `CT no teste: sim`.
+O `acordos.json`. Só com `ct_no_teste: true`.
 
 ## Faça
 

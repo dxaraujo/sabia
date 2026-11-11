@@ -9,7 +9,7 @@ para os números do ciclo.
 ## Faça
 
 1. Sem `.sabia/sabia.md` → diga que o fluxo não está configurado e ofereça a `sa-setup.configurar`.
-2. Sem `equipe.json` ou `acordos.md` → sugira a `sa-planejamento.inicial` e siga sem limites de WIP nem SLE.
+2. Sem `equipe.json` ou `acordos.json` → sugira a `sa-planejamento.inicial` e siga sem limites de WIP nem SLE.
 3. Chamado pela retrospectiva: só os passos de coleta e o passo `metricas`; devolva os números a ela.
 
 ## Saída

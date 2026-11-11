@@ -59,7 +59,7 @@ avaliados em separado e relatados em tabelas próprias: um não compensa nem esc
 | # | Verificação | Severidade |
 |---|---|---|
 | C1 | Cada critério da spec (na trivial, cada cenário da ficha) tem implementação (`critério → arquivo:linha`) | BLOQUEANTE |
-| C2 | Cada cenário CT-nn tem teste automatizado que o exercita, com o esperado igual ao "Então"; com `CT no teste = sim` no `acordos.md`, o teste traz a marca `<FT-nnn> CT-nn` | BLOQUEANTE |
+| C2 | Cada cenário CT-nn tem teste automatizado que o exercita, com o esperado igual ao "Então"; com `ct_no_teste: true` no `acordos.json`, o teste traz a marca `<FT-nnn> CT-nn` | BLOQUEANTE |
 | C3 | CI verde no último commit da branch, sem teste verde no baseline (último pipeline da branch base) que ficou vermelho. Fonte: MCP do Jenkins, a saída do validar de quem chamou ou o resultado informado pela pessoa; nunca "os testes passaram" sem a saída | BLOQUEANTE |
 | C4 | Oráculo protegido: nenhum teste removido, desabilitado, ignorado, com assert vazio, enfraquecido ou tautológico; nenhuma exceção engolida. Expectativa de teste existente alterada só com a decisão registrada no plano | BLOQUEANTE |
 | C5 | Reexecução segura: rodar de novo não duplica nem corrompe (chave, situação gravada, transação) | BLOQUEANTE |

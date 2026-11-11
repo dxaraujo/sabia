@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O item com autonomia IA autopilot, a worktree `.sabia/local/wt/<id>` e a linha Disjuntor do `acordos.md`.
+O item com autonomia IA autopilot, a worktree `.sabia/local/wt/<id>` e a chave `disjuntor` do `acordos.json`.
 
 ## Faça
 

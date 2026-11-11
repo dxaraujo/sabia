@@ -3,15 +3,15 @@
 ---
 ## Entrada
 
-Uma etapa do autopilot terminou (tarefa, revisar, verificar) ou uma reprovação. A linha Disjuntor do
-`acordos.md`.
+Uma etapa do autopilot terminou (tarefa, revisar, verificar) ou uma reprovação. A chave `disjuntor` do
+`acordos.json`.
 
 ## Faça
 
 Fora do autopilot → nada a fazer; siga.
 
 1. Acrescente a linha da etapa em `.sabia/local/loop-<id>.md`, pelo template `sa-desenvolver/loop.md`.
-2. Dispara no teto do `acordos.md` (tentativas, tempo ou custo) ou em 2 reprovações seguidas na mesma etapa
+2. Dispara no teto do `acordos.json` (`tentativas`, `horas` ou `creditos`) ou em 2 reprovações seguidas na mesma etapa
    (revisar ou verificar).
 3. Disparou: grave a linha `Devolvido: <motivo> · AAAA-MM-DD HH:MM`, o Retomar do `status.md`, commit e push da
    branch, e devolva à pessoa o resumo (motivo, Desvios, Em aberto).

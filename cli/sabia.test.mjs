@@ -695,7 +695,7 @@ test("status: quadro lê acordos (WIP/SLE), o status.md da branch, os avisos dos
       + "| FT-003 | Três | fatia | adiada até 2026-11-01 |  | P |  |  | a |  |  |  |  |  |\n"
       + "| FT-004 | Quatro | fatia | nova |  |  |  |  | a |  | falta: qual tela · para ana |  |  |  |\n"
       + "| EP-01 | Épico | épico | concluido |  |  |  |  | a |  |  |  | 2026-10-01 | 2026-10-11 |\n",
-    ".sabia/planejamento/acordos.md": "# Acordos\n\n| Item | Acordo |\n|---|---|\n| Timebox | 2 semanas |\n| WIP | em-andamento: 1 · em-revisao: 2 |\n| SLE | 85% em até 5 dias |\n",
+    ".sabia/planejamento/acordos.json": JSON.stringify({ timebox_semanas: 2, wip: { "em-andamento": 1, "em-revisao": 2 }, sle: { percentual: 85, dias: 5 } }),
     ".sabia/planejamento/sprints/2026/sprint-01.md": "# 2026/Sprint 01 · 2026-11-02 → 2026-11-13\n\n**Meta:** Entregar\n\n**Reserva de capacidade:** 0 itens (0%)\n\n## Itens\n\n| Item | Trabalho | Responsável | Tarefas |\n|---|---|---|---|\n| FT-001 | desenvolvimento | ana | — |\n| AT-001 | atendimento | — | — |\n",
     // a worktree do item, com o status.md da spec: a Fase dá a coluna e o Em aberto que bloqueia vira aviso
     ".sabia/local/wt/ft-001/.kiro/specs/ft-001-um/status.md": "# Status\n\n| Campo | Valor |\n|---|---|\n| Fase | retrabalho |\n| MR | !12 https://gl.exemplo/time/app/-/merge_requests/12 |\n| Trilha | completo |\n| Autonomia | IA supervisionada |\n\n## Em aberto\n\n| Pergunta | Para quem | Bloqueia |\n|---|---|---|\n| Qual o limite? | P.O. | MR |\n| E a cor? | P.O. | nada |\n",
@@ -756,8 +756,17 @@ test("status: quadro lê acordos (WIP/SLE), o status.md da branch, os avisos dos
   escrever(proj, { ".sabia/planejamento/equipe.json": JSON.stringify({ membros: [{ nome: "Ana Souza", usuario: "ana" }] }) });
   assert.deepEqual(statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora }).quadro.pessoas, { ana: "Ana Souza" });
   assert.equal(ruim.alertas[0].tipo, "config");
-  // sem acordos.md: WIP vazio e sem SLE
-  fs.rmSync(path.join(proj, ".sabia/planejamento/acordos.md"));
+  // sem acordos.json: WIP vazio e sem SLE
+  // o limite do MR parado e do impedimento vem dos alertas; sem eles, o padrão
+  assert.deepEqual(r.quadro.limites, { mr_parado_dias: 1, impedimento_dias: 7 });
+  escrever(proj, { ".sabia/planejamento/acordos.json": JSON.stringify({ alertas: { mr_parado_dias: 3 } }) });
+  assert.deepEqual(statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora }).quadro.limites, { mr_parado_dias: 3, impedimento_dias: 7 });
+  // JSON inválido: sem WIP nem SLE, com o alerta
+  escrever(proj, { ".sabia/planejamento/acordos.json": "{ wip: " });
+  const semAcordos = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora }).quadro;
+  assert.deepEqual(semAcordos.wip, []);
+  assert.equal(semAcordos.alertas.find((a) => a.tipo === "acordos").nivel, "critico");
+  fs.rmSync(path.join(proj, ".sabia/planejamento/acordos.json"));
   const s2 = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora });
   assert.deepEqual(s2.quadro.wip, []);
   assert.equal(s2.quadro.sle, null);
@@ -796,7 +805,7 @@ test("kanban: a página leva o tema, a versão e o JSON da sabia status; o servi
       + "| FT-004 | Quatro | fatia | em-andamento |  | M | bia |  | a |  |  |  |  |  |\n"
       + "| EP-01 | Epic | épico | em-especificacao |  |  | bia |  | a |  |  |  |  |  |\n"
       + "| AT-001 | Contas | sustentação | em-andamento |  |  |  |  | a |  |  |  |  |  |\n",
-    ".sabia/planejamento/acordos.md": "# Acordos\n\n| Item | Acordo |\n|---|---|\n| WIP | em-andamento: 1 · em-revisao: 2 |\n| SLE | 85% em até 5 dias |\n",
+    ".sabia/planejamento/acordos.json": JSON.stringify({ timebox_semanas: 2, wip: { "em-andamento": 1, "em-revisao": 2 }, sle: { percentual: 85, dias: 5 } }),
     ".sabia/planejamento/sprints/2026/sprint-02.md": "# 2026/Sprint 02 · 2026-11-09 → 2026-11-20\n\n**Meta:** Entregar\n\n## Itens\n\n| Item | Trabalho | Responsável | Tarefas |\n|---|---|---|---|\n| FT-001 | desenvolvimento | ana | — |\n| FT-002 | desenvolvimento | — | — |\n| FT-004 | desenvolvimento | bia | — |\n| EP-01 | especificação | bia | — |\n| AT-001 | atendimento | — | — |\n",
     // a situação do FT-001 vem do status.md da worktree (Fase implementando → Em desenvolvimento, ainda que haja MR aberto);
     // a FT-004 não tem status.md: o MR aberto no GitLab a coloca em Em Revisão
@@ -1144,6 +1153,6 @@ test("opção desconhecida é recusada; o toolkits -h só mostra as opções do 
 test("schemas públicos: as cópias do framework são iguais às do repositório json-schemas", (t) => {
   const pub = path.resolve(REPO, "../json-schemas/sabia");
   if (!fs.existsSync(pub)) return t.skip("repositório json-schemas não clonado ao lado");
-  for (const [nome, copia] of [["toolkit", "skills/sa-setup/assets"], ["equipe", "skills/sa-planejamento/assets"]])
+  for (const [nome, copia] of [["toolkit", "skills/sa-setup/assets"], ["equipe", "skills/sa-planejamento/assets"], ["acordos", "skills/sa-planejamento/assets"]])
     assert.equal(fs.readFileSync(path.join(REPO, copia, `${nome}.schema.json`), "utf8"), fs.readFileSync(path.join(pub, `${nome}.schema.json`), "utf8"), nome);
 });

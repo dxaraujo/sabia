@@ -1,34 +1,36 @@
 ---
-{"resumo": "Formato do .sabia/planejamento/acordos.md: a tabela Item | Acordo com as chaves nesta ordem."}
+{"resumo": "Exemplo do .sabia/planejamento/acordos.json, validado pelo acordos.schema.json da sa-planejamento."}
 ---
-```markdown
-# Acordos do time
-
-| Item | Acordo |
-|---|---|
-| Timebox | 2 semanas |
-| WIP | em-andamento: 3 · em-revisao: 2 |
-| SLE | 85% em até 5 dias |
-| DoD | CI verde · 1 aprovação de desenvolvedor ≠ autor · Evidência no MR · Artefatos afetados no MR · Lições aprendidas no status.md |
-| Classes de serviço | urgente = prioridade crítica (vai ao topo, puxada sem aprovação, pode passar o WIP em 1) · padrão = ordem das linhas |
-| Reserva de capacidade | 20% |
-| Tamanhos | P = horas · M ≈ 1 dia · G = 2–3 dias (maior que G é épico) |
-| Disjuntor | tentativas 3 · tempo 4 h · custo 50 créditos |
-| Id no commit | não |
-| CT no teste | sim |
+```json
+{
+  "$schema": "https://dxaraujo.github.io/json-schemas/sabia/acordos.schema.json",
+  "timebox_semanas": 2,
+  "wip": {"em-andamento": 3, "em-revisao": 2},
+  "sle": {"percentual": 85, "dias": 5},
+  "alertas": {"mr_parado_dias": 1, "impedimento_dias": 7},
+  "reserva_capacidade_pct": 20,
+  "tamanhos": {"P": "horas", "M": "≈ 1 dia", "G": "2–3 dias"},
+  "dod": ["CI verde", "1 aprovação de desenvolvedor ≠ autor", "Evidência no MR", "Artefatos afetados no MR", "Lições aprendidas no status.md"],
+  "classes_de_servico": {"urgente": "prioridade crítica", "urgente_passa_wip": true},
+  "disjuntor": {"tentativas": 3, "horas": 4, "creditos": 50},
+  "id_no_commit": false,
+  "ct_no_teste": true
+}
 ```
 
 | Chave | Valores | Quem lê |
 |---|---|---|
-| Timebox | `<n> semanas` | `sa-planejamento.sprint` (datas) |
-| WIP | `<status>: <n>`, status ∈ `aceita` · `elegivel` · `em-andamento` · `em-revisao` (derivado do MR aberto) | `sa-status.painel`, `sa-desenvolver.iniciar` |
-| SLE | `<p>% em até <n> dias` · vazio (opcional) | `sa-status.painel` (idade) |
-| DoD | checklist separado por ` · ` | `sa-desenvolver.codificar`, `sa-revisar.mr` |
-| Classes de serviço | urgente = `crítica` · padrão = ordem das linhas | `sa-triar.triar`, `sa-desenvolver.iniciar` |
-| Reserva de capacidade | `<n>%` da capacidade, em itens, para o atendimento | `sa-planejamento.sprint`, `sa-atender.atender` |
-| Tamanhos | `P` · `M` · `G` com o que cada um vale (editável) | `sa-triar.triar`, `sa-refinar.detalhar` |
-| Disjuntor | `tentativas <n> · tempo <n> h · custo <n> créditos`; 2 reprovações seguidas disparam sempre | `sa-desenvolver.codificar` (autopilot) |
-| Id no commit | `sim` · `não` | commit direto na branch base, `sa-status.pendencias` |
-| CT no teste | `sim` · `não` (a marca `<FT-nnn> CT-nn` no teste automatizado) | `sa-desenvolver.codificar`, `sa-status.pendencias` |
+| `timebox_semanas` | semanas da sprint | `sa-planejamento.sprint` (datas) |
+| `wip` | limite por status ∈ `aceita` · `elegivel` · `em-andamento` · `em-revisao` (derivado do MR aberto); conta fatia e bug | `sa-status.painel`, `sa-desenvolver.iniciar`, `sabia status` |
+| `sle` | `percentual`% em até `dias` dias (opcional) | `sa-status.painel` (idade), `sabia status` |
+| `alertas` | `mr_parado_dias` (padrão 1) · `impedimento_dias` (padrão 7); opcional | `sa-status.painel`, `sabia status` |
+| `reserva_capacidade_pct` | % da capacidade, em itens, para o atendimento | `sa-planejamento.sprint`, `sa-atender.atender` |
+| `tamanhos` | o que vale `P` · `M` · `G` (maior que G é épico) | `sa-triar.triar`, `sa-desenvolver.iniciar` |
+| `dod` | o checklist, um item por elemento | `sa-desenvolver.codificar`, `sa-revisar.mr` |
+| `classes_de_servico` | `urgente` = o que torna o item urgente (vai ao topo, puxado sem aprovação) · `urgente_passa_wip`: `true` = pode passar o WIP em 1 | `sa-triar.triar`, `sa-desenvolver.iniciar` |
+| `disjuntor` | teto do autopilot por item: `tentativas` · `horas` · `creditos`; 2 reprovações seguidas disparam sempre | `sa-desenvolver.codificar` (autopilot) |
+| `id_no_commit` | `true` · `false` (o id da tarefa do EWM na mensagem do commit) | commit direto na branch base, `sa-status.pendencias` |
+| `ct_no_teste` | `true` · `false` (a marca `<FT-nnn> CT-nn` no teste automatizado) | `sa-desenvolver.codificar`, `sa-status.pendencias` |
 
-Cria: `sa-planejamento.inicial`. Ajusta: `sa-planejamento.retrospectiva` (com o "ok" de quem tem `produto`).
+Cria: `sa-planejamento.inicial`. Ajusta: `sa-planejamento.retrospectiva` (com o "ok" de quem tem `produto`). Para
+mostrar os acordos à pessoa, use uma tabela `Chave | Acordo`; o arquivo é sempre o JSON.

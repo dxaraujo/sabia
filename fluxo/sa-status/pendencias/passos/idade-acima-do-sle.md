@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-O `acordos.md`. Só com SLE.
+O `acordos.json`. Só com `sle`.
 
 ## Faça
 

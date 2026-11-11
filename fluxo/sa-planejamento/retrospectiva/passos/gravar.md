@@ -1,5 +1,5 @@
 ---
-{"resumo": "Com o ok, monta a Retro do sprint-<nn>.md e o acordos.md, se mudou, num commit só."}
+{"resumo": "Com o ok, monta a Retro do sprint-<nn>.md e o acordos.json, se mudou, num commit só."}
 ---
 ## Entrada
 
@@ -7,7 +7,7 @@ A Retro, a linha Números e a reserva de capacidade revista.
 
 ## Faça
 
-Mostre a `## Retro` e a mudança do `acordos.md`, se houve. Com o "ok", grave pelo passo `commit-na-branch-base`, commit
+Mostre a `## Retro` e a mudança do `acordos.json`, se houve. Com o "ok", grave pelo passo `commit-na-branch-base`, commit
 `<AAAA>/Sprint <nn>: retrospectiva`.
 
 ## Saída

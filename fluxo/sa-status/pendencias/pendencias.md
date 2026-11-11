@@ -6,6 +6,7 @@
    {"id": "inicio"},
    {"id": "publicacao-pendente"},
    {"id": "trava-de-artefato"},
+   {"id": "acordos-invalido"},
    {"id": "commit-sem-id"},
    {"id": "ct-sem-teste"},
    {"id": "mr-mergeado-sem-concluir"},

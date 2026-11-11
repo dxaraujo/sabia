@@ -14,8 +14,8 @@ O repositório.
    protegida contra o push de quem trabalha → avise e peça outra branch base.
 3. **Prefixo da branch** (`prefixo_branch` do `agentes.json`): das branches remotas; a branch de trabalho é
    `<prefixo><id>-<slug>`.
-4. **Padrão de commit:** o que aparece no `git log`. O id do WI só entra no commit se o `acordos.md` pedir
-   ("Id no commit: sim").
+4. **Padrão de commit:** o que aparece no `git log`. O id do WI só entra no commit se o `acordos.json` pedir
+   (`id_no_commit: true`).
 
 ## Saída
 

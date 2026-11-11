@@ -18,7 +18,7 @@ const COLUNAS = [["backlog", "Backlog"], ["nova", "Nova"], ["a-moldar", "A molda
   ["iniciada", "Iniciada"], ["implementando", "Em desenvolvimento"], ["revisando", "Revisão do agente"], ["verificando", "Verificação do agente"],
   ["pr-aberto", "Aguardando aprovação do MR"], ["retrabalho", "Retrabalho"],
   ["adiada", "Adiada"], ["concluida", "Concluída"], ["cancelada", "Cancelada"]];
-// As colunas que cada status do WIP do `acordos.md` conta. `em-revisao` é derivado (MR aberto) e nunca se grava.
+// As colunas que cada status do WIP do `acordos.json` conta. `em-revisao` é derivado (MR aberto) e nunca se grava.
 const WIP = { "em-andamento": ["Em andamento", ["iniciada", "implementando", "revisando", "verificando"]], "em-revisao": ["MR em revisão", ["pr-aberto", "retrabalho"]] };
 const celulas = (l) => l.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((c) => c.trim());
 const semValor = (x) => !x || x === "—";
@@ -75,18 +75,19 @@ function mrsAbertos(raiz, exec) {
   }
 }
 
-/** Os acordos do time: WIP por status e SLE; nulo quando o arquivo ou a linha falta. */
+/** Os acordos do time (`acordos.json`): WIP por status, SLE e os limites de alerta, com o padrão no que falta.
+ *  Sem o arquivo, sem WIP nem SLE; JSON inválido devolve `erro`, e o quadro avisa. */
 function acordosDe(raiz) {
-  const f = path.join(raiz, ".sabia/planejamento/acordos.md");
-  if (!fs.existsSync(f)) return { wip: null, sle: null };
-  const linhas = tabela(fs.readFileSync(f, "utf8"), "Item");
-  const wip = {};
-  for (const parte of (linhas.find((x) => x.Item === "WIP")?.Acordo ?? "").split("·")) {
-    const m = parte.trim().match(/^([a-z][a-z-]*)\s*:\s*(\d+)$/i);
-    if (m) wip[m[1].toLowerCase()] = +m[2];
-  }
-  const s = (linhas.find((x) => x.Item === "SLE")?.Acordo ?? "").match(/(\d+)\s*%\s*em até\s*(\d+)\s*dias/i);
-  return { wip: Object.keys(wip).length ? wip : null, sle: s ? { percentual: +s[1], dias: +s[2] } : null };
+  const f = path.join(raiz, ".sabia/planejamento/acordos.json"), num = (x, padrao) => (Number.isFinite(x) && x > 0 ? x : padrao);
+  let a = {}, erro = null;
+  if (fs.existsSync(f)) try { a = JSON.parse(fs.readFileSync(f, "utf8")) ?? {}; } catch (e) { erro = e.message; a = {}; }
+  const wip = Object.fromEntries(Object.entries(a.wip ?? {}).filter(([, n]) => Number.isFinite(n)));
+  return {
+    wip: Object.keys(wip).length ? wip : null,
+    sle: Number.isFinite(a.sle?.dias) ? { percentual: a.sle.percentual ?? null, dias: a.sle.dias } : null,
+    alertas: { mr_parado_dias: num(a.alertas?.mr_parado_dias, 1), impedimento_dias: num(a.alertas?.impedimento_dias, 7) },
+    erro,
+  };
 }
 
 /** Os campos do status.md da fatia (a pasta da spec, na branch): Fase, MR, Trilha e Autonomia, e as linhas do
@@ -200,7 +201,7 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
     const md = andando ? mdDe(l.id) : null, mrG = andando ? mrGitlabDe(l.id) : null;
     const idade = !terminal && l.iniciada_em ? dias(l.iniciada_em) : null;
     const adiadaAte = l.status?.match(/^adiada até (\d{4}-\d{2}-\d{2})$/)?.[1] ?? null;
-    // os avisos: o que o acordos.md e o fluxo do sa-status pedem para olhar; `critico` pede ação já, `atencao` acompanha
+    // os avisos: o que o acordos.json e o fluxo do sa-status pedem para olhar; `critico` pede ação já, `atencao` acompanha
     const avisos = [], aviso = (tipo, nivel, mensagem) => avisos.push({ tipo, nivel, mensagem });
     if (l.prioridade === "crítica" && !terminal) aviso("urgente", "critico", "urgente: prioridade crítica, vai ao topo");
     if (acordos.sle && andando && idade > acordos.sle.dias) aviso("sle", "critico", `idade ${idade} dias, acima do SLE de ${acordos.sle.dias} dias`);
@@ -208,7 +209,7 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
     for (const b of md?.bloqueios ?? []) aviso("bloqueio", "critico", `em aberto bloqueia ${b.bloqueia}: ${b.pergunta}${b.para ? ` (para ${b.para})` : ""}`);
     if (mrG?.atualizado_em) {
       const d = Math.floor((agora - new Date(mrG.atualizado_em)) / 86400000);
-      if (d >= 1) aviso("mr-parado", "atencao", `MR !${mrG.iid} parado: sem atualização há ${plural(d, "dia", "dias")}`);
+      if (d >= acordos.alertas.mr_parado_dias) aviso("mr-parado", "atencao", `MR !${mrG.iid} parado: sem atualização há ${plural(d, "dia", "dias")}`);
     }
     if (md?.fase === "retrabalho") aviso("retrabalho", "atencao", "retrabalho: o dono retoma no mesmo MR");
     if (adiadaAte && adiadaAte < hoje) aviso("adiamento-vencido", "atencao", `adiamento vencido em ${adiadaAte}: volta à triagem`);
@@ -245,13 +246,14 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
   // status fora dos do framework (erro de digitação, linha da sprint fora do backlog): a coluna entra no fim
   for (const c of cards) if (!colunas.some((x) => x.id === c.coluna)) colunas.push({ id: c.coluna, nome: c.coluna === "sem-dados" ? "Fora do backlog" : c.coluna, oculta: false, grupo: false });
 
-  // o WIP conta só fatia e bug (os status do `acordos.md` são os deles), no backlog inteiro
+  // o WIP conta só fatia e bug (os status do `acordos.json` são os deles), no backlog inteiro
   const wip = Object.entries(acordos.wip ?? {}).map(([status, limite]) => {
     const [nome, cols] = WIP[status] ?? [colunas.find((c) => c.id === status)?.nome ?? status, [status]];
     return { status, nome, colunas: cols, atual: cards.filter((c) => (c.tipo === "fatia" || c.tipo === "bug") && cols.includes(c.coluna)).length, limite };
   });
   // os alertas do quadro: a configuração inválida, o WIP estourado, a reserva de capacidade e o fim do ciclo
   const alertas = [];
+  if (acordos.erro) alertas.push({ tipo: "acordos", nivel: "critico", mensagem: `.sabia/planejamento/acordos.json inválido (${acordos.erro}): o quadro segue sem WIP nem SLE` });
   if (config.erro) alertas.push({ tipo: "config", nivel: "critico", mensagem: `${CONFIG_KANBAN} inválido (${config.erro}): o quadro usa o padrão` });
   for (const w of wip) if (w.atual > w.limite) alertas.push({ tipo: "wip", nivel: "critico", mensagem: `WIP estourado em ${w.nome}: ${w.atual} de ${w.limite}` });
   const atendimentos = linhas.filter((x) => x.Trabalho === "atendimento").length;
@@ -274,7 +276,7 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
       iniciada_em: l.iniciada_em || null, idade_dias: l.iniciada_em ? dias(l.iniciada_em) : null })),
     mrs_aguardando: mrs,
     quadro: {
-      config, grupo, colunas, itens: cards, wip, sle: acordos.sle, alertas, pessoas: pessoasDe(raiz),
+      config, grupo, colunas, itens: cards, wip, sle: acordos.sle, limites: acordos.alertas, alertas, pessoas: pessoasDe(raiz),
       // as sprints, da aberta para a primeira, com as linhas de cada uma (a página escolhe qual mostra)
       sprints: sprints.map((x) => ({ chave: x.chave, inicio: x.inicio, fim: x.fim, meta: x.meta, reserva: x.reserva, aberta: x.aberta,
         itens: x.itens.map((l) => ({ id: l.Item, trabalho: l.Trabalho ?? null, responsavel: semValor(l["Responsável"]) ? null : l["Responsável"], tarefas: semValor(l.Tarefas) ? null : l.Tarefas })) })),

@@ -54,7 +54,7 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
   até <data>`; `em-revisao` não se grava, vem do MR aberto. Épico: `a-moldar` → `em-especificacao` (investir) → `fatiado` →
   `concluido` · `cancelado`; fecha no merge da última fatia aberta (`sa-desenvolver.encerrar`). Sustentação: `nova` →
   `em-andamento` → `concluida` · `cancelada`.
-- **Prioridade e tamanho.** `prioridade` ∈ {`crítica`, vazio}: crítica é o item urgente, pela política do `acordos.md`;
+- **Prioridade e tamanho.** `prioridade` ∈ {`crítica`, vazio}: crítica é o item urgente, pela política do `acordos.json`;
   vazio segue a ordem das linhas. `tamanho` ∈ {`P`, `M`, `G`}: P = horas, M ≈ 1 dia, G = 2 a 3 dias. Maior que G é
   épico, e só o épico vai ao pitch e à decisão de investimento.
 - **Trilhas.** Quem desenvolve escolhe pelo código: `trivial` (sem arquivo de spec, tudo no MR), `rapida` ou `completo`.
@@ -89,7 +89,7 @@ trabalho. Codificação e especificação têm autonomias independentes.
   sincroniza).
 - **Autopilot:** o `sa-desenvolvedor` roda como subagente na worktree `.sabia/local/wt/<id>` enquanto a pessoa segue na branch base; várias tarefas podem correr em paralelo. Ficam liberados o push da própria branch (sem `--force`), o merge da branch base nela e abrir ou atualizar o MR dela. Merge do MR, ELM e rede continuam bloqueados. O autopilot leva até o MR,
   que passa pela mesma revisão humana. Não existe lote.
-- **Disjuntor:** dispara pelo teto do `acordos.md` ou por 2 reprovações seguidas, grava em `.sabia/local/loop-<id>.md`
+- **Disjuntor:** dispara pelo teto do `acordos.json` ou por 2 reprovações seguidas, grava em `.sabia/local/loop-<id>.md`
   e devolve o item à pessoa.
 
 ## Princípios
@@ -126,7 +126,7 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 | escrever o PRD do épico depois da decisão de investir, ou mudar o PRD | `sa-prd` (`sa-prd.prd`) |
 | os arquivos de `elm/` da fatia · protótipo de tela e aprovação do cliente · ATA de reunião (transcrição em `.sabia/local/reunioes/`) · archive da spec depois do merge | `sa-especificar` (`sa-especificar.elm` · `sa-especificar.prototipo` · `sa-especificar.reuniao` · `sa-especificar.archive`) |
 | alinhar decisões em rodadas | `sa-entrevistar` (`sa-entrevistar.entrevistar`) |
-| planejamento inicial (`equipe.json`, `acordos.md`) · planejar a sprint, reabastecer, virada · review com curadoria das Regras aprendidas · retrospectiva | `sa-planejamento` (`sa-planejamento.inicial` · `sa-planejamento.sprint` · `sa-planejamento.review` · `sa-planejamento.retrospectiva`) |
+| planejamento inicial (`equipe.json`, `acordos.json`) · planejar a sprint, reabastecer, virada · review com curadoria das Regras aprendidas · retrospectiva | `sa-planejamento` (`sa-planejamento.inicial` · `sa-planejamento.sprint` · `sa-planejamento.review` · `sa-planejamento.retrospectiva`) |
 | puxar, começar ou retomar, com trilha e autonomia · implementar e abrir o MR · mergear e fechar | `sa-desenvolver` (`sa-desenvolver.iniciar` · `sa-desenvolver.codificar` · `sa-desenvolver.encerrar`); autopilot é uma autonomia da `sa-desenvolver` |
 | entender o código e devolver fatos, sem gravar | `sa-pesquisar` (`sa-pesquisar.pesquisar`) |
 | `research.md`, design e tasks da fatia, com o texto aprovado copiado para o delta · replanejar | `sa-plano` (`sa-plano.plano` · `sa-plano.replanejar`) |
@@ -143,7 +143,7 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 | `.sabia/sabia.md` | Resumo do fluxo · Projeto · Especificação · Comandos · Verificação de aceite · Sustentação · ELM · Desvios de toolkit · Tipos com skill de toolkit · Regras aprendidas (gravadas pela curadoria da review) |
 | `.sabia/config/` | `agentes.json` (as escolhas do projeto e a entrada do gerador), `elm/pa_<nome>.json` (da `sa-elm.setup`) e `elk/elk-<ambiente>.json` |
 | `.kiro/agents/` · `.opencode/agents/` | os 5 agentes gerados (e os de toolkit) |
-| `.sabia/planejamento/` | `backlog.md` (id · título · tipo · status · prioridade · tamanho · responsável · pai · relator · ib · obs · aceita_em · iniciada_em · concluida_em), `acordos.md`, `equipe.json`, `roadmap.md`, `sprints/<AAAA>/sprint-<nn>.md` (Item · Trabalho · Responsável · Tarefas), `fatias/FT-<nnn>-<slug>.md`, `epicos/EP-nn-<slug>/` (`pitch.md`; `prd.md` a partir da decisão de investir), `prototipos/`, `atas/`, `sustentacao/<pasta>/` |
+| `.sabia/planejamento/` | `backlog.md` (id · título · tipo · status · prioridade · tamanho · responsável · pai · relator · ib · obs · aceita_em · iniciada_em · concluida_em), `acordos.json`, `equipe.json`, `roadmap.md`, `sprints/<AAAA>/sprint-<nn>.md` (Item · Trabalho · Responsável · Tarefas), `fatias/FT-<nnn>-<slug>.md`, `epicos/EP-nn-<slug>/` (`pitch.md`; `prd.md` a partir da decisão de investir), `prototipos/`, `atas/`, `sustentacao/<pasta>/` |
 | spec da fatia | `.kiro/specs/ft-<nnn>-<slug>/` ou `openspec/changes/ft-<nnn>-<slug>/`: `status.md`, `research.md`, os arquivos da trilha, `CT.csv` e, com ELM, `elm/`. No OpenSpec, a arquivada fica em `openspec/changes/archive/<AAAA-MM-DD>-ft-<nnn>-<slug>/` |
 | glossário · ADRs · bundle | GL no DOORS, onde há ELM; o `.sabia/glossario.md` é opcional. ADRs em `docs/adr/`, só para decisão que atravessa fatias. O bundle (chave `elm.bundle` do `agentes.json`, ex.: `docs/elm/<pa>/`) é cópia local e nunca é editado |
 | `.sabia/creditos/` | `<usuario>.csv` com os créditos do Kiro por sessão |

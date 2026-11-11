@@ -17,7 +17,7 @@ Capacidade: vazão prevista <n> · migrados <n> · sobra <n>
 ```
 
 `<AAAA>` é o ano de início; `<nn>` é a próxima sprint do ano, com 2 dígitos (ano novo → 01). O início é o dia
-seguinte ao fim da anterior; sem anterior, pergunte a data. O fim = início + Timebox − 1 dia. No reabastecimento,
+seguinte ao fim da anterior; sem anterior, pergunte a data. O fim = início + `timebox_semanas` − 1 dia. No reabastecimento,
 mostre só as linhas novas, com a chave e a meta da sprint aberta.
 
 Peça o "ok" a quem tem `produto`. No reabastecimento, quem não tem a booleana grava com a anuência de quem tem: pergunte o nome,

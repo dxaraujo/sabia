@@ -15,7 +15,7 @@ Senão, leia o código do trecho tocado e mostre, de uma vez, as escolhas abaixo
 corrige. Vale para qualquer autonomia: a IA autopilot só começa no passo `autopilot`, e até lá as perguntas seguem com a pessoa.
 Em cada escolha, mostre a recomendada e as outras opções, com o que muda em cada uma:
 
-1. **Tamanho**: o triado (`P` = horas · `M` ≈ 1 dia · `G` = 2–3 dias, linha Tamanhos do `acordos.md`). O corrigido
+1. **Tamanho**: o triado (`P` = horas · `M` ≈ 1 dia · `G` = 2–3 dias, chave `tamanhos` do `acordos.json`). O corrigido
    vai à linha do `backlog.md` no commit da atribuição.
    - **Maior que G** → vira épico, sem branch: pelo passo `gravar`, nasce a linha `EP-nn` (tipo `épico`, status
      `a-moldar`, `obs` `veio de FT-nnn`) e a FT fica `cancelada` com `obs` `virou EP-nn`, num commit só. Com ELM,

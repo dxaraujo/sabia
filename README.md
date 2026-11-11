@@ -121,7 +121,7 @@ Especificação e codificação têm autonomias independentes.
 | **Especificação** (só com ELM; `sa-refinar.detalhar`; campo Especificação da ficha) | o `sa-especificador` edita o arquivo inteiro de `elm/` com o especificador | o `sa-especificador` como subagente edita sem perguntas; o que não tem fonte vai ao Em aberto, e o especificador aprova | o especificador altera direto no DOORS e avisa "alterei"; a skill sincroniza `elm/`, os artefatos afetados e o delta |
 
 No autopilot ficam liberados o push da própria branch (sem `--force`), o merge da branch base nela e abrir ou atualizar o
-MR dela; merge do MR, ELM e rede seguem bloqueados. O disjuntor (teto do `acordos.md` ou 2 reprovações seguidas)
+MR dela; merge do MR, ELM e rede seguem bloqueados. O disjuntor (teto do `acordos.json` ou 2 reprovações seguidas)
 grava `.sabia/local/loop-<id>.md` e devolve o item à pessoa. O MR passa pela mesma revisão humana.
 
 ## Spec da fatia
@@ -155,7 +155,7 @@ power são ignorados. Por isso a `sa-setup` grava no projeto, a partir de `skill
 | `.sabia/config/elm/pa_<nome>.json` · `.sabia/config/elk/elk-<ambiente>.json` | a project area do ELM (da `sa-elm.setup`) e a configuração do ELK |
 | `.kiro/agents/sa-*.json` · `.opencode/agents/sa-*.md` | os 5 agentes (e os de toolkit), gerados pelo `sabia agentes gerar` |
 | `.sabia/fluxo/` · `.sabia/template/` (só ao customizar) | override esparso de um passo ou template; nenhum agente escreve |
-| pasta do produto (template `.sabia/planejamento`) | `backlog.md`, `equipe.json`, `acordos.md`, `roadmap.md`, `sprints/<AAAA>/sprint-<nn>.md`, `fatias/`, `epicos/EP-nn-<slug>/` (`pitch.md`, `prd.md`), `prototipos/`, `atas/`, `sustentacao/` — versionada |
+| pasta do produto (template `.sabia/planejamento`) | `backlog.md`, `equipe.json`, `acordos.json`, `roadmap.md`, `sprints/<AAAA>/sprint-<nn>.md`, `fatias/`, `epicos/EP-nn-<slug>/` (`pitch.md`, `prd.md`), `prototipos/`, `atas/`, `sustentacao/` — versionada |
 | `.sabia/creditos/<usuario>.csv` | créditos do Kiro por sessão, gravados pela `sa-status.fechar-sessao` |
 | `.sabia/local/` (fora do git) | worktrees do autopilot, `loop-<id>.md`, transcrições e dados de cliente |
 

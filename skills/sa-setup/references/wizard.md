@@ -179,7 +179,7 @@ Duas mensagens: a proposta (Status `⏸️ ainda não rodado`) e, depois do `ok`
 | 1 | Branch base | `<branch>` | ✅ | 🔍 <sinal: origin/HEAD · destino dos merges · única remota> |
 | 2 | Push na branch base | o estado e os documentos de planejamento vão direto nela | <✅ aceita | ⚠️ protegida — diga outra branch base> | 🔍 |
 | 3 | Prefixo das branches | `<prefixo>` | ✅ | 🔍 <branches remotas> |
-| 4 | Padrão de commit | `<padrão>` (o id do WI só com "Id no commit: sim" no `acordos.md`) | ✅ | 🔍 <git log> |
+| 4 | Padrão de commit | `<padrão>` (o id do WI só com `id_no_commit: true` no `acordos.json`) | ✅ | 🔍 <git log> |
 | 5 | MR | <MCP `gitlabpr` | entregar título e descrição> | <✅ respondeu | ⏸️ sem rede — testo de novo na etapa 9 | ❌ sem credencial> | 🔍 |
 | 6 | Banco (só consulta) | <`<servidor>/<tool>` | não há> | <✅ | ⏸️ …> | 🔍 <arquivo de MCP onde está> |
 
@@ -343,7 +343,7 @@ primeiro. Depois de um ajuste, mostre o cartão de novo antes de pedir o "ok" do
 | 5 | Autopilot | 🟢 push da própria branch, merge da branch base nela, abrir ou atualizar o MR · 🔴 merge do MR, ELM e rede | 📐 fixo |
 | 6 | Executar · URL de teste | <`<comando>` · `<url>` | `<job e parâmetros>` · ➖> | <🔍 | 🙋> |
 | 7 | Backpressure | trecho tocado a cada alteração · suíte completa antes do MR · baseline do CI | 📐 fixo |
-| 8 | Disjuntor do autopilot | no `acordos.md` (`sa-planejamento.inicial`) | 📐 |
+| 8 | Disjuntor do autopilot | no `acordos.json` (`sa-planejamento.inicial`) | 📐 |
 
 (se o projeto é `backend` ou `frontend` e a URL não está no repositório)
 > ❓ **Qual é a URL do ambiente de teste?** (nunca a de produção)

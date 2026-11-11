@@ -31,7 +31,7 @@
 
 - Caminho: `.sabia/planejamento/sprints/<AAAA>/sprint-<nn>.md`; `<AAAA>` = ano do início, `<nn>` com 2 dígitos
   (ano novo → `01`). Chave: `<AAAA>/Sprint <nn>`. A sprint aberta é a de maior chave.
-- Datas: início = dia seguinte ao fim da anterior (a primeira: a data que o time informa); fim = início + Timebox − 1.
+- Datas: início = dia seguinte ao fim da anterior (a primeira: a data que o time informa); fim = início + `timebox_semanas` do `acordos.json` − 1.
 - Itens: uma linha por item e trabalho. O mesmo item pode ter uma linha de especificação e outra de desenvolvimento.
   - Trabalho ∈ `especificação` · `desenvolvimento` · `atendimento`.
   - Responsável = `usuario` do `equipe.json` ou `—`.

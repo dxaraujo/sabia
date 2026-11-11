@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dxaraujo.github.io/json-schemas/sabia/acordos.schema.json",
+  "title": "Acordos do time do Sabiá",
+  "description": ".sabia/planejamento/acordos.json: as políticas do time que os fluxos e o `sabia status` leem. Chaves em snake_case; o que é opcional pode faltar.",
+  "type": "object",
+  "required": ["timebox_semanas", "wip", "reserva_capacidade_pct", "tamanhos", "dod", "classes_de_servico", "disjuntor", "id_no_commit", "ct_no_teste"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {"type": "string"},
+    "timebox_semanas": {"type": "integer", "minimum": 1, "description": "Duração da sprint, em semanas."},
+    "wip": {
+      "type": "object",
+      "description": "Limite de itens (fatia e bug) por status. `em-revisao` é derivado do MR aberto e nunca se grava no backlog.",
+      "additionalProperties": false,
+      "properties": {
+        "aceita": {"$ref": "#/$defs/limite"},
+        "elegivel": {"$ref": "#/$defs/limite"},
+        "em-andamento": {"$ref": "#/$defs/limite"},
+        "em-revisao": {"$ref": "#/$defs/limite"}
+      }
+    },
+    "sle": {
+      "type": "object",
+      "description": "Opcional: `percentual`% dos itens concluídos em até `dias` dias.",
+      "required": ["percentual", "dias"],
+      "additionalProperties": false,
+      "properties": {"percentual": {"type": "integer", "minimum": 1, "maximum": 100}, "dias": {"type": "integer", "minimum": 1}}
+    },
+    "alertas": {
+      "type": "object",
+      "description": "Limites de aviso do painel e do Kanban; o que falta vale o padrão.",
+      "additionalProperties": false,
+      "properties": {
+        "mr_parado_dias": {"type": "integer", "minimum": 1, "description": "MR sem atualização há este número de dias ou mais (padrão 1)."},
+        "impedimento_dias": {"type": "integer", "minimum": 1, "description": "Item impedido há mais dias que este vira aviso crítico (padrão 7)."}
+      }
+    },
+    "reserva_capacidade_pct": {"type": "integer", "minimum": 0, "maximum": 100, "description": "% da capacidade da sprint, em itens, reservada ao atendimento."},
+    "tamanhos": {
+      "type": "object",
+      "description": "O que vale cada tamanho; maior que G é épico.",
+      "required": ["P", "M", "G"],
+      "additionalProperties": false,
+      "properties": {"P": {"type": "string", "minLength": 1}, "M": {"type": "string", "minLength": 1}, "G": {"type": "string", "minLength": 1}}
+    },
+    "dod": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "description": "Definição de pronto, um item por linha do checklist."},
+    "classes_de_servico": {
+      "type": "object",
+      "required": ["urgente", "urgente_passa_wip"],
+      "additionalProperties": false,
+      "properties": {
+        "urgente": {"type": "string", "minLength": 1, "description": "O que torna um item urgente (vai ao topo e é puxado sem aprovação)."},
+        "urgente_passa_wip": {"type": "boolean", "description": "true = o urgente pode passar o WIP em 1 item."}
+      }
+    },
+    "disjuntor": {
+      "type": "object",
+      "description": "Teto do autopilot por item; 2 reprovações seguidas disparam sempre.",
+      "required": ["tentativas", "horas", "creditos"],
+      "additionalProperties": false,
+      "properties": {"tentativas": {"type": "integer", "minimum": 1}, "horas": {"type": "number", "exclusiveMinimum": 0}, "creditos": {"type": "number", "exclusiveMinimum": 0}}
+    },
+    "id_no_commit": {"type": "boolean", "description": "true = o id da tarefa do EWM entra na mensagem do commit."},
+    "ct_no_teste": {"type": "boolean", "description": "true = o teste automatizado do cenário traz a marca `<FT-nnn> CT-nn`."}
+  },
+  "$defs": {
+    "limite": {"type": "integer", "minimum": 1}
+  }
+}

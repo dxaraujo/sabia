@@ -8,7 +8,7 @@ Os dados do ciclo.
 ## Faça
 
 Conduza e registre para a `## Retro` do `sprint-<nn>.md`: **bom** · **melhorar** · **ações**, cada ação com dono
-(`usuario` do `equipe.json`). A ação que muda uma política vai ao `acordos.md` (passo `reserva-capacidade` para a reserva de capacidade; as outras
+(`usuario` do `equipe.json`). A ação que muda uma política vai ao `acordos.json` (passo `reserva-capacidade` para a reserva de capacidade; as outras
 chaves, com o "ok" de quem tem `produto`, no mesmo commit).
 
 ## Saída

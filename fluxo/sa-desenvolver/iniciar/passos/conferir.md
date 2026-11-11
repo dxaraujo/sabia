@@ -4,17 +4,17 @@
 ## Entrada
 
 O item da entrada comum (fatia ou bug, sem branch `<id>` publicada ou com a branch que voltou na virada), a linha dele no `backlog.md` da branch base, o
-`sprint-<nn>.md` aberto (o de maior chave), o `acordos.md` e a ficha `.sabia/planejamento/fatias/FT-nnn-<slug>.md`.
+`sprint-<nn>.md` aberto (o de maior chave), o `acordos.json` e a ficha `.sabia/planejamento/fatias/FT-nnn-<slug>.md`.
 
 ## Faça
 
 1. **Sprint ou urgente.** O item tem linha no `sprint-<nn>.md` aberto com Trabalho `desenvolvimento` → segue. Fora
-   da sprint com prioridade `crítica` → é urgente, pela Classe de serviço do `acordos.md`, sem aprovação do P.O.; a
+   da sprint com prioridade `crítica` → é urgente, pela `classes_de_servico` do `acordos.json`, sem aprovação do P.O.; a
    linha da sprint nasce no passo `atribuicao`. Fora da sprint sem `crítica` → "não está na sprint; o reabastecimento é do
    P.O. (`sa-planejamento.sprint`)" e pare.
 2. **DoR.** Status `elegivel` → segue. Status `aceita` (ainda não refinado) → mostre o que falta no checklist DoR da
    ficha e ofereça a `sa-refinar.detalhar`. Só siga com o "sim" de quem puxa.
-3. **WIP.** Conte o WIP por coluna do `acordos.md` com os valores de status (`em-andamento`; `em-revisao` é derivado
+3. **WIP.** Conte o WIP pela chave `wip` do `acordos.json` com os valores de status (`em-andamento`; `em-revisao` é derivado
    do MR aberto) e os MRs parados. Acima do limite → mostre e recomende destravar antes (revisar um MR). Não trava; o item urgente pode passar o WIP em 1.
 4. **Trava de artefato.** Só com ELM. Um `<sigla>-<id>` com `altera` ou `exclui` nos artefatos afetados da ficha está no `elm/` de
    outra fatia que não está `cancelada` nem com `Publicação: publicada` (a que gravou o `elm/` primeiro tem a

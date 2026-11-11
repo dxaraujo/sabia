@@ -28,7 +28,7 @@ da pasta da spec (Fase e Retomar) e pelo primeiro item não marcado do `tasks.md
   passo `autopilot` da `sa-desenvolver.iniciar`, as perguntas seguem com a pessoa): sem perguntas; comandos como
   `cd .sabia/local/wt/<id> && <comando>` e arquivos pelo caminho da worktree. Liberados só o push da própria branch,
   o merge da branch base nela e abrir ou atualizar o MR dela; merge do MR, ELM e rede seguem bloqueados. Não grave na branch base:
-  anote em Em aberto do `status.md` o que gravaria. O disjuntor (teto do `acordos.md` ou 2 reprovações seguidas)
+  anote em Em aberto do `status.md` o que gravaria. O disjuntor (teto do `acordos.json` ou 2 reprovações seguidas)
   grava em `.sabia/local/loop-<id>.md` e devolve à pessoa.
 - Termine cada fluxo dizendo o próximo e ofereça seguir na mesma sessão quando é a mesma tarefa.
 {{SKILLS_EXTRAS}}

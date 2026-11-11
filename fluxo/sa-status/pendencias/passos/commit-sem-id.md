@@ -1,9 +1,9 @@
 ---
-{"resumo": "Com 'Id no commit: sim': commit da branch sem o id da tarefa da sprint."}
+{"resumo": "Com id_no_commit: true: commit da branch sem o id da tarefa da sprint."}
 ---
 ## Entrada
 
-O `acordos.md`. Só com `Id no commit: sim`.
+O `acordos.json`. Só com `id_no_commit: true`.
 
 ## Faça
 

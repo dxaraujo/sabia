@@ -8,7 +8,7 @@ Pedido direto ("planejar a sprint", "reabastecer a sprint", "virada de sprint") 
 
 ## Faça
 
-1. Sem `equipe.json` ou `acordos.md` em `.sabia/planejamento/` → ofereça a `sa-planejamento.inicial`.
+1. Sem `equipe.json` ou `acordos.json` em `.sabia/planejamento/` → ofereça a `sa-planejamento.inicial`.
 2. A sprint aberta é o `.sabia/planejamento/sprints/<AAAA>/sprint-<nn>.md` de maior chave. Nenhum, ou o de maior
    chave já passou da data de fim → **início do ciclo**. Dentro das datas → **reabastecimento**: pula a virada, só
    acrescenta linhas e não muda a meta.
@@ -17,9 +17,9 @@ Pedido direto ("planejar a sprint", "reabastecer a sprint", "virada de sprint") 
 
 ## Saída
 
-Início do ciclo → passo `virada`. Reabastecimento → passo `capacidade`. Sem `equipe.json` ou `acordos.md` → passa a
+Início do ciclo → passo `virada`. Reabastecimento → passo `capacidade`. Sem `equipe.json` ou `acordos.json` → passa a
 `sa-planejamento.inicial`.
 
 ## Pare se
 
-Sem o sim à `sa-planejamento.inicial`, faltando o `equipe.json` ou o `acordos.md` → pare.
+Sem o sim à `sa-planejamento.inicial`, faltando o `equipe.json` ou o `acordos.json` → pare.

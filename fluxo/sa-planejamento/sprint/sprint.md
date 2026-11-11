@@ -3,7 +3,7 @@
  "quando": ["seleção do ciclo, no início (com a virada) ou no reabastecimento: capacidade, reserva de capacidade, especificação, previsão, responsáveis, meta e o sprint-<nn>.md", "planejar a sprint", "reabastecer a sprint", "virada de sprint"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa", "elm-pela-sa-elm"],
  "passos": [
-   {"id": "inicio", "saidas": {"sem equipe.json ou acordos.md": "→ sa-planejamento.inicial", "reabastecimento": "capacidade"}},
+   {"id": "inicio", "saidas": {"sem equipe.json ou acordos.json": "→ sa-planejamento.inicial", "reabastecimento": "capacidade"}},
    {"id": "virada", "chama": ["sa-elm.finalizar", "sa-elm.iteracao"]},
    {"id": "capacidade"},
    {"id": "especificacao"},

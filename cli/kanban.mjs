@@ -300,7 +300,7 @@ function cliente() {
       + (c.avisos.length ? '<ul class="avisos">' + c.avisos.map((a) => "<li>" + ponto(a.nivel) + "<span>" + esc(a.mensagem) + "</span></li>").join("") + "</ul>" : "")
       + "</div></article>";
   }
-  const chipWip = (w, rotulo) => '<span class="wip' + (w.atual > w.limite ? " estourado" : "") + '" title="WIP do acordos.md: até ' + w.limite + " (conta fatias e bugs do backlog inteiro)" + '">'
+  const chipWip = (w, rotulo) => '<span class="wip' + (w.atual > w.limite ? " estourado" : "") + '" title="WIP do acordos.json: até ' + w.limite + " (conta fatias e bugs do backlog inteiro)" + '">'
     + (w.atual > w.limite ? ponto("critico") : "") + esc(rotulo) + " " + w.atual + "/" + w.limite + "</span>";
   const cartoes = (cs, situ) => '<div class="cartoes">' + (cs.map((c) => cartao(c, situ)).join("") || '<p class="vazia">Nenhum item</p>') + "</div>";
   function coluna(c, mapa) {

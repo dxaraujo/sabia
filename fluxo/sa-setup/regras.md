@@ -25,7 +25,7 @@ Roda na **sessão sem agente** da ferramenta (Kiro ou opencode, sem agente `sa-*
   `.opencode/agents/`, as `instructions` do `opencode.json`, `.gitlab/merge_request_templates/Default.md` (só se não
   existir), `.gitignore` e `.gitattributes`.
 - **Onde não escreve:** `.sabia/config/elm/` (é da `sa-elm.setup`), `.sabia/local/`, `CODEOWNERS` (só sugere),
-  `equipe.json` e `acordos.md` (são da `sa-planejamento.inicial`). Nunca copie skills para o projeto: elas são
+  `equipe.json` e `acordos.json` (são da `sa-planejamento.inicial`). Nunca copie skills para o projeto: elas são
   compiladas na pasta do usuário pelo `sabia instalar`.
 - Nada que a ferramenta carrega é gravado sem o "ok" do cartão que o mostra. Em atualização, mostre o diff de cada
   arquivo que muda. Recusa de uma confirmação da ferramenta → diga o que ficou de fora e ofereça regravar.

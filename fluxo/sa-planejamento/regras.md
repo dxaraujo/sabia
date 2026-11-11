@@ -7,7 +7,7 @@ Valem em todos os fluxos da skill.
 
 - **Arquivos** em `.sabia/planejamento/`, cada um pelo seu template:
   - `equipe.json`, validado pelo [equipe.schema.json](~/.sabia/framework/skills/sa-planejamento/assets/equipe.schema.json): o template `sa-planejamento/equipe.md`;
-  - `acordos.md`: o template `sa-planejamento/acordos.md`;
+  - `acordos.json`, validado pelo [acordos.schema.json](~/.sabia/framework/skills/sa-planejamento/assets/acordos.schema.json): o template `sa-planejamento/acordos.md`;
   - `roadmap.md` (opcional): o template `sa-planejamento/roadmap.md`;
   - `sprints/<AAAA>/sprint-<nn>.md`: o template `sa-planejamento/sprint.md`;
   - Regras aprendidas, no `.sabia/sabia.md`: o template `sa-planejamento/regras-aprendidas.md`.

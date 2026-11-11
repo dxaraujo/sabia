@@ -12,7 +12,7 @@ A branch com todas as tarefas feitas, ou a volta da codificação manual ("termi
    Cobrir testes e cenários é de quem codificou: aponte o que falta e não trave.
 2. **Suíte completa**, uma vez, em toda autonomia: push da branch e o pipeline dela (sem CI, localmente pelos
    Comandos do `.sabia/sabia.md`), comparado com o baseline do passo `preparar`. Sem o MCP do Jenkins, a pessoa confere o pipeline ou
-   a suíte roda local. Cobertura como o `acordos.md` ou o pipeline pedem.
+   a suíte roda local. Cobertura como o pipeline pede.
 3. Mostre a evidência: o comando e o resultado. "Passou" sem a saída não vale.
 4. Vermelho novo (verde no baseline) → tarefa nova no fim do `tasks.md` e volta ao passo `tarefa`; no manual, vai a
    quem codificou, que avisa de novo.
