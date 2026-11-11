@@ -62,7 +62,7 @@ npx sabia kanban --porta 5000        # padrão: 4780 (ocupada, usa uma livre)</p
  <tr><td>Card</td><td>urgente (prioridade crítica) · idade acima do SLE · impedido há mais dias que o limite dos acordos · devolvido pelo autopilot · Em aberto que bloqueia</td><td>MR parado · retrabalho · impedimento com a data vencida · <code>falta:</code> na triagem · sem responsável na sprint · em andamento fora da sprint</td></tr>
  <tr><td>Quadro</td><td>WIP estourado · <code>acordos.json</code> ou <code>kanban.json</code> inválido</td><td>reserva de capacidade estourada · fim do ciclo</td></tr>
     </tbody></table></div>
-    <p class="phnote">Os limites vêm do <code>acordos.json</code>: <code>wip</code>, <code>sle</code>, <code>alertas.mr_parado_dias</code> e <code>alertas.impedimento_dias</code>. O item impedido mostra o motivo, quem impede, há quantos dias e o status anterior.</p>
+    <p class="phnote">Os limites vêm do <code>acordos.json</code>: <code>wip</code>, <code>sle</code>, <code>alertas.mr_parado_dias</code> e <code>alertas.impedimento_dias</code>. O <code>sle</code> é o prazo esperado: com <code>{"percentual": 85, "dias": 5}</code> (85% dos itens em até 5 dias), o item em andamento há mais de 5 dias ganha a bolinha vermelha e o aviso “idade N dias, acima do SLE de 5 dias”. O item impedido mostra o motivo, quem impede, há quantos dias e o status anterior.</p>
 
     <h3>Lista por sprint</h3>
     <figure class="fig"><img src="img/kanban-lista.png" width="1760" height="980" alt="Lista com a tabela do backlog e a tabela da sprint, uma linha por tarefa, com início, fim e lead time" loading="lazy"><figcaption>A vista Lista: o backlog e, em cada sprint, uma linha por tarefa.</figcaption></figure>
