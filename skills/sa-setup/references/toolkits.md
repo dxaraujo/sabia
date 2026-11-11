@@ -56,12 +56,12 @@ Nunca leia arquivos de credenciais que encontrar no caminho.
 
 ## Manifesto `toolkit.json`
 
-Formato definido por [../assets/toolkit.schema.json](../assets/toolkit.schema.json). Caminhos sempre relativos
+Formato definido por [toolkit.schema.json](~/.sabia/framework/schemas/toolkit.schema.json). Caminhos sempre relativos
 à pasta do toolkit, com `/`.
 
 ```json
 {
-  "$schema": "https://dxaraujo.github.io/json-schemas/sabia/toolkit.schema.json",
+  "$schema": "https://raw.githubusercontent.com/dxaraujo/sabia/main/schemas/toolkit.schema.json",
   "nome": "spring-batch",
   "versao": "1.0.0",
   "autor": { "nome": "<quem fez>", "area": "<área, equipe ou projeto>" },

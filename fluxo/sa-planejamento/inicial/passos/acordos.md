@@ -26,7 +26,7 @@ padrões quando o time não diz outro valor. Mostre a proposta à pessoa como ta
 - **`id_no_commit`**: `true` ou `false` (o id da tarefa do EWM na mensagem do commit).
 - **`ct_no_teste`**: `true` ou `false` (a marca `<FT-nnn> CT-nn` do cenário no teste automatizado).
 
-Valide contra o [acordos.schema.json](~/.sabia/framework/skills/sa-planejamento/assets/acordos.schema.json); o que
+Valide contra o [acordos.schema.json](~/.sabia/framework/schemas/acordos.schema.json); o que
 não passa volta à pessoa antes de gravar.
 
 Mostre o `equipe.json` e o `acordos.json` juntos. Com o "ok", grave os dois pelo passo `commit-na-branch-base`, commit

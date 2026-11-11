@@ -4,7 +4,7 @@ description: "Wizard that installs or updates the Sabiá flow in a project, in t
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.30"
+  version: "2.1.31"
 ---
 
 # sa-setup — Configurar o Sabiá no projeto

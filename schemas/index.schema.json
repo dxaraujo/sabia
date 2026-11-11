@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/dxaraujo/sabia/main/schemas/index.schema.json",
+  "title": "Índice de toolkits do Sabiá",
+  "description": "index.json na raiz de um repositório git: lista os toolkits e aponta para a versão exata de cada um. Só metadados: o toolkit vive no repositório dele.",
+  "type": "object",
+  "required": [
+    "nome",
+    "toolkits"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "nome": {
+      "type": "string"
+    },
+    "descricao": {
+      "type": "string"
+    },
+    "toolkits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "nome",
+          "versao",
+          "fonte"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "nome": {
+            "type": "string",
+            "pattern": "^(?!sa-)[a-z0-9]+(-[a-z0-9]+)*$",
+            "description": "Igual ao nome do toolkit.json."
+          },
+          "versao": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "autor": {
+            "type": "object",
+            "required": [
+              "nome"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "nome": {
+                "type": "string"
+              },
+              "area": {
+                "type": "string"
+              }
+            }
+          },
+          "customiza": {
+            "type": "object",
+            "required": [
+              "toolkit"
+            ],
+            "properties": {
+              "toolkit": {
+                "type": "string"
+              },
+              "versao": {
+                "type": "string"
+              }
+            },
+            "description": "A entrada é uma cópia modificada de outro toolkit."
+          },
+          "fonte": {
+            "oneOf": [
+              {
+                "type": "object",
+                "required": [
+                  "url",
+                  "ref",
+                  "sha"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "description": "URL git do repositório."
+                  },
+                  "ref": {
+                    "type": "string",
+                    "description": "Tag ou branch."
+                  },
+                  "sha": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{40}$",
+                    "description": "Commit exato; o CLI recusa outro."
+                  },
+                  "subpasta": {
+                    "type": "string",
+                    "description": "Pasta do toolkit, se o repositório tiver vários."
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "required": [
+                  "caminho"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "caminho": {
+                    "type": "string",
+                    "description": "Pasta do toolkit dentro do próprio índice."
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

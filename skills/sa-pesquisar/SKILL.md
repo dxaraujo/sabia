@@ -4,7 +4,7 @@ description: "Neutral, read-only research in the sa-pesquisador subagent of the 
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.30"
+  version: "2.1.31"
 ---
 
 # sa-pesquisar — Fatos antes de decidir

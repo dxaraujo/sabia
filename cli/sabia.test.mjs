@@ -1285,9 +1285,8 @@ test("opção desconhecida é recusada; o toolkits -h só mostra as opções do 
   assert.ok(!/-t, --toolkits|--sem-mcp/.test(logs.at(-1)) && /-y, --sim/.test(logs.at(-1)));
 });
 
-test("schemas públicos: as cópias do framework são iguais às do repositório json-schemas", (t) => {
-  const pub = path.resolve(REPO, "../json-schemas/sabia");
-  if (!fs.existsSync(pub)) return t.skip("repositório json-schemas não clonado ao lado");
-  for (const [nome, copia] of [["toolkit", "skills/sa-setup/assets"], ["equipe", "skills/sa-planejamento/assets"], ["acordos", "skills/sa-planejamento/assets"]])
-    assert.equal(fs.readFileSync(path.join(REPO, copia, `${nome}.schema.json`), "utf8"), fs.readFileSync(path.join(pub, `${nome}.schema.json`), "utf8"), nome);
+test("schemas: cada um mora em schemas/, com o $id apontando para o próprio arquivo no repositório", () => {
+  for (const nome of ["toolkit", "index", "equipe", "acordos"])
+    assert.equal(JSON.parse(fs.readFileSync(path.join(REPO, "schemas", `${nome}.schema.json`), "utf8")).$id, `https://raw.githubusercontent.com/dxaraujo/sabia/main/schemas/${nome}.schema.json`, nome);
+  assert.deepEqual(fs.readdirSync(path.join(REPO, "schemas")).sort(), ["acordos.schema.json", "equipe.schema.json", "index.schema.json", "toolkit.schema.json"]);
 });

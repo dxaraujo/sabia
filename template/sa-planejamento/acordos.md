@@ -3,7 +3,7 @@
 ---
 ```json
 {
-  "$schema": "https://dxaraujo.github.io/json-schemas/sabia/acordos.schema.json",
+  "$schema": "https://raw.githubusercontent.com/dxaraujo/sabia/main/schemas/acordos.schema.json",
   "timebox_semanas": 2,
   "wip": {"em-andamento": 3, "em-revisao": 2},
   "sle": {"percentual": 85, "dias": 5},

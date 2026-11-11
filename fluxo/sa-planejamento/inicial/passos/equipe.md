@@ -17,7 +17,7 @@ Proponha `.sabia/planejamento/equipe.json` (exemplo no template `sa-planejamento
 - `horas_semana` no time; `ausencias` = `[{"inicio": "AAAA-MM-DD", "fim": "AAAA-MM-DD"}]` (vazio: `[]`).
 - Quem sai do time fica `ativo: false` e nunca é apagado.
 
-Valide contra o [equipe.schema.json](~/.sabia/framework/skills/sa-planejamento/assets/equipe.schema.json). Avise se
+Valide contra o [equipe.schema.json](~/.sabia/framework/schemas/equipe.schema.json). Avise se
 nenhum membro ativo tem `produto` (ninguém aprovaria a decisão de investimento, PRD e ficha) ou se só um tem `desenvolvedor` (o revisor
 do MR precisa ser outro desenvolvedor). O aviso não trava.
 

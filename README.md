@@ -178,7 +178,7 @@ detecta o tipo do projeto e **propõe, agente por agente**, as skills a ligar.
 
 Fluxo com passos é só do framework: o Sabiá não compila conteúdo de toolkit, e o toolkit não troca template do núcleo.
 Contrato em [`skills/sa-setup/references/toolkits.md`](skills/sa-setup/references/toolkits.md) e schema em
-[`toolkit.schema.json`](skills/sa-setup/assets/toolkit.schema.json).
+[`toolkit.schema.json`](schemas/toolkit.schema.json).
 
 ## IBM ELM
 
@@ -209,7 +209,7 @@ ficha; o `CT.csv` da verificação) e `ATA`. Artefato novo: id provisório `<sig
 - MCPs do próprio power (o `mcp.json` os sobe com `uvx`): [`mcp-gitlabpr`](https://pypi.org/project/mcp-gitlabpr/),
   que lista, lê, abre e mescla os MRs — credencial nas variáveis de ambiente `GITLAB_API_URL` e
   `GITLAB_API_TOKEN`; sem ela, o fluxo entrega título e descrição do MR, e a pessoa o abre; e
-  [`mcp-elm`](https://pypi.org/project/mcp-elm/), que também consulta o bundle local. Os schemas públicos (como o [`pa.schema.json`](https://dxaraujo.github.io/json-schemas/mcp/elm/pa.schema.json)) estão em [`dxaraujo/json-schemas`](https://github.com/dxaraujo/json-schemas).
+  [`mcp-elm`](https://pypi.org/project/mcp-elm/), que também consulta o bundle local. Cada schema fica no repositório dono, sem cópia: os do Sabiá em `schemas/`, e o [`pa.schema.json`](https://raw.githubusercontent.com/dxaraujo/mcp-elm/main/schemas/pa.schema.json) no `mcp-elm`.
 - Opcional: logs do ELK na Sustentação, pelo [`mcp-elk`](https://pypi.org/project/mcp-elk/), que fica fora do Sabiá. Instale o servidor na
   ferramenta com o nome `elk`, grave `.sabia/config/elk/elk-<ambiente>.json` e acrescente `"elk"` em `agentes.<agente>.mcp` de quem atende
   (`sa-desenvolvedor` e `sa-especificador`), na `sa-setup`.

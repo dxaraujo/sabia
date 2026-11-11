@@ -3,7 +3,7 @@
 ---
 ```json
 {
-  "$schema": "https://dxaraujo.github.io/json-schemas/sabia/equipe.schema.json",
+  "$schema": "https://raw.githubusercontent.com/dxaraujo/sabia/main/schemas/equipe.schema.json",
   "membros": [
     {"nome": "Ana Souza", "usuario": "ana.souza", "elm_login": "asouza", "desenvolvedor": true, "especificador": false,
      "produto": false, "horas_semana": 40, "ausencias": [{"inicio": "2026-12-22", "fim": "2026-12-31"}], "ativo": true},
