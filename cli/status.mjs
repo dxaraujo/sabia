@@ -9,11 +9,11 @@ const TERMINAIS = ["concluida", "concluido", "cancelada", "cancelado"];
 const NAO_INICIADO = ["aceita", "elegivel"];
 // As colunas padrão do quadro, na ordem do fluxo: [id, nome]. Os ids são do framework: os status do `backlog.md`
 // (concluido e cancelado, do épico, caem em concluida e cancelada) e, no lugar do `em-andamento`, as fases do
-// `status.md` da branch (FASES; `iniciada` é o em-andamento sem Fase). O projeto troca só a ordem, o nome e
-// `oculta`, no CONFIG_KANBAN.
+// `status.md` da branch (FASES; `iniciada` é o em-andamento sem Fase). `backlog` é da página: o item fora da sprint
+// escolhida nela, que ainda não começou. O projeto troca só a ordem, o nome e `oculta`, no CONFIG_KANBAN.
 export const CONFIG_KANBAN = ".sabia/config/kanban.json";
 const FASES = ["iniciada", "implementando", "revisando", "verificando", "pr-aberto", "retrabalho"];
-const COLUNAS = [["nova", "Nova"], ["a-moldar", "A moldar"], ["em-especificacao", "Em especificação"], ["fatiado", "Fatiado"],
+const COLUNAS = [["backlog", "Backlog"], ["nova", "Nova"], ["a-moldar", "A moldar"], ["em-especificacao", "Em especificação"], ["fatiado", "Fatiado"],
   ["aceita", "Aceita"], ["elegivel", "Elegível"],
   ["iniciada", "Iniciada"], ["implementando", "Em desenvolvimento"], ["revisando", "Revisão do agente"], ["verificando", "Verificação do agente"],
   ["pr-aberto", "Aguardando aprovação do MR"], ["retrabalho", "Retrabalho"],
@@ -34,17 +34,24 @@ function tabela(texto, coluna) {
   return out;
 }
 
-function sprintAberta(raiz, hoje) {
+/** As sprints do projeto, da mais nova para a mais antiga; a primeira é a aberta (a de maior chave). */
+function sprintsDe(raiz, hoje) {
   const dir = path.join(raiz, ".sabia/planejamento/sprints");
-  if (!fs.existsSync(dir)) return null;
+  if (!fs.existsSync(dir)) return [];
   const chave = (f) => f.split(path.sep).slice(-2).join("/");
-  const arqs = fs.readdirSync(dir, { recursive: true }).map(String).filter((f) => /(^|\/)sprint-\d+\.md$/.test(f)).sort((a, b) => chave(a).localeCompare(chave(b), "en", { numeric: true }));
-  if (!arqs.length) return null;
-  const texto = fs.readFileSync(path.join(dir, arqs.at(-1)), "utf8");
-  const c = texto.match(/^# (\d{4}\/Sprint \d+) · (\d{4}-\d{2}-\d{2}) → (\d{4}-\d{2}-\d{2})/m);
-  if (!c) return null;
-  const reserva = texto.match(/^\*\*Reserva de capacidade:\*\* (\d+)/m);
-  return { chave: c[1], inicio: c[2], fim: c[3], meta: texto.match(/^\*\*Meta:\*\* (.*)$/m)?.[1] ?? null, reserva: reserva ? +reserva[1] : null, aberta: hoje <= c[3], itens: tabela(texto, "Item") };
+  return fs.readdirSync(dir, { recursive: true }).map(String).filter((f) => /(^|\/)sprint-\d+\.md$/.test(f)).sort((a, b) => chave(b).localeCompare(chave(a), "en", { numeric: true })).map((f) => {
+    const texto = fs.readFileSync(path.join(dir, f), "utf8");
+    const c = texto.match(/^# (\d{4}\/Sprint \d+) · (\d{4}-\d{2}-\d{2}) → (\d{4}-\d{2}-\d{2})/m);
+    const reserva = texto.match(/^\*\*Reserva de capacidade:\*\* (\d+)/m);
+    return c && { chave: c[1], inicio: c[2], fim: c[3], meta: texto.match(/^\*\*Meta:\*\* (.*)$/m)?.[1] ?? null, reserva: reserva ? +reserva[1] : null, aberta: hoje <= c[3], itens: tabela(texto, "Item") };
+  }).filter(Boolean);
+}
+
+/** Os nomes das pessoas pelo `usuario` do equipe.json; vazio sem o arquivo. */
+function pessoasDe(raiz) {
+  try {
+    return Object.fromEntries(JSON.parse(fs.readFileSync(path.join(raiz, ".sabia/planejamento/equipe.json"), "utf8")).membros.filter((m) => m.usuario && m.nome).map((m) => [m.usuario, m.nome]));
+  } catch { return {}; }
 }
 
 function mrsAbertos(raiz, exec) {
@@ -160,7 +167,7 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
   const raiz = path.resolve(projeto), f = path.join(raiz, ".sabia/planejamento/backlog.md");
   if (!fs.existsSync(f)) throw new Error(`${f} não existe: rode na raiz de um projeto com o Sabiá configurado`);
   const backlog = tabela(fs.readFileSync(f, "utf8"), "id"), porId = Object.fromEntries(backlog.map((l) => [l.id, l]));
-  const hoje = agora.toISOString().slice(0, 10), sprint = sprintAberta(raiz, hoje);
+  const hoje = agora.toISOString().slice(0, 10), sprints = sprintsDe(raiz, hoje), sprint = sprints[0] ?? null;
   const dias = (d, ate = hoje) => Math.floor((Date.parse(ate) - Date.parse(d)) / 86400000);
   const plural = (n, um, varios) => `${n} ${n === 1 ? um : varios}`;
   const porStatus = {};
@@ -219,7 +226,6 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
       coluna: colunaDe(l),
       fase: md?.fase ?? null,
       na_sprint: daSprint.length > 0,
-      sprint: daSprint.map((x) => ({ trabalho: x.Trabalho ?? null, responsavel: semValor(x["Responsável"]) ? null : x["Responsável"], tarefas: semValor(x.Tarefas) ? null : x.Tarefas })),
       responsavel: (semValor(l["responsável"]) ? daSprint.map((x) => x["Responsável"]).find((r) => !semValor(r)) : l["responsável"]) ?? null,
       prioridade: l.prioridade || null,
       tamanho: l.tamanho || null,
@@ -267,6 +273,11 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
     em_andamento: backlog.filter((l) => l.status === "em-andamento").map((l) => ({ id: l.id, titulo: l["título"], responsavel: semValor(l["responsável"]) ? null : l["responsável"],
       iniciada_em: l.iniciada_em || null, idade_dias: l.iniciada_em ? dias(l.iniciada_em) : null })),
     mrs_aguardando: mrs,
-    quadro: { config, grupo, colunas, itens: cards, wip, sle: acordos.sle, alertas },
+    quadro: {
+      config, grupo, colunas, itens: cards, wip, sle: acordos.sle, alertas, pessoas: pessoasDe(raiz),
+      // as sprints, da aberta para a primeira, com as linhas de cada uma (a página escolhe qual mostra)
+      sprints: sprints.map((x) => ({ chave: x.chave, inicio: x.inicio, fim: x.fim, meta: x.meta, reserva: x.reserva, aberta: x.aberta,
+        itens: x.itens.map((l) => ({ id: l.Item, trabalho: l.Trabalho ?? null, responsavel: semValor(l["Responsável"]) ? null : l["Responsável"], tarefas: semValor(l.Tarefas) ? null : l.Tarefas })) })),
+    },
   };
 }

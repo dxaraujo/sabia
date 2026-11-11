@@ -634,7 +634,7 @@ test("status: JSON estável com sprint, sem responsável, não iniciados, em and
   // por item do backlog, na coluna dele; a pr-aberto da FT-004 vem do status.md (o GitLab não está disponível)
   assert.deepEqual(r.quadro.config, { arquivo: ".sabia/config/kanban.json", do_projeto: false, erro: null });
   assert.equal(r.quadro.grupo, "Em andamento");
-  assert.deepEqual(r.quadro.colunas.map((c) => c.id), ["nova", "a-moldar", "em-especificacao", "fatiado", "aceita", "elegivel",
+  assert.deepEqual(r.quadro.colunas.map((c) => c.id), ["backlog", "nova", "a-moldar", "em-especificacao", "fatiado", "aceita", "elegivel",
     "iniciada", "implementando", "revisando", "verificando", "pr-aberto", "retrabalho", "adiada", "concluida", "cancelada"]);
   assert.deepEqual(r.quadro.colunas.filter((c) => c.grupo).map((c) => c.nome), ["Iniciada", "Em desenvolvimento", "Revisão do agente", "Verificação do agente", "Aguardando aprovação do MR", "Retrabalho"]);
   assert.equal(r.quadro.itens.length, 4);
@@ -644,7 +644,10 @@ test("status: JSON estável com sprint, sem responsável, não iniciados, em and
   assert.equal(c2.responsavel, "ana");
   assert.equal(c2.fase, null);
   assert.equal(c2.na_sprint, true);
-  assert.deepEqual(c2.sprint, [{ trabalho: "desenvolvimento", responsavel: "ana", tarefas: null }]);
+  // as sprints, da aberta para a primeira, com as linhas de cada uma; os nomes vêm do equipe.json (aqui, sem ele)
+  assert.deepEqual(r.quadro.sprints.map((x) => x.chave), ["2026/Sprint 02", "2026/Sprint 01"]);
+  assert.deepEqual(r.quadro.sprints[0].itens[1], { id: "FT-002", trabalho: "desenvolvimento", responsavel: "ana", tarefas: null });
+  assert.deepEqual(r.quadro.pessoas, {});
   const c4 = r.quadro.itens.find((c) => c.id === "FT-004");
   assert.equal(c4.coluna, "pr-aberto");  // Fase pr-aberto no status.md
   assert.deepEqual(c4.mr, { iid: 99, url: "https://gl.exemplo/time/app/-/merge_requests/99" });
@@ -742,13 +745,16 @@ test("status: quadro lê acordos (WIP/SLE), o status.md da branch, os avisos dos
   assert.deepEqual(q.config, { arquivo: ".sabia/config/kanban.json", do_projeto: true, erro: null });
   assert.equal(q.grupo, "Fazendo");
   assert.deepEqual(q.colunas.map((c) => c.id), ["elegivel", "retrabalho", "implementando", "iniciada", "revisando", "verificando", "pr-aberto", "nova",
-    "a-moldar", "em-especificacao", "fatiado", "aceita", "adiada", "concluida", "cancelada"]);
+    "backlog", "a-moldar", "em-especificacao", "fatiado", "aceita", "adiada", "concluida", "cancelada"]);
   assert.deepEqual(q.colunas.slice(0, 3).map((c) => c.nome), ["Pronta", "Retrabalho", "Codando"]);
   assert.equal(q.colunas.find((c) => c.id === "nova").oculta, true);
   // JSON inválido: o quadro usa o padrão e avisa
   escrever(proj, { ".sabia/config/kanban.json": "{ colunas: " });
   const ruim = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora }).quadro;
-  assert.equal(ruim.colunas[0].id, "nova");
+  assert.equal(ruim.colunas[0].id, "backlog");
+  // os nomes das pessoas pelo usuario do equipe.json
+  escrever(proj, { ".sabia/planejamento/equipe.json": JSON.stringify({ membros: [{ nome: "Ana Souza", usuario: "ana" }] }) });
+  assert.deepEqual(statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora }).quadro.pessoas, { ana: "Ana Souza" });
   assert.equal(ruim.alertas[0].tipo, "config");
   // sem acordos.md: WIP vazio e sem SLE
   fs.rmSync(path.join(proj, ".sabia/planejamento/acordos.md"));
@@ -812,13 +818,13 @@ test("kanban: a página leva o tema, a versão e o JSON da sabia status; o servi
     assert.match(html, /<title>Quadro · st-k<\/title>/);
     assert.match(html, /data-sobria="sobria-sabia"/);
     assert.match(html, /data-modo/);  // o claro/escuro do tema
-    assert.match(html, new RegExp(`<span class="ver">${s.VERSAO.replaceAll(".", "\\.")}</span>`));  // a versão no topo
-    assert.match(html, new RegExp(`<span>Sabiá ${s.VERSAO.replaceAll(".", "\\.")}</span>`));  // e no rodapé
     assert.match(html, /<code>\.sabia\/config\/kanban\.json<\/code>/);  // onde gravar o JSON copiado
     // a página desenha no navegador só o JSON da `sabia status` embutido nela
     const embutido = JSON.parse(html.match(/<script id="dados" type="application\/json">([\s\S]*?)<\/script>/)[1]);
     assert.equal(embutido.versao, 3);
+    assert.ok(html.includes(`<span class="ver">${embutido.sabia}</span>`) && html.includes(`<span>Sabiá ${embutido.sabia}</span>`));  // a versão no topo e no rodapé
     assert.equal(embutido.quadro.itens.length, 5);
+    assert.deepEqual(embutido.quadro.sprints.map((x) => `${x.chave} ${x.itens.length}`), ["2026/Sprint 02 5"]);  // o combo das sprints
     const de = (id) => embutido.quadro.itens.find((c) => c.id === id);
     assert.equal(de("FT-001").coluna, "implementando");  // a Fase do status.md manda, mesmo com MR aberto
     assert.equal(de("FT-004").coluna, "pr-aberto");  // sem status.md: o MR aberto no GitLab
