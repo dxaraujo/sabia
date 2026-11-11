@@ -17,7 +17,7 @@
 <div class="wrap">
   <div class="top">
     <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá</span></a>
-    <span class="ver">2.1.36 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
+    <span class="ver">2.1.37 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
     <span class="autor">Desenvolvido por <b>Daniel Xavier Araújo</b></span>
     <a class="gh" href="https://github.com/dxaraujo/sabia">GitHub</a>
   </div>
@@ -53,8 +53,18 @@ npx sabia kanban --porta 5000        # padrão: 4780 (ocupada, usa uma livre)</p
     </ul>
 
     <h3>Em andamento, fase a fase</h3>
-    <figure class="fig"><img src="img/kanban-andamento.png" width="1760" height="980" alt="O grupo Em andamento aberto, com as raias Iniciada, Em desenvolvimento, Revisão do agente, Verificação do agente, Aguardando aprovação do MR e Retrabalho" loading="lazy"><figcaption>O grupo aberto: cada raia é uma Fase do <code>status.md</code> da fatia.</figcaption></figure>
-    <p class="phnote">O grupo recolhe e expande pela seta. Aberto, mostra onde cada item está: Iniciada (sem Fase ainda), Em desenvolvimento, Revisão do agente, Verificação do agente, Aguardando aprovação do MR e Retrabalho. No topo dele fica o WIP contra o limite do <code>acordos.json</code>.</p>
+    <figure class="fig"><img src="img/kanban-andamento.png" width="1760" height="980" alt="O grupo Em andamento aberto, com as raias Em desenvolvimento, Revisão do agente, Verificação do agente, Aguardando aprovação do MR, Retrabalho e Aguardando encerramento, onde dois cards dizem o que falta" loading="lazy"><figcaption>O grupo aberto: cada raia é uma Fase do <code>status.md</code> da fatia.</figcaption></figure>
+    <p class="phnote">O grupo recolhe e expande pela seta. Aberto, mostra onde cada item está: Iniciada (sem Fase ainda), Em desenvolvimento, Revisão do agente, Verificação do agente, Aguardando aprovação do MR, Retrabalho e Aguardando encerramento. No topo dele fica o WIP contra o limite do <code>acordos.json</code>.</p>
+
+    <h3>Aguardando encerramento</h3>
+    <p class="phnote">Aprovar e mesclar o MR não encerra o item: ainda falta a <code>sa-desenvolver.encerrar</code>, que conclui, arquiva a spec, oferece a publicação no ELM e remove a worktree. O quadro não dá o item por concluído sozinho. Enquanto falta algo, o card fica nesta raia e diz o quê:</p>
+    <div class="scroll"><table><thead><tr><th>Situação</th><th>O card diz</th></tr></thead><tbody>
+ <tr><td>MR mesclado, item ainda <code>em-andamento</code></td><td>falta concluir o item (<code>sa-desenvolver.encerrar</code>)</td></tr>
+ <tr><td>concluído, spec do OpenSpec fora de <code>archive/</code></td><td>falta arquivar a spec (<code>sa-desenvolver.encerrar</code>)</td></tr>
+ <tr><td>concluído, <code>Publicação: pendente</code> no <code>status.md</code></td><td>falta publicar no ELM (<code>sa-elm.publicar</code>)</td></tr>
+ <tr><td>concluído, worktree do autopilot no lugar</td><td>falta remover a worktree (<code>sa-desenvolver.encerrar</code>)</td></tr>
+    </tbody></table></div>
+    <p class="phnote">O MR mesclado é visto pelo GitLab, quando configurado, ou pelo git: a Fase <code>pr-aberto</code> com a branch do item já contida na branch base, ou já removida. O item nesta raia não conta no WIP. Só vai para Concluída quando não falta mais nada.</p>
 
     <h3>Avisos</h3>
     <p class="phnote">A bolinha no card diz que há algo para olhar, e a lista embaixo diz o quê. Os avisos do quadro inteiro aparecem ao lado da meta da sprint.</p>
@@ -69,19 +79,16 @@ npx sabia kanban --porta 5000        # padrão: 4780 (ocupada, usa uma livre)</p
     <p class="phnote">O quadro também grava. Pelo menu dos três pontos do card, ou arrastando o card para a raia de destino, a página pede a confirmação e o servidor local altera os arquivos do projeto, faz o commit direto na branch base e o push.</p>
     <div class="scroll"><table><thead><tr><th>Ação</th><th>O que grava</th><th>Quem pode</th></tr></thead><tbody>
  <tr><td>Backlog → a raia do status do item</td><td>uma tarefa nova na sprint aberta, com o responsável; o status do item não muda. Entram: fatia ou bug elegível (desenvolvimento) ou aceita (especificação), épico a moldar ou em especificação (especificação) e sustentação nova ou em andamento (atendimento)</td><td>quem tem <code>produto</code></td></tr>
- <tr><td>Sprint → Backlog</td><td>as tarefas abertas saem da sprint; o item em andamento volta a elegível; o início e a tarefa do EWM ficam na <code>obs</code></td><td rowspan="5"><code>produto</code>, ou o responsável da tarefa em curso</td></tr>
+ <tr><td>Sprint → Backlog</td><td>as tarefas abertas saem da sprint; o item em andamento volta a elegível; o início e a tarefa do EWM ficam na <code>obs</code></td><td rowspan="4"><code>produto</code>, ou o responsável da tarefa em curso</td></tr>
  <tr><td>→ Impedido</td><td>status <code>impedida</code> e o <code>motivo</code>: o que impede, quem, até quando e o status anterior</td></tr>
  <tr><td>Impedido → outra raia</td><td>o item volta ao status anterior; o período fica na <code>obs</code></td></tr>
  <tr><td>→ Cancelada</td><td>status <code>cancelada</code> e o <code>motivo</code>; a pasta da spec sai da branch base</td></tr>
- <tr><td>→ Concluída</td><td><code>concluida</code> e a data no backlog e na tarefa de desenvolvimento; as lições escolhidas viram Regras aprendidas</td></tr>
  <tr><td>Ordem dentro do Backlog</td><td>a ordem das linhas do <code>backlog.md</code> (a prioridade)</td><td>quem tem <code>produto</code></td></tr>
     </tbody></table></div>
-    <figure class="fig"><img src="img/kanban-concluir.png" width="1760" height="900" alt="Modal Concluir com as lições aprendidas do item, cada uma com caixa de seleção e texto editável, e o botão Gravar e enviar" loading="lazy"><figcaption>Ao concluir um item já mesclado, você escolhe e edita as lições que viram regra do projeto.</figcaption></figure>
     <ul>
       <li><b>Quem está no quadro:</b> o usuário do GitLab ou do git da máquina, se ele está no <code>equipe.json</code>. Fora da equipe, o quadro só mostra.</li>
       <li><b>Quando grava:</b> só com o projeto na branch base e sem alteração pendente. Fora disso, o topo diz “Só leitura” e o motivo.</li>
-      <li><b>MR mesclado:</b> com o GitLab configurado, o card do item cujo MR foi mesclado avisa “falta registrar a conclusão”.</li>
-      <li><b>O que continua nos fluxos:</b> iniciar um item, mudar a Fase do desenvolvimento, aprovar a ficha, o archive da spec e tudo do ELM.</li>
+            <li><b>O que continua nos fluxos:</b> iniciar um item, mudar a Fase do desenvolvimento, aprovar a ficha, concluir (<code>sa-desenvolver.encerrar</code>), o archive da spec e tudo do ELM.</li>
     </ul>
 
     <h3>Lista por sprint</h3>
@@ -124,7 +131,7 @@ npx sabia kanban --porta 5000        # padrão: 4780 (ocupada, usa uma livre)</p
  <tr><td>ordem, nome e colunas ocultas</td><td><code>.sabia/config/kanban.json</code></td></tr>
     </tbody></table></div>
     <div class="proxima"><a href="toolkits.html">Próxima: Toolkits</a></div></section>
-  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.36, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
+  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.37, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
 </div>
 </body>
 </html>
