@@ -4,7 +4,7 @@ description: "Sabiá intake and triage, open to anyone, on the base branch. cada
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.26"
+  version: "2.1.27"
 ---
 
 # sa-triar — Cadastro e triagem
