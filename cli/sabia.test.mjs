@@ -636,7 +636,7 @@ test("status: JSON estável com sprint, sem responsável, não iniciados, em and
   assert.deepEqual(r.quadro.config, { arquivo: ".sabia/config/kanban.json", do_projeto: false, erro: null });
   assert.equal(r.quadro.grupo, "Em andamento");
   assert.deepEqual(r.quadro.colunas.map((c) => c.id), ["backlog", "nova", "a-moldar", "em-especificacao", "fatiado", "aceita", "elegivel",
-    "iniciada", "implementando", "revisando", "verificando", "pr-aberto", "retrabalho", "impedida", "concluida", "cancelada"]);
+    "iniciada", "implementando", "revisando", "verificando", "pr-aberto", "retrabalho", "concluida", "impedida", "cancelada"]);
   assert.deepEqual(r.quadro.colunas.filter((c) => c.grupo).map((c) => c.nome), ["Iniciada", "Em desenvolvimento", "Revisão do agente", "Verificação do agente", "Aguardando aprovação do MR", "Retrabalho"]);
   assert.equal(r.quadro.itens.length, 4);
   const c2 = r.quadro.itens.find((c) => c.id === "FT-002");
@@ -767,7 +767,7 @@ test("status: quadro lê acordos (WIP/SLE), o status.md da branch, os avisos dos
   assert.deepEqual(q.config, { arquivo: ".sabia/config/kanban.json", do_projeto: true, erro: null });
   assert.equal(q.grupo, "Fazendo");
   assert.deepEqual(q.colunas.map((c) => c.id), ["elegivel", "retrabalho", "implementando", "iniciada", "revisando", "verificando", "pr-aberto", "nova",
-    "backlog", "a-moldar", "em-especificacao", "fatiado", "aceita", "impedida", "concluida", "cancelada"]);
+    "backlog", "a-moldar", "em-especificacao", "fatiado", "aceita", "concluida", "impedida", "cancelada"]);
   assert.deepEqual(q.colunas.slice(0, 3).map((c) => c.nome), ["Pronta", "Retrabalho", "Codando"]);
   assert.equal(q.colunas.find((c) => c.id === "nova").oculta, true);
   // JSON inválido: o quadro usa o padrão e avisa

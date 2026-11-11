@@ -18,7 +18,7 @@ const COLUNAS = [["backlog", "Backlog"], ["nova", "Nova"], ["a-moldar", "A molda
   ["aceita", "Aceita"], ["elegivel", "Elegível"],
   ["iniciada", "Iniciada"], ["implementando", "Em desenvolvimento"], ["revisando", "Revisão do agente"], ["verificando", "Verificação do agente"],
   ["pr-aberto", "Aguardando aprovação do MR"], ["retrabalho", "Retrabalho"],
-  ["impedida", "Impedido"], ["concluida", "Concluída"], ["cancelada", "Cancelada"]];
+  ["concluida", "Concluída"], ["impedida", "Impedido"], ["cancelada", "Cancelada"]];
 // As colunas que cada status do WIP do `acordos.json` conta. `em-revisao` é derivado (MR aberto) e nunca se grava.
 const WIP = { "em-andamento": ["Em andamento", ["iniciada", "implementando", "revisando", "verificando"]], "em-revisao": ["MR em revisão", ["pr-aberto", "retrabalho"]] };
 export const celulas = (l) => l.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((c) => c.trim());

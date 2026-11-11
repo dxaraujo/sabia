@@ -4,7 +4,7 @@ description: "Dashboard of the Sabiá flow and the lookup for any item. Daily in
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.32"
+  version: "2.1.33"
 ---
 
 # sa-status — Onde está o fluxo

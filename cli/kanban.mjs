@@ -484,7 +484,7 @@ function cliente() {
       const padrao = (c.tipo === "fatia" || c.tipo === "bug") && c.status !== "elegivel" ? "especificação" : { fatia: "desenvolvimento", bug: "desenvolvimento", "sustentação": "atendimento", "épico": "especificação" }[c.tipo] ?? "desenvolvimento";
       campos = "<label>Trabalho<select name=\"trabalho\">" + ["especificação", "desenvolvimento", "atendimento"].map((t) => "<option" + (t === padrao ? " selected" : "") + ">" + t + "</option>").join("") + "</select></label>"
         + '<label>Responsável<select name="responsavel"><option value="">sem responsável</option>' + Object.entries(Q.pessoas).map(([u, n]) => '<option value="' + esc(u) + '">' + esc(n) + "</option>").join("") + "</select></label>"
-        + '<p class="nota">Entra uma tarefa na ' + esc(sp.chave) + ", sem data de início.</p>";
+        + '<p class="nota">Entra uma tarefa na ' + esc(sp.chave) + ", sem data de início. O status não muda: o item continua <b>" + esc(col(c.coluna)?.nome ?? c.coluna) + "</b> e aparece nessa raia.</p>";
     } else if (tipo === "para-backlog") campos = '<p class="nota">As tarefas abertas do item saem da ' + esc(sp.chave) + (c.status === "em-andamento" ? ", e ele volta a " + esc(col(c.tipo === "sustentação" ? "nova" : "elegivel")?.nome ?? "elegível") : "")
       + ". O início e a tarefa do EWM ficam anotados na obs do item.</p>";
     else if (tipo === "concluir") campos = (c.mesclado ? '<p class="nota">MR !' + c.mesclado.iid + " mesclado" + (c.mesclado.em ? " em " + dataBr(c.mesclado.em) : "") + '.</p><input type="hidden" name="mesclado_em" value="' + esc(c.mesclado.em ?? "") + '">'
@@ -589,7 +589,8 @@ function cliente() {
     if (para === "impedida") return ok("impedir");
     if (para === "cancelada") return ok("cancelar");
     if (para === "concluida") return ok("concluir");
-    return de === "backlog" ? ok("para-sprint") : cardArr.status === "impedida" ? ok("liberar") : null;
+    // do Backlog para a sprint o item entra com o status que já tem: só a raia desse status o recebe
+    return de === "backlog" ? (para === cardArr.coluna ? ok("para-sprint") : null) : cardArr.status === "impedida" ? ok("liberar") : null;
   };
   quadro.addEventListener("dragstart", (e) => {
     const ca = e.target.closest?.('.cartao[draggable="true"]');
@@ -641,7 +642,10 @@ function cliente() {
     catch { prompt("Copie o JSON:", json); }
   });
   $("#descartar").addEventListener("click", () => { cfg = structuredClone(servido); mudou(); });
-  $("#gravacao").textContent = !G ? "" : grava ? "Gravando como " + (G.usuario.nome ?? G.usuario.usuario) : "Só leitura: " + G.motivo;
+  // quem está no quadro e o que pode: sem `produto`, só os itens em que a pessoa é a responsável da tarefa em curso
+  const meus = Q.itens.filter((c) => c.pode && !TERMINAL.has(c.status)).length;
+  $("#gravacao").textContent = !G ? "" : !grava ? "Só leitura: " + G.motivo
+    : "Gravando como " + (G.usuario.nome ?? G.usuario.usuario) + (produto ? " (produto)" : meus ? " · só os seus itens (" + meus + ")" : " · sem produto e sem item seu em aberto: nada para mudar");
   const g = new Date(D.gerado_em), p2 = (x) => String(x).padStart(2, "0");
   $("#gerado").textContent = "Gerado em " + p2(g.getDate()) + "/" + p2(g.getMonth() + 1) + "/" + g.getFullYear() + " " + p2(g.getHours()) + ":" + p2(g.getMinutes()) + ":" + p2(g.getSeconds());
   marcar(); desenhar();

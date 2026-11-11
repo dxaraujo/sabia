@@ -4,7 +4,7 @@ description: "Sabiá backlog refinement, on the base branch. moldar shapes an ep
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.32"
+  version: "2.1.33"
 ---
 
 # sa-refinar — Refinamento do backlog

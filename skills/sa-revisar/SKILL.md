@@ -4,7 +4,7 @@ description: "Plan and code review in the Sabiá flow. The revisar flow is the i
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.32"
+  version: "2.1.33"
 ---
 
 # sa-revisar — Revisão de plano e de código
