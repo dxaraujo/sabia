@@ -17,7 +17,7 @@
 <div class="wrap">
   <div class="top">
     <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá</span></a>
-    <span class="ver">2.1.28 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
+    <span class="ver">2.1.29 · Kiro e opencode</span><span class="dev">Em desenvolvimento</span>
     <span class="autor">Desenvolvido por <b>Daniel Xavier Araújo</b></span>
     <a class="gh" href="https://github.com/dxaraujo/sabia">GitHub</a>
   </div>
@@ -41,7 +41,7 @@
     <pre class="cod">npx sabia kanban                     # na raiz do projeto; mostra o link e fica no ar
 npx sabia kanban --projeto ../outro  # outro projeto
 npx sabia kanban --porta 5000        # padrão: 4780 (ocupada, usa uma livre)</pre>
-    <p class="phnote">O comando sobe um servidor local e escreve o link no terminal; é só clicar. Cada vez que a página carrega, ele lê o projeto de novo. Com <kbd>Ctrl</kbd>+<kbd>C</kbd> o servidor fecha e a página avisa que o quadro foi encerrado. Nada sai da máquina, e a página só lê.</p>
+    <p class="phnote">O comando sobe um servidor local e escreve o link no terminal; é só clicar. Cada vez que a página carrega, ele lê o projeto de novo. Com <kbd>Ctrl</kbd>+<kbd>C</kbd> o servidor fecha e a página avisa que o quadro foi encerrado. Nada sai da máquina além do commit que você confirma.</p>
 
     <h3>O quadro</h3>
     <figure class="fig"><img src="img/kanban-quadro.png" width="1760" height="980" alt="Quadro Kanban com as raias Backlog, Nova, Pronta para puxar, Em andamento, Impedido e Concluída, e cards com bolinhas de aviso" loading="lazy"><figcaption>A sprint atual, com o Em andamento recolhido numa raia só.</figcaption></figure>
@@ -63,6 +63,26 @@ npx sabia kanban --porta 5000        # padrão: 4780 (ocupada, usa uma livre)</p
  <tr><td>Quadro</td><td>WIP estourado · <code>acordos.json</code> ou <code>kanban.json</code> inválido</td><td>reserva de capacidade estourada · fim do ciclo</td></tr>
     </tbody></table></div>
     <p class="phnote">Os limites vêm do <code>acordos.json</code>: <code>wip</code>, <code>sle</code>, <code>alertas.mr_parado_dias</code> e <code>alertas.impedimento_dias</code>. O <code>sle</code> é o prazo esperado: com <code>{"percentual": 85, "dias": 5}</code> (85% dos itens em até 5 dias), o item em andamento há mais de 5 dias ganha a bolinha vermelha e o aviso “idade N dias, acima do SLE de 5 dias”. O item impedido mostra o motivo, quem impede, há quantos dias e o status anterior.</p>
+
+    <h3>Mudar a situação pelo quadro</h3>
+    <figure class="fig"><img src="img/kanban-acoes.png" width="1760" height="760" alt="Menu de um card impedido com as ações Devolver ao backlog, Liberar e Cancelar" loading="lazy"><figcaption>O menu do card mostra só o que vale para aquele item e para quem está no quadro.</figcaption></figure>
+    <p class="phnote">O quadro também grava. Pelo menu dos três pontos do card, ou arrastando o card para a raia de destino, a página pede a confirmação e o servidor local altera os arquivos do projeto, faz o commit direto na branch base e o push.</p>
+    <div class="scroll"><table><thead><tr><th>Ação</th><th>O que grava</th><th>Quem pode</th></tr></thead><tbody>
+ <tr><td>Backlog → uma raia da sprint</td><td>uma tarefa nova na sprint aberta (trabalho e responsável)</td><td>quem tem <code>produto</code></td></tr>
+ <tr><td>Sprint → Backlog</td><td>as tarefas abertas saem da sprint; o item em andamento volta a elegível; o início e a tarefa do EWM ficam na <code>obs</code></td><td rowspan="5"><code>produto</code>, ou o responsável da tarefa em curso</td></tr>
+ <tr><td>→ Impedido</td><td>status <code>impedida</code> e o <code>motivo</code>: o que impede, quem, até quando e o status anterior</td></tr>
+ <tr><td>Impedido → outra raia</td><td>o item volta ao status anterior; o período fica na <code>obs</code></td></tr>
+ <tr><td>→ Cancelada</td><td>status <code>cancelada</code> e o <code>motivo</code>; a pasta da spec sai da branch base</td></tr>
+ <tr><td>→ Concluída</td><td><code>concluida</code> e a data no backlog e na tarefa de desenvolvimento; as lições escolhidas viram Regras aprendidas</td></tr>
+ <tr><td>Ordem dentro do Backlog</td><td>a ordem das linhas do <code>backlog.md</code> (a prioridade)</td><td>quem tem <code>produto</code></td></tr>
+    </tbody></table></div>
+    <figure class="fig"><img src="img/kanban-concluir.png" width="1760" height="900" alt="Modal Concluir com as lições aprendidas do item, cada uma com caixa de seleção e texto editável, e o botão Gravar e enviar" loading="lazy"><figcaption>Ao concluir um item já mesclado, você escolhe e edita as lições que viram regra do projeto.</figcaption></figure>
+    <ul>
+      <li><b>Quem está no quadro:</b> o usuário do GitLab ou do git da máquina, se ele está no <code>equipe.json</code>. Fora da equipe, o quadro só mostra.</li>
+      <li><b>Quando grava:</b> só com o projeto na branch base e sem alteração pendente. Fora disso, o topo diz “Só leitura” e o motivo.</li>
+      <li><b>MR mesclado:</b> com o GitLab configurado, o card do item cujo MR foi mesclado avisa “falta registrar a conclusão”.</li>
+      <li><b>O que continua nos fluxos:</b> iniciar um item, mudar a Fase do desenvolvimento, aprovar a ficha, o archive da spec e tudo do ELM.</li>
+    </ul>
 
     <h3>Lista por sprint</h3>
     <figure class="fig"><img src="img/kanban-lista.png" width="1760" height="980" alt="Lista com a tabela do backlog e a tabela da sprint, uma linha por tarefa, com início, fim e lead time" loading="lazy"><figcaption>A vista Lista: o backlog e, em cada sprint, uma linha por tarefa.</figcaption></figure>
@@ -104,7 +124,7 @@ npx sabia kanban --porta 5000        # padrão: 4780 (ocupada, usa uma livre)</p
  <tr><td>ordem, nome e colunas ocultas</td><td><code>.sabia/config/kanban.json</code></td></tr>
     </tbody></table></div>
     <div class="proxima"><a href="toolkits.html">Próxima: Toolkits</a></div></section>
-  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.28, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
+  <footer class="site"><svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 175 185" class="ave" aria-hidden="true"><polygon points="56,57 70,42 90,38 104,46 106,62 84,74 57,70" style="fill:var(--cyan);stroke:var(--cyan)" stroke-width=".6" stroke-linejoin="round"/><polygon points="84,74 106,62 118,74 116,92 92,94" style="fill:var(--lime);stroke:var(--lime)" stroke-width=".6" stroke-linejoin="round"/><polygon points="57,70 84,74 92,94 86,122 70,112 60,92" style="fill:var(--brand);stroke:var(--brand)" stroke-width=".6" stroke-linejoin="round"/><polygon points="92,94 116,92 134,108 112,124 86,122" style="fill:var(--navy);stroke:var(--navy)" stroke-width=".6" stroke-linejoin="round"/><polygon points="86,122 112,124 132,152 118,170 94,146" style="fill:var(--green);stroke:var(--green)" stroke-width=".6" stroke-linejoin="round"/><polygon points="134,108 150,128 150,154 132,152 112,124" style="fill:var(--orange);stroke:var(--orange)" stroke-width=".6" stroke-linejoin="round"/><polygon points="132,152 150,154 180,196 164,198" style="fill:var(--teal);stroke:var(--teal)" stroke-width=".6" stroke-linejoin="round"/><polygon points="36,64 56,57 57,70" fill="#1B1F1C"/><circle cx="82" cy="54" r="4.6" fill="#0E1210"/><circle cx="83.6" cy="52.4" r="1.4" fill="#fff"/></svg><span>Sabiá 2.1.29, para Kiro e opencode, licença MIT. Desenvolvido por Daniel Xavier Araújo. Ids, nomes e exemplos são ilustrativos.</span></footer>
 </div>
 </body>
 </html>
