@@ -83,6 +83,7 @@ cancelada   <motivo> · desde AAAA-MM-DD
 | `veio de <id>[ v<N>]` | nasceu de outro: virar épico, dividir, juntar, mudança do PRD |
 | `virou <id>` (também no `motivo`) | a linha antiga de uma troca de série ou de uma junção |
 | `impedida AAAA-MM-DD a AAAA-MM-DD: <motivo>` | o item foi liberado; o período impedido fica no histórico |
+| `saiu da <AAAA>/Sprint <nn> em AAAA-MM-DD (<trabalho> · iniciada em <data> · <tarefas>)` | o item foi devolvido ao backlog no meio da sprint; guarda o que as tarefas abertas tinham |
 | `reserva de capacidade estourada: <decisão> (<usuario>, AAAA-MM-DD)` | a reserva de capacidade do atendimento estourou e o produto decidiu |
 
 ## Id estável

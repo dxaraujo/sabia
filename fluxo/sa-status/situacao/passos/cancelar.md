@@ -15,7 +15,7 @@ A fatia, o bug ou a sustentação `em-andamento` (ou impedida que veio de `em-an
    - era a última fatia aberta do épico (aberta = não `concluida` nem `cancelada`)? Com alguma `concluida`: o épico
      fica `concluido`, com `concluida_em` = hoje. Sem nenhuma: `cancelado`, `motivo` `fatias canceladas · desde <hoje>`;
    - sustentação: a Resposta do registro diz "cancelado: <motivo>".
-3. A linha da sprint fica, sem `concluida_em`.
+3. A linha da sprint fica, sem `concluida_em`: é o registro do trabalho que parou.
 4. Diga o que a pessoa desfaz, porque o fluxo não fecha nada sozinho: fechar o MR aberto, apagar a branch remota
    `<id>` (sem `--force`) e remover a worktree. Com autopilot rodando, peça para parar antes.
 5. Peça o "sim".

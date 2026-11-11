@@ -42,8 +42,9 @@
     o dia em que terminou. Sem `iniciada_em`, a tarefa está planejada; com ela, em andamento; com `concluida_em`,
     concluída. Lead time do trabalho = `concluida_em` − `iniciada_em`.
   - Não há coluna de situação: o status do item é o do `backlog.md`.
-  - A linha nunca é apagada (a tarefa do EWM mora nela). O item que volta ao backlog no meio da sprint fica com a
-    linha, sem `concluida_em`. Na virada, a linha migrada mantém o `iniciada_em`.
+  - A linha só sai quando o item é devolvido ao backlog no meio da sprint (`sa-status.situacao` ou o Quadro Kanban):
+    saem as tarefas abertas, e o que elas guardavam (início, tarefa do EWM) vai para a `obs` do item. Na virada, a
+    sprint anterior não muda, e a linha migrada mantém o `iniciada_em`.
 - Datas da tarefa, gravadas no mesmo commit que muda o item. Sem a linha na sprint aberta, quem grava a cria; sem
   sprint aberta, a tarefa segue sem datas.
 

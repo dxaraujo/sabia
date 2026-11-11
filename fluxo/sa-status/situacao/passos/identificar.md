@@ -18,7 +18,7 @@ Um id do Sabiá e o pedido: impedir, liberar, cancelar ou devolver ao backlog.
    | impedir (também "adiar até <data>") | qualquer status não terminal, menos `impedida` e `impedido` | `impedir` |
    | liberar | `impedida` · `impedido` | `liberar` |
    | cancelar | fatia, bug ou sustentação `em-andamento`, ou impedida que veio de `em-andamento` | `cancelar` |
-   | devolver ao backlog | item com linha na sprint aberta, sem `concluida_em` | `devolver` |
+   | devolver ao backlog | item com tarefa aberta na sprint (linha sem `concluida_em`) | `devolver` |
 
 4. Cancelar um item que ainda não começou é do dono do status: `nova` → `sa-triar.triar`; `aceita`, `elegivel`,
    épico `em-especificacao` ou `fatiado` → `sa-refinar.ajustar`; épico `a-moldar` → `sa-refinar.moldar`. Diga a dona e

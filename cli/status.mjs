@@ -21,12 +21,12 @@ const COLUNAS = [["backlog", "Backlog"], ["nova", "Nova"], ["a-moldar", "A molda
   ["impedida", "Impedido"], ["concluida", "Concluída"], ["cancelada", "Cancelada"]];
 // As colunas que cada status do WIP do `acordos.json` conta. `em-revisao` é derivado (MR aberto) e nunca se grava.
 const WIP = { "em-andamento": ["Em andamento", ["iniciada", "implementando", "revisando", "verificando"]], "em-revisao": ["MR em revisão", ["pr-aberto", "retrabalho"]] };
-const celulas = (l) => l.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((c) => c.trim());
-const semValor = (x) => !x || x === "—";
+export const celulas = (l) => l.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((c) => c.trim());
+export const semValor = (x) => !x || x === "—";
 /** O status no feminino dos três que o épico grava no masculino; o resto fica como está no backlog. */
 const statusColuna = (s) => ({ impedido: "impedida", concluido: "concluida", cancelado: "cancelada" }[s] ?? s);
 /** A coluna `motivo` do backlog: `<texto> · por <quem> · desde <data> · até <data> · de <status anterior>`. */
-function lerMotivo(celula) {
+export function lerMotivo(celula) {
   if (semValor(celula)) return null;
   const m = { texto: null, por: null, desde: null, ate: null, de: null }, texto = [];
   for (const parte of celula.split(" · ")) {
@@ -37,7 +37,7 @@ function lerMotivo(celula) {
 }
 
 /** As linhas da primeira tabela cujo cabeçalho começa com `coluna`, como objetos pelo nome da coluna. */
-function tabela(texto, coluna) {
+export function tabela(texto, coluna) {
   const ls = texto.split("\n"), i = ls.findIndex((l) => l.trim().startsWith("|") && celulas(l)[0] === coluna);
   if (i < 0) return [];
   const cab = celulas(ls[i]), out = [];
@@ -46,7 +46,7 @@ function tabela(texto, coluna) {
 }
 
 /** As sprints do projeto, da mais nova para a mais antiga; a primeira é a aberta (a de maior chave). */
-function sprintsDe(raiz, hoje) {
+export function sprintsDe(raiz, hoje) {
   const dir = path.join(raiz, ".sabia/planejamento/sprints");
   if (!fs.existsSync(dir)) return [];
   const chave = (f) => f.split(path.sep).slice(-2).join("/");
@@ -54,7 +54,8 @@ function sprintsDe(raiz, hoje) {
     const texto = fs.readFileSync(path.join(dir, f), "utf8");
     const c = texto.match(/^# (\d{4}\/Sprint \d+) · (\d{4}-\d{2}-\d{2}) → (\d{4}-\d{2}-\d{2})/m);
     const reserva = texto.match(/^\*\*Reserva de capacidade:\*\* (\d+)/m);
-    return c && { chave: c[1], inicio: c[2], fim: c[3], meta: texto.match(/^\*\*Meta:\*\* (.*)$/m)?.[1] ?? null, reserva: reserva ? +reserva[1] : null, aberta: hoje <= c[3], itens: tabela(texto, "Item") };
+    return c && { chave: c[1], inicio: c[2], fim: c[3], meta: texto.match(/^\*\*Meta:\*\* (.*)$/m)?.[1] ?? null, reserva: reserva ? +reserva[1] : null, aberta: hoje <= c[3], itens: tabela(texto, "Item"),
+      arquivo: path.join(".sabia/planejamento/sprints", f) };
   }).filter(Boolean);
 }
 
@@ -65,25 +66,37 @@ function pessoasDe(raiz) {
   } catch { return {}; }
 }
 
-function mrsAbertos(raiz, exec) {
-  const sem = (motivo) => ({ disponivel: false, motivo, itens: [] });
+/** O acesso ao GitLab do projeto, pelas variáveis GITLAB_API_URL e GITLAB_API_TOKEN: `ler(rota)` devolve o JSON da
+ *  rota (relativa à API) ou lança. O token vai pela entrada do curl, para não aparecer na lista de processos. */
+export function gitlab(raiz, exec) {
   const base = process.env.GITLAB_API_URL?.replace(/\/+$/, ""), token = process.env.GITLAB_API_TOKEN;
-  if (!base || !token) return sem("defina GITLAB_API_URL e GITLAB_API_TOKEN");
+  if (!base || !token) return { motivo: "defina GITLAB_API_URL e GITLAB_API_TOKEN" };
   const remoto = exec("git", ["remote", "get-url", "origin"], { cwd: raiz });
-  if (remoto.status !== 0) return sem("o repositório não tem o remoto origin");
+  if (remoto.status !== 0) return { motivo: "o repositório não tem o remoto origin" };
   const caminho = remoto.stdout.trim().replace(/\.git$/, "").replace(/^[a-z+]+:\/\/[^/]+\//, "").replace(/^[^@/]+@[^:]+:/, "");
-  const api = /\/api\/v\d+$/.test(base) ? base : `${base}/api/v4`;
-  const ca = process.env.GITLAB_CA_BUNDLE;
-  // o token vai pela entrada do curl, para não aparecer na lista de processos
-  const r = exec("curl", ["-sS", "--fail", "--max-time", "20", ...(ca ? ["--cacert", ca] : []), "-K", "-", `${api}/projects/${encodeURIComponent(caminho)}/merge_requests?state=opened&per_page=100`],
-    { input: `header = "PRIVATE-TOKEN: ${token}"\n` });
-  if (r.status !== 0) return sem(`GitLab: ${(r.stderr || r.error?.message || "falhou").trim()}`);
-  try {
-    return { disponivel: true, motivo: null, itens: JSON.parse(r.stdout).map((m) => ({ iid: m.iid, titulo: m.title, autor: m.author?.username ?? null, branch: m.source_branch,
-      url: m.web_url, criado_em: m.created_at, atualizado_em: m.updated_at ?? null, rascunho: Boolean(m.draft) })) };
-  } catch (e) {
-    return sem(`GitLab: resposta inválida (${e.message})`);
-  }
+  const api = /\/api\/v\d+$/.test(base) ? base : `${base}/api/v4`, ca = process.env.GITLAB_CA_BUNDLE;
+  return {
+    motivo: null, projeto: `/projects/${encodeURIComponent(caminho)}`,
+    ler(rota) {
+      const r = exec("curl", ["-sS", "--fail", "--max-time", "20", ...(ca ? ["--cacert", ca] : []), "-K", "-", api + rota], { input: `header = "PRIVATE-TOKEN: ${token}"\n` });
+      if (r.status !== 0) throw new Error((r.stderr || r.error?.message || "falhou").trim());
+      try { return JSON.parse(r.stdout); } catch (e) { throw new Error(`resposta inválida (${e.message})`); }
+    },
+  };
+}
+
+/** Os MRs abertos do projeto e, à parte, os mesclados há pouco (para avisar do item que falta concluir). */
+function mrsDoGitlab(raiz, exec) {
+  const g = gitlab(raiz, exec), mr = (m) => ({ iid: m.iid, titulo: m.title, autor: m.author?.username ?? null, branch: m.source_branch,
+    url: m.web_url, criado_em: m.created_at, atualizado_em: m.updated_at ?? null, rascunho: Boolean(m.draft) });
+  if (g.motivo) return { abertos: { disponivel: false, motivo: g.motivo, itens: [] }, mesclados: [] };
+  let abertos;
+  try { abertos = { disponivel: true, motivo: null, itens: g.ler(`${g.projeto}/merge_requests?state=opened&per_page=100`).map(mr) }; }
+  catch (e) { return { abertos: { disponivel: false, motivo: `GitLab: ${e.message}`, itens: [] }, mesclados: [] }; }
+  let mesclados = [];
+  // shortcut: só os 50 MRs mesclados mais recentes; item mesclado há mais tempo que isso não ganha o aviso
+  try { mesclados = g.ler(`${g.projeto}/merge_requests?state=merged&order_by=updated_at&per_page=50`).filter((m) => m.state === "merged").map((m) => ({ ...mr(m), mesclado_em: m.merged_at ?? null })); } catch { /* sem os mesclados, só falta o aviso */ }
+  return { abertos, mesclados };
 }
 
 /** Os acordos do time (`acordos.json`): WIP por status, SLE e os limites de alerta, com o padrão no que falta.
@@ -113,7 +126,8 @@ function lerStatusMd(texto) {
   }
   const bloqueios = tabela(texto, "Pergunta").filter((x) => !semValor(x.Pergunta) && !semValor(x.Bloqueia) && x.Bloqueia !== "nada")
     .map((x) => ({ pergunta: x.Pergunta, para: x["Para quem"] || null, bloqueia: x.Bloqueia }));
-  return { fase: v("Fase"), trilha: v("Trilha"), autonomia: v("Autonomia"), mr, bloqueios };
+  const licoes = tabela(texto, "Lição").filter((x) => !semValor(x["Lição"])).map((x) => ({ licao: x["Lição"], origem: semValor(x.Origem) ? null : x.Origem, regra: semValor(x["Regra proposta"]) ? null : x["Regra proposta"] }));
+  return { fase: v("Fase"), trilha: v("Trilha"), autonomia: v("Autonomia"), mr, bloqueios, licoes };
 }
 
 /** O status.md do item: a worktree `.sabia/local/wt/<id>` (a branch pode não estar publicada), a branch
@@ -174,8 +188,9 @@ function colunasDoProjeto(raiz) {
   };
 }
 
-/** O estado do fluxo. `agora` e `exec` são parâmetros para o teste. */
-export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
+/** O estado do fluxo. `agora` e `exec` são parâmetros para o teste. `usuario` ({ usuario, produto }) é quem está
+ *  no quadro Kanban: com ele, cada card diz se a pessoa pode mudar a situação do item. */
+export function statusDoProjeto({ projeto = ".", exec, agora = new Date(), usuario = null }) {
   const raiz = path.resolve(projeto), f = path.join(raiz, ".sabia/planejamento/backlog.md");
   if (!fs.existsSync(f)) throw new Error(`${f} não existe: rode na raiz de um projeto com o Sabiá configurado`);
   const backlog = tabela(fs.readFileSync(f, "utf8"), "id"), porId = Object.fromEntries(backlog.map((l) => [l.id, l]));
@@ -192,7 +207,7 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
   const itens = sprint?.aberta ? sprint.itens.map((x) => ({ ...x, linha: porId[x.Item] })).filter((x) => x.linha && !TERMINAIS.includes(x.linha.status)) : [];
 
   // o quadro: os MRs abertos (o GitLab, quando disponível), os acordos e o status.md dos itens em andamento
-  const mrs = mrsAbertos(raiz, exec), acordos = acordosDe(raiz), { colunas, grupo, config } = colunasDoProjeto(raiz);
+  const { abertos: mrs, mesclados } = mrsDoGitlab(raiz, exec), acordos = acordosDe(raiz), { colunas, grupo, config } = colunasDoProjeto(raiz);
   const mdCache = {};
   const mdDe = (id) => (id in mdCache ? mdCache[id] : (mdCache[id] = statusDaBranch(raiz, exec, id)));
   const mrGitlabDe = (id) => mrs.disponivel ? (mrs.itens.find((x) => (x.branch ?? "").toLowerCase() === id.toLowerCase() && !x.rascunho) ?? null) : null;
@@ -227,6 +242,10 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
       const d = Math.floor((agora - new Date(mrG.atualizado_em)) / 86400000);
       if (d >= acordos.alertas.mr_parado_dias) aviso("mr-parado", "atencao", `MR !${mrG.iid} parado: sem atualização há ${plural(d, "dia", "dias")}`);
     }
+    const mesclado = andando ? (mesclados.find((x) => (x.branch ?? "").toLowerCase() === l.id.toLowerCase()) ?? null) : null;
+    if (mesclado) aviso("mesclado", "atencao", `MR !${mesclado.iid} mesclado: falta registrar a conclusão`);
+    // quem pode mudar a situação: quem tem produto, ou o responsável da tarefa em curso (sem tarefa em curso, o do item)
+    const emCurso = daSprint.find((x) => data(x.iniciada_em) && !data(x.concluida_em) && !semValor(x["Responsável"]))?.["Responsável"] ?? (semValor(l["responsável"]) ? null : l["responsável"]);
     if (md?.fase === "retrabalho") aviso("retrabalho", "atencao", "retrabalho: o dono retoma no mesmo MR");
     if (st === "impedida") {
       if (!motivo) aviso("impedimento", "atencao", "impedida sem a coluna motivo");
@@ -262,6 +281,9 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
       autonomia: md?.autonomia ?? null,
       mr: mrG ? { iid: mrG.iid, url: mrG.url } : (md?.mr ?? null),
       motivo,
+      mesclado: mesclado && { iid: mesclado.iid, url: mesclado.url, em: mesclado.mesclado_em?.slice(0, 10) ?? null },
+      licoes: md?.licoes ?? [],
+      pode: Boolean(usuario && (usuario.produto || (emCurso && emCurso === usuario.usuario))),
       impedida_dias: st === "impedida" && desde ? dias(desde) : null,
       avisos,
     };

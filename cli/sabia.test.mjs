@@ -8,6 +8,7 @@ import { afterEach, beforeEach, test } from "node:test";
 import * as s from "./sabia.mjs";
 import { statusDoProjeto } from "./status.mjs";
 import { abrirQuadro, paginaHtml } from "./kanban.mjs";
+import { editarTabela, preparar, executar, usuarioDaMaquina, podeGravar } from "./acoes.mjs";
 
 let raiz, home, chamadas, respostas, saida, escolhas, logs;
 
@@ -864,7 +865,16 @@ test("kanban: a página leva o tema, a versão e o JSON da sabia status; o servi
     assert.deepEqual(embutido.quadro.wip.map((w) => `${w.status} ${w.atual}/${w.limite}`), ["em-andamento 1/1", "em-revisao 1/2"]);
     // os outros caminhos: o JSON cru, o 404 e o método
     const dados = await (await fetch(q.url + "dados.json")).json();
+    // fora o que é do quadro (quem está nele e se pode gravar), é o mesmo JSON da `sabia status`
+    assert.deepEqual(dados.quadro.gravacao, { usuario: null, ok: false, motivo: "seu usuário do git não está no equipe.json" });
+    delete dados.quadro.gravacao;
     assert.deepEqual(dados, statusDoProjeto({ projeto: proj, exec, agora }));
+    // gravar exige o token da página: sem ele, o pedido é recusado
+    assert.equal((await fetch(q.url + "acao", { method: "POST", body: "{}" })).status, 403);
+    assert.equal((await fetch(q.url + "acao", { method: "POST", headers: { "x-sabia-token": q.token, origin: "http://outro.exemplo" }, body: "{}" })).status, 403);
+    const recusa = await fetch(q.url + "acao", { method: "POST", headers: { "x-sabia-token": q.token }, body: JSON.stringify({ tipo: "impedir", id: "FT-001", motivo: "x" }) });
+    assert.equal(recusa.status, 400);  // com o token, a regra responde: quem está no quadro não é da equipe
+    assert.match((await recusa.json()).erro, /não está no equipe\.json/);
     assert.equal((await fetch(q.url + "outro")).status, 404);
     assert.equal((await fetch(q.url, { method: "POST" })).status, 405);
     // cada carga lê o projeto de novo: o kanban.json gravado depois de o servidor subir já vale
@@ -880,6 +890,110 @@ test("kanban: a página leva o tema, a versão e o JSON da sabia status; o servi
     if (q) { q.fechar(); await q.fechou; }  // se uma asserção falhar antes, fecha o mesmo — sem vazar o servidor
     delete process.env.GITLAB_API_URL; delete process.env.GITLAB_API_TOKEN;
   }
+});
+
+test("kanban que grava: impedir, liberar, cancelar, sprint ↔ backlog, concluir com as regras e a ordem", () => {
+  const CAB = "| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | motivo | obs | entrou_em | concluida_em |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n";
+  const proj = escrever(path.join(raiz, "kb-acoes"), {
+    ".sabia/planejamento/backlog.md": "# Backlog\n\n" + CAB
+      + "| EP-01 | Épico | épico | fatiado | | | | | a | | | | 2026-10-01 | |\n"
+      + "| FT-001 | Um | fatia | em-andamento | | M | ana | EP-01 | a | | | | 2026-10-02 | |\n"
+      + "| FT-002 | Dois | fatia | elegivel | | P | | EP-01 | a | | | | 2026-10-03 | |\n"
+      + "| FT-003 | Três | bug | aceita | | P | | | a | | | nota | 2026-10-04 | |\n",
+    ".sabia/planejamento/equipe.json": JSON.stringify({ membros: [{ nome: "Ana Souza", usuario: "ana", produto: false, ativo: true }, { nome: "Bia Lima", usuario: "bia", produto: true, ativo: true }] }),
+    ".sabia/planejamento/sprints/2026/sprint-01.md": "# 2026/Sprint 01 · 2026-11-02 → 2026-11-13\n\n## Itens\n\n| Item | Trabalho | Responsável | Tarefas | iniciada_em | concluida_em |\n|---|---|---|---|---|---|\n| FT-001 | especificação | bia | | 2026-11-02 | 2026-11-03 |\n| FT-001 | desenvolvimento | ana | DEV 77 | 2026-11-04 | |\n| FT-002 | desenvolvimento | — | | | |\n\n## Review\n",
+    ".sabia/sabia.md": "# Sabiá\n\n## Regras aprendidas\n\nUma por linha.\n\n<!-- Nenhuma regra ainda. -->\n\n## Outra\n",
+    ".kiro/specs/ft-001-um/status.md": "x",
+  });
+  const agora = new Date("2026-11-09T12:00:00Z"), ana = { usuario: "ana", produto: false }, bia = { usuario: "bia", produto: true };
+  const bk = (m) => m.arquivos[".sabia/planejamento/backlog.md"], sp = (m) => m.arquivos[".sabia/planejamento/sprints/2026/sprint-01.md"];
+  const linha = (texto, id) => texto.split("\n").find((l) => l.startsWith(`| ${id} |`));
+  const aplicar = (m) => { for (const [c, t] of Object.entries(m.arquivos)) fs.writeFileSync(path.join(proj, c), t); };
+  // só a linha que muda é reescrita
+  const original = fs.readFileSync(path.join(proj, ".sabia/planejamento/backlog.md"), "utf8");
+  assert.equal(editarTabela(original, "id", () => {}), original);
+  // quem pode: produto, ou o responsável da tarefa em curso
+  assert.throws(() => preparar(proj, { tipo: "impedir", id: "FT-002", motivo: "x" }, { usuario: ana, agora }), /de quem tem produto/);
+  assert.throws(() => preparar(proj, { tipo: "impedir", id: "FT-001", motivo: "x" }, { usuario: null, agora }), /equipe\.json/);
+  assert.throws(() => preparar(proj, { tipo: "impedir", id: "FT-001", motivo: " " }, { usuario: ana, agora }), /diga o motivo/);
+  // impedir: o status, e o motivo com quem, desde, até e o status anterior; o texto da pessoa não quebra a tabela
+  let m = preparar(proj, { tipo: "impedir", id: "FT-001", motivo: "ambiente | fora\ndo ar", por: "externo: infra", ate: "2026-11-20" }, { usuario: ana, agora });
+  assert.equal(linha(bk(m), "FT-001"), "| FT-001 | Um | fatia | impedida |  | M | ana | EP-01 | a |  | ambiente fora do ar · por externo: infra · desde 2026-11-09 · até 2026-11-20 · de em-andamento |  | 2026-10-02 |  |");
+  assert.equal(linha(bk(m), "FT-002"), linha(original, "FT-002"));  // as outras linhas ficam como estavam
+  assert.equal(m.commit, "FT-001 impedir");
+  aplicar(m);
+  // devolver o impedido ao backlog: as tarefas abertas saem da sprint, o rastro vai para a obs e o "de" acompanha
+  m = preparar(proj, { tipo: "para-backlog", id: "FT-001" }, { usuario: bia, agora });
+  assert.ok(!sp(m).includes("| FT-001 | desenvolvimento") && sp(m).includes("| FT-001 | especificação | bia | | 2026-11-02 | 2026-11-03 |"));
+  assert.match(linha(bk(m), "FT-001"), /de elegivel \| saiu da 2026\/Sprint 01 em 2026-11-09 \(desenvolvimento · iniciada em 2026-11-04 · DEV 77\) \|/);
+  assert.deepEqual(m.avisos, ["com ELM, cancele a tarefa do item pela sa-elm.finalizar"]);
+  // liberar: volta ao status anterior, o motivo sai e o período fica na obs
+  m = preparar(proj, { tipo: "liberar", id: "FT-001" }, { usuario: ana, agora: new Date("2026-11-12T12:00:00Z") });
+  assert.equal(linha(bk(m), "FT-001"), "| FT-001 | Um | fatia | em-andamento |  | M | ana | EP-01 | a |  |  | impedida 2026-11-09 a 2026-11-12: ambiente fora do ar | 2026-10-02 |  |");
+  aplicar(m);
+  // cancelar um item em andamento: a pasta da spec sai da branch base, e o aviso diz o que a pessoa fecha à parte
+  m = preparar(proj, { tipo: "cancelar", id: "FT-001", motivo: "desistimos" }, { usuario: ana, agora });
+  assert.deepEqual(m.remover, [path.join(".kiro/specs", "ft-001-um")]);
+  assert.match(m.avisos[0], /feche o MR/);
+  // concluir: o backlog, a tarefa de desenvolvimento e as regras escolhidas no sabia.md
+  assert.throws(() => preparar(proj, { tipo: "concluir", id: "FT-001" }, { usuario: ana, agora }), /confirme que o MR foi mesclado/);
+  m = preparar(proj, { tipo: "concluir", id: "FT-001", mesclado_em: "2026-11-08", regras: ["Filtrar pelo período antes de paginar", " "] }, { usuario: ana, agora });
+  assert.match(linha(bk(m), "FT-001"), /\| concluida \|.*\| 2026-10-02 \| 2026-11-08 \|$/);
+  assert.ok(sp(m).includes("| FT-001 | desenvolvimento | ana | DEV 77 | 2026-11-04 | 2026-11-08 |"));
+  assert.equal(m.arquivos[".sabia/sabia.md"], "# Sabiá\n\n## Regras aprendidas\n\nUma por linha.\n\n- Filtrar pelo período antes de paginar · origem FT-001 · 2026-11-09\n\n## Outra\n");
+  assert.equal(linha(bk(m), "EP-01"), linha(original, "EP-01"));  // ainda há fatia aberta: o épico não fecha
+  aplicar(m);
+  // levar para a sprint (só produto) e devolver a que não começou
+  assert.throws(() => preparar(proj, { tipo: "para-sprint", id: "FT-003" }, { usuario: ana, agora }), /de quem tem produto/);
+  m = preparar(proj, { tipo: "para-sprint", id: "FT-003", responsavel: "ana" }, { usuario: bia, agora });
+  assert.ok(sp(m).includes("| FT-003 | especificação | ana |  |  |  |\n\n## Review"));  // aceita: a tarefa é de especificação
+  assert.equal(m.commit, "2026/Sprint 01: reabastecimento");
+  assert.throws(() => preparar(proj, { tipo: "para-sprint", id: "FT-002" }, { usuario: bia, agora }), /já tem a tarefa de desenvolvimento/);
+  // cancelar a última fatia aberta: a pasta da spec sai e o épico fecha (havia uma concluída)
+  m = preparar(proj, { tipo: "cancelar", id: "FT-002", motivo: "fora do escopo" }, { usuario: bia, agora });
+  assert.match(linha(bk(m), "FT-002"), /\| cancelada \|.*\| fora do escopo · desde 2026-11-09 \|/);
+  assert.match(linha(bk(m), "EP-01"), /\| concluido \|.*\| 2026-11-09 \|$/);
+  assert.deepEqual(m.remover, []);  // a FT-002 não tem pasta de spec
+  assert.throws(() => preparar(proj, { tipo: "cancelar", id: "FT-001", motivo: "x" }, { usuario: bia, agora }), /FT-001 está concluida/);
+});
+
+test("kanban que grava: a ordem do backlog, quem está no quadro e o commit com push", () => {
+  const CAB = "| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | motivo | obs | entrou_em | concluida_em |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n";
+  const proj = escrever(path.join(raiz, "kb-git"), {
+    ".sabia/planejamento/backlog.md": "# Backlog\n\n" + CAB + "| FT-001 | Um | fatia | aceita | | | | | a | | | | | |\n| FT-002 | Dois | fatia | aceita | | | | | a | | | | | |\n| FT-003 | Três | fatia | aceita | | | | | a | | | | | |\n",
+    ".sabia/planejamento/equipe.json": JSON.stringify({ membros: [{ nome: "Bia Lima", usuario: "bia.lima", produto: true, ativo: true }, { nome: "Saiu", usuario: "saiu", produto: true, ativo: false }] }),
+    ".sabia/config/agentes.json": JSON.stringify({ branch_base: "develop" }),
+  });
+  const agora = new Date("2026-11-09T12:00:00Z"), bia = { usuario: "bia.lima", nome: "Bia Lima", produto: true };
+  const ids = (t) => t.split("\n").filter((l) => /^\| FT-/.test(l)).map((l) => l.slice(2, 8));
+  const bk = (m) => m.arquivos[".sabia/planejamento/backlog.md"];
+  assert.deepEqual(ids(bk(preparar(proj, { tipo: "ordenar", id: "FT-003", antes: "FT-001" }, { usuario: bia, agora }))), ["FT-003", "FT-001", "FT-002"]);
+  assert.deepEqual(ids(bk(preparar(proj, { tipo: "ordenar", id: "FT-001", depois: "FT-002" }, { usuario: bia, agora }))), ["FT-002", "FT-001", "FT-003"]);
+  assert.throws(() => preparar(proj, { tipo: "ordenar", id: "FT-001", antes: "FT-001" }, { usuario: bia, agora }), /não serve de referência/);
+  // quem está no quadro: o e-mail do git (antes do @) ou o nome, entre os ativos do equipe.json
+  const cfg = (valores) => (cmd, args) => (cmd === "git" && args[2] === "config" ? { status: 0, stdout: (valores[args[3]] ?? "") + "\n" } : { status: 1, stdout: "" });
+  delete process.env.GITLAB_API_URL;
+  assert.deepEqual(usuarioDaMaquina(proj, cfg({ "user.email": "Bia.Lima@empresa.gov.br" })), bia);
+  assert.deepEqual(usuarioDaMaquina(proj, cfg({ "user.email": "x@y", "user.name": "bia lima" })), bia);
+  assert.equal(usuarioDaMaquina(proj, cfg({ "user.email": "saiu@y" })), null);  // inativo não entra
+  // só grava na branch base, com a árvore limpa
+  const git = (respostas, vistos = []) => (cmd, args) => { const a = args.slice(2); vistos.push(a.join(" ")); const r = respostas[a[0]]; return typeof r === "function" ? r(a) : r ?? { status: 0, stdout: "" }; };
+  assert.deepEqual(podeGravar(proj, git({ "rev-parse": { status: 0, stdout: "ft-001\n" } }), bia), { ok: false, motivo: "o projeto está na branch ft-001; o quadro grava só na develop" });
+  assert.equal(podeGravar(proj, git({ "rev-parse": { status: 0, stdout: "develop\n" }, status: { status: 0, stdout: " M x\n" } }), bia).ok, false);
+  assert.equal(podeGravar(proj, git({ "rev-parse": { status: 0, stdout: "develop\n" } }), null).ok, false);
+  // executar: pull, grava, add só dos arquivos da mudança, commit e push
+  const antes = fs.readFileSync(path.join(proj, ".sabia/planejamento/backlog.md"), "utf8"), base = { "rev-parse": { status: 0, stdout: "develop\n" } };
+  let vistos = [];
+  const r = executar(proj, { tipo: "ordenar", id: "FT-003", antes: "FT-001" }, { exec: git(base, vistos), usuario: bia, agora });
+  assert.deepEqual(r, { commit: "backlog: ordem", avisos: [] });
+  assert.deepEqual(vistos, ["rev-parse --abbrev-ref HEAD", "status --porcelain", "pull --ff-only", "add -- .sabia/planejamento/backlog.md", "commit --quiet -m backlog: ordem", "push --quiet"]);
+  assert.deepEqual(ids(fs.readFileSync(path.join(proj, ".sabia/planejamento/backlog.md"), "utf8")), ["FT-003", "FT-001", "FT-002"]);
+  fs.writeFileSync(path.join(proj, ".sabia/planejamento/backlog.md"), antes);
+  // o commit falhou: os arquivos voltam ao que eram; só o push falhou: o commit fica e o erro diz
+  assert.throws(() => executar(proj, { tipo: "ordenar", id: "FT-003", antes: "FT-001" }, { exec: git({ ...base, commit: { status: 1, stderr: "hook recusou" } }), usuario: bia, agora }), /git commit: hook recusou/);
+  assert.equal(fs.readFileSync(path.join(proj, ".sabia/planejamento/backlog.md"), "utf8"), antes);
+  assert.throws(() => executar(proj, { tipo: "ordenar", id: "FT-003", antes: "FT-001" }, { exec: git({ ...base, push: { status: 1, stderr: "rejected" } }), usuario: bia, agora }), /ficou só nesta máquina; o push falhou: rejected/);
+  assert.throws(() => executar(proj, { tipo: "ordenar", id: "FT-003", antes: "FT-001" }, { exec: git({ ...base, pull: { status: 1, stderr: "divergiu" } }), usuario: bia, agora }), /git pull --ff-only: divergiu/);
 });
 
 test("kanban: a linha de comando — ajuda sem executar e o erro quando não há backlog", async () => {

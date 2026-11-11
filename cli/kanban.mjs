@@ -3,7 +3,9 @@
 // claro/escuro). Quem reordena, renomeia ou oculta colunas na página copia o JSON para o CONFIG_KANBAN do projeto.
 // Servidor node:http sem dependências: cada carga da página lê o projeto de novo; ao fechar, a página avisa.
 import http from "node:http";
+import { randomUUID } from "node:crypto";
 import { statusDoProjeto } from "./status.mjs";
+import { usuarioDaMaquina, podeGravar, executar } from "./acoes.mjs";
 
 const PORTA = 4780;  // fixa para o navegador guardar o tema e o rascunho (o localStorage é por origem)
 
@@ -157,7 +159,7 @@ select:hover{background:var(--suave-h)}
 .chapeu{display:flex;align-items:center;gap:8px;padding:12px 12px 0;font-size:12px;line-height:16px}
 .chapeu .id{font:600 12px/16px var(--mono);color:var(--title)}
 .chapeu .tipo{font-weight:600;color:color-mix(in srgb,var(--tipo) 60%,var(--title))}
-.chapeu .ponto{margin-left:auto;box-shadow:0 0 0 2px var(--card)}
+.chapeu .ponto{box-shadow:0 0 0 2px var(--card)}
 [data-paleta] .cartao{box-shadow:var(--sombra)}
 [data-paleta] .chapeu{padding:7px 12px;background:color-mix(in srgb,var(--tipo) 42%,#fff);color:#022338}
 [data-paleta][data-modo="escuro"] .chapeu{background:color-mix(in srgb,var(--tipo) 46%,var(--card));color:#fff}
@@ -195,6 +197,32 @@ td.nw{white-space:nowrap}
 td .t{display:inline-block;width:9px;height:9px;margin-right:6px;border-radius:3px;background:var(--tipo)}
 td .ponto{margin-right:6px}
 .nada{padding:10px 14px 14px;color:var(--muted);font-size:13px}
+
+/* o que o quadro grava: o botão de ações do card, a raia que recebe o card e o modal de confirmação */
+.cartao[draggable="true"]{cursor:grab}
+.card-btn{flex:none;display:grid;place-items:center;width:24px;height:24px;margin:-4px -6px -4px 0;padding:0;border:0;border-radius:var(--r-sm);background:none;color:inherit;opacity:.75}
+.card-btn:hover{background:color-mix(in srgb,currentColor 14%,transparent);opacity:1}
+.chapeu .ponto,.chapeu .card-btn{margin-left:auto}
+.chapeu .ponto+.card-btn{margin-left:4px}
+.alvo{box-shadow:inset 0 0 0 2px var(--blue)}
+.antes-de{box-shadow:var(--sombra),0 -3px 0 var(--blue)}
+#gravacao{font-size:13px;color:var(--muted)}
+dialog{width:min(520px,calc(100vw - 32px));max-height:calc(100dvh - 48px);padding:0;border:0;border-radius:12px;background:var(--card);color:var(--ink);box-shadow:var(--overlay);overflow:auto}
+dialog::backdrop{background:rgba(2,24,36,.45)}
+dialog form{display:grid;gap:12px;padding:20px}
+dialog h2{font-size:17px;line-height:24px}
+dialog .sub{color:var(--muted);font-size:13px;margin-top:-8px}
+dialog label{display:grid;gap:4px;font-size:13px;font-weight:500;color:var(--title)}
+dialog label.linha{display:flex;align-items:flex-start;gap:8px;font-weight:400;color:var(--ink)}
+dialog :is(input[type="text"],input[type="date"],textarea,select){width:100%;padding:8px 10px;border:0;border-radius:var(--r-sm);background:var(--suave);color:var(--title);font:400 14px/20px var(--body)}
+dialog select{height:36px;font-weight:400}
+dialog textarea{min-height:64px;resize:vertical}
+dialog .licao{display:grid;grid-template-columns:auto 1fr;gap:6px 8px;align-items:start}
+dialog .licao small{grid-column:2;color:var(--muted);font-size:12px;line-height:16px}
+dialog .erro{color:var(--critico);font-size:13px;font-weight:500}
+dialog .nota{font-size:13px;color:var(--muted)}
+dialog .botoes{display:flex;justify-content:flex-end;gap:8px;margin-top:4px}
+dialog ul{margin:0;padding-left:18px;font-size:13px}
 
 .rodape{display:flex;gap:6px 16px;flex-wrap:wrap;padding:7px 20px;color:var(--muted);font-size:12px;line-height:16px}
 .fora{position:fixed;inset:0;z-index:9;display:grid;place-content:center;gap:8px;text-align:center;padding:24px;background:var(--pagina)}
@@ -280,7 +308,22 @@ function cliente() {
   // Na sprint aberta entra também o que está em andamento fora dela (com o aviso). Sem sprint, vale a situação.
   const raia = (c) => (!SP.length || linhasDe(c).length || (si === 0 && NO_GRUPO.has(c.coluna)) ? c.coluna : noBacklog(c) ? "backlog" : null);
 
+  // o que o quadro grava: só na sprint aberta, e só o que a pessoa pode (produto, ou o responsável da tarefa em curso)
+  const G = Q.gravacao, grava = Boolean(G?.ok), produto = Boolean(G?.usuario?.produto), TOKEN = $('meta[name="sabia-token"]')?.content ?? "";
+  const abertasDe = (c) => (SP[0]?.itens ?? []).filter((l) => l.id === c.id && !l.concluida_em);
+  function acoesDe(c) {
+    if (!grava || si !== 0) return [];
+    const term = TERMINAL.has(c.status), imp = c.status === "impedida", a = [];
+    if (produto && !term && SP[0]?.aberta && raia(c) === "backlog") a.push(["para-sprint", "Levar para a sprint"]);
+    if (c.pode && SP[0]?.aberta && abertasDe(c).length) a.push(["para-backlog", "Devolver ao backlog"]);
+    if (c.pode && !term && !imp) a.push(["impedir", "Impedir"]);
+    if (c.pode && imp) a.push(["liberar", "Liberar"]);
+    if (c.pode && c.status === "em-andamento" && (c.tipo === "fatia" || c.tipo === "bug")) a.push(["concluir", c.mesclado ? "Concluir (MR mesclado)" : "Concluir"]);
+    if (c.pode && !term) a.push(["cancelar", "Cancelar"]);
+    return a;
+  }
   function cartao(c, situ) {
+    const acs = acoesDe(c), arrasta = acs.length || (grava && produto && si === 0 && raia(c) === "backlog");
     const nv = nivelDe(c), r = c.responsavel, ini = r ? nome(r).split(/[.\s_-]+/).filter(Boolean).slice(0, 2).map((p) => p[0].toUpperCase()).join("") : "–";
     const d = [];
     if (c.tamanho) d.push("tamanho " + esc(c.tamanho));
@@ -298,7 +341,8 @@ function cliente() {
     if (c.trilha) d.push(esc(c.trilha));
     if (c.autonomia) d.push(esc(c.autonomia));
     for (const l of linhasDe(c)) if (l.tarefas) d.push(esc(l.tarefas));
-    return '<article class="cartao" data-tipo="' + esc(c.tipo) + '"><div class="chapeu"><span class="id">' + esc(c.id) + '</span><span class="tipo">' + esc(c.tipo ?? "sem tipo") + "</span>" + (nv ? ponto(nv) : "") + "</div>"
+    return '<article class="cartao" data-card="' + esc(c.id) + '" data-tipo="' + esc(c.tipo) + '"' + (arrasta ? ' draggable="true"' : "") + '><div class="chapeu"><span class="id">' + esc(c.id) + '</span><span class="tipo">' + esc(c.tipo ?? "sem tipo") + "</span>" + (nv ? ponto(nv) : "")
+      + (acs.length ? '<button type="button" class="card-btn" data-card-menu="' + esc(c.id) + '" aria-label="Ações de ' + esc(c.id) + '">' + PONTOS + "</button>" : "") + "</div>"
       + '<div class="corpo"><h3>' + (c.titulo ? esc(c.titulo) : '<span class="semtitulo">sem título</span>') + "</h3>"
       + (mv?.texto ? '<p class="motivo">' + esc(mv.texto) + "</p>" : "")
       + '<div class="quem' + (r ? "" : " sem") + '"><i aria-hidden="true">' + esc(ini) + "</i><span" + (r ? ' title="' + esc(r) + '"' : "") + ">" + esc(r ? nome(r) : "sem responsável") + "</span>"
@@ -422,8 +466,70 @@ function cliente() {
   // o menu da coluna: o caminho do teclado para o que o arrasto e os dois cliques fazem
   const menu = $("#menu");
   let menuDe = null;
+  // o modal de cada ação: mostra o que vai mudar, pede o que falta e só grava com a confirmação
+  const modal = $("#modal"), porId = (id) => Q.itens.find((c) => c.id === id);
+  const ROTULO = { impedir: "Impedir", liberar: "Liberar", cancelar: "Cancelar o item", "para-sprint": "Levar para a sprint", "para-backlog": "Devolver ao backlog", concluir: "Concluir", ordenar: "Mudar a prioridade" };
+  function abrir(tipo, c, extra = {}) {
+    const hoje = D.gerado_em.slice(0, 10), m = c.motivo, sp = SP[0];
+    let campos = "";
+    if (tipo === "impedir") campos = '<label>O que impede<textarea name="motivo" required maxlength="300"></textarea></label>'
+      + '<label>Quem impede (área, pessoa ou item)<input type="text" name="por" maxlength="80" placeholder="externo: infraestrutura"></label>'
+      + '<label>Até quando (opcional; use para adiar)<input type="date" name="ate" min="' + hoje + '"></label>'
+      + '<p class="nota">O item volta para ' + esc(col(c.coluna)?.nome ?? c.coluna) + " quando for liberado." + (c.status === "em-andamento" ? " Branch, MR e tarefa ficam como estão, e o item segue contando no WIP." : "") + "</p>";
+    else if (tipo === "liberar") campos = '<p class="nota">' + esc(m?.texto ?? "sem motivo registrado") + (m?.por ? " · por " + esc(m.por) : "") + (m?.desde ? " · desde " + dataBr(m.desde) : "") + "</p><p>O item volta para <b>"
+      + esc(m?.de === "em-andamento" ? cfg.grupo : col(m?.de)?.nome ?? m?.de ?? "o status anterior") + "</b>.</p>";
+    else if (tipo === "cancelar") campos = '<label>Motivo do cancelamento<textarea name="motivo" required maxlength="300"></textarea></label>'
+      + '<p class="nota">O cancelamento não se desfaz pelo quadro. A pasta da spec sai da branch base; MR, branch e tarefa do EWM você fecha à parte.</p>';
+    else if (tipo === "para-sprint") {
+      const padrao = (c.tipo === "fatia" || c.tipo === "bug") && c.status !== "elegivel" ? "especificação" : { fatia: "desenvolvimento", bug: "desenvolvimento", "sustentação": "atendimento", "épico": "especificação" }[c.tipo] ?? "desenvolvimento";
+      campos = "<label>Trabalho<select name=\"trabalho\">" + ["especificação", "desenvolvimento", "atendimento"].map((t) => "<option" + (t === padrao ? " selected" : "") + ">" + t + "</option>").join("") + "</select></label>"
+        + '<label>Responsável<select name="responsavel"><option value="">sem responsável</option>' + Object.entries(Q.pessoas).map(([u, n]) => '<option value="' + esc(u) + '">' + esc(n) + "</option>").join("") + "</select></label>"
+        + '<p class="nota">Entra uma tarefa na ' + esc(sp.chave) + ", sem data de início.</p>";
+    } else if (tipo === "para-backlog") campos = '<p class="nota">As tarefas abertas do item saem da ' + esc(sp.chave) + (c.status === "em-andamento" ? ", e ele volta a " + esc(col(c.tipo === "sustentação" ? "nova" : "elegivel")?.nome ?? "elegível") : "")
+      + ". O início e a tarefa do EWM ficam anotados na obs do item.</p>";
+    else if (tipo === "concluir") campos = (c.mesclado ? '<p class="nota">MR !' + c.mesclado.iid + " mesclado" + (c.mesclado.em ? " em " + dataBr(c.mesclado.em) : "") + '.</p><input type="hidden" name="mesclado_em" value="' + esc(c.mesclado.em ?? "") + '">'
+      : '<label class="linha"><input type="checkbox" name="confirmo" required>O MR deste item já foi mesclado</label>')
+      + "<p><b>Lições aprendidas → Regras aprendidas do .sabia/sabia.md</b></p>"
+      + (c.licoes.length ? c.licoes.map((l, k) => '<div class="licao"><input type="checkbox" name="usar' + k + '" aria-label="Levar a regra ' + (k + 1) + '"><textarea name="regra' + k + '" maxlength="240" aria-label="Regra ' + (k + 1) + '">' + esc(l.regra ?? l.licao) + "</textarea><small>Lição: "
+        + esc(l.licao) + (l.origem ? " · " + esc(l.origem) : "") + "</small></div>").join("") : '<p class="nota">O status.md do item não tem lições.</p>')
+      + '<label>Outra regra (opcional)<textarea name="outra" maxlength="240" placeholder="Uma frase curta e imperativa"></textarea></label>'
+      + '<p class="nota">Marque as que valem como regra do projeto e ajuste o texto. As não marcadas ficam só no status.md.</p>';
+    else if (tipo === "ordenar") campos = '<p class="nota">' + esc(c.id) + (extra.antes ? " passa para antes de " + esc(extra.antes) : extra.depois ? " passa para depois de " + esc(extra.depois) : " vai para o fim") + " na ordem do backlog.</p>";
+    modal.innerHTML = '<form method="dialog"><h2 id="modal-titulo">' + ROTULO[tipo] + '</h2><p class="sub">' + esc(c.id) + " · " + esc(c.titulo ?? "") + "</p>" + campos
+      + '<p class="erro" role="alert" hidden></p><div class="botoes"><button type="button" class="btn" data-fechar>Voltar</button><button type="submit" class="btn pri">Gravar e enviar</button></div></form>';
+    const f = modal.querySelector("form"), erro = f.querySelector(".erro");
+    f.querySelector("[data-fechar]").addEventListener("click", () => modal.close());
+    f.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const d = new FormData(f), acao = { tipo, id: c.id, ...extra };
+      for (const k of ["motivo", "por", "ate", "trabalho", "responsavel", "mesclado_em"]) if (d.get(k)) acao[k] = d.get(k);
+      if (tipo === "concluir") { acao.confirmo = d.has("confirmo"); acao.regras = [...c.licoes.map((_, k) => (d.has("usar" + k) ? d.get("regra" + k) : "")), d.get("outra")].filter((x) => x && x.trim()); }
+      const botao = f.querySelector('[type="submit"]');
+      botao.disabled = true; botao.textContent = "Gravando…"; erro.hidden = true;
+      try {
+        const r = await (await fetch("/acao", { method: "POST", headers: { "content-type": "application/json", "x-sabia-token": TOKEN }, body: JSON.stringify(acao) })).json();
+        if (!r.ok) throw new Error(r.erro || "não gravou");
+        modal.innerHTML = '<form method="dialog"><h2 id="modal-titulo">Gravado</h2><p class="sub">Commit “' + esc(r.commit) + "”, enviado para a branch base.</p>"
+          + (r.avisos?.length ? "<ul>" + r.avisos.map((a) => "<li>" + esc(a) + "</li>").join("") + "</ul>" : "") + '<div class="botoes"><button type="submit" class="btn pri">Atualizar o quadro</button></div></form>';
+        modal.addEventListener("close", () => location.reload(), { once: true });
+        modal.querySelector("button").focus();
+      } catch (x) { erro.textContent = x.message; erro.hidden = false; botao.disabled = false; botao.textContent = "Gravar e enviar"; }
+    });
+    modal.showModal();
+  }
+
   quadro.addEventListener("click", (e) => {
     if (e.target.closest(".dobra")) return dobrar();
+    const cb = e.target.closest(".card-btn");
+    if (cb) {
+      const c = porId(cb.dataset.cardMenu);
+      menuDe = null;
+      menu.innerHTML = acoesDe(c).map(([t, r]) => '<button type="button" data-cacao="' + t + '" data-card="' + esc(c.id) + '">' + r + "</button>").join("");
+      const r = cb.getBoundingClientRect();
+      menu.style.top = r.bottom + 4 + "px"; menu.style.left = Math.min(r.left, innerWidth - 220) + "px";
+      menu.showPopover(); menu.querySelector("button").focus();
+      return;
+    }
     const b = e.target.closest(".menu-btn");
     if (!b) return;
     menuDe = b.dataset.menu;
@@ -434,6 +540,8 @@ function cliente() {
     menu.showPopover(); menu.querySelector("button").focus();
   });
   menu.addEventListener("click", (e) => {
+    const ca = e.target.closest("[data-cacao]");
+    if (ca) { menu.hidePopover(); return abrir(ca.dataset.cacao, porId(ca.dataset.card)); }
     const a = e.target.closest("[data-acao]")?.dataset.acao;
     if (!a) return;
     menu.hidePopover();
@@ -464,16 +572,48 @@ function cliente() {
     const r = el.getBoundingClientRect();
     return { el, id: el.dataset.id, depois: e.clientX > r.left + r.width / 2 };
   };
+  // arrastar o card: a raia de destino diz a ação (Backlog devolve, Impedido impede, Cancelada cancela, Concluída
+  // conclui; do Backlog para a sprint leva; do Impedido para fora libera; dentro do Backlog muda a prioridade)
+  let cardArr = null;
+  const limparAlvo = () => quadro.querySelectorAll(".alvo,.antes-de").forEach((e) => e.classList.remove("alvo", "antes-de"));
+  const alvoCard = (e) => {
+    const el = e.target.closest(".coluna,.grupo.recolhido");
+    if (!el || !cardArr) return null;
+    const para = el.dataset.id, de = raia(cardArr), tem = (t) => acoesDe(cardArr).some(([x]) => x === t), ok = (tipo, mais) => (tipo === "ordenar" || tem(tipo) ? { el, tipo, ...mais } : null);
+    if (para === de || (para === "@grupo" && NO_GRUPO.has(de))) {
+      if (de !== "backlog" || !produto) return null;
+      const outros = [...el.querySelectorAll(".cartao")].filter((x) => x.dataset.card !== cardArr.id), prox = outros.find((x) => { const r = x.getBoundingClientRect(); return e.clientY < r.top + r.height / 2; });
+      return prox ? ok("ordenar", { antes: prox.dataset.card, marca: prox }) : outros.length ? ok("ordenar", { depois: outros.at(-1).dataset.card }) : null;
+    }
+    if (para === "backlog") return ok("para-backlog");
+    if (para === "impedida") return ok("impedir");
+    if (para === "cancelada") return ok("cancelar");
+    if (para === "concluida") return ok("concluir");
+    return de === "backlog" ? ok("para-sprint") : cardArr.status === "impedida" ? ok("liberar") : null;
+  };
   quadro.addEventListener("dragstart", (e) => {
+    const ca = e.target.closest?.('.cartao[draggable="true"]');
+    if (ca) { cardArr = porId(ca.dataset.card); e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("text/plain", cardArr.id); ca.classList.add("indo"); return; }
     const h = e.target.closest?.("[data-arrasta]");
     if (!h) return;
     arrastando = h.dataset.arrasta;
     e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("text/plain", arrastando);
     h.parentElement.classList.add("indo");
   });
-  quadro.addEventListener("dragover", (e) => { limpar(); const a = alvoDe(e); if (a) { e.preventDefault(); a.el.classList.add(a.depois ? "solta-d" : "solta-e"); } });
-  quadro.addEventListener("drop", (e) => { const a = alvoDe(e); if (a) { e.preventDefault(); mover(arrastando, a.id, a.depois); } });
-  quadro.addEventListener("dragend", () => { arrastando = null; limpar(); quadro.querySelector(".indo")?.classList.remove("indo"); });
+  quadro.addEventListener("dragover", (e) => {
+    if (!cardArr) return;
+    limparAlvo();
+    const a = alvoCard(e);
+    if (a) { e.preventDefault(); (a.marca ?? a.el).classList.add(a.marca ? "antes-de" : "alvo"); }
+  });
+  quadro.addEventListener("drop", (e) => {
+    if (!cardArr) return;
+    const a = alvoCard(e), c = cardArr;
+    if (a) { e.preventDefault(); const { el, marca, tipo, ...extra } = a; abrir(tipo, c, extra); }
+  });
+  quadro.addEventListener("dragover", (e) => { if (cardArr) return; limpar(); const a = alvoDe(e); if (a) { e.preventDefault(); a.el.classList.add(a.depois ? "solta-d" : "solta-e"); } });
+  quadro.addEventListener("drop", (e) => { if (cardArr) return; const a = alvoDe(e); if (a) { e.preventDefault(); mover(arrastando, a.id, a.depois); } });
+  quadro.addEventListener("dragend", () => { cardArr = null; limparAlvo(); arrastando = null; limpar(); quadro.querySelector(".indo")?.classList.remove("indo"); });
 
   // o topo e a barra: sprint, vista, tipos, só com aviso, busca e a configuração das colunas
   const sel = $("#sprint");
@@ -501,6 +641,7 @@ function cliente() {
     catch { prompt("Copie o JSON:", json); }
   });
   $("#descartar").addEventListener("click", () => { cfg = structuredClone(servido); mudou(); });
+  $("#gravacao").textContent = !G ? "" : grava ? "Gravando como " + (G.usuario.nome ?? G.usuario.usuario) : "Só leitura: " + G.motivo;
   const g = new Date(D.gerado_em), p2 = (x) => String(x).padStart(2, "0");
   $("#gerado").textContent = "Gerado em " + p2(g.getDate()) + "/" + p2(g.getMonth() + 1) + "/" + g.getFullYear() + " " + p2(g.getHours()) + ":" + p2(g.getMinutes()) + ":" + p2(g.getSeconds());
   marcar(); desenhar();
@@ -519,12 +660,13 @@ const CERTO = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5 9-
 const esc = (x) => String(x ?? "").replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
 /** A página: HTML único, sem rede, com o JSON da `sabia status` embutido em <script id="dados">. */
-export function paginaHtml(status) {
+export function paginaHtml(status, token = "") {
   return `<!doctype html>
 <html lang="pt-BR" data-sobria="sobria-sabia">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="sabia-token" content="${esc(token)}">
 <title>Quadro · ${esc(status.projeto)}</title>
 <script>(${tema})()</script>
 <style>${CSS}</style>
@@ -550,6 +692,7 @@ export function paginaHtml(status) {
   <div class="chips" id="tipos" role="group" aria-label="Tipos de item"></div>
   <input class="busca" id="busca" type="search" placeholder="Filtrar por id, título ou responsável" aria-label="Filtrar por id, título ou responsável">
   <div class="config">
+    <p id="gravacao"></p>
     <p id="rascunho" role="status" hidden>Colunas alteradas só neste navegador: grave o JSON em <code>${esc(status.quadro.config.arquivo)}</code></p>
     <button type="button" class="btn" id="descartar" hidden>Descartar</button>
     <button type="button" class="btn" id="ocultas-btn" popovertarget="ocultas" hidden></button>
@@ -560,6 +703,7 @@ export function paginaHtml(status) {
 <main class="mesa"><div class="quadro" id="quadro"></div><div class="lista" id="lista" hidden></div></main>
 <footer class="rodape"><span id="gerado"></span><span>Sabiá ${esc(status.sabia)}</span></footer>
 <div id="menu" popover></div>
+<dialog id="modal" aria-labelledby="modal-titulo"></dialog>
 <div class="fora" id="fora" role="alert" hidden><h1>O quadro foi encerrado</h1><p>Rode <code>sabia kanban</code> de novo para abrir.</p></div>
 <script id="dados" type="application/json">${JSON.stringify(status).replace(/</g, "\\u003c")}</script>
 <script>(${cliente})()</script>
@@ -567,17 +711,29 @@ export function paginaHtml(status) {
 </html>`;
 }
 
-/** Servidor local: GET / (a página), /dados.json (o JSON cru) e /vivo (o sinal de que o servidor segue de pé).
- *  `gerar` roda a cada carga, para a página mostrar o projeto de agora. Sem porta pedida, usa a PORTA e, com ela
- *  ocupada, uma livre. `fechou` resolve quando o servidor fecha de fato (conexões incluídas). */
-export function servirQuadro(gerar, { porta, host = "127.0.0.1" } = {}) {
+/** Servidor local: GET / (a página), /dados.json (o JSON cru), /vivo (o sinal de que o servidor segue de pé) e
+ *  POST /acao (uma mudança do quadro, com o token que só a página conhece). `gerar` roda a cada carga, para a página
+ *  mostrar o projeto de agora. Sem porta pedida, usa a PORTA e, com ela ocupada, uma livre. `fechou` resolve quando o
+ *  servidor fecha de fato (conexões incluídas). */
+export function servirQuadro(gerar, { porta, host = "127.0.0.1", acao } = {}) {
+  const token = randomUUID();
   const server = http.createServer((req, res) => {
     const fim = (codigo, corpo, tipo = "text/plain; charset=utf-8") => { res.writeHead(codigo, { "content-type": tipo, "cache-control": "no-store" }); res.end(corpo); };
+    const json = (codigo, o) => fim(codigo, JSON.stringify(o), "application/json; charset=utf-8");
+    if (req.method === "POST" && req.url === "/acao") {
+      // só a página deste servidor grava: o token está nela, e o pedido vem da própria origem
+      const origem = req.headers.origin;
+      if (!acao || req.headers["x-sabia-token"] !== token || (origem && origem !== `http://${req.headers.host}`)) return json(403, { erro: "pedido recusado" });
+      let corpo = "";
+      req.on("data", (d) => { corpo += d; if (corpo.length > 65536) req.destroy(); });
+      req.on("end", () => { try { json(200, { ok: true, ...acao(JSON.parse(corpo)) }); } catch (e) { json(400, { erro: e.message }); } });
+      return;
+    }
     if (req.method !== "GET" && req.method !== "HEAD") return fim(405, "use GET");
     if (req.url === "/vivo") { res.writeHead(200, { "content-type": "text/event-stream", "cache-control": "no-store" }); return res.write(": vivo\n\n"); }
     try {
       if (req.url === "/dados.json") return fim(200, JSON.stringify(gerar(), null, 2), "application/json; charset=utf-8");
-      if (req.url === "/" || req.url === "/index.html") return fim(200, paginaHtml(gerar()), "text/html; charset=utf-8");
+      if (req.url === "/" || req.url === "/index.html") return fim(200, paginaHtml(gerar(), token), "text/html; charset=utf-8");
     } catch (e) { return fim(500, `sabia kanban: ${e.message}`); }
     return fim(404, "não encontrado");
   });
@@ -589,7 +745,7 @@ export function servirQuadro(gerar, { porta, host = "127.0.0.1" } = {}) {
       const { port } = server.address();
       server.on("close", fecharFechou);
       resolve({
-        url: `http://${host}:${port}/`, porta: port, host,
+        url: `http://${host}:${port}/`, porta: port, host, token,
         fechar: () => { if (server.listening) { server.close(); server.closeAllConnections?.(); } else fecharFechou(); },
         fechou,
       });
@@ -601,9 +757,15 @@ export function servirQuadro(gerar, { porta, host = "127.0.0.1" } = {}) {
 /** O comando: confere o projeto (sem backlog, falha antes de servir), sobe o servidor, escreve a URL no log e
  *  devolve { url, fechar, fechou }; quem chama decide quando aguardar o fechamento (o comando espera o sinal). */
 export async function abrirQuadro({ projeto = ".", exec, log = console.log, porta, host, agora } = {}) {
-  const gerar = () => statusDoProjeto({ projeto, exec, agora });
+  // quem está no quadro: o usuário do git da máquina, se é da equipe; sem ele, o quadro só mostra
+  const usuario = usuarioDaMaquina(projeto, exec);
+  const gerar = () => {
+    const st = statusDoProjeto({ projeto, exec, agora, usuario });
+    st.quadro.gravacao = { usuario, ...podeGravar(projeto, exec, usuario) };
+    return st;
+  };
   gerar();
-  const q = await servirQuadro(gerar, { porta: Number.parseInt(porta, 10) || 0, host });
+  const q = await servirQuadro(gerar, { porta: Number.parseInt(porta, 10) || 0, host, acao: (a) => executar(projeto, a, { exec, usuario, agora }) });
   // a URL sozinha na linha: o terminal a torna clicável; com OSC 8, também onde ele não detecta o link
   const link = process.stdout.isTTY ? `\x1b]8;;${q.url}\x1b\\${q.url}\x1b]8;;\x1b\\` : q.url;
   log(`Quadro Kanban do projeto ${gerar().projeto} (Ctrl+C encerra):\n\n  ${link}\n`);

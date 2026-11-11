@@ -18,7 +18,8 @@
 O `backlog.md` é o dono do status do item. Este fluxo faz as mudanças de situação que não são de nenhum outro: o
 item impedido por algo de fora (outra equipe, ambiente, acesso, fornecedor, decisão externa, ou um "agora não" com
 data), a liberação, o cancelamento de um item já em andamento e a devolução ao backlog no meio da sprint. Mostra a
-prévia, grava com o "sim" e vai num commit direto na branch base.
+prévia, grava com o "sim" e vai num commit direto na branch base. O Quadro Kanban (`sabia kanban`) faz as mesmas
+mudanças pela página, com as mesmas regras.
 
 Quem pode: quem tem `produto`, ou o responsável da tarefa em curso (o Responsável da linha de especificação ou de
 desenvolvimento da sprint; no atendimento, o `responsável` do item). É a única exceção, com a `sa-status.fechar-sessao`,
