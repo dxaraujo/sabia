@@ -57,6 +57,7 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
   algo de fora impede, com data "até" opcional; volta ao status anterior ao ser liberado) ou a `cancelada`
   (`cancelado`), com a coluna `motivo`; quem muda é quem tem `produto` ou o responsável da tarefa em curso
   (`sa-status.situacao`). Não há adiamento: adiar é impedir com data.
+- **SLE.** O prazo esperado (SLE) fica na chave `sle` do `acordos.json`: `{"percentual": 85, "dias": 5}` quer dizer "85% dos itens em até 5 dias". O item em andamento com idade acima de `dias` vira aviso crítico no painel (`sa-status.painel`), nas pendências e no Quadro Kanban; a idade conta do início da tarefa principal, na linha da sprint. Sem a chave, não há aviso.
 - **Prioridade e tamanho.** `prioridade` ∈ {`crítica`, vazio}: crítica é o item urgente, pela política do `acordos.json`;
   vazio segue a ordem das linhas. `tamanho` ∈ {`P`, `M`, `G`}: P = horas, M ≈ 1 dia, G = 2 a 3 dias. Maior que G é
   épico, e só o épico vai ao pitch e à decisão de investimento.

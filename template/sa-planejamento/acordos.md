@@ -22,7 +22,7 @@
 |---|---|---|
 | `timebox_semanas` | semanas da sprint | `sa-planejamento.sprint` (datas) |
 | `wip` | limite por status ∈ `aceita` · `elegivel` · `em-andamento` · `em-revisao` (derivado do MR aberto); conta fatia e bug | `sa-status.painel`, `sa-desenvolver.iniciar`, `sabia status` |
-| `sle` | `percentual`% em até `dias` dias (opcional) | `sa-status.painel` (idade), `sabia status` |
+| `sle` | o prazo esperado (SLE do Kanban): `percentual`% dos itens em até `dias` dias, ex. `{"percentual": 85, "dias": 5}`. O item em andamento com idade acima de `dias` vira aviso crítico. Opcional: sem a chave, não há aviso | `sa-status.painel` (idade), `sa-status.pendencias`, `sabia status` e `sabia kanban` |
 | `alertas` | `mr_parado_dias` (padrão 1) · `impedimento_dias` (padrão 7); opcional | `sa-status.painel`, `sabia status` |
 | `reserva_capacidade_pct` | % da capacidade, em itens, para o atendimento | `sa-planejamento.sprint`, `sa-atender.atender` |
 | `tamanhos` | o que vale `P` · `M` · `G` (maior que G é épico) | `sa-triar.triar`, `sa-desenvolver.iniciar` |

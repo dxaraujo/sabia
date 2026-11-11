@@ -64,7 +64,7 @@ Fontes no fim deste arquivo.
 |---|---|---|
 | `sabia` | — | guia e roteador: disciplinas, papéis, aprovações, autonomia e qual skill usar |
 | `sa-setup` | `configurar` · `customizar` | configura o projeto na sessão sem agente: alvos, comandos, branch_base, formato da spec, "usa ELM?", toolkits e os 5 agentes; customiza um passo ou template |
-| `sa-status` | `painel` · `item` · `minha-proxima` · `pendencias` · `licoes-aprendidas` · `fechar-sessao` · `situacao` | painel só leitura (WIP, vazão, idade, lead time, pendências de rastreio), estado de um `<id>`, a próxima tarefa e os créditos da sessão |
+| `sa-status` | `painel` · `item` · `minha-proxima` · `pendencias` · `licoes-aprendidas` · `fechar-sessao` · `situacao` | painel só leitura (WIP, vazão, idade contra o SLE do `acordos.json`, lead time, pendências de rastreio), estado de um `<id>`, a próxima tarefa e os créditos da sessão |
 | `sa-triar` | `cadastrar` · `triar` | cadastro sem triar e triagem da fila `nova`: duplicado, falta informação, adiar, cancelar, aceitar |
 | `sa-refinar` | `moldar` · `detalhar` · `fatiar` · `ajustar` | pitch e decisão de investimento do épico; refinamento conjunto da fatia (ficha com regras, `CT-nn` e artefatos afetados, e `elm/` com ELM); fatiamento do PRD; ajuste do item pronto |
 | `sa-prd` | `prd` · `mudanca` | PRD do épico depois da decisão de investir, aprovado pelo produto no próprio documento |

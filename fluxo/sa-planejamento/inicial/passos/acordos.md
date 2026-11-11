@@ -13,7 +13,8 @@ padrões quando o time não diz outro valor. Mostre a proposta à pessoa como ta
 - **`timebox_semanas`**: padrão 2.
 - **`wip`**: limite por status de fatia e bug (`aceita` · `elegivel` · `em-andamento` · `em-revisao`); padrão
   `em-andamento` e `em-revisao`.
-- **`sle`** (opcional): `percentual` e `dias`.
+- **`sle`** (opcional): o prazo esperado, `percentual` e `dias` (ex.: 85% dos itens em até 5 dias). Acima de `dias`, o
+  item em andamento vira aviso crítico no painel e no Kanban.
 - **`alertas`** (opcional): `mr_parado_dias` (padrão 1) e `impedimento_dias` (padrão 7).
 - **`dod`**: CI verde · 1 aprovação de desenvolvedor ≠ autor · Evidência no MR · Artefatos afetados no MR · Lições aprendidas no `status.md`.
 - **`classes_de_servico`**: `urgente` = prioridade `crítica` (vai ao topo e é puxada sem aprovação) ·
