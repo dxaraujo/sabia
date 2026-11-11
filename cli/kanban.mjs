@@ -319,7 +319,7 @@ function cliente() {
       + (recolhido ? cartoes(cs, true) : '<div class="grupo-colunas">' + cols.filter((c) => !c.oculta).map((c) => coluna(c, mapa)).join("") + "</div>") + "</section>";
   }
 
-  // a lista: uma tabela por sprint e a do backlog, com as situações e os atributos do item
+  // a lista: a tabela do backlog e uma por sprint (da aberta para a primeira), com as situações e os atributos do item
   function tabela(titulo, sub, cs, sp, aberta) {
     const linha = (c) => {
       const nv = nivelDe(c);
@@ -336,10 +336,10 @@ function cliente() {
   const itens = (n) => n + (n === 1 ? " item" : " itens");
   function lista() {
     const doBacklog = Q.itens.filter((c) => noBacklog(c) && passa(c));
-    return SP.map((sp, i) => {
+    return tabela("Backlog", itens(doBacklog.length), doBacklog, null, true) + SP.map((sp, i) => {
       const cs = Q.itens.filter((c) => linhasDe(c, sp).length && passa(c));
       return tabela(sp.chave, dataBr(sp.inicio) + " → " + dataBr(sp.fim) + " · " + itens(cs.length), cs, sp, i === 0);
-    }).join("") + tabela("Backlog", itens(doBacklog.length), doBacklog, null, true);
+    }).join("");
   }
 
   const quadro = $("#quadro");
