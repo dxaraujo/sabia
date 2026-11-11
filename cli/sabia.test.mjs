@@ -8,7 +8,7 @@ import { afterEach, beforeEach, test } from "node:test";
 import * as s from "./sabia.mjs";
 import { statusDoProjeto } from "./status.mjs";
 import { abrirQuadro, paginaHtml } from "./kanban.mjs";
-import { editarTabela, preparar, executar, usuarioDaMaquina, podeGravar } from "./acoes.mjs";
+import { editarTabela, preparar, executar, usuarioDaMaquina, podeGravar, trabalhoNaSprint } from "./acoes.mjs";
 
 let raiz, home, chamadas, respostas, saida, escolhas, logs;
 
@@ -950,13 +950,14 @@ test("kanban que grava: impedir, liberar, cancelar, sprint ↔ backlog, concluir
   assert.ok(sp(m).includes("| FT-003 | especificação | ana |  |  |  |\n\n## Review"));  // aceita: a tarefa é de especificação
   assert.equal(m.commit, "2026/Sprint 01: reabastecimento");
   assert.throws(() => preparar(proj, { tipo: "para-sprint", id: "FT-002" }, { usuario: bia, agora }), /já tem a tarefa de desenvolvimento/);
-  // o item sem status entra na sprint como nova: o quadro o mostra na raia Nova, com o aviso, e a entrada grava o status
+  // o que entra na sprint é o que o planejamento aceita; o item sem status vale como nova no quadro e não entra
   const semStatus = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora }).quadro.itens.find((c) => c.id === "FT-004");
   assert.equal(semStatus.coluna, "nova");
   assert.deepEqual(semStatus.avisos.map((a) => a.tipo), ["sem-status"]);
-  m = preparar(proj, { tipo: "para-sprint", id: "FT-004" }, { usuario: bia, agora });
-  assert.match(linha(bk(m), "FT-004"), /^\| FT-004 \| Quatro \| fatia \| nova \|/);
-  assert.ok(sp(m).includes("| FT-004 | especificação | — |"));
+  assert.throws(() => preparar(proj, { tipo: "para-sprint", id: "FT-004" }, { usuario: bia, agora }), /não entra na sprint/);
+  assert.throws(() => preparar(proj, { tipo: "para-sprint", id: "EP-01" }, { usuario: bia, agora }), /épico fatiado\) não entra na sprint/);
+  assert.deepEqual([["fatia", "elegivel"], ["bug", "aceita"], ["fatia", "nova"], ["épico", "a-moldar"], ["épico", "em-especificacao"], ["épico", "fatiado"], ["sustentação", "nova"], ["sustentação", "em-andamento"], ["fatia", "em-andamento"], ["fatia", "impedida"]]
+    .map(([tipo, status]) => trabalhoNaSprint({ tipo, status })), ["desenvolvimento", "especificação", null, "especificação", "especificação", null, "atendimento", "atendimento", null, null]);
   // cancelar a última fatia aberta: a pasta da spec sai e o épico fecha (havia uma concluída)
   m = preparar(proj, { tipo: "cancelar", id: "FT-002", motivo: "fora do escopo" }, { usuario: bia, agora });
   assert.match(linha(bk(m), "FT-002"), /\| cancelada \|.*\| fora do escopo · desde 2026-11-09 \|/);

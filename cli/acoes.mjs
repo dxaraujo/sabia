@@ -9,12 +9,22 @@ import { celulas, semValor, lerMotivo, tabela, sprintsDe, gitlab } from "./statu
 const BACKLOG = ".sabia/planejamento/backlog.md", SABIA_MD = ".sabia/sabia.md";
 const TERMINAIS = ["concluida", "concluido", "cancelada", "cancelado"], IMPEDIDOS = ["impedida", "impedido"];
 const PRINCIPAL = { fatia: "desenvolvimento", bug: "desenvolvimento", "sustentação": "atendimento", "épico": "especificação" };
-const TRABALHOS = ["especificação", "desenvolvimento", "atendimento"];
 // o texto da pessoa vai para dentro de uma célula de tabela: sem barra vertical, sem quebra de linha e sem o
 // separador das partes do motivo
 const limpo = (x, max = 300) => String(x ?? "").replace(/[|\r\n]+/g, " ").replace(/ · /g, " - ").replace(/\s+/g, " ").trim().slice(0, max);
 const ehData = (x) => /^\d{4}-\d{2}-\d{2}$/.test(x ?? "");
 const junta = (...partes) => partes.filter(Boolean).join(" · ");
+
+/** O trabalho com que o item entra na sprint, pela regra da `sa-planejamento.sprint` (passos `especificacao` e
+ *  `previsao`); nulo se o item não entra. */
+export function trabalhoNaSprint(item) {
+  const fb = item.tipo === "fatia" || item.tipo === "bug";
+  if (fb && item.status === "elegivel") return "desenvolvimento";
+  if (fb && item.status === "aceita") return "especificação";
+  if (item.tipo === "épico" && ["a-moldar", "em-especificacao"].includes(item.status)) return "especificação";
+  if (item.tipo === "sustentação" && ["nova", "em-andamento"].includes(item.status)) return "atendimento";
+  return null;
+}
 
 /** Edita a primeira tabela cujo cabeçalho começa com `coluna`: `fn` recebe as linhas como objetos (pelo nome da
  *  coluna) e pode alterá-las ou devolver outra lista. Só a linha que mudou é reescrita; as outras ficam como estão. */
@@ -120,13 +130,12 @@ export function preparar(raiz, acao, { usuario, agora = new Date() }) {
   } else if (acao.tipo === "para-sprint") {
     exige(true);
     if (!sprint?.aberta) throw new Error("não há sprint aberta: planeje pela sa-planejamento.sprint");
-    if (terminal) throw new Error(`${item.id} está ${item.status}`);
-    const trabalho = acao.trabalho || (["fatia", "bug"].includes(item.tipo) && item.status !== "elegivel" ? "especificação" : PRINCIPAL[item.tipo] ?? "especificação");
-    if (!TRABALHOS.includes(trabalho)) throw new Error("trabalho inválido");
+    // o que entra na sprint é o que a sa-planejamento.sprint aceita: o trabalho sai do tipo e do status do item
+    const trabalho = trabalhoNaSprint(item);
+    if (!trabalho) throw new Error(`${item.id} (${item.tipo || "sem tipo"} ${item.status || "sem status"}) não entra na sprint: entram fatia ou bug elegivel (desenvolvimento) ou aceita (especificação), épico a-moldar ou em-especificacao (especificação) e sustentação nova ou em-andamento (atendimento)`);
     if (abertas.some((x) => x.Trabalho === trabalho)) throw new Error(`${item.id} já tem a tarefa de ${trabalho} na sprint`);
     const resp = limpo(acao.responsavel, 60) || "—";
     out.arquivos[sprint.arquivo] = editarTabela(ler(sprint.arquivo), "Item", (ls) => [...ls, { Item: item.id, Trabalho: trabalho, "Responsável": resp, Tarefas: "", iniciada_em: "", concluida_em: "" }]);
-    if (semValor(item.status)) naLinha((l) => { l.status = "nova"; });  // sem status, entra como nova
     out.commit = `${sprint.chave}: reabastecimento`;
   } else if (acao.tipo === "para-backlog") {
     exige(false);

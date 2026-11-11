@@ -311,10 +311,18 @@ function cliente() {
   // o que o quadro grava: só na sprint aberta, e só o que a pessoa pode (produto, ou o responsável da tarefa em curso)
   const G = Q.gravacao, grava = Boolean(G?.ok), produto = Boolean(G?.usuario?.produto), TOKEN = $('meta[name="sabia-token"]')?.content ?? "";
   const abertasDe = (c) => (SP[0]?.itens ?? []).filter((l) => l.id === c.id && !l.concluida_em);
+  // o que entra na sprint, e com que trabalho: a regra da sa-planejamento.sprint (a mesma do servidor)
+  const entra = (c) => {
+    const fb = c.tipo === "fatia" || c.tipo === "bug";
+    return fb && c.status === "elegivel" ? "desenvolvimento" : fb && c.status === "aceita" ? "especificação"
+      : c.tipo === "épico" && ["a-moldar", "em-especificacao"].includes(c.status) ? "especificação"
+      : c.tipo === "sustentação" && ["nova", "em-andamento"].includes(c.status) ? "atendimento" : null;
+  };
   function acoesDe(c) {
     if (!grava || si !== 0) return [];
     const term = TERMINAL.has(c.status), imp = c.status === "impedida", a = [];
-    if (produto && !term && SP[0]?.aberta && raia(c) === "backlog") a.push(["para-sprint", "Levar para a sprint"]);
+    const tr = entra(c);
+    if (produto && tr && SP[0]?.aberta && !abertasDe(c).some((l) => l.trabalho === tr)) a.push(["para-sprint", "Levar para a sprint"]);
     if (c.pode && SP[0]?.aberta && abertasDe(c).length) a.push(["para-backlog", "Devolver ao backlog"]);
     if (c.pode && !term && !imp) a.push(["impedir", "Impedir"]);
     if (c.pode && imp) a.push(["liberar", "Liberar"]);
@@ -481,10 +489,9 @@ function cliente() {
     else if (tipo === "cancelar") campos = '<label>Motivo do cancelamento<textarea name="motivo" required maxlength="300"></textarea></label>'
       + '<p class="nota">O cancelamento não se desfaz pelo quadro. A pasta da spec sai da branch base; MR, branch e tarefa do EWM você fecha à parte.</p>';
     else if (tipo === "para-sprint") {
-      const padrao = (c.tipo === "fatia" || c.tipo === "bug") && c.status !== "elegivel" ? "especificação" : { fatia: "desenvolvimento", bug: "desenvolvimento", "sustentação": "atendimento", "épico": "especificação" }[c.tipo] ?? "desenvolvimento";
-      campos = "<label>Trabalho<select name=\"trabalho\">" + ["especificação", "desenvolvimento", "atendimento"].map((t) => "<option" + (t === padrao ? " selected" : "") + ">" + t + "</option>").join("") + "</select></label>"
+      campos = "<p>Entra uma tarefa de <b>" + esc(entra(c)) + "</b> na " + esc(sp.chave) + ", sem data de início.</p>"
         + '<label>Responsável<select name="responsavel"><option value="">sem responsável</option>' + Object.entries(Q.pessoas).map(([u, n]) => '<option value="' + esc(u) + '">' + esc(n) + "</option>").join("") + "</select></label>"
-        + '<p class="nota">Entra uma tarefa na ' + esc(sp.chave) + ", sem data de início. " + (c.avisos.some((a) => a.tipo === "sem-status") ? "O item está sem status no backlog e entra como <b>" : "O status não muda: o item continua <b>") + esc(col(c.coluna)?.nome ?? c.coluna) + "</b> e aparece nessa raia.</p>";
+        + '<p class="nota">O status não muda: o item continua <b>' + esc(col(c.coluna)?.nome ?? c.coluna) + "</b> e aparece nessa raia.</p>";
     } else if (tipo === "para-backlog") campos = '<p class="nota">As tarefas abertas do item saem da ' + esc(sp.chave) + (c.status === "em-andamento" ? ", e ele volta a " + esc(col(c.tipo === "sustentação" ? "nova" : "elegivel")?.nome ?? "elegível") : "")
       + ". O início e a tarefa do EWM ficam anotados na obs do item.</p>";
     else if (tipo === "concluir") campos = (c.mesclado ? '<p class="nota">MR !' + c.mesclado.iid + " mesclado" + (c.mesclado.em ? " em " + dataBr(c.mesclado.em) : "") + '.</p><input type="hidden" name="mesclado_em" value="' + esc(c.mesclado.em ?? "") + '">'
@@ -502,7 +509,7 @@ function cliente() {
     f.addEventListener("submit", async (e) => {
       e.preventDefault();
       const d = new FormData(f), acao = { tipo, id: c.id, ...extra };
-      for (const k of ["motivo", "por", "ate", "trabalho", "responsavel", "mesclado_em"]) if (d.get(k)) acao[k] = d.get(k);
+      for (const k of ["motivo", "por", "ate", "responsavel", "mesclado_em"]) if (d.get(k)) acao[k] = d.get(k);
       if (tipo === "concluir") { acao.confirmo = d.has("confirmo"); acao.regras = [...c.licoes.map((_, k) => (d.has("usar" + k) ? d.get("regra" + k) : "")), d.get("outra")].filter((x) => x && x.trim()); }
       const botao = f.querySelector('[type="submit"]');
       botao.disabled = true; botao.textContent = "Gravando…"; erro.hidden = true;
