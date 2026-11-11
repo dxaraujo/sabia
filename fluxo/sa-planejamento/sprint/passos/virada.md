@@ -13,8 +13,8 @@ A sprint anterior (a de maior chave) e o `backlog.md` da branch base. Sem sprint
    - **atendimento** aberto: `nova` ou `em-andamento`.
    Linhas de itens concluídos, cancelados ou adiados não migram.
 2. Pergunte "migrar para esta sprint?", por item ou todos. Quem tem `produto` decide.
-3. **Migra**: ganha na sprint nova uma linha igual (Item · Trabalho · Responsável · Tarefas) e entra primeiro na
-   capacidade.
+3. **Migra**: ganha na sprint nova uma linha igual (Item · Trabalho · Responsável · Tarefas), com o `iniciada_em` que
+   já tinha, e entra primeiro na capacidade.
 4. **Não migra**: volta ao backlog com a branch, a ficha e a pasta mantidas. O item `em-andamento` passa a `elegivel`
    e o responsável fica; os outros status não mudam. A mudança do `backlog.md` vai no commit do passo `gravar`.
 5. Com ELM, ofereça cancelar a tarefa do item que saiu (`sa-elm.finalizar`, só a tarefa; o IB fica) e mover os

@@ -1,5 +1,5 @@
 ---
-{"resumo": "A pessoa declara resolvido: Resposta e Horas no registro, concluida e concluida_em no backlog (ou cancelada com o motivo); avisa a fatia de origem; oferece finalizar a tarefa no ELM."}
+{"resumo": "A pessoa declara resolvido: Resposta e Horas no registro, concluida e concluida_em no backlog e na linha da sprint (ou cancelada com o motivo); avisa a fatia de origem; oferece finalizar a tarefa no ELM."}
 ---
 ## Entrada
 
@@ -9,7 +9,8 @@
 
 1. Quem declara resolvido é a pessoa, nunca a IA. Não há confirmação do solicitante.
 2. No registro: a Resposta enviada (sem dado de cliente) e, se a pessoa informar, a linha Data | Horas.
-3. No `backlog.md`: status `concluida` e `concluida_em` = hoje. Pedido retirado: status `cancelada` com
+3. No `backlog.md`: status `concluida` e `concluida_em` = hoje; na linha Item · `atendimento` da sprint,
+   `concluida_em` = hoje. Pedido retirado: status `cancelada` com
    `motivo: <texto>` na `obs`.
 4. O commit sai no passo `desdobramentos`.
 5. Item com `origem FT-nnn` (ex.: a DDL de uma fatia) → avise que a `FT-nnn` pode seguir; quem desenvolve tira o

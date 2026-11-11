@@ -1,5 +1,5 @@
 ---
-{"resumo": "Assume o item num commit '<ID> iniciar' na branch base: em-andamento, responsável e iniciada_em no backlog, o Responsável no registro e a linha atendimento no sprint aberto; oferece o item no ELM."}
+{"resumo": "Assume o item num commit '<ID> iniciar' na branch base: em-andamento e responsável no backlog, o Responsável no registro e a linha atendimento com iniciada_em no sprint aberto; oferece o item no ELM."}
 ---
 ## Entrada
 
@@ -12,10 +12,9 @@ O item puxado (passo `puxar`) e o usuário da sessão.
 2. Responsável de outra pessoa → mostre de quem é e só assuma com o "sim"; registre a troca na Atividade do registro.
 3. Já `em-andamento` com a mesma pessoa (retomada) → nada a gravar; siga.
 4. Grave pelo commit direto na branch base (passo `commit-na-branch-base`), num commit `<ID> iniciar`:
-   - no `backlog.md`: status `em-andamento`, `responsável` = `usuario`, `iniciada_em` = hoje e a `obs` da reserva de capacidade,
-     se houve;
+   - no `backlog.md`: status `em-andamento`, `responsável` = `usuario` e a `obs` da reserva de capacidade, se houve;
    - no registro: o Responsável;
-   - no `sprint-<nn>.md` aberto, se falta: a linha Item · `atendimento` · Responsável.
+   - no `sprint-<nn>.md` aberto: a linha Item · `atendimento` (nasce se falta) com o Responsável e `iniciada_em` = hoje.
 5. Com ELM configurado: "quer criar o item no ELM?" → `sa-elm.item` (IB e tarefa ATD; o id da tarefa vai na coluna
    Tarefas da linha do sprint). Qualquer resposta segue.
 

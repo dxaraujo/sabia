@@ -8,7 +8,7 @@ O id, o trabalho e o `sprint-<nn>.md` aberto (o de maior chave).
 ## Faça
 
 Procure a linha Item · Trabalho do item no `sprint-<nn>.md` aberto. Não existe → acrescente (Item · Trabalho ·
-Responsável = a pessoa · Tarefas vazia), gravada no passo `gravar`. Sem sprint aberta → não crie a tarefa: diga
+Responsável = a pessoa · Tarefas e datas vazias), gravada no passo `gravar`. Sem sprint aberta → não crie a tarefa: diga
 que ela nasce quando o item entrar numa sprint.
 
 ## Saída

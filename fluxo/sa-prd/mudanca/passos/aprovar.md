@@ -10,6 +10,10 @@ O `prd.md` mudado e o `equipe.json`.
 Igual ao `sa-prd.prd.aprovar`: só quem tem `produto` aprova. Sim → `**Aprovado:** <usuario> · <AAAA-MM-DD>` no topo; o
 commit é o do passo `gravar` (`EP-nn aprovar PRD v<N>`). Ajuste → passo `editar`.
 
+**Tarefa de especificação.** No mesmo commit, abra a tarefa pela regra do template `sa-planejamento/sprint.md`: na linha
+`EP-nn · especificação` da sprint aberta, `iniciada_em` = hoje, só se está vazia. A linha nasce se falta; sem sprint
+aberta, siga.
+
 ## Saída
 
 Aprovado → passo `gravar`. Ajuste → passo `editar`.

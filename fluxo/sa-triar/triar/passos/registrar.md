@@ -9,17 +9,17 @@ O destino do passo `decidir` e, no aceito, a classificação do passo `classific
 
 **Status gravado:**
 
-| Caso | Status | Datas |
-|---|---|---|
-| fatia ou bug aceito | `aceita` | `aceita_em` |
-| épico aceito | `a-moldar` | `aceita_em` |
-| sustentação aceita, ou qualquer item com `falta:` | `nova` | — |
-| duplicado ou recusa | `cancelada` | — |
-| agora não | `adiada até <AAAA-MM-DD>` (fatia ou bug) | — |
+| Caso | Status |
+|---|---|
+| fatia ou bug aceito | `aceita` |
+| épico aceito | `a-moldar` |
+| sustentação aceita, ou qualquer item com `falta:` | `nova` |
+| duplicado ou recusa | `cancelada` |
+| agora não | `adiada até <AAAA-MM-DD>` (fatia ou bug) |
 
 **Colunas:** id · título · tipo · status · prioridade · tamanho · responsável (vazio) · pai · relator (`usuario` do
-`equipe.json` ou `externo: <área ou nome>`) · `ib` (só o número, quando veio do EWM) · `obs` · `aceita_em` ·
-`iniciada_em` · `concluida_em` (AAAA-MM-DD).
+`equipe.json` ou `externo: <área ou nome>`) · `ib` (só o número, quando veio do EWM) · `obs` · `entrou_em`
+(do cadastro; a triagem não muda) · `concluida_em` (AAAA-MM-DD).
 
 **Corpo:**
 - fatia e bug: a ficha curta `.sabia/planejamento/fatias/FT-nnn-<slug>.md`, só com a seção Entrada do tipo, pelo template `sa-refinar/ficha.md`;

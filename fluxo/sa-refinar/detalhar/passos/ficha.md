@@ -21,7 +21,10 @@ O que os passos anteriores levantaram: regras, cenários, Não muda, artefatos a
    mudar regra não tiram o Aprovado.
 4. **Linha**: DoR completa → status `elegivel`. Senão, fica `aceita`; a `elegivel` que perde um item da DoR volta a
    `aceita`. O tamanho se atualiza se mudou.
-5. Ficha e linha vão num commit: `backlog: refinamento FT-nnn`.
+5. **Tarefa de especificação**, pela regra do template `sa-planejamento/sprint.md`: na linha `<id> · especificação` da
+   sprint aberta, `iniciada_em` = hoje, só se está vazia (a linha nasce se falta); ao gravar `elegivel`,
+   `concluida_em` = hoje. Sem sprint aberta, siga.
+6. Ficha, linha do backlog e linha da sprint vão num commit: `backlog: refinamento FT-nnn`.
 
 ## Saída
 

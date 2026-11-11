@@ -5,15 +5,21 @@ próximo a puxar. O cadastro acrescenta no fim, quem tem a booleana `produto` re
 prioridade `crítica` é urgente. Célula sem valor fica vazia. Toda escrita vai por commit direto na branch base
 (commit pequeno, push com o "sim"). O corpo do item é achado pelo id: não há coluna de link nem de sprint.
 
+O backlog é o dono do status do item. As datas do trabalho (início e fim de cada tarefa) ficam na linha da sprint
+(o template `sa-planejamento/sprint.md`): o início do item é o primeiro `iniciada_em` das linhas do trabalho
+principal dele (fatia e bug: desenvolvimento; sustentação: atendimento; épico: especificação), e o lead time vai
+desse início até o `concluida_em` do backlog.
+
 ```markdown
 # Backlog
 
-| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | obs | aceita_em | iniciada_em | concluida_em |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| EP-03 | Bloqueio de conta por tentativas | épico | fatiado | | | | | ana.souza | 612010 | | 2026-10-02 | 2026-10-05 | |
-| FT-031 | Bloquear após 3 tentativas inválidas | fatia | elegível | | M | | EP-03 | ana.souza | | | 2026-10-12 | | |
-| FT-034 | Erro 500 no login com senha vazia | bug | em-andamento | crítica | P | joao.lima | | externo: suporte | 4567 | | 2026-10-20 | 2026-10-21 | |
-| AT-012 | Extrair contas bloqueadas de outubro | sustentação | nova | | | | | externo: financeiro | | | | | |
+| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | obs | entrou_em | concluida_em |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| EP-03 | Bloqueio de conta por tentativas | épico | fatiado | | | | | ana.souza | 612010 | | 2026-10-02 | |
+| FT-031 | Bloquear após 3 tentativas inválidas | fatia | elegivel | | M | | EP-03 | ana.souza | | | 2026-10-12 | |
+| FT-034 | Erro 500 no login com senha vazia | bug | em-andamento | crítica | P | joao.lima | | externo: suporte | 4567 | | 2026-10-20 | |
+| FT-030 | Contador de tentativas inválidas | fatia | concluida | | M | ana.souza | EP-03 | ana.souza | | | 2026-10-12 | 2026-11-06 |
+| AT-012 | Extrair contas bloqueadas de outubro | sustentação | nova | | | | | externo: financeiro | | | 2026-11-03 | |
 ```
 
 ## Colunas
@@ -31,9 +37,8 @@ prioridade `crítica` é urgente. Célula sem valor fica vazia. Toda escrita vai
 | `relator` | `usuario` do `equipe.json` · `externo: <área ou nome>` | o cadastro · `sa-elm.importar-backlog` |
 | `ib` | só o número do IB no EWM · vazio | `sa-elm.item` · `sa-elm.importar-backlog` |
 | `obs` | convenções abaixo, separadas por ` · `; o resto é texto livre | quem causa a anotação |
-| `aceita_em` | AAAA-MM-DD: o item sai de `nova` (fatia e bug: `aceita`; épico: `a-moldar`) | `sa-triar.triar` · `sa-atender.atender` · `sa-refinar.fatiar` |
-| `iniciada_em` | AAAA-MM-DD: início do lead time (fatia, bug e sustentação: `em-andamento`; épico: `em-especificacao`) | `sa-desenvolver.iniciar` · `sa-atender.atender` · `sa-refinar.moldar` (investir) |
-| `concluida_em` | AAAA-MM-DD; lead time = `concluida_em` − `iniciada_em` | `sa-desenvolver.encerrar` · `sa-atender.atender` |
+| `entrou_em` | AAAA-MM-DD: o dia em que o item entrou no backlog | o cadastro comum · `sa-elm.importar-backlog` |
+| `concluida_em` | AAAA-MM-DD: o dia em que o item foi concluído | `sa-desenvolver.encerrar` · `sa-atender.atender` · quem fecha o épico |
 
 ## Status
 

@@ -1,6 +1,7 @@
-// `sabia status`: o estado do fluxo em JSON estável, para bots e scripts. Só lê: o backlog e a sprint aberta do repositório,
-// os acordos do time (WIP e SLE), o `status.md` da branch dos itens em andamento (worktree ou branch publicada) e, com as
-// variáveis do GitLab, os MRs abertos. A seção `quadro` é o que a `sabia kanban` exibe. O campo `versao` muda se o formato mudar.
+// `sabia status`: o estado do fluxo em JSON estável, para bots e scripts. Só lê: o backlog e as sprints do repositório
+// (com o início e o fim de cada tarefa), os acordos do time (WIP, SLE e alertas), o `status.md` da branch dos itens em
+// andamento (worktree ou branch publicada) e, com as variáveis do GitLab, os MRs abertos. A seção `quadro` é o que a
+// `sabia kanban` exibe. O campo `versao` muda se o formato mudar.
 import fs from "node:fs";
 import path from "node:path";
 
@@ -170,6 +171,11 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
   const backlog = tabela(fs.readFileSync(f, "utf8"), "id"), porId = Object.fromEntries(backlog.map((l) => [l.id, l]));
   const hoje = agora.toISOString().slice(0, 10), sprints = sprintsDe(raiz, hoje), sprint = sprints[0] ?? null;
   const dias = (d, ate = hoje) => Math.floor((Date.parse(ate) - Date.parse(d)) / 86400000);
+  // as datas são da tarefa (a linha da sprint). O início do item é o primeiro `iniciada_em` das linhas do trabalho
+  // principal dele, em qualquer sprint; a idade e o lead time do item partem daí
+  const PRINCIPAL = { fatia: "desenvolvimento", bug: "desenvolvimento", "sustentação": "atendimento", "épico": "especificação" };
+  const data = (x) => (/^\d{4}-\d{2}-\d{2}$/.test(x ?? "") ? x : null);
+  const inicioDe = (l) => sprints.flatMap((sp) => sp.itens).filter((x) => x.Item === l.id && x.Trabalho === PRINCIPAL[l.tipo]).map((x) => data(x.iniciada_em)).filter(Boolean).sort()[0] ?? null;
   const plural = (n, um, varios) => `${n} ${n === 1 ? um : varios}`;
   const porStatus = {};
   for (const l of backlog) porStatus[l.status] = (porStatus[l.status] ?? 0) + 1;
@@ -199,7 +205,7 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
     const daSprint = linhas.filter((x) => x.Item === l.id);
     const st = statusColuna(l.status) || "sem-dados", terminal = TERMINAIS.includes(st), andando = st === "em-andamento";
     const md = andando ? mdDe(l.id) : null, mrG = andando ? mrGitlabDe(l.id) : null;
-    const idade = !terminal && l.iniciada_em ? dias(l.iniciada_em) : null;
+    const inicio = inicioDe(l), idade = !terminal && inicio ? dias(inicio) : null;
     const adiadaAte = l.status?.match(/^adiada até (\d{4}-\d{2}-\d{2})$/)?.[1] ?? null;
     // os avisos: o que o acordos.json e o fluxo do sa-status pedem para olhar; `critico` pede ação já, `atencao` acompanha
     const avisos = [], aviso = (tipo, nivel, mensagem) => avisos.push({ tipo, nivel, mensagem });
@@ -232,10 +238,11 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
       tamanho: l.tamanho || null,
       pai: l.pai || null,
       ib: l.ib || null,
-      iniciada_em: l.iniciada_em || null,
-      concluida_em: l.concluida_em || null,
+      entrou_em: data(l.entrou_em),
+      iniciada_em: inicio,
+      concluida_em: data(l.concluida_em),
       idade_dias: idade,
-      lead_time_dias: l.iniciada_em && l.concluida_em ? dias(l.iniciada_em, l.concluida_em) : null,
+      lead_time_dias: inicio && data(l.concluida_em) ? dias(inicio, l.concluida_em) : null,
       trilha: md?.trilha ?? null,
       autonomia: md?.autonomia ?? null,
       mr: mrG ? { iid: mrG.iid, url: mrG.url } : (md?.mr ?? null),
@@ -264,7 +271,7 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
   }
 
   return {
-    versao: 3,
+    versao: 4,
     sabia: VERSAO_SABIA,
     projeto: path.basename(raiz),
     gerado_em: agora.toISOString(),
@@ -273,13 +280,16 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
     sem_responsavel: itens.filter((x) => semValor(x["Responsável"])).map((x) => ({ id: x.Item, titulo: x.linha["título"], trabalho: x.Trabalho, status: x.linha.status })),
     nao_iniciados: itens.filter((x) => x.Trabalho === "desenvolvimento" && NAO_INICIADO.includes(x.linha.status)).map((x) => ({ id: x.Item, titulo: x.linha["título"], status: x.linha.status })),
     em_andamento: backlog.filter((l) => l.status === "em-andamento").map((l) => ({ id: l.id, titulo: l["título"], responsavel: semValor(l["responsável"]) ? null : l["responsável"],
-      iniciada_em: l.iniciada_em || null, idade_dias: l.iniciada_em ? dias(l.iniciada_em) : null })),
+      iniciada_em: inicioDe(l), idade_dias: inicioDe(l) ? dias(inicioDe(l)) : null })),
     mrs_aguardando: mrs,
     quadro: {
       config, grupo, colunas, itens: cards, wip, sle: acordos.sle, limites: acordos.alertas, alertas, pessoas: pessoasDe(raiz),
       // as sprints, da aberta para a primeira, com as linhas de cada uma (a página escolhe qual mostra)
       sprints: sprints.map((x) => ({ chave: x.chave, inicio: x.inicio, fim: x.fim, meta: x.meta, reserva: x.reserva, aberta: x.aberta,
-        itens: x.itens.map((l) => ({ id: l.Item, trabalho: l.Trabalho ?? null, responsavel: semValor(l["Responsável"]) ? null : l["Responsável"], tarefas: semValor(l.Tarefas) ? null : l.Tarefas })) })),
+        itens: x.itens.map((l) => ({ id: l.Item, trabalho: l.Trabalho ?? null, responsavel: semValor(l["Responsável"]) ? null : l["Responsável"], tarefas: semValor(l.Tarefas) ? null : l.Tarefas,
+          // a tarefa: início e fim daquele trabalho, e o lead time dele
+          iniciada_em: data(l.iniciada_em), concluida_em: data(l.concluida_em),
+          lead_time_dias: data(l.iniciada_em) && data(l.concluida_em) ? dias(l.iniciada_em, l.concluida_em) : null })) })),
     },
   };
 }

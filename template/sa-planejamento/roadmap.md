@@ -12,7 +12,7 @@
 
 - Épicos: `EP-nn` separados por ` · `, em ordem de valor e risco (a maior incerteza mais cedo). Épico `a-moldar`
   aparece como `a moldar (sa-refinar.moldar)`.
-- Previsão: a sprint prevista pela vazão (itens de desenvolvimento concluídos por sprint, pela `concluida_em` do
+- Previsão: a sprint prevista pela vazão (itens de desenvolvimento concluídos por sprint, pela `concluida_em` das linhas de desenvolvimento das sprints, não do
   `backlog.md`), ou vazio.
 
 Escrevem: `sa-planejamento.inicial` (só com "usa roadmap?" = sim) · `sa-planejamento.sprint` (Previsão, só se o

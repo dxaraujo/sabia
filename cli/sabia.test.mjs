@@ -608,9 +608,9 @@ test("toolkits no projeto: instalar liga pelo manifesto, escreve o sabia.md e vo
 
 test("status: JSON estável com sprint, sem responsável, não iniciados, em andamento e MRs pelo GitLab", async () => {
   const proj = escrever(path.join(raiz, "st"), {
-    ".sabia/planejamento/backlog.md": "# Backlog\n\n| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | obs | aceita_em | iniciada_em | concluida_em |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n"
-      + "| FT-001 | Um | fatia | elegivel |  | P |  |  | a |  |  |  |  |  |\n| FT-002 | Dois | fatia | em-andamento |  | M | ana |  | a |  |  |  | 2026-11-01 |  |\n| FT-003 | Três | fatia | concluida |  | M | ana |  | a |  |  |  |  | 2026-11-02 |\n| FT-004 | Quatro | fatia | em-andamento |  | M | bia |  | a |  |  |  |  |  |\n",
-    ".sabia/planejamento/sprints/2026/sprint-02.md": "# 2026/Sprint 02 · 2026-11-01 → 2026-11-13\n\n**Meta:** Entregar\n\n## Itens\n\n| Item | Trabalho | Responsável | Tarefas |\n|---|---|---|---|\n| FT-001 | desenvolvimento | — | — |\n| FT-002 | desenvolvimento | ana | — |\n| FT-003 | desenvolvimento | — | — |\n| FT-004 | desenvolvimento | bia | — |\n",
+    ".sabia/planejamento/backlog.md": "# Backlog\n\n| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | obs | entrou_em | concluida_em |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n"
+      + "| FT-001 | Um | fatia | elegivel |  | P |  |  | a |  |  |  |  |\n| FT-002 | Dois | fatia | em-andamento |  | M | ana |  | a |  |  |  |  |\n| FT-003 | Três | fatia | concluida |  | M | ana |  | a |  |  |  | 2026-11-02 |\n| FT-004 | Quatro | fatia | em-andamento |  | M | bia |  | a |  |  |  |  |\n",
+    ".sabia/planejamento/sprints/2026/sprint-02.md": "# 2026/Sprint 02 · 2026-11-01 → 2026-11-13\n\n**Meta:** Entregar\n\n## Itens\n\n| Item | Trabalho | Responsável | Tarefas | iniciada_em | concluida_em |\n|---|---|---|---|---|---|\n| FT-001 | desenvolvimento | — | — | | |\n| FT-002 | desenvolvimento | ana | — | 2026-11-01 | |\n| FT-003 | desenvolvimento | — | — | | |\n| FT-004 | desenvolvimento | bia | — | | |\n",
     ".sabia/planejamento/sprints/2026/sprint-01.md": "# 2026/Sprint 01 · 2026-10-01 → 2026-10-13\n",
     // o status.md das branches: o da FT-002 tem Fase — (fica em em-andamento); o da FT-004, pr-aberto (em-revisao, GitLab ou não)
     ".sabia/local/wt/ft-002/.kiro/specs/ft-002-duas/status.md": "# Status\n\n| Campo | Valor |\n|---|---|\n| Fase | — |\n",
@@ -619,7 +619,7 @@ test("status: JSON estável com sprint, sem responsável, não iniciados, em and
   const agora = new Date("2026-11-09T12:00:00Z");
   delete process.env.GITLAB_API_URL;
   let r = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora });
-  assert.equal(r.versao, 3);
+  assert.equal(r.versao, 4);
   assert.equal(r.projeto, "st");
   assert.match(r.sabia, /^\d+\.\d+\.\d+/);  // a versão do Sabiá que gerou
   assert.deepEqual(r.sprint, { chave: "2026/Sprint 02", inicio: "2026-11-01", fim: "2026-11-13", meta: "Entregar", reserva: null, aberta: true });
@@ -646,7 +646,10 @@ test("status: JSON estável com sprint, sem responsável, não iniciados, em and
   assert.equal(c2.na_sprint, true);
   // as sprints, da aberta para a primeira, com as linhas de cada uma; os nomes vêm do equipe.json (aqui, sem ele)
   assert.deepEqual(r.quadro.sprints.map((x) => x.chave), ["2026/Sprint 02", "2026/Sprint 01"]);
-  assert.deepEqual(r.quadro.sprints[0].itens[1], { id: "FT-002", trabalho: "desenvolvimento", responsavel: "ana", tarefas: null });
+  // cada linha é uma tarefa, com o início e o fim dela; a idade do item parte do início do trabalho principal
+  assert.deepEqual(r.quadro.sprints[0].itens[1], { id: "FT-002", trabalho: "desenvolvimento", responsavel: "ana", tarefas: null, iniciada_em: "2026-11-01", concluida_em: null, lead_time_dias: null });
+  assert.equal(c2.iniciada_em, "2026-11-01");
+  assert.equal(c2.idade_dias, 8);
   assert.deepEqual(r.quadro.pessoas, {});
   const c4 = r.quadro.itens.find((c) => c.id === "FT-004");
   assert.equal(c4.coluna, "pr-aberto");  // Fase pr-aberto no status.md
@@ -688,15 +691,15 @@ test("status: JSON estável com sprint, sem responsável, não iniciados, em and
 
 test("status: quadro lê acordos (WIP/SLE), o status.md da branch, os avisos dos acordos e o kanban.json do projeto", async () => {
   const proj = escrever(path.join(raiz, "st-q"), {
-    ".sabia/planejamento/backlog.md": "# Backlog\n\n| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | obs | aceita_em | iniciada_em | concluida_em |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n"
-      + "| FT-001 | Um | fatia | em-andamento |  | M | ana |  | a |  |  |  | 2026-10-20 |  |\n"
-      + "| AT-001 | Contas | sustentação | em-andamento |  |  |  |  | a |  |  |  |  |  |\n"
-      + "| FT-002 | Dois | bug | em-andamento | crítica | P | bia |  | a |  |  |  | 2026-11-08 |  |\n"
-      + "| FT-003 | Três | fatia | adiada até 2026-11-01 |  | P |  |  | a |  |  |  |  |  |\n"
-      + "| FT-004 | Quatro | fatia | nova |  |  |  |  | a |  | falta: qual tela · para ana |  |  |  |\n"
-      + "| EP-01 | Épico | épico | concluido |  |  |  |  | a |  |  |  | 2026-10-01 | 2026-10-11 |\n",
+    ".sabia/planejamento/backlog.md": "# Backlog\n\n| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | obs | entrou_em | concluida_em |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n"
+      + "| FT-001 | Um | fatia | em-andamento |  | M | ana |  | a |  |  |  |  |\n"
+      + "| AT-001 | Contas | sustentação | em-andamento |  |  |  |  | a |  |  |  |  |\n"
+      + "| FT-002 | Dois | bug | em-andamento | crítica | P | bia |  | a |  |  |  |  |\n"
+      + "| FT-003 | Três | fatia | adiada até 2026-11-01 |  | P |  |  | a |  |  |  |  |\n"
+      + "| FT-004 | Quatro | fatia | nova |  |  |  |  | a |  | falta: qual tela · para ana |  |  |\n"
+      + "| EP-01 | Épico | épico | concluido |  |  |  |  | a |  |  |  | 2026-10-11 |\n",
     ".sabia/planejamento/acordos.json": JSON.stringify({ timebox_semanas: 2, wip: { "em-andamento": 1, "em-revisao": 2 }, sle: { percentual: 85, dias: 5 } }),
-    ".sabia/planejamento/sprints/2026/sprint-01.md": "# 2026/Sprint 01 · 2026-11-02 → 2026-11-13\n\n**Meta:** Entregar\n\n**Reserva de capacidade:** 0 itens (0%)\n\n## Itens\n\n| Item | Trabalho | Responsável | Tarefas |\n|---|---|---|---|\n| FT-001 | desenvolvimento | ana | — |\n| AT-001 | atendimento | — | — |\n",
+    ".sabia/planejamento/sprints/2026/sprint-01.md": "# 2026/Sprint 01 · 2026-11-02 → 2026-11-13\n\n**Meta:** Entregar\n\n**Reserva de capacidade:** 0 itens (0%)\n\n## Itens\n\n| Item | Trabalho | Responsável | Tarefas | iniciada_em | concluida_em |\n|---|---|---|---|---|---|\n| FT-001 | desenvolvimento | ana | — | 2026-10-20 | |\n| AT-001 | atendimento | — | — | | |\n| EP-01 | especificação | bia | — | 2026-10-01 | 2026-10-11 |\n",
     // a worktree do item, com o status.md da spec: a Fase dá a coluna e o Em aberto que bloqueia vira aviso
     ".sabia/local/wt/ft-001/.kiro/specs/ft-001-um/status.md": "# Status\n\n| Campo | Valor |\n|---|---|\n| Fase | retrabalho |\n| MR | !12 https://gl.exemplo/time/app/-/merge_requests/12 |\n| Trilha | completo |\n| Autonomia | IA supervisionada |\n\n## Em aberto\n\n| Pergunta | Para quem | Bloqueia |\n|---|---|---|\n| Qual o limite? | P.O. | MR |\n| E a cor? | P.O. | nada |\n",
     ".sabia/local/loop-ft-002.md": "# Loop\n\nDevolvido: teto de tentativas\n",
@@ -737,6 +740,8 @@ test("status: quadro lê acordos (WIP/SLE), o status.md da branch, os avisos dos
   // o épico concluido cai na coluna concluida, com o lead time
   assert.equal(de("EP-01").coluna, "concluida");
   assert.equal(de("EP-01").lead_time_dias, 10);
+  assert.equal(r.quadro.sprints[0].itens.find((x) => x.id === "EP-01").lead_time_dias, 10);  // o lead time da tarefa
+  assert.equal(de("FT-002").idade_dias, null);  // em andamento sem linha na sprint: a tarefa não tem data
   // o kanban.json do projeto: ordem, nome e oculta; id desconhecido sai, a coluna que falta entra no fim e as do
   // em andamento ficam juntas, na ordem em que o projeto as pôs
   escrever(proj, { ".sabia/config/kanban.json": JSON.stringify({ grupo: "Fazendo", colunas: [
@@ -776,9 +781,9 @@ test("status: quadro lê acordos (WIP/SLE), o status.md da branch, os avisos dos
 test("status: a spec na branch base, sem branch do item", async () => {
   // a spec pode viver na branch base (o projeto a grava nela até o merge), sem branch do item
   const proj = escrever(path.join(raiz, "st-fase"), {
-    ".sabia/planejamento/backlog.md": "# Backlog\n\n| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | obs | aceita_em | iniciada_em | concluida_em |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n"
-      + "| FT-004 | Quatro | fatia | em-andamento |  | M | bia |  | a |  |  |  |  |  |\n",
-    ".sabia/planejamento/sprints/2026/sprint-01.md": "# 2026/Sprint 01 · 2026-11-02 → 2026-11-13\n\n**Meta:** Entregar\n\n## Itens\n\n| Item | Trabalho | Responsável | Tarefas |\n|---|---|---|---|\n| FT-004 | desenvolvimento | bia | — |\n",
+    ".sabia/planejamento/backlog.md": "# Backlog\n\n| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | obs | entrou_em | concluida_em |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n"
+      + "| FT-004 | Quatro | fatia | em-andamento |  | M | bia |  | a |  |  |  |  |\n",
+    ".sabia/planejamento/sprints/2026/sprint-01.md": "# 2026/Sprint 01 · 2026-11-02 → 2026-11-13\n\n**Meta:** Entregar\n\n## Itens\n\n| Item | Trabalho | Responsável | Tarefas | iniciada_em | concluida_em |\n|---|---|---|---|---|---|\n| FT-004 | desenvolvimento | bia | — | | |\n",
   });
   const git = { "origin/HEAD": { status: 0, stdout: "origin/main\n" }, HEAD: { status: 0, stdout: "abc\n" } };
   const exec = (cmd, args = []) => {
@@ -799,14 +804,14 @@ test("status: a spec na branch base, sem branch do item", async () => {
 
 test("kanban: a página leva o tema, a versão e o JSON da sabia status; o servidor lê o projeto a cada carga e fecha", async () => {
   const proj = escrever(path.join(raiz, "st-k"), {
-    ".sabia/planejamento/backlog.md": "# Backlog\n\n| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | obs | aceita_em | iniciada_em | concluida_em |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n"
-      + "| FT-001 | Um | fatia | em-andamento |  | M | ana |  | a |  |  |  | 2026-11-08 |  |\n"
-      + "| FT-002 | Dois | fatia | elegivel |  | M |  |  | a |  |  |  |  |  |\n"
-      + "| FT-004 | Quatro | fatia | em-andamento |  | M | bia |  | a |  |  |  |  |  |\n"
-      + "| EP-01 | Epic | épico | em-especificacao |  |  | bia |  | a |  |  |  |  |  |\n"
-      + "| AT-001 | Contas | sustentação | em-andamento |  |  |  |  | a |  |  |  |  |  |\n",
+    ".sabia/planejamento/backlog.md": "# Backlog\n\n| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | obs | entrou_em | concluida_em |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n"
+      + "| FT-001 | Um | fatia | em-andamento |  | M | ana |  | a |  |  |  |  |\n"
+      + "| FT-002 | Dois | fatia | elegivel |  | M |  |  | a |  |  |  |  |\n"
+      + "| FT-004 | Quatro | fatia | em-andamento |  | M | bia |  | a |  |  |  |  |\n"
+      + "| EP-01 | Epic | épico | em-especificacao |  |  | bia |  | a |  |  |  |  |\n"
+      + "| AT-001 | Contas | sustentação | em-andamento |  |  |  |  | a |  |  |  |  |\n",
     ".sabia/planejamento/acordos.json": JSON.stringify({ timebox_semanas: 2, wip: { "em-andamento": 1, "em-revisao": 2 }, sle: { percentual: 85, dias: 5 } }),
-    ".sabia/planejamento/sprints/2026/sprint-02.md": "# 2026/Sprint 02 · 2026-11-09 → 2026-11-20\n\n**Meta:** Entregar\n\n## Itens\n\n| Item | Trabalho | Responsável | Tarefas |\n|---|---|---|---|\n| FT-001 | desenvolvimento | ana | — |\n| FT-002 | desenvolvimento | — | — |\n| FT-004 | desenvolvimento | bia | — |\n| EP-01 | especificação | bia | — |\n| AT-001 | atendimento | — | — |\n",
+    ".sabia/planejamento/sprints/2026/sprint-02.md": "# 2026/Sprint 02 · 2026-11-09 → 2026-11-20\n\n**Meta:** Entregar\n\n## Itens\n\n| Item | Trabalho | Responsável | Tarefas | iniciada_em | concluida_em |\n|---|---|---|---|---|---|\n| FT-001 | desenvolvimento | ana | — | 2026-11-08 | |\n| FT-002 | desenvolvimento | — | — | | |\n| FT-004 | desenvolvimento | bia | — | | |\n| EP-01 | especificação | bia | — | | |\n| AT-001 | atendimento | — | — | | |\n",
     // a situação do FT-001 vem do status.md da worktree (Fase implementando → Em desenvolvimento, ainda que haja MR aberto);
     // a FT-004 não tem status.md: o MR aberto no GitLab a coloca em Em Revisão
     ".sabia/local/wt/ft-001/.kiro/specs/ft-001-um/status.md": "# FT-001\n\n| Campo | Valor |\n|---|---|\n| Fase | implementando |\n| MR | !12 https://gl.exemplo/time/app/-/merge_requests/12 |\n| Trilha | completo |\n| Autonomia | IA supervisionada |\n",
@@ -830,7 +835,7 @@ test("kanban: a página leva o tema, a versão e o JSON da sabia status; o servi
     assert.match(html, /<code>\.sabia\/config\/kanban\.json<\/code>/);  // onde gravar o JSON copiado
     // a página desenha no navegador só o JSON da `sabia status` embutido nela
     const embutido = JSON.parse(html.match(/<script id="dados" type="application\/json">([\s\S]*?)<\/script>/)[1]);
-    assert.equal(embutido.versao, 3);
+    assert.equal(embutido.versao, 4);
     assert.ok(html.includes(`<span class="ver">${embutido.sabia}</span>`) && html.includes(`<span>Sabiá ${embutido.sabia}</span>`));  // a versão no topo e no rodapé
     assert.equal(embutido.quadro.itens.length, 5);
     assert.deepEqual(embutido.quadro.sprints.map((x) => `${x.chave} ${x.itens.length}`), ["2026/Sprint 02 5"]);  // o combo das sprints

@@ -23,7 +23,7 @@ gravar na mesma gravação os campos que já decidiu (status `aceita`, tamanho, 
 4. **Linha.** No fim da tabela (a ordem é a prioridade; quem tem `produto` reordena pela `sa-refinar.ajustar`):
    status `nova` (épico: `a-moldar`); prioridade, tamanho e responsável vazios; `pai` = `EP-nn` aberto ou vazio (só
    fatia e bug); relator = `usuario` do `equipe.json` ou `externo: <área ou nome>`; `ib` = só o número, quando veio do
-   EWM; `obs` `origem <id>` quando nasceu do trabalho em outro item; datas vazias (o épico ganha `aceita_em`).
+   EWM; `obs` `origem <id>` quando nasceu do trabalho em outro item; `entrou_em` = hoje e `concluida_em` vazia.
 5. **Corpo.** Fatia: ficha curta `.sabia/planejamento/fatias/FT-nnn-<slug>.md` com a seção Entrada (pedido · quem
    pediu · requisito, se souber). Bug: a mesma ficha, com Entrada (passos · atual · esperado · reproduzido: sim | não
    | detalhe insuficiente). Sustentação: registro `.sabia/planejamento/sustentacao/<ID>-<slug>.md`, pelo template

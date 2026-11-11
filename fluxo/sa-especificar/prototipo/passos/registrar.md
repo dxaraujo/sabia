@@ -17,6 +17,10 @@ A pasta `.sabia/planejamento/prototipos/<id>-<slug>/` e o documento do item.
 4. **Sem arquivo novo.** Uma versão com `aprovação do cliente da v<N>` no Em aberto → passo `aprovacao`. Nenhuma →
    diga "ponha os arquivos da versão em `.sabia/planejamento/prototipos/<id>-<slug>/`" e devolva.
 
+**Tarefa de especificação.** No mesmo commit, abra a tarefa pela regra do template `sa-planejamento/sprint.md`: na linha
+`<id> · especificação` da sprint aberta, `iniciada_em` = hoje, só se está vazia. A linha nasce se falta; sem sprint
+aberta, siga.
+
 ## Saída
 
 Versão registrada, ou uma já aguardando o cliente → passo `aprovacao`. Nada a registrar → passo `devolver`.

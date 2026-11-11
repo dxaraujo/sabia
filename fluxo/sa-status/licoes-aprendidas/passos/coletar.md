@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-Os itens com `concluida_em` nas datas da sprint.
+Os itens com `concluida_em` (a do `backlog.md`) nas datas da sprint.
 
 ## Faça
 

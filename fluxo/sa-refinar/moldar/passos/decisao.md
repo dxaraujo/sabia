@@ -12,11 +12,11 @@ A decisão de investimento é de quem tem `produto` no `equipe.json`. Sem essa p
 
 | Decisão | Linha do épico | `pitch.md` | Commit |
 |---|---|---|---|
-| investir | status `em-especificacao`, `iniciada_em` = hoje | `Decisão: investir` e, no topo, `**Aprovado:** <usuario> · AAAA-MM-DD` | `EP-nn investir` |
+| investir | status `em-especificacao`; na sprint aberta, a linha `EP-nn · especificação` com `iniciada_em` = hoje (se vazia; a linha nasce se falta) | `Decisão: investir` e, no topo, `**Aprovado:** <usuario> · AAAA-MM-DD` | `EP-nn investir` |
 | cancelar | status `cancelado`, `obs` `não investir: <motivo>` | `Decisão: cancelar · <motivo>` e, no topo, `**Aprovado:** <usuario> · AAAA-MM-DD`; a pasta fica | `EP-nn cancelar` |
 | cabe em G (não é épico) | status `cancelado`, `obs` `virou FT-nnn` | `Decisão: cancelar · cabe em G, virou FT-nnn` e, no topo, `**Aprovado:** <usuario> · AAAA-MM-DD` | `EP-nn cancelar` |
 
-**Cabe em G**: a fatia nasce pelo passo `cadastro`, já `aceita` (com `aceita_em` e o tamanho), com `veio de EP-nn` na
+**Cabe em G**: a fatia nasce pelo passo `cadastro`, já `aceita` (com o tamanho), com `veio de EP-nn` na
 `obs` e a ficha curta com a Entrada tirada do pitch. A linha do épico, a da fatia e o `pitch.md` vão no mesmo commit.
 
 ## Saída

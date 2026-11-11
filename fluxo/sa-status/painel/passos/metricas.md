@@ -9,9 +9,11 @@ A coleta e o `acordos.json`.
 
 Linha de topo:
 - WIP por status contra o limite do `acordos.json` (`em-revisao` contado pelos MRs abertos);
-- vazão do ciclo: itens de desenvolvimento com `concluida_em` nas datas da sprint, e atendimento à parte;
-- lead time médio do ciclo: `concluida_em` − `iniciada_em`, em dias corridos;
-- idade dos itens `em-andamento` (hoje − `iniciada_em`) contra o SLE, quando existe.
+- vazão do ciclo: linhas de desenvolvimento com `concluida_em` nas datas da sprint, e atendimento à parte;
+- lead time médio do ciclo, em dias corridos: o do item (do primeiro `iniciada_em` das linhas do trabalho principal dele
+  — fatia e bug: desenvolvimento; sustentação: atendimento; épico: especificação — até o `concluida_em` do `backlog.md`)
+  e o de cada trabalho (`concluida_em` − `iniciada_em` da linha), especificação e desenvolvimento à parte;
+- idade dos itens `em-andamento` (hoje − o primeiro `iniciada_em` do trabalho principal) contra o SLE, quando existe.
 
 ## Saída
 

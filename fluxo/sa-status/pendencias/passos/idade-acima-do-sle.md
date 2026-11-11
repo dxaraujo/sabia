@@ -7,7 +7,7 @@ O `acordos.json`. Só com `sle`.
 
 ## Faça
 
-Item `em-andamento` com idade (hoje − `iniciada_em`) acima do SLE → o dono decide se divide
+Item `em-andamento` com idade (hoje − o primeiro `iniciada_em` das linhas do trabalho principal dele nas sprints) acima do SLE → o dono decide se divide
 (`sa-refinar.ajustar`) ou se termina (`sa-desenvolver.codificar`).
 
 ## Saída

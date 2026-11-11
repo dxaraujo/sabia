@@ -16,7 +16,7 @@ Um pedido em texto, ou um id que não existe no `backlog.md` (passo `entrada`).
    `pedido` ou `origem <id>`), Pedido por (área ou papel, sem nome de pessoa), Prazo (`AAAA-MM-DD` ou `—`), a seção
    Pedido (sem dado de cliente) e o Critério de pronto, numa frase.
 4. **Gravar.** Inclua o cadastro comum (passo `cadastro`) com tipo `sustentação` e a categoria, e grave na mesma
-   gravação: status `nova`, a prioridade, `aceita_em` = hoje, `obs` `origem chamado <n>` quando houver, e o
+   gravação: status `nova`, a prioridade, `obs` `origem chamado <n>` quando houver, e o
    registro `.sabia/planejamento/sustentacao/<ID>-<slug>.md`.
 5. Pergunte "atender agora?".
 

@@ -7,7 +7,7 @@ A sprint e o `backlog.md` da branch base.
 
 ## Faça
 
-1. Mostre os itens concluídos no ciclo: linhas desenvolvimento e atendimento cujo item tem `concluida_em` dentro das
+1. Mostre os itens concluídos no ciclo: linhas desenvolvimento e atendimento com `concluida_em` dentro das
    datas da sprint, cada um com o link do MR, onde está a evidência. Depois, os abertos: vão para a virada do próximo
    planejamento.
 2. Registre o retorno de quem está presente, uma linha por item concluído: `<id> · <retorno>`, ou `<id> · sem
