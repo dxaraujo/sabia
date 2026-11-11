@@ -1,12 +1,13 @@
 ---
-{"resumo": "Regras comuns aos fluxos da sa-status: só leitura (salvo o fechar-sessao), coleta única, pasta da spec, quem pode e nada inventado."}
+{"resumo": "Regras comuns aos fluxos da sa-status: só leitura (salvo o fechar-sessao e a situacao), coleta única, pasta da spec, quem pode e nada inventado."}
 ---
 # Regras comuns da `sa-status`
 
 Valem em todos os fluxos da skill.
 
 - **Só leitura**: nenhum fluxo grava arquivo, branch nem ELM, salvo a `sa-status.fechar-sessao` (Retomar, `tasks.md`
-  e o CSV de créditos, com o "ok"). O EWM é da `sa-elm`.
+  e o CSV de créditos, com o "ok") e a `sa-status.situacao` (a linha do item no `backlog.md`, com o "sim"). O EWM é da
+  `sa-elm`.
 - **Coleta única**: todos os fluxos leem pela coleta da `sa-status.painel` (do `sa-status.painel.backlog-e-sprint` ao
   `sa-status.painel.trava-de-artefato`), sempre da branch base remota depois do `git fetch --quiet`. Sem rede, a branch base local,
   com o aviso "dados locais".

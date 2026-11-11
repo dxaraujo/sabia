@@ -170,6 +170,7 @@ select:hover{background:var(--suave-h)}
 .quem.sem{color:var(--muted)}
 .quem span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .situ{flex:none;margin-left:auto;padding:1px 7px;border-radius:999px;background:var(--suave);font:500 12px/16px var(--body);color:var(--title);white-space:nowrap}
+.motivo{margin-top:6px;font-size:13px;line-height:18px;color:var(--ink)}
 .dados{margin-top:6px;font-size:12px;line-height:18px;color:var(--muted);font-variant-numeric:tabular-nums}
 .avisos{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:3px}
 .avisos li{display:flex;align-items:baseline;gap:7px;font-size:12px;line-height:17px;color:var(--title)}
@@ -285,7 +286,12 @@ function cliente() {
     if (c.tamanho) d.push("tamanho " + esc(c.tamanho));
     if (c.idade_dias != null) d.push("idade " + c.idade_dias + " d");
     if (c.lead_time_dias != null) d.push("lead time " + c.lead_time_dias + " d");
-    if (c.adiada_ate) d.push("até " + dataBr(c.adiada_ate));
+    const mv = c.motivo;
+    if (mv?.por) d.push("por " + esc(mv.por));
+    if (c.impedida_dias != null) d.push("impedida há " + c.impedida_dias + " d");
+    else if (mv?.desde) d.push("desde " + dataBr(mv.desde));
+    if (mv?.ate) d.push("até " + dataBr(mv.ate));
+    if (mv?.de) d.push("antes: " + esc(col(mv.de)?.nome ?? mv.de));
     if (c.mr) d.push(/^https?:/.test(c.mr.url) ? '<a href="' + esc(c.mr.url) + '" target="_blank" rel="noopener">MR ' + (c.mr.iid ? "!" + c.mr.iid : "aberto") + "</a>" : "MR " + esc(c.mr.url));
     if (c.pai) d.push("pai " + esc(c.pai));
     if (c.ib) d.push("IB " + esc(c.ib));
@@ -294,6 +300,7 @@ function cliente() {
     for (const l of linhasDe(c)) if (l.tarefas) d.push(esc(l.tarefas));
     return '<article class="cartao" data-tipo="' + esc(c.tipo) + '"><div class="chapeu"><span class="id">' + esc(c.id) + '</span><span class="tipo">' + esc(c.tipo ?? "sem tipo") + "</span>" + (nv ? ponto(nv) : "") + "</div>"
       + '<div class="corpo"><h3>' + (c.titulo ? esc(c.titulo) : '<span class="semtitulo">sem título</span>') + "</h3>"
+      + (mv?.texto ? '<p class="motivo">' + esc(mv.texto) + "</p>" : "")
       + '<div class="quem' + (r ? "" : " sem") + '"><i aria-hidden="true">' + esc(ini) + "</i><span" + (r ? ' title="' + esc(r) + '"' : "") + ">" + esc(r ? nome(r) : "sem responsável") + "</span>"
       + (situ ? '<span class="situ">' + esc(col(c.coluna)?.nome ?? c.coluna) + "</span>" : "") + "</div>"
       + (d.length ? '<p class="dados">' + d.join(" · ") + "</p>" : "")

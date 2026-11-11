@@ -1,6 +1,6 @@
 ---
 {"fluxo": "painel", "dono": "sa-desenvolvedor",
- "quando": ["daily, só leitura: WIP, vazão, lead time, idade, urgente, MRs esperando pessoa, topo puxável, refinamento, Sustentação e reserva de capacidade, fila de triagem, publicação pendente, trava de artefato e a sugestão", "status", "painel", "bom dia", "onde parei", "como está a sprint"],
+ "quando": ["daily, só leitura: WIP, vazão, lead time, idade, urgente, impedidos, MRs esperando pessoa, topo puxável, refinamento, Sustentação e reserva de capacidade, fila de triagem, publicação pendente, trava de artefato e a sugestão", "status", "painel", "bom dia", "onde parei", "como está a sprint"],
  "travas_gerais": ["elm-pela-sa-elm"],
  "passos": [
    {"id": "inicio", "saidas": {"sem .sabia/sabia.md": "fim"}},
@@ -16,6 +16,7 @@
    {"id": "trava-de-artefato"},
    {"id": "metricas"},
    {"id": "urgente"},
+   {"id": "impedidos"},
    {"id": "fila-de-triagem"},
    {"id": "esperando-pessoa"},
    {"id": "retrabalho"},

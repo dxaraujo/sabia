@@ -3,7 +3,7 @@
  "quando": ["triagem item a item: pedido em texto, número do EWM, id do backlog.md ou a fila de itens nova", "triagem", "triar a fila", "nova demanda", "chegou um pedido", "o cliente pediu", "registra o defeito 4567 e tria", "triar a FT-031"],
  "travas_gerais": ["sim-da-pessoa", "decisao-da-pessoa", "elm-pela-sa-elm"],
  "passos": [
-   {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao", "saidas": {"sem .sabia/planejamento/backlog.md na branch base: diga 'rode a sa-setup'": "fim", "pedido em texto, número do EWM ou nada informado (não é o caso 'não registrado' da entrada comum)": "ler", "fatia ou bug em adiada até <data> (retriagem: o adiamento se trata no decidir)": "ler"}},
+   {"id": "entrada", "de": "entrada", "papel": "nenhuma", "branch": "nao", "saidas": {"sem .sabia/planejamento/backlog.md na branch base: diga 'rode a sa-setup'": "fim", "pedido em texto, número do EWM ou nada informado (não é o caso 'não registrado' da entrada comum)": "ler"}},
    {"id": "ler", "chama": "sa-elm.item"},
    {"id": "duplicado", "saidas": {"o mesmo de um item aberto, e a entrada é pedido em texto ou EWM": "encaminhar"}},
    {"id": "decidir", "saidas": {"duplicado, recusa, falta informação ou agora não": "registrar"}},
@@ -17,9 +17,10 @@
 # Triar — decidir se o item entra
 
 Qualquer pessoa tria, item a item, direto na branch base (na prática, P.O. e SM; o Dev pode triar o que achou). A triagem
-decide se o item entra (aceita, cancelada, falta informação ou adiada) e, no aceito, o tipo, o tamanho, a prioridade
+decide se o item entra (aceita, cancelada, falta informação ou impedida até uma data) e, no aceito, o tipo, o tamanho, a prioridade
 e o pai. Todo ramo grava, um commit por item. O próximo passo do item é só sugestão de sessão nova. Aceita qualquer
-tipo em `nova` e fatia ou bug em `aceita` ou `adiada até <data>` (retriagem). Item já registrado em outro estado é
+tipo em `nova` e fatia ou bug em `aceita` (retriagem). O item impedido passa antes pela entrada comum, que o libera e
+devolve ao status anterior. Item já registrado em outro estado é
 de outro fluxo:
 
 ## Entrada: vizinhos

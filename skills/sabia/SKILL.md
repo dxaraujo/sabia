@@ -50,10 +50,13 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
   `FT-nnn`; sustentação → `<categoria>-nnn` (`AT` · `IM` · `BD` · `IN` · `OP` · `EX`). Fatia e bug têm `pai` `EP-nn`
   ou vazio. O próximo id é o maior da série no `backlog.md` + 1, lido depois do pull, e nunca muda: "vira épico" cria
   a linha `EP-nn` com a obs `veio de FT-nnn`, e a FT fica `cancelada · virou EP-nn`.
-- **Status.** Fatia e bug: `nova` → `aceita` → `elegivel` → `em-andamento` → `concluida`, mais `cancelada` e `adiada
-  até <data>`; `em-revisao` não se grava, vem do MR aberto. Épico: `a-moldar` → `em-especificacao` (investir) → `fatiado` →
-  `concluido` · `cancelado`; fecha no merge da última fatia aberta (`sa-desenvolver.encerrar`). Sustentação: `nova` →
-  `em-andamento` → `concluida` · `cancelada`.
+- **Status.** O `backlog.md` é o dono único. Fatia e bug: `nova` → `aceita` → `elegivel` → `em-andamento` →
+  `concluida`; `em-revisao` não se grava, vem do MR aberto. Épico: `a-moldar` → `em-especificacao` (investir) → `fatiado` →
+  `concluido`; fecha no merge da última fatia aberta (`sa-desenvolver.encerrar`). Sustentação: `nova` →
+  `em-andamento` → `concluida`. De qualquer status não terminal, todo item pode ir a `impedida` (épico: `impedido`;
+  algo de fora impede, com data "até" opcional; volta ao status anterior ao ser liberado) ou a `cancelada`
+  (`cancelado`), com a coluna `motivo`; quem muda é quem tem `produto` ou o responsável da tarefa em curso
+  (`sa-status.situacao`). Não há adiamento: adiar é impedir com data.
 - **Prioridade e tamanho.** `prioridade` ∈ {`crítica`, vazio}: crítica é o item urgente, pela política do `acordos.json`;
   vazio segue a ordem das linhas. `tamanho` ∈ {`P`, `M`, `G`}: P = horas, M ≈ 1 dia, G = 2 a 3 dias. Maior que G é
   épico, e só o épico vai ao pitch e à decisão de investimento.
@@ -120,7 +123,7 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 | Quero… | Skill |
 |---|---|
 | instalar ou atualizar o Sabiá no projeto, os agentes, o formato da spec, "usa ELM?" · customizar ou descustomizar um passo ou template | `sa-setup` (`sa-setup.configurar` · `sa-setup.customizar`) |
-| onde parei · minha próxima · o estado de `<id>` · pendências (publicação pendente, travas de artefato) · lições aprendidas para a review · fechar a sessão | `sa-status` (`sa-status.painel` · `sa-status.item` · `sa-status.minha-proxima` · `sa-status.pendencias` · `sa-status.licoes-aprendidas` · `sa-status.fechar-sessao`) |
+| onde parei · minha próxima · o estado de `<id>` · pendências (publicação pendente, travas de artefato) · lições aprendidas para a review · fechar a sessão · impedir, liberar, cancelar em andamento ou devolver um item ao backlog | `sa-status` (`sa-status.painel` · `sa-status.item` · `sa-status.minha-proxima` · `sa-status.pendencias` · `sa-status.licoes-aprendidas` · `sa-status.fechar-sessao` · `sa-status.situacao`) |
 | registrar uma demanda sem triar · triar a fila das linhas `nova` | `sa-triar` (`sa-triar.cadastrar` · `sa-triar.triar`) |
 | ideia nova, pitch, decisão de investimento · refinamento conjunto, ficha, artefatos afetados e `elm/` da fatia · fatiar o épico · editar, dividir ou cancelar um item pronto | `sa-refinar` (`sa-refinar.moldar` · `sa-refinar.detalhar` · `sa-refinar.fatiar` · `sa-refinar.ajustar`) |
 | escrever o PRD do épico depois da decisão de investir, ou mudar o PRD | `sa-prd` (`sa-prd.prd`) |
@@ -143,7 +146,7 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 | `.sabia/sabia.md` | Resumo do fluxo · Projeto · Especificação · Comandos · Verificação de aceite · Sustentação · ELM · Desvios de toolkit · Tipos com skill de toolkit · Regras aprendidas (gravadas pela curadoria da review) |
 | `.sabia/config/` | `agentes.json` (as escolhas do projeto e a entrada do gerador), `elm/pa_<nome>.json` (da `sa-elm.setup`) e `elk/elk-<ambiente>.json` |
 | `.kiro/agents/` · `.opencode/agents/` | os 5 agentes gerados (e os de toolkit) |
-| `.sabia/planejamento/` | `backlog.md` (id · título · tipo · status · prioridade · tamanho · responsável · pai · relator · ib · obs · entrou_em · concluida_em), `acordos.json`, `equipe.json`, `roadmap.md`, `sprints/<AAAA>/sprint-<nn>.md` (Item · Trabalho · Responsável · Tarefas · iniciada_em · concluida_em), `fatias/FT-<nnn>-<slug>.md`, `epicos/EP-nn-<slug>/` (`pitch.md`; `prd.md` a partir da decisão de investir), `prototipos/`, `atas/`, `sustentacao/<pasta>/` |
+| `.sabia/planejamento/` | `backlog.md` (id · título · tipo · status · prioridade · tamanho · responsável · pai · relator · ib · motivo · obs · entrou_em · concluida_em), `acordos.json`, `equipe.json`, `roadmap.md`, `sprints/<AAAA>/sprint-<nn>.md` (Item · Trabalho · Responsável · Tarefas · iniciada_em · concluida_em), `fatias/FT-<nnn>-<slug>.md`, `epicos/EP-nn-<slug>/` (`pitch.md`; `prd.md` a partir da decisão de investir), `prototipos/`, `atas/`, `sustentacao/<pasta>/` |
 | spec da fatia | `.kiro/specs/ft-<nnn>-<slug>/` ou `openspec/changes/ft-<nnn>-<slug>/`: `status.md`, `research.md`, os arquivos da trilha, `CT.csv` e, com ELM, `elm/`. No OpenSpec, a arquivada fica em `openspec/changes/archive/<AAAA-MM-DD>-ft-<nnn>-<slug>/` |
 | glossário · ADRs · bundle | GL no DOORS, onde há ELM; o `.sabia/glossario.md` é opcional. ADRs em `docs/adr/`, só para decisão que atravessa fatias. O bundle (chave `elm.bundle` do `agentes.json`, ex.: `docs/elm/<pa>/`) é cópia local e nunca é editado |
 | `.sabia/creditos/` | `<usuario>.csv` com os créditos do Kiro por sessão |

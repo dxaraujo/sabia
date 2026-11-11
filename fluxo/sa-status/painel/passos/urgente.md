@@ -12,7 +12,7 @@ a política do `acordos.json`, sem aprovação.
 
 ## Saída
 
-Urgente → passo `fila-de-triagem`.
+Urgente → passo `impedidos`.
 
 ## Pare se
 

@@ -18,13 +18,23 @@ const COLUNAS = [["backlog", "Backlog"], ["nova", "Nova"], ["a-moldar", "A molda
   ["aceita", "Aceita"], ["elegivel", "Elegível"],
   ["iniciada", "Iniciada"], ["implementando", "Em desenvolvimento"], ["revisando", "Revisão do agente"], ["verificando", "Verificação do agente"],
   ["pr-aberto", "Aguardando aprovação do MR"], ["retrabalho", "Retrabalho"],
-  ["adiada", "Adiada"], ["concluida", "Concluída"], ["cancelada", "Cancelada"]];
+  ["impedida", "Impedido"], ["concluida", "Concluída"], ["cancelada", "Cancelada"]];
 // As colunas que cada status do WIP do `acordos.json` conta. `em-revisao` é derivado (MR aberto) e nunca se grava.
 const WIP = { "em-andamento": ["Em andamento", ["iniciada", "implementando", "revisando", "verificando"]], "em-revisao": ["MR em revisão", ["pr-aberto", "retrabalho"]] };
 const celulas = (l) => l.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((c) => c.trim());
 const semValor = (x) => !x || x === "—";
-/** `adiada até <data>` ocupa uma coluna só (`adiada`); o resto fica como está no backlog. */
-const statusColuna = (s) => (s && s.startsWith("adiada") ? "adiada" : s);
+/** O status no feminino dos três que o épico grava no masculino; o resto fica como está no backlog. */
+const statusColuna = (s) => ({ impedido: "impedida", concluido: "concluida", cancelado: "cancelada" }[s] ?? s);
+/** A coluna `motivo` do backlog: `<texto> · por <quem> · desde <data> · até <data> · de <status anterior>`. */
+function lerMotivo(celula) {
+  if (semValor(celula)) return null;
+  const m = { texto: null, por: null, desde: null, ate: null, de: null }, texto = [];
+  for (const parte of celula.split(" · ")) {
+    const c = parte.match(/^(por|desde|até|de) (.+)$/);
+    if (c) m[c[1] === "até" ? "ate" : c[1]] = c[2].trim(); else texto.push(parte.trim());
+  }
+  return { ...m, texto: texto.join(" · ") || null };
+}
 
 /** As linhas da primeira tabela cujo cabeçalho começa com `coluna`, como objetos pelo nome da coluna. */
 function tabela(texto, coluna) {
@@ -190,7 +200,7 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
   // Fase o MR aberto no GitLab (pr-aberto) ou `iniciada`
   const colunaDe = (l) => {
     const st = statusColuna(l.status) || "sem-dados";
-    if (st !== "em-andamento") return { concluido: "concluida", cancelado: "cancelada" }[st] ?? st;
+    if (st !== "em-andamento") return st;
     const fase = mdDe(l.id)?.fase;
     return FASES.includes(fase) ? fase : mrGitlabDe(l.id) ? "pr-aberto" : "iniciada";
   };
@@ -206,7 +216,7 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
     const st = statusColuna(l.status) || "sem-dados", terminal = TERMINAIS.includes(st), andando = st === "em-andamento";
     const md = andando ? mdDe(l.id) : null, mrG = andando ? mrGitlabDe(l.id) : null;
     const inicio = inicioDe(l), idade = !terminal && inicio ? dias(inicio) : null;
-    const adiadaAte = l.status?.match(/^adiada até (\d{4}-\d{2}-\d{2})$/)?.[1] ?? null;
+    const motivo = st === "impedida" || st === "cancelada" ? lerMotivo(l.motivo) : null, desde = data(motivo?.desde);
     // os avisos: o que o acordos.json e o fluxo do sa-status pedem para olhar; `critico` pede ação já, `atencao` acompanha
     const avisos = [], aviso = (tipo, nivel, mensagem) => avisos.push({ tipo, nivel, mensagem });
     if (l.prioridade === "crítica" && !terminal) aviso("urgente", "critico", "urgente: prioridade crítica, vai ao topo");
@@ -218,7 +228,11 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
       if (d >= acordos.alertas.mr_parado_dias) aviso("mr-parado", "atencao", `MR !${mrG.iid} parado: sem atualização há ${plural(d, "dia", "dias")}`);
     }
     if (md?.fase === "retrabalho") aviso("retrabalho", "atencao", "retrabalho: o dono retoma no mesmo MR");
-    if (adiadaAte && adiadaAte < hoje) aviso("adiamento-vencido", "atencao", `adiamento vencido em ${adiadaAte}: volta à triagem`);
+    if (st === "impedida") {
+      if (!motivo) aviso("impedimento", "atencao", "impedida sem a coluna motivo");
+      else if (desde && dias(desde) > acordos.alertas.impedimento_dias) aviso("impedimento", "critico", `impedida há ${dias(desde)} dias${motivo.texto ? `: ${motivo.texto}` : ""}`);
+      if (data(motivo?.ate) && motivo.ate < hoje) aviso("impedimento-vencido", "atencao", `impedimento com a data vencida em ${motivo.ate}: pode ser liberado`);
+    }
     const falta = st === "nova" ? l.obs?.match(/falta: ([^·]+)/)?.[1].trim() : null;
     if (falta) aviso("falta-informacao", "atencao", `falta: ${falta}`);
     if (sprint?.aberta && !terminal) {
@@ -246,7 +260,8 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
       trilha: md?.trilha ?? null,
       autonomia: md?.autonomia ?? null,
       mr: mrG ? { iid: mrG.iid, url: mrG.url } : (md?.mr ?? null),
-      adiada_ate: adiadaAte,
+      motivo,
+      impedida_dias: st === "impedida" && desde ? dias(desde) : null,
       avisos,
     };
   });
@@ -256,7 +271,8 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
   // o WIP conta só fatia e bug (os status do `acordos.json` são os deles), no backlog inteiro
   const wip = Object.entries(acordos.wip ?? {}).map(([status, limite]) => {
     const [nome, cols] = WIP[status] ?? [colunas.find((c) => c.id === status)?.nome ?? status, [status]];
-    return { status, nome, colunas: cols, atual: cards.filter((c) => (c.tipo === "fatia" || c.tipo === "bug") && cols.includes(c.coluna)).length, limite };
+    return { status, nome, colunas: cols, // o impedido segue contando no WIP do status de onde veio
+      atual: cards.filter((c) => (c.tipo === "fatia" || c.tipo === "bug") && (cols.includes(c.coluna) || (c.status === "impedida" && c.motivo?.de === status))).length, limite };
   });
   // os alertas do quadro: a configuração inválida, o WIP estourado, a reserva de capacidade e o fim do ciclo
   const alertas = [];

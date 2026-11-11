@@ -1,5 +1,5 @@
 ---
-{"resumo": "Entrada comum de quem pega um item: existe, terminal, adiada, é deste fluxo, papel pelo equipe.json, dono e a branch <id>."}
+{"resumo": "Entrada comum de quem pega um item: existe, terminal, impedida, é deste fluxo, papel pelo equipe.json, dono e a branch <id>."}
 ---
 ## Entrada
 
@@ -32,14 +32,16 @@ Senão, nesta ordem; o primeiro caso que casar decide:
 2. **Terminal?** Status `concluida`, `concluido`, `cancelada` ou `cancelado` → mostre o status e a `obs` e pare. Com
    `virou <id>` na `obs`, diga "o item seguiu como `<id>`". Pedido novo sobre item terminal não reabre nada: é item
    novo pelo cadastro comum, com `origem <id>` na `obs`.
-3. **Adiada?** Só fatia e bug. `adiada até <data>` com a data no futuro → avise ("adiada até `<data>`: `<motivo da
-   obs>`") e pergunte "seguir mesmo assim?". Sim: acrescente na `obs` `adiamento ignorado (<usuario>, AAAA-MM-DD)`, e
-   o status volta a `aceita`. Não: pare. Data já passada: o status volta a `aceita` sem perguntar. A correção grava
-   pelo commit direto na branch base junto com a próxima gravação do fluxo (ou logo, se o fluxo não grava estado).
+3. **Impedida?** Status `impedida` ou `impedido` (todo tipo) → mostre a coluna `motivo`: o que impede, quem, desde
+   quando e até quando. Com o `até` vencido, libere sem perguntar. Senão, pergunte "o que impedia foi resolvido?
+   libero?"; só libera quem tem `produto` ou é o responsável da tarefa em curso (regra da `sa-status.situacao`). Sem o
+   "sim", ou sem poder: pare. Liberar: o status volta ao `de <status>` do `motivo`, a coluna `motivo` fica vazia e a
+   `obs` ganha `impedida <desde> a <hoje>: <motivo>`. A correção grava pelo commit direto na branch base junto com a
+   próxima gravação do fluxo (ou logo, se o fluxo não grava estado). O item segue pelo status que voltou.
 4. **É deste fluxo?** O estado do item (tipo, status da linha e, na fatia em andamento, a Fase do `status.md` ou o MR
    aberto, que dá o `em-revisao` derivado) casa com uma linha dos vizinhos → linha com a dona: "`<id>` está
    `<estado>`: entre pela `<skill.fluxo>`" (com o agente dela, quando é outro) e pare; linha terminada em ■: diga a
-   frase da linha, como está, e pare. Uma linha dos vizinhos vence os casos terminal e adiada. Estado aceito por
+   frase da linha, como está, e pare. Uma linha dos vizinhos vence o caso terminal; o caso impedida vem antes dos vizinhos e vale para todo fluxo. Estado aceito por
    este fluxo: siga. Nem deste fluxo nem dos vizinhos → "não é deste fluxo: veja `sa-status.item`" e pare.
 5. **Papel.** O usuário da sessão é o usuário do GitLab (o MCP `gitlabpr` informa; sem o MCP, pergunte uma vez na
    sessão), procurado no campo `usuario` do `equipe.json`. Papel `nenhuma`: siga mesmo fora do `equipe.json`, e o
@@ -59,7 +61,7 @@ passo `entrada` na definição do fluxo indica para aquele estado.
 
 ## Pare se
 
-- Não registrado sem o "sim" ao cadastro, terminal, adiada sem o "sim", vizinho ou fora deste fluxo → a frase do caso,
+- Não registrado sem o "sim" ao cadastro, terminal, impedida sem o "sim", vizinho ou fora deste fluxo → a frase do caso,
   com a `skill.fluxo` seguinte quando há uma, e pare.
 - Fora do `equipe.json` ou sem a booleana do papel → a frase do caso e pare.
 - Branch `fatia`: sem o "sim" à troca, árvore suja ou branch no autopilot → avise e pare.

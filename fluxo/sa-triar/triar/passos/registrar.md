@@ -15,10 +15,10 @@ O destino do passo `decidir` e, no aceito, a classificação do passo `classific
 | épico aceito | `a-moldar` |
 | sustentação aceita, ou qualquer item com `falta:` | `nova` |
 | duplicado ou recusa | `cancelada` |
-| agora não | `adiada até <AAAA-MM-DD>` (fatia ou bug) |
+| agora não | `impedida` (épico: `impedido`), com a data no `motivo` |
 
 **Colunas:** id · título · tipo · status · prioridade · tamanho · responsável (vazio) · pai · relator (`usuario` do
-`equipe.json` ou `externo: <área ou nome>`) · `ib` (só o número, quando veio do EWM) · `obs` · `entrou_em`
+`equipe.json` ou `externo: <área ou nome>`) · `ib` (só o número, quando veio do EWM) · `motivo` (só no cancelado e no impedido) · `obs` · `entrou_em`
 (do cadastro; a triagem não muda) · `concluida_em` (AAAA-MM-DD).
 
 **Corpo:**

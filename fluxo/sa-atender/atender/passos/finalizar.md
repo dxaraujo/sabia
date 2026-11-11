@@ -11,7 +11,7 @@
 2. No registro: a Resposta enviada (sem dado de cliente) e, se a pessoa informar, a linha Data | Horas.
 3. No `backlog.md`: status `concluida` e `concluida_em` = hoje; na linha Item · `atendimento` da sprint,
    `concluida_em` = hoje. Pedido retirado: status `cancelada` com
-   `motivo: <texto>` na `obs`.
+   `<texto> · desde <hoje>` na coluna `motivo`.
 4. O commit sai no passo `desdobramentos`.
 5. Item com `origem FT-nnn` (ex.: a DDL de uma fatia) → avise que a `FT-nnn` pode seguir; quem desenvolve tira o
    `<ID>` do Em aberto do `status.md` dela.

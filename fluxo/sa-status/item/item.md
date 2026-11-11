@@ -7,6 +7,7 @@
    {"id": "identificar", "saidas": {"não registrado ou fora do Sabiá": "fora-do-sabia"}},
    {"id": "estado"},
    {"id": "terminal", "saidas": {"terminal": "fim"}},
+   {"id": "impedida", "saidas": {"impedido": "mostrar-e-seguir"}},
    {"id": "triagem-e-refinamento", "saidas": {"casou": "mostrar-e-seguir"}},
    {"id": "desenvolvimento", "saidas": {"casou": "mostrar-e-seguir", "trava de artefato": "fim"}},
    {"id": "epico", "saidas": {"casou": "mostrar-e-seguir"}},

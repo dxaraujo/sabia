@@ -635,7 +635,7 @@ test("status: JSON estável com sprint, sem responsável, não iniciados, em and
   assert.deepEqual(r.quadro.config, { arquivo: ".sabia/config/kanban.json", do_projeto: false, erro: null });
   assert.equal(r.quadro.grupo, "Em andamento");
   assert.deepEqual(r.quadro.colunas.map((c) => c.id), ["backlog", "nova", "a-moldar", "em-especificacao", "fatiado", "aceita", "elegivel",
-    "iniciada", "implementando", "revisando", "verificando", "pr-aberto", "retrabalho", "adiada", "concluida", "cancelada"]);
+    "iniciada", "implementando", "revisando", "verificando", "pr-aberto", "retrabalho", "impedida", "concluida", "cancelada"]);
   assert.deepEqual(r.quadro.colunas.filter((c) => c.grupo).map((c) => c.nome), ["Iniciada", "Em desenvolvimento", "Revisão do agente", "Verificação do agente", "Aguardando aprovação do MR", "Retrabalho"]);
   assert.equal(r.quadro.itens.length, 4);
   const c2 = r.quadro.itens.find((c) => c.id === "FT-002");
@@ -691,13 +691,15 @@ test("status: JSON estável com sprint, sem responsável, não iniciados, em and
 
 test("status: quadro lê acordos (WIP/SLE), o status.md da branch, os avisos dos acordos e o kanban.json do projeto", async () => {
   const proj = escrever(path.join(raiz, "st-q"), {
-    ".sabia/planejamento/backlog.md": "# Backlog\n\n| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | obs | entrou_em | concluida_em |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n"
-      + "| FT-001 | Um | fatia | em-andamento |  | M | ana |  | a |  |  |  |  |\n"
-      + "| AT-001 | Contas | sustentação | em-andamento |  |  |  |  | a |  |  |  |  |\n"
-      + "| FT-002 | Dois | bug | em-andamento | crítica | P | bia |  | a |  |  |  |  |\n"
-      + "| FT-003 | Três | fatia | adiada até 2026-11-01 |  | P |  |  | a |  |  |  |  |\n"
-      + "| FT-004 | Quatro | fatia | nova |  |  |  |  | a |  | falta: qual tela · para ana |  |  |\n"
-      + "| EP-01 | Épico | épico | concluido |  |  |  |  | a |  |  |  | 2026-10-11 |\n",
+    ".sabia/planejamento/backlog.md": "# Backlog\n\n| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | motivo | obs | entrou_em | concluida_em |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n"
+      + "| FT-001 | Um | fatia | em-andamento |  | M | ana |  | a |  |  |  |  |  |\n"
+      + "| AT-001 | Contas | sustentação | em-andamento |  |  |  |  | a |  |  |  |  |  |\n"
+      + "| FT-002 | Dois | bug | em-andamento | crítica | P | bia |  | a |  |  |  |  |  |\n"
+      + "| FT-003 | Três | fatia | impedida |  | P |  |  | a |  | fornecedor sem prazo · por externo: fornecedor · desde 2026-10-20 · até 2026-11-01 · de elegivel |  |  |  |\n"
+      + "| FT-005 | Cinco | bug | impedida |  | P | bia |  | a |  | ambiente fora · por externo: infra · desde 2026-11-08 · de em-andamento |  |  |  |\n"
+      + "| EP-02 | Outro | épico | impedido |  |  |  |  | a |  |  |  |  |  |\n"
+      + "| FT-004 | Quatro | fatia | nova |  |  |  |  | a |  |  | falta: qual tela · para ana |  |  |\n"
+      + "| EP-01 | Épico | épico | concluido |  |  |  |  | a |  |  |  |  | 2026-10-11 |\n",
     ".sabia/planejamento/acordos.json": JSON.stringify({ timebox_semanas: 2, wip: { "em-andamento": 1, "em-revisao": 2 }, sle: { percentual: 85, dias: 5 } }),
     ".sabia/planejamento/sprints/2026/sprint-01.md": "# 2026/Sprint 01 · 2026-11-02 → 2026-11-13\n\n**Meta:** Entregar\n\n**Reserva de capacidade:** 0 itens (0%)\n\n## Itens\n\n| Item | Trabalho | Responsável | Tarefas | iniciada_em | concluida_em |\n|---|---|---|---|---|---|\n| FT-001 | desenvolvimento | ana | — | 2026-10-20 | |\n| AT-001 | atendimento | — | — | | |\n| EP-01 | especificação | bia | — | 2026-10-01 | 2026-10-11 |\n",
     // a worktree do item, com o status.md da spec: a Fase dá a coluna e o Em aberto que bloqueia vira aviso
@@ -707,14 +709,17 @@ test("status: quadro lê acordos (WIP/SLE), o status.md da branch, os avisos dos
   delete process.env.GITLAB_API_URL;
   const agora = new Date("2026-11-09T12:00:00Z");
   const r = statusDoProjeto({ projeto: proj, exec: s.ctx.exec, agora });
-  // o WIP conta só fatia e bug, pelas colunas de cada status: a FT-002 em andamento (2 de 1) e a FT-001 com o MR em revisão
+  // o WIP conta só fatia e bug, pelas colunas de cada status: a FT-002 em andamento mais a FT-005, impedida que veio de
+  // em-andamento (o impedido segue ocupando a capacidade), e a FT-001 com o MR em revisão
   assert.deepEqual(r.quadro.wip, [
-    { status: "em-andamento", nome: "Em andamento", colunas: ["iniciada", "implementando", "revisando", "verificando"], atual: 1, limite: 1 },
+    { status: "em-andamento", nome: "Em andamento", colunas: ["iniciada", "implementando", "revisando", "verificando"], atual: 2, limite: 1 },
     { status: "em-revisao", nome: "MR em revisão", colunas: ["pr-aberto", "retrabalho"], atual: 1, limite: 2 }]);
   assert.deepEqual(r.quadro.sle, { percentual: 85, dias: 5 });
   assert.equal(r.sprint.reserva, 0);
-  // os alertas do quadro: a reserva de capacidade (1 linha de atendimento contra 0)
-  assert.deepEqual(r.quadro.alertas, [{ tipo: "reserva", nivel: "atencao", mensagem: "reserva de capacidade estourada: 1 de 0 itens de atendimento" }]);
+  // os alertas do quadro: o WIP estourado e a reserva de capacidade (1 linha de atendimento contra 0)
+  assert.deepEqual(r.quadro.alertas, [
+    { tipo: "wip", nivel: "critico", mensagem: "WIP estourado em Em andamento: 2 de 1" },
+    { tipo: "reserva", nivel: "atencao", mensagem: "reserva de capacidade estourada: 1 de 0 itens de atendimento" }]);
   const de = (id) => r.quadro.itens.find((c) => c.id === id), tipos = (id) => de(id).avisos.map((a) => `${a.nivel}:${a.tipo}`);
   const c1 = de("FT-001");
   assert.equal(c1.coluna, "retrabalho");
@@ -729,8 +734,19 @@ test("status: quadro lê acordos (WIP/SLE), o status.md da branch, os avisos dos
   // urgente (prioridade crítica), devolvido pelo autopilot e em andamento fora da sprint
   assert.deepEqual(tipos("FT-002"), ["critico:urgente", "critico:devolvido", "atencao:fora-da-sprint"]);
   assert.equal(de("FT-002").na_sprint, false);
-  assert.deepEqual(tipos("FT-003"), ["atencao:adiamento-vencido"]);
-  assert.equal(de("FT-003").coluna, "adiada");
+  // impedida: a coluna motivo dá o que impede, quem, desde quando, até quando e o status anterior; acima do limite dos
+  // acordos (7 dias, o padrão) o aviso é crítico, e a data "até" vencida avisa que pode liberar
+  assert.equal(de("FT-003").coluna, "impedida");
+  assert.deepEqual(de("FT-003").motivo, { texto: "fornecedor sem prazo", por: "externo: fornecedor", desde: "2026-10-20", ate: "2026-11-01", de: "elegivel" });
+  assert.equal(de("FT-003").impedida_dias, 20);
+  assert.deepEqual(de("FT-003").avisos, [
+    { tipo: "impedimento", nivel: "critico", mensagem: "impedida há 20 dias: fornecedor sem prazo" },
+    { tipo: "impedimento-vencido", nivel: "atencao", mensagem: "impedimento com a data vencida em 2026-11-01: pode ser liberado" }]);
+  assert.deepEqual(tipos("FT-005"), []);  // impedida há 1 dia: sem aviso
+  assert.equal(de("FT-005").motivo.de, "em-andamento");
+  // o épico impedido cai na mesma coluna; sem a coluna motivo, o aviso
+  assert.equal(de("EP-02").coluna, "impedida");
+  assert.deepEqual(tipos("EP-02"), ["atencao:impedimento"]);
   assert.deepEqual(de("FT-004").avisos, [{ tipo: "falta-informacao", nivel: "atencao", mensagem: "falta: qual tela" }]);
   const c2 = de("AT-001");
   assert.equal(c2.tipo, "sustentação");
@@ -750,7 +766,7 @@ test("status: quadro lê acordos (WIP/SLE), o status.md da branch, os avisos dos
   assert.deepEqual(q.config, { arquivo: ".sabia/config/kanban.json", do_projeto: true, erro: null });
   assert.equal(q.grupo, "Fazendo");
   assert.deepEqual(q.colunas.map((c) => c.id), ["elegivel", "retrabalho", "implementando", "iniciada", "revisando", "verificando", "pr-aberto", "nova",
-    "backlog", "a-moldar", "em-especificacao", "fatiado", "aceita", "adiada", "concluida", "cancelada"]);
+    "backlog", "a-moldar", "em-especificacao", "fatiado", "aceita", "impedida", "concluida", "cancelada"]);
   assert.deepEqual(q.colunas.slice(0, 3).map((c) => c.nome), ["Pronta", "Retrabalho", "Codando"]);
   assert.equal(q.colunas.find((c) => c.id === "nova").oculta, true);
   // JSON inválido: o quadro usa o padrão e avisa

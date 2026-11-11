@@ -13,6 +13,7 @@
    {"id": "mr-com-tarefas-pendentes"},
    {"id": "item-sem-ficha"},
    {"id": "atribuicao-e-status"},
+   {"id": "impedida-sem-motivo"},
    {"id": "fora-da-sprint"},
    {"id": "idade-acima-do-sle"},
    {"id": "epico-sem-fechar"},

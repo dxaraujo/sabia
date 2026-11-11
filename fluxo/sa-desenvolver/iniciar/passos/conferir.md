@@ -14,8 +14,8 @@ O item da entrada comum (fatia ou bug, sem branch `<id>` publicada ou com a bran
    P.O. (`sa-planejamento.sprint`)" e pare.
 2. **DoR.** Status `elegivel` → segue. Status `aceita` (ainda não refinado) → mostre o que falta no checklist DoR da
    ficha e ofereça a `sa-refinar.detalhar`. Só siga com o "sim" de quem puxa.
-3. **WIP.** Conte o WIP pela chave `wip` do `acordos.json` com os valores de status (`em-andamento`; `em-revisao` é derivado
-   do MR aberto) e os MRs parados. Acima do limite → mostre e recomende destravar antes (revisar um MR). Não trava; o item urgente pode passar o WIP em 1.
+3. **WIP.** Conte o WIP pela chave `wip` do `acordos.json` com os valores de status (`em-andamento`, contando o impedido que veio
+   de `em-andamento`; `em-revisao` é derivado do MR aberto) e os MRs parados. Acima do limite → mostre e recomende destravar antes (revisar um MR). Não trava; o item urgente pode passar o WIP em 1.
 4. **Trava de artefato.** Só com ELM. Um `<sigla>-<id>` com `altera` ou `exclui` nos artefatos afetados da ficha está no `elm/` de
    outra fatia que não está `cancelada` nem com `Publicação: publicada` (a que gravou o `elm/` primeiro tem a
    precedência) → "FT-<x> tem o mesmo `<sigla>-<id>`; espere ela ser publicada ou cancelada" e pare.

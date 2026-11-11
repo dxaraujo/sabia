@@ -16,7 +16,7 @@ tarefa):
 | épico `a-moldar` | `sa-refinar.moldar` |
 | sustentação `nova` | `sa-atender.atender` |
 | prioridade `crítica` | avise que é urgente e diga quem puxa pela política do `acordos.json` |
-| falta, adiada ou cancelada | nada a seguir |
+| falta, impedida ou cancelada | nada a seguir |
 
 Pergunte "mais algum item para triar?".
 

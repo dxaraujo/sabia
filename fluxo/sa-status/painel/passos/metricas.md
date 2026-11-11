@@ -8,7 +8,8 @@ A coleta e o `acordos.json`.
 ## Faça
 
 Linha de topo:
-- WIP por status contra o limite do `acordos.json` (`em-revisao` contado pelos MRs abertos);
+- WIP por status contra o limite do `acordos.json` (`em-revisao` contado pelos MRs abertos; o impedido que veio de
+  `em-andamento` segue contando);
 - vazão do ciclo: linhas de desenvolvimento com `concluida_em` nas datas da sprint, e atendimento à parte;
 - lead time médio do ciclo, em dias corridos: o do item (do primeiro `iniciada_em` das linhas do trabalho principal dele
   — fatia e bug: desenvolvimento; sustentação: atendimento; épico: especificação — até o `concluida_em` do `backlog.md`)

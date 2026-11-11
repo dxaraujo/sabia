@@ -12,7 +12,7 @@ aponte o `EP-nn`. Concluída com `Publicação: pendente` → quem tem `especifi
 
 ## Saída
 
-Terminal → o fluxo termina. Senão → passo `triagem-e-refinamento`.
+Terminal → o fluxo termina. Senão → passo `impedida`.
 
 ## Pare se
 

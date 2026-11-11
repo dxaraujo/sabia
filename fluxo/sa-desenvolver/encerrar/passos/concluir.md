@@ -10,7 +10,7 @@ A data do merge e a linha do item no `backlog.md` da branch base.
 1. Pelo passo `gravar`, commit `<FT> concluir`: no `backlog.md`, status `concluida` e `concluida_em` = data do merge;
    na linha Item · `desenvolvimento` da sprint, `concluida_em` = a mesma data.
 2. Fatia ou bug com `pai` `EP-nn`: se o épico está `fatiado` e não resta nenhuma outra fatia ou bug dele aberto
-   (`nova`, `aceita`, `elegivel`, `em-andamento` ou `adiada até …`), grave também `concluido` e `concluida_em` na linha do épico, no
+   (`nova`, `aceita`, `elegivel`, `em-andamento` ou `impedida`), grave também `concluido` e `concluida_em` na linha do épico, no
    mesmo commit.
 
 ## Saída

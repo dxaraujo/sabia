@@ -8,7 +8,7 @@ A pasta do produto.
 ## Faça
 
 Sem `.sabia/planejamento/backlog.md` → crie-o com a tabela vazia, nestas colunas: id · título · tipo · status ·
-prioridade · tamanho · responsável · pai · relator · ib · obs · entrou_em · concluida_em. Crie também
+prioridade · tamanho · responsável · pai · relator · ib · motivo · obs · entrou_em · concluida_em. Crie também
 as subpastas que faltam do passo `pasta-produto`. Existe → não mexa.
 
 ## Saída
