@@ -9,7 +9,8 @@
 
 ## Verificar
 
-- **Quadro Kanban:** o arrasto do card com o mouse (só o menu do card foi exercitado) e navegadores além do Chrome.
+- **Quadro Kanban:** o arrasto do card com o mouse (só eventos simulados e o menu do card foram exercitados) e o Safari
+  (o Chrome e o Firefox foram conferidos).
 - **MR mesclado:** a detecção contra um GitLab de verdade (só respostas simuladas).
 - **CI:** um projeto com um MCP de CI declarado no `.sabia/sabia.md`, lendo o pipeline e o baseline.
 - **Fluxos novos num agente:** `sa-status.situacao` (impedir, liberar, cancelar, devolver) e as datas de início e fim

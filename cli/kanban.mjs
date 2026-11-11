@@ -117,7 +117,7 @@ select:hover{background:var(--suave-h)}
 /* a mesa: o quadro ocupa o que sobra da janela; cada raia vai até o fundo e rola por dentro */
 .mesa{flex:1;min-height:0;display:flex;background:var(--mesa)}
 .quadro{flex:1;min-width:0;display:flex;align-items:stretch;gap:10px;padding:12px 20px;overflow:auto hidden}
-.coluna{flex:0 0 272px;display:flex;flex-direction:column;min-height:0;border-radius:var(--r);background:var(--raia)}
+.coluna{flex:0 0 272px;width:272px;display:flex;flex-direction:column;min-height:0;border-radius:var(--r);background:var(--raia)}
 .cab{flex:none;display:flex;align-items:center;gap:8px;padding:8px 6px 6px 12px;cursor:grab}
 .cab h2{flex:0 1 auto;min-width:0;font-size:13px;line-height:20px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .conta{font:500 12px/20px var(--body);color:var(--muted);font-variant-numeric:tabular-nums}
