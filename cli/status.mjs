@@ -230,7 +230,8 @@ export function statusDoProjeto({ projeto = ".", exec, agora = new Date() }) {
     if (md?.fase === "retrabalho") aviso("retrabalho", "atencao", "retrabalho: o dono retoma no mesmo MR");
     if (st === "impedida") {
       if (!motivo) aviso("impedimento", "atencao", "impedida sem a coluna motivo");
-      else if (desde && dias(desde) > acordos.alertas.impedimento_dias) aviso("impedimento", "critico", `impedida há ${dias(desde)} dias${motivo.texto ? `: ${motivo.texto}` : ""}`);
+      // com a data "até" ainda no futuro, o impedimento é um adiamento combinado: não alarma
+      else if (desde && dias(desde) > acordos.alertas.impedimento_dias && !(data(motivo.ate) && motivo.ate >= hoje)) aviso("impedimento", "critico", `impedida há ${dias(desde)} dias${motivo.texto ? `: ${motivo.texto}` : ""}`);
       if (data(motivo?.ate) && motivo.ate < hoje) aviso("impedimento-vencido", "atencao", `impedimento com a data vencida em ${motivo.ate}: pode ser liberado`);
     }
     const falta = st === "nova" ? l.obs?.match(/falta: ([^·]+)/)?.[1].trim() : null;

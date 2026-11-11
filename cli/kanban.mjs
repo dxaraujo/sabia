@@ -291,7 +291,7 @@ function cliente() {
     if (c.impedida_dias != null) d.push("impedida há " + c.impedida_dias + " d");
     else if (mv?.desde) d.push("desde " + dataBr(mv.desde));
     if (mv?.ate) d.push("até " + dataBr(mv.ate));
-    if (mv?.de) d.push("antes: " + esc(col(mv.de)?.nome ?? mv.de));
+    if (mv?.de) d.push("antes: " + esc(mv.de === "em-andamento" ? cfg.grupo : col(mv.de)?.nome ?? mv.de));
     if (c.mr) d.push(/^https?:/.test(c.mr.url) ? '<a href="' + esc(c.mr.url) + '" target="_blank" rel="noopener">MR ' + (c.mr.iid ? "!" + c.mr.iid : "aberto") + "</a>" : "MR " + esc(c.mr.url));
     if (c.pai) d.push("pai " + esc(c.pai));
     if (c.ib) d.push("IB " + esc(c.ib));
@@ -326,26 +326,28 @@ function cliente() {
       + (recolhido ? cartoes(cs, true) : '<div class="grupo-colunas">' + cols.filter((c) => !c.oculta).map((c) => coluna(c, mapa)).join("") + "</div>") + "</section>";
   }
 
-  // a lista: a tabela do backlog e uma por sprint (da aberta para a primeira), com as situações e os atributos do item
-  function tabela(titulo, sub, cs, sp, aberta) {
-    const linha = (c) => {
-      const nv = nivelDe(c);
-      return '<tr><td class="id">' + esc(c.id) + '</td><td class="tit">' + esc(c.titulo ?? "sem título") + '</td><td class="nw" data-tipo="' + esc(c.tipo) + '"><span class="t"></span>' + esc(c.tipo ?? "") + "</td>"
-        + '<td class="nw">' + esc(col(c.coluna)?.nome ?? c.coluna) + '</td><td class="nw">' + esc(c.responsavel ? nome(c.responsavel) : "") + "</td>"
-        + (sp ? '<td class="nw">' + esc(linhasDe(c, sp).map((l) => l.trabalho).join(", ")) + "</td>" : "")
-        + "<td>" + esc(c.tamanho ?? "") + '</td><td class="nw">' + (c.lead_time_dias != null ? "lead time " + c.lead_time_dias + " d" : c.idade_dias != null ? c.idade_dias + " d" : "") + "</td>"
-        + "<td>" + (nv ? ponto(nv) + esc(c.avisos.map((a) => a.mensagem).join("; ")) : "") + "</td></tr>";
-    };
+  // a lista: a tabela do backlog e uma por sprint (da aberta para a primeira). Na sprint, uma linha por tarefa, com o
+  // início, o fim e o lead time daquele trabalho; no backlog, uma por item
+  function tabela(titulo, sub, linhas, sp, aberta) {
+    const dt = (d) => (d ? dataBr(d) : ""), avisos = (c) => { const nv = nivelDe(c); return nv ? ponto(nv) + esc(c.avisos.map((a) => a.mensagem).join("; ")) : ""; };
+    const comum = (c) => '<td class="id">' + esc(c.id) + '</td><td class="tit">' + esc(c.titulo ?? "sem título") + '</td><td class="nw" data-tipo="' + esc(c.tipo) + '"><span class="t"></span>' + esc(c.tipo ?? "")
+      + '</td><td class="nw">' + esc(col(c.coluna)?.nome ?? c.coluna) + "</td>";
+    const linha = sp
+      ? ({ c, l }) => "<tr>" + comum(c) + '<td class="nw">' + esc(l.trabalho ?? "") + '</td><td class="nw">' + esc(l.responsavel ? nome(l.responsavel) : "") + '</td><td class="nw">' + dt(l.iniciada_em)
+        + '</td><td class="nw">' + dt(l.concluida_em) + '</td><td class="nw">' + (l.lead_time_dias != null ? l.lead_time_dias + " d" : "") + "</td><td>" + avisos(c) + "</td></tr>"
+      : ({ c }) => "<tr>" + comum(c) + '<td class="nw">' + esc(c.responsavel ? nome(c.responsavel) : "") + "</td><td>" + esc(c.tamanho ?? "") + '</td><td class="nw">' + dt(c.entrou_em) + "</td><td>"
+        + esc(c.motivo?.texto ?? "") + "</td><td>" + avisos(c) + "</td></tr>";
+    const cab = sp ? "<th>Trabalho</th><th>Responsável</th><th>Início</th><th>Fim</th><th>Lead time</th>" : "<th>Responsável</th><th>Tamanho</th><th>Entrou em</th><th>Motivo</th>";
     return '<details class="bloco"' + (aberta ? " open" : "") + "><summary>" + SETA + "<h2>" + esc(titulo) + "</h2><span>" + esc(sub) + "</span></summary>"
-      + (cs.length ? '<div class="rola"><table><thead><tr><th>Item</th><th>Título</th><th>Tipo</th><th>Situação</th><th>Responsável</th>' + (sp ? "<th>Trabalho</th>" : "") + "<th>Tamanho</th><th>Idade</th><th>Avisos</th></tr></thead><tbody>"
-        + cs.map(linha).join("") + "</tbody></table></div>" : '<p class="nada">Nenhum item</p>') + "</details>";
+      + (linhas.length ? '<div class="rola"><table><thead><tr><th>Item</th><th>Título</th><th>Tipo</th><th>Situação</th>' + cab + "<th>Avisos</th></tr></thead><tbody>"
+        + linhas.map(linha).join("") + "</tbody></table></div>" : '<p class="nada">Nenhum item</p>') + "</details>";
   }
   const itens = (n) => n + (n === 1 ? " item" : " itens");
   function lista() {
-    const doBacklog = Q.itens.filter((c) => noBacklog(c) && passa(c));
+    const doBacklog = Q.itens.filter((c) => noBacklog(c) && passa(c)).map((c) => ({ c })), porId = Object.fromEntries(Q.itens.map((c) => [c.id, c]));
     return tabela("Backlog", itens(doBacklog.length), doBacklog, null, true) + SP.map((sp, i) => {
-      const cs = Q.itens.filter((c) => linhasDe(c, sp).length && passa(c));
-      return tabela(sp.chave, dataBr(sp.inicio) + " → " + dataBr(sp.fim) + " · " + itens(cs.length), cs, sp, i === 0);
+      const ls = sp.itens.map((l) => ({ c: porId[l.id], l })).filter((x) => x.c && passa(x.c));
+      return tabela(sp.chave, dataBr(sp.inicio) + " → " + dataBr(sp.fim) + " · " + ls.length + (ls.length === 1 ? " tarefa" : " tarefas"), ls, sp, i === 0);
     }).join("");
   }
 
