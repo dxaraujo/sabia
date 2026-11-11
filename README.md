@@ -206,7 +206,8 @@ ficha; o `CT.csv` da verificação) e `ATA`. Artefato novo: id provisório `<sig
   para os scripts da setup e da `sa-status`. No opencode, a proteção por agente é menor que no Kiro: o gerador lista
   o que não tem tradução.
 - Kiro Web não lê `~/.kiro`: os agentes do projeto aparecem lá, mas sem as skills do power — use a IDE ou o CLI.
-- MCPs do próprio power (o `mcp.json` os sobe com `uvx`): [`mcp-gitlabpr`](https://pypi.org/project/mcp-gitlabpr/),
+- MCPs do próprio power (o `mcp.json` os sobe com `uvx`, numa versão fixa: cada versão do Sabiá roda com a versão dos
+  MCPs com que foi testada): [`mcp-gitlabpr`](https://pypi.org/project/mcp-gitlabpr/),
   que lista, lê, abre e mescla os MRs — credencial nas variáveis de ambiente `GITLAB_API_URL` e
   `GITLAB_API_TOKEN`; sem ela, o fluxo entrega título e descrição do MR, e a pessoa o abre; e
   [`mcp-elm`](https://pypi.org/project/mcp-elm/), que também consulta o bundle local. Cada schema fica no repositório dono, sem cópia: os do Sabiá em `schemas/`, e o [`pa.schema.json`](https://raw.githubusercontent.com/dxaraujo/mcp-elm/main/schemas/pa.schema.json) no `mcp-elm`.

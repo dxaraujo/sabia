@@ -1285,6 +1285,11 @@ test("opção desconhecida é recusada; o toolkits -h só mostra as opções do 
   assert.ok(!/-t, --toolkits|--sem-mcp/.test(logs.at(-1)) && /-y, --sim/.test(logs.at(-1)));
 });
 
+test("mcp.json: cada MCP numa versão fixa, nunca @latest", () => {
+  const servidores = JSON.parse(fs.readFileSync(path.join(REPO, "mcp.json"), "utf8")).mcpServers;
+  for (const [nome, s] of Object.entries(servidores)) assert.match(s.args[0], /^mcp-[a-z]+@\d+\.\d+\.\d+$/, nome);
+});
+
 test("schemas: cada um mora em schemas/, com o $id apontando para o próprio arquivo no repositório", () => {
   for (const nome of ["toolkit", "index", "equipe", "acordos"])
     assert.equal(JSON.parse(fs.readFileSync(path.join(REPO, "schemas", `${nome}.schema.json`), "utf8")).$id, `https://raw.githubusercontent.com/dxaraujo/sabia/main/schemas/${nome}.schema.json`, nome);

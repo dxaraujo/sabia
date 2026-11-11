@@ -4,7 +4,7 @@ description: "Sustentação in the Sabiá flow, one flow for the six categories:
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.31"
+  version: "2.1.32"
 ---
 
 # sa-atender — Sustentação sem perder o rastro

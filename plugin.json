@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "sabia",
-  "version": "2.1.31",
+  "version": "2.1.32",
   "description": "Sabiá: framework de engenharia agêntica que leva cada demanda da ideia ao merge, em Kiro e opencode. Alinhar antes e verificar depois: o cadastro e a triagem registram épicos, fatias, bugs e Sustentação no backlog; o refinamento molda o épico (pitch e decisão de investimento), detalha a fatia no refinamento conjunto e fatia o épico; o ciclo é Scrumban, com WIP e virada. Cada fatia segue a trilha trivial, rápida ou completo, em IA supervisionada, IA autopilot ou manual, com TDD e backpressure, revisão e verificação do agente, em contexto isolado e um MR revisado por outro desenvolvedor e lido por uma pessoa. O ELM (IBM) é utilitário e opcional, pela sa-elm. As skills: sabia, sa-setup, sa-status, sa-triar, sa-refinar, sa-planejamento, sa-prd, sa-especificar, sa-entrevistar, sa-desenvolver, sa-pesquisar, sa-plano, sa-revisar, sa-verificar, sa-atender, sa-elm, mais os arquivos comuns de fluxo (entrada, cadastro e gravação na branch base). Inclui os MCPs mcp-elm e mcp-gitlabpr (merge requests) e uma setup que gera os 5 agentes do projeto (sa-desenvolvedor, sa-especificador, sa-pesquisador, sa-revisor e sa-verificador) com as skills de toolkit escolhidas.",
   "author": {
     "name": "Daniel Xavier Araújo",
