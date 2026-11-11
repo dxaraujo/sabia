@@ -266,7 +266,9 @@ subagente no autopilot (no opencode, se precisa de `mode: all`); e EARS em portu
 
 - **Não verificado numa PA real:** os tipos de artefato do DOORS Next para a `ATA` (Reunião) e a `EL` (Leiaute) — o
   nome, o `OT_` e os atributos obrigatórios de cada um (`elm_setup_descobrir`).
-- **A construir:** o MCP do Jenkins (resultado do pipeline no codificar e na revisão do MR); o `sabia validar-spec`
+- **CI:** opcional. O `.sabia/sabia.md` declara se o projeto tem CI e qual MCP lê o pipeline; sem isso, a validação é a
+  suíte completa local. O Sabiá não traz um MCP de CI.
+- **A construir:** o `sabia validar-spec`
   (forma e ligações da spec nos dois formatos); a busca da configuração do `mcp-elm` e do `mcp-elk` em
   `.sabia/config/<mcp>`.
 - **Próxima versão:** o ELM como toolkit; toolkits oficiais (backend Java/Spring, Spring Batch, frontend

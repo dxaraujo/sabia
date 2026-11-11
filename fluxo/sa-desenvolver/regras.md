@@ -9,6 +9,12 @@ Leia antes: `.sabia/sabia.md` (Projeto, Especificação, Comandos, Verificação
 `.sabia/config/agentes.json` (`branch_base`, `prefixo_branch`, `formato_spec`, `elm`). Sem o `.sabia/sabia.md` →
 ofereça a `sa-setup.configurar` e pare.
 
+- **CI e validação verde.** A linha CI da seção Comandos do `.sabia/sabia.md` diz se o projeto tem CI e qual MCP lê o
+  pipeline. Com CI: vale o pipeline do último commit da branch, lido por esse MCP, e o baseline é o último pipeline
+  da branch base. Sem CI declarado, ou com o MCP fora do ar: vale a suíte completa rodada localmente pelos Comandos,
+  com a saída na Evidência do MR, e o baseline é a suíte rodada antes de mexer. Nos dois casos o teste que já estava
+  vermelho no baseline não conta; nenhum teste verde pode ficar vermelho. Onde um fluxo diz "CI verde", leia
+  "validação verde" por esta regra. Nenhum fluxo presume um CI que o `sabia.md` não declara.
 - **Autonomia da codificação** (linha Autonomia do `status.md`): IA supervisionada, IA autopilot ou manual, escolhido ao assumir
   e fixo até o fim da tarefa. No manual, só a geração do código-fonte é da pessoa; o resto do fluxo segue igual.
   Pedido de trocar no meio → diga isso e siga na autonomia atual.

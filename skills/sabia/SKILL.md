@@ -4,7 +4,7 @@ description: "Sabiá guide and router for the agent workflow (Kiro and opencode)
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.29"
+  version: "2.1.30"
 ---
 
 # Sabiá — guia e roteador do fluxo
@@ -58,6 +58,7 @@ Não existe consolidação: o fechamento é o merge, o archive e a publicação.
   (`cancelado`), com a coluna `motivo`; quem muda é quem tem `produto` ou o responsável da tarefa em curso
   (`sa-status.situacao`). Não há adiamento: adiar é impedir com data.
 - **SLE.** O prazo esperado (SLE) fica na chave `sle` do `acordos.json`: `{"percentual": 85, "dias": 5}` quer dizer "85% dos itens em até 5 dias". O item em andamento com idade acima de `dias` vira aviso crítico no painel (`sa-status.painel`), nas pendências e no Quadro Kanban; a idade conta do início da tarefa principal, na linha da sprint. Sem a chave, não há aviso.
+- **CI.** Opcional. A linha CI da seção Comandos do `.sabia/sabia.md` diz se o projeto tem CI e qual MCP lê o pipeline. Com CI, "validação verde" é o pipeline do último commit, contra o último pipeline da branch base; sem CI, é a suíte completa local, contra a suíte rodada antes de mexer. O teste que já estava vermelho no baseline não conta.
 - **Prioridade e tamanho.** `prioridade` ∈ {`crítica`, vazio}: crítica é o item urgente, pela política do `acordos.json`;
   vazio segue a ordem das linhas. `tamanho` ∈ {`P`, `M`, `G`}: P = horas, M ≈ 1 dia, G = 2 a 3 dias. Maior que G é
   épico, e só o épico vai ao pitch e à decisão de investimento.
@@ -103,7 +104,7 @@ trabalho. Codificação e especificação têm autonomias independentes.
 2. **Cerimônia do tamanho** — pelas trilhas `trivial` · `rapida` · `completo` e pelo tamanho P · M · G.
 3. **Fatias verticais** — cada fatia prova algo demonstrável e mantém os artefatos afetados.
 4. **Verificação acima de geração** — backpressure em camadas: o trecho tocado a cada alteração e a suíte completa uma
-   vez antes do MR, com baseline do CI. A asserção que dura são os testes automatizados, marcados com o `CT-nn`.
+   vez antes do MR, contra o baseline (do CI, se o projeto declara um; senão, da suíte local). A asserção que dura são os testes automatizados, marcados com o `CT-nn`.
 5. **Gerador ≠ avaliador** — a revisão do agente pelo `sa-revisor` tem três eixos: spec · padrões · segurança. O aceite é
    do `sa-verificador`, de contexto isolado.
 6. **Estado em disco** — o estado vive no `status.md`, no `research.md` e no plano. Na mesma tarefa, segue na mesma

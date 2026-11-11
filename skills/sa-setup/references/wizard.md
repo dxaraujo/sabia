@@ -342,7 +342,7 @@ primeiro. Depois de um ajuste, mostre o cartão de novo antes de pedir o "ok" do
 | 4 | ELM | <🟢 leitura · 🟡 escrita nos principais · 🔴 nos subagentes e no autopilot | ➖ sem ELM> | <🧩 | ➖> |
 | 5 | Autopilot | 🟢 push da própria branch, merge da branch base nela, abrir ou atualizar o MR · 🔴 merge do MR, ELM e rede | 📐 fixo |
 | 6 | Executar · URL de teste | <`<comando>` · `<url>` | `<job e parâmetros>` · ➖> | <🔍 | 🙋> |
-| 7 | Backpressure | trecho tocado a cada alteração · suíte completa antes do MR · baseline do CI | 📐 fixo |
+| 7 | Backpressure | trecho tocado a cada alteração · suíte completa antes do MR · o pipeline, se o projeto declara CI | 📐 fixo |
 | 8 | Disjuntor do autopilot | no `acordos.json` (`sa-planejamento.inicial`) | 📐 |
 
 (se o projeto é `backend` ou `frontend` e a URL não está no repositório)

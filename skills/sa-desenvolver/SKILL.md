@@ -4,7 +4,7 @@ description: "Sabiá developer cycle for a slice or bug (FT-nnn), from pulling t
 license: MIT
 metadata:
   author: "Daniel Xavier Araújo"
-  version: "2.1.29"
+  version: "2.1.30"
 ---
 
 # sa-desenvolver — Do puxar ao merge

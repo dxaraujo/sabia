@@ -10,9 +10,9 @@ A branch com todas as tarefas feitas, ou a volta da codificação manual ("termi
 1. **Volta do manual**: árvore suja → mostre o `git status` e proponha o commit do que a pessoa fez (com o "sim").
    Compile, rode os testes do trecho tocado e confira um teste com o `CT-nn` para cada cenário da ficha e da spec.
    Cobrir testes e cenários é de quem codificou: aponte o que falta e não trave.
-2. **Suíte completa**, uma vez, em toda autonomia: push da branch e o pipeline dela (sem CI, localmente pelos
-   Comandos do `.sabia/sabia.md`), comparado com o baseline do passo `preparar`. Sem o MCP do Jenkins, a pessoa confere o pipeline ou
-   a suíte roda local. Cobertura como o pipeline pede.
+2. **Suíte completa**, uma vez, em toda autonomia, comparada com o baseline do passo `preparar`. Com CI declarado no
+   `.sabia/sabia.md`: push da branch e o pipeline dela, lido pelo MCP do CI. Sem CI, ou com o MCP fora do ar: a suíte
+   roda local, pelos Comandos. Cobertura pelo gate dos Comandos.
 3. Mostre a evidência: o comando e o resultado. "Passou" sem a saída não vale.
 4. Vermelho novo (verde no baseline) → tarefa nova no fim do `tasks.md` e volta ao passo `tarefa`; no manual, vai a
    quem codificou, que avisa de novo.
