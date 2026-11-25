@@ -20,6 +20,7 @@ demanda ─► cadastro (fluxo/cadastro.md; entrada direta sa-triar.cadastrar)  
         └─ sustentação ► SUSTENTAÇÃO sa-atender.atender (AT · IM · BD · IN · OP · EX, dentro da reserva de capacidade)
 
 PLANEJAMENTO ─────── sa-planejamento.inicial · .sprint · .review · .retrospectiva · daily sa-status.painel
+                     páginas do time: sabia kanban · sabia review · sabia retrospective      números: sabia metricas
 DESENVOLVIMENTO ──── sa-desenvolver.iniciar ─► [sa-plano.plano] ─► sa-desenvolver.codificar ─► MR
                      trilha: trivial · rápida · completo       autonomia: IA supervisionada · IA autopilot · manual
 REVISÃO E ACEITE ─── sa-verificar.verificar · sa-revisar.mr (desenvolvedor ≠ autor) · [sa-verificar.revisao-humana]
@@ -70,6 +71,7 @@ Fontes no fim deste arquivo.
 | `sa-prd` | `prd` · `mudanca` | PRD do épico depois da decisão de investir, aprovado pelo produto no próprio documento |
 | `sa-especificar` | `elm` · `prototipo` · `reuniao` · `archive` | arquivos de `elm/` da fatia, protótipo de tela, ATA de reunião e archive da spec depois do merge |
 | `sa-entrevistar` | `entrevistar` | alinhamento em rodadas de até 5 perguntas, cada uma com recomendação |
+| `sa-planejamento` | `inicial` · `sprint` · `review` · `retrospectiva` | equipe, acordos e roadmap; a sprint pela vazão, com a capacidade prevista gravada; a review (feedback de cada entrega, novas ideias e necessidades, repriorização do backlog, Histórico de Entregas e Métricas da sprint); a retrospectiva (pontos, agrupamento, votação, ações e lições aprendidas que viram Regras aprendidas) |
 | `sa-desenvolver` | `iniciar` · `codificar` · `encerrar` | assume a tarefa num passo (tamanho, trilha e autonomia), codifica com TDD e backpressure até o MR, faz o merge e fecha |
 | `sa-plano` | `plano` · `replanejar` | `research.md`, design e tasks; copia o texto aprovado para o delta sem reescrever |
 | `sa-pesquisar` | `pesquisar` | pesquisa neutra e só leitura no `sa-pesquisador`; devolve fatos com arquivo:linha |
@@ -155,7 +157,7 @@ power são ignorados. Por isso a `sa-setup` grava no projeto, a partir de `skill
 | `.sabia/config/elm/pa_<nome>.json` · `.sabia/config/elk/elk-<ambiente>.json` | a project area do ELM (da `sa-elm.setup`) e a configuração do ELK |
 | `.kiro/agents/sa-*.json` · `.opencode/agents/sa-*.md` | os 5 agentes (e os de toolkit), gerados pelo `sabia agentes gerar` |
 | `.sabia/fluxo/` · `.sabia/template/` (só ao customizar) | override esparso de um passo ou template; nenhum agente escreve |
-| pasta do produto (template `.sabia/planejamento`) | `backlog.md`, `equipe.json`, `acordos.json`, `roadmap.md`, `sprints/<AAAA>/sprint-<nn>.md`, `fatias/`, `epicos/EP-nn-<slug>/` (`pitch.md`, `prd.md`), `prototipos/`, `atas/`, `sustentacao/` — versionada |
+| pasta do produto (template `.sabia/planejamento`) | `backlog.md`, `equipe.json`, `acordos.json`, `roadmap.md`, `sprints/<AAAA>/sprint-<nn>.md`, `historico-de-entregas.md`, `fatias/`, `epicos/EP-nn-<slug>/` (`pitch.md`, `prd.md`), `prototipos/`, `atas/`, `sustentacao/` — versionada |
 | `.sabia/creditos/<usuario>.csv` | créditos do Kiro por sessão, gravados pela `sa-status.fechar-sessao` |
 | `.sabia/local/` (fora do git) | worktrees do autopilot, `loop-<id>.md`, transcrições e dados de cliente |
 
@@ -236,6 +238,21 @@ ficha; o `CT.csv` da verificação) e `ATA`. Artefato novo: id provisório `<sig
 3. Abra a sessão no `sa-especificador` ou no `sa-desenvolvedor` e comece: **"nova demanda: …"** (a `sa-triar`
    registra e tria), **"minha próxima tarefa"** ou **"onde está a FT-031?"** (a `sa-status` mostra o estado e oferece
    seguir), **"puxar a FT-031"** (a `sa-desenvolver.iniciar` assume a tarefa) — ou **"onde parei?"**.
+4. As páginas do time rodam no terminal de quem conduz, na branch base do projeto, e mostram o link (`--rede` dá o
+   link para o time abrir na rede local; Ctrl+C encerra):
+   - **`sabia kanban`**: o quadro do projeto. Quem é do `equipe.json` impede, libera, cancela, põe na sprint e ordena
+     o backlog, com commit e push.
+   - **`sabia review`**: a review da sprint, em etapas que o apresentador (quem abriu a página na própria máquina)
+     libera: o feedback de cada entrega, as novas ideias e necessidades e a repriorização do backlog. Só o
+     apresentador registra; os demais acompanham.
+   - **`sabia retrospective`**: a retrospectiva, em etapas que o apresentador libera: pontos (cada pessoa vê só os
+     seus), agrupamento, votação (cada pessoa vê só o seu voto), ações e lições aprendidas (Sim ou Não).
+   - Nas duas cerimônias, o `sprint-<nn>.md` só muda no botão Publicar, com commit e push; depois, de volta ao agente,
+     a `sa-planejamento.review` grava o Histórico de Entregas e as Métricas, e a `sa-planejamento.retrospectiva` leva
+     as lições marcadas às Regras aprendidas.
+   - **`sabia metricas`**: as métricas da sprint e o histórico da equipe (vazão de cada sprint, média das três
+     últimas, duração por tamanho), em JSON, calculados das sprints e do backlog; `--md` imprime a seção `## Métricas`
+     da sprint.
 
 Depois de atualizar o power ou um toolkit, peça "atualizar os agentes do Sabiá".
 
