@@ -10,7 +10,7 @@ A fatia verificada (`ACEITO`), o `status.md` (Desvios, Em aberto) e o histórico
 1. Uma linha por lição na seção Lições aprendidas do `status.md`: Lição · Origem (`tarefa N.M`, `MR !<n>` ou `CT-nn`) · Regra
    proposta. Nenhuma lição → a seção fica vazia.
 2. No trivial, as lições aprendidas vão na seção Lições aprendidas do MR.
-3. A curadoria é da review do ciclo (`sa-planejamento.review`): aqui só se registra.
+3. A curadoria é da retrospectiva do ciclo (`sa-planejamento.retrospectiva`): aqui só se registra.
 
 ## Saída
 

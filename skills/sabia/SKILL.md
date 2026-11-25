@@ -113,7 +113,7 @@ trabalho. Codificação e especificação têm autonomias independentes.
 8. **Rastreio leve** — os artefatos afetados ficam na ficha, e o texto completo dos requisitos fica no delta. Com ELM, a pasta `elm/`
    da fatia é a fonte da publicação no DOORS depois do merge, conferindo a versão. Sem ELM, a especificação vigente fica no
    repositório.
-9. **Aprendizado composto** — a lição nasce na seção Lições aprendidas do `status.md` ou do registro de Sustentação. Na review do
+9. **Aprendizado composto** — a lição nasce na seção Lições aprendidas do `status.md` ou do registro de Sustentação. Na retrospectiva do
    ciclo, as escolhidas entram nas Regras aprendidas do `sabia.md`.
 10. **Leia o código** — o MR traz o quê, o porquê, a evidência, o risco, o foco e os artefatos afetados. Nada é mergeado sem uma
     aprovação humana.
@@ -125,13 +125,13 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 | Quero… | Skill |
 |---|---|
 | instalar ou atualizar o Sabiá no projeto, os agentes, o formato da spec, "usa ELM?" · customizar ou descustomizar um passo ou template | `sa-setup` (`sa-setup.configurar` · `sa-setup.customizar`) |
-| onde parei · minha próxima · o estado de `<id>` · pendências (publicação pendente, travas de artefato) · lições aprendidas para a review · fechar a sessão · impedir, liberar, cancelar em andamento ou devolver um item ao backlog | `sa-status` (`sa-status.painel` · `sa-status.item` · `sa-status.minha-proxima` · `sa-status.pendencias` · `sa-status.licoes-aprendidas` · `sa-status.fechar-sessao` · `sa-status.situacao`) |
+| onde parei · minha próxima · o estado de `<id>` · pendências (publicação pendente, travas de artefato) · lições aprendidas para a retrospectiva · fechar a sessão · impedir, liberar, cancelar em andamento ou devolver um item ao backlog | `sa-status` (`sa-status.painel` · `sa-status.item` · `sa-status.minha-proxima` · `sa-status.pendencias` · `sa-status.licoes-aprendidas` · `sa-status.fechar-sessao` · `sa-status.situacao`) |
 | registrar uma demanda sem triar · triar a fila das linhas `nova` | `sa-triar` (`sa-triar.cadastrar` · `sa-triar.triar`) |
 | ideia nova, pitch, decisão de investimento · refinamento conjunto, ficha, artefatos afetados e `elm/` da fatia · fatiar o épico · editar, dividir ou cancelar um item pronto | `sa-refinar` (`sa-refinar.moldar` · `sa-refinar.detalhar` · `sa-refinar.fatiar` · `sa-refinar.ajustar`) |
 | escrever o PRD do épico depois da decisão de investir, ou mudar o PRD | `sa-prd` (`sa-prd.prd`) |
 | os arquivos de `elm/` da fatia · protótipo de tela e aprovação do cliente · ATA de reunião (transcrição em `.sabia/local/reunioes/`) · archive da spec depois do merge | `sa-especificar` (`sa-especificar.elm` · `sa-especificar.prototipo` · `sa-especificar.reuniao` · `sa-especificar.archive`) |
 | alinhar decisões em rodadas | `sa-entrevistar` (`sa-entrevistar.entrevistar`) |
-| planejamento inicial (`equipe.json`, `acordos.json`) · planejar a sprint, reabastecer, virada · review com curadoria das Regras aprendidas · retrospectiva | `sa-planejamento` (`sa-planejamento.inicial` · `sa-planejamento.sprint` · `sa-planejamento.review` · `sa-planejamento.retrospectiva`) |
+| planejamento inicial (`equipe.json`, `acordos.json`) · planejar a sprint, reabastecer, virada · review · retrospectiva com curadoria das Regras aprendidas | `sa-planejamento` (`sa-planejamento.inicial` · `sa-planejamento.sprint` · `sa-planejamento.review` · `sa-planejamento.retrospectiva`) |
 | puxar, começar ou retomar, com trilha e autonomia · implementar e abrir o MR · mergear e fechar | `sa-desenvolver` (`sa-desenvolver.iniciar` · `sa-desenvolver.codificar` · `sa-desenvolver.encerrar`); autopilot é uma autonomia da `sa-desenvolver` |
 | entender o código e devolver fatos, sem gravar | `sa-pesquisar` (`sa-pesquisar.pesquisar`) |
 | `research.md`, design e tasks da fatia, com o texto aprovado copiado para o delta · replanejar | `sa-plano` (`sa-plano.plano` · `sa-plano.replanejar`) |
@@ -145,7 +145,7 @@ Pedido que não nomeia skill → a linha que casa. Couber em duas → pergunte q
 
 | Caminho | O quê |
 |---|---|
-| `.sabia/sabia.md` | Resumo do fluxo · Projeto · Especificação · Comandos · Verificação de aceite · Sustentação · ELM · Desvios de toolkit · Tipos com skill de toolkit · Regras aprendidas (gravadas pela curadoria da review) |
+| `.sabia/sabia.md` | Resumo do fluxo · Projeto · Especificação · Comandos · Verificação de aceite · Sustentação · ELM · Desvios de toolkit · Tipos com skill de toolkit · Regras aprendidas (gravadas pela curadoria da retrospectiva) |
 | `.sabia/config/` | `agentes.json` (as escolhas do projeto e a entrada do gerador), `elm/pa_<nome>.json` (da `sa-elm.setup`) e `elk/elk-<ambiente>.json` |
 | `.kiro/agents/` · `.opencode/agents/` | os 5 agentes gerados (e os de toolkit) |
 | `.sabia/planejamento/` | `backlog.md` (id · título · tipo · status · prioridade · tamanho · responsável · pai · relator · ib · motivo · obs · entrou_em · concluida_em), `acordos.json`, `equipe.json`, `roadmap.md`, `sprints/<AAAA>/sprint-<nn>.md` (Item · Trabalho · Responsável · Tarefas · iniciada_em · concluida_em), `fatias/FT-<nnn>-<slug>.md`, `epicos/EP-nn-<slug>/` (`pitch.md`; `prd.md` a partir da decisão de investir), `prototipos/`, `atas/`, `sustentacao/<pasta>/` |

@@ -11,7 +11,7 @@ O item `concluida` ou `cancelada`, sem commit ainda (passo `finalizar`).
    - Nada → siga para o commit.
    - Defeito, mudança ou outro item de Sustentação → cadastro comum (passo `cadastro`) com `origem <ID>` na `obs`.
 2. Lição, se houver, numa linha da seção Lições aprendidas do registro: lição · regra proposta. A resposta que se repete também
-   vira lição. As lições aprendidas vão para a curadoria na `sa-planejamento.review` (agente `sa-especificador`).
+   vira lição. As lições aprendidas vão para a curadoria na `sa-planejamento.retrospectiva` (agente `sa-especificador`).
 3. O commit `<ID> concluir` pelo commit direto na branch base (passo `commit-na-branch-base`) leva o registro, o `backlog.md` e os cadastros.
 4. Ofereça "seguir para a próxima?".
 

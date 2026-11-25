@@ -44,7 +44,7 @@
 |---|---|---|
 
 <!-- Gravadas antes do MR (sa-desenvolver.codificar.licoes-aprendidas). Origem ∈ tarefa N.M · MR !<n> · CT-nn. A curadoria é da
-     review do ciclo (sa-planejamento.review), que leva as escolhidas às Regras aprendidas do .sabia/sabia.md. -->
+     retrospectiva do ciclo (sa-planejamento.retrospectiva), que leva as escolhidas às Regras aprendidas do .sabia/sabia.md. -->
 
 ## Retomar
 

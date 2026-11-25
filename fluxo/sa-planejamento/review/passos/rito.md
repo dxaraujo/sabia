@@ -23,7 +23,7 @@ A sprint e o `backlog.md` da branch base.
 
 ## Saída
 
-Pedido novo → passo `cadastro`. Sem pedido novo → passo `regras-aprendidas`.
+Pedido novo → passo `cadastro`. Sem pedido novo → passo `gravar`.
 
 ## Pare se
 

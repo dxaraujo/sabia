@@ -14,8 +14,8 @@ no ELM); a entrada do fluxo confere.
   `sa-especificar.reuniao` (a transcrição fica em `.sabia/local/reunioes/`; sobe só a ATA). Alinhar decisões →
   `sa-entrevistar.entrevistar`, em rodadas, sempre com a recomendação.
 - Equipe, acordos e roadmap → `sa-planejamento.inicial`. Sprint → `sa-planejamento.sprint`. Review →
-  `sa-planejamento.review` (com a curadoria das Lições aprendidas em Regras aprendidas). Retrospectiva →
-  `sa-planejamento.retrospectiva`.
+  `sa-planejamento.review`. Retrospectiva → `sa-planejamento.retrospectiva` (com a curadoria das Lições aprendidas em
+  Regras aprendidas).
 - **Fatos são do subagente `sa-pesquisador`**; **decisões são da pessoa**. Regra, valor ou ator sem fonte e sem
   decisão de uma pessoa fica em aberto.
 - Pitch, PRD e ficha só valem com `Aprovado: <usuário> · <data>` no topo, de quem tem `produto`; a ficha, também com a anuência nomeada dele. Decisões vão na

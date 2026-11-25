@@ -48,4 +48,4 @@ Seção sem conteúdo fica só com o título.
 | Atividade | O que foi feito: consultas, pesquisa de código (`arquivo:linha`), passos em ambiente (o que · onde · resultado), troca de responsável, regra em aberto ao P.O. | linhas `AAAA-MM-DD · feito · próximo` | `sa-atender.atender` · fechar a sessão da `sa-status` |
 | Resposta | Texto enviado, sem dado que identifique pessoas | texto | `sa-atender.atender` |
 | Horas | Horas informadas pela pessoa (opcional; nunca bloqueia) | tabela Data \| Horas (`AAAA-MM-DD` \| decimal) | `sa-atender.atender` |
-| Lições aprendidas | Candidatas às Regras aprendidas, para a curadoria na review | tabela Lição \| Regra proposta | `sa-atender.atender` |
+| Lições aprendidas | Candidatas às Regras aprendidas, para a curadoria na retrospectiva | tabela Lição \| Regra proposta | `sa-atender.atender` |

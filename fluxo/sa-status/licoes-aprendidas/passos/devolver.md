@@ -1,5 +1,5 @@
 ---
-{"resumo": "Lista # · lição · origem · já está?; devolve à review ou oferece levá-la."}
+{"resumo": "Lista # · lição · origem · já está?; devolve à retrospectiva ou oferece levá-la."}
 ---
 ## Entrada
 
@@ -7,12 +7,12 @@ As lições aprendidas marcadas.
 
 ## Faça
 
-Liste `# · lição · origem <id> · já está?`. Chamado pela review: devolva a lista a ela. Direto: mostre a lista e
-ofereça "levar à review?".
+Liste `# · lição · origem <id> · já está?`. Chamado pela retrospectiva: devolva a lista a ela. Direto: mostre a lista e
+ofereça "levar à retrospectiva?".
 
 ## Saída
 
-Sim → `sa-planejamento.review`, na mesma sessão. Chamado ou sem o sim → o fluxo termina.
+Sim → `sa-planejamento.retrospectiva`, na mesma sessão. Chamado ou sem o sim → o fluxo termina.
 
 ## Pare se
 

@@ -8,7 +8,7 @@ Os dados do ciclo.
 ## Faça
 
 A `## Retro` do `sprint-<nn>.md` recebe **pontos positivos** · **pontos negativos** · **pontos de melhoria** · **ações
-propostas**, cada ação com dono (`usuario` do `equipe.json`). Ponto é o assunto que a pessoa levanta; quem levanta e
+propostas**, cada ação com dono (`usuario` do `equipe.json`), e as **lições aprendidas** do ciclo que o time marca para considerar. Ponto é o assunto que a pessoa levanta; quem levanta e
 quem vota é o time.
 
 1. Peça à pessoa que conduz para abrir a página, no terminal dela, na branch base: `sabia retrospective` (com
@@ -25,7 +25,7 @@ chaves, com o "ok" de quem tem `produto`, no mesmo commit).
 
 ## Saída
 
-A Retro → passo `fechar`.
+A Retro → passo `regras-aprendidas`.
 
 ## Pare se
 

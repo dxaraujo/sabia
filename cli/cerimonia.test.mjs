@@ -4,7 +4,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { after, test } from "node:test";
-import { abrirCerimonia, aplicar, cerimoniaDoProjeto, importarSecao, lerPropostas, linhasDaSecao, numerosDaSprint, publicar, trocarSecao } from "./cerimonia.mjs";
+import { abrirCerimonia, aplicar, cerimoniaDoProjeto, importarSecao, juntarLicoes, lerPropostas, linhasDaSecao, numerosDaSprint, publicar, trocarSecao } from "./cerimonia.mjs";
 
 const raiz = fs.mkdtempSync(path.join(os.tmpdir(), "sabia-cerimonia-"));
 after(() => fs.rmSync(raiz, { recursive: true, force: true }));
@@ -36,7 +36,7 @@ const ler = (p) => fs.readFileSync(path.join(p, SPRINT), "utf8");
 
 test("cerimônia: os números da sprint, os grupos da retro e os itens entregues da review", () => {
   const p = projeto("dados"), retro = cerimoniaDoProjeto({ projeto: p, modo: "retrospective", exec: git(), agora });
-  assert.deepEqual(retro.grupos.map((g) => `${g.id} ${g.tag}`), ["positivo Positivo", "negativo Negativo", "melhoria Melhoria", "acao Ação"]);
+  assert.deepEqual(retro.grupos.map((g) => `${g.id} ${g.tag}`), ["positivo Positivo", "negativo Negativo", "melhoria Melhoria", "licao Lição", "acao Ação"]);
   assert.deepEqual(retro.numeros, [
     { trabalho: "especificação", linhas: 1, no_prazo: 1, depois: 0, abertas: 0, lead_medio: 1 },
     { trabalho: "desenvolvimento", linhas: 2, no_prazo: 1, depois: 0, abertas: 1, lead_medio: 2 },
@@ -102,6 +102,39 @@ test("cerimônia: incluir, votar e remover; as linhas da Retro e da Review pela 
   const lr = linhasDaSecao(rv, er);
   assert.deepEqual(lr, ["- AT-001 · sem retorno", "- FT-001 · Aprovado, faltou o filtro — por Cliente; Tela clara — por Cliente", "- pedido novo · Filtro por data — por Cliente"]);
   assert.deepEqual(importarSecao(rv, trocarSecao(ler(p), "Review", lr)).map((i) => [i.grupo, i.texto, i.autor]), [["FT-001", "Aprovado, faltou o filtro", "Cliente"], ["FT-001", "Tela clara", "Cliente"], ["pedido", "Filtro por data", "Cliente"]]);
+});
+
+test("cerimônia: as lições do ciclo entram na retro para a escolha; só as marcadas vão para o sprint-<nn>.md", () => {
+  const p = projeto("licoes");
+  const arquivos = {
+    ".kiro/specs/ft-001-extrato/status.md": "# FT-001\n## Lições aprendidas\n| Lição | Origem | Regra proposta |\n|---|---|---|\n| L-1 · teste criou a coluna errada | tarefa 2 | Conferir as colunas no banco antes do DDL de teste |\n| L-2 · JaCoCo não rodou | revisão 1 | — (descartada: ambiente) |\n## Retomar\n",
+    ".kiro/specs/ft-002-filtro/status.md": "## Lições aprendidas\n| Lição | Origem | Regra proposta |\n|---|---|---|\n| item em andamento não entra | t | fora |\n",
+    ".sabia/planejamento/sustentacao/AT-001-contas.md": "# AT-001\n## Lições aprendidas\n| Lição | Regra proposta |\n|---|---|\n| extração grande trava a sprint | Quebrar a extração grande em lotes |\n",
+    ".sabia/sabia.md": "# Sabiá\n## Regras aprendidas\n- Quebrar a extração grande em lotes · origem AT-001 · 2026-11-20\n",
+  };
+  for (const [f, c] of Object.entries(arquivos)) { fs.mkdirSync(path.dirname(path.join(p, f)), { recursive: true }); fs.writeFileSync(path.join(p, f), c); }
+  const dados = cerimoniaDoProjeto({ projeto: p, modo: "retrospective", exec: git(), agora });
+  // só dos itens concluídos; o texto é a regra proposta ou, sem ela, a lição; a que já é regra vem marcada
+  assert.deepEqual(dados.licoes, [
+    { origem: "FT-001", texto: "Conferir as colunas no banco antes do DDL de teste", detalhe: "L-1 - teste criou a coluna errada", ja_esta: false },
+    { origem: "FT-001", texto: "L-2 - JaCoCo não rodou", detalhe: null, ja_esta: false },
+    { origem: "AT-001", texto: "Quebrar a extração grande em lotes", detalhe: "extração grande trava a sprint", ja_esta: true },
+  ]);
+  const estado = juntarLicoes({ itens: [] }, dados.licoes), [a, b, c] = estado.itens;
+  assert.deepEqual(linhasDaSecao(dados, estado), []);  // sem marca, nada é gravado
+  aplicar(estado, { tipo: "votar", nome: "Ana", id: a.id }, dados);
+  aplicar(estado, { tipo: "incluir", nome: "Bia", grupo: "licao", texto: "Combinar a massa antes" }, dados, 9);
+  aplicar(estado, { tipo: "incluir", nome: "Bia", grupo: "acao", texto: "Rever a massa" }, dados, 10);
+  assert.throws(() => aplicar(estado, { tipo: "votar", nome: "Ana", id: c.id }, dados), /já é Regra aprendida/);
+  assert.throws(() => aplicar(estado, { tipo: "remover", nome: "Ana", id: b.id }, dados), /não se remove/);
+  // as lições vêm antes das ações
+  const linhas = linhasDaSecao(dados, estado);
+  assert.deepEqual(linhas, ["- Lição: Conferir as colunas no banco antes do DDL de teste · origem FT-001 · 1 voto (Ana)", "- Lição: Combinar a massa antes · por Bia", "- Ação: Rever a massa · por Bia"]);
+  // de volta do .md: a marcada casa com a do ciclo (sem duplicar) e as outras duas voltam para a escolha
+  const lido = juntarLicoes({ itens: importarSecao(dados, trocarSecao(ler(p), "Retro", linhas)) }, dados.licoes);
+  assert.deepEqual(lido.itens.filter((i) => i.grupo === "licao").map((i) => `${i.texto} | ${i.origem ?? "-"} | ${i.votos.length} | ${!!i.do_ciclo}`), [
+    "Conferir as colunas no banco antes do DDL de teste | FT-001 | 1 | true", "Combinar a massa antes | - | 0 | false", "L-2 - JaCoCo não rodou | FT-001 | 0 | true", "Quebrar a extração grande em lotes | AT-001 | 0 | true"]);
+  assert.deepEqual(linhasDaSecao(dados, lido), linhas);
 });
 
 test("cerimônia: o servidor leva a página no tema do quadro, grava o sprint-<nn>.md a cada mudança e avisa quem está nela", async () => {

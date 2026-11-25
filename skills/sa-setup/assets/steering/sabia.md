@@ -116,7 +116,7 @@ imprime.
 
 ## Regras aprendidas
 
-Gravadas pela curadoria da `sa-planejamento.review`; a `sa-setup` as preserva ao regravar este arquivo. O revisor as
+Gravadas pela curadoria da `sa-planejamento.retrospectiva`; a `sa-setup` as preserva ao regravar este arquivo. O revisor as
 cobra como itens dos critérios de revisão; o plano as respeita. Uma por linha:
 `- <regra> · origem <FT-nnn | AT-nnn…> · AAAA-MM-DD`.
 

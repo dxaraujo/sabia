@@ -30,6 +30,7 @@
 - Negativo: … · por Bia Lima
 - Melhoria: … · por Caio Reis · 1 voto (Ana Souza)
 - Ação: … · por Ana Souza · dono ana.souza
+- Lição: … · origem FT-031 · 2 votos (Ana Souza, Bia Lima)
 - Números: concluídas 4 (desenvolvimento) · atendimento 2 · meta atingida · lead time médio 3.5 dias
 ```
 
@@ -62,7 +63,8 @@
   `sabia review` lê e grava essas linhas; a review não tem votação.
 - Retro: uma linha por ponto, `- Positivo: …` · `- Negativo: …` · `- Melhoria: …` · `- Ação: …`, e a linha Números. Cada
   linha guarda, nesta ordem e separados por ` · `: o texto, `por <quem levantou>`, `dono <usuario>` (só na ação) e
-  `<n> votos (<quem votou>, …)`. A página `sabia retrospective` lê e grava essas linhas, pela ordem dos votos; não há
+  `<n> votos (<quem votou>, …)`. `- Lição: … · origem <id>` é a lição do ciclo que o time marcou para virar Regra aprendida
+  (só as marcadas são gravadas). A página `sabia retrospective` lê e grava essas linhas, pela ordem dos votos; não há
   arquivo à parte.
 
 Escrevem: `sa-planejamento.sprint` (cabeçalho, meta, reserva de capacidade, linhas, virada) · a skill que puxa um item fora da seleção

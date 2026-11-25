@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-A chamada do `sa-planejamento.review.regras-aprendidas` ou pedido direto ("lições do ciclo").
+A chamada do `sa-planejamento.retrospectiva.regras-aprendidas` ou pedido direto ("lições do ciclo").
 
 ## Faça
 

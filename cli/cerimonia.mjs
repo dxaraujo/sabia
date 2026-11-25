@@ -7,7 +7,7 @@ import os from "node:os";
 import path from "node:path";
 import http from "node:http";
 import { randomUUID } from "node:crypto";
-import { statusDoProjeto, sprintsDe } from "./status.mjs";
+import { statusDoProjeto, sprintsDe, tabela, semValor } from "./status.mjs";
 import { usuarioDaMaquina } from "./acoes.mjs";
 import { CSS, tema, AVE, SOL, LUA, PALETA, CERTO, esc } from "./kanban.mjs";
 
@@ -15,11 +15,12 @@ const MODOS = {
   retrospective: { titulo: "Retrospectiva", secao: "Retro", commit: "retrospectiva", porta: 4781 },
   review: { titulo: "Review", secao: "Review", commit: "review", porta: 4782 },
 };
-// os quatro grupos da retro e a palavra de cada um na linha do sprint-<nn>.md (template sa-planejamento/sprint.md)
+// os cinco grupos da retro, na ordem da página e a palavra de cada um na linha do sprint-<nn>.md (template sa-planejamento/sprint.md)
 const RETRO = [
   { id: "positivo", nome: "Pontos positivos", tag: "Positivo", linha: "Positivo" },
   { id: "negativo", nome: "Pontos negativos", tag: "Negativo", linha: "Negativo" },
   { id: "melhoria", nome: "Pontos de melhoria", tag: "Melhoria", linha: "Melhoria" },
+  { id: "licao", nome: "Lições aprendidas", tag: "Lição", linha: "Lição" },
   { id: "acao", nome: "Ações propostas", tag: "Ação", linha: "Ação" },
 ];
 // as palavras do formato anterior da Retro (bom · melhorar · ações), ainda lidas dos sprint-<nn>.md já gravados
@@ -46,6 +47,48 @@ export function numerosDaSprint(sprint) {
     return { trabalho, linhas: ls.length, no_prazo: fechadas.filter((x) => x.concluida_em <= sprint.fim).length, depois: fechadas.filter((x) => x.concluida_em > sprint.fim).length,
       abertas: ls.length - fechadas.length, lead_medio: leads.length ? Math.round(10 * leads.reduce((a, b) => a + b, 0) / leads.length) / 10 : null };
   }).filter((n) => n.linhas);
+}
+
+const TERMINAIS_OK = ["concluida", "concluido"];
+const norma = (x) => String(x ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+
+/** As Lições aprendidas dos itens concluídos da sprint, candidatas a Regra aprendida: da tabela Lição do `status.md`
+ *  da fatia (Kiro `.kiro/specs/<id>-…/`, OpenSpec `openspec/changes/<id>-…/` ou o archive) e do registro de
+ *  Sustentação. O texto do ponto é a regra proposta (sem ela, a lição); `ja_esta` marca a que já é Regra aprendida do
+ *  `.sabia/sabia.md`. A lição do MR da trilha trivial não é lida aqui. */
+export function licoesDoCiclo(raiz, sprint, itens) {
+  const ler = (f) => { try { return fs.readFileSync(f, "utf8"); } catch { return ""; } };
+  const dirs = (d) => { try { return fs.readdirSync(path.join(raiz, d)); } catch { return []; } };
+  const sabiaMd = ler(path.join(raiz, ".sabia/sabia.md")), regras = lerSecao(sabiaMd, "Regras aprendidas").filter((l) => /^- /.test(l)).map((l) => norma(l.slice(2).split(" · ")[0]));
+  const out = [];
+  for (const id of new Set(sprint.itens.map((x) => x.Item))) {
+    const item = itens.find((c) => c.id === id);
+    if (!item || !TERMINAIS_OK.includes(item.status)) continue;
+    const pre = id.toLowerCase() + "-", arquivos = [
+      ...dirs(".kiro/specs").filter((d) => d.toLowerCase().startsWith(pre)).map((d) => path.join(".kiro/specs", d, "status.md")),
+      ...dirs("openspec/changes").filter((d) => d.toLowerCase().startsWith(pre)).map((d) => path.join("openspec/changes", d, "status.md")),
+      ...dirs("openspec/changes/archive").filter((d) => d.toLowerCase().includes("-" + pre)).map((d) => path.join("openspec/changes/archive", d, "status.md")),
+      ...dirs(".sabia/planejamento/sustentacao").filter((d) => d.toLowerCase().startsWith(pre)).map((d) => path.join(".sabia/planejamento/sustentacao", d)),
+    ];
+    for (const arq of arquivos) for (const l of tabela(ler(path.join(raiz, arq)), "Lição")) {
+      if (semValor(l["Lição"])) continue;
+      const proposta = l["Regra proposta"], temRegra = !semValor(proposta) && !/^—/.test(proposta.trim());
+      const texto = limpo(temRegra ? proposta : l["Lição"]);
+      if (texto && !out.some((x) => x.origem === id && x.texto === texto)) out.push({ origem: id, texto, detalhe: temRegra ? limpo(l["Lição"], 400) : null, ja_esta: regras.includes(norma(texto)) });
+    }
+  }
+  return out;
+}
+
+/** Junta as lições do ciclo aos pontos da cerimônia: a que já está na `## Retro` (marcada pelo time) ganha o detalhe;
+ *  a que não está entra sem voto, só para a escolha na página. */
+export function juntarLicoes(estado, licoes) {
+  for (const l of licoes) {
+    const ja = estado.itens.find((i) => i.grupo === "licao" && i.texto === l.texto && (i.origem ?? l.origem) === l.origem);
+    if (ja) Object.assign(ja, { origem: l.origem, detalhe: l.detalhe, ja_esta: l.ja_esta, do_ciclo: true });
+    else estado.itens.push({ id: randomUUID().slice(0, 8), grupo: "licao", texto: l.texto, autor: null, em: estado.itens.length, votos: [], origem: l.origem, detalhe: l.detalhe, ja_esta: l.ja_esta, do_ciclo: true });
+  }
+  return estado;
 }
 
 /** O resumo do ciclo para o painel da retro: conclusão (linhas concluídas sobre as da sprint), o que fechou até o
@@ -105,6 +148,7 @@ export function cerimoniaDoProjeto({ projeto = ".", modo, exec, agora = new Date
   return { versao: 1, sabia: st.sabia, projeto: st.projeto, gerado_em: st.gerado_em, modo, titulo: MODOS[modo].titulo, secao: MODOS[modo].secao, votos: modo === "retrospective",
     sprint: { chave: sprint.chave, inicio: sprint.inicio, fim: sprint.fim, meta: sprint.meta, arquivo: sprint.arquivo }, pessoas, grupos,
     numeros: modo === "retrospective" ? numerosDaSprint(sprint) : [], sle: st.quadro.sle ?? null,
+    licoes: modo === "retrospective" ? licoesDoCiclo(projeto, sprint, st.quadro.itens) : [],
     resumo: modo === "retrospective" ? resumoDaSprint(sprint, { sle: st.quadro.sle ?? null, reservaPct }) : null,
     publicar: { usuario, ...podePublicar(projeto, exec, usuario) } };
 }
@@ -140,7 +184,7 @@ const votosTxt = (i) => (votosDe(i) ? `${plural(votosDe(i))}${i.votos.length ? `
  *  <retorno> — por <autor>` ou `- <id> · sem retorno`, uma linha por item entregue, e `- pedido novo · … — por <autor>`. */
 export function linhasDaSecao(dados, estado) {
   const doGrupo = (g) => (dados.votos ? ordenados : (x) => x)(estado.itens.filter((i) => i.grupo === g));
-  if (dados.modo === "retrospective") return RETRO.flatMap((g) => doGrupo(g.id).map((i) => [`- ${g.linha}: ${i.texto}`, i.autor && `por ${i.autor}`, i.dono && `dono ${i.dono}`, votosTxt(i)].filter(Boolean).join(" · ")));
+  if (dados.modo === "retrospective") return RETRO.flatMap((g) => doGrupo(g.id).filter((i) => !i.do_ciclo || votosDe(i)).map((i) => [`- ${g.linha}: ${i.texto}`, i.origem && `origem ${i.origem}`, i.autor && `por ${i.autor}`, i.dono && `dono ${i.dono}`, votosTxt(i)].filter(Boolean).join(" · ")));
   const com = (i) => `${i.texto}${i.autor ? ` — por ${i.autor}` : ""}`;
   return dados.grupos.flatMap((g) => (g.id === PEDIDO ? doGrupo(PEDIDO).map((i) => `- ${LINHA_PEDIDO} · ${com(i)}`) : [`- ${g.id} · ${doGrupo(g.id).map(com).join("; ") || "sem retorno"}`]));
 }
@@ -151,13 +195,14 @@ export function importarSecao(dados, texto) {
   const itens = [], novo = (grupo, t, mais = {}) => { if (t) itens.push({ id: randomUUID().slice(0, 8), grupo, texto: t, autor: null, em: itens.length, votos: [], ...mais }); };
   for (const l of lerSecao(texto, dados.secao)) {
     if (dados.modo === "retrospective") {
-      const m = l.match(/^- (Positivo|Negativo|Melhoria|Ação|Bom|Melhorar): (.*)$/);
+      const m = l.match(/^- (Positivo|Negativo|Melhoria|Lição|Ação|Bom|Melhorar): (.*)$/);
       if (!m) continue;
       const [primeira, ...partes] = m[2].trim().split(" · "), mais = {}, textos = [primeira];
       for (const parte of partes) {
-        const por = parte.match(/^por (.+)$/), dono = parte.match(/^dono (\S+)$/), v = parte.match(/^(\d+) votos?(?: \((.*)\))?$/);
+        const por = parte.match(/^por (.+)$/), dono = parte.match(/^dono (\S+)$/), origem = parte.match(/^origem (\S+)$/), v = parte.match(/^(\d+) votos?(?: \((.*)\))?$/);
         if (por) mais.autor = por[1].trim();
         else if (dono) mais.dono = dono[1];
+        else if (origem) mais.origem = origem[1];
         else if (v) {
           mais.votos = (v[2] ?? "").split(",").map((n) => n.trim()).filter((n) => chaveDe(n)).map((n) => ({ chave: chaveDe(n), nome: n }));
           if (+v[1] > mais.votos.length) mais.base = +v[1] - mais.votos.length;
@@ -200,9 +245,13 @@ export function aplicar(estado, acao, dados, agora = Date.now()) {
   if (!item) throw new Error("esse ponto não existe mais");
   if (acao.tipo === "votar") {
     if (!dados.votos) throw new Error("a review não tem votação");
+    if (item.ja_esta) throw new Error("essa lição já é Regra aprendida");
     const k = item.votos.findIndex((v) => v.chave === chave);
     if (k >= 0) item.votos.splice(k, 1); else item.votos.push({ chave, nome });
-  } else if (acao.tipo === "remover") estado.itens.splice(estado.itens.indexOf(item), 1);
+  } else if (acao.tipo === "remover") {
+    if (item.do_ciclo) throw new Error("a lição do ciclo não se remove: tire o voto para não considerá-la");
+    estado.itens.splice(estado.itens.indexOf(item), 1);
+  }
   else throw new Error("ação desconhecida");
 }
 
@@ -245,6 +294,7 @@ const CSS_CERIMONIA = `
 [data-g="negativo"]{--g:var(--critico)}
 [data-g="melhoria"]{--g:var(--atencao)}
 [data-g="acao"],[data-g="retorno"]{--g:var(--brand)}
+[data-g="licao"]{--g:var(--epico)}
 [data-g="pedido"]{--g:var(--orange)}
 .bloco summary{flex-wrap:wrap}
 .bloco summary h2{box-shadow:inset 0 -2px 0 var(--g)}
@@ -252,6 +302,9 @@ const CSS_CERIMONIA = `
 .ponto-l td{vertical-align:middle}
 td.tit{box-shadow:inset 3px 0 0 var(--g);overflow-wrap:anywhere}
 td.tit small{display:block;font-weight:400;color:var(--muted)}
+.ja{display:inline-block;margin-left:8px;padding:0 7px;border-radius:999px;background:var(--suave);color:var(--muted);font:500 12px/18px var(--body)}
+.voto:disabled{border-color:var(--suave-h);cursor:default}
+.voto:disabled:hover{background:none}
 .selo{display:inline-block;min-width:76px;padding:3px 10px;border-radius:var(--r-sm);background:color-mix(in srgb,var(--g) 20%,var(--card));color:color-mix(in srgb,var(--g) 62%,var(--title));font:600 12px/18px var(--body);text-align:center}
 td.selo-c{width:112px;white-space:nowrap}
 td.quem-c{width:48px;white-space:nowrap}
@@ -388,9 +441,9 @@ function cliente() {
       + '<div class="trab"><div class="trab-l cab-l"><span>Por trabalho</span><span class="leg"><i class="p"></i>até ' + fim + '<i class="d"></i>depois<i class="a"></i>em aberto</span><span class="trab-n">no prazo · depois · aberto</span><span class="trab-n">lead time médio</span></div>' + linhas + "</div></section>";
   })();
   $("#lista").innerHTML = numeros + D.grupos.map((g) =>
-    '<details class="bloco" open data-g="' + esc(g.cor) + '" data-grupo="' + esc(g.id) + '"><summary>' + SETA + "<h2>" + esc(g.nome) + '</h2><span class="n"></span>' + (g.sub ? "<span>" + esc(g.sub) + "</span>" : "")
+    '<details class="bloco" open data-g="' + esc(g.cor) + '" data-grupo="' + esc(g.id) + '"><summary>' + SETA + "<h2>" + esc(g.nome) + '</h2><span class="n"></span>' + (g.sub ? "<span>" + esc(g.sub) + "</span>" : g.id === "licao" ? "<span>marque as que devem virar Regra aprendida</span>" : "")
     + (g.mr && /^https?:\/\//.test(g.mr.url) ? '<a href="' + esc(g.mr.url) + '" target="_blank" rel="noopener">MR !' + esc(g.mr.iid) + "</a>" : "")
-    + '</summary><div class="rola"><table><tbody></tbody></table><form class="novo"><input name="texto" maxlength="280" autocomplete="off" placeholder="' + esc(g.id === "pedido" ? "Novo pedido" : D.modo === "review" ? "Retorno sobre este item" : g.id === "acao" ? "Nova ação" : "Novo ponto") + '" aria-label="Novo ponto em ' + esc(g.nome) + '">'
+    + '</summary><div class="rola"><table><tbody></tbody></table><form class="novo"><input name="texto" maxlength="280" autocomplete="off" placeholder="' + esc(g.id === "pedido" ? "Novo pedido" : D.modo === "review" ? "Retorno sobre este item" : g.id === "acao" ? "Nova ação" : g.id === "licao" ? "Lição levantada agora" : "Novo ponto") + '" aria-label="Novo ponto em ' + esc(g.nome) + '">'
     + (g.dono ? donos : "") + '<button type="submit" class="btn">Incluir</button></form></div></details>').join("");
 
   function desenhar() {
@@ -400,14 +453,14 @@ function cliente() {
       const bloco = document.querySelector('.bloco[data-grupo="' + CSS.escape(g.id) + '"]');
       const itens = estado.itens.filter((i) => i.grupo === g.id).sort((a, b) => (D.votos && ordem === "votos" ? votos(b) - votos(a) : 0) || (a.em || 0) - (b.em || 0));
       const nv = itens.reduce((s, i) => s + votos(i), 0);
-      total += itens.length;
-      bloco.querySelector("summary .n").textContent = itens.length + " " + um(g.id === "pedido" ? "pedido" : D.modo === "review" ? "retorno" : "ponto", itens.length) + (D.votos ? " · " + nv + (nv === 1 ? " voto" : " votos") : "");
+      total += g.id === "licao" ? 0 : itens.length;
+      bloco.querySelector("summary .n").textContent = itens.length + " " + (g.id === "licao" ? (itens.length === 1 ? "lição" : "lições") : um(g.id === "pedido" ? "pedido" : D.modo === "review" ? "retorno" : "ponto", itens.length)) + (g.id === "licao" ? " · " + itens.filter((i) => votos(i)).length + " a considerar" : D.votos ? " · " + nv + (nv === 1 ? " voto" : " votos") : "");
       bloco.querySelector("tbody").innerHTML = itens.map((i) => {
         const n = votos(i), meu = !!eu && i.votos.some((v) => v.chave === eu), quem = i.votos.map((v) => v.nome).join(", ");
-        return '<tr class="ponto-l" data-id="' + esc(i.id) + '"><td class="tit">' + esc(i.texto) + (i.dono ? "<small>dono: " + esc(D.pessoas[i.dono] || i.dono) + "</small>" : "") + '</td><td class="selo-c"><span class="selo">' + esc(g.tag) + '</span></td>'
-          + (!D.votos ? "" : '<td class="votos"><div class="voto-l"><button type="button" class="voto" aria-pressed="' + meu + '" aria-label="' + (meu ? "Tirar o meu voto" : "Votar") + '" title="' + esc(quem ? "Votaram: " + quem : "Ninguém votou ainda") + '">' + CERTO + '</button><span class="trilho"><i style="width:' + Math.round(100 * n / max) + '%"></i></span><b>' + n + "</b></div></td>")
-          + '<td class="quem-c"><i class="av" title="' + esc(i.autor ? "Criado por " + i.autor : "Veio do " + D.arquivo) + '">' + esc(i.autor ? iniciais(i.autor) : "md") + '</i></td><td class="fim"><button type="button" class="rm" title="Remover" aria-label="Remover o ponto">✕</button></td></tr>';
-      }).join("") || '<tr><td class="nada" colspan="5">' + (g.id === "pedido" ? "Nenhum pedido novo." : D.modo === "review" ? "Sem retorno ainda." : "Nenhum ponto ainda.") + "</td></tr>";
+        return '<tr class="ponto-l" data-id="' + esc(i.id) + '"><td class="tit">' + esc(i.texto) + (i.ja_esta ? '<span class="ja">já é regra</span>' : "") + (i.dono ? "<small>dono: " + esc(D.pessoas[i.dono] || i.dono) + "</small>" : "") + (i.origem ? "<small>origem " + esc(i.origem) + (i.detalhe ? " · " + esc(i.detalhe) : "") + "</small>" : "") + '</td><td class="selo-c"><span class="selo">' + esc(g.tag) + '</span></td>'
+          + (!D.votos ? "" : '<td class="votos"><div class="voto-l"><button type="button" class="voto"' + (i.ja_esta ? " disabled" : "") + ' aria-pressed="' + meu + '" aria-label="' + (g.id === "licao" ? (meu ? "Não considerar esta lição" : "Considerar esta lição") : meu ? "Tirar o meu voto" : "Votar") + '" title="' + esc(quem ? "Votaram: " + quem : "Ninguém votou ainda") + '">' + CERTO + '</button><span class="trilho"><i style="width:' + Math.round(100 * n / max) + '%"></i></span><b>' + n + "</b></div></td>")
+          + '<td class="quem-c"><i class="av" title="' + esc(i.autor ? "Criado por " + i.autor : i.do_ciclo ? "Lição de " + i.origem : "Veio do " + D.arquivo) + '">' + esc(i.autor ? iniciais(i.autor) : i.do_ciclo ? String(i.origem).slice(0, 2) : "md") + '</i></td><td class="fim">' + (i.do_ciclo ? "" : '<button type="button" class="rm" title="Remover" aria-label="Remover o ponto">✕</button>') + "</td></tr>";
+      }).join("") || '<tr><td class="nada" colspan="5">' + (g.id === "pedido" ? "Nenhum pedido novo." : D.modo === "review" ? "Sem retorno ainda." : g.id === "licao" ? "Nenhuma lição registrada nos itens concluídos do ciclo." : "Nenhum ponto ainda.") + "</td></tr>";
     }
     if ($("#total")) $("#total").textContent = total + " " + um("ponto", total);
   }
@@ -516,6 +569,7 @@ export async function abrirCerimonia({ projeto = ".", modo, exec, log = console.
   // de onde a cerimônia parte: o que já está na seção do sprint-<nn>.md; com a seção vazia, as propostas
   const estado = { versao: 1, modo, sprint: dados.sprint.chave, itens: importarSecao(dados, fs.readFileSync(md(), "utf8")) };
   if (propostas && !estado.itens.length) estado.itens = lerPropostas(propostas, dados);
+  juntarLicoes(estado, dados.licoes);
   // cada mudança regrava a seção do sprint-<nn>.md: é ele que guarda os pontos, quem levantou e quem votou
   const gravar = () => {
     const antes = fs.readFileSync(md(), "utf8"), depois = trocarSecao(antes, dados.secao, linhasDaSecao(dados, estado), modo === "retrospective" ? /^- Números:/ : null);
