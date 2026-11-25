@@ -20,13 +20,16 @@
 
 ## Review
 
-- FT-031 · cliente aprovou o extrato; pediu filtro por data (FT-040)
+- FT-031 · cliente aprovou o extrato — por Rui Prado; faltou o total no rodapé — por Ana Souza
+- FT-034 · sem retorno
+- pedido novo · filtro por data no extrato — por Rui Prado (FT-040)
 
 ## Retro
 
-- Bom: …
-- Melhorar: …
-- Ação: … · dono ana.souza
+- Positivo: … · por Ana Souza · 2 votos (Bia Lima, Caio Reis)
+- Negativo: … · por Bia Lima
+- Melhoria: … · por Caio Reis · 1 voto (Ana Souza)
+- Ação: … · por Ana Souza · dono ana.souza
 - Números: concluídas 4 (desenvolvimento) · atendimento 2 · meta atingida · lead time médio 3.5 dias
 ```
 
@@ -54,8 +57,13 @@
   | desenvolvimento | `sa-desenvolver.iniciar` | `sa-desenvolver.encerrar` (a data do merge) |
   | atendimento | `sa-atender.atender` (assumir) | `sa-atender.atender` (finalizar) |
 - A reserva de capacidade consumida é a contagem das linhas de atendimento.
-- Review: `<id> · <retorno>` ou `<id> · sem retorno`, uma linha por item concluído.
-- Retro: bom · melhorar · ações (com dono) e a linha Números.
+- Review: uma linha por item concluído, `<id> · <retorno> — por <quem>; <retorno> — por <quem>` ou `<id> · sem retorno`,
+  e uma por pedido novo, `pedido novo · <pedido> — por <quem>`, que ganha o id no fim depois do cadastro. A página
+  `sabia review` lê e grava essas linhas; a review não tem votação.
+- Retro: uma linha por ponto, `- Positivo: …` · `- Negativo: …` · `- Melhoria: …` · `- Ação: …`, e a linha Números. Cada
+  linha guarda, nesta ordem e separados por ` · `: o texto, `por <quem levantou>`, `dono <usuario>` (só na ação) e
+  `<n> votos (<quem votou>, …)`. A página `sabia retrospective` lê e grava essas linhas, pela ordem dos votos; não há
+  arquivo à parte.
 
 Escrevem: `sa-planejamento.sprint` (cabeçalho, meta, reserva de capacidade, linhas, virada) · a skill que puxa um item fora da seleção
 (a linha que falta) · quem inicia ou conclui uma tarefa (as datas) · `sa-elm.item` (Tarefas) · `sa-planejamento.review` (Review) · `sa-planejamento.retrospectiva`

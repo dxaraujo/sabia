@@ -9,7 +9,8 @@ O retorno (passo `rito`) e as regras escolhidas (passo `regras-aprendidas`).
 
 Mostre o que vai na `## Review` do `sprint-<nn>.md` e as linhas novas da seção Regras aprendidas do `.sabia/sabia.md`
 (só essa seção muda). Com o "ok", grave os dois pelo passo `commit-na-branch-base`, commit `<AAAA>/Sprint <nn>: review`. As
-linhas do cadastro já foram gravadas pelo passo `cadastro`.
+linhas do cadastro já foram gravadas pelo passo `cadastro`. O botão Publicar da página `sabia review` faz esse mesmo commit
+só do `sprint-<nn>.md`: se a pessoa já publicou por ele, o commit daqui leva o que falta.
 
 ## Saída
 

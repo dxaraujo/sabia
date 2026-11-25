@@ -18,6 +18,12 @@ Valem em todos os fluxos da skill.
   `produto` no `equipe.json`. Sem a booleana: mostre a proposta, diga quem aprova (os nomes do `equipe.json`) e não
   grave; no reabastecimento da sprint, vale a anuência nomeada de quem tem `produto`.
 - **Gravação**: todo estado e todo arquivo de planejamento vão direto na branch base, num commit pequeno de cada fluxo. Nada daqui vai por MR.
+- **Página da cerimônia**: `sabia retrospective` e `sabia review` abrem a página da sprint (`--rede` dá o link ao
+  time). Cada pessoa entra com o nome; cada mudança regrava a seção `## Retro` ou `## Review` do `sprint-<nn>.md`, que
+  guarda o ponto, quem levantou e quem votou (formato no template `sa-planejamento/sprint.md`); não há arquivo à parte.
+  Quem roda o comando é a pessoa, no terminal dela. O agente não levanta ponto em nome próprio: o que ele redige é
+  proposta de quem conduz, em `.sabia/local/cerimonia/propostas.json` (fora do git), com o `autor` de cada uma, e só
+  entra no `sprint-<nn>.md` quando o time mexe na página. Sem a página, o rito segue na conversa, no mesmo formato.
 - **Previsão pela vazão**: itens de desenvolvimento concluídos por sprint, sem pontos. A meta é o compromisso; a
   seleção é previsão. Item previsto que não terminou não é falha: volta na virada do próximo planejamento.
 - **Item maior que G** é épico: não entra como desenvolvimento; vai ao refinamento (`sa-refinar.moldar`).

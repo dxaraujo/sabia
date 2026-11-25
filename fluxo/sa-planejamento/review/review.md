@@ -15,5 +15,5 @@
 # Review da sprint
 
 Fim do ciclo, com os stakeholders presentes e sem travar: o que foi entregue, com a evidência do MR → retorno no
-`sprint-<nn>.md` → pedido novo pelo cadastro → Regras aprendidas (curadoria das Lições aprendidas) → grava → "seguir para a
+`sprint-<nn>.md` (pela página `sabia review`) → pedido novo pelo cadastro → Regras aprendidas (curadoria das Lições aprendidas) → grava → "seguir para a
 retrospectiva?". Não há consolidação nem pré-condição de rito.

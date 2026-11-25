@@ -13,6 +13,7 @@ import { fileURLToPath } from "node:url";
 import { AGENTE_DO_PAPEL, baseDe as baseDaCopia, ganchoDe, gerarProjeto } from "./agentes.mjs";
 import { statusDoProjeto } from "./status.mjs";
 import { abrirQuadro } from "./kanban.mjs";
+import { abrirCerimonia } from "./cerimonia.mjs";
 import { carregar, compilar, versaoMenor, grafoAscii, LEGENDA, partes, temDesvio, validarToolkitFonte } from "./compilar.mjs";
 
 const VERSAO = JSON.parse(fs.readFileSync(new URL("./package.json", import.meta.url), "utf8")).version;
@@ -1344,6 +1345,13 @@ const USO = [
     "      as colunas (ordem, nome, oculta) vêm de .sabia/config/kanban.json, que a própria página gera\n" +
     "      grava (impedir, liberar, cancelar, sprint e backlog, concluir, prioridade) com commit e push na branch base,\n" +
     "      para quem é do equipe.json pelo git da máquina; fora da branch base ou com alteração pendente, só mostra"],
+  ["sabia retrospective", "a página da retrospectiva da sprint: o time entra com o nome, inclui pontos positivos, negativos, de melhoria e ações propostas, vota e remove", "[--projeto <pasta>] [--porta <n>] (padrão: 4781) [--rede] [--propostas <arquivo.json>]\n" +
+    "      cada mudança regrava a seção ## Retro do sprint-<nn>.md; o botão Publicar faz o commit e o push na branch base\n" +
+    "      --rede escuta na rede local e mostra o link para o time; a linha do ponto guarda quem levantou e quem votou\n" +
+    "      --propostas: os pontos de partida, { \"retrospective\": [{ \"tipo\": \"positivo|negativo|melhoria|acao\", \"texto\": \"…\", \"autor\": \"…\" }] }"],
+  ["sabia review", "a página da review da sprint: os itens entregues, o retorno de cada um e os pedidos novos, com voto", "[--projeto <pasta>] [--porta <n>] (padrão: 4782) [--rede] [--propostas <arquivo.json>]\n" +
+    "      cada mudança regrava a seção ## Review do sprint-<nn>.md; o botão Publicar faz o commit e o push na branch base\n" +
+    "      --propostas: { \"review\": [{ \"item\": \"<id>|pedido\", \"texto\": \"…\", \"autor\": \"…\" }] }"],
   ["sabia agentes gerar", "gera os agentes do projeto; sem --gravar, só mostra o que muda", "[--gravar] [-a kiro,opencode] [--projeto <pasta>] [--config <arquivo>] [--framework <pasta>]"],
   ["sabia agentes base <id>", "a base de uma cópia: o sha do passo ou do template", "<sa-x.f.p | sa-x/nome.md | requisitos/template-<tipo>.md | ~/.sabia/toolkits/…> [--framework <pasta>]"],
   ["sabia rota <arquivo>", "explica a rota de um arquivo", "o passo com desvio de toolkit, o dono, o toolkit, o motivo e as travas\n" +
@@ -1381,8 +1389,8 @@ function ajudaDe(prefixo) {
 
 const CURTAS = { "-y": "--sim", "-h": "--ajuda", "-v": "--version", "-a": "--alvo", "-t": "--toolkits" };
 
-const BOOLEANAS = ["sim", "forcar", "semMcp", "mapa", "ajuda", "version", "json", "gravar"];
-const COM_VALOR = ["alvo", "toolkits", "versao", "fonte", "indice", "fluxo", "projeto", "framework", "config", "porta"];
+const BOOLEANAS = ["sim", "forcar", "semMcp", "mapa", "ajuda", "version", "json", "gravar", "rede"];
+const COM_VALOR = ["alvo", "toolkits", "versao", "fonte", "indice", "fluxo", "projeto", "framework", "config", "porta", "propostas"];
 
 export function lerArgs(argv) {
   const posicionais = [];
@@ -1401,6 +1409,16 @@ export function lerArgs(argv) {
   return { posicionais, opcoes };
 }
 
+/** A página local fica de pé até o Ctrl+C (ou o SIGTERM). */
+async function ateFechar(q) {
+  const parar = () => q.fechar();
+  process.once("SIGINT", parar);
+  process.once("SIGTERM", parar);
+  await q.fechou;
+  process.removeListener("SIGINT", parar);
+  process.removeListener("SIGTERM", parar);
+}
+
 const APELIDOS = { ls: "listar", i: "instalar", rm: "remover" };
 const COMANDOS = {
   instalar: (_, o) => instalar(o),
@@ -1411,15 +1429,9 @@ const COMANDOS = {
   "toolkits atualizar": atualizarToolkits,
   "toolkits remover": removerToolkits,
   status: (_, o) => { ctx.log(JSON.stringify(statusDoProjeto({ projeto: o.projeto, exec: ctx.exec }), null, 2)); },
-  kanban: async (_, o) => {
-    const q = await abrirQuadro({ projeto: o.projeto, exec: ctx.exec, log: ctx.log, porta: o.porta });
-    const parar = () => q.fechar();
-    process.once("SIGINT", parar);
-    process.once("SIGTERM", parar);
-    await q.fechou;
-    process.removeListener("SIGINT", parar);
-    process.removeListener("SIGTERM", parar);
-  },
+  kanban: async (_, o) => ateFechar(await abrirQuadro({ projeto: o.projeto, exec: ctx.exec, log: ctx.log, porta: o.porta })),
+  retrospective: async (_, o) => ateFechar(await abrirCerimonia({ modo: "retrospective", projeto: o.projeto, exec: ctx.exec, log: ctx.log, porta: o.porta, rede: o.rede, propostas: o.propostas })),
+  review: async (_, o) => ateFechar(await abrirCerimonia({ modo: "review", projeto: o.projeto, exec: ctx.exec, log: ctx.log, porta: o.porta, rede: o.rede, propostas: o.propostas })),
   agentes: ([sub, id], o) => {
     if (sub === "gerar") ctx.log(gerarProjeto({ projeto: o.projeto, config: o.config, alvo: o.alvo, framework: o.framework, gravar: o.gravar }).texto);
     else if (sub === "base" && id) ctx.log(baseDaCopia(id, o.framework));
