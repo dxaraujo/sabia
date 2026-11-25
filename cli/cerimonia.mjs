@@ -1,6 +1,6 @@
 // `sabia retrospective` e `sabia review`: a página da cerimônia, no tema do quadro Kanban. O time entra só com o nome, inclui
-// pontos, vota e remove; cada mudança regrava a seção `## Retro` (ou `## Review`) do `sprint-<nn>.md` da sprint, e o
-// botão Publicar faz o commit e o push na branch base. Quem levantou e quem votou em cada ponto vai na própria linha.
+// pontos, vota e remove; a cerimônia fica na memória do servidor, e o `sprint-<nn>.md` só muda no botão Publicar, que
+// pede a mensagem, grava a seção `## Retro` (ou `## Review`) e faz o commit e o push na branch base. Quem levantou e quem votou em cada ponto vai na própria linha.
 // Servidor node:http sem dependências, como o do quadro; com --rede, escuta na rede local para o time abrir o link.
 import fs from "node:fs";
 import os from "node:os";
@@ -268,21 +268,32 @@ export function lerPropostas(arquivo, dados) {
   });
 }
 
-/** Commit e push do `sprint-<nn>.md` na branch base, com a mensagem do fluxo (`<AAAA>/Sprint <nn>: retrospectiva`).
- *  Só esse arquivo entra no commit; se só o push falha, o commit fica local e o erro diz isso. */
-export function publicar(raiz, dados, { exec, usuario }) {
+/** O texto do `sprint-<nn>.md` com a seção da cerimônia como está na página (a linha Números da retro fica). */
+export function comASecao(dados, estado, texto) {
+  return trocarSecao(texto, dados.secao, linhasDaSecao(dados, estado), dados.modo === "retrospective" ? /^- Números:/ : null);
+}
+
+/** A mensagem de commit que a página propõe: a do fluxo, `<AAAA>/Sprint <nn>: retrospectiva` (ou `review`). */
+export const mensagemPadrao = (dados) => `${dados.sprint.chave}: ${MODOS[dados.modo].commit}`;
+
+/** Publicar: só aqui o `sprint-<nn>.md` muda. Depois do `git pull --ff-only`, grava a seção como está na página e faz
+ *  o commit só desse arquivo, com a mensagem que a pessoa confirmou, e o push na branch base. Se o commit falha, o
+ *  arquivo volta ao que era; se só o push falha, o commit fica local e o erro diz isso. */
+export function publicar(raiz, dados, estado, { exec, usuario, mensagem }) {
   const pode = podePublicar(raiz, exec, usuario);
   if (!pode.ok) throw new Error(pode.motivo);
   const git = (...a) => exec("git", ["-C", raiz, ...a]), falha = (r) => (r.stderr || r.stdout || r.error?.message || "falhou").trim().split("\n").at(-1);
-  const arquivo = dados.sprint.arquivo, mensagem = `${dados.sprint.chave}: ${MODOS[dados.modo].commit}`;
-  if (!git("status", "--porcelain", "--", arquivo).stdout.trim()) throw new Error(`nada a publicar: o ${path.basename(arquivo)} já está no commit`);
+  const arquivo = dados.sprint.arquivo, caminho = path.join(raiz, arquivo), texto = String(mensagem ?? "").replace(/[\r\n]+/g, " ").trim().slice(0, 300) || mensagemPadrao(dados);
   const pull = git("pull", "--ff-only");
   if (pull.status !== 0) throw new Error(`git pull --ff-only: ${falha(pull)}`);
-  const add = git("add", "--", arquivo), commit = add.status === 0 ? git("commit", "--quiet", "-m", mensagem, "--", arquivo) : add;
-  if (commit.status !== 0) throw new Error(`git commit: ${falha(commit)}`);
+  const antes = fs.readFileSync(caminho, "utf8"), depois = comASecao(dados, estado, antes);
+  if (depois === antes && !git("status", "--porcelain", "--", arquivo).stdout.trim()) throw new Error(`nada a publicar: a seção ${dados.secao} do ${path.basename(arquivo)} já está assim no repositório`);
+  fs.writeFileSync(caminho, depois);
+  const add = git("add", "--", arquivo), commit = add.status === 0 ? git("commit", "--quiet", "-m", texto, "--", arquivo) : add;
+  if (commit.status !== 0) { fs.writeFileSync(caminho, antes); git("reset", "--quiet", "--", arquivo); throw new Error(`git commit: ${falha(commit)}`); }
   const push = git("push", "--quiet");
-  if (push.status !== 0) throw new Error(`o commit "${mensagem}" ficou só nesta máquina; o push falhou: ${falha(push)}`);
-  return { commit: mensagem };
+  if (push.status !== 0) throw new Error(`o commit "${texto}" ficou só nesta máquina; o push falhou: ${falha(push)}`);
+  return { commit: texto };
 }
 
 const CSS_CERIMONIA = `
@@ -462,6 +473,7 @@ function cliente() {
           + '<td class="quem-c"><i class="av" title="' + esc(i.autor ? "Criado por " + i.autor : i.do_ciclo ? "Lição de " + i.origem : "Veio do " + D.arquivo) + '">' + esc(i.autor ? iniciais(i.autor) : i.do_ciclo ? String(i.origem).slice(0, 2) : "md") + '</i></td><td class="fim">' + (i.do_ciclo ? "" : '<button type="button" class="rm" title="Remover" aria-label="Remover o ponto">✕</button>') + "</td></tr>";
       }).join("") || '<tr><td class="nada" colspan="5">' + (g.id === "pedido" ? "Nenhum pedido novo." : D.modo === "review" ? "Sem retorno ainda." : g.id === "licao" ? "Nenhuma lição registrada nos itens concluídos do ciclo." : "Nenhum ponto ainda.") + "</td></tr>";
     }
+    $("#pendente").hidden = !estado.nao_publicado;
     if ($("#total")) $("#total").textContent = total + " " + um("ponto", total);
   }
 
@@ -487,11 +499,20 @@ function cliente() {
     if (r) { f.elements.texto.value = ""; f.elements.texto.focus(); }
   });
   $("#ordem")?.addEventListener("change", (e) => { ordem = e.target.value; desenhar(); });
-  $("#publicar")?.addEventListener("click", async (e) => {
-    e.target.disabled = true;
+  // publicar: o popup pede a mensagem do commit, já preenchida; sem commit possível, o botão só grava o arquivo
+  $("#publicar")?.addEventListener("click", async () => {
+    if (D.publicar.ok) { $("#erro-publicar").hidden = true; $("#modal").showModal(); $("#mensagem").select(); return; }
     const r = await enviar({ tipo: "publicar" });
-    e.target.disabled = false;
-    if (r) aviso("Publicado: " + r.commit);
+    if (r) aviso("Gravado no " + r.gravado);
+  });
+  $("#cancelar").addEventListener("click", () => $("#modal").close());
+  $("#form-publicar").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const botao = $("#confirmar"); botao.disabled = true;
+    const r = await enviar({ tipo: "publicar", mensagem: $("#mensagem").value });
+    botao.disabled = false;
+    if (r) { $("#modal").close(); aviso("Publicado: " + r.commit); }
+    else { $("#erro-publicar").textContent = $("#aviso").textContent; $("#erro-publicar").hidden = false; }
   });
 
   $("#ciclo").innerHTML = '<span class="quando">' + dataBr(D.sprint.inicio) + " → " + dataBr(D.sprint.fim) + "</span>" + (D.sprint.meta ? '<span class="meta"><b>Meta:</b> ' + esc(D.sprint.meta) + "</span>" : "");
@@ -542,12 +563,19 @@ export function paginaCerimonia(dados, estado, token = "", { local = false } = {
   <span class="conta" id="total"></span>` : ""}
   <p id="aviso" role="status"></p>
   <div class="config">
-    <p id="gravacao">Cada mudança regrava a seção <code>## ${esc(dados.secao)}</code> do <code>${esc(arquivo)}</code>${publica ? "" : local ? ` · publicar: ${esc(dados.publicar.motivo)}` : ""}</p>
-    ${publica ? `<button type="button" class="btn pri" id="publicar" title="Commit e push do ${esc(arquivo)} na branch base: ${esc(dados.sprint.chave)}: ${esc(MODOS[dados.modo].commit)}">Publicar (commit e push)</button>` : ""}
+    <p id="gravacao">O <code>${esc(arquivo)}</code> só muda ao publicar<span id="pendente" hidden> · há mudanças não publicadas</span>${publica ? "" : local ? ` · sem commit: ${esc(dados.publicar.motivo)}` : ""}</p>
+    ${local ? `<button type="button" class="btn pri" id="publicar">${publica ? "Publicar" : `Gravar no ${esc(arquivo)}`}</button>` : ""}
   </div>
 </div>
 <main class="mesa"><div class="lista" id="lista"></div></main>
 <footer class="rodape"><span id="gerado"></span><span>${esc(dados.sprint.arquivo)}</span><span>Sabiá ${esc(dados.sabia)}</span></footer>
+<dialog id="modal" aria-labelledby="modal-titulo"><form method="dialog" id="form-publicar">
+  <h2 id="modal-titulo">Publicar a ${esc(dados.titulo.toLowerCase())}</h2>
+  <p class="sub">Grava a seção <code>## ${esc(dados.secao)}</code> do <code>${esc(arquivo)}</code> como está na página e faz o commit e o push na branch base.</p>
+  <label>Mensagem do commit<input type="text" id="mensagem" maxlength="300" value="${esc(mensagemPadrao(dados))}" autocomplete="off"></label>
+  <p class="erro" id="erro-publicar" role="alert" hidden></p>
+  <div class="botoes"><button type="button" class="btn" id="cancelar">Cancelar</button><button type="submit" class="btn pri" id="confirmar">Publicar</button></div>
+</form></dialog>
 <div class="fora" id="fora" role="alert" hidden><h1>A cerimônia foi encerrada</h1><p>Rode <code>sabia ${esc(dados.modo)}</code> de novo para abrir.</p></div>
 <script id="dados" type="application/json">${JSON.stringify(embutido).replace(/</g, "\\u003c")}</script>
 <script>(${cliente})()</script>
@@ -570,11 +598,9 @@ export async function abrirCerimonia({ projeto = ".", modo, exec, log = console.
   const estado = { versao: 1, modo, sprint: dados.sprint.chave, itens: importarSecao(dados, fs.readFileSync(md(), "utf8")) };
   if (propostas && !estado.itens.length) estado.itens = lerPropostas(propostas, dados);
   juntarLicoes(estado, dados.licoes);
-  // cada mudança regrava a seção do sprint-<nn>.md: é ele que guarda os pontos, quem levantou e quem votou
-  const gravar = () => {
-    const antes = fs.readFileSync(md(), "utf8"), depois = trocarSecao(antes, dados.secao, linhasDaSecao(dados, estado), modo === "retrospective" ? /^- Números:/ : null);
-    if (depois !== antes) fs.writeFileSync(md(), depois);
-  };
+  // a cerimônia fica na memória: o sprint-<nn>.md só muda no Publicar; `nao_publicado` diz à página se há o que publicar
+  const marcar = () => { const t = fs.readFileSync(md(), "utf8"); estado.nao_publicado = comASecao(dados, estado, t) !== t; return estado; };
+  marcar();
   const vivos = new Set();
   const server = http.createServer((req, res) => {
     const fim = (codigo, corpo, tipo = "text/plain; charset=utf-8") => { res.writeHead(codigo, { "content-type": tipo, "cache-control": "no-store" }); res.end(corpo); };
@@ -590,10 +616,15 @@ export async function abrirCerimonia({ projeto = ".", modo, exec, log = console.
           const acao = JSON.parse(corpo);
           if (acao.tipo === "publicar") {
             if (!local) throw new Error("publicar é de quem abriu a cerimônia, na máquina dela");
-            return json(200, { ok: true, ...publicar(projeto, dados, { exec, usuario }) });
+            // quem não pode fazer o commit (fora da equipe ou da branch base) ainda grava o arquivo
+            const r = dados.publicar.ok ? publicar(projeto, dados, estado, { exec, usuario, mensagem: acao.mensagem }) : (fs.writeFileSync(md(), comASecao(dados, estado, fs.readFileSync(md(), "utf8"))), { commit: null, gravado: path.basename(dados.sprint.arquivo) });
+            marcar();
+            const aviso = `data: ${JSON.stringify(estado)}\n\n`;
+            for (const v of vivos) v.write(aviso);
+            return json(200, { ok: true, ...r, estado });
           }
           aplicar(estado, acao, dados);
-          gravar();
+          marcar();
           const linha = `data: ${JSON.stringify(estado)}\n\n`;
           for (const v of vivos) v.write(linha);
           json(200, { ok: true, estado });

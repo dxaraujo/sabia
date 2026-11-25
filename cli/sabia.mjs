@@ -1346,11 +1346,11 @@ const USO = [
     "      grava (impedir, liberar, cancelar, sprint e backlog, concluir, prioridade) com commit e push na branch base,\n" +
     "      para quem é do equipe.json pelo git da máquina; fora da branch base ou com alteração pendente, só mostra"],
   ["sabia retrospective", "a página da retrospectiva da sprint: o time entra com o nome, inclui pontos positivos, negativos, de melhoria e ações propostas, vota e remove", "[--projeto <pasta>] [--porta <n>] (padrão: 4781) [--rede] [--propostas <arquivo.json>]\n" +
-    "      cada mudança regrava a seção ## Retro do sprint-<nn>.md; o botão Publicar faz o commit e o push na branch base\n" +
+    "      o sprint-<nn>.md só muda no botão Publicar: pede a mensagem do commit, grava a seção ## Retro e faz o commit e o push\n" +
     "      --rede escuta na rede local e mostra o link para o time; a linha do ponto guarda quem levantou e quem votou\n" +
     "      --propostas: os pontos de partida, { \"retrospective\": [{ \"tipo\": \"positivo|negativo|melhoria|acao\", \"texto\": \"…\", \"autor\": \"…\" }] }"],
   ["sabia review", "a página da review da sprint: os itens entregues, o retorno de cada um e os pedidos novos, com voto", "[--projeto <pasta>] [--porta <n>] (padrão: 4782) [--rede] [--propostas <arquivo.json>]\n" +
-    "      cada mudança regrava a seção ## Review do sprint-<nn>.md; o botão Publicar faz o commit e o push na branch base\n" +
+    "      o sprint-<nn>.md só muda no botão Publicar: pede a mensagem do commit, grava a seção ## Review e faz o commit e o push\n" +
     "      --propostas: { \"review\": [{ \"item\": \"<id>|pedido\", \"texto\": \"…\", \"autor\": \"…\" }] }"],
   ["sabia agentes gerar", "gera os agentes do projeto; sem --gravar, só mostra o que muda", "[--gravar] [-a kiro,opencode] [--projeto <pasta>] [--config <arquivo>] [--framework <pasta>]"],
   ["sabia agentes base <id>", "a base de uma cópia: o sha do passo ou do template", "<sa-x.f.p | sa-x/nome.md | requisitos/template-<tipo>.md | ~/.sabia/toolkits/…> [--framework <pasta>]"],

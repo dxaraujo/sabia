@@ -18,6 +18,7 @@ const git = (mais = {}) => (cmd, args) => {
   if (a.startsWith("rev-parse")) return { status: 0, stdout: "main\n" };
   if (a.startsWith("status")) return { status: 0, stdout: mais.limpo ? "" : " M sprint-02.md\n" };
   if (a.startsWith("push")) return mais.push ?? { status: 0, stdout: "" };
+  if (a.startsWith("commit") && mais.commit) return mais.commit;
   (mais.chamadas ?? []).push(a);
   return { status: 0, stdout: "" };
 };
@@ -137,7 +138,7 @@ test("cerimônia: as lições do ciclo entram na retro para a escolha; só as ma
   assert.deepEqual(linhasDaSecao(dados, lido), linhas);
 });
 
-test("cerimônia: o servidor leva a página no tema do quadro, grava o sprint-<nn>.md a cada mudança e avisa quem está nela", async () => {
+test("cerimônia: o servidor leva a página no tema do quadro, avisa quem está nela a cada mudança e só grava o sprint-<nn>.md no Publicar", async () => {
   const p = projeto("servidor"), logs = [], propostas = path.join(p, "propostas.json");
   fs.writeFileSync(propostas, JSON.stringify({ retrospective: [{ tipo: "positivo", texto: "Vazão de 5", autor: "Ana Souza" }, { tipo: "nada", texto: "fora" }, { tipo: "acao", texto: "Fechar no timebox", dono: "ana", autor: "Bia" }] }));
   const q = await abrirCerimonia({ projeto: p, modo: "retrospective", exec: git(), log: (x) => logs.push(String(x)), porta: 0, host: "127.0.0.1", propostas, agora });
@@ -164,10 +165,15 @@ test("cerimônia: o servidor leva a página no tema do quadro, grava o sprint-<n
     assert.equal(r.estado.itens.length, 3);
     assert.equal((await proximo()).itens.at(-1).texto, "Review sem retorno");
     await post({ tipo: "votar", nome: "Bia", id: r.estado.itens[2].id });
-    assert.ok(ler(p).endsWith("## Retro\n- Positivo: Vazão de 5 · por Ana Souza\n- Melhoria: Review sem retorno · por Bia · 1 voto (Bia)\n- Ação: Fechar no timebox · por Bia · dono ana\n"));
-    assert.equal(fs.existsSync(path.join(p, ".sabia/local")), false);  // nada fora do sprint-<nn>.md: ele guarda quem levantou e quem votou
+    assert.equal(ler(p).endsWith("## Retro\n"), true);  // incluir e votar não mexem no sprint-<nn>.md: só o Publicar
+    assert.equal((await (await fetch(q.url + "dados.json")).json()).estado.nao_publicado, true);
+    assert.equal(fs.existsSync(path.join(p, ".sabia/local")), false);  // e nada fora dele
     assert.match((await (await post({ tipo: "incluir", nome: "Ana", grupo: "melhoria", texto: "Review sem retorno" })).json()).erro, /já está na lista/);
-    assert.deepEqual(await (await post({ tipo: "publicar" })).json(), { ok: true, commit: "2026/Sprint 02: retrospectiva" });
+    assert.match(html, /<input type="text" id="mensagem" maxlength="300" value="2026\/Sprint 02: retrospectiva"/);  // o popup já traz a mensagem
+    const pub = await (await post({ tipo: "publicar", mensagem: "Task 42 - retro da Sprint 02" })).json();
+    assert.deepEqual([pub.ok, pub.commit, pub.estado.nao_publicado], [true, "Task 42 - retro da Sprint 02", false]);
+    // o Publicar grava a seção, com quem levantou e quem votou
+    assert.ok(ler(p).endsWith("## Retro\n- Positivo: Vazão de 5 · por Ana Souza\n- Melhoria: Review sem retorno · por Bia · 1 voto (Bia)\n- Ação: Fechar no timebox · por Bia · dono ana\n"));
     assert.equal((await fetch(q.url + "outro")).status, 404);
     await leitor.cancel();
   } finally { q.fechar(); await q.fechou; }
@@ -182,9 +188,13 @@ test("cerimônia: publicar faz o commit só do sprint-<nn>.md, com a mensagem do
   fs.writeFileSync(path.join(p, "sem-autor.json"), JSON.stringify({ review: [{ item: "pedido", texto: "Filtro" }] }));
   assert.throws(() => lerPropostas(path.join(p, "sem-autor.json"), dados), /a proposta 1 de sem-autor\.json não tem "autor"/);
   const chamadas = [];
-  assert.deepEqual(publicar(p, dados, { exec: git({ chamadas }), usuario: ana }), { commit: "2026/Sprint 02: review" });
+  const estado = { itens: [] }, antes = ler(p);
+  assert.throws(() => publicar(p, dados, estado, { exec: git({ commit: { status: 1, stderr: "hook recusou" } }), usuario: ana }), /git commit: hook recusou/);
+  assert.equal(ler(p), antes);  // o commit falhou: o arquivo volta ao que era
+  assert.deepEqual(publicar(p, dados, estado, { exec: git({ chamadas }), usuario: ana }), { commit: "2026/Sprint 02: review" });
+  assert.ok(ler(p).endsWith("## Review\n- AT-001 · sem retorno\n- FT-001 · sem retorno\n## Retro\n"));
   assert.deepEqual(chamadas, ["pull --ff-only", `add -- ${SPRINT}`, `commit --quiet -m 2026/Sprint 02: review -- ${SPRINT}`]);
-  assert.throws(() => publicar(p, dados, { exec: git({ limpo: true }), usuario: ana }), /nada a publicar/);
-  assert.throws(() => publicar(p, dados, { exec: git({ push: { status: 1, stderr: "rejected" } }), usuario: ana }), /ficou só nesta máquina; o push falhou: rejected/);
-  assert.throws(() => publicar(p, dados, { exec: git(), usuario: null }), /não está no equipe\.json/);
+  assert.throws(() => publicar(p, dados, estado, { exec: git({ limpo: true }), usuario: ana }), /nada a publicar/);
+  assert.throws(() => publicar(p, dados, estado, { exec: git({ push: { status: 1, stderr: "rejected" } }), usuario: ana, mensagem: "Task 7 - review\n" }), /o commit "Task 7 - review" ficou só nesta máquina; o push falhou: rejected/);
+  assert.throws(() => publicar(p, dados, estado, { exec: git(), usuario: null }), /não está no equipe\.json/);
 });

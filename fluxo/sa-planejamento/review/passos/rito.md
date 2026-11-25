@@ -12,12 +12,13 @@ A sprint e o `backlog.md` da branch base.
    planejamento.
 2. Peça à pessoa que conduz para abrir a página, no terminal dela, na branch base: `sabia review` (`--rede` para os
    stakeholders abrirem o link). Ela tem um bloco por item entregue (o trabalho principal concluído na sprint), com o
-   MR, e o bloco Pedidos novos; cada um entra com o nome e registra o retorno. Cada mudança regrava a `## Review` do
-   `sprint-<nn>.md`: uma linha por item, `<id> · <retorno> — por <quem>; <retorno> — por <quem>` ou `<id> · sem retorno`,
+   MR, e o bloco Pedidos novos; cada um entra com o nome e registra o retorno. No fim, quem conduz usa o
+   botão Publicar: ele pede a mensagem do commit e só então grava a `## Review` do `sprint-<nn>.md`, com commit e push:
+   uma linha por item, `<id> · <retorno> — por <quem>; <retorno> — por <quem>` ou `<id> · sem retorno`,
    e `pedido novo · <pedido> — por <quem>`. A review não tem votação.
 3. Sem a página: registre na conversa o retorno de quem está presente, no mesmo formato; vai na `## Review` pelo passo
    `gravar`.
-4. Com o "terminamos", leia a `## Review`. Cada linha `pedido novo` vira item pelo passo `cadastro`, com `origem review
+4. Com o "publicamos", atualize a branch base e leia a `## Review`. Cada linha `pedido novo` vira item pelo passo `cadastro`, com `origem review
    <AAAA>/Sprint <nn>` na `obs`; depois do cadastro, a linha ganha o id no fim: `… (FT-040)`. Item concluído não reabre: o
    pedido sobre ele também entra pelo cadastro.
 

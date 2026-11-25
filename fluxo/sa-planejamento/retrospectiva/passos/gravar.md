@@ -9,8 +9,8 @@ A Retro, as regras escolhidas (passo `regras-aprendidas`), a linha Números e a 
 
 Mostre a `## Retro` (os pontos como a página os gravou e a linha Números), as linhas novas da seção Regras aprendidas do
 `.sabia/sabia.md` (só essa seção muda) e a mudança do `acordos.json`, se houve. Com o
-"ok", grave pelo passo `commit-na-branch-base`, commit `<AAAA>/Sprint <nn>: retrospectiva`. O botão Publicar da página faz
-esse mesmo commit só do `sprint-<nn>.md`: se a pessoa já publicou por ele, o commit daqui leva o que falta (a linha
+"ok", grave pelo passo `commit-na-branch-base`, commit `<AAAA>/Sprint <nn>: retrospectiva`. O botão Publicar da página já fez
+o commit do `sprint-<nn>.md` com os pontos: o commit daqui leva o que falta (a linha
 Números, as Regras aprendidas e o `acordos.json`).
 
 ## Saída
