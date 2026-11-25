@@ -2,12 +2,15 @@
 // (a seção `quadro`: colunas, cards, WIP e alertas); o tema é o do site (paletas Sóbria - Sabiá e Sabiá, modo
 // claro/escuro). Quem reordena, renomeia ou oculta colunas na página copia o JSON para o CONFIG_KANBAN do projeto.
 // Servidor node:http sem dependências: cada carga da página lê o projeto de novo; ao fechar, a página avisa.
+import fs from "node:fs";
 import http from "node:http";
+import os from "node:os";
 import { randomUUID } from "node:crypto";
 import { statusDoProjeto } from "./status.mjs";
 import { usuarioDaMaquina, podeGravar, executar } from "./acoes.mjs";
 
-const PORTA = 4780;  // fixa para o navegador guardar o tema e o rascunho (o localStorage é por origem)
+const PORTA = 4780;  // fixa para o navegador guardar o tema e o rascunho (o localStorage é por origem); 4781 é a da review e 4782 a da retrospective
+const LOCAIS = ["127.0.0.1", "::1", "::ffff:127.0.0.1"];
 
 export const CSS = `
 /* Os tons do Sabiá (tema.css do site) em quatro superfícies, da mais funda à mais alta: página, mesa do quadro, raia e
@@ -659,6 +662,25 @@ export const PALETA = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 
 export const CERTO = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>`;
 export const esc = (x) => String(x ?? "").replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
+/** Os links para o time, no modo --rede: um por endereço IPv4 da máquina. No WSL em modo NAT os endereços do Linux só
+ *  valem dentro da máquina: o link é o do Windows (o endereço da rota padrão dele, pelo PowerShell) e `dica` traz os
+ *  comandos que encaminham a porta para o WSL. Sem conseguir perguntar ao Windows, ficam os endereços do Linux. */
+export function linksDaRede(porta, exec) {
+  const daqui = Object.values(os.networkInterfaces()).flat().filter((i) => i && i.family === "IPv4" && !i.internal).map((i) => i.address);
+  const url = (ip) => `http://${ip}:${porta}/`;
+  let wsl = false;
+  try { wsl = /microsoft/i.test(fs.readFileSync("/proc/sys/kernel/osrelease", "utf8")); } catch { /* fora do Linux */ }
+  if (!wsl || !exec) return { urls: daqui.map(url), dica: null };
+  const roda = (cmd, args) => { try { const r = exec(cmd, args, { timeout: 10000 }); return r?.status === 0 ? String(r.stdout ?? "") : ""; } catch { return ""; } };
+  if (/mirrored/i.test(roda("wslinfo", ["--networking-mode"]))) return { urls: daqui.map(url), dica: null };
+  const doWindows = roda("powershell.exe", ["-NoProfile", "-Command", "(Get-NetIPConfiguration | Where-Object { $_.IPv4DefaultGateway }).IPv4Address.IPAddress"])
+    .split(/\r?\n/).map((l) => l.trim()).filter((l) => /^\d+\.\d+\.\d+\.\d+$/.test(l));
+  if (!doWindows.length || !daqui.length) return { urls: daqui.map(url), dica: null };
+  return { urls: doWindows.map(url), dica: `WSL em modo NAT: para o link acima abrir, encaminhe a porta no PowerShell do Windows (como administrador):\n`
+    + `    netsh interface portproxy add v4tov4 listenaddress=0.0.0.0 listenport=${porta} connectaddress=${daqui[0]} connectport=${porta}\n`
+    + `    New-NetFirewallRule -DisplayName "Sabia ${porta}" -Direction Inbound -Protocol TCP -LocalPort ${porta} -Action Allow` };
+}
+
 /** A página: HTML único, sem rede, com o JSON da `sabia status` embutido em <script id="dados">. */
 export function paginaHtml(status, token = "") {
   return `<!doctype html>
@@ -720,10 +742,13 @@ export function servirQuadro(gerar, { porta, host = "127.0.0.1", acao } = {}) {
   const server = http.createServer((req, res) => {
     const fim = (codigo, corpo, tipo = "text/plain; charset=utf-8") => { res.writeHead(codigo, { "content-type": tipo, "cache-control": "no-store" }); res.end(corpo); };
     const json = (codigo, o) => fim(codigo, JSON.stringify(o), "application/json; charset=utf-8");
+    // pela rede (--rede) o quadro só mostra: quem grava é quem o abriu, na máquina dela
+    const local = LOCAIS.includes(req.socket.remoteAddress);
+    const doPedido = () => { const st = gerar(); if (!local && st.quadro?.gravacao) st.quadro.gravacao = { ...st.quadro.gravacao, ok: false, motivo: "pela rede, o quadro só mostra" }; return st; };
     if (req.method === "POST" && req.url === "/acao") {
       // só a página deste servidor grava: o token está nela, e o pedido vem da própria origem
       const origem = req.headers.origin;
-      if (!acao || req.headers["x-sabia-token"] !== token || (origem && origem !== `http://${req.headers.host}`)) return json(403, { erro: "pedido recusado" });
+      if (!acao || !local || req.headers["x-sabia-token"] !== token || (origem && origem !== `http://${req.headers.host}`)) return json(403, { erro: "pedido recusado" });
       let corpo = "";
       req.on("data", (d) => { corpo += d; if (corpo.length > 65536) req.destroy(); });
       req.on("end", () => { try { json(200, { ok: true, ...acao(JSON.parse(corpo)) }); } catch (e) { json(400, { erro: e.message }); } });
@@ -732,8 +757,8 @@ export function servirQuadro(gerar, { porta, host = "127.0.0.1", acao } = {}) {
     if (req.method !== "GET" && req.method !== "HEAD") return fim(405, "use GET");
     if (req.url === "/vivo") { res.writeHead(200, { "content-type": "text/event-stream", "cache-control": "no-store" }); return res.write(": vivo\n\n"); }
     try {
-      if (req.url === "/dados.json") return fim(200, JSON.stringify(gerar(), null, 2), "application/json; charset=utf-8");
-      if (req.url === "/" || req.url === "/index.html") return fim(200, paginaHtml(gerar(), token), "text/html; charset=utf-8");
+      if (req.url === "/dados.json") return fim(200, JSON.stringify(doPedido(), null, 2), "application/json; charset=utf-8");
+      if (req.url === "/" || req.url === "/index.html") return fim(200, paginaHtml(doPedido(), token), "text/html; charset=utf-8");
     } catch (e) { return fim(500, `sabia kanban: ${e.message}`); }
     return fim(404, "não encontrado");
   });
@@ -745,7 +770,7 @@ export function servirQuadro(gerar, { porta, host = "127.0.0.1", acao } = {}) {
       const { port } = server.address();
       server.on("close", fecharFechou);
       resolve({
-        url: `http://${host}:${port}/`, porta: port, host, token,
+        url: `http://${host === "0.0.0.0" ? "127.0.0.1" : host}:${port}/`, porta: port, host, token,
         fechar: () => { if (server.listening) { server.close(); server.closeAllConnections?.(); } else fecharFechou(); },
         fechou,
       });
@@ -756,7 +781,7 @@ export function servirQuadro(gerar, { porta, host = "127.0.0.1", acao } = {}) {
 
 /** O comando: confere o projeto (sem backlog, falha antes de servir), sobe o servidor, escreve a URL no log e
  *  devolve { url, fechar, fechou }; quem chama decide quando aguardar o fechamento (o comando espera o sinal). */
-export async function abrirQuadro({ projeto = ".", exec, log = console.log, porta, host, agora } = {}) {
+export async function abrirQuadro({ projeto = ".", exec, log = console.log, porta, rede = false, host, agora } = {}) {
   // quem está no quadro: o usuário do git da máquina, se é da equipe; sem ele, o quadro só mostra
   const usuario = usuarioDaMaquina(projeto, exec);
   const gerar = () => {
@@ -765,9 +790,12 @@ export async function abrirQuadro({ projeto = ".", exec, log = console.log, port
     return st;
   };
   gerar();
-  const q = await servirQuadro(gerar, { porta: Number.parseInt(porta, 10) || 0, host, acao: (a) => executar(projeto, a, { exec, usuario, agora }) });
+  const q = await servirQuadro(gerar, { porta: Number.parseInt(porta, 10) || 0, host: host ?? (rede ? "0.0.0.0" : undefined), acao: (a) => executar(projeto, a, { exec, usuario, agora }) });
   // a URL sozinha na linha: o terminal a torna clicável; com OSC 8, também onde ele não detecta o link
-  const link = process.stdout.isTTY ? `\x1b]8;;${q.url}\x1b\\${q.url}\x1b]8;;\x1b\\` : q.url;
-  log(`Quadro Kanban do projeto ${gerar().projeto} (Ctrl+C encerra):\n\n  ${link}\n`);
+  const link = (u) => (process.stdout.isTTY ? `\x1b]8;;${u}\x1b\\${u}\x1b]8;;\x1b\\` : u);
+  // na rede, o link de cada endereço da máquina, para o time abrir
+  const daRede = q.host === "0.0.0.0" ? linksDaRede(q.porta, exec) : { urls: [], dica: null };
+  q.urls = daRede.urls;
+  log(`Quadro Kanban do projeto ${gerar().projeto} (Ctrl+C encerra):\n\n  ${link(q.url)}\n${q.urls.map((u) => `  ${link(u)}  (para o time, na rede: só mostra)\n`).join("")}${daRede.dica ? `\n  ${daRede.dica}\n` : ""}`);
   return q;
 }

@@ -3,17 +3,16 @@
 // pede a mensagem, grava a seção `## Retro` (ou `## Review`) e faz o commit e o push na branch base. Quem levantou e quem votou em cada ponto vai na própria linha.
 // Servidor node:http sem dependências, como o do quadro; com --rede, escuta na rede local para o time abrir o link.
 import fs from "node:fs";
-import os from "node:os";
 import path from "node:path";
 import http from "node:http";
 import { randomUUID } from "node:crypto";
 import { statusDoProjeto, sprintsDe, tabela, semValor } from "./status.mjs";
 import { usuarioDaMaquina } from "./acoes.mjs";
-import { CSS, tema, AVE, SOL, LUA, PALETA, CERTO, esc } from "./kanban.mjs";
+import { CSS, tema, AVE, SOL, LUA, PALETA, CERTO, esc, linksDaRede } from "./kanban.mjs";
 
 const MODOS = {
-  retrospective: { titulo: "Retrospectiva", secao: "Retro", commit: "retrospectiva", porta: 4781 },
-  review: { titulo: "Review", secao: "Review", commit: "review", porta: 4782 },
+  retrospective: { titulo: "Retrospectiva", secao: "Retro", commit: "retrospectiva", porta: 4782 },
+  review: { titulo: "Review", secao: "Review", commit: "review", porta: 4781 },
 };
 // os cinco grupos da retro, na ordem da página e a palavra de cada um na linha do sprint-<nn>.md (template sa-planejamento/sprint.md)
 const RETRO = [
@@ -653,14 +652,14 @@ export async function abrirCerimonia({ projeto = ".", modo, exec, log = console.
     server.on("listening", () => {
       const { port } = server.address();
       server.on("close", fecharFechou);
-      // na rede, o link de cada endereço IPv4 da máquina, para o time abrir
-      const daRede = escuta === "0.0.0.0" ? Object.values(os.networkInterfaces()).flat().filter((i) => i && i.family === "IPv4" && !i.internal).map((i) => `http://${i.address}:${port}/`) : [];
-      resolve({ url: `http://${escuta === "0.0.0.0" ? "127.0.0.1" : escuta}:${port}/`, urls: daRede, porta: port, token,
+      // na rede, o link de cada endereço da máquina, para o time abrir (no WSL em NAT, o do Windows e a dica da porta)
+      const daRede = escuta === "0.0.0.0" ? linksDaRede(port, exec) : { urls: [], dica: null };
+      resolve({ url: `http://${escuta === "0.0.0.0" ? "127.0.0.1" : escuta}:${port}/`, urls: daRede.urls, dica: daRede.dica, porta: port, token,
         fechar: () => { if (server.listening) { server.close(); server.closeAllConnections?.(); } else fecharFechou(); }, fechou });
     });
     server.listen(livre ? 0 : pedida || MODOS[modo].porta, escuta);
   });
   const link = (u) => (process.stdout.isTTY ? `\x1b]8;;${u}\x1b\\${u}\x1b]8;;\x1b\\` : u);
-  log(`${dados.titulo} da ${dados.sprint.chave} do projeto ${dados.projeto} (Ctrl+C encerra):\n\n  ${link(q.url)}\n${q.urls.map((u) => `  ${link(u)}  (para o time, na rede)\n`).join("")}`);
+  log(`${dados.titulo} da ${dados.sprint.chave} do projeto ${dados.projeto} (Ctrl+C encerra):\n\n  ${link(q.url)}\n${q.urls.map((u) => `  ${link(u)}  (para o time, na rede)\n`).join("")}${q.dica ? `\n  ${q.dica}\n` : ""}`);
   return q;
 }

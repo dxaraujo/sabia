@@ -1341,17 +1341,19 @@ const USO = [
   ["sabia toolkits atualizar", "leva os toolkits do projeto à última versão", "[<nome> …] [-y] [--indice <url-git|pasta>]   (sem nome: todos os do projeto)"],
   ["sabia toolkits remover", "tira do projeto; a versão sai da máquina se ninguém mais usar", "[<nome>[@versao] …] [-y]   (apelido rm; fora de um projeto: apaga da máquina)"],
   ["sabia status", "o estado do fluxo em JSON, para bots e scripts (só lê)", "[--projeto <pasta>]"],
-  ["sabia kanban", "o quadro Kanban do projeto numa página local: mostra o link, e Ctrl+C encerra (desenha o JSON da `sabia status`)", "[--projeto <pasta>] [--porta <n>] (padrão: 4780; ocupada, uma livre)\n" +
+  ["sabia kanban", "o quadro Kanban do projeto numa página local: mostra o link, e Ctrl+C encerra (desenha o JSON da `sabia status`)", "[--projeto <pasta>] [--porta <n>] (padrão: 4780; ocupada, uma livre) [--rede]\n" +
+    "      --rede escuta na rede local e mostra o link para o time: pela rede o quadro só mostra, quem grava é quem o abriu\n" +
     "      as colunas (ordem, nome, oculta) vêm de .sabia/config/kanban.json, que a própria página gera\n" +
     "      grava (impedir, liberar, cancelar, sprint e backlog, concluir, prioridade) com commit e push na branch base,\n" +
     "      para quem é do equipe.json pelo git da máquina; fora da branch base ou com alteração pendente, só mostra"],
-  ["sabia retrospective", "a página da retrospectiva da sprint: o time entra com o nome, inclui pontos positivos, negativos, de melhoria e ações propostas, vota e remove", "[--projeto <pasta>] [--porta <n>] (padrão: 4781) [--rede] [--propostas <arquivo.json>]\n" +
+  ["sabia review", "a página da review da sprint: os itens entregues, o retorno de cada um e os pedidos novos", "[--projeto <pasta>] [--porta <n>] (padrão: 4781) [--rede] [--propostas <arquivo.json>]\n" +
+    "      o sprint-<nn>.md só muda no botão Publicar: pede a mensagem do commit, grava a seção ## Review e faz o commit e o push\n" +
+    "      --rede escuta na rede local e mostra o link para os stakeholders\n" +
+    "      --propostas: { \"review\": [{ \"item\": \"<id>|pedido\", \"texto\": \"…\", \"autor\": \"…\" }] }"],
+  ["sabia retrospective", "a página da retrospectiva da sprint: o time entra com o nome, inclui pontos positivos, negativos, de melhoria e ações propostas, vota e remove", "[--projeto <pasta>] [--porta <n>] (padrão: 4782) [--rede] [--propostas <arquivo.json>]\n" +
     "      o sprint-<nn>.md só muda no botão Publicar: pede a mensagem do commit, grava a seção ## Retro e faz o commit e o push\n" +
     "      --rede escuta na rede local e mostra o link para o time; a linha do ponto guarda quem levantou e quem votou\n" +
     "      --propostas: os pontos de partida, { \"retrospective\": [{ \"tipo\": \"positivo|negativo|melhoria|acao\", \"texto\": \"…\", \"autor\": \"…\" }] }"],
-  ["sabia review", "a página da review da sprint: os itens entregues, o retorno de cada um e os pedidos novos, com voto", "[--projeto <pasta>] [--porta <n>] (padrão: 4782) [--rede] [--propostas <arquivo.json>]\n" +
-    "      o sprint-<nn>.md só muda no botão Publicar: pede a mensagem do commit, grava a seção ## Review e faz o commit e o push\n" +
-    "      --propostas: { \"review\": [{ \"item\": \"<id>|pedido\", \"texto\": \"…\", \"autor\": \"…\" }] }"],
   ["sabia agentes gerar", "gera os agentes do projeto; sem --gravar, só mostra o que muda", "[--gravar] [-a kiro,opencode] [--projeto <pasta>] [--config <arquivo>] [--framework <pasta>]"],
   ["sabia agentes base <id>", "a base de uma cópia: o sha do passo ou do template", "<sa-x.f.p | sa-x/nome.md | requisitos/template-<tipo>.md | ~/.sabia/toolkits/…> [--framework <pasta>]"],
   ["sabia rota <arquivo>", "explica a rota de um arquivo", "o passo com desvio de toolkit, o dono, o toolkit, o motivo e as travas\n" +
@@ -1429,7 +1431,7 @@ const COMANDOS = {
   "toolkits atualizar": atualizarToolkits,
   "toolkits remover": removerToolkits,
   status: (_, o) => { ctx.log(JSON.stringify(statusDoProjeto({ projeto: o.projeto, exec: ctx.exec }), null, 2)); },
-  kanban: async (_, o) => ateFechar(await abrirQuadro({ projeto: o.projeto, exec: ctx.exec, log: ctx.log, porta: o.porta })),
+  kanban: async (_, o) => ateFechar(await abrirQuadro({ projeto: o.projeto, exec: ctx.exec, log: ctx.log, porta: o.porta, rede: o.rede })),
   retrospective: async (_, o) => ateFechar(await abrirCerimonia({ modo: "retrospective", projeto: o.projeto, exec: ctx.exec, log: ctx.log, porta: o.porta, rede: o.rede, propostas: o.propostas })),
   review: async (_, o) => ateFechar(await abrirCerimonia({ modo: "review", projeto: o.projeto, exec: ctx.exec, log: ctx.log, porta: o.porta, rede: o.rede, propostas: o.propostas })),
   agentes: ([sub, id], o) => {

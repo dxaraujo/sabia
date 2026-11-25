@@ -198,3 +198,20 @@ test("cerimônia: publicar faz o commit só do sprint-<nn>.md, com a mensagem do
   assert.throws(() => publicar(p, dados, estado, { exec: git({ push: { status: 1, stderr: "rejected" } }), usuario: ana, mensagem: "Task 7 - review\n" }), /o commit "Task 7 - review" ficou só nesta máquina; o push falhou: rejected/);
   assert.throws(() => publicar(p, dados, estado, { exec: git(), usuario: null }), /não está no equipe\.json/);
 });
+
+test("portas e rede: 4781 é a review e 4782 a retrospective; o quadro com --rede escuta na rede e dá o link local", async () => {
+  const fonte = fs.readFileSync(new URL("./cerimonia.mjs", import.meta.url), "utf8");
+  assert.match(fonte, /review: \{[^}]*porta: 4781 \}/);
+  assert.match(fonte, /retrospective: \{[^}]*porta: 4782 \}/);
+  const { abrirQuadro } = await import("./kanban.mjs");
+  const p = projeto("quadro-rede"), logs = [];
+  const q = await abrirQuadro({ projeto: p, exec: git(), log: (x) => logs.push(String(x)), rede: true, agora });
+  try {
+    assert.equal(q.host, "0.0.0.0");
+    assert.match(q.url, /^http:\/\/127\.0\.0\.1:\d+\/$/);  // o link de quem abriu
+    assert.ok(Array.isArray(q.urls) && q.urls.every((u) => /^http:\/\/\d+\.\d+\.\d+\.\d+:\d+\/$/.test(u)));  // os da rede
+    assert.match(logs.at(-1), /^Quadro Kanban do projeto quadro-rede \(Ctrl\+C encerra\):\n\n {2}http:\/\/127\.0\.0\.1:\d+\/\n/);
+    // quem abriu, na máquina dela, não cai na regra da rede (só o pedido de fora fica "só mostra")
+    assert.notEqual((await (await fetch(q.url + "dados.json")).json()).quadro.gravacao.motivo, "pela rede, o quadro só mostra");
+  } finally { q.fechar(); await q.fechou; }
+});
