@@ -270,9 +270,10 @@ export function importarSecao(dados, texto) {
 }
 
 /** A retrospectiva, etapa a etapa (`estado.etapa`): o que cada pessoa pode fazer depende da etapa e de ser ou não o
- *  apresentador. Ponto, ação e lição entram na etapa de cada um (pontos · ações · lições) e só o autor altera ou
- *  remove, enquanto ela dura; depois, só o apresentador inclui, sem alterar. Agrupar, liberar a próxima etapa e o Sim
- *  ou Não da lição são do apresentador. Vota-se só na etapa da votação, no ponto solto ou no grupo. */
+ *  apresentador. Ponto e ação entram na etapa de cada um (pontos · ações) e só o autor altera ou remove, enquanto ela
+ *  dura; depois, só o apresentador inclui, sem alterar. A lição não se inclui: é a dos itens concluídos do ciclo.
+ *  Agrupar, liberar a próxima etapa e o Sim ou Não da lição são do apresentador. Vota-se só na etapa da votação, no
+ *  ponto solto ou no grupo. */
 function aplicarRetro(estado, acao, dados, agora, { nome, chave, apresentador }) {
   const n = Math.max(0, ETAPAS.findIndex((e) => e.id === estado.etapa)), etapa = ETAPAS[n].id, nDe = (g) => ETAPAS.findIndex((e) => e.id === (ETAPA_DE[g] ?? "pontos"));
   const exige = (ok, msg) => { if (!ok) throw new Error(msg); };
@@ -292,7 +293,9 @@ function aplicarRetro(estado, acao, dados, agora, { nome, chave, apresentador })
   if (acao.tipo === "incluir") {
     const g = dados.grupos.find((x) => x.id === acao.grupo);
     exige(g, "grupo desconhecido");
-    exige(n >= nDe(g.id), g.id === "acao" ? "as ações entram depois da votação" : "as lições aprendidas vêm depois das ações");
+    // a lição não se cria na página: vem dos itens concluídos do ciclo, para não virar Regra aprendida sem origem
+    exige(g.id !== "licao", "as lições aprendidas vêm dos itens concluídos do ciclo: na página, só o Sim ou Não");
+    exige(n >= nDe(g.id), "as ações entram depois da votação");
     exige(n === nDe(g.id) || apresentador, `a etapa ${ETAPAS[nDe(g.id)].nome} terminou: agora só quem apresenta inclui`);
     const texto = limpo(acao.texto);
     exige(texto, "escreva o ponto");
@@ -300,7 +303,7 @@ function aplicarRetro(estado, acao, dados, agora, { nome, chave, apresentador })
     exige(estado.itens.length < 500, "a cerimônia chegou a 500 pontos: remova algum antes de incluir");
     const dono = donoDe(g.id, acao.dono), alvo = g.id === "acao" && acao.sobre ? achar(acao.sobre) : null;
     exige(!alvo || votavel(alvo), "a ação é atrelada a um item ou a um grupo");
-    estado.itens.push({ id: randomUUID().slice(0, 8), grupo: g.id, texto, autor: nome, em: agora, votos: [], ...(dono ? { dono } : {}), ...(alvo ? { sobre: alvo.id } : {}), ...(g.id === "licao" ? { manter: null } : {}) });
+    estado.itens.push({ id: randomUUID().slice(0, 8), grupo: g.id, texto, autor: nome, em: agora, votos: [], ...(dono ? { dono } : {}), ...(alvo ? { sobre: alvo.id } : {}) });
     return;
   }
   if (acao.tipo === "agrupar" || acao.tipo === "editar-grupo") {
@@ -388,19 +391,6 @@ export function aplicar(estado, acao, dados, agora = Date.now(), { apresentador 
   if (acao.tipo === "votar") throw new Error("a review não tem votação");
   else if (acao.tipo === "remover") estado.itens.splice(estado.itens.indexOf(item), 1);
   else throw new Error("ação desconhecida");
-}
-
-/** As propostas de quem prepara a cerimônia, de um JSON `{ "retrospective": [{ tipo, texto, autor, dono? }],
- *  "review": [{ item, texto, autor }] }`: `tipo` é positivo, negativo, melhoria ou acao; `item` é o id do item entregue ou
- *  "pedido". Toda proposta diz o autor dela: o Sabiá não gera ponto nenhum. */
-export function lerPropostas(arquivo, dados) {
-  const doc = JSON.parse(fs.readFileSync(arquivo, "utf8")), bruto = doc[dados.modo] ?? [];
-  return bruto.flatMap((p, k) => {
-    const grupo = dados.modo === "retrospective" ? p.tipo : p.item, texto = limpo(p.texto), autor = nomeLimpo(p.autor);
-    if (!texto || !dados.grupos.some((g) => g.id === grupo)) return [];
-    if (!chaveDe(autor)) throw new Error(`a proposta ${k + 1} de ${path.basename(arquivo)} não tem "autor"`);
-    return [{ id: randomUUID().slice(0, 8), grupo, texto, autor, em: k, votos: [], ...(grupo === "acao" && p.dono && p.dono in dados.pessoas ? { dono: p.dono } : {}), ...(grupo === "licao" ? { manter: null } : {}) }];
-  });
 }
 
 /** O texto do `sprint-<nn>.md` com a seção da cerimônia como está na página (a linha Números da retro fica). */
@@ -713,9 +703,10 @@ function cliente() {
     let total = 0;
     for (const g of D.grupos) {
       const bloco = document.querySelector('.bloco[data-grupo="' + CSS.escape(g.id) + '"]'), ehPonto = PONTOS.includes(g.id), nG = nDe(g.id === "acao" ? "acoes" : g.id === "licao" ? "licoes" : "pontos");
-      // o bloco aparece na etapa dele; o formulário de incluir, enquanto ela dura e, depois, só para quem apresenta
+      // o bloco aparece na etapa dele; o formulário de incluir, enquanto ela dura e, depois, só para quem apresenta;
+      // lição não se inclui na página: só as dos itens concluídos do ciclo
       bloco.hidden = n < nG;
-      bloco.querySelector(".novo").hidden = !(n === nG || (AP && n > nG));
+      bloco.querySelector(".novo").hidden = g.id === "licao" || !(n === nG || (AP && n > nG));
       const itens = estado.itens.filter((i) => i.grupo === g.id && !i.em_grupo).sort((a, b) => (ehPonto && depois("acoes") && ordem === "votos" ? votos(b) - votos(a) : 0) || chegada(a, b));
       const nv = itens.reduce((s, i) => s + votos(i), 0);
       if (ehPonto) total += itens.length;
@@ -935,20 +926,19 @@ ${retro ? `<dialog id="modal-etapa" aria-labelledby="etapa-titulo"><form method=
 const LOCAIS = ["127.0.0.1", "::1", "::ffff:127.0.0.1"];
 
 /** O comando: lê a sprint, carrega os pontos da cerimônia (os que já estão na
- *  seção do .md e as propostas), sobe o servidor e devolve { url, urls, fechar, fechou, token }. Rotas: GET / (a
+ *  seção do .md), sobe o servidor e devolve { url, urls, fechar, fechou, token }. Rotas: GET / (a
  *  página), /dados.json, /vivo?nome=<quem> (a visão da pessoa a cada mudança) e POST /acao (com o token que só a
  *  página conhece). O apresentador da retrospectiva é quem pede da própria máquina do servidor. */
-export async function abrirCerimonia({ projeto = ".", modo, exec, log = console.log, porta, rede = false, host, propostas, agora } = {}) {
+export async function abrirCerimonia({ projeto = ".", modo, exec, log = console.log, porta, rede = false, host, agora } = {}) {
   if (!MODOS[modo]) throw new Error(`cerimônia desconhecida: ${modo}`);
   const usuario = usuarioDaMaquina(projeto, exec), token = randomUUID();
   const gerar = () => cerimoniaDoProjeto({ projeto, modo, exec, agora, usuario });
   let dados = gerar();
   const md = () => path.join(projeto, dados.sprint.arquivo);
-  // de onde a cerimônia parte: o que já está na seção do sprint-<nn>.md; com a seção vazia, as propostas
+  // de onde a cerimônia parte: o que já está na seção do sprint-<nn>.md; ponto novo, só quem está na página inclui
   const estado = { versao: 1, modo, sprint: dados.sprint.chave, itens: importarSecao(dados, fs.readFileSync(md(), "utf8")) };
   // a retrospectiva começa pela etapa dos pontos; a que já está no sprint-<nn>.md foi feita: abre na última, com tudo à vista
   if (modo === "retrospective") estado.etapa = estado.itens.length ? ETAPAS.at(-1).id : ETAPAS[0].id;
-  if (propostas && !estado.itens.length) estado.itens = lerPropostas(propostas, dados);
   juntarLicoes(estado, dados.licoes);
   // a cerimônia fica na memória: o sprint-<nn>.md só muda no Publicar; `nao_publicado` diz à página se há o que publicar
   const marcar = () => { const t = fs.readFileSync(md(), "utf8"); estado.nao_publicado = comASecao(dados, estado, t) !== t; return estado; };

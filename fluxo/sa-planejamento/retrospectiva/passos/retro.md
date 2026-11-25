@@ -12,18 +12,18 @@ propostas**, cada ação com dono (`usuario` do `equipe.json`) e, quando nasce d
 as **lições aprendidas** do ciclo que o apresentador marcou Sim. Ponto é o assunto que a pessoa levanta; quem levanta e
 quem vota é o time.
 
-1. Peça à pessoa que conduz para abrir a página, no terminal dela, na branch base: `sabia retrospective` (com
-   `--propostas .sabia/local/cerimonia/propostas.json` se o passo `dados` gravou propostas, e `--rede` para o time abrir
+1. Peça à pessoa que conduz para abrir a página, no terminal dela, na branch base: `sabia retrospective` (com `--rede` para o time abrir
    o link). Quem abre a página nessa máquina é o apresentador: só ele libera a etapa seguinte, e não há volta. Cada
    um entra com o nome. As etapas:
    - **Pontos**: cada pessoa inclui, altera e remove os seus pontos positivos, negativos e de melhoria. Só ela e o
-     apresentador veem o que ela escreveu. A proposta do `propostas.json` entra como ponto do autor dela.
+     apresentador veem o que ela escreveu.
    - **Agrupamento**: os pontos de todos ficam à vista, só texto. O apresentador junta os repetidos ou correlatos da
      mesma categoria num item, com o título escolhido entre os pontos e ajustado por ele.
    - **Votação**: cada um vota nos itens (o grupo conta como um). Só a pessoa e o apresentador veem o voto dela.
    - **Ações**: o resultado da votação aparece para todos. O time propõe ações para um item ou gerais; a tabela das
      ações junta todas.
-   - **Lições aprendidas**: aparecem as lições do ciclo; o apresentador marca Sim ou Não em cada uma.
+   - **Lições aprendidas**: aparecem as lições dos itens concluídos do ciclo; o apresentador marca Sim ou Não em
+     cada uma. Não se cria lição na página.
 
    Terminada uma etapa, o que é dela não se altera mais; o apresentador ainda inclui, sem alterar. Na última etapa,
    o apresentador usa o botão Publicar: ele pede a mensagem do commit e só então grava a `## Retro`, com quem levantou

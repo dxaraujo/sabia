@@ -5,7 +5,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { after, test } from "node:test";
-import { abrirCerimonia, aplicar, cerimoniaDoProjeto, importarSecao, juntarLicoes, lerPropostas, linhasDaSecao, numerosDaSprint, paginaCerimonia, publicar, trocarSecao, visaoDe } from "./cerimonia.mjs";
+import { abrirCerimonia, aplicar, cerimoniaDoProjeto, importarSecao, juntarLicoes, linhasDaSecao, numerosDaSprint, paginaCerimonia, publicar, trocarSecao, visaoDe } from "./cerimonia.mjs";
 
 const raiz = fs.mkdtempSync(path.join(os.tmpdir(), "sabia-cerimonia-"));
 after(() => fs.rmSync(raiz, { recursive: true, force: true }));
@@ -70,7 +70,7 @@ test("retrospectiva: as etapas — pontos ocultos, agrupamento, votação oculta
   assert.throws(() => faz({ tipo: "incluir", nome: "Ana", grupo: "nada", texto: "x" }), /grupo desconhecido/);
   assert.throws(() => faz({ tipo: "incluir", nome: "Ana", grupo: "positivo", texto: "  " }), /escreva o ponto/);
   assert.throws(() => faz({ tipo: "incluir", nome: "Ana", grupo: "acao", texto: "x" }), /as ações entram depois da votação/);
-  assert.throws(() => faz({ tipo: "incluir", nome: "Ana", grupo: "licao", texto: "x" }, 0, AP), /vêm depois das ações/);
+  assert.throws(() => faz({ tipo: "incluir", nome: "Ana", grupo: "licao", texto: "x" }, 0, AP), /vêm dos itens concluídos do ciclo/);
 
   // etapa 1, os pontos: cada um inclui, altera e remove os seus, e só vê os seus; quem apresenta vê todos
   faz({ tipo: "incluir", nome: "Ana", grupo: "positivo", texto: "Entrega | no prazo\n · sem susto" }, 1);
@@ -219,20 +219,19 @@ test("retrospectiva: as lições do ciclo aparecem na última etapa; quem aprese
   aplicar(estado, { tipo: "manter", nome: "Ana", id: a.id, valor: true }, dados, 0, AP);
   aplicar(estado, { tipo: "manter", nome: "Ana", id: b.id, valor: true }, dados, 0, AP);
   aplicar(estado, { tipo: "manter", nome: "Ana", id: b.id, valor: false }, dados, 0, AP);  // mudou de ideia: Não
-  aplicar(estado, { tipo: "incluir", nome: "Bia", grupo: "licao", texto: "Combinar a massa antes" }, dados, 9);
-  aplicar(estado, { tipo: "incluir", nome: "Bia", grupo: "licao", texto: "Lição sem resposta" }, dados, 10);
-  aplicar(estado, { tipo: "manter", nome: "Ana", id: estado.itens[3].id, valor: true }, dados, 0, AP);
+  // ninguém cria lição na página, nem quem apresenta: só as dos itens concluídos, para não poluir as Regras aprendidas
+  assert.throws(() => aplicar(estado, { tipo: "incluir", nome: "Ana", grupo: "licao", texto: "Combinar a massa antes" }, dados, 9, AP), /vêm dos itens concluídos do ciclo/);
   aplicar(estado, { tipo: "incluir", nome: "Ana", grupo: "acao", texto: "Rever a massa" }, dados, 11, AP);
-  assert.deepEqual(estado.itens.slice(0, 5).map((i) => i.manter), [true, false, null, true, null]);
+  assert.deepEqual(estado.itens.slice(0, 3).map((i) => i.manter), [true, false, null]);
   assert.throws(() => aplicar(estado, { tipo: "manter", nome: "Ana", id: c.id, valor: true }, dados, 0, AP), /já é Regra aprendida/);
   assert.throws(() => aplicar(estado, { tipo: "remover", nome: "Ana", id: b.id }, dados, 0, AP), /não se altera nem se remove/);
   // só as marcadas Sim, antes das ações
   const linhas = linhasDaSecao(dados, estado);
-  assert.deepEqual(linhas, ["- Lição: Conferir as colunas no banco antes do DDL de teste · origem FT-001", "- Lição: Combinar a massa antes · por Bia", "- Ação: Rever a massa · por Ana"]);
+  assert.deepEqual(linhas, ["- Lição: Conferir as colunas no banco antes do DDL de teste · origem FT-001", "- Ação: Rever a massa · por Ana"]);
   // de volta do .md: a marcada casa com a do ciclo (sem duplicar) e volta Sim; as outras do ciclo voltam sem resposta
   const lido = juntarLicoes({ itens: importarSecao(dados, trocarSecao(ler(p), "Retro", linhas)) }, dados.licoes);
   assert.deepEqual(lido.itens.filter((i) => i.grupo === "licao").map((i) => `${i.texto} | ${i.origem ?? "-"} | ${i.manter} | ${!!i.do_ciclo}`), [
-    "Conferir as colunas no banco antes do DDL de teste | FT-001 | true | true", "Combinar a massa antes | - | true | false", "L-2 - JaCoCo não rodou | FT-001 | null | true", "Quebrar a extração grande em lotes | AT-001 | null | true"]);
+    "Conferir as colunas no banco antes do DDL de teste | FT-001 | true | true", "L-2 - JaCoCo não rodou | FT-001 | null | true", "Quebrar a extração grande em lotes | AT-001 | null | true"]);
   assert.deepEqual(linhasDaSecao(dados, lido), linhas);
   // a lição do formato anterior, marcada por voto, é lida como Sim e regravada sem os votos
   const antiga = importarSecao(dados, "## Retro\n- Lição: Medir antes · origem FT-009 · 2 votos (Ana, Bia)\n");
@@ -240,9 +239,8 @@ test("retrospectiva: as lições do ciclo aparecem na última etapa; quem aprese
 });
 
 test("cerimônia: o servidor leva a página no tema do quadro, dá a cada pessoa a visão dela, anda pelas etapas com quem abriu e só grava o sprint-<nn>.md no Publicar", async () => {
-  const p = projeto("servidor"), logs = [], propostas = path.join(p, "propostas.json");
-  fs.writeFileSync(propostas, JSON.stringify({ retrospective: [{ tipo: "positivo", texto: "Vazão de 5", autor: "Ana Souza" }, { tipo: "nada", texto: "fora" }, { tipo: "acao", texto: "Fechar no timebox", dono: "ana", autor: "Bia" }] }));
-  const q = await abrirCerimonia({ projeto: p, modo: "retrospective", exec: git(), log: (x) => logs.push(String(x)), porta: 0, host: "127.0.0.1", propostas, agora });
+  const p = projeto("servidor"), logs = [];
+  const q = await abrirCerimonia({ projeto: p, modo: "retrospective", exec: git(), log: (x) => logs.push(String(x)), porta: 0, host: "127.0.0.1", agora });
   const embutidoDe = (html) => JSON.parse(html.match(/<script id="dados" type="application\/json">([\s\S]*?)<\/script>/)[1]);
   try {
     assert.match(logs.at(-1), /^Retrospectiva da 2026\/Sprint 02 do projeto servidor \(Ctrl\+C encerra\):\n\n {2}http:\/\/127\.0\.0\.1:\d+\/\n$/);
@@ -252,13 +250,13 @@ test("cerimônia: o servidor leva a página no tema do quadro, dá a cada pessoa
     assert.match(html, /id="publicar"/);  // quem abriu é da equipe e está na máquina
     assert.match(html, /<nav class="etapas" id="etapas"/);
     assert.match(html, /<code>## Retro<\/code> do <code>sprint-02\.md<\/code>/);
-    // quem abriu, na máquina dele, é o apresentador: começa na etapa dos pontos e vê tudo, as propostas inclusive
+    // quem abriu, na máquina dele, é o apresentador; a retro começa vazia, na etapa dos pontos: só quem está na página inclui
     const embutido = embutidoDe(html);
     assert.deepEqual([embutido.apresentador, embutido.estado.etapa], [true, "pontos"]);
-    assert.deepEqual(embutido.estado.itens.map((i) => `${i.grupo} ${i.texto} ${i.autor} ${i.dono ?? ""}`.trim()), ["positivo Vazão de 5 Ana Souza", "acao Fechar no timebox Bia ana"]);
+    assert.deepEqual(embutido.estado.itens, []);
     assert.equal(ler(p).endsWith("## Retro\n"), true);  // abrir a página não grava nada
     // a página de quem vem pela rede: sem o Publicar, sem ser apresentador, e com a visão de quem ainda não disse o nome
-    const dados = cerimoniaDoProjeto({ projeto: p, modo: "retrospective", exec: git(), agora }), deFora = paginaCerimonia(dados, visaoDe({ etapa: "pontos", itens: embutido.estado.itens }, {}), "t");
+    const dados = cerimoniaDoProjeto({ projeto: p, modo: "retrospective", exec: git(), agora }), deFora = paginaCerimonia(dados, visaoDe({ etapa: "pontos", itens: [{ id: "a", grupo: "positivo", texto: "Vazão de 5", autor: "Ana Souza", votos: [] }] }, {}), "t");
     assert.doesNotMatch(deFora, /id="publicar"/);
     assert.deepEqual([embutidoDe(deFora).apresentador, embutidoDe(deFora).estado.itens], [false, []]);
     // gravar exige o token da página
@@ -267,12 +265,13 @@ test("cerimônia: o servidor leva a página no tema do quadro, dá a cada pessoa
     assert.equal((await post({}, {})).status, 403);
     assert.equal((await post({}, { "x-sabia-token": q.token, origin: "http://outro.exemplo" })).status, 403);
     assert.match((await faz({ tipo: "incluir", grupo: "positivo", texto: "x" })).erro, /diga o seu nome/);
+    await faz({ tipo: "incluir", nome: "Ana Souza", grupo: "positivo", texto: "Vazão de 5" });
     // o /vivo entrega a visão ao abrir e a cada mudança
     const vivo = await fetch(q.url + "vivo?nome=Ana%20Souza"), leitor = vivo.body.getReader(), dec = new TextDecoder();
     const proximo = async () => JSON.parse(dec.decode((await leitor.read()).value).replace(/^data: /, ""));
-    assert.equal((await proximo()).itens.length, 2);
+    assert.equal((await proximo()).itens.length, 1);
     const r = await faz({ tipo: "incluir", nome: "Bia", grupo: "melhoria", texto: "Review sem retorno" });
-    assert.equal(r.estado.itens.length, 3);
+    assert.equal(r.estado.itens.length, 2);
     assert.equal((await proximo()).itens.at(-1).texto, "Review sem retorno");
     await leitor.cancel();
     assert.match((await faz({ tipo: "incluir", nome: "Bia", grupo: "melhoria", texto: "Review sem retorno" })).erro, /já está na lista/);
@@ -281,8 +280,9 @@ test("cerimônia: o servidor leva a página no tema do quadro, dá a cada pessoa
     assert.equal((await faz({ tipo: "avancar", nome: "Ana Souza", de: "pontos" })).estado.etapa, "agrupar");
     assert.equal((await faz({ tipo: "avancar", nome: "Ana Souza", de: "agrupar" })).estado.etapa, "votar");
     assert.match((await faz({ tipo: "avancar", nome: "Ana Souza", de: "agrupar" })).erro, /a etapa já mudou/);  // o clique dobrado não pula etapa
-    await faz({ tipo: "votar", nome: "Bia", id: r.estado.itens[2].id });
+    await faz({ tipo: "votar", nome: "Bia", id: r.estado.itens[1].id });
     await faz({ tipo: "avancar", nome: "Ana Souza", de: "votar" });
+    await faz({ tipo: "incluir", nome: "Bia", grupo: "acao", texto: "Fechar no timebox", dono: "ana" });
     assert.equal((await faz({ tipo: "avancar", nome: "Ana Souza", de: "acoes" })).estado.etapa, "licoes");
     assert.equal(ler(p).endsWith("## Retro\n"), true);  // nada disso mexe no sprint-<nn>.md: só o Publicar
     assert.equal((await (await fetch(q.url + "dados.json")).json()).estado.nao_publicado, true);
@@ -311,9 +311,6 @@ test("cerimônia: o servidor leva a página no tema do quadro, dá a cada pessoa
 
 test("cerimônia: publicar faz o commit só do sprint-<nn>.md, com a mensagem do fluxo, e diz quando o push falha", () => {
   const p = projeto("publicar"), dados = cerimoniaDoProjeto({ projeto: p, modo: "review", exec: git(), agora }), ana = { usuario: "ana", nome: "Ana Souza", produto: true };
-  // a proposta sem autor não entra: o Sabiá não assina ponto
-  fs.writeFileSync(path.join(p, "sem-autor.json"), JSON.stringify({ review: [{ item: "pedido", texto: "Filtro" }] }));
-  assert.throws(() => lerPropostas(path.join(p, "sem-autor.json"), dados), /a proposta 1 de sem-autor\.json não tem "autor"/);
   const chamadas = [];
   const estado = { itens: [] }, antes = ler(p);
   assert.throws(() => publicar(p, dados, estado, { exec: git({ commit: { status: 1, stderr: "hook recusou" } }), usuario: ana }), /git commit: hook recusou/);

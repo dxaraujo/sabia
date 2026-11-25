@@ -1,5 +1,5 @@
 ---
-{"resumo": "Os números da sa-status.painel, as pendências de rastreio, os itens que o disjuntor do autopilot devolveu e as propostas de quem conduz."}
+{"resumo": "Os números da sa-status.painel, as pendências de rastreio, e os itens que o disjuntor do autopilot devolveu."}
 ---
 ## Entrada
 
@@ -12,14 +12,10 @@ A sprint escolhida.
 2. Chame a `sa-status.pendencias` para a lista de rastreio.
 3. Mostre também os itens que o disjuntor do autopilot devolveu no ciclo (`.sabia/local/loop-<id>.md` com
    `Devolvido:`).
-4. Com a `## Retro` do `sprint-<nn>.md` vazia, ofereça redigir as propostas a partir desses dados. Com o "sim", mostre-as
-   e grave em `.sabia/local/cerimonia/propostas.json`: `{ "retrospective": [{ "tipo": "positivo|negativo|melhoria|acao",
-   "texto": "…", "autor": "<quem conduz>", "dono": "<usuario>" }] }` (`dono` só na ação, se a pessoa disser). O `autor` é
-   a pessoa que conduz, ou quem ela indicar; nunca o agente. Nada vai ao `sprint-<nn>.md` neste passo.
 
 ## Saída
 
-Os dados na tela e, se a pessoa quis, as propostas no arquivo → passo `retro`.
+Os dados na tela → passo `retro`. O agente não redige ponto: quem levanta é o time, na página.
 
 ## Pare se
 

@@ -16,5 +16,5 @@
 ---
 # Retrospectiva
 
-Independente da review: dados da `sa-status` e propostas de quem conduz → página `sabia retrospective`, em etapas que o apresentador libera (pontos · agrupamento · votação · ações · lições aprendidas com Sim ou Não) → Regras aprendidas (curadoria das Lições aprendidas) → números da sprint → reserva de capacidade revista → grava →
+Independente da review: dados da `sa-status` → página `sabia retrospective`, em etapas que o apresentador libera (pontos · agrupamento · votação · ações · lições aprendidas com Sim ou Não) → Regras aprendidas (curadoria das Lições aprendidas) → números da sprint → reserva de capacidade revista → grava →
 "seguir para o planejamento da próxima?". O que ficou em aberto é perguntado na virada do próximo planejamento.

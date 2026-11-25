@@ -1346,15 +1346,13 @@ const USO = [
     "      as colunas (ordem, nome, oculta) vêm de .sabia/config/kanban.json, que a própria página gera\n" +
     "      grava (impedir, liberar, cancelar, sprint e backlog, concluir, prioridade) com commit e push na branch base,\n" +
     "      para quem é do equipe.json pelo git da máquina; fora da branch base ou com alteração pendente, só mostra"],
-  ["sabia review", "a página da review da sprint: os itens entregues, o retorno de cada um e os pedidos novos", "[--projeto <pasta>] [--porta <n>] (padrão: 4781) [--rede] [--propostas <arquivo.json>]\n" +
+  ["sabia review", "a página da review da sprint: os itens entregues, o retorno de cada um e os pedidos novos", "[--projeto <pasta>] [--porta <n>] (padrão: 4781) [--rede]\n" +
     "      o sprint-<nn>.md só muda no botão Publicar: pede a mensagem do commit, grava a seção ## Review e faz o commit e o push\n" +
-    "      --rede escuta na rede local e mostra o link para os stakeholders\n" +
-    "      --propostas: { \"review\": [{ \"item\": \"<id>|pedido\", \"texto\": \"…\", \"autor\": \"…\" }] }"],
-  ["sabia retrospective", "a página da retrospectiva da sprint, em etapas que o apresentador libera: pontos, agrupamento, votação, ações e lições aprendidas", "[--projeto <pasta>] [--porta <n>] (padrão: 4782) [--rede] [--propostas <arquivo.json>]\n" +
+    "      --rede escuta na rede local e mostra o link para os stakeholders"],
+  ["sabia retrospective", "a página da retrospectiva da sprint, em etapas que o apresentador libera: pontos, agrupamento, votação, ações e lições aprendidas", "[--projeto <pasta>] [--porta <n>] (padrão: 4782) [--rede]\n" +
     "      o apresentador é quem abre a página nesta máquina; os pontos e os votos de cada pessoa ficam ocultos dos demais até ele liberar\n" +
     "      o sprint-<nn>.md só muda no botão Publicar, na última etapa: pede a mensagem do commit, grava a seção ## Retro e faz o commit e o push\n" +
-    "      --rede escuta na rede local e mostra o link para o time; a linha do ponto guarda quem levantou e quem votou\n" +
-    "      --propostas: os pontos de partida, { \"retrospective\": [{ \"tipo\": \"positivo|negativo|melhoria|acao\", \"texto\": \"…\", \"autor\": \"…\" }] }"],
+    "      --rede escuta na rede local e mostra o link para o time; a linha do ponto guarda quem levantou e quem votou"],
   ["sabia agentes gerar", "gera os agentes do projeto; sem --gravar, só mostra o que muda", "[--gravar] [-a kiro,opencode] [--projeto <pasta>] [--config <arquivo>] [--framework <pasta>]"],
   ["sabia agentes base <id>", "a base de uma cópia: o sha do passo ou do template", "<sa-x.f.p | sa-x/nome.md | requisitos/template-<tipo>.md | ~/.sabia/toolkits/…> [--framework <pasta>]"],
   ["sabia rota <arquivo>", "explica a rota de um arquivo", "o passo com desvio de toolkit, o dono, o toolkit, o motivo e as travas\n" +
@@ -1393,7 +1391,7 @@ function ajudaDe(prefixo) {
 const CURTAS = { "-y": "--sim", "-h": "--ajuda", "-v": "--version", "-a": "--alvo", "-t": "--toolkits" };
 
 const BOOLEANAS = ["sim", "forcar", "semMcp", "mapa", "ajuda", "version", "json", "gravar", "rede"];
-const COM_VALOR = ["alvo", "toolkits", "versao", "fonte", "indice", "fluxo", "projeto", "framework", "config", "porta", "propostas"];
+const COM_VALOR = ["alvo", "toolkits", "versao", "fonte", "indice", "fluxo", "projeto", "framework", "config", "porta"];
 
 export function lerArgs(argv) {
   const posicionais = [];
@@ -1433,8 +1431,8 @@ const COMANDOS = {
   "toolkits remover": removerToolkits,
   status: (_, o) => { ctx.log(JSON.stringify(statusDoProjeto({ projeto: o.projeto, exec: ctx.exec }), null, 2)); },
   kanban: async (_, o) => ateFechar(await abrirQuadro({ projeto: o.projeto, exec: ctx.exec, log: ctx.log, porta: o.porta, rede: o.rede })),
-  retrospective: async (_, o) => ateFechar(await abrirCerimonia({ modo: "retrospective", projeto: o.projeto, exec: ctx.exec, log: ctx.log, porta: o.porta, rede: o.rede, propostas: o.propostas })),
-  review: async (_, o) => ateFechar(await abrirCerimonia({ modo: "review", projeto: o.projeto, exec: ctx.exec, log: ctx.log, porta: o.porta, rede: o.rede, propostas: o.propostas })),
+  retrospective: async (_, o) => ateFechar(await abrirCerimonia({ modo: "retrospective", projeto: o.projeto, exec: ctx.exec, log: ctx.log, porta: o.porta, rede: o.rede })),
+  review: async (_, o) => ateFechar(await abrirCerimonia({ modo: "review", projeto: o.projeto, exec: ctx.exec, log: ctx.log, porta: o.porta, rede: o.rede })),
   agentes: ([sub, id], o) => {
     if (sub === "gerar") ctx.log(gerarProjeto({ projeto: o.projeto, config: o.config, alvo: o.alvo, framework: o.framework, gravar: o.gravar }).texto);
     else if (sub === "base" && id) ctx.log(baseDaCopia(id, o.framework));

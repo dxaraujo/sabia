@@ -29,9 +29,8 @@ Valem em todos os fluxos da skill.
   Votação: cada um vota nos itens e só ele e o apresentador veem o voto. Ações: o resultado aparece e o time propõe
   ações, de um item ou gerais. Lições aprendidas: o apresentador marca Sim ou Não em cada lição do ciclo. Terminada a
   etapa, o que é dela não se altera mais; só o apresentador ainda inclui. Publica-se na última etapa.
-  Quem roda o comando é a pessoa, no terminal dela. O agente não levanta ponto em nome próprio: o que ele redige é
-  proposta de quem conduz, em `.sabia/local/cerimonia/propostas.json` (fora do git), com o `autor` de cada uma, e só
-  entra no `sprint-<nn>.md` quando quem conduz publica a página. Sem a página, o rito segue na conversa, no mesmo formato.
+  Quem roda o comando é a pessoa, no terminal dela. O agente não levanta ponto nem prepara ponto de partida: quem
+  inclui é quem está na página, com o próprio nome. Sem a página, o rito segue na conversa, no mesmo formato.
 - **Previsão pela vazão**: itens de desenvolvimento concluídos por sprint, sem pontos. A meta é o compromisso; a
   seleção é previsão. Item previsto que não terminou não é falha: volta na virada do próximo planejamento.
 - **Item maior que G** é épico: não entra como desenvolvimento; vai ao refinamento (`sa-refinar.moldar`).
