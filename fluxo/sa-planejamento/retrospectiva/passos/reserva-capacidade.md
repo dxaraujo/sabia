@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-A `**Reserva de capacidade:**` do `sprint-<nn>.md` e as linhas de atendimento.
+A `**Reserva de capacidade:**` do `sprint-<nn>.md` e a linha `Reserva de capacidade` da `## Métricas` (as linhas de atendimento).
 
 ## Faça
 

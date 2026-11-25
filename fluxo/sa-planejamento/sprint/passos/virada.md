@@ -22,7 +22,7 @@ A sprint anterior (a de maior chave) e o `backlog.md` da branch base. Sem sprint
 5. Com ELM, ofereça cancelar a tarefa do item que saiu (`sa-elm.finalizar`, só a tarefa; o IB fica) e mover os
    migrados para a iteração nova (`sa-elm.iteracao`). Sem o sim, siga.
 
-A sprint anterior não é alterada: os números dela ficam para a retrospectiva. Não existe "incompleto no fechamento".
+A sprint anterior não é alterada: os números dela estão na `## Métricas` (review e retrospectiva). Não existe "incompleto no fechamento".
 
 ## Saída
 

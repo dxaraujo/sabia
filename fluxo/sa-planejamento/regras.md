@@ -10,6 +10,7 @@ Valem em todos os fluxos da skill.
   - `acordos.json`, validado pelo [acordos.schema.json](~/.sabia/framework/schemas/acordos.schema.json): o template `sa-planejamento/acordos.md`;
   - `roadmap.md` (opcional): o template `sa-planejamento/roadmap.md`;
   - `sprints/<AAAA>/sprint-<nn>.md`: o template `sa-planejamento/sprint.md`;
+  - `historico-de-entregas.md` (o que cada sprint entregou, escrito pela review): o template `sa-planejamento/historico-de-entregas.md`;
   - Regras aprendidas, no `.sabia/sabia.md`: o template `sa-planejamento/regras-aprendidas.md`.
 - **Sprint aberta** = o `sprint-<nn>.md` de maior chave (`<AAAA>/Sprint <nn>`). A sprint não tem campo de situação:
   deixa de ser a aberta quando a próxima é gravada. O andamento de cada linha vem do status do `backlog.md`.

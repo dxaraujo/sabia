@@ -7,6 +7,9 @@ A coleta e o `acordos.json`.
 
 ## Faça
 
+Os números da sprint e o histórico saem prontos de `sabia metricas` (JSON, calculado das sprints e do backlog); sem o
+comando, valem as definições abaixo.
+
 Linha de topo:
 - WIP por status contra o limite do `acordos.json` (`em-revisao` contado pelos MRs abertos; o impedido que veio de
   `em-andamento` segue contando);

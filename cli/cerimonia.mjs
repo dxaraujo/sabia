@@ -15,6 +15,7 @@ import http from "node:http";
 import { randomUUID } from "node:crypto";
 import { statusDoProjeto, sprintsDe, tabela, semValor } from "./status.mjs";
 import { usuarioDaMaquina, prepararLote } from "./acoes.mjs";
+import { numerosDaSprint, resumoDaSprint } from "./metricas.mjs";
 import { CSS, tema, AVE, SOL, LUA, PALETA, CERTO, esc, linksDaRede } from "./kanban.mjs";
 
 const MODOS = {
@@ -82,17 +83,6 @@ export const chaveDe = (nome) => String(nome ?? "").normalize("NFD").replace(/[\
 const votosDe = (i) => i.votos.length + (i.base ?? 0);
 const plural = (n) => `${n} voto${n === 1 ? "" : "s"}`;
 
-/** Os números do ciclo pelas linhas da sprint: por trabalho, quantas linhas, as concluídas até o fim da sprint, as
- *  concluídas depois, as abertas e o lead time médio (concluida_em − iniciada_em). */
-export function numerosDaSprint(sprint) {
-  return ["especificação", "desenvolvimento", "atendimento"].map((trabalho) => {
-    const ls = sprint.itens.filter((x) => x.Trabalho === trabalho), fechadas = ls.filter((x) => ehData(x.concluida_em));
-    const leads = fechadas.filter((x) => ehData(x.iniciada_em)).map((x) => dias(x.iniciada_em, x.concluida_em));
-    return { trabalho, linhas: ls.length, no_prazo: fechadas.filter((x) => x.concluida_em <= sprint.fim).length, depois: fechadas.filter((x) => x.concluida_em > sprint.fim).length,
-      abertas: ls.length - fechadas.length, lead_medio: leads.length ? Math.round(10 * leads.reduce((a, b) => a + b, 0) / leads.length) / 10 : null };
-  }).filter((n) => n.linhas);
-}
-
 const TERMINAIS_OK = ["concluida", "concluido"];
 const norma = (x) => String(x ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
@@ -133,24 +123,6 @@ export function juntarLicoes(estado, licoes) {
     else estado.itens.push({ id: randomUUID().slice(0, 8), grupo: "licao", texto: l.texto, autor: null, em: estado.itens.length, votos: [], manter: null, origem: l.origem, detalhe: l.detalhe, ja_esta: l.ja_esta, do_ciclo: true });
   }
   return estado;
-}
-
-/** O resumo do ciclo para o painel da retro: conclusão (linhas concluídas sobre as da sprint), o que fechou até o
- *  fim da sprint, a vazão por trabalho, o lead time médio do desenvolvimento, o SLE medido nas linhas de
- *  desenvolvimento e atendimento, os dias além do fim e a parte do atendimento contra a reserva de capacidade. */
-export function resumoDaSprint(sprint, { sle = null, reservaPct = null } = {}) {
-  const ls = sprint.itens, fechadas = ls.filter((x) => ehData(x.concluida_em)), pct = (a, b) => (b ? Math.round(100 * a / b) : null);
-  const de = (t) => fechadas.filter((x) => x.Trabalho === t), media = (v) => (v.length ? Math.round(10 * v.reduce((a, b) => a + b, 0) / v.length) / 10 : null);
-  const lead = (xs) => xs.filter((x) => ehData(x.iniciada_em)).map((x) => dias(x.iniciada_em, x.concluida_em));
-  const noPrazo = fechadas.filter((x) => x.concluida_em <= sprint.fim).length, ultima = fechadas.map((x) => x.concluida_em).sort().at(-1) ?? null;
-  const medidos = lead([...de("desenvolvimento"), ...de("atendimento")]), atend = ls.filter((x) => x.Trabalho === "atendimento").length;
-  return { linhas: ls.length, itens: new Set(ls.map((x) => x.Item)).size, concluidas: fechadas.length, no_prazo: noPrazo, depois: fechadas.length - noPrazo, abertas: ls.length - fechadas.length,
-    pct_conclusao: pct(fechadas.length, ls.length), pct_no_prazo: pct(noPrazo, ls.length),
-    vazao: { desenvolvimento: de("desenvolvimento").length, atendimento: de("atendimento").length, "especificação": de("especificação").length },
-    lead_medio: { desenvolvimento: media(lead(de("desenvolvimento"))), atendimento: media(lead(de("atendimento"))), "especificação": media(lead(de("especificação"))) },
-    sle: sle && medidos.length ? { dias: sle.dias, alvo: sle.percentual, medidos: medidos.length, dentro: medidos.filter((d) => d <= sle.dias).length, pct: pct(medidos.filter((d) => d <= sle.dias).length, medidos.length) } : null,
-    ultima_conclusao: ultima, dias_alem: ultima && ultima > sprint.fim ? dias(sprint.fim, ultima) : 0,
-    atendimento: { linhas: atend, pct: pct(atend, ls.length), reserva_pct: reservaPct } };
 }
 
 /** Se a máquina pode publicar (commit e push): quem está nela é da equipe e o projeto está na branch base. */
@@ -221,7 +193,7 @@ export function lerSecao(texto, titulo) {
 }
 
 /** Troca o corpo da seção `## <titulo>` pelas `linhas` (a seção que falta entra no fim) e mantém as linhas dela que
- *  casam com `manter` (a `- Números:` da retro, que é do passo `fechar`). Devolve o texto novo. */
+ *  casam com `manter` (a `- Backlog:` da review, o rastro de uma repriorização já publicada). Devolve o texto novo. */
 export function trocarSecao(texto, titulo, linhas, manter = null) {
   const ls = texto.replace(/\n+$/, "").split("\n"), arejado = ls.some((l, k) => /^## /.test(l) && ls[k + 1]?.trim() === "" && ls[k + 2] !== undefined);
   let i = ls.findIndex((l) => l.trim() === `## ${titulo}`);
@@ -478,10 +450,10 @@ export function aplicar(estado, acao, dados, agora = Date.now(), { apresentador 
   return (dados.modo === "retrospective" ? aplicarRetro : aplicarReview)(estado, acao, dados, agora, { nome, chave, apresentador });
 }
 
-/** O texto do `sprint-<nn>.md` com a seção da cerimônia como está na página (a linha Números da retro fica). */
+/** O texto do `sprint-<nn>.md` com a seção da cerimônia como está na página; as outras seções não mudam. */
 export function comASecao(dados, estado, texto) {
-  // ficam: a linha Números da retro (do passo `fechar`) e, na review sem repriorização nova, a linha Backlog já gravada
-  return trocarSecao(texto, dados.secao, linhasDaSecao(dados, estado), dados.modo === "retrospective" ? /^- Números:/ : mudouBacklog(estado) ? null : /^- Backlog:/);
+  // na review sem repriorização nova, fica a linha Backlog já gravada; as métricas têm a seção delas (## Métricas)
+  return trocarSecao(texto, dados.secao, linhasDaSecao(dados, estado), dados.modo === "review" && !mudouBacklog(estado) ? /^- Backlog:/ : null);
 }
 
 /** A mensagem de commit que a página propõe: a do fluxo, `<AAAA>/Sprint <nn>: retrospectiva` (ou `review`). */

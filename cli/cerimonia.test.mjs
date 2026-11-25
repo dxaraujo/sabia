@@ -5,7 +5,8 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { after, test } from "node:test";
-import { abrirCerimonia, acoesDoBacklog, aplicar, cerimoniaDoProjeto, importarSecao, juntarLicoes, linhasDaSecao, numerosDaSprint, paginaCerimonia, publicar, trocarSecao, visaoDe } from "./cerimonia.mjs";
+import { abrirCerimonia, acoesDoBacklog, aplicar, cerimoniaDoProjeto, importarSecao, juntarLicoes, linhasDaSecao, paginaCerimonia, publicar, trocarSecao, visaoDe } from "./cerimonia.mjs";
+import { numerosDaSprint } from "./metricas.mjs";
 
 const raiz = fs.mkdtempSync(path.join(os.tmpdir(), "sabia-cerimonia-"));
 after(() => fs.rmSync(raiz, { recursive: true, force: true }));

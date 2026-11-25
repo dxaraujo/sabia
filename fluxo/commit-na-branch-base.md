@@ -4,7 +4,7 @@
 ## Entrada
 
 Os arquivos que o fluxo grava e a mensagem do commit. Grava direto na branch base: as linhas de estado (`backlog.md` e
-`sprint-<nn>.md`), o `equipe.json`, o `acordos.json`, o `roadmap.md`, as Regras aprendidas do `.sabia/sabia.md`, os
+`sprint-<nn>.md`), o `equipe.json`, o `acordos.json`, o `roadmap.md`, o `historico-de-entregas.md`, as Regras aprendidas do `.sabia/sabia.md`, os
 documentos de planejamento (`pitch.md`, `prd.md`, ficha, registro de Sustentação, ATA, protótipos), os arquivos de
 `elm/` da pasta da spec da fatia, o `status.md` arquivado (Publicação), o bundle do ELM (`sa-elm.baixar`) e, numa
 sessão sem branch (Sustentação), o `.sabia/creditos/<usuario>.csv`. Código e o resto da spec (delta, design, tasks,

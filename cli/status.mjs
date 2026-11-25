@@ -58,7 +58,9 @@ export function sprintsDe(raiz, hoje) {
     const texto = fs.readFileSync(path.join(dir, f), "utf8");
     const c = texto.match(/^# (\d{4}\/Sprint \d+) · (\d{4}-\d{2}-\d{2}) → (\d{4}-\d{2}-\d{2})/m);
     const reserva = texto.match(/^\*\*Reserva de capacidade:\*\* (\d+)/m);
-    return c && { chave: c[1], inicio: c[2], fim: c[3], meta: texto.match(/^\*\*Meta:\*\* (.*)$/m)?.[1] ?? null, reserva: reserva ? +reserva[1] : null, aberta: hoje <= c[3], itens: tabela(texto, "Item"),
+    // o previsto no planejamento: `**Capacidade:** vazão prevista <n> · migrados <n> · sobra <n>`
+    const cap = texto.match(/^\*\*Capacidade:\*\* vazão prevista (\d+) · migrados (\d+) · sobra (\d+)/m);
+    return c && { chave: c[1], inicio: c[2], fim: c[3], meta: texto.match(/^\*\*Meta:\*\* (.*)$/m)?.[1] ?? null, reserva: reserva ? +reserva[1] : null, capacidade: cap ? { prevista: +cap[1], migrados: +cap[2], sobra: +cap[3] } : null, aberta: hoje <= c[3], itens: tabela(texto, "Item"),
       arquivo: path.join(".sabia/planejamento/sprints", f) };
   }).filter(Boolean);
 }

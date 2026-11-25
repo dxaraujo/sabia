@@ -1,5 +1,5 @@
 ---
-{"resumo": "Formato do .sabia/planejamento/sprints/<AAAA>/sprint-<nn>.md: cabeçalho, meta, reserva de capacidade, Itens (uma linha por tarefa, com início e fim), Review e Retro."}
+{"resumo": "Formato do .sabia/planejamento/sprints/<AAAA>/sprint-<nn>.md: cabeçalho, meta, reserva de capacidade, capacidade prevista, Itens (uma linha por tarefa, com início e fim), Review, Retro e Métricas."}
 ---
 ```markdown
 # 2026/Sprint 03 · 2026-11-09 → 2026-11-20
@@ -7,6 +7,8 @@
 **Meta:** o cliente consulta o extrato sem ligar para o suporte.
 
 **Reserva de capacidade:** 2 itens (20%)
+
+**Capacidade:** vazão prevista 4 · migrados 1 · sobra 3
 
 ## Itens
 
@@ -36,7 +38,20 @@
 - Lição: … · origem FT-031
 - Ação: … · sobre Negativo: revisão de MR lenta · por Ana Souza · dono ana.souza
 - Ação: … · por Bia Lima
-- Números: concluídas 4 (desenvolvimento) · atendimento 2 · meta atingida · lead time médio 3.5 dias
+
+## Métricas
+
+- Medida em: 2026-11-20 · meta atingida
+- Conclusão: 4 de 6 linhas (67%) · no prazo 3 · depois 1 · em aberto 2
+- Vazão: desenvolvimento 3 (prevista 4) · atendimento 1 · especificação 2
+- Lead time médio: desenvolvimento 3,5 dias · atendimento 1 dia · especificação 2 dias
+- SLE: 75% em até 5 dias (alvo 85%)
+- Reserva de capacidade: 1 de 2 itens
+
+| Entrega | Tipo | Tam. | Especificação (d) | Desenvolvimento (d) | Atendimento (d) | Lead time (d) | No prazo |
+|---|---|---|---|---|---|---|---|
+| FT-031 | fatia | M | 1 | 4 |  | 5 | sim |
+| AT-012 | sustentação |  |  |  | 1 | 1 | sim |
 ```
 
 - Caminho: `.sabia/planejamento/sprints/<AAAA>/sprint-<nn>.md`; `<AAAA>` = ano do início, `<nn>` com 2 dígitos
@@ -69,8 +84,7 @@
   linha `Backlog: ordem <ids> · cancelada <id> (<motivo>) — por <usuario>` é o rastro da repriorização feita na review:
   o trecho da ordem que mudou e os cancelados; o estado está no `backlog.md`. A página `sabia review` lê e grava essas
   linhas; a review não tem votação.
-- Retro: uma linha por item, `- Positivo: …` · `- Negativo: …` · `- Melhoria: …` · `- Lição: …` · `- Ação: …`, e a linha
-  Números. Cada linha guarda, nesta ordem e separados por ` · `: o texto, `origem <id>` (só na lição do ciclo),
+- Retro: uma linha por item, `- Positivo: …` · `- Negativo: …` · `- Melhoria: …` · `- Lição: …` · `- Ação: …`. Cada linha guarda, nesta ordem e separados por ` · `: o texto, `origem <id>` (só na lição do ciclo),
   `sobre <Categoria>: <título do item>` (só na ação que nasceu de um item), `por <quem levantou>`, `dono <usuario>` (só na
   ação) e `<n> votos (<quem votou>, …)` (só nos pontos).
   - Grupo: os pontos que o apresentador juntou viram uma linha com o título do grupo e os votos dele, e cada ponto
@@ -78,7 +92,16 @@
   - `- Lição:` é a lição do ciclo marcada Sim para virar Regra aprendida; a marcada Não e a sem resposta não são
     gravadas.
   - A página `sabia retrospective` lê e grava essas linhas, os pontos pela ordem dos votos; não há arquivo à parte.
+- Capacidade: os três números da proposta do planejamento, `vazão prevista <n> · migrados <n> · sobra <n>`. É o
+  previsto que as métricas comparam com o realizado.
+- Métricas: o retrato da sprint no dia da medida, impresso por `sabia metricas --md` (calculado das linhas da sprint e
+  do `backlog.md`): conclusão, vazão por trabalho contra a prevista, lead time médio, SLE e reserva de capacidade
+  consumida (as linhas de SLE e de reserva só quando há o acordo e a reserva), e uma linha por entrega (item com
+  alguma tarefa concluída) com os dias de cada trabalho, o lead time na sprint e se fechou até o fim dela. Só
+  `meta atingida` ou `meta não atingida — <por quê>`, na primeira linha, não é calculado: é a resposta de quem tem
+  `produto`. O histórico da equipe (vazão média, duração por tamanho) não é gravado: `sabia metricas` o deriva das
+  sprints.
 
-Escrevem: `sa-planejamento.sprint` (cabeçalho, meta, reserva de capacidade, linhas, virada) · a skill que puxa um item fora da seleção
-(a linha que falta) · quem inicia ou conclui uma tarefa (as datas) · `sa-elm.item` (Tarefas) · `sa-planejamento.review` (Review) · `sa-planejamento.retrospectiva`
-(Retro). Toda escrita vai direto na branch base.
+Escrevem: `sa-planejamento.sprint` (cabeçalho, meta, reserva de capacidade, capacidade, linhas, virada) · a skill que puxa um item fora da seleção
+(a linha que falta) · quem inicia ou conclui uma tarefa (as datas) · `sa-elm.item` (Tarefas) · `sa-planejamento.review` (Review e Métricas) · `sa-planejamento.retrospectiva`
+(Retro e Métricas). Toda escrita vai direto na branch base.

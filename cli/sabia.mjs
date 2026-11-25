@@ -11,6 +11,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { AGENTE_DO_PAPEL, baseDe as baseDaCopia, ganchoDe, gerarProjeto } from "./agentes.mjs";
+import { metricasDoProjeto, secaoMetricas } from "./metricas.mjs";
 import { statusDoProjeto } from "./status.mjs";
 import { abrirQuadro } from "./kanban.mjs";
 import { abrirCerimonia } from "./cerimonia.mjs";
@@ -1341,6 +1342,10 @@ const USO = [
   ["sabia toolkits atualizar", "leva os toolkits do projeto à última versão", "[<nome> …] [-y] [--indice <url-git|pasta>]   (sem nome: todos os do projeto)"],
   ["sabia toolkits remover", "tira do projeto; a versão sai da máquina se ninguém mais usar", "[<nome>[@versao] …] [-y]   (apelido rm; fora de um projeto: apaga da máquina)"],
   ["sabia status", "o estado do fluxo em JSON, para bots e scripts (só lê)", "[--projeto <pasta>]"],
+  ["sabia metricas", "as métricas da sprint e o histórico da equipe em JSON, calculados das sprints e do backlog (só lê)", "[--projeto <pasta>] [--sprint \"<AAAA>/Sprint <nn>\"] (padrão: a aberta) [--md]\n" +
+    "      da sprint: conclusão, vazão contra a prevista, lead time, SLE, reserva de capacidade e as entregas\n" +
+    "      do histórico: a vazão de cada sprint, a média das três últimas fechadas e a duração do desenvolvimento por tamanho (mediana e percentil 85)\n" +
+    "      --md imprime a seção ## Métricas do sprint-<nn>.md, pronta para gravar"],
   ["sabia kanban", "o quadro Kanban do projeto numa página local: mostra o link, e Ctrl+C encerra (desenha o JSON da `sabia status`)", "[--projeto <pasta>] [--porta <n>] (padrão: 4780; ocupada, uma livre) [--rede]\n" +
     "      --rede escuta na rede local e mostra o link para o time: pela rede o quadro só mostra, quem grava é quem o abriu\n" +
     "      as colunas (ordem, nome, oculta) vêm de .sabia/config/kanban.json, que a própria página gera\n" +
@@ -1392,8 +1397,8 @@ function ajudaDe(prefixo) {
 
 const CURTAS = { "-y": "--sim", "-h": "--ajuda", "-v": "--version", "-a": "--alvo", "-t": "--toolkits" };
 
-const BOOLEANAS = ["sim", "forcar", "semMcp", "mapa", "ajuda", "version", "json", "gravar", "rede"];
-const COM_VALOR = ["alvo", "toolkits", "versao", "fonte", "indice", "fluxo", "projeto", "framework", "config", "porta"];
+const BOOLEANAS = ["sim", "forcar", "semMcp", "mapa", "ajuda", "version", "json", "gravar", "rede", "md"];
+const COM_VALOR = ["alvo", "toolkits", "versao", "fonte", "indice", "fluxo", "projeto", "framework", "config", "porta", "sprint"];
 
 export function lerArgs(argv) {
   const posicionais = [];
@@ -1432,6 +1437,7 @@ const COMANDOS = {
   "toolkits atualizar": atualizarToolkits,
   "toolkits remover": removerToolkits,
   status: (_, o) => { ctx.log(JSON.stringify(statusDoProjeto({ projeto: o.projeto, exec: ctx.exec }), null, 2)); },
+  metricas: (_, o) => { const m = metricasDoProjeto({ projeto: o.projeto, chave: o.sprint }); ctx.log(o.md ? ["## Métricas", "", ...secaoMetricas(m)].join("\n") : JSON.stringify(m, null, 2)); },
   kanban: async (_, o) => ateFechar(await abrirQuadro({ projeto: o.projeto, exec: ctx.exec, log: ctx.log, porta: o.porta, rede: o.rede })),
   retrospective: async (_, o) => ateFechar(await abrirCerimonia({ modo: "retrospective", projeto: o.projeto, exec: ctx.exec, log: ctx.log, porta: o.porta, rede: o.rede })),
   review: async (_, o) => ateFechar(await abrirCerimonia({ modo: "review", projeto: o.projeto, exec: ctx.exec, log: ctx.log, porta: o.porta, rede: o.rede })),

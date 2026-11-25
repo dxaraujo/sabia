@@ -18,7 +18,7 @@ A `## Review` do `sprint-<nn>.md` publicada e o `backlog.md` da branch base, já
 
 ## Saída
 
-O que mudou, na tela → passo `gravar`.
+O que mudou, na tela → passo `historico`.
 
 ## Pare se
 

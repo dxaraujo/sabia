@@ -8,8 +8,9 @@ A proposta com o "ok".
 ## Faça
 
 1. **`sprint-<nn>.md`** em `.sabia/planejamento/sprints/<AAAA>/`, pelo template `sa-planejamento/sprint.md`: cabeçalho
-   `# <AAAA>/Sprint <nn> · AAAA-MM-DD → AAAA-MM-DD`, `**Meta:**`, `**Reserva de capacidade:** <n> itens (<p>%)`, a tabela `## Itens`
-   (Item · Trabalho · Responsável · Tarefas · iniciada_em · concluida_em, com as datas vazias) e as seções vazias `## Review` e `## Retro`. No reabastecimento, só
+   `# <AAAA>/Sprint <nn> · AAAA-MM-DD → AAAA-MM-DD`, `**Meta:**`, `**Reserva de capacidade:** <n> itens (<p>%)`, `**Capacidade:** vazão prevista <n> · migrados <n> · sobra <n>`
+   (os números da proposta: é o previsto que as métricas comparam com o realizado), a tabela `## Itens`
+   (Item · Trabalho · Responsável · Tarefas · iniciada_em · concluida_em, com as datas vazias) e as seções vazias `## Review`, `## Retro` e `## Métricas`. No reabastecimento, só
    acrescente as linhas. A coluna Tarefas fica vazia: quem puxa preenche pela `sa-elm.item`.
 2. **`backlog.md`**: os itens que a virada tirou da sprint (`em-andamento` → `elegivel`).
 3. **`roadmap.md`**, só se existe: pergunte "atualizar o roadmap?" e, com o sim, atualize a Previsão pela vazão.
