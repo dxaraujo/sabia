@@ -27,10 +27,14 @@
 ## Retro
 
 - Positivo: … · por Ana Souza · 2 votos (Bia Lima, Caio Reis)
+- Negativo: revisão de MR lenta · 3 votos (Ana Souza, Bia Lima, Caio Reis)
+  - MR parado três dias · por Bia Lima
+  - revisão demorou · por Caio Reis
 - Negativo: … · por Bia Lima
 - Melhoria: … · por Caio Reis · 1 voto (Ana Souza)
-- Ação: … · por Ana Souza · dono ana.souza
-- Lição: … · origem FT-031 · 2 votos (Ana Souza, Bia Lima)
+- Lição: … · origem FT-031
+- Ação: … · sobre Negativo: revisão de MR lenta · por Ana Souza · dono ana.souza
+- Ação: … · por Bia Lima
 - Números: concluídas 4 (desenvolvimento) · atendimento 2 · meta atingida · lead time médio 3.5 dias
 ```
 
@@ -61,11 +65,15 @@
 - Review: uma linha por item concluído, `<id> · <retorno> — por <quem>; <retorno> — por <quem>` ou `<id> · sem retorno`,
   e uma por pedido novo, `pedido novo · <pedido> — por <quem>`, que ganha o id no fim depois do cadastro. A página
   `sabia review` lê e grava essas linhas; a review não tem votação.
-- Retro: uma linha por ponto, `- Positivo: …` · `- Negativo: …` · `- Melhoria: …` · `- Ação: …`, e a linha Números. Cada
-  linha guarda, nesta ordem e separados por ` · `: o texto, `por <quem levantou>`, `dono <usuario>` (só na ação) e
-  `<n> votos (<quem votou>, …)`. `- Lição: … · origem <id>` é a lição do ciclo que o time marcou para virar Regra aprendida
-  (só as marcadas são gravadas). A página `sabia retrospective` lê e grava essas linhas, pela ordem dos votos; não há
-  arquivo à parte.
+- Retro: uma linha por item, `- Positivo: …` · `- Negativo: …` · `- Melhoria: …` · `- Lição: …` · `- Ação: …`, e a linha
+  Números. Cada linha guarda, nesta ordem e separados por ` · `: o texto, `origem <id>` (só na lição do ciclo),
+  `sobre <Categoria>: <título do item>` (só na ação que nasceu de um item), `por <quem levantou>`, `dono <usuario>` (só na
+  ação) e `<n> votos (<quem votou>, …)` (só nos pontos).
+  - Grupo: os pontos que o apresentador juntou viram uma linha com o título do grupo e os votos dele, e cada ponto
+    fica recuado abaixo dela, `  - <ponto> · por <quem levantou>`.
+  - `- Lição:` é a lição do ciclo marcada Sim para virar Regra aprendida; a marcada Não e a sem resposta não são
+    gravadas.
+  - A página `sabia retrospective` lê e grava essas linhas, os pontos pela ordem dos votos; não há arquivo à parte.
 
 Escrevem: `sa-planejamento.sprint` (cabeçalho, meta, reserva de capacidade, linhas, virada) · a skill que puxa um item fora da seleção
 (a linha que falta) · quem inicia ou conclui uma tarefa (as datas) · `sa-elm.item` (Tarefas) · `sa-planejamento.review` (Review) · `sa-planejamento.retrospectiva`

@@ -1350,8 +1350,9 @@ const USO = [
     "      o sprint-<nn>.md só muda no botão Publicar: pede a mensagem do commit, grava a seção ## Review e faz o commit e o push\n" +
     "      --rede escuta na rede local e mostra o link para os stakeholders\n" +
     "      --propostas: { \"review\": [{ \"item\": \"<id>|pedido\", \"texto\": \"…\", \"autor\": \"…\" }] }"],
-  ["sabia retrospective", "a página da retrospectiva da sprint: o time entra com o nome, inclui pontos positivos, negativos, de melhoria e ações propostas, vota e remove", "[--projeto <pasta>] [--porta <n>] (padrão: 4782) [--rede] [--propostas <arquivo.json>]\n" +
-    "      o sprint-<nn>.md só muda no botão Publicar: pede a mensagem do commit, grava a seção ## Retro e faz o commit e o push\n" +
+  ["sabia retrospective", "a página da retrospectiva da sprint, em etapas que o apresentador libera: pontos, agrupamento, votação, ações e lições aprendidas", "[--projeto <pasta>] [--porta <n>] (padrão: 4782) [--rede] [--propostas <arquivo.json>]\n" +
+    "      o apresentador é quem abre a página nesta máquina; os pontos e os votos de cada pessoa ficam ocultos dos demais até ele liberar\n" +
+    "      o sprint-<nn>.md só muda no botão Publicar, na última etapa: pede a mensagem do commit, grava a seção ## Retro e faz o commit e o push\n" +
     "      --rede escuta na rede local e mostra o link para o time; a linha do ponto guarda quem levantou e quem votou\n" +
     "      --propostas: os pontos de partida, { \"retrospective\": [{ \"tipo\": \"positivo|negativo|melhoria|acao\", \"texto\": \"…\", \"autor\": \"…\" }] }"],
   ["sabia agentes gerar", "gera os agentes do projeto; sem --gravar, só mostra o que muda", "[--gravar] [-a kiro,opencode] [--projeto <pasta>] [--config <arquivo>] [--framework <pasta>]"],

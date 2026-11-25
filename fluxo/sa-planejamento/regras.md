@@ -23,6 +23,12 @@ Valem em todos os fluxos da skill.
   commit (já preenchida), grava a seção `## Retro` ou `## Review` do `sprint-<nn>.md` e faz o commit e o push na branch
   base. A seção guarda o ponto, quem levantou e quem votou (formato no template `sa-planejamento/sprint.md`); não há
   arquivo à parte, e fechar o comando sem publicar perde o que não foi publicado.
+  A retrospectiva anda em etapas que só o apresentador libera, sem volta; o apresentador é quem abriu a página na
+  máquina em que rodou o comando. Pontos: cada pessoa inclui e altera os seus, e só ela e o apresentador os veem.
+  Agrupamento: os pontos ficam à vista e o apresentador junta os repetidos num item, com o título que escolher.
+  Votação: cada um vota nos itens e só ele e o apresentador veem o voto. Ações: o resultado aparece e o time propõe
+  ações, de um item ou gerais. Lições aprendidas: o apresentador marca Sim ou Não em cada lição do ciclo. Terminada a
+  etapa, o que é dela não se altera mais; só o apresentador ainda inclui. Publica-se na última etapa.
   Quem roda o comando é a pessoa, no terminal dela. O agente não levanta ponto em nome próprio: o que ele redige é
   proposta de quem conduz, em `.sabia/local/cerimonia/propostas.json` (fora do git), com o `autor` de cada uma, e só
   entra no `sprint-<nn>.md` quando quem conduz publica a página. Sem a página, o rito segue na conversa, no mesmo formato.

@@ -1,10 +1,11 @@
-// Testes da cerimônia (`sabia retrospective` e `sabia review`): o estado, as linhas do sprint-<nn>.md e o servidor.
+// Testes da cerimônia (`sabia retrospective` e `sabia review`): o estado, as etapas da retrospectiva e a visão de cada
+// pessoa, as linhas do sprint-<nn>.md e o servidor.
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { after, test } from "node:test";
-import { abrirCerimonia, aplicar, cerimoniaDoProjeto, importarSecao, juntarLicoes, lerPropostas, linhasDaSecao, numerosDaSprint, publicar, trocarSecao } from "./cerimonia.mjs";
+import { abrirCerimonia, aplicar, cerimoniaDoProjeto, importarSecao, juntarLicoes, lerPropostas, linhasDaSecao, numerosDaSprint, paginaCerimonia, publicar, trocarSecao, visaoDe } from "./cerimonia.mjs";
 
 const raiz = fs.mkdtempSync(path.join(os.tmpdir(), "sabia-cerimonia-"));
 after(() => fs.rmSync(raiz, { recursive: true, force: true }));
@@ -61,51 +62,137 @@ test("cerimônia: os números da sprint, os grupos da retro e os itens entregues
   assert.throws(() => cerimoniaDoProjeto({ projeto: p, modo: "daily", exec: git(), agora }), /cerimônia desconhecida/);
 });
 
-test("cerimônia: incluir, votar e remover; as linhas da Retro e da Review pela ordem dos votos; importar o que já está no .md", () => {
-  const p = projeto("linhas"), dados = cerimoniaDoProjeto({ projeto: p, modo: "retrospective", exec: git(), agora }), estado = { itens: [] };
-  assert.throws(() => aplicar(estado, { tipo: "incluir", grupo: "positivo", texto: "x" }, dados), /diga o seu nome/);
-  assert.throws(() => aplicar(estado, { tipo: "incluir", nome: "Ana", grupo: "nada", texto: "x" }, dados), /grupo desconhecido/);
-  assert.throws(() => aplicar(estado, { tipo: "incluir", nome: "Ana", grupo: "positivo", texto: "  " }, dados), /escreva o ponto/);
-  assert.throws(() => aplicar(estado, { tipo: "incluir", nome: "Ana", grupo: "acao", texto: "x", dono: "zé" }, dados), /não está no equipe\.json/);
-  aplicar(estado, { tipo: "incluir", nome: "Ana", grupo: "positivo", texto: "Entrega | no prazo\n · sem susto" }, dados, 1);
-  aplicar(estado, { tipo: "incluir", nome: "Bia", grupo: "positivo", texto: "Pareamento" }, dados, 2);
-  aplicar(estado, { tipo: "incluir", nome: "Bia", grupo: "negativo", texto: "MR parado" }, dados, 3);
-  aplicar(estado, { tipo: "incluir", nome: "Ana", grupo: "acao", texto: "Revisar em 1 dia", dono: "bia" }, dados, 4);
-  const [a, b, , d] = estado.itens;
+test("retrospectiva: as etapas — pontos ocultos, agrupamento, votação oculta e ações por item; as linhas da Retro e a volta do .md; a review segue sem etapas", () => {
+  const p = projeto("linhas"), dados = cerimoniaDoProjeto({ projeto: p, modo: "retrospective", exec: git(), agora }), estado = { etapa: "pontos", itens: [] };
+  const AP = { apresentador: true }, faz = (acao, quando, papel) => aplicar(estado, acao, dados, quando, papel), textos = (v) => v.itens.map((i) => i.texto);
+  assert.deepEqual(dados.etapas.map((e) => e.id), ["pontos", "agrupar", "votar", "acoes", "licoes"]);
+  assert.throws(() => faz({ tipo: "incluir", grupo: "positivo", texto: "x" }), /diga o seu nome/);
+  assert.throws(() => faz({ tipo: "incluir", nome: "Ana", grupo: "nada", texto: "x" }), /grupo desconhecido/);
+  assert.throws(() => faz({ tipo: "incluir", nome: "Ana", grupo: "positivo", texto: "  " }), /escreva o ponto/);
+  assert.throws(() => faz({ tipo: "incluir", nome: "Ana", grupo: "acao", texto: "x" }), /as ações entram depois da votação/);
+  assert.throws(() => faz({ tipo: "incluir", nome: "Ana", grupo: "licao", texto: "x" }, 0, AP), /vêm depois das ações/);
+
+  // etapa 1, os pontos: cada um inclui, altera e remove os seus, e só vê os seus; quem apresenta vê todos
+  faz({ tipo: "incluir", nome: "Ana", grupo: "positivo", texto: "Entrega | no prazo\n · sem susto" }, 1);
+  faz({ tipo: "incluir", nome: "Bia", grupo: "positivo", texto: "Pareamento" }, 2);
+  faz({ tipo: "incluir", nome: "Bia", grupo: "negativo", texto: "MR parado" }, 3);
+  faz({ tipo: "incluir", nome: "Ana", grupo: "negativo", texto: "MR parado" }, 4);  // o mesmo ponto, de outra pessoa: ela não vê o da Bia
+  faz({ tipo: "incluir", nome: "Ana", grupo: "negativo", texto: "Revisão demorou" }, 5);
+  assert.throws(() => faz({ tipo: "incluir", nome: "ana", grupo: "negativo", texto: "MR parado" }), /já está na lista/);
+  const [a, b, c, d, e] = estado.itens;
   assert.equal(a.texto, "Entrega no prazo - sem susto");  // sem barra, quebra nem o separador das partes
-  aplicar(estado, { tipo: "votar", nome: "Ana", id: b.id }, dados);
-  aplicar(estado, { tipo: "votar", nome: "Bía", id: b.id }, dados);
-  aplicar(estado, { tipo: "votar", nome: "ana", id: b.id }, dados);  // a mesma pessoa de novo: tira o voto
-  aplicar(estado, { tipo: "votar", nome: "Ana", id: d.id }, dados);
-  assert.deepEqual(b.votos.map((v) => v.chave), ["bia"]);
+  assert.deepEqual(textos(visaoDe(estado, { chave: "bia" })), ["Pareamento", "MR parado"]);
+  assert.deepEqual(textos(visaoDe(estado, {})), []);  // sem nome, nada
+  assert.equal(visaoDe(estado, { chave: "bia", apresentador: true }).itens.length, 5);
+  assert.throws(() => faz({ tipo: "editar", nome: "Bia", id: a.id, texto: "y" }), /só quem criou/);
+  assert.throws(() => faz({ tipo: "remover", nome: "Bia", id: a.id }, 0, AP), /só quem criou/);  // nem quem apresenta mexe no ponto alheio
+  faz({ tipo: "editar", nome: "Ana", id: e.id, texto: "Revisão demorou 3 dias" });
+  assert.equal(e.texto, "Revisão demorou 3 dias");
+  assert.throws(() => faz({ tipo: "votar", nome: "Ana", id: b.id }), /ainda não foi liberada/);
+  assert.throws(() => faz({ tipo: "avancar", nome: "Bia", de: "pontos" }), /de quem apresenta/);
+  assert.throws(() => faz({ tipo: "avancar", nome: "Ana", de: "votar" }, 0, AP), /a etapa já mudou/);
+  faz({ tipo: "avancar", nome: "Ana", de: "pontos" }, 0, AP);
+
+  // etapa 2, o agrupamento: todos veem tudo, só texto; quem apresenta ainda inclui e junta os pontos da mesma categoria
+  assert.equal(estado.etapa, "agrupar");
+  assert.equal(visaoDe(estado, { chave: "bia" }).itens.length, 5);
+  assert.throws(() => faz({ tipo: "editar", nome: "Ana", id: e.id, texto: "z" }), /terminou: nada mais se altera/);
+  assert.throws(() => faz({ tipo: "remover", nome: "Ana", id: e.id }, 0, AP), /terminou: nada mais se altera/);
+  assert.throws(() => faz({ tipo: "incluir", nome: "Bia", grupo: "positivo", texto: "Tarde" }), /só quem apresenta inclui/);
+  faz({ tipo: "incluir", nome: "Ana", grupo: "melhoria", texto: "Fila de revisão" }, 6, AP);
+  assert.throws(() => faz({ tipo: "agrupar", nome: "Bia", ids: [c.id, d.id], titulo: "MR" }), /de quem apresenta/);
+  assert.throws(() => faz({ tipo: "agrupar", nome: "Ana", ids: [c.id], titulo: "MR" }, 0, AP), /pelo menos dois/);
+  assert.throws(() => faz({ tipo: "agrupar", nome: "Ana", ids: [a.id, c.id], titulo: "MR" }, 0, AP), /mesma categoria/);
+  assert.throws(() => faz({ tipo: "agrupar", nome: "Ana", ids: [c.id, d.id], titulo: " " }, 0, AP), /escolha o título/);
+  assert.throws(() => faz({ tipo: "agrupar", nome: "Ana", ids: [c.id, d.id], titulo: "Revisão demorou 3 dias" }, 0, AP), /já existe um item com esse título/);
+  faz({ tipo: "agrupar", nome: "Ana", ids: [c.id, d.id], titulo: "MR parado" }, 0, AP);  // o título de um dos pontos serve
+  const g = estado.itens.find((i) => i.agrupa);
+  assert.deepEqual([g.grupo, g.texto, g.em, c.em_grupo, d.em_grupo], ["negativo", "MR parado", 3, g.id, g.id]);
+  assert.throws(() => faz({ tipo: "agrupar", nome: "Ana", ids: [d.id, e.id], titulo: "x" }, 0, AP), /ponto que está solto/);
+  faz({ tipo: "editar-grupo", nome: "Ana", id: g.id, ids: [c.id, d.id, e.id], titulo: "Revisão de MR lenta" }, 0, AP);
+  assert.deepEqual([g.texto, e.em_grupo], ["Revisão de MR lenta", g.id]);
+  faz({ tipo: "editar-grupo", nome: "Ana", id: g.id, ids: [c.id, d.id], titulo: "Revisão de MR lenta" }, 0, AP);
+  assert.equal(e.em_grupo, undefined);  // o ponto que saiu do grupo volta a ser item
+  faz({ tipo: "desagrupar", nome: "Ana", id: g.id }, 0, AP);
+  assert.deepEqual([estado.itens.includes(g), c.em_grupo], [false, undefined]);
+  faz({ tipo: "agrupar", nome: "Ana", ids: [c.id, d.id], titulo: "Revisão de MR lenta" }, 0, AP);
+  const gr = estado.itens.find((i) => i.agrupa);
+  faz({ tipo: "avancar", nome: "Ana", de: "agrupar" }, 0, AP);
+
+  // etapa 3, a votação: no ponto solto ou no grupo (que conta como um item); cada um vê só o próprio voto
+  assert.throws(() => faz({ tipo: "desagrupar", nome: "Ana", id: gr.id }, 0, AP), /etapa Agrupamento/);
+  assert.throws(() => faz({ tipo: "votar", nome: "Ana", id: c.id }), /vota-se no ponto ou no grupo/);
+  faz({ tipo: "votar", nome: "Ana", id: gr.id });
+  faz({ tipo: "votar", nome: "Bía", id: gr.id });
+  faz({ tipo: "votar", nome: "Bia", id: b.id });
+  faz({ tipo: "votar", nome: "Ana", id: b.id });
+  faz({ tipo: "votar", nome: "ana", id: b.id });  // a mesma pessoa de novo: tira o voto
+  const votosNaVisao = (quem) => visaoDe(estado, quem).itens.filter((i) => i.votos.length).map((i) => `${i.texto}: ${i.votos.map((v) => v.chave).join()}`);
+  assert.deepEqual(votosNaVisao({ chave: "ana" }), ["Revisão de MR lenta: ana"]);
+  assert.deepEqual(votosNaVisao({ chave: "bia" }), ["Pareamento: bia", "Revisão de MR lenta: bia"]);
+  assert.deepEqual(votosNaVisao({}), []);
+  assert.deepEqual(votosNaVisao({ chave: "ana", apresentador: true }), ["Pareamento: bia", "Revisão de MR lenta: ana,bia"]);
+  assert.equal(gr.votos.length, 2);  // a visão não mexe no estado
+  faz({ tipo: "avancar", nome: "Ana", de: "votar" }, 0, AP);
+
+  // etapa 4, as ações: o resultado à vista; a ação é de um item (ou grupo) ou geral, e o autor a altera
+  assert.deepEqual(votosNaVisao({ chave: "ana" }), ["Pareamento: bia", "Revisão de MR lenta: ana,bia"]);
+  assert.throws(() => faz({ tipo: "votar", nome: "Ana", id: b.id }), /a votação terminou/);
+  assert.throws(() => faz({ tipo: "incluir", nome: "Ana", grupo: "acao", texto: "x", dono: "zé" }), /não está no equipe\.json/);
+  assert.throws(() => faz({ tipo: "incluir", nome: "Ana", grupo: "acao", texto: "x", sobre: c.id }), /atrelada a um item ou a um grupo/);
+  faz({ tipo: "incluir", nome: "Ana", grupo: "acao", texto: "Revisar em 1 dia", dono: "bia", sobre: gr.id }, 7);
+  faz({ tipo: "incluir", nome: "Bia", grupo: "acao", texto: "Rever o quadro toda segunda" }, 8);
+  faz({ tipo: "incluir", nome: "Bia", grupo: "acao", texto: "Engano" }, 9);
+  const [x, y, z] = estado.itens.slice(-3);
+  assert.equal(x.sobre, gr.id);
+  faz({ tipo: "editar", nome: "Ana", id: x.id, texto: "Revisar o MR em 1 dia", dono: "ana" });
+  assert.deepEqual([x.texto, x.dono], ["Revisar o MR em 1 dia", "ana"]);
+  faz({ tipo: "remover", nome: "Bia", id: z.id });
+  assert.throws(() => faz({ tipo: "remover", nome: "Bia", id: z.id }), /não existe mais/);
   const linhas = linhasDaSecao(dados, estado);
-  assert.deepEqual(linhas, ["- Positivo: Pareamento · por Bia · 1 voto (Bía)", "- Positivo: Entrega no prazo - sem susto · por Ana", "- Negativo: MR parado · por Bia", "- Ação: Revisar em 1 dia · por Ana · dono bia · 1 voto (Ana)"]);
+  assert.deepEqual(linhas, [
+    "- Positivo: Pareamento · por Bia · 1 voto (Bia)", "- Positivo: Entrega no prazo - sem susto · por Ana",
+    "- Negativo: Revisão de MR lenta · 2 votos (Ana, Bía)", "  - MR parado · por Bia", "  - MR parado · por Ana", "- Negativo: Revisão demorou 3 dias · por Ana",
+    "- Melhoria: Fila de revisão · por Ana",
+    "- Ação: Revisar o MR em 1 dia · sobre Negativo: Revisão de MR lenta · por Ana · dono ana", "- Ação: Rever o quadro toda segunda · por Bia"]);
   // a seção troca de corpo e a linha Números (do passo fechar) fica
   const md = trocarSecao(ler(p).replace("## Retro\n", "## Retro\n- Positivo: velho\n- Números: concluídas 1\n"), "Retro", linhas, /^- Números:/);
   assert.ok(md.endsWith("## Review\n## Retro\n" + linhas.join("\n") + "\n- Números: concluídas 1\n"));
   assert.equal(trocarSecao("# S\n\n## Itens\n\nx\n", "Retro", ["- Positivo: a"]), "# S\n\n## Itens\n\nx\n\n## Retro\n\n- Positivo: a\n");  // a seção que falta, no .md arejado
-  // de volta: a linha do .md traz o ponto com quem levantou e quem votou
-  const lidos = importarSecao(dados, md);
-  assert.deepEqual(lidos.map((i) => [i.grupo, i.texto, i.autor, i.dono ?? null, i.votos.map((v) => v.chave).join()]), [["positivo", "Pareamento", "Bia", null, "bia"], ["positivo", "Entrega no prazo - sem susto", "Ana", null, ""], ["negativo", "MR parado", "Bia", null, ""], ["acao", "Revisar em 1 dia", "Ana", "bia", "ana"]]);
+  // de volta: o grupo com os pontos dele, quem levantou, quem votou e a ação apontando o item
+  const lidos = importarSecao(dados, md), grupoLido = lidos.find((i) => i.agrupa);
+  assert.deepEqual(lidos.map((i) => [i.grupo, i.texto, i.autor, i.em_grupo ? "no grupo" : i.dono ?? null, i.votos.map((v) => v.chave).join()]), [
+    ["positivo", "Pareamento", "Bia", null, "bia"], ["positivo", "Entrega no prazo - sem susto", "Ana", null, ""],
+    ["negativo", "Revisão de MR lenta", null, null, "ana,bia"], ["negativo", "MR parado", "Bia", "no grupo", ""], ["negativo", "MR parado", "Ana", "no grupo", ""], ["negativo", "Revisão demorou 3 dias", "Ana", null, ""],
+    ["melhoria", "Fila de revisão", "Ana", null, ""], ["acao", "Revisar o MR em 1 dia", "Ana", "ana", ""], ["acao", "Rever o quadro toda segunda", "Bia", null, ""]]);
+  assert.equal(lidos.find((i) => i.grupo === "acao").sobre, grupoLido.id);
   assert.deepEqual(linhasDaSecao(dados, { itens: lidos }), linhas);
-  // o formato anterior (bom · melhorar · ações) ainda é lido
-  assert.deepEqual(importarSecao(dados, "## Retro\n- Bom: a\n- Melhorar: b · 2 votos\n").map((i) => [i.grupo, i.texto, i.base ?? 0]), [["positivo", "a", 0], ["melhoria", "b", 2]]);
-  aplicar(estado, { tipo: "remover", nome: "Bia", id: a.id }, dados);
-  assert.equal(estado.itens.length, 3);
-  assert.throws(() => aplicar(estado, { tipo: "votar", nome: "Bia", id: a.id }, dados), /não existe mais/);
+  // o formato anterior (bom · melhorar · ações com voto) ainda é lido; o `sobre` sem o item volta ao texto da ação
+  assert.deepEqual(importarSecao(dados, "## Retro\n- Bom: a\n- Melhorar: b · 2 votos\n- Ação: c · sobre Negativo: sumiu\n").map((i) => [i.grupo, i.texto, i.base ?? 0]), [["positivo", "a", 0], ["melhoria", "b", 2], ["acao", "c - sobre Negativo: sumiu", 0]]);
+  faz({ tipo: "avancar", nome: "Ana", de: "acoes" }, 0, AP);
 
-  // a review: uma linha por item entregue, os retornos juntos, e os pedidos novos
+  // etapa 5: as ações ficam só texto; quem apresenta ainda inclui; não há etapa depois
+  assert.throws(() => faz({ tipo: "remover", nome: "Bia", id: y.id }), /terminou: nada mais se altera/);
+  assert.throws(() => faz({ tipo: "incluir", nome: "Bia", grupo: "acao", texto: "Tarde" }), /só quem apresenta inclui/);
+  faz({ tipo: "incluir", nome: "Ana", grupo: "acao", texto: "Avisar o time", sobre: b.id }, 10, AP);
+  assert.throws(() => faz({ tipo: "avancar", nome: "Ana", de: "licoes" }, 0, AP), /última etapa/);
+
+  // a review: uma linha por item entregue, os retornos juntos, e os pedidos novos; sem etapas nem votos
   const rv = cerimoniaDoProjeto({ projeto: p, modo: "review", exec: git(), agora }), er = { itens: [] };
   aplicar(er, { tipo: "incluir", nome: "Cliente", grupo: "FT-001", texto: "Aprovado; faltou o filtro" }, rv, 1);
   aplicar(er, { tipo: "incluir", nome: "Cliente", grupo: "FT-001", texto: "Tela clara" }, rv, 2);
   aplicar(er, { tipo: "incluir", nome: "Cliente", grupo: "pedido", texto: "Filtro por data" }, rv, 3);
+  aplicar(er, { tipo: "incluir", nome: "Rui", grupo: "pedido", texto: "Engano" }, rv, 4);
+  aplicar(er, { tipo: "remover", nome: "Ana", id: er.itens[3].id }, rv);  // na review, qualquer um remove
   assert.throws(() => aplicar(er, { tipo: "votar", nome: "Ana", id: er.itens[1].id }, rv), /a review não tem votação/);
+  assert.throws(() => aplicar(er, { tipo: "avancar", nome: "Ana", de: "pontos" }, rv, 0, AP), /não existe mais/);
+  assert.deepEqual([rv.etapas, visaoDe(er, {})], [[], er]);  // a review mostra tudo a todos
   const lr = linhasDaSecao(rv, er);
   assert.deepEqual(lr, ["- AT-001 · sem retorno", "- FT-001 · Aprovado, faltou o filtro — por Cliente; Tela clara — por Cliente", "- pedido novo · Filtro por data — por Cliente"]);
   assert.deepEqual(importarSecao(rv, trocarSecao(ler(p), "Review", lr)).map((i) => [i.grupo, i.texto, i.autor]), [["FT-001", "Aprovado, faltou o filtro", "Cliente"], ["FT-001", "Tela clara", "Cliente"], ["pedido", "Filtro por data", "Cliente"]]);
 });
 
-test("cerimônia: as lições do ciclo entram na retro para a escolha; só as marcadas vão para o sprint-<nn>.md", () => {
+test("retrospectiva: as lições do ciclo aparecem na última etapa; quem apresenta marca Sim ou Não e só as marcadas Sim vão para o sprint-<nn>.md", () => {
   const p = projeto("licoes");
   const arquivos = {
     ".kiro/specs/ft-001-extrato/status.md": "# FT-001\n## Lições aprendidas\n| Lição | Origem | Regra proposta |\n|---|---|---|\n| L-1 · teste criou a coluna errada | tarefa 2 | Conferir as colunas no banco antes do DDL de teste |\n| L-2 · JaCoCo não rodou | revisão 1 | — (descartada: ambiente) |\n## Retomar\n",
@@ -114,72 +201,112 @@ test("cerimônia: as lições do ciclo entram na retro para a escolha; só as ma
     ".sabia/sabia.md": "# Sabiá\n## Regras aprendidas\n- Quebrar a extração grande em lotes · origem AT-001 · 2026-11-20\n",
   };
   for (const [f, c] of Object.entries(arquivos)) { fs.mkdirSync(path.dirname(path.join(p, f)), { recursive: true }); fs.writeFileSync(path.join(p, f), c); }
-  const dados = cerimoniaDoProjeto({ projeto: p, modo: "retrospective", exec: git(), agora });
+  const dados = cerimoniaDoProjeto({ projeto: p, modo: "retrospective", exec: git(), agora }), AP = { apresentador: true };
   // só dos itens concluídos; o texto é a regra proposta ou, sem ela, a lição; a que já é regra vem marcada
   assert.deepEqual(dados.licoes, [
     { origem: "FT-001", texto: "Conferir as colunas no banco antes do DDL de teste", detalhe: "L-1 - teste criou a coluna errada", ja_esta: false },
     { origem: "FT-001", texto: "L-2 - JaCoCo não rodou", detalhe: null, ja_esta: false },
     { origem: "AT-001", texto: "Quebrar a extração grande em lotes", detalhe: "extração grande trava a sprint", ja_esta: true },
   ]);
-  const estado = juntarLicoes({ itens: [] }, dados.licoes), [a, b, c] = estado.itens;
-  assert.deepEqual(linhasDaSecao(dados, estado), []);  // sem marca, nada é gravado
-  aplicar(estado, { tipo: "votar", nome: "Ana", id: a.id }, dados);
+  const estado = juntarLicoes({ etapa: "acoes", itens: [] }, dados.licoes), [a, b, c] = estado.itens;
+  // antes da etapa delas, as lições não saem do servidor para quem não apresenta, e ninguém responde
+  assert.deepEqual([visaoDe(estado, { chave: "bia" }).itens.length, visaoDe(estado, { apresentador: true }).itens.length], [0, 3]);
+  assert.throws(() => aplicar(estado, { tipo: "manter", nome: "Ana", id: a.id, valor: true }, dados, 0, AP), /na última etapa/);
+  estado.etapa = "licoes";
+  assert.equal(visaoDe(estado, { chave: "bia" }).itens.length, 3);
+  assert.deepEqual(linhasDaSecao(dados, estado), []);  // sem resposta, nada é gravado
+  assert.throws(() => aplicar(estado, { tipo: "manter", nome: "Bia", id: a.id, valor: true }, dados), /de quem apresenta/);
+  aplicar(estado, { tipo: "manter", nome: "Ana", id: a.id, valor: true }, dados, 0, AP);
+  aplicar(estado, { tipo: "manter", nome: "Ana", id: b.id, valor: true }, dados, 0, AP);
+  aplicar(estado, { tipo: "manter", nome: "Ana", id: b.id, valor: false }, dados, 0, AP);  // mudou de ideia: Não
   aplicar(estado, { tipo: "incluir", nome: "Bia", grupo: "licao", texto: "Combinar a massa antes" }, dados, 9);
-  aplicar(estado, { tipo: "incluir", nome: "Bia", grupo: "acao", texto: "Rever a massa" }, dados, 10);
-  assert.throws(() => aplicar(estado, { tipo: "votar", nome: "Ana", id: c.id }, dados), /já é Regra aprendida/);
-  assert.throws(() => aplicar(estado, { tipo: "remover", nome: "Ana", id: b.id }, dados), /não se remove/);
-  // as lições vêm antes das ações
+  aplicar(estado, { tipo: "incluir", nome: "Bia", grupo: "licao", texto: "Lição sem resposta" }, dados, 10);
+  aplicar(estado, { tipo: "manter", nome: "Ana", id: estado.itens[3].id, valor: true }, dados, 0, AP);
+  aplicar(estado, { tipo: "incluir", nome: "Ana", grupo: "acao", texto: "Rever a massa" }, dados, 11, AP);
+  assert.deepEqual(estado.itens.slice(0, 5).map((i) => i.manter), [true, false, null, true, null]);
+  assert.throws(() => aplicar(estado, { tipo: "manter", nome: "Ana", id: c.id, valor: true }, dados, 0, AP), /já é Regra aprendida/);
+  assert.throws(() => aplicar(estado, { tipo: "remover", nome: "Ana", id: b.id }, dados, 0, AP), /não se altera nem se remove/);
+  // só as marcadas Sim, antes das ações
   const linhas = linhasDaSecao(dados, estado);
-  assert.deepEqual(linhas, ["- Lição: Conferir as colunas no banco antes do DDL de teste · origem FT-001 · 1 voto (Ana)", "- Lição: Combinar a massa antes · por Bia", "- Ação: Rever a massa · por Bia"]);
-  // de volta do .md: a marcada casa com a do ciclo (sem duplicar) e as outras duas voltam para a escolha
+  assert.deepEqual(linhas, ["- Lição: Conferir as colunas no banco antes do DDL de teste · origem FT-001", "- Lição: Combinar a massa antes · por Bia", "- Ação: Rever a massa · por Ana"]);
+  // de volta do .md: a marcada casa com a do ciclo (sem duplicar) e volta Sim; as outras do ciclo voltam sem resposta
   const lido = juntarLicoes({ itens: importarSecao(dados, trocarSecao(ler(p), "Retro", linhas)) }, dados.licoes);
-  assert.deepEqual(lido.itens.filter((i) => i.grupo === "licao").map((i) => `${i.texto} | ${i.origem ?? "-"} | ${i.votos.length} | ${!!i.do_ciclo}`), [
-    "Conferir as colunas no banco antes do DDL de teste | FT-001 | 1 | true", "Combinar a massa antes | - | 0 | false", "L-2 - JaCoCo não rodou | FT-001 | 0 | true", "Quebrar a extração grande em lotes | AT-001 | 0 | true"]);
+  assert.deepEqual(lido.itens.filter((i) => i.grupo === "licao").map((i) => `${i.texto} | ${i.origem ?? "-"} | ${i.manter} | ${!!i.do_ciclo}`), [
+    "Conferir as colunas no banco antes do DDL de teste | FT-001 | true | true", "Combinar a massa antes | - | true | false", "L-2 - JaCoCo não rodou | FT-001 | null | true", "Quebrar a extração grande em lotes | AT-001 | null | true"]);
   assert.deepEqual(linhasDaSecao(dados, lido), linhas);
+  // a lição do formato anterior, marcada por voto, é lida como Sim e regravada sem os votos
+  const antiga = importarSecao(dados, "## Retro\n- Lição: Medir antes · origem FT-009 · 2 votos (Ana, Bia)\n");
+  assert.deepEqual([antiga[0].manter, antiga[0].votos, linhasDaSecao(dados, { itens: antiga })], [true, [], ["- Lição: Medir antes · origem FT-009"]]);
 });
 
-test("cerimônia: o servidor leva a página no tema do quadro, avisa quem está nela a cada mudança e só grava o sprint-<nn>.md no Publicar", async () => {
+test("cerimônia: o servidor leva a página no tema do quadro, dá a cada pessoa a visão dela, anda pelas etapas com quem abriu e só grava o sprint-<nn>.md no Publicar", async () => {
   const p = projeto("servidor"), logs = [], propostas = path.join(p, "propostas.json");
   fs.writeFileSync(propostas, JSON.stringify({ retrospective: [{ tipo: "positivo", texto: "Vazão de 5", autor: "Ana Souza" }, { tipo: "nada", texto: "fora" }, { tipo: "acao", texto: "Fechar no timebox", dono: "ana", autor: "Bia" }] }));
   const q = await abrirCerimonia({ projeto: p, modo: "retrospective", exec: git(), log: (x) => logs.push(String(x)), porta: 0, host: "127.0.0.1", propostas, agora });
+  const embutidoDe = (html) => JSON.parse(html.match(/<script id="dados" type="application\/json">([\s\S]*?)<\/script>/)[1]);
   try {
     assert.match(logs.at(-1), /^Retrospectiva da 2026\/Sprint 02 do projeto servidor \(Ctrl\+C encerra\):\n\n {2}http:\/\/127\.0\.0\.1:\d+\/\n$/);
     const html = await (await fetch(q.url)).text();
     assert.match(html, /<title>Retrospectiva · 2026\/Sprint 02 · servidor<\/title>/);
     assert.match(html, /data-sobria="sobria-sabia"/);  // o tema do quadro
     assert.match(html, /id="publicar"/);  // quem abriu é da equipe e está na máquina
+    assert.match(html, /<nav class="etapas" id="etapas"/);
     assert.match(html, /<code>## Retro<\/code> do <code>sprint-02\.md<\/code>/);
-    const embutido = JSON.parse(html.match(/<script id="dados" type="application\/json">([\s\S]*?)<\/script>/)[1]);
+    // quem abriu, na máquina dele, é o apresentador: começa na etapa dos pontos e vê tudo, as propostas inclusive
+    const embutido = embutidoDe(html);
+    assert.deepEqual([embutido.apresentador, embutido.estado.etapa], [true, "pontos"]);
     assert.deepEqual(embutido.estado.itens.map((i) => `${i.grupo} ${i.texto} ${i.autor} ${i.dono ?? ""}`.trim()), ["positivo Vazão de 5 Ana Souza", "acao Fechar no timebox Bia ana"]);
     assert.equal(ler(p).endsWith("## Retro\n"), true);  // abrir a página não grava nada
+    // a página de quem vem pela rede: sem o Publicar, sem ser apresentador, e com a visão de quem ainda não disse o nome
+    const dados = cerimoniaDoProjeto({ projeto: p, modo: "retrospective", exec: git(), agora }), deFora = paginaCerimonia(dados, visaoDe({ etapa: "pontos", itens: embutido.estado.itens }, {}), "t");
+    assert.doesNotMatch(deFora, /id="publicar"/);
+    assert.deepEqual([embutidoDe(deFora).apresentador, embutidoDe(deFora).estado.itens], [false, []]);
     // gravar exige o token da página
     const post = (corpo, cab = { "x-sabia-token": q.token }) => fetch(q.url + "acao", { method: "POST", headers: cab, body: JSON.stringify(corpo) });
+    const faz = async (corpo) => (await post(corpo)).json();
     assert.equal((await post({}, {})).status, 403);
     assert.equal((await post({}, { "x-sabia-token": q.token, origin: "http://outro.exemplo" })).status, 403);
-    assert.match((await (await post({ tipo: "incluir", grupo: "positivo", texto: "x" })).json()).erro, /diga o seu nome/);
-    // o /vivo entrega o estado ao abrir e a cada mudança
-    const vivo = await fetch(q.url + "vivo"), leitor = vivo.body.getReader(), dec = new TextDecoder();
+    assert.match((await faz({ tipo: "incluir", grupo: "positivo", texto: "x" })).erro, /diga o seu nome/);
+    // o /vivo entrega a visão ao abrir e a cada mudança
+    const vivo = await fetch(q.url + "vivo?nome=Ana%20Souza"), leitor = vivo.body.getReader(), dec = new TextDecoder();
     const proximo = async () => JSON.parse(dec.decode((await leitor.read()).value).replace(/^data: /, ""));
     assert.equal((await proximo()).itens.length, 2);
-    const r = await (await post({ tipo: "incluir", nome: "Bia", grupo: "melhoria", texto: "Review sem retorno" })).json();
+    const r = await faz({ tipo: "incluir", nome: "Bia", grupo: "melhoria", texto: "Review sem retorno" });
     assert.equal(r.estado.itens.length, 3);
     assert.equal((await proximo()).itens.at(-1).texto, "Review sem retorno");
-    await post({ tipo: "votar", nome: "Bia", id: r.estado.itens[2].id });
-    assert.equal(ler(p).endsWith("## Retro\n"), true);  // incluir e votar não mexem no sprint-<nn>.md: só o Publicar
+    await leitor.cancel();
+    assert.match((await faz({ tipo: "incluir", nome: "Bia", grupo: "melhoria", texto: "Review sem retorno" })).erro, /já está na lista/);
+    // publica-se só na última etapa; quem abriu libera uma a uma
+    assert.match((await faz({ tipo: "publicar", mensagem: "cedo" })).erro, /publicada na última etapa/);
+    assert.equal((await faz({ tipo: "avancar", nome: "Ana Souza", de: "pontos" })).estado.etapa, "agrupar");
+    assert.equal((await faz({ tipo: "avancar", nome: "Ana Souza", de: "agrupar" })).estado.etapa, "votar");
+    assert.match((await faz({ tipo: "avancar", nome: "Ana Souza", de: "agrupar" })).erro, /a etapa já mudou/);  // o clique dobrado não pula etapa
+    await faz({ tipo: "votar", nome: "Bia", id: r.estado.itens[2].id });
+    await faz({ tipo: "avancar", nome: "Ana Souza", de: "votar" });
+    assert.equal((await faz({ tipo: "avancar", nome: "Ana Souza", de: "acoes" })).estado.etapa, "licoes");
+    assert.equal(ler(p).endsWith("## Retro\n"), true);  // nada disso mexe no sprint-<nn>.md: só o Publicar
     assert.equal((await (await fetch(q.url + "dados.json")).json()).estado.nao_publicado, true);
     assert.equal(fs.existsSync(path.join(p, ".sabia/local")), false);  // e nada fora dele
-    assert.match((await (await post({ tipo: "incluir", nome: "Ana", grupo: "melhoria", texto: "Review sem retorno" })).json()).erro, /já está na lista/);
     assert.match(html, /<input type="text" id="mensagem" maxlength="300" value="2026\/Sprint 02: retrospectiva"/);  // o popup já traz a mensagem
-    const pub = await (await post({ tipo: "publicar", mensagem: "Task 42 - retro da Sprint 02" })).json();
+    const pub = await faz({ tipo: "publicar", mensagem: "Task 42 - retro da Sprint 02" });
     assert.deepEqual([pub.ok, pub.commit, pub.estado.nao_publicado], [true, "Task 42 - retro da Sprint 02", false]);
     // o Publicar grava a seção, com quem levantou e quem votou
     assert.ok(ler(p).endsWith("## Retro\n- Positivo: Vazão de 5 · por Ana Souza\n- Melhoria: Review sem retorno · por Bia · 1 voto (Bia)\n- Ação: Fechar no timebox · por Bia · dono ana\n"));
     assert.equal((await fetch(q.url + "outro")).status, 404);
-    await leitor.cancel();
   } finally { q.fechar(); await q.fechou; }
-  // de novo: os pontos voltam do sprint-<nn>.md, com o autor e os votos
+  // de novo: a retro já publicada abre na última etapa, com os pontos, o autor e os votos de volta do sprint-<nn>.md
   const q2 = await abrirCerimonia({ projeto: p, modo: "retrospective", exec: git(), log: () => {}, porta: 0, host: "127.0.0.1", agora });
-  try { assert.deepEqual((await (await fetch(q2.url + "dados.json")).json()).estado.itens.map((i) => `${i.autor} ${i.votos.map((v) => v.nome).join()}`), ["Ana Souza ", "Bia Bia", "Bia "]); } finally { q2.fechar(); await q2.fechou; }
+  try {
+    const e2 = (await (await fetch(q2.url + "dados.json")).json()).estado;
+    assert.deepEqual([e2.etapa, e2.itens.map((i) => `${i.autor} ${i.votos.map((v) => v.nome).join()}`)], ["licoes", ["Ana Souza ", "Bia Bia", "Bia "]]);
+  } finally { q2.fechar(); await q2.fechou; }
+  // a review não tem etapas nem apresentador
+  const q3 = await abrirCerimonia({ projeto: p, modo: "review", exec: git(), log: () => {}, porta: 0, host: "127.0.0.1", agora });
+  try {
+    const h3 = await (await fetch(q3.url)).text();
+    assert.doesNotMatch(h3, /id="etapas"|id="modal-etapa"/);
+    assert.deepEqual([embutidoDe(h3).apresentador, embutidoDe(h3).estado.etapa], [false, undefined]);
+  } finally { q3.fechar(); await q3.fechou; }
 });
 
 test("cerimônia: publicar faz o commit só do sprint-<nn>.md, com a mensagem do fluxo, e diz quando o push falha", () => {

@@ -1,6 +1,9 @@
-// `sabia retrospective` e `sabia review`: a página da cerimônia, no tema do quadro Kanban. O time entra só com o nome, inclui
-// pontos, vota e remove; a cerimônia fica na memória do servidor, e o `sprint-<nn>.md` só muda no botão Publicar, que
-// pede a mensagem, grava a seção `## Retro` (ou `## Review`) e faz o commit e o push na branch base. Quem levantou e quem votou em cada ponto vai na própria linha.
+// `sabia retrospective` e `sabia review`: a página da cerimônia, no tema do quadro Kanban. O time entra só com o nome; a
+// cerimônia fica na memória do servidor, e o `sprint-<nn>.md` só muda no botão Publicar, que pede a mensagem, grava a
+// seção `## Retro` (ou `## Review`) e faz o commit e o push na branch base. Quem levantou e quem votou vai na linha.
+// A retrospectiva anda em etapas que só o apresentador (quem abriu, na máquina dele) libera: pontos (cada um vê só os
+// seus), agrupamento, votação (cada um vê só o seu voto), ações e lições aprendidas. O que é oculto não sai do
+// servidor: cada pessoa recebe a visão dela (`visaoDe`). A review não tem etapas.
 // Servidor node:http sem dependências, como o do quadro; com --rede, escuta na rede local para o time abrir o link.
 import fs from "node:fs";
 import path from "node:path";
@@ -24,6 +27,24 @@ const RETRO = [
 ];
 // as palavras do formato anterior da Retro (bom · melhorar · ações), ainda lidas dos sprint-<nn>.md já gravados
 const ANTIGAS = { Bom: "Positivo", Melhorar: "Melhoria" };
+// os grupos em que se levanta ponto, se agrupa e se vota; ação e lição têm a etapa delas
+const PONTOS = ["positivo", "negativo", "melhoria"];
+// as etapas da retrospectiva, na ordem: `liberar` é o botão do apresentador que entra nela, `confirma` o que ele lê
+// antes de confirmar (não há volta) e `dica` o que todos leem enquanto ela dura
+export const ETAPAS = [
+  { id: "pontos", nome: "Pontos", dica: "Inclua os seus pontos. Até a liberação, só você e quem apresenta veem o que você escreveu." },
+  { id: "agrupar", nome: "Agrupamento", liberar: "Mostrar os pontos", confirma: "Os pontos de todos ficam à vista e ninguém mais os altera. Quem apresenta junta os repetidos ou correlatos.",
+    dica: "Os pontos de todos estão à vista. Quem apresenta junta os repetidos ou correlatos num item só." },
+  { id: "votar", nome: "Votação", liberar: "Abrir a votação", confirma: "O agrupamento termina e todos votam nos itens. Até a liberação, só quem apresenta vê os votos.",
+    dica: "Vote nos itens. Até a liberação, só você e quem apresenta veem o seu voto." },
+  { id: "acoes", nome: "Ações", liberar: "Mostrar o resultado", confirma: "A votação termina, o resultado aparece para todos e o time passa a propor as ações.",
+    dica: "O resultado da votação está à vista. Proponha ações para os itens ou ações gerais." },
+  { id: "licoes", nome: "Lições aprendidas", liberar: "Ir às lições aprendidas", confirma: "O cadastro das ações termina e aparecem as lições aprendidas do ciclo.",
+    dica: "Quem apresenta marca Sim ou Não em cada lição: só as marcadas Sim são gravadas. Depois, publica." },
+];
+const ETAPA_DE = { acao: "acoes", licao: "licoes" };  // a etapa em que o grupo é de todos (os pontos: a primeira)
+const linhaDe = (i) => `${RETRO.find((g) => g.id === i.grupo).linha}: ${i.texto}`;
+const votavel = (i) => PONTOS.includes(i.grupo) && !i.em_grupo;
 const PEDIDO = "pedido", LINHA_PEDIDO = "pedido novo";
 const CONCLUIDOS = ["concluida", "concluido"];
 const PRINCIPAL = { fatia: "desenvolvimento", bug: "desenvolvimento", "sustentação": "atendimento", "épico": "especificação" };
@@ -79,13 +100,13 @@ export function licoesDoCiclo(raiz, sprint, itens) {
   return out;
 }
 
-/** Junta as lições do ciclo aos pontos da cerimônia: a que já está na `## Retro` (marcada pelo time) ganha o detalhe;
- *  a que não está entra sem voto, só para a escolha na página. */
+/** Junta as lições do ciclo aos pontos da cerimônia: a que já está na `## Retro` (marcada Sim) ganha o detalhe; a que
+ *  não está entra sem resposta (`manter: null`), para o Sim ou Não do apresentador na página. */
 export function juntarLicoes(estado, licoes) {
   for (const l of licoes) {
     const ja = estado.itens.find((i) => i.grupo === "licao" && i.texto === l.texto && (i.origem ?? l.origem) === l.origem);
     if (ja) Object.assign(ja, { origem: l.origem, detalhe: l.detalhe, ja_esta: l.ja_esta, do_ciclo: true });
-    else estado.itens.push({ id: randomUUID().slice(0, 8), grupo: "licao", texto: l.texto, autor: null, em: estado.itens.length, votos: [], origem: l.origem, detalhe: l.detalhe, ja_esta: l.ja_esta, do_ciclo: true });
+    else estado.itens.push({ id: randomUUID().slice(0, 8), grupo: "licao", texto: l.texto, autor: null, em: estado.itens.length, votos: [], manter: null, origem: l.origem, detalhe: l.detalhe, ja_esta: l.ja_esta, do_ciclo: true });
   }
   return estado;
 }
@@ -144,7 +165,7 @@ export function cerimoniaDoProjeto({ projeto = ".", modo, exec, agora = new Date
     }).sort((a, b) => a.id.localeCompare(b.id, "en", { numeric: true }));
     grupos.push({ id: PEDIDO, nome: "Pedidos novos", tag: "Pedido", cor: "pedido", sub: "viram item pelo cadastro (sa-triar)" });
   }
-  return { versao: 1, sabia: st.sabia, projeto: st.projeto, gerado_em: st.gerado_em, modo, titulo: MODOS[modo].titulo, secao: MODOS[modo].secao, votos: modo === "retrospective",
+  return { versao: 1, sabia: st.sabia, projeto: st.projeto, gerado_em: st.gerado_em, modo, titulo: MODOS[modo].titulo, secao: MODOS[modo].secao, votos: modo === "retrospective", etapas: modo === "retrospective" ? ETAPAS : [],
     sprint: { chave: sprint.chave, inicio: sprint.inicio, fim: sprint.fim, meta: sprint.meta, arquivo: sprint.arquivo }, pessoas, grupos,
     numeros: modo === "retrospective" ? numerosDaSprint(sprint) : [], sle: st.quadro.sle ?? null,
     licoes: modo === "retrospective" ? licoesDoCiclo(projeto, sprint, st.quadro.itens) : [],
@@ -178,36 +199,57 @@ const ordenados = (itens) => [...itens].sort((a, b) => votosDe(b) - votosDe(a) |
 const votosTxt = (i) => (votosDe(i) ? `${plural(votosDe(i))}${i.votos.length ? ` (${i.votos.map((v) => v.nome).join(", ")})` : ""}` : "");
 
 /** As linhas que a cerimônia grava na seção: os pontos pela ordem dos votos, com quem levantou e quem votou — o
- *  sprint-<nn>.md guarda tudo, sem arquivo à parte. Retro: `- Positivo: … · por <autor> · dono <usuario> · <n> votos
- *  (<nome>, <nome>)`, com `Negativo`, `Melhoria` e `Ação` do mesmo jeito. Review: `- <id> · <retorno> — por <autor>;
- *  <retorno> — por <autor>` ou `- <id> · sem retorno`, uma linha por item entregue, e `- pedido novo · … — por <autor>`. */
+ *  sprint-<nn>.md guarda tudo, sem arquivo à parte. Retro: `- Positivo: … · por <autor> · <n> votos (<nome>, <nome>)`,
+ *  com `Negativo` e `Melhoria` do mesmo jeito; o grupo é a linha do título com os votos e, recuados abaixo dela, os
+ *  pontos que ele junta (`  - <ponto> · por <autor>`); `- Lição: … · origem <id>` só para a lição marcada Sim; e
+ *  `- Ação: … · sobre <Negativo: título do item> · por <autor> · dono <usuario>`. Review: `- <id> · <retorno> — por
+ *  <autor>; <retorno> — por <autor>` ou `- <id> · sem retorno`, uma linha por item entregue, e `- pedido novo · … —
+ *  por <autor>`. */
 export function linhasDaSecao(dados, estado) {
   const doGrupo = (g) => (dados.votos ? ordenados : (x) => x)(estado.itens.filter((i) => i.grupo === g));
-  if (dados.modo === "retrospective") return RETRO.flatMap((g) => doGrupo(g.id).filter((i) => !i.do_ciclo || votosDe(i)).map((i) => [`- ${g.linha}: ${i.texto}`, i.origem && `origem ${i.origem}`, i.autor && `por ${i.autor}`, i.dono && `dono ${i.dono}`, votosTxt(i)].filter(Boolean).join(" · ")));
+  if (dados.modo === "retrospective") return RETRO.flatMap((g) => doGrupo(g.id).filter((i) => !i.em_grupo && (g.id !== "licao" || i.manter === true)).flatMap((i) => {
+    const alvo = i.sobre && estado.itens.find((x) => x.id === i.sobre && votavel(x));
+    const linha = [`- ${g.linha}: ${i.texto}`, i.origem && `origem ${i.origem}`, alvo && `sobre ${linhaDe(alvo)}`, i.autor && `por ${i.autor}`, i.dono && `dono ${i.dono}`, g.id !== "licao" && votosTxt(i)].filter(Boolean).join(" · ");
+    const membros = i.agrupa ? estado.itens.filter((m) => m.em_grupo === i.id).sort((a, b) => (a.em ?? 0) - (b.em ?? 0)) : [];
+    return [linha, ...membros.map((m) => `  - ${m.texto}${m.autor ? ` · por ${m.autor}` : ""}`)];
+  }));
   const com = (i) => `${i.texto}${i.autor ? ` — por ${i.autor}` : ""}`;
   return dados.grupos.flatMap((g) => (g.id === PEDIDO ? doGrupo(PEDIDO).map((i) => `- ${LINHA_PEDIDO} · ${com(i)}`) : [`- ${g.id} · ${doGrupo(g.id).map(com).join("; ") || "sem retorno"}`]));
 }
 
 /** Os pontos que estão na seção do .md, com o autor e os votos de cada linha: é de onde a cerimônia parte. O voto sem
- *  nome (linha escrita à mão, ou do formato anterior) conta como base do ponto. */
+ *  nome (linha escrita à mão, ou do formato anterior) conta como base do ponto. Na retro, a linha recuada é ponto do
+ *  grupo da linha acima, toda `- Lição:` gravada é lição marcada Sim e o `sobre …` da ação volta a apontar o item. */
 export function importarSecao(dados, texto) {
-  const itens = [], novo = (grupo, t, mais = {}) => { if (t) itens.push({ id: randomUUID().slice(0, 8), grupo, texto: t, autor: null, em: itens.length, votos: [], ...mais }); };
+  const itens = [], novo = (grupo, t, mais = {}) => { if (!t) return null; itens.push({ id: randomUUID().slice(0, 8), grupo, texto: t, autor: null, em: itens.length, votos: [], ...mais }); return itens.at(-1); };
+  let ultimo = null;
   for (const l of lerSecao(texto, dados.secao)) {
     if (dados.modo === "retrospective") {
+      const sub = l.match(/^\s+- (.*)$/);
+      if (sub) {
+        if (!ultimo || !PONTOS.includes(ultimo.grupo)) continue;
+        const [t, ...partes] = sub[1].trim().split(" · "), por = partes.map((x) => x.match(/^por (.+)$/)).find(Boolean);
+        if (novo(ultimo.grupo, [t, ...partes.filter((x) => !/^por /.test(x))].join(" - ").trim(), { em_grupo: ultimo.id, ...(por ? { autor: por[1].trim() } : {}) })) ultimo.agrupa = true;
+        continue;
+      }
       const m = l.match(/^- (Positivo|Negativo|Melhoria|Lição|Ação|Bom|Melhorar): (.*)$/);
-      if (!m) continue;
+      if (!m) { ultimo = null; continue; }
+      const grupo = RETRO.find((g) => g.linha === (ANTIGAS[m[1]] ?? m[1])).id;
       const [primeira, ...partes] = m[2].trim().split(" · "), mais = {}, textos = [primeira];
       for (const parte of partes) {
-        const por = parte.match(/^por (.+)$/), dono = parte.match(/^dono (\S+)$/), origem = parte.match(/^origem (\S+)$/), v = parte.match(/^(\d+) votos?(?: \((.*)\))?$/);
+        const por = parte.match(/^por (.+)$/), dono = parte.match(/^dono (\S+)$/), origem = parte.match(/^origem (\S+)$/), v = parte.match(/^(\d+) votos?(?: \((.*)\))?$/), sobre = grupo === "acao" && parte.match(/^sobre (.+)$/);
         if (por) mais.autor = por[1].trim();
         else if (dono) mais.dono = dono[1];
         else if (origem) mais.origem = origem[1];
+        else if (sobre) mais.sobre = sobre[1].trim();
         else if (v) {
+          if (grupo === "licao") continue;  // o formato anterior marcava a lição com voto: gravada, ela é Sim
           mais.votos = (v[2] ?? "").split(",").map((n) => n.trim()).filter((n) => chaveDe(n)).map((n) => ({ chave: chaveDe(n), nome: n }));
           if (+v[1] > mais.votos.length) mais.base = +v[1] - mais.votos.length;
         } else textos.push(parte);
       }
-      novo(RETRO.find((g) => g.linha === (ANTIGAS[m[1]] ?? m[1])).id, textos.join(" - ").trim(), mais);
+      if (grupo === "licao") mais.manter = true;
+      ultimo = novo(grupo, textos.join(" - ").trim(), mais);
     } else {
       const m = l.match(/^- (.+?) · (.*)$/);
       if (!m) continue;
@@ -219,38 +261,132 @@ export function importarSecao(dados, texto) {
       }
     }
   }
+  // o `sobre <Negativo: título>` da ação aponta o item pela linha dele; sem o item, o trecho volta ao texto da ação
+  for (const i of itens) if (typeof i.sobre === "string") {
+    const alvo = itens.find((x) => votavel(x) && linhaDe(x) === i.sobre);
+    if (alvo) i.sobre = alvo.id; else { i.texto = `${i.texto} - sobre ${i.sobre}`; delete i.sobre; }
+  }
   return itens;
 }
 
-/** Aplica uma mudança da página no estado: incluir (grupo, texto e, na ação da retro, o dono), votar (liga e desliga
- *  o voto de quem pediu) e remover. Toda mudança exige o nome de quem está na página. */
-export function aplicar(estado, acao, dados, agora = Date.now()) {
+/** A retrospectiva, etapa a etapa (`estado.etapa`): o que cada pessoa pode fazer depende da etapa e de ser ou não o
+ *  apresentador. Ponto, ação e lição entram na etapa de cada um (pontos · ações · lições) e só o autor altera ou
+ *  remove, enquanto ela dura; depois, só o apresentador inclui, sem alterar. Agrupar, liberar a próxima etapa e o Sim
+ *  ou Não da lição são do apresentador. Vota-se só na etapa da votação, no ponto solto ou no grupo. */
+function aplicarRetro(estado, acao, dados, agora, { nome, chave, apresentador }) {
+  const n = Math.max(0, ETAPAS.findIndex((e) => e.id === estado.etapa)), etapa = ETAPAS[n].id, nDe = (g) => ETAPAS.findIndex((e) => e.id === (ETAPA_DE[g] ?? "pontos"));
+  const exige = (ok, msg) => { if (!ok) throw new Error(msg); };
+  const soApresentador = () => exige(apresentador, "isso é de quem apresenta a retrospectiva");
+  const achar = (id) => { const i = estado.itens.find((x) => x.id === id); exige(i, "esse ponto não existe mais"); return i; };
+  const meu = (i) => !!i.autor && chaveDe(i.autor) === chave;
+  // o ponto repetido: enquanto os pontos estão ocultos, só entre os da própria pessoa (os dos outros, o agrupamento junta)
+  const repetido = (grupo, texto, menos = null) => estado.itens.some((i) => i !== menos && i.grupo === grupo && i.texto === texto && !i.em_grupo && (etapa !== "pontos" || !PONTOS.includes(grupo) || meu(i)));
+  const donoDe = (g, d) => { const dono = g === "acao" && d ? String(d) : null; exige(!dono || dono in dados.pessoas, `${dono} não está no equipe.json`); return dono; };
+  if (acao.tipo === "avancar") {
+    soApresentador();
+    exige(acao.de === etapa, "a etapa já mudou: confira a página");
+    exige(n < ETAPAS.length - 1, "a retrospectiva já está na última etapa");
+    estado.etapa = ETAPAS[n + 1].id;
+    return;
+  }
+  if (acao.tipo === "incluir") {
+    const g = dados.grupos.find((x) => x.id === acao.grupo);
+    exige(g, "grupo desconhecido");
+    exige(n >= nDe(g.id), g.id === "acao" ? "as ações entram depois da votação" : "as lições aprendidas vêm depois das ações");
+    exige(n === nDe(g.id) || apresentador, `a etapa ${ETAPAS[nDe(g.id)].nome} terminou: agora só quem apresenta inclui`);
+    const texto = limpo(acao.texto);
+    exige(texto, "escreva o ponto");
+    exige(!repetido(g.id, texto), "esse ponto já está na lista");
+    exige(estado.itens.length < 500, "a cerimônia chegou a 500 pontos: remova algum antes de incluir");
+    const dono = donoDe(g.id, acao.dono), alvo = g.id === "acao" && acao.sobre ? achar(acao.sobre) : null;
+    exige(!alvo || votavel(alvo), "a ação é atrelada a um item ou a um grupo");
+    estado.itens.push({ id: randomUUID().slice(0, 8), grupo: g.id, texto, autor: nome, em: agora, votos: [], ...(dono ? { dono } : {}), ...(alvo ? { sobre: alvo.id } : {}), ...(g.id === "licao" ? { manter: null } : {}) });
+    return;
+  }
+  if (acao.tipo === "agrupar" || acao.tipo === "editar-grupo") {
+    soApresentador();
+    exige(etapa === "agrupar", "os grupos são da etapa Agrupamento");
+    const grupo = acao.tipo === "editar-grupo" ? achar(acao.id) : null;
+    exige(!grupo || grupo.agrupa, "esse item não é um grupo");
+    const membros = [...new Set(Array.isArray(acao.ids) ? acao.ids : [])].map(achar);
+    exige(membros.length >= 2, "o grupo junta pelo menos dois pontos");
+    exige(membros.every((m) => PONTOS.includes(m.grupo) && !m.agrupa && (!m.em_grupo || m.em_grupo === grupo?.id)), "só entra em grupo o ponto que está solto");
+    exige(membros.every((m) => m.grupo === membros[0].grupo) && (!grupo || grupo.grupo === membros[0].grupo), "o grupo junta pontos da mesma categoria");
+    const titulo = limpo(acao.titulo);
+    exige(titulo, "escolha o título do grupo");
+    exige(!estado.itens.some((i) => i !== grupo && !membros.includes(i) && i.grupo === membros[0].grupo && !i.em_grupo && i.texto === titulo), "já existe um item com esse título");
+    const g = grupo ?? { id: randomUUID().slice(0, 8), grupo: membros[0].grupo, texto: titulo, agrupa: true, autor: null, em: Math.min(...membros.map((m) => m.em ?? 0)), votos: [] };
+    g.texto = titulo;
+    if (!grupo) estado.itens.push(g);
+    for (const i of estado.itens) if (i.em_grupo === g.id) delete i.em_grupo;
+    for (const m of membros) m.em_grupo = g.id;
+    return;
+  }
+  const item = achar(acao.id);
+  if (acao.tipo === "desagrupar") {
+    soApresentador();
+    exige(etapa === "agrupar", "os grupos são da etapa Agrupamento");
+    exige(item.agrupa, "esse item não é um grupo");
+    for (const i of estado.itens) if (i.em_grupo === item.id) delete i.em_grupo;
+    estado.itens.splice(estado.itens.indexOf(item), 1);
+  } else if (acao.tipo === "votar") {
+    exige(etapa === "votar", n < ETAPAS.findIndex((e) => e.id === "votar") ? "a votação ainda não foi liberada" : "a votação terminou");
+    exige(votavel(item), "vota-se no ponto ou no grupo");
+    const k = item.votos.findIndex((v) => v.chave === chave);
+    if (k >= 0) item.votos.splice(k, 1); else item.votos.push({ chave, nome });
+  } else if (acao.tipo === "manter") {
+    soApresentador();
+    exige(etapa === "licoes" && item.grupo === "licao", "o Sim ou Não é das lições aprendidas, na última etapa");
+    exige(!item.ja_esta, "essa lição já é Regra aprendida");
+    item.manter = acao.valor === true ? true : acao.valor === false ? false : null;
+  } else if (acao.tipo === "editar" || acao.tipo === "remover") {
+    exige(!item.do_ciclo, "a lição do ciclo não se altera nem se remove: marque Não para não mantê-la");
+    exige(!item.agrupa, "o grupo se altera pelo agrupamento");
+    exige(n === nDe(item.grupo), `a etapa ${ETAPAS[nDe(item.grupo)].nome} terminou: nada mais se altera`);
+    exige(meu(item), "só quem criou altera ou remove");
+    if (acao.tipo === "remover") return void estado.itens.splice(estado.itens.indexOf(item), 1);
+    const texto = limpo(acao.texto);
+    exige(texto, "escreva o ponto");
+    exige(!repetido(item.grupo, texto, item), "esse ponto já está na lista");
+    const dono = donoDe(item.grupo, acao.dono);
+    item.texto = texto;
+    if (item.grupo === "acao") { if (dono) item.dono = dono; else delete item.dono; }
+  } else throw new Error("ação desconhecida");
+}
+
+/** O que cada pessoa recebe do estado da retrospectiva. O apresentador recebe tudo. Os demais: na etapa dos pontos, só
+ *  os pontos que a própria pessoa levantou; na votação, só o próprio voto em cada item; e a ação e a lição só a partir
+ *  da etapa delas. É o que mantém oculto o que ainda não foi liberado: o resto não sai do servidor. */
+export function visaoDe(estado, { chave = null, apresentador = false } = {}) {
+  const n = ETAPAS.findIndex((e) => e.id === estado.etapa);
+  if (n < 0 || apresentador) return estado;
+  const nDe = (g) => ETAPAS.findIndex((e) => e.id === (ETAPA_DE[g] ?? "pontos"));
+  let itens = estado.itens.filter((i) => n >= nDe(i.grupo));
+  if (estado.etapa === "pontos") itens = itens.filter((i) => !!chave && !!i.autor && chaveDe(i.autor) === chave);
+  if (estado.etapa === "votar") itens = itens.map(({ base, ...i }) => ({ ...i, votos: i.votos.filter((v) => v.chave === chave) }));
+  return { ...estado, itens };
+}
+
+/** Aplica uma mudança da página no estado. Toda mudança exige o nome de quem está na página. Na retrospectiva, vale a
+ *  etapa e o papel (`aplicarRetro`). Na review: incluir (grupo e texto) e remover. */
+export function aplicar(estado, acao, dados, agora = Date.now(), { apresentador = false } = {}) {
   const nome = nomeLimpo(acao.nome), chave = chaveDe(nome);
   if (!chave) throw new Error("diga o seu nome para participar");
+  if (dados.modo === "retrospective") return aplicarRetro(estado, acao, dados, agora, { nome, chave, apresentador });
   if (acao.tipo === "incluir") {
     const g = dados.grupos.find((x) => x.id === acao.grupo);
     if (!g) throw new Error("grupo desconhecido");
-    let texto = limpo(acao.texto);
-    if (dados.modo === "review") texto = texto.replace(/;/g, ",").replace(/ — /g, " - ");
+    const texto = limpo(acao.texto).replace(/;/g, ",").replace(/ — /g, " - ");
     if (estado.itens.some((i) => i.grupo === g.id && i.texto === texto)) throw new Error("esse ponto já está na lista");
     if (!texto) throw new Error("escreva o ponto");
     if (estado.itens.length >= 500) throw new Error("a cerimônia chegou a 500 pontos: remova algum antes de incluir");
-    const dono = g.dono && acao.dono ? String(acao.dono) : null;
-    if (dono && !(dono in dados.pessoas)) throw new Error(`${dono} não está no equipe.json`);
-    estado.itens.push({ id: randomUUID().slice(0, 8), grupo: g.id, texto, autor: nome, em: agora, votos: [], ...(dono ? { dono } : {}) });
+    estado.itens.push({ id: randomUUID().slice(0, 8), grupo: g.id, texto, autor: nome, em: agora, votos: [] });
     return;
   }
   const item = estado.itens.find((i) => i.id === acao.id);
   if (!item) throw new Error("esse ponto não existe mais");
-  if (acao.tipo === "votar") {
-    if (!dados.votos) throw new Error("a review não tem votação");
-    if (item.ja_esta) throw new Error("essa lição já é Regra aprendida");
-    const k = item.votos.findIndex((v) => v.chave === chave);
-    if (k >= 0) item.votos.splice(k, 1); else item.votos.push({ chave, nome });
-  } else if (acao.tipo === "remover") {
-    if (item.do_ciclo) throw new Error("a lição do ciclo não se remove: tire o voto para não considerá-la");
-    estado.itens.splice(estado.itens.indexOf(item), 1);
-  }
+  if (acao.tipo === "votar") throw new Error("a review não tem votação");
+  else if (acao.tipo === "remover") estado.itens.splice(estado.itens.indexOf(item), 1);
   else throw new Error("ação desconhecida");
 }
 
@@ -263,7 +399,7 @@ export function lerPropostas(arquivo, dados) {
     const grupo = dados.modo === "retrospective" ? p.tipo : p.item, texto = limpo(p.texto), autor = nomeLimpo(p.autor);
     if (!texto || !dados.grupos.some((g) => g.id === grupo)) return [];
     if (!chaveDe(autor)) throw new Error(`a proposta ${k + 1} de ${path.basename(arquivo)} não tem "autor"`);
-    return [{ id: randomUUID().slice(0, 8), grupo, texto, autor, em: k, votos: [], ...(p.dono && p.dono in dados.pessoas ? { dono: p.dono } : {}) }];
+    return [{ id: randomUUID().slice(0, 8), grupo, texto, autor, em: k, votos: [], ...(grupo === "acao" && p.dono && p.dono in dados.pessoas ? { dono: p.dono } : {}), ...(grupo === "licao" ? { manter: null } : {}) }];
   });
 }
 
@@ -366,11 +502,42 @@ td.fim{width:1%;white-space:nowrap;text-align:right}
 .leg{display:flex;align-items:center;flex-wrap:wrap;gap:4px 6px;font-weight:500}
 .leg i{width:10px;height:10px;border-radius:3px}
 .leg i:not(:first-child){margin-left:8px}
+/* a retrospectiva em etapas: a faixa com a etapa atual e o botão de quem apresenta; o grupo com os pontos dele; as
+   ações de cada item; o Sim ou Não da lição */
+.etapas{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px;padding:0 20px 12px}
+.etapas ol{display:flex;flex-wrap:wrap;gap:2px;padding:3px;border-radius:8px;background:var(--suave);list-style:none}
+.etapas li{display:inline-flex;align-items:center;gap:6px;padding:4px 12px 4px 6px;border-radius:var(--r-sm);font:500 13px/18px var(--body);color:var(--muted)}
+.etapas li b{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--suave-h);font:600 11px/1 var(--display);color:var(--title)}
+.etapas li.feita{color:var(--title)}
+.etapas li.atual{background:var(--card);color:var(--title);font-weight:600;box-shadow:var(--sombra)}
+.etapas li.atual b{background:var(--blue);color:var(--card)}
+.etapas p{flex:1 1 320px;font-size:13px;color:var(--title)}
+.btn:disabled{opacity:.5;cursor:default}
+.ac{height:28px;padding:0 8px;border:0;border-radius:var(--r-sm);background:none;color:var(--title);font:500 13px/1 var(--body);white-space:nowrap}
+.ac:hover,.ac[data-armado]{background:var(--suave)}
+.ac[data-armado]{color:var(--critico)}
+td.sel-c{width:1%;padding-right:0}
+.sel{width:16px;height:16px;accent-color:var(--blue);cursor:pointer}
+.membros,.acoes-i{margin:6px 0 0;padding-left:18px;font-weight:400;color:var(--ink)}
+.acoes-i{padding-left:0;list-style:none}
+.acoes-i li{margin-top:2px}
+.acoes-i b{margin-right:6px;padding:1px 7px;border-radius:999px;background:color-mix(in srgb,var(--brand) 20%,var(--card));color:var(--title);font:600 11px/16px var(--body)}
+td.tit :is(.membros,.acoes-i) small{display:inline;margin-left:8px}
+td.item-c{min-width:200px;color:var(--title)}
+td.item-c .selo{min-width:0;margin-right:8px}
+td.manter-c{width:1%;white-space:nowrap}
+.geral,.meu-voto{color:var(--muted)}
+.meu-voto{font-size:12px}
+.seg button:disabled{cursor:default}
+dialog fieldset{display:grid;gap:6px;min-width:0;padding:0;border:0}
+dialog legend{margin-bottom:4px;padding:0;font-size:13px;font-weight:500;color:var(--title)}
+@media (max-width:820px){.etapas{padding-inline:12px}}
 @media (max-width:720px){.trab-l{grid-template-columns:1fr 1fr}.trab-l .pilha,.trab-l .leg{grid-column:1/-1;order:3}.trab-l .trab-n:last-child{display:none}}
 `;
 
 // A página no navegador: desenha os blocos uma vez e, a cada estado que chega (resposta de uma ação ou o /vivo),
-// troca só as linhas, para não fechar bloco nem apagar o que a pessoa está digitando.
+// troca só as linhas, para não fechar bloco nem apagar o que a pessoa está digitando. Na retrospectiva, a etapa do
+// estado diz o que aparece e o que cada um pode fazer; o que se edita numa linha abre num popup, fora das linhas.
 function cliente() {
   const D = JSON.parse(document.getElementById("dados").textContent), TOKEN = document.querySelector('meta[name="sabia-token"]').content;
   const $ = (s) => document.querySelector(s);
@@ -382,7 +549,10 @@ function cliente() {
   const votos = (i) => i.votos.length + (i.base || 0);
   const um = (palavra, n) => palavra + (n === 1 ? "" : "s");
   const CHAVE = "sabia-cerimonia-nome";
-  let estado = D.estado, nome = null, ordem = "votos", tAviso;
+  // a retrospectiva: RETRO liga as etapas; AP é o apresentador (quem abriu, na máquina dele)
+  const RETRO = D.modo === "retrospective", AP = !!D.apresentador, PONTOS = ["positivo", "negativo", "melhoria"];
+  const sel = new Set();  // os pontos que o apresentador marcou para agrupar
+  let estado = D.estado, nome = null, ordem = "votos", tAviso, vivo = null;
   try { nome = localStorage.getItem(CHAVE) || null; } catch {}
 
   function aviso(texto, erro) {
@@ -402,11 +572,32 @@ function cliente() {
     if (nome) return true;
     aviso("Entre com o seu nome para participar", true); $("#nome")?.focus(); return false;
   }
+  // os popups: abrem sem erro; a ação que o servidor recusa mostra o motivo dentro deles
+  const abrir = (dlg) => { dlg.querySelector(".erro").hidden = true; dlg.showModal(); };
+  async function noModal(dlg, acao) {
+    const erro = dlg.querySelector(".erro"), botao = dlg.querySelector('[type="submit"]');
+    botao.disabled = true;
+    const r = await enviar(acao);
+    botao.disabled = false;
+    if (r) dlg.close(); else { erro.textContent = $("#aviso").textContent; erro.hidden = false; }
+    return r;
+  }
+  document.addEventListener("click", (e) => { const b = e.target.closest("[data-fechar]"); if (b) b.closest("dialog").close(); });
+
+  // o /vivo traz a visão desta pessoa a cada mudança de qualquer um: reabre quando o nome muda, porque o que ela pode
+  // ver depende de quem ela é; se o servidor fecha (Ctrl+C), a página avisa
+  function conectar() {
+    if (vivo) vivo.close();
+    vivo = new EventSource("/vivo" + (nome ? "?nome=" + encodeURIComponent(nome) : ""));
+    vivo.onmessage = (e) => { try { estado = JSON.parse(e.data); desenhar(); } catch {} };
+    vivo.onerror = () => { $("#fora").hidden = false; };
+    vivo.onopen = () => { if (!$("#fora").hidden) location.reload(); };
+  }
 
   // quem está na página: só o nome, guardado neste navegador
   function desenharQuem() {
     $("#quem").innerHTML = nome
-      ? '<i class="av">' + esc(iniciais(nome)) + "</i><span>" + esc(nome) + '</span><button type="button" class="btn" id="sair">Trocar</button>'
+      ? '<i class="av">' + esc(iniciais(nome)) + "</i><span>" + esc(nome) + (AP ? " · apresenta" : "") + '</span><button type="button" class="btn" id="sair">Trocar</button>'
       : '<input id="nome" maxlength="40" list="equipe" placeholder="Seu nome" aria-label="Seu nome" autocomplete="off"><button type="submit" class="btn pri">Entrar</button>';
   }
   $("#quem").addEventListener("submit", (e) => {
@@ -414,17 +605,18 @@ function cliente() {
     const v = $("#nome").value.trim().replace(/\s+/g, " ").slice(0, 40);
     if (!chave(v)) return aviso("Digite o seu nome", true);
     nome = v; try { localStorage.setItem(CHAVE, nome); } catch {}
-    aviso(""); desenharQuem(); desenhar();
+    aviso(""); desenharQuem(); desenhar(); conectar();
   });
   $("#quem").addEventListener("click", (e) => {
     if (!e.target.closest("#sair")) return;
     nome = null; try { localStorage.removeItem(CHAVE); } catch {}
-    desenharQuem(); desenhar();
+    desenharQuem(); desenhar(); conectar();
   });
   $("#equipe").innerHTML = Object.values(D.pessoas).map((n) => '<option value="' + esc(n) + '">').join("");
 
   // o esqueleto: os números do ciclo (retro) e um bloco por grupo, com o formulário de inclusão
-  const donos = '<select name="dono" aria-label="Dono da ação"><option value="">sem dono</option>' + Object.entries(D.pessoas).map(([u, n]) => '<option value="' + esc(u) + '">' + esc(n) + "</option>").join("") + "</select>";
+  const opcoesDono = '<option value="">sem dono</option>' + Object.entries(D.pessoas).map(([u, n]) => '<option value="' + esc(u) + '">' + esc(n) + "</option>").join("");
+  const donos = '<select name="dono" aria-label="Dono da ação">' + opcoesDono + "</select>";
   // os dados do ciclo (retro): sempre à vista — os números da equipe em cartões e, por trabalho, o que fechou até o fim
   // da sprint, o que fechou depois e o que ficou em aberto
   const numeros = (() => {
@@ -451,41 +643,179 @@ function cliente() {
       + '<div class="trab"><div class="trab-l cab-l"><span>Por trabalho</span><span class="leg"><i class="p"></i>até ' + fim + '<i class="d"></i>depois<i class="a"></i>em aberto</span><span class="trab-n">no prazo · depois · aberto</span><span class="trab-n">lead time médio</span></div>' + linhas + "</div></section>";
   })();
   $("#lista").innerHTML = numeros + D.grupos.map((g) =>
-    '<details class="bloco" open data-g="' + esc(g.cor) + '" data-grupo="' + esc(g.id) + '"><summary>' + SETA + "<h2>" + esc(g.nome) + '</h2><span class="n"></span>' + (g.sub ? "<span>" + esc(g.sub) + "</span>" : g.id === "licao" ? "<span>marque as que devem virar Regra aprendida</span>" : "")
+    '<details class="bloco" open data-g="' + esc(g.cor) + '" data-grupo="' + esc(g.id) + '"><summary>' + SETA + "<h2>" + esc(g.nome) + '</h2><span class="n"></span>' + (g.sub ? "<span>" + esc(g.sub) + "</span>" : g.id === "licao" ? "<span>só as marcadas Sim viram Regra aprendida</span>" : g.id === "acao" ? "<span>as dos itens e as gerais</span>" : "")
     + (g.mr && /^https?:\/\//.test(g.mr.url) ? '<a href="' + esc(g.mr.url) + '" target="_blank" rel="noopener">MR !' + esc(g.mr.iid) + "</a>" : "")
-    + '</summary><div class="rola"><table><tbody></tbody></table><form class="novo"><input name="texto" maxlength="280" autocomplete="off" placeholder="' + esc(g.id === "pedido" ? "Novo pedido" : D.modo === "review" ? "Retorno sobre este item" : g.id === "acao" ? "Nova ação" : g.id === "licao" ? "Lição levantada agora" : "Novo ponto") + '" aria-label="Novo ponto em ' + esc(g.nome) + '">'
+    + '</summary><div class="rola"><table>' + (g.id === "acao" ? "<thead><tr><th>Ação</th><th>Item</th><th>Dono</th><th>Por</th><th></th></tr></thead>" : "") + '<tbody></tbody></table><form class="novo"><input name="texto" maxlength="280" autocomplete="off" placeholder="' + esc(g.id === "pedido" ? "Novo pedido" : D.modo === "review" ? "Retorno sobre este item" : g.id === "acao" ? "Nova ação geral, sem item" : g.id === "licao" ? "Lição levantada agora" : "Novo ponto") + '" aria-label="Novo ponto em ' + esc(g.nome) + '">'
     + (g.dono ? donos : "") + '<button type="submit" class="btn">Incluir</button></form></div></details>').join("");
 
-  function desenhar() {
-    const eu = nome ? chave(nome) : null, max = Math.max(1, ...estado.itens.map(votos));
+  // a review: todos os retornos à vista, sem etapas nem votos
+  function desenharReview() {
     let total = 0;
     for (const g of D.grupos) {
       const bloco = document.querySelector('.bloco[data-grupo="' + CSS.escape(g.id) + '"]');
-      const itens = estado.itens.filter((i) => i.grupo === g.id).sort((a, b) => (D.votos && ordem === "votos" ? votos(b) - votos(a) : 0) || (a.em || 0) - (b.em || 0));
-      const nv = itens.reduce((s, i) => s + votos(i), 0);
-      total += g.id === "licao" ? 0 : itens.length;
-      bloco.querySelector("summary .n").textContent = itens.length + " " + (g.id === "licao" ? (itens.length === 1 ? "lição" : "lições") : um(g.id === "pedido" ? "pedido" : D.modo === "review" ? "retorno" : "ponto", itens.length)) + (g.id === "licao" ? " · " + itens.filter((i) => votos(i)).length + " a considerar" : D.votos ? " · " + nv + (nv === 1 ? " voto" : " votos") : "");
-      bloco.querySelector("tbody").innerHTML = itens.map((i) => {
-        const n = votos(i), meu = !!eu && i.votos.some((v) => v.chave === eu), quem = i.votos.map((v) => v.nome).join(", ");
-        return '<tr class="ponto-l" data-id="' + esc(i.id) + '"><td class="tit">' + esc(i.texto) + (i.ja_esta ? '<span class="ja">já é regra</span>' : "") + (i.dono ? "<small>dono: " + esc(D.pessoas[i.dono] || i.dono) + "</small>" : "") + (i.origem ? "<small>origem " + esc(i.origem) + (i.detalhe ? " · " + esc(i.detalhe) : "") + "</small>" : "") + '</td><td class="selo-c"><span class="selo">' + esc(g.tag) + '</span></td>'
-          + (!D.votos ? "" : '<td class="votos"><div class="voto-l"><button type="button" class="voto"' + (i.ja_esta ? " disabled" : "") + ' aria-pressed="' + meu + '" aria-label="' + (g.id === "licao" ? (meu ? "Não considerar esta lição" : "Considerar esta lição") : meu ? "Tirar o meu voto" : "Votar") + '" title="' + esc(quem ? "Votaram: " + quem : "Ninguém votou ainda") + '">' + CERTO + '</button><span class="trilho"><i style="width:' + Math.round(100 * n / max) + '%"></i></span><b>' + n + "</b></div></td>")
-          + '<td class="quem-c"><i class="av" title="' + esc(i.autor ? "Criado por " + i.autor : i.do_ciclo ? "Lição de " + i.origem : "Veio do " + D.arquivo) + '">' + esc(i.autor ? iniciais(i.autor) : i.do_ciclo ? String(i.origem).slice(0, 2) : "md") + '</i></td><td class="fim">' + (i.do_ciclo ? "" : '<button type="button" class="rm" title="Remover" aria-label="Remover o ponto">✕</button>') + "</td></tr>";
-      }).join("") || '<tr><td class="nada" colspan="5">' + (g.id === "pedido" ? "Nenhum pedido novo." : D.modo === "review" ? "Sem retorno ainda." : g.id === "licao" ? "Nenhuma lição registrada nos itens concluídos do ciclo." : "Nenhum ponto ainda.") + "</td></tr>";
+      const itens = estado.itens.filter((i) => i.grupo === g.id).sort((a, b) => (a.em || 0) - (b.em || 0));
+      total += itens.length;
+      bloco.querySelector("summary .n").textContent = itens.length + " " + um(g.id === "pedido" ? "pedido" : "retorno", itens.length);
+      bloco.querySelector("tbody").innerHTML = itens.map((i) => '<tr class="ponto-l" data-id="' + esc(i.id) + '"><td class="tit">' + esc(i.texto) + '</td><td class="selo-c"><span class="selo">' + esc(g.tag) + '</span></td>'
+        + '<td class="quem-c"><i class="av" title="' + esc(i.autor ? "Criado por " + i.autor : "Veio do " + D.arquivo) + '">' + esc(i.autor ? iniciais(i.autor) : "md") + '</i></td><td class="fim"><button type="button" class="rm" title="Remover" aria-label="Remover o ponto">✕</button></td></tr>').join("")
+        || '<tr><td class="nada" colspan="5">' + (g.id === "pedido" ? "Nenhum pedido novo." : "Sem retorno ainda.") + "</td></tr>";
     }
     $("#pendente").hidden = !estado.nao_publicado;
     if ($("#total")) $("#total").textContent = total + " " + um("ponto", total);
   }
 
+  // a retrospectiva: a faixa das etapas e, em cada bloco, o que a etapa mostra e deixa fazer
+  function desenharRetro() {
+    const eu = nome ? chave(nome) : null, nDe = (id) => D.etapas.findIndex((e) => e.id === id), n = Math.max(0, nDe(estado.etapa)), E = D.etapas[n], etapa = E.id, depois = (id) => n >= nDe(id);
+    const por = (id) => estado.itens.find((i) => i.id === id), meu = (i) => !!eu && !!i.autor && chave(i.autor) === eu, chegada = (a, b) => (a.em || 0) - (b.em || 0);
+    const tagDe = (grupo) => D.grupos.find((g) => g.id === grupo)?.tag ?? grupo;
+    for (const id of [...sel]) { const i = por(id); if (etapa !== "agrupar" || !i || i.em_grupo) sel.delete(id); }
+    $("#etapas").innerHTML = "<ol>" + D.etapas.map((e, k) => "<li" + (k === n ? ' class="atual" aria-current="step"' : k < n ? ' class="feita"' : "") + "><b>" + (k + 1) + "</b>" + esc(e.nome) + "</li>").join("") + "</ol><p>" + esc(E.dica) + "</p>"
+      + (AP ? '<div class="config">' + (etapa === "agrupar" ? '<button type="button" class="btn" id="agrupar"' + (sel.size < 2 ? " disabled" : "") + ">Agrupar selecionados" + (sel.size ? " (" + sel.size + ")" : "") + "</button>" : "")
+        + (D.etapas[n + 1] ? '<button type="button" class="btn pri" id="liberar">' + esc(D.etapas[n + 1].liberar) + "</button>" : "") + "</div>" : "");
+    const max = Math.max(1, ...estado.itens.map(votos));
+    const quemTd = (i, nMembros) => '<td class="quem-c"><i class="av" title="' + esc(i.agrupa ? "Grupo de " + nMembros + " pontos" : i.autor ? "Criado por " + i.autor : i.do_ciclo ? "Lição de " + i.origem : "Veio do " + D.arquivo) + '">' + esc(i.agrupa ? "×" + nMembros : i.autor ? iniciais(i.autor) : i.do_ciclo ? String(i.origem).slice(0, 2) : "md") + "</i></td>";
+    const bt = (cls, texto, rotulo) => '<button type="button" class="ac ' + cls + '" aria-label="' + esc(rotulo) + '">' + texto + "</button>";
+    // alterar e remover: só de quem criou, e só enquanto dura a etapa do item
+    const altera = (i, id) => (etapa === id && meu(i) ? bt("ed", "Alterar", "Alterar o texto") + '<button type="button" class="rm" title="Remover" aria-label="Remover">✕</button>' : "");
+    const seloTd = (grupo) => '<td class="selo-c"><span class="selo">' + esc(tagDe(grupo)) + "</span></td>";
+
+    const ponto = (i) => {
+      const membros = i.agrupa ? estado.itens.filter((m) => m.em_grupo === i.id).sort(chegada) : [];
+      const acoes = depois("acoes") ? estado.itens.filter((a) => a.grupo === "acao" && a.sobre === i.id).sort(chegada) : [];
+      const nv = votos(i), meuVoto = !!eu && i.votos.some((v) => v.chave === eu), quem = i.votos.map((v) => v.nome).join(", "), barra = '<span class="trilho"><i style="width:' + Math.round(100 * nv / max) + '%"></i></span><b>' + nv + "</b>";
+      let v = "";
+      // na votação, cada um vê só o próprio voto; a contagem e os nomes, só o apresentador, até ele mostrar o resultado
+      if (etapa === "votar") v = '<td class="votos"><div class="voto-l"><button type="button" class="voto" aria-pressed="' + meuVoto + '" aria-label="' + (meuVoto ? "Tirar o meu voto" : "Votar") + '"' + (AP ? ' title="' + esc(quem ? "Votaram: " + quem : "Ninguém votou ainda") + '"' : "") + ">" + CERTO + "</button>" + (AP ? barra : '<span class="meu-voto">' + (meuVoto ? "Você votou" : "") + "</span>") + "</div></td>";
+      else if (depois("acoes")) v = '<td class="votos"><div class="voto-l" title="' + esc(quem ? "Votaram: " + quem : "Sem votos") + '">' + barra + "</div></td>";
+      const fim = etapa === "pontos" ? altera(i, "pontos")
+        : etapa === "agrupar" && AP && i.agrupa ? bt("gr-ed", "Alterar", "Alterar o grupo") + bt("gr-rm", "Desfazer", "Desfazer o grupo")
+        : etapa === "acoes" || (AP && etapa === "licoes") ? bt("mais", "+ Ação", "Nova ação para este item") : "";
+      return '<tr class="ponto-l" data-id="' + esc(i.id) + '">' + (AP && etapa === "agrupar" ? '<td class="sel-c"><input type="checkbox" class="sel" aria-label="Selecionar para agrupar"' + (sel.has(i.id) ? " checked" : "") + "></td>" : "")
+        + '<td class="tit">' + esc(i.texto) + (i.agrupa ? '<span class="ja">grupo de ' + membros.length + "</span>" : "")
+        + (membros.length ? '<ul class="membros">' + membros.map((m) => "<li>" + esc(m.texto) + (m.autor ? "<small>" + esc(m.autor) + "</small>" : "") + "</li>").join("") + "</ul>" : "")
+        + (acoes.length ? '<ul class="acoes-i">' + acoes.map((a) => "<li><b>Ação</b>" + esc(a.texto) + (a.dono ? "<small>dono: " + esc(D.pessoas[a.dono] || a.dono) + "</small>" : "") + "</li>").join("") + "</ul>" : "")
+        + "</td>" + seloTd(i.grupo) + v + quemTd(i, membros.length) + '<td class="fim">' + fim + "</td></tr>";
+    };
+    // a tabela consolidada das ações: as atreladas a um item e as gerais
+    const acaoL = (i) => {
+      const alvo = i.sobre && por(i.sobre);
+      return '<tr class="ponto-l" data-id="' + esc(i.id) + '"><td class="tit">' + esc(i.texto) + '</td><td class="item-c">' + (alvo ? '<span class="selo" data-g="' + esc(alvo.grupo) + '">' + esc(tagDe(alvo.grupo)) + "</span>" + esc(alvo.texto) : '<span class="geral">geral</span>')
+        + '</td><td class="nw">' + (i.dono ? esc(D.pessoas[i.dono] || i.dono) : '<span class="geral">sem dono</span>') + "</td>" + quemTd(i) + '<td class="fim">' + altera(i, "acoes") + "</td></tr>";
+    };
+    // a lição: o Sim ou Não é de quem apresenta; os demais veem a resposta
+    const licaoL = (i) => {
+      const resp = (rot, valor) => '<button type="button" class="manter" data-v="' + (valor ? "sim" : "nao") + '" aria-pressed="' + (i.manter === valor) + '"' + (AP && !i.ja_esta ? "" : " disabled") + ">" + rot + "</button>";
+      return '<tr class="ponto-l" data-id="' + esc(i.id) + '"><td class="tit">' + esc(i.texto) + (i.ja_esta ? '<span class="ja">já é regra</span>' : "") + (i.origem ? "<small>origem " + esc(i.origem) + (i.detalhe ? " · " + esc(i.detalhe) : "") + "</small>" : "") + "</td>" + seloTd("licao")
+        + '<td class="manter-c"><div class="seg" role="group" aria-label="Manter esta lição?">' + resp("Sim", true) + resp("Não", false) + "</div></td>" + quemTd(i) + '<td class="fim">' + altera(i, "licoes") + "</td></tr>";
+    };
+
+    let total = 0;
+    for (const g of D.grupos) {
+      const bloco = document.querySelector('.bloco[data-grupo="' + CSS.escape(g.id) + '"]'), ehPonto = PONTOS.includes(g.id), nG = nDe(g.id === "acao" ? "acoes" : g.id === "licao" ? "licoes" : "pontos");
+      // o bloco aparece na etapa dele; o formulário de incluir, enquanto ela dura e, depois, só para quem apresenta
+      bloco.hidden = n < nG;
+      bloco.querySelector(".novo").hidden = !(n === nG || (AP && n > nG));
+      const itens = estado.itens.filter((i) => i.grupo === g.id && !i.em_grupo).sort((a, b) => (ehPonto && depois("acoes") && ordem === "votos" ? votos(b) - votos(a) : 0) || chegada(a, b));
+      const nv = itens.reduce((s, i) => s + votos(i), 0);
+      if (ehPonto) total += itens.length;
+      bloco.querySelector("summary .n").textContent = g.id === "licao" ? itens.length + " " + (itens.length === 1 ? "lição" : "lições") + " · " + itens.filter((i) => i.manter === true).length + " a manter"
+        : g.id === "acao" ? itens.length + " " + (itens.length === 1 ? "ação" : "ações")
+        : itens.length + " " + um("ponto", itens.length) + (depois("acoes") || (AP && etapa === "votar") ? " · " + nv + (nv === 1 ? " voto" : " votos") : "");
+      bloco.querySelector("tbody").innerHTML = itens.map(g.id === "licao" ? licaoL : g.id === "acao" ? acaoL : ponto).join("")
+        || '<tr><td class="nada" colspan="6">' + (g.id === "licao" ? "Nenhuma lição registrada nos itens concluídos do ciclo." : g.id === "acao" ? "Nenhuma ação ainda." : etapa === "pontos" && !AP ? "Você ainda não incluiu ponto aqui." : "Nenhum ponto.") + "</td></tr>";
+    }
+    $("#pendente").hidden = !estado.nao_publicado;
+    $("#total").textContent = total + " " + um("ponto", total);
+    $("#ordem").closest(".campo").hidden = !depois("acoes");
+    const pub = $("#publicar");
+    if (pub) { pub.disabled = etapa !== "licoes"; pub.title = pub.disabled ? "A retrospectiva é publicada na última etapa, a das lições aprendidas" : ""; }
+  }
+  const desenhar = RETRO ? desenharRetro : desenharReview;
+
+  // o popup do texto: alterar um ponto, uma ação ou uma lição, e a ação nova de um item
+  let pedido = null;
+  function abrirItem(acao, item) {
+    const nova = acao.tipo === "incluir", ehAcao = nova || item.grupo === "acao";
+    pedido = acao;
+    $("#item-titulo").textContent = nova ? "Nova ação" : ehAcao ? "Alterar a ação" : item.grupo === "licao" ? "Alterar a lição" : "Alterar o ponto";
+    $("#item-sub").textContent = nova ? "Para o item: " + item.texto : ""; $("#item-sub").hidden = !nova;
+    $("#item-texto").value = nova ? "" : item.texto;
+    $("#item-dono-l").hidden = !ehAcao; $("#item-dono").innerHTML = opcoesDono; $("#item-dono").value = nova ? "" : item.dono || "";
+    abrir($("#modal-item")); $("#item-texto").focus();
+  }
+  $("#form-item")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const texto = $("#item-texto").value.trim();
+    if (!texto) return $("#item-texto").focus();
+    noModal($("#modal-item"), { ...pedido, texto, dono: $("#item-dono-l").hidden ? null : $("#item-dono").value || null });
+  });
+
+  // o popup do grupo: o título começa pelo combo com os pontos e, escolhido um, fica no campo de texto para ajustar
+  let grupoId = null;
+  function abrirGrupo(id, membros) {
+    const g = id ? estado.itens.find((i) => i.id === id) : null;
+    grupoId = g ? g.id : null;
+    $("#grupo-h").textContent = g ? "Alterar o grupo" : "Agrupar os pontos";
+    $("#grupo-combo").innerHTML = '<option value="">Escolha entre os pontos…</option>' + membros.map((m) => "<option>" + esc(m.texto) + "</option>").join("");
+    $("#grupo-titulo").value = g ? g.texto : ""; $("#grupo-titulo-l").hidden = !g;
+    $("#grupo-membros").innerHTML = "<legend>Pontos do grupo</legend>" + membros.map((m) => '<label class="linha"><input type="checkbox" value="' + esc(m.id) + '" checked><span>' + esc(m.texto) + (m.autor ? " · " + esc(m.autor) : "") + "</span></label>").join("");
+    abrir($("#modal-grupo"));
+  }
+  $("#grupo-combo")?.addEventListener("change", (e) => {
+    if (!e.target.value) return;
+    $("#grupo-titulo").value = e.target.value; $("#grupo-titulo-l").hidden = false; $("#grupo-titulo").focus();
+  });
+  $("#form-grupo")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const dlg = $("#modal-grupo"), erro = dlg.querySelector(".erro"), titulo = $("#grupo-titulo").value.trim(), ids = [...dlg.querySelectorAll("#grupo-membros input:checked")].map((c) => c.value);
+    if (!titulo) { erro.textContent = "Escolha o título do grupo entre os pontos."; erro.hidden = false; return $("#grupo-combo").focus(); }
+    const r = await noModal(dlg, grupoId ? { tipo: "editar-grupo", id: grupoId, ids, titulo } : { tipo: "agrupar", ids, titulo });
+    if (r) { sel.clear(); desenhar(); }
+  });
+
+  // a faixa das etapas: liberar a próxima (com a confirmação, porque não há volta) e agrupar os pontos marcados
+  let deEtapa = null;
+  $("#etapas")?.addEventListener("click", (e) => {
+    if (e.target.closest("#liberar")) {
+      if (!exigeNome()) return;
+      const k = D.etapas.findIndex((x) => x.id === estado.etapa), prox = D.etapas[k + 1];
+      deEtapa = estado.etapa;
+      $("#etapa-titulo").textContent = prox.liberar; $("#etapa-sub").textContent = prox.confirma; $("#etapa-ok").textContent = prox.liberar;
+      return abrir($("#modal-etapa"));
+    }
+    if (!e.target.closest("#agrupar") || !exigeNome()) return;
+    const itens = [...sel].map((id) => estado.itens.find((i) => i.id === id)).filter(Boolean), grupos = itens.filter((i) => i.agrupa);
+    if (new Set(itens.map((i) => i.grupo)).size > 1) return aviso("O grupo junta pontos da mesma categoria", true);
+    if (grupos.length > 1) return aviso("Marque um grupo só, com os pontos que entram nele", true);
+    abrirGrupo(grupos[0]?.id ?? null, [...(grupos[0] ? estado.itens.filter((m) => m.em_grupo === grupos[0].id) : []), ...itens.filter((i) => !i.agrupa)]);
+  });
+  $("#form-etapa")?.addEventListener("submit", (e) => { e.preventDefault(); noModal($("#modal-etapa"), { tipo: "avancar", de: deEtapa }); });
+
+  $("#lista").addEventListener("change", (e) => {
+    const c = e.target.closest(".sel");
+    if (!c) return;
+    const id = c.closest("tr").dataset.id;
+    if (c.checked) sel.add(id); else sel.delete(id);
+    desenhar();
+  });
   $("#lista").addEventListener("click", (e) => {
     const linha = e.target.closest("tr[data-id]");
     if (!linha) return;
-    if (e.target.closest(".voto")) { if (exigeNome()) enviar({ tipo: "votar", id: linha.dataset.id }); return; }
-    const rm = e.target.closest(".rm");
+    const id = linha.dataset.id, item = estado.itens.find((i) => i.id === id);
+    if (e.target.closest(".voto")) { if (exigeNome()) enviar({ tipo: "votar", id }); return; }
+    const resp = e.target.closest(".manter");
+    if (resp) { if (exigeNome()) enviar({ tipo: "manter", id, valor: resp.getAttribute("aria-pressed") === "true" ? null : resp.dataset.v === "sim" }); return; }
+    if (e.target.closest(".ed")) { if (item && exigeNome()) abrirItem({ tipo: "editar", id }, item); return; }
+    if (e.target.closest(".mais")) { if (item && exigeNome()) abrirItem({ tipo: "incluir", grupo: "acao", sobre: id }, item); return; }
+    if (e.target.closest(".gr-ed")) return abrirGrupo(id, estado.itens.filter((m) => m.em_grupo === id));
+    const rm = e.target.closest(".rm,.gr-rm");
     if (!rm || !exigeNome()) return;
-    // remover pede o segundo clique: o primeiro arma o botão por alguns segundos
-    if (rm.dataset.armado) return void enviar({ tipo: "remover", id: linha.dataset.id });
-    rm.dataset.armado = "1"; rm.textContent = "Remover?";
-    setTimeout(() => { if (rm.isConnected) { delete rm.dataset.armado; rm.textContent = "✕"; } }, 4000);
+    // remover e desfazer pedem o segundo clique: o primeiro arma o botão por alguns segundos
+    const grupo = rm.classList.contains("gr-rm"), antes = rm.textContent;
+    if (rm.dataset.armado) return void enviar({ tipo: grupo ? "desagrupar" : "remover", id });
+    rm.dataset.armado = "1"; rm.textContent = grupo ? "Desfazer?" : "Remover?";
+    setTimeout(() => { if (rm.isConnected) { delete rm.dataset.armado; rm.textContent = antes; } }, 4000);
   });
   $("#lista").addEventListener("submit", async (e) => {
     const f = e.target.closest(".novo");
@@ -516,19 +846,14 @@ function cliente() {
 
   $("#ciclo").innerHTML = '<span class="quando">' + dataBr(D.sprint.inicio) + " → " + dataBr(D.sprint.fim) + "</span>" + (D.sprint.meta ? '<span class="meta"><b>Meta:</b> ' + esc(D.sprint.meta) + "</span>" : "");
   $("#gerado").textContent = "Aberta em " + new Date(D.gerado_em).toLocaleString("pt-BR");
-  desenharQuem(); desenhar();
-
-  // o /vivo traz o estado a cada mudança de qualquer pessoa; se o servidor fecha (Ctrl+C), a página avisa
-  const vivo = new EventSource("/vivo");
-  vivo.onmessage = (e) => { try { estado = JSON.parse(e.data); desenhar(); } catch {} };
-  vivo.onerror = () => { $("#fora").hidden = false; };
-  vivo.onopen = () => { if (!$("#fora").hidden) location.reload(); };
+  desenharQuem(); desenhar(); conectar();
 }
 
 /** A página: HTML único, sem rede, com os dados da cerimônia e o estado em <script id="dados">. `local` diz se quem
- *  pediu a página está na máquina do servidor: só ela vê o botão Publicar. */
+ *  pediu a página está na máquina do servidor: só ela vê o botão Publicar e, na retrospectiva, é o apresentador, que
+ *  libera as etapas, agrupa os pontos e responde o Sim ou Não das lições. */
 export function paginaCerimonia(dados, estado, token = "", { local = false } = {}) {
-  const arquivo = path.basename(dados.sprint.arquivo), embutido = { ...dados, arquivo, estado };
+  const arquivo = path.basename(dados.sprint.arquivo), retro = dados.modo === "retrospective", embutido = { ...dados, arquivo, apresentador: local && retro, estado };
   const publica = local && dados.publicar.ok;
   return `<!doctype html>
 <html lang="pt-BR" data-sobria="sobria-sabia">
@@ -566,6 +891,7 @@ export function paginaCerimonia(dados, estado, token = "", { local = false } = {
     ${local ? `<button type="button" class="btn pri" id="publicar">${publica ? "Publicar" : `Gravar no ${esc(arquivo)}`}</button>` : ""}
   </div>
 </div>
+${retro ? `<nav class="etapas" id="etapas" aria-label="Etapas da retrospectiva"></nav>` : ""}
 <main class="mesa"><div class="lista" id="lista"></div></main>
 <footer class="rodape"><span id="gerado"></span><span>${esc(dados.sprint.arquivo)}</span><span>Sabiá ${esc(dados.sabia)}</span></footer>
 <dialog id="modal" aria-labelledby="modal-titulo"><form method="dialog" id="form-publicar">
@@ -575,6 +901,30 @@ export function paginaCerimonia(dados, estado, token = "", { local = false } = {
   <p class="erro" id="erro-publicar" role="alert" hidden></p>
   <div class="botoes"><button type="button" class="btn" id="cancelar">Cancelar</button><button type="submit" class="btn pri" id="confirmar">Publicar</button></div>
 </form></dialog>
+${retro ? `<dialog id="modal-etapa" aria-labelledby="etapa-titulo"><form method="dialog" id="form-etapa">
+  <h2 id="etapa-titulo"></h2>
+  <p class="sub" id="etapa-sub"></p>
+  <p class="nota">Não dá para voltar à etapa anterior.</p>
+  <p class="erro" role="alert" hidden></p>
+  <div class="botoes"><button type="button" class="btn" data-fechar>Cancelar</button><button type="submit" class="btn pri" id="etapa-ok"></button></div>
+</form></dialog>
+<dialog id="modal-item" aria-labelledby="item-titulo"><form method="dialog" id="form-item">
+  <h2 id="item-titulo"></h2>
+  <p class="sub" id="item-sub"></p>
+  <label>Texto<input type="text" id="item-texto" maxlength="280" autocomplete="off"></label>
+  <label id="item-dono-l">Dono<select id="item-dono"></select></label>
+  <p class="erro" role="alert" hidden></p>
+  <div class="botoes"><button type="button" class="btn" data-fechar>Cancelar</button><button type="submit" class="btn pri">Gravar</button></div>
+</form></dialog>
+<dialog id="modal-grupo" aria-labelledby="grupo-h"><form method="dialog" id="form-grupo">
+  <h2 id="grupo-h"></h2>
+  <p class="sub">Os pontos viram um item só, com o título que você escolher: é nele que o time vota.</p>
+  <label>Título a partir de um dos pontos<select id="grupo-combo"></select></label>
+  <label id="grupo-titulo-l">Título do grupo<input type="text" id="grupo-titulo" maxlength="280" autocomplete="off"></label>
+  <fieldset id="grupo-membros"></fieldset>
+  <p class="erro" role="alert" hidden></p>
+  <div class="botoes"><button type="button" class="btn" data-fechar>Cancelar</button><button type="submit" class="btn pri">Gravar o grupo</button></div>
+</form></dialog>` : ""}
 <div class="fora" id="fora" role="alert" hidden><h1>A cerimônia foi encerrada</h1><p>Rode <code>sabia ${esc(dados.modo)}</code> de novo para abrir.</p></div>
 <script id="dados" type="application/json">${JSON.stringify(embutido).replace(/</g, "\\u003c")}</script>
 <script>(${cliente})()</script>
@@ -586,7 +936,8 @@ const LOCAIS = ["127.0.0.1", "::1", "::ffff:127.0.0.1"];
 
 /** O comando: lê a sprint, carrega os pontos da cerimônia (os que já estão na
  *  seção do .md e as propostas), sobe o servidor e devolve { url, urls, fechar, fechou, token }. Rotas: GET / (a
- *  página), /dados.json, /vivo (o estado a cada mudança) e POST /acao (com o token que só a página conhece). */
+ *  página), /dados.json, /vivo?nome=<quem> (a visão da pessoa a cada mudança) e POST /acao (com o token que só a
+ *  página conhece). O apresentador da retrospectiva é quem pede da própria máquina do servidor. */
 export async function abrirCerimonia({ projeto = ".", modo, exec, log = console.log, porta, rede = false, host, propostas, agora } = {}) {
   if (!MODOS[modo]) throw new Error(`cerimônia desconhecida: ${modo}`);
   const usuario = usuarioDaMaquina(projeto, exec), token = randomUUID();
@@ -595,12 +946,16 @@ export async function abrirCerimonia({ projeto = ".", modo, exec, log = console.
   const md = () => path.join(projeto, dados.sprint.arquivo);
   // de onde a cerimônia parte: o que já está na seção do sprint-<nn>.md; com a seção vazia, as propostas
   const estado = { versao: 1, modo, sprint: dados.sprint.chave, itens: importarSecao(dados, fs.readFileSync(md(), "utf8")) };
+  // a retrospectiva começa pela etapa dos pontos; a que já está no sprint-<nn>.md foi feita: abre na última, com tudo à vista
+  if (modo === "retrospective") estado.etapa = estado.itens.length ? ETAPAS.at(-1).id : ETAPAS[0].id;
   if (propostas && !estado.itens.length) estado.itens = lerPropostas(propostas, dados);
   juntarLicoes(estado, dados.licoes);
   // a cerimônia fica na memória: o sprint-<nn>.md só muda no Publicar; `nao_publicado` diz à página se há o que publicar
   const marcar = () => { const t = fs.readFileSync(md(), "utf8"); estado.nao_publicado = comASecao(dados, estado, t) !== t; return estado; };
   marcar();
-  const vivos = new Set();
+  // quem está na página: cada um recebe a visão dele do estado (o que é oculto não sai daqui)
+  const vivos = new Set(), quemE = (nome, local) => ({ chave: chaveDe(nomeLimpo(nome)) || null, apresentador: local });
+  const avisar = () => { for (const v of vivos) v.res.write(`data: ${JSON.stringify(visaoDe(estado, v))}\n\n`); };
   const server = http.createServer((req, res) => {
     const fim = (codigo, corpo, tipo = "text/plain; charset=utf-8") => { res.writeHead(codigo, { "content-type": tipo, "cache-control": "no-store" }); res.end(corpo); };
     const json = (codigo, o) => fim(codigo, JSON.stringify(o), "application/json; charset=utf-8");
@@ -612,35 +967,36 @@ export async function abrirCerimonia({ projeto = ".", modo, exec, log = console.
       req.on("data", (d) => { corpo += d; if (corpo.length > 65536) req.destroy(); });
       req.on("end", () => {
         try {
-          const acao = JSON.parse(corpo);
+          const acao = JSON.parse(corpo), visao = () => visaoDe(estado, quemE(acao.nome, local));
           if (acao.tipo === "publicar") {
             if (!local) throw new Error("publicar é de quem abriu a cerimônia, na máquina dela");
+            if (estado.etapa && estado.etapa !== ETAPAS.at(-1).id) throw new Error("a retrospectiva é publicada na última etapa, a das lições aprendidas");
             // quem não pode fazer o commit (fora da equipe ou da branch base) ainda grava o arquivo
             const r = dados.publicar.ok ? publicar(projeto, dados, estado, { exec, usuario, mensagem: acao.mensagem }) : (fs.writeFileSync(md(), comASecao(dados, estado, fs.readFileSync(md(), "utf8"))), { commit: null, gravado: path.basename(dados.sprint.arquivo) });
             marcar();
-            const aviso = `data: ${JSON.stringify(estado)}\n\n`;
-            for (const v of vivos) v.write(aviso);
-            return json(200, { ok: true, ...r, estado });
+            avisar();
+            return json(200, { ok: true, ...r, estado: visao() });
           }
-          aplicar(estado, acao, dados);
+          aplicar(estado, acao, dados, Date.now(), { apresentador: local });
           marcar();
-          const linha = `data: ${JSON.stringify(estado)}\n\n`;
-          for (const v of vivos) v.write(linha);
-          json(200, { ok: true, estado });
+          avisar();
+          json(200, { ok: true, estado: visao() });
         } catch (e) { json(400, { erro: e.message }); }
       });
       return;
     }
     if (req.method !== "GET" && req.method !== "HEAD") return fim(405, "use GET");
-    if (req.url === "/vivo") {
+    const url = new URL(req.url, "http://sabia"), semNome = () => visaoDe(estado, quemE(null, local));
+    if (url.pathname === "/vivo") {
+      const v = { res, ...quemE(url.searchParams.get("nome"), local) };
       res.writeHead(200, { "content-type": "text/event-stream", "cache-control": "no-store" });
-      res.write(`data: ${JSON.stringify(estado)}\n\n`);
-      vivos.add(res); req.on("close", () => vivos.delete(res));
+      res.write(`data: ${JSON.stringify(visaoDe(estado, v))}\n\n`);
+      vivos.add(v); req.on("close", () => vivos.delete(v));
       return;
     }
     try {
-      if (req.url === "/dados.json") return fim(200, JSON.stringify({ ...dados, estado }, null, 2), "application/json; charset=utf-8");
-      if (req.url === "/" || req.url === "/index.html") { dados = gerar(); return fim(200, paginaCerimonia(dados, estado, token, { local }), "text/html; charset=utf-8"); }
+      if (req.url === "/dados.json") return fim(200, JSON.stringify({ ...dados, estado: semNome() }, null, 2), "application/json; charset=utf-8");
+      if (req.url === "/" || req.url === "/index.html") { dados = gerar(); return fim(200, paginaCerimonia(dados, semNome(), token, { local }), "text/html; charset=utf-8"); }
     } catch (e) { return fim(500, `sabia ${modo}: ${e.message}`); }
     return fim(404, "não encontrado");
   });
