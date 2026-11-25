@@ -3,7 +3,9 @@
 // seção `## Retro` (ou `## Review`) e faz o commit e o push na branch base. Quem levantou e quem votou vai na linha.
 // A retrospectiva anda em etapas que só o apresentador (quem abriu, na máquina dele) libera: pontos (cada um vê só os
 // seus), agrupamento, votação (cada um vê só o seu voto), ações e lições aprendidas. O que é oculto não sai do
-// servidor: cada pessoa recebe a visão dela (`visaoDe`). A review não tem etapas.
+// servidor: cada pessoa recebe a visão dela (`visaoDe`). A review também anda em etapas do apresentador, com tudo à
+// vista: o feedback de cada entrega e, depois, as novas ideias e necessidades; nela, só o apresentador registra (inclui,
+// altera e remove), e os demais acompanham.
 // Servidor node:http sem dependências, como o do quadro; com --rede, escuta na rede local para o time abrir o link.
 import fs from "node:fs";
 import path from "node:path";
@@ -25,8 +27,6 @@ const RETRO = [
   { id: "licao", nome: "Lições aprendidas", tag: "Lição", linha: "Lição" },
   { id: "acao", nome: "Ações propostas", tag: "Ação", linha: "Ação" },
 ];
-// as palavras do formato anterior da Retro (bom · melhorar · ações), ainda lidas dos sprint-<nn>.md já gravados
-const ANTIGAS = { Bom: "Positivo", Melhorar: "Melhoria" };
 // os grupos em que se levanta ponto, se agrupa e se vota; ação e lição têm a etapa delas
 const PONTOS = ["positivo", "negativo", "melhoria"];
 // as etapas da retrospectiva, na ordem: `liberar` é o botão do apresentador que entra nela, `confirma` o que ele lê
@@ -42,10 +42,18 @@ export const ETAPAS = [
   { id: "licoes", nome: "Lições aprendidas", liberar: "Ir às lições aprendidas", confirma: "O cadastro das ações termina e aparecem as lições aprendidas do ciclo.",
     dica: "Quem apresenta marca Sim ou Não em cada lição: só as marcadas Sim são gravadas. Depois, publica." },
 ];
+// as etapas da review: nada é oculto e só quem apresenta registra; a etapa diz o que se registra agora
+export const ETAPAS_REVIEW = [
+  { id: "feedback", nome: "Feedback", dica: "Quem apresenta registra o feedback de cada entrega; os demais acompanham na página." },
+  { id: "ideias", nome: "Novas ideias e necessidades", liberar: "Ir às novas ideias e necessidades", confirma: "O feedback das entregas foi registrado. Agora entram as novas ideias e necessidades.",
+    dica: "Quem apresenta registra as novas ideias e necessidades: cada uma entra no backlog como item novo, para a triagem depois. No fim, publica." },
+];
+const ETAPAS_DE = { retrospective: ETAPAS, review: ETAPAS_REVIEW };
 const ETAPA_DE = { acao: "acoes", licao: "licoes" };  // a etapa em que o grupo é de todos (os pontos: a primeira)
 const linhaDe = (i) => `${RETRO.find((g) => g.id === i.grupo).linha}: ${i.texto}`;
 const votavel = (i) => PONTOS.includes(i.grupo) && !i.em_grupo;
-const PEDIDO = "pedido", LINHA_PEDIDO = "pedido novo";
+// o grupo das novas ideias e necessidades da review
+const IDEIA = "ideia", LINHA_IDEIA = "ideia ou necessidade";
 const CONCLUIDOS = ["concluida", "concluido"];
 const PRINCIPAL = { fatia: "desenvolvimento", bug: "desenvolvimento", "sustentação": "atendimento", "épico": "especificação" };
 const ehData = (x) => /^\d{4}-\d{2}-\d{2}$/.test(x ?? "");
@@ -141,8 +149,8 @@ export function podePublicar(raiz, exec, usuario) {
 }
 
 /** O que a página desenha: a sprint da cerimônia (a aberta, a de maior chave), os grupos em que se inclui ponto e,
- *  na retro, os números do ciclo. Na review, um grupo por item entregue (o trabalho principal concluído na sprint)
- *  e o dos pedidos novos. */
+ *  na retro, os números do ciclo. Na review, um grupo por entrega (a fatia, o bug e o atendimento cujo trabalho principal
+ *  foi concluído na sprint, e o épico concluído ou com entrega no ciclo) e o das novas ideias e necessidades. */
 export function cerimoniaDoProjeto({ projeto = ".", modo, exec, agora = new Date(), usuario = null }) {
   if (!MODOS[modo]) throw new Error(`cerimônia desconhecida: ${modo}`);
   const st = statusDoProjeto({ projeto, exec, agora, usuario }), sprint = sprintsDe(projeto, agora.toISOString().slice(0, 10))[0];
@@ -153,19 +161,29 @@ export function cerimoniaDoProjeto({ projeto = ".", modo, exec, agora = new Date
   let grupos;
   if (modo === "retrospective") grupos = RETRO.map((g) => ({ id: g.id, nome: g.nome, tag: g.tag, cor: g.id, dono: g.id === "acao" }));
   else {
-    const vistos = new Set();
-    grupos = sprint.itens.flatMap((l) => {
-      const item = st.quadro.itens.find((c) => c.id === l.Item);
-      if (!item || vistos.has(l.Item) || !CONCLUIDOS.includes(item.status) || l.Trabalho !== PRINCIPAL[item.tipo] || !ehData(l.concluida_em)) return [];
+    const itens = st.quadro.itens, vistos = new Set(), dia = (d) => `${d.slice(8)}/${d.slice(5, 7)}`, porId = (a, b) => a.id.localeCompare(b.id, "en", { numeric: true });
+    const grupo = (item, sub, mais = {}) => { const mr = item.mesclado ?? item.mr; return { id: item.id, nome: `${item.id} · ${item.titulo ?? ""}`, tag: "Feedback", cor: "feedback", sub, mr: mr?.url ? { iid: mr.iid, url: mr.url } : null, ...mais }; };
+    // a fatia, o bug e o atendimento entregues: o trabalho principal concluído na sprint
+    const entregas = sprint.itens.flatMap((l) => {
+      const item = itens.find((c) => c.id === l.Item);
+      if (!item || item.tipo === "épico" || vistos.has(l.Item) || !CONCLUIDOS.includes(item.status) || l.Trabalho !== PRINCIPAL[item.tipo] || !ehData(l.concluida_em)) return [];
       vistos.add(l.Item);
-      const mr = item.mesclado ?? item.mr;
-      return [{ id: item.id, nome: `${item.id} · ${item.titulo ?? ""}`, tag: "Retorno", cor: "retorno",
-        sub: [item.tipo, item.responsavel && nome(item.responsavel), `concluída em ${l.concluida_em.slice(8)}/${l.concluida_em.slice(5, 7)}`].filter(Boolean).join(" · "),
-        mr: mr?.url ? { iid: mr.iid, url: mr.url } : null }];
-    }).sort((a, b) => a.id.localeCompare(b.id, "en", { numeric: true }));
-    grupos.push({ id: PEDIDO, nome: "Pedidos novos", tag: "Pedido", cor: "pedido", sub: "viram item pelo cadastro (sa-triar)" });
+      return [grupo(item, [item.tipo, item.responsavel && nome(item.responsavel), `concluída em ${dia(l.concluida_em)}`].filter(Boolean).join(" · "), { pai: item.pai })];
+    });
+    // o épico é entrega quando foi concluído no ciclo, quando a especificação dele fechou na sprint ou quando teve fatia entregue nela
+    const epicos = itens.filter((c) => c.tipo === "épico").flatMap((ep) => {
+      const filhas = itens.filter((c) => c.pai === ep.id && !["cancelada", "cancelado"].includes(c.status)), feitas = filhas.filter((c) => CONCLUIDOS.includes(c.status)).length;
+      const concluido = CONCLUIDOS.includes(ep.status) && ehData(ep.concluida_em) && ep.concluida_em >= sprint.inicio;
+      const especificado = sprint.itens.some((l) => l.Item === ep.id && l.Trabalho === "especificação" && ehData(l.concluida_em));
+      if (!concluido && !especificado && !entregas.some((g) => g.pai === ep.id)) return [];
+      return [grupo(ep, concluido ? `épico · concluído em ${dia(ep.concluida_em)}` : `épico · em andamento · ${feitas} de ${filhas.length} ${filhas.length === 1 ? "fatia" : "fatias"}`)];
+    });
+    // o épico vem antes das entregas dele
+    const doEpico = (g) => !!g.pai && epicos.some((e) => e.id === g.pai);
+    grupos = [...epicos, ...entregas.filter((g) => !doEpico(g))].sort(porId).flatMap((g) => [g, ...entregas.filter((f) => f.pai === g.id).sort(porId).map((f) => ({ ...f, filho: true, sub: `${f.sub} · do ${g.id}` }))]);
+    grupos.push({ id: IDEIA, nome: "Novas ideias e necessidades", tag: "Novo", cor: "ideia", sub: "cada uma entra no backlog como item novo, para a triagem" });
   }
-  return { versao: 1, sabia: st.sabia, projeto: st.projeto, gerado_em: st.gerado_em, modo, titulo: MODOS[modo].titulo, secao: MODOS[modo].secao, votos: modo === "retrospective", etapas: modo === "retrospective" ? ETAPAS : [],
+  return { versao: 1, sabia: st.sabia, projeto: st.projeto, gerado_em: st.gerado_em, modo, titulo: MODOS[modo].titulo, secao: MODOS[modo].secao, votos: modo === "retrospective", etapas: ETAPAS_DE[modo],
     sprint: { chave: sprint.chave, inicio: sprint.inicio, fim: sprint.fim, meta: sprint.meta, arquivo: sprint.arquivo }, pessoas, grupos,
     numeros: modo === "retrospective" ? numerosDaSprint(sprint) : [], sle: st.quadro.sle ?? null,
     licoes: modo === "retrospective" ? licoesDoCiclo(projeto, sprint, st.quadro.itens) : [],
@@ -202,24 +220,25 @@ const votosTxt = (i) => (votosDe(i) ? `${plural(votosDe(i))}${i.votos.length ? `
  *  sprint-<nn>.md guarda tudo, sem arquivo à parte. Retro: `- Positivo: … · por <autor> · <n> votos (<nome>, <nome>)`,
  *  com `Negativo` e `Melhoria` do mesmo jeito; o grupo é a linha do título com os votos e, recuados abaixo dela, os
  *  pontos que ele junta (`  - <ponto> · por <autor>`); `- Lição: … · origem <id>` só para a lição marcada Sim; e
- *  `- Ação: … · sobre <Negativo: título do item> · por <autor> · dono <usuario>`. Review: `- <id> · <retorno> — por
- *  <autor>; <retorno> — por <autor>` ou `- <id> · sem retorno`, uma linha por item entregue, e `- pedido novo · … —
- *  por <autor>`. */
+ *  `- Ação: … · sobre <Negativo: título do item> · por <autor> · dono <usuario>`. Review: `- <id> · <feedback> — por
+ *  <autor>; <feedback> — por <autor>` ou `- <id> · sem feedback`, uma linha por entrega, e `- ideia ou necessidade ·
+ *  … — por <autor>`, com o `(<id>)` no fim depois do cadastro. */
 export function linhasDaSecao(dados, estado) {
   const doGrupo = (g) => (dados.votos ? ordenados : (x) => x)(estado.itens.filter((i) => i.grupo === g));
   if (dados.modo === "retrospective") return RETRO.flatMap((g) => doGrupo(g.id).filter((i) => !i.em_grupo && (g.id !== "licao" || i.manter === true)).flatMap((i) => {
     const alvo = i.sobre && estado.itens.find((x) => x.id === i.sobre && votavel(x));
-    const linha = [`- ${g.linha}: ${i.texto}`, i.origem && `origem ${i.origem}`, alvo && `sobre ${linhaDe(alvo)}`, i.autor && `por ${i.autor}`, i.dono && `dono ${i.dono}`, g.id !== "licao" && votosTxt(i)].filter(Boolean).join(" · ");
+    const linha = [`- ${g.linha}: ${i.texto}`, i.origem && `origem ${i.origem}`, alvo && `sobre ${linhaDe(alvo)}`, i.autor && `por ${i.autor}`, i.dono && `dono ${i.dono}`, PONTOS.includes(g.id) && votosTxt(i)].filter(Boolean).join(" · ");
     const membros = i.agrupa ? estado.itens.filter((m) => m.em_grupo === i.id).sort((a, b) => (a.em ?? 0) - (b.em ?? 0)) : [];
     return [linha, ...membros.map((m) => `  - ${m.texto}${m.autor ? ` · por ${m.autor}` : ""}`)];
   }));
-  const com = (i) => `${i.texto}${i.autor ? ` — por ${i.autor}` : ""}`;
-  return dados.grupos.flatMap((g) => (g.id === PEDIDO ? doGrupo(PEDIDO).map((i) => `- ${LINHA_PEDIDO} · ${com(i)}`) : [`- ${g.id} · ${doGrupo(g.id).map(com).join("; ") || "sem retorno"}`]));
+  const com = (i) => `${i.texto}${i.autor ? ` — por ${i.autor}` : ""}${i.cadastrado ? ` (${i.cadastrado})` : ""}`;
+  return dados.grupos.flatMap((g) => (g.id === IDEIA ? doGrupo(IDEIA).map((i) => `- ${LINHA_IDEIA} · ${com(i)}`) : [`- ${g.id} · ${doGrupo(g.id).map(com).join("; ") || "sem feedback"}`]));
 }
 
 /** Os pontos que estão na seção do .md, com o autor e os votos de cada linha: é de onde a cerimônia parte. O voto sem
- *  nome (linha escrita à mão, ou do formato anterior) conta como base do ponto. Na retro, a linha recuada é ponto do
- *  grupo da linha acima, toda `- Lição:` gravada é lição marcada Sim e o `sobre …` da ação volta a apontar o item. */
+ *  nome (linha escrita à mão) conta como base do ponto. Na retro, a linha recuada é ponto do
+ *  grupo da linha acima, toda `- Lição:` gravada é lição marcada Sim e o `sobre …` da ação volta a apontar o item. Na
+ *  review, o `(<id>)` no fim da ideia ou necessidade já cadastrada fica em `cadastrado`. */
 export function importarSecao(dados, texto) {
   const itens = [], novo = (grupo, t, mais = {}) => { if (!t) return null; itens.push({ id: randomUUID().slice(0, 8), grupo, texto: t, autor: null, em: itens.length, votos: [], ...mais }); return itens.at(-1); };
   let ultimo = null;
@@ -232,18 +251,17 @@ export function importarSecao(dados, texto) {
         if (novo(ultimo.grupo, [t, ...partes.filter((x) => !/^por /.test(x))].join(" - ").trim(), { em_grupo: ultimo.id, ...(por ? { autor: por[1].trim() } : {}) })) ultimo.agrupa = true;
         continue;
       }
-      const m = l.match(/^- (Positivo|Negativo|Melhoria|Lição|Ação|Bom|Melhorar): (.*)$/);
+      const m = l.match(/^- (Positivo|Negativo|Melhoria|Lição|Ação): (.*)$/);
       if (!m) { ultimo = null; continue; }
-      const grupo = RETRO.find((g) => g.linha === (ANTIGAS[m[1]] ?? m[1])).id;
+      const grupo = RETRO.find((g) => g.linha === m[1]).id;
       const [primeira, ...partes] = m[2].trim().split(" · "), mais = {}, textos = [primeira];
       for (const parte of partes) {
-        const por = parte.match(/^por (.+)$/), dono = parte.match(/^dono (\S+)$/), origem = parte.match(/^origem (\S+)$/), v = parte.match(/^(\d+) votos?(?: \((.*)\))?$/), sobre = grupo === "acao" && parte.match(/^sobre (.+)$/);
+        const por = parte.match(/^por (.+)$/), dono = parte.match(/^dono (\S+)$/), origem = parte.match(/^origem (\S+)$/), v = PONTOS.includes(grupo) && parte.match(/^(\d+) votos?(?: \((.*)\))?$/), sobre = grupo === "acao" && parte.match(/^sobre (.+)$/);
         if (por) mais.autor = por[1].trim();
         else if (dono) mais.dono = dono[1];
         else if (origem) mais.origem = origem[1];
         else if (sobre) mais.sobre = sobre[1].trim();
         else if (v) {
-          if (grupo === "licao") continue;  // o formato anterior marcava a lição com voto: gravada, ela é Sim
           mais.votos = (v[2] ?? "").split(",").map((n) => n.trim()).filter((n) => chaveDe(n)).map((n) => ({ chave: chaveDe(n), nome: n }));
           if (+v[1] > mais.votos.length) mais.base = +v[1] - mais.votos.length;
         } else textos.push(parte);
@@ -253,11 +271,14 @@ export function importarSecao(dados, texto) {
     } else {
       const m = l.match(/^- (.+?) · (.*)$/);
       if (!m) continue;
-      const grupo = m[1] === LINHA_PEDIDO ? PEDIDO : m[1];
-      if (!dados.grupos.some((g) => g.id === grupo) || m[2].trim() === "sem retorno") continue;
-      for (const parte of grupo === PEDIDO ? [m[2]] : m[2].split("; ")) {
+      const grupo = m[1] === LINHA_IDEIA ? IDEIA : m[1];
+      if (!dados.grupos.some((g) => g.id === grupo) || m[2].trim() === "sem feedback") continue;
+      for (let parte of grupo === IDEIA ? [m[2]] : m[2].split("; ")) {
+        // o id que o cadastro pôs no fim da linha não é parte do nome de quem levantou
+        const id = grupo === IDEIA ? parte.match(/ \(([A-Za-zÀ-ú]+-\d+)\)\s*$/) : null;
+        if (id) parte = parte.slice(0, id.index);
         const por = parte.match(/ — por (.+)$/);
-        novo(grupo, (por ? parte.slice(0, por.index) : parte).trim(), por ? { autor: por[1].trim() } : {});
+        novo(grupo, (por ? parte.slice(0, por.index) : parte).trim(), { ...(por ? { autor: por[1].trim() } : {}), ...(id ? { cadastrado: id[1] } : {}) });
       }
     }
   }
@@ -370,27 +391,49 @@ export function visaoDe(estado, { chave = null, apresentador = false } = {}) {
   return { ...estado, itens };
 }
 
-/** Aplica uma mudança da página no estado. Toda mudança exige o nome de quem está na página. Na retrospectiva, vale a
- *  etapa e o papel (`aplicarRetro`). Na review: incluir (grupo e texto) e remover. */
-export function aplicar(estado, acao, dados, agora = Date.now(), { apresentador = false } = {}) {
-  const nome = nomeLimpo(acao.nome), chave = chaveDe(nome);
-  if (!chave) throw new Error("diga o seu nome para participar");
-  if (dados.modo === "retrospective") return aplicarRetro(estado, acao, dados, agora, { nome, chave, apresentador });
+/** A review, etapa a etapa: o feedback entra em cada entrega desde a primeira etapa e as novas ideias e necessidades a
+ *  partir da segunda. Só o apresentador registra: inclui (dizendo de quem é, em `autor`), altera e remove; os demais
+ *  acompanham. Não há votação. */
+function aplicarReview(estado, acao, dados, agora, { nome, apresentador }) {
+  const n = Math.max(0, ETAPAS_REVIEW.findIndex((e) => e.id === estado.etapa)), etapa = ETAPAS_REVIEW[n].id, nDe = (g) => (g === IDEIA ? 1 : 0);
+  const exige = (ok, msg) => { if (!ok) throw new Error(msg); };
+  const textoDe = (x) => limpo(x).replace(/;/g, ",").replace(/ — /g, " - ");
+  exige(apresentador, "na review, só quem apresenta registra");
+  if (acao.tipo === "avancar") {
+    exige(acao.de === etapa, "a etapa já mudou: confira a página");
+    exige(n < ETAPAS_REVIEW.length - 1, "a review já está na última etapa");
+    estado.etapa = ETAPAS_REVIEW[n + 1].id;
+    return;
+  }
   if (acao.tipo === "incluir") {
     const g = dados.grupos.find((x) => x.id === acao.grupo);
-    if (!g) throw new Error("grupo desconhecido");
-    const texto = limpo(acao.texto).replace(/;/g, ",").replace(/ — /g, " - ");
-    if (estado.itens.some((i) => i.grupo === g.id && i.texto === texto)) throw new Error("esse ponto já está na lista");
-    if (!texto) throw new Error("escreva o ponto");
-    if (estado.itens.length >= 500) throw new Error("a cerimônia chegou a 500 pontos: remova algum antes de incluir");
-    estado.itens.push({ id: randomUUID().slice(0, 8), grupo: g.id, texto, autor: nome, em: agora, votos: [] });
+    exige(g, "grupo desconhecido");
+    exige(n >= nDe(g.id), "as novas ideias e necessidades vêm depois do feedback");
+    const texto = textoDe(acao.texto);
+    exige(texto, "escreva o ponto");
+    exige(!estado.itens.some((i) => i.grupo === g.id && i.texto === texto), "esse ponto já está na lista");
+    exige(estado.itens.length < 500, "a cerimônia chegou a 500 pontos: remova algum antes de incluir");
+    // quem apresenta registra o que ouviu: `autor` diz de quem é; sem ele, é do próprio apresentador
+    estado.itens.push({ id: randomUUID().slice(0, 8), grupo: g.id, texto, autor: nomeLimpo(acao.autor) || nome, em: agora, votos: [] });
     return;
   }
   const item = estado.itens.find((i) => i.id === acao.id);
-  if (!item) throw new Error("esse ponto não existe mais");
-  if (acao.tipo === "votar") throw new Error("a review não tem votação");
-  else if (acao.tipo === "remover") estado.itens.splice(estado.itens.indexOf(item), 1);
-  else throw new Error("ação desconhecida");
+  exige(item, "esse ponto não existe mais");
+  exige(acao.tipo !== "votar", "a review não tem votação");
+  exige(acao.tipo === "editar" || acao.tipo === "remover", "ação desconhecida");
+  if (acao.tipo === "remover") return void estado.itens.splice(estado.itens.indexOf(item), 1);
+  const texto = textoDe(acao.texto);
+  exige(texto, "escreva o ponto");
+  exige(!estado.itens.some((i) => i !== item && i.grupo === item.grupo && i.texto === texto), "esse ponto já está na lista");
+  item.texto = texto;
+}
+
+/** Aplica uma mudança da página no estado. Toda mudança exige o nome de quem está na página, e vale a etapa e o papel:
+ *  `aplicarRetro` na retrospectiva e `aplicarReview` na review. */
+export function aplicar(estado, acao, dados, agora = Date.now(), { apresentador = false } = {}) {
+  const nome = nomeLimpo(acao.nome), chave = chaveDe(nome);
+  if (!chave) throw new Error("diga o seu nome para participar");
+  return (dados.modo === "retrospective" ? aplicarRetro : aplicarReview)(estado, acao, dados, agora, { nome, chave, apresentador });
 }
 
 /** O texto do `sprint-<nn>.md` com a seção da cerimônia como está na página (a linha Números da retro fica). */
@@ -429,9 +472,10 @@ const CSS_CERIMONIA = `
 [data-g="positivo"]{--g:var(--bom)}
 [data-g="negativo"]{--g:var(--critico)}
 [data-g="melhoria"]{--g:var(--atencao)}
-[data-g="acao"],[data-g="retorno"]{--g:var(--brand)}
+[data-g="acao"],[data-g="feedback"]{--g:var(--brand)}
 [data-g="licao"]{--g:var(--epico)}
-[data-g="pedido"]{--g:var(--orange)}
+[data-g="ideia"]{--g:var(--orange)}
+.bloco.filho{box-shadow:inset 4px 0 0 var(--epico)}
 .bloco summary{flex-wrap:wrap}
 .bloco summary h2{box-shadow:inset 0 -2px 0 var(--g)}
 .bloco summary a{font-size:13px}
@@ -460,6 +504,7 @@ td.fim{width:1%;white-space:nowrap;text-align:right}
 .novo{display:flex;flex-wrap:wrap;gap:8px;padding:8px 12px 10px;border-top:1px solid var(--mesa)}
 .novo input,.entrar input{flex:1 1 240px;min-width:0;height:32px;padding:0 10px;border:0;border-radius:var(--r-sm);background:var(--suave);color:var(--title)}
 .novo input::placeholder,.entrar input::placeholder{color:var(--muted)}
+.novo input.de-quem{flex:0 1 220px}
 .entrar{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--title)}
 .entrar input{flex:0 1 200px}
 #aviso{font-size:13px;color:var(--title);font-weight:500}
@@ -539,7 +584,7 @@ function cliente() {
   const votos = (i) => i.votos.length + (i.base || 0);
   const um = (palavra, n) => palavra + (n === 1 ? "" : "s");
   const CHAVE = "sabia-cerimonia-nome";
-  // a retrospectiva: RETRO liga as etapas; AP é o apresentador (quem abriu, na máquina dele)
+  // RETRO: a retrospectiva (senão, a review); AP é o apresentador (quem abriu, na máquina dele)
   const RETRO = D.modo === "retrospective", AP = !!D.apresentador, PONTOS = ["positivo", "negativo", "melhoria"];
   const sel = new Set();  // os pontos que o apresentador marcou para agrupar
   let estado = D.estado, nome = null, ordem = "votos", tAviso, vivo = null;
@@ -584,8 +629,9 @@ function cliente() {
     vivo.onopen = () => { if (!$("#fora").hidden) location.reload(); };
   }
 
-  // quem está na página: só o nome, guardado neste navegador
+  // quem está na página: só o nome, guardado neste navegador; na review, quem não apresenta só acompanha, sem nome
   function desenharQuem() {
+    if (!RETRO && !AP) return void ($("#quem").hidden = true);
     $("#quem").innerHTML = nome
       ? '<i class="av">' + esc(iniciais(nome)) + "</i><span>" + esc(nome) + (AP ? " · apresenta" : "") + '</span><button type="button" class="btn" id="sair">Trocar</button>'
       : '<input id="nome" maxlength="40" list="equipe" placeholder="Seu nome" aria-label="Seu nome" autocomplete="off"><button type="submit" class="btn pri">Entrar</button>';
@@ -633,25 +679,35 @@ function cliente() {
       + '<div class="trab"><div class="trab-l cab-l"><span>Por trabalho</span><span class="leg"><i class="p"></i>até ' + fim + '<i class="d"></i>depois<i class="a"></i>em aberto</span><span class="trab-n">no prazo · depois · aberto</span><span class="trab-n">lead time médio</span></div>' + linhas + "</div></section>";
   })();
   $("#lista").innerHTML = numeros + D.grupos.map((g) =>
-    '<details class="bloco" open data-g="' + esc(g.cor) + '" data-grupo="' + esc(g.id) + '"><summary>' + SETA + "<h2>" + esc(g.nome) + '</h2><span class="n"></span>' + (g.sub ? "<span>" + esc(g.sub) + "</span>" : g.id === "licao" ? "<span>só as marcadas Sim viram Regra aprendida</span>" : g.id === "acao" ? "<span>as dos itens e as gerais</span>" : "")
+    '<details class="bloco' + (g.filho ? " filho" : "") + '" open data-g="' + esc(g.cor) + '" data-grupo="' + esc(g.id) + '"><summary>' + SETA + "<h2>" + esc(g.nome) + '</h2><span class="n"></span>' + (g.sub ? "<span>" + esc(g.sub) + "</span>" : g.id === "licao" ? "<span>só as marcadas Sim viram Regra aprendida</span>" : g.id === "acao" ? "<span>as dos itens e as gerais</span>" : "")
     + (g.mr && /^https?:\/\//.test(g.mr.url) ? '<a href="' + esc(g.mr.url) + '" target="_blank" rel="noopener">MR !' + esc(g.mr.iid) + "</a>" : "")
-    + '</summary><div class="rola"><table>' + (g.id === "acao" ? "<thead><tr><th>Ação</th><th>Item</th><th>Dono</th><th>Por</th><th></th></tr></thead>" : "") + '<tbody></tbody></table><form class="novo"><input name="texto" maxlength="280" autocomplete="off" placeholder="' + esc(g.id === "pedido" ? "Novo pedido" : D.modo === "review" ? "Retorno sobre este item" : g.id === "acao" ? "Nova ação geral, sem item" : g.id === "licao" ? "Lição levantada agora" : "Novo ponto") + '" aria-label="Novo ponto em ' + esc(g.nome) + '">'
-    + (g.dono ? donos : "") + '<button type="submit" class="btn">Incluir</button></form></div></details>').join("");
+    + '</summary><div class="rola"><table>' + (g.id === "acao" ? "<thead><tr><th>Ação</th><th>Item</th><th>Dono</th><th>Por</th><th></th></tr></thead>" : "") + '<tbody></tbody></table><form class="novo"><input name="texto" maxlength="280" autocomplete="off" placeholder="' + esc(g.id === "ideia" ? "Nova ideia ou necessidade" : D.modo === "review" ? "Feedback sobre esta entrega" : g.id === "acao" ? "Nova ação geral, sem item" : g.id === "licao" ? "Lição levantada agora" : "Novo ponto") + '" aria-label="Novo ponto em ' + esc(g.nome) + '">'
+    + (g.dono ? donos : "") + (RETRO ? "" : '<input name="autor" class="de-quem" maxlength="40" list="equipe" autocomplete="off" placeholder="De quem (se não for seu)" aria-label="De quem é">') + '<button type="submit" class="btn">Incluir</button></form></div></details>').join("");
 
-  // a review: todos os retornos à vista, sem etapas nem votos
+  // a faixa das etapas: a atual em destaque, o que se faz nela e, para quem apresenta, o botão que libera a próxima
+  function faixa(n, mais) {
+    $("#etapas").innerHTML = "<ol>" + D.etapas.map((e, k) => "<li" + (k === n ? ' class="atual" aria-current="step"' : k < n ? ' class="feita"' : "") + "><b>" + (k + 1) + "</b>" + esc(e.nome) + "</li>").join("") + "</ol><p>" + esc(D.etapas[n].dica) + "</p>"
+      + (AP ? '<div class="config">' + (mais || "") + (D.etapas[n + 1] ? '<button type="button" class="btn pri" id="liberar">' + esc(D.etapas[n + 1].liberar) + "</button>" : "") + "</div>" : "");
+  }
+
+  // a review: tudo à vista; só quem apresenta registra (inclui, altera e remove), no bloco que a etapa já liberou
   function desenharReview() {
-    let total = 0;
+    const nDe = (id) => D.etapas.findIndex((e) => e.id === id), n = Math.max(0, nDe(estado.etapa));
+    faixa(n);
     for (const g of D.grupos) {
-      const bloco = document.querySelector('.bloco[data-grupo="' + CSS.escape(g.id) + '"]');
+      const bloco = document.querySelector('.bloco[data-grupo="' + CSS.escape(g.id) + '"]'), ideia = g.id === "ideia", nG = ideia ? nDe("ideias") : 0;
+      bloco.hidden = n < nG;
+      bloco.querySelector(".novo").hidden = !AP;
       const itens = estado.itens.filter((i) => i.grupo === g.id).sort((a, b) => (a.em || 0) - (b.em || 0));
-      total += itens.length;
-      bloco.querySelector("summary .n").textContent = itens.length + " " + um(g.id === "pedido" ? "pedido" : "retorno", itens.length);
-      bloco.querySelector("tbody").innerHTML = itens.map((i) => '<tr class="ponto-l" data-id="' + esc(i.id) + '"><td class="tit">' + esc(i.texto) + '</td><td class="selo-c"><span class="selo">' + esc(g.tag) + '</span></td>'
-        + '<td class="quem-c"><i class="av" title="' + esc(i.autor ? "Criado por " + i.autor : "Veio do " + D.arquivo) + '">' + esc(i.autor ? iniciais(i.autor) : "md") + '</i></td><td class="fim"><button type="button" class="rm" title="Remover" aria-label="Remover o ponto">✕</button></td></tr>').join("")
-        || '<tr><td class="nada" colspan="5">' + (g.id === "pedido" ? "Nenhum pedido novo." : "Sem retorno ainda.") + "</td></tr>";
+      bloco.querySelector("summary .n").textContent = itens.length + " " + (ideia ? (itens.length === 1 ? "item novo" : "itens novos") : um("feedback", itens.length));
+      bloco.querySelector("tbody").innerHTML = itens.map((i) => '<tr class="ponto-l" data-id="' + esc(i.id) + '"><td class="tit">' + esc(i.texto) + (i.cadastrado ? '<span class="ja">' + esc(i.cadastrado) + "</span>" : "") + '</td><td class="selo-c"><span class="selo">' + esc(g.tag) + '</span></td>'
+        + '<td class="quem-c"><i class="av" title="' + esc(i.autor ? "Criado por " + i.autor : "Veio do " + D.arquivo) + '">' + esc(i.autor ? iniciais(i.autor) : "md") + '</i></td><td class="fim">'
+        + (AP ? '<button type="button" class="ac ed" aria-label="Alterar o texto">Alterar</button><button type="button" class="rm" title="Remover" aria-label="Remover">✕</button>' : "") + "</td></tr>").join("")
+        || '<tr><td class="nada" colspan="5">' + (ideia ? "Nenhuma ideia ou necessidade nova." : "Sem feedback ainda.") + "</td></tr>";
     }
     $("#pendente").hidden = !estado.nao_publicado;
-    if ($("#total")) $("#total").textContent = total + " " + um("ponto", total);
+    const pub = $("#publicar");
+    if (pub) { pub.disabled = n < D.etapas.length - 1; pub.title = pub.disabled ? "A review é publicada na última etapa" : ""; }
   }
 
   // a retrospectiva: a faixa das etapas e, em cada bloco, o que a etapa mostra e deixa fazer
@@ -660,9 +716,7 @@ function cliente() {
     const por = (id) => estado.itens.find((i) => i.id === id), meu = (i) => !!eu && !!i.autor && chave(i.autor) === eu, chegada = (a, b) => (a.em || 0) - (b.em || 0);
     const tagDe = (grupo) => D.grupos.find((g) => g.id === grupo)?.tag ?? grupo;
     for (const id of [...sel]) { const i = por(id); if (etapa !== "agrupar" || !i || i.em_grupo) sel.delete(id); }
-    $("#etapas").innerHTML = "<ol>" + D.etapas.map((e, k) => "<li" + (k === n ? ' class="atual" aria-current="step"' : k < n ? ' class="feita"' : "") + "><b>" + (k + 1) + "</b>" + esc(e.nome) + "</li>").join("") + "</ol><p>" + esc(E.dica) + "</p>"
-      + (AP ? '<div class="config">' + (etapa === "agrupar" ? '<button type="button" class="btn" id="agrupar"' + (sel.size < 2 ? " disabled" : "") + ">Agrupar selecionados" + (sel.size ? " (" + sel.size + ")" : "") + "</button>" : "")
-        + (D.etapas[n + 1] ? '<button type="button" class="btn pri" id="liberar">' + esc(D.etapas[n + 1].liberar) + "</button>" : "") + "</div>" : "");
+    faixa(n, etapa === "agrupar" ? '<button type="button" class="btn" id="agrupar"' + (sel.size < 2 ? " disabled" : "") + ">Agrupar selecionados" + (sel.size ? " (" + sel.size + ")" : "") + "</button>" : "");
     const max = Math.max(1, ...estado.itens.map(votos));
     const quemTd = (i, nMembros) => '<td class="quem-c"><i class="av" title="' + esc(i.agrupa ? "Grupo de " + nMembros + " pontos" : i.autor ? "Criado por " + i.autor : i.do_ciclo ? "Lição de " + i.origem : "Veio do " + D.arquivo) + '">' + esc(i.agrupa ? "×" + nMembros : i.autor ? iniciais(i.autor) : i.do_ciclo ? String(i.origem).slice(0, 2) : "md") + "</i></td>";
     const bt = (cls, texto, rotulo) => '<button type="button" class="ac ' + cls + '" aria-label="' + esc(rotulo) + '">' + texto + "</button>";
@@ -724,12 +778,12 @@ function cliente() {
   }
   const desenhar = RETRO ? desenharRetro : desenharReview;
 
-  // o popup do texto: alterar um ponto, uma ação ou uma lição, e a ação nova de um item
+  // o popup do texto: alterar um ponto, uma ação, um feedback ou uma ideia, e a ação nova de um item
   let pedido = null;
   function abrirItem(acao, item) {
     const nova = acao.tipo === "incluir", ehAcao = nova || item.grupo === "acao";
     pedido = acao;
-    $("#item-titulo").textContent = nova ? "Nova ação" : ehAcao ? "Alterar a ação" : item.grupo === "licao" ? "Alterar a lição" : "Alterar o ponto";
+    $("#item-titulo").textContent = nova ? "Nova ação" : ehAcao ? "Alterar a ação" : item.grupo === "licao" ? "Alterar a lição" : item.grupo === "ideia" ? "Alterar a ideia ou necessidade" : RETRO ? "Alterar o ponto" : "Alterar o feedback";
     $("#item-sub").textContent = nova ? "Para o item: " + item.texto : ""; $("#item-sub").hidden = !nova;
     $("#item-texto").value = nova ? "" : item.texto;
     $("#item-dono-l").hidden = !ehAcao; $("#item-dono").innerHTML = opcoesDono; $("#item-dono").value = nova ? "" : item.dono || "";
@@ -815,7 +869,7 @@ function cliente() {
     if (!exigeNome()) return;
     const texto = f.elements.texto.value.trim();
     if (!texto) return f.elements.texto.focus();
-    const r = await enviar({ tipo: "incluir", grupo: f.closest(".bloco").dataset.grupo, texto, dono: f.elements.dono?.value || null });
+    const r = await enviar({ tipo: "incluir", grupo: f.closest(".bloco").dataset.grupo, texto, dono: f.elements.dono?.value || null, autor: f.elements.autor?.value.trim() || null });
     if (r) { f.elements.texto.value = ""; f.elements.texto.focus(); }
   });
   $("#ordem")?.addEventListener("change", (e) => { ordem = e.target.value; desenhar(); });
@@ -841,10 +895,10 @@ function cliente() {
 }
 
 /** A página: HTML único, sem rede, com os dados da cerimônia e o estado em <script id="dados">. `local` diz se quem
- *  pediu a página está na máquina do servidor: só ela vê o botão Publicar e, na retrospectiva, é o apresentador, que
- *  libera as etapas, agrupa os pontos e responde o Sim ou Não das lições. */
+ *  pediu a página está na máquina do servidor: só ela vê o botão Publicar e é o apresentador, que libera as etapas e,
+ *  na retrospectiva, agrupa os pontos e responde o Sim ou Não das lições; na review, só ele registra. */
 export function paginaCerimonia(dados, estado, token = "", { local = false } = {}) {
-  const arquivo = path.basename(dados.sprint.arquivo), retro = dados.modo === "retrospective", embutido = { ...dados, arquivo, apresentador: local && retro, estado };
+  const arquivo = path.basename(dados.sprint.arquivo), retro = dados.modo === "retrospective", embutido = { ...dados, arquivo, apresentador: local, estado };
   const publica = local && dados.publicar.ok;
   return `<!doctype html>
 <html lang="pt-BR" data-sobria="sobria-sabia">
@@ -882,7 +936,7 @@ export function paginaCerimonia(dados, estado, token = "", { local = false } = {
     ${local ? `<button type="button" class="btn pri" id="publicar">${publica ? "Publicar" : `Gravar no ${esc(arquivo)}`}</button>` : ""}
   </div>
 </div>
-${retro ? `<nav class="etapas" id="etapas" aria-label="Etapas da retrospectiva"></nav>` : ""}
+<nav class="etapas" id="etapas" aria-label="Etapas da ${esc(dados.titulo.toLowerCase())}"></nav>
 <main class="mesa"><div class="lista" id="lista"></div></main>
 <footer class="rodape"><span id="gerado"></span><span>${esc(dados.sprint.arquivo)}</span><span>Sabiá ${esc(dados.sabia)}</span></footer>
 <dialog id="modal" aria-labelledby="modal-titulo"><form method="dialog" id="form-publicar">
@@ -892,7 +946,7 @@ ${retro ? `<nav class="etapas" id="etapas" aria-label="Etapas da retrospectiva">
   <p class="erro" id="erro-publicar" role="alert" hidden></p>
   <div class="botoes"><button type="button" class="btn" id="cancelar">Cancelar</button><button type="submit" class="btn pri" id="confirmar">Publicar</button></div>
 </form></dialog>
-${retro ? `<dialog id="modal-etapa" aria-labelledby="etapa-titulo"><form method="dialog" id="form-etapa">
+<dialog id="modal-etapa" aria-labelledby="etapa-titulo"><form method="dialog" id="form-etapa">
   <h2 id="etapa-titulo"></h2>
   <p class="sub" id="etapa-sub"></p>
   <p class="nota">Não dá para voltar à etapa anterior.</p>
@@ -907,7 +961,7 @@ ${retro ? `<dialog id="modal-etapa" aria-labelledby="etapa-titulo"><form method=
   <p class="erro" role="alert" hidden></p>
   <div class="botoes"><button type="button" class="btn" data-fechar>Cancelar</button><button type="submit" class="btn pri">Gravar</button></div>
 </form></dialog>
-<dialog id="modal-grupo" aria-labelledby="grupo-h"><form method="dialog" id="form-grupo">
+${retro ? `<dialog id="modal-grupo" aria-labelledby="grupo-h"><form method="dialog" id="form-grupo">
   <h2 id="grupo-h"></h2>
   <p class="sub">Os pontos viram um item só, com o título que você escolher: é nele que o time vota.</p>
   <label>Título a partir de um dos pontos<select id="grupo-combo"></select></label>
@@ -928,7 +982,7 @@ const LOCAIS = ["127.0.0.1", "::1", "::ffff:127.0.0.1"];
 /** O comando: lê a sprint, carrega os pontos da cerimônia (os que já estão na
  *  seção do .md), sobe o servidor e devolve { url, urls, fechar, fechou, token }. Rotas: GET / (a
  *  página), /dados.json, /vivo?nome=<quem> (a visão da pessoa a cada mudança) e POST /acao (com o token que só a
- *  página conhece). O apresentador da retrospectiva é quem pede da própria máquina do servidor. */
+ *  página conhece). O apresentador é quem pede da própria máquina do servidor. */
 export async function abrirCerimonia({ projeto = ".", modo, exec, log = console.log, porta, rede = false, host, agora } = {}) {
   if (!MODOS[modo]) throw new Error(`cerimônia desconhecida: ${modo}`);
   const usuario = usuarioDaMaquina(projeto, exec), token = randomUUID();
@@ -936,9 +990,11 @@ export async function abrirCerimonia({ projeto = ".", modo, exec, log = console.
   let dados = gerar();
   const md = () => path.join(projeto, dados.sprint.arquivo);
   // de onde a cerimônia parte: o que já está na seção do sprint-<nn>.md; ponto novo, só quem está na página inclui
-  const estado = { versao: 1, modo, sprint: dados.sprint.chave, itens: importarSecao(dados, fs.readFileSync(md(), "utf8")) };
-  // a retrospectiva começa pela etapa dos pontos; a que já está no sprint-<nn>.md foi feita: abre na última, com tudo à vista
-  if (modo === "retrospective") estado.etapa = estado.itens.length ? ETAPAS.at(-1).id : ETAPAS[0].id;
+  const inicial = fs.readFileSync(md(), "utf8"), estado = { versao: 1, modo, sprint: dados.sprint.chave, itens: importarSecao(dados, inicial) };
+  // a cerimônia começa pela primeira etapa; a que já está no sprint-<nn>.md foi feita: abre na última, com tudo à vista
+  // (a review publicada sem feedback nenhum tem só as linhas "sem feedback": vale a seção ter linha)
+  const feita = modo === "retrospective" ? estado.itens.length > 0 : lerSecao(inicial, dados.secao).length > 0;
+  estado.etapa = ETAPAS_DE[modo].at(feita ? -1 : 0).id;
   juntarLicoes(estado, dados.licoes);
   // a cerimônia fica na memória: o sprint-<nn>.md só muda no Publicar; `nao_publicado` diz à página se há o que publicar
   const marcar = () => { const t = fs.readFileSync(md(), "utf8"); estado.nao_publicado = comASecao(dados, estado, t) !== t; return estado; };
@@ -960,7 +1016,7 @@ export async function abrirCerimonia({ projeto = ".", modo, exec, log = console.
           const acao = JSON.parse(corpo), visao = () => visaoDe(estado, quemE(acao.nome, local));
           if (acao.tipo === "publicar") {
             if (!local) throw new Error("publicar é de quem abriu a cerimônia, na máquina dela");
-            if (estado.etapa && estado.etapa !== ETAPAS.at(-1).id) throw new Error("a retrospectiva é publicada na última etapa, a das lições aprendidas");
+            if (estado.etapa !== ETAPAS_DE[modo].at(-1).id) throw new Error(`a ${dados.titulo.toLowerCase()} é publicada na última etapa (${ETAPAS_DE[modo].at(-1).nome})`);
             // quem não pode fazer o commit (fora da equipe ou da branch base) ainda grava o arquivo
             const r = dados.publicar.ok ? publicar(projeto, dados, estado, { exec, usuario, mensagem: acao.mensagem }) : (fs.writeFileSync(md(), comASecao(dados, estado, fs.readFileSync(md(), "utf8"))), { commit: null, gravado: path.basename(dados.sprint.arquivo) });
             marcar();

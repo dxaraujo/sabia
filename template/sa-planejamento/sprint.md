@@ -21,8 +21,8 @@
 ## Review
 
 - FT-031 · cliente aprovou o extrato — por Rui Prado; faltou o total no rodapé — por Ana Souza
-- FT-034 · sem retorno
-- pedido novo · filtro por data no extrato — por Rui Prado (FT-040)
+- FT-034 · sem feedback
+- ideia ou necessidade · filtro por data no extrato — por Rui Prado (FT-040)
 
 ## Retro
 
@@ -62,9 +62,10 @@
   | desenvolvimento | `sa-desenvolver.iniciar` | `sa-desenvolver.encerrar` (a data do merge) |
   | atendimento | `sa-atender.atender` (assumir) | `sa-atender.atender` (finalizar) |
 - A reserva de capacidade consumida é a contagem das linhas de atendimento.
-- Review: uma linha por item concluído, `<id> · <retorno> — por <quem>; <retorno> — por <quem>` ou `<id> · sem retorno`,
-  e uma por pedido novo, `pedido novo · <pedido> — por <quem>`, que ganha o id no fim depois do cadastro. A página
-  `sabia review` lê e grava essas linhas; a review não tem votação.
+- Review: uma linha por entrega, `<id> · <feedback> — por <quem>; <feedback> — por <quem>` ou `<id> · sem feedback`, e
+  uma por ideia ou necessidade nova, `ideia ou necessidade · <texto> — por <quem>`, que ganha o id no fim depois do
+  cadastro. Entrega é a fatia, o bug ou o atendimento concluído na sprint e o épico concluído ou com entrega nela. A
+  página `sabia review` lê e grava essas linhas; a review não tem votação.
 - Retro: uma linha por item, `- Positivo: …` · `- Negativo: …` · `- Melhoria: …` · `- Lição: …` · `- Ação: …`, e a linha
   Números. Cada linha guarda, nesta ordem e separados por ` · `: o texto, `origem <id>` (só na lição do ciclo),
   `sobre <Categoria>: <título do item>` (só na ação que nasceu de um item), `por <quem levantou>`, `dono <usuario>` (só na

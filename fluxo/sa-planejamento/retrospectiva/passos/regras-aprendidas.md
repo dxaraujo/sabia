@@ -10,8 +10,7 @@ A `## Retro` do `sprint-<nn>.md`, com as linhas `- Lição:` das lições marcad
 1. As lições a considerar são as linhas `- Lição: <lição> · origem <id>` da `## Retro`: na página
    `sabia retrospective`, a última etapa lista as lições dos itens concluídos no ciclo (do `status.md` da fatia ou do
    registro de Sustentação), o apresentador marca Sim ou Não em cada uma com o time, e só as marcadas Sim vão para o
-   `sprint-<nn>.md`. Na página não se cria lição: o que o time levanta na hora entra como ponto ou ação. A linha
-   gravada antes das etapas, com `<n> votos`, vale como marcada.
+   `sprint-<nn>.md`. Na página não se cria lição: o que o time levanta na hora entra como ponto ou ação.
 2. Sem a página (ou para conferir o que ela não lê, como a lição do MR na trilha trivial): chame a
    `sa-status.licoes-aprendidas`, mostre a lista e pergunte quais o time considera; grave as escolhidas como linhas
    `- Lição:` no mesmo formato.

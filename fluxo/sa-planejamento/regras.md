@@ -29,6 +29,9 @@ Valem em todos os fluxos da skill.
   Votação: cada um vota nos itens e só ele e o apresentador veem o voto. Ações: o resultado aparece e o time propõe
   ações, de um item ou gerais. Lições aprendidas: o apresentador marca Sim ou Não em cada lição do ciclo. Terminada a
   etapa, o que é dela não se altera mais; só o apresentador ainda inclui. Publica-se na última etapa.
+  A review também anda em etapas do apresentador, com tudo à vista: o feedback de cada entrega (fatia, bug,
+  atendimento e épico) e, depois, as novas ideias e necessidades. Nela só o apresentador registra (inclui, dizendo de
+  quem é, altera e remove); os demais acompanham.
   Quem roda o comando é a pessoa, no terminal dela. O agente não levanta ponto nem prepara ponto de partida: quem
   inclui é quem está na página, com o próprio nome. Sem a página, o rito segue na conversa, no mesmo formato.
 - **Previsão pela vazão**: itens de desenvolvimento concluídos por sprint, sem pontos. A meta é o compromisso; a

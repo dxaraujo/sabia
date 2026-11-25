@@ -3,7 +3,7 @@
 ---
 ## Entrada
 
-"review da sprint". Qualquer pessoa conduz; o retorno é de quem está presente.
+"review da sprint". Qualquer pessoa conduz; o feedback é de quem está presente.
 
 ## Faça
 

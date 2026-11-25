@@ -54,15 +54,21 @@ test("cerimônia: os números da sprint, os grupos da retro e os itens entregues
   const r2 = cerimoniaDoProjeto({ projeto: p, modo: "retrospective", exec: git(), agora }).resumo;
   assert.deepEqual(r2.sle, { dias: 7, alvo: 85, medidos: 2, dentro: 1, pct: 50 });
   assert.equal(r2.atendimento.reserva_pct, 20);
-  // a review: um grupo por item cujo trabalho principal foi concluído na sprint, e o dos pedidos novos
+  // a review: um grupo por entrega (o trabalho principal concluído na sprint) e o das novas ideias e necessidades
   const review = cerimoniaDoProjeto({ projeto: p, modo: "review", exec: git(), agora });
-  assert.deepEqual(review.grupos.map((g) => g.id), ["AT-001", "FT-001", "pedido"]);
-  assert.equal(review.grupos[1].nome, "FT-001 · Extrato");
-  assert.equal(review.grupos[1].sub, "fatia · Ana Souza · concluída em 12/11");
+  assert.deepEqual(review.grupos.map((g) => g.id), ["AT-001", "FT-001", "ideia"]);
+  assert.deepEqual([review.grupos[1].nome, review.grupos[1].tag, review.grupos[1].sub], ["FT-001 · Extrato", "Feedback", "fatia · Ana Souza · concluída em 12/11"]);
+  assert.deepEqual(review.etapas.map((e) => e.id), ["feedback", "ideias"]);
+  // o épico é entrega quando teve fatia entregue na sprint (ou foi concluído, ou a especificação dele fechou nela): vem antes das fatias dele
+  const pe = projeto("epico"), bl = path.join(pe, ".sabia/planejamento/backlog.md");
+  fs.writeFileSync(bl, fs.readFileSync(bl, "utf8").replace("| FT-001 | Extrato | fatia | concluida |  | M | ana |  |", "| FT-001 | Extrato | fatia | concluida |  | M | ana | EP-01 |")
+    + "| EP-01 | Extratos | épico | fatiado |  |  |  |  |  |  |  | 2026-11-01 |  |\n| FT-003 | Exportar | fatia | aceita |  | P |  | EP-01 |  |  |  | 2026-11-09 |  |\n| FT-004 | Fora | fatia | cancelada |  | P |  | EP-01 |  |  |  | 2026-11-09 |  |\n| EP-02 | Sem entrega | épico | fatiado |  |  |  |  |  |  |  | 2026-11-01 |  |\n");
+  const ge = cerimoniaDoProjeto({ projeto: pe, modo: "review", exec: git(), agora }).grupos;
+  assert.deepEqual(ge.map((g) => `${g.id}${g.filho ? " (filho)" : ""} | ${g.sub}`), ["AT-001 | sustentação · Bia Lima · concluída em 24/11", "EP-01 | épico · em andamento · 1 de 2 fatias", "FT-001 (filho) | fatia · Ana Souza · concluída em 12/11 · do EP-01", "ideia | cada uma entra no backlog como item novo, para a triagem"]);
   assert.throws(() => cerimoniaDoProjeto({ projeto: p, modo: "daily", exec: git(), agora }), /cerimônia desconhecida/);
 });
 
-test("retrospectiva: as etapas — pontos ocultos, agrupamento, votação oculta e ações por item; as linhas da Retro e a volta do .md; a review segue sem etapas", () => {
+test("retrospectiva: as etapas — pontos ocultos, agrupamento, votação oculta e ações por item; as linhas da Retro e a volta do .md; a review em duas etapas, em que só quem apresenta registra", () => {
   const p = projeto("linhas"), dados = cerimoniaDoProjeto({ projeto: p, modo: "retrospective", exec: git(), agora }), estado = { etapa: "pontos", itens: [] };
   const AP = { apresentador: true }, faz = (acao, quando, papel) => aplicar(estado, acao, dados, quando, papel), textos = (v) => v.itens.map((i) => i.texto);
   assert.deepEqual(dados.etapas.map((e) => e.id), ["pontos", "agrupar", "votar", "acoes", "licoes"]);
@@ -167,8 +173,8 @@ test("retrospectiva: as etapas — pontos ocultos, agrupamento, votação oculta
     ["melhoria", "Fila de revisão", "Ana", null, ""], ["acao", "Revisar o MR em 1 dia", "Ana", "ana", ""], ["acao", "Rever o quadro toda segunda", "Bia", null, ""]]);
   assert.equal(lidos.find((i) => i.grupo === "acao").sobre, grupoLido.id);
   assert.deepEqual(linhasDaSecao(dados, { itens: lidos }), linhas);
-  // o formato anterior (bom · melhorar · ações com voto) ainda é lido; o `sobre` sem o item volta ao texto da ação
-  assert.deepEqual(importarSecao(dados, "## Retro\n- Bom: a\n- Melhorar: b · 2 votos\n- Ação: c · sobre Negativo: sumiu\n").map((i) => [i.grupo, i.texto, i.base ?? 0]), [["positivo", "a", 0], ["melhoria", "b", 2], ["acao", "c - sobre Negativo: sumiu", 0]]);
+  // a linha escrita à mão: o voto sem nome conta como base; o `sobre` sem o item volta ao texto da ação
+  assert.deepEqual(importarSecao(dados, "## Retro\n- Positivo: a\n- Melhoria: b · 2 votos\n- Ação: c · sobre Negativo: sumiu\n").map((i) => [i.grupo, i.texto, i.base ?? 0]), [["positivo", "a", 0], ["melhoria", "b", 2], ["acao", "c - sobre Negativo: sumiu", 0]]);
   faz({ tipo: "avancar", nome: "Ana", de: "acoes" }, 0, AP);
 
   // etapa 5: as ações ficam só texto; quem apresenta ainda inclui; não há etapa depois
@@ -177,19 +183,32 @@ test("retrospectiva: as etapas — pontos ocultos, agrupamento, votação oculta
   faz({ tipo: "incluir", nome: "Ana", grupo: "acao", texto: "Avisar o time", sobre: b.id }, 10, AP);
   assert.throws(() => faz({ tipo: "avancar", nome: "Ana", de: "licoes" }, 0, AP), /última etapa/);
 
-  // a review: uma linha por item entregue, os retornos juntos, e os pedidos novos; sem etapas nem votos
-  const rv = cerimoniaDoProjeto({ projeto: p, modo: "review", exec: git(), agora }), er = { itens: [] };
-  aplicar(er, { tipo: "incluir", nome: "Cliente", grupo: "FT-001", texto: "Aprovado; faltou o filtro" }, rv, 1);
-  aplicar(er, { tipo: "incluir", nome: "Cliente", grupo: "FT-001", texto: "Tela clara" }, rv, 2);
-  aplicar(er, { tipo: "incluir", nome: "Cliente", grupo: "pedido", texto: "Filtro por data" }, rv, 3);
-  aplicar(er, { tipo: "incluir", nome: "Rui", grupo: "pedido", texto: "Engano" }, rv, 4);
-  aplicar(er, { tipo: "remover", nome: "Ana", id: er.itens[3].id }, rv);  // na review, qualquer um remove
-  assert.throws(() => aplicar(er, { tipo: "votar", nome: "Ana", id: er.itens[1].id }, rv), /a review não tem votação/);
-  assert.throws(() => aplicar(er, { tipo: "avancar", nome: "Ana", de: "pontos" }, rv, 0, AP), /não existe mais/);
-  assert.deepEqual([rv.etapas, visaoDe(er, {})], [[], er]);  // a review mostra tudo a todos
+  // a review: o feedback de cada entrega e, liberada a etapa, as novas ideias e necessidades; tudo à vista, sem votos,
+  // e só quem apresenta registra (inclui, dizendo de quem é, altera e remove): os demais acompanham
+  const rv = cerimoniaDoProjeto({ projeto: p, modo: "review", exec: git(), agora }), er = { etapa: "feedback", itens: [] }, rf = (acao, quando, papel = AP) => aplicar(er, { nome: "Ana", ...acao }, rv, quando, papel);
+  rf({ tipo: "incluir", grupo: "FT-001", texto: "Aprovado; faltou o filtro", autor: "Cliente" }, 1);
+  rf({ tipo: "incluir", grupo: "FT-001", texto: "Tela clara", autor: "Cliente" }, 2);
+  for (const acao of [{ tipo: "incluir", grupo: "FT-001", texto: "Meu" }, { tipo: "editar", id: er.itens[1].id, texto: "x" }, { tipo: "remover", id: er.itens[1].id }, { tipo: "avancar", de: "feedback" }])
+    assert.throws(() => rf({ ...acao, nome: "Cliente" }, 0, {}), /só quem apresenta registra/);
+  assert.throws(() => rf({ tipo: "incluir", grupo: "FT-001", texto: "Tela clara" }), /já está na lista/);
+  assert.throws(() => rf({ tipo: "incluir", grupo: "ideia", texto: "Filtro por data" }), /vêm depois do feedback/);
+  rf({ tipo: "editar", id: er.itens[1].id, texto: "Tela clara — e rápida" });
+  assert.deepEqual([er.itens[1].texto, er.itens[1].autor], ["Tela clara - e rápida", "Cliente"]);  // o texto muda, de quem é fica
+  rf({ tipo: "avancar", de: "feedback" });
+  rf({ tipo: "incluir", grupo: "AT-001", texto: "Resolveu no mesmo dia" }, 3);  // o feedback ainda entra depois da etapa; sem `autor`, é de quem apresenta
+  rf({ tipo: "incluir", grupo: "ideia", texto: "Filtro por data", autor: "Cliente" }, 4);
+  rf({ tipo: "incluir", grupo: "ideia", texto: "Engano", autor: "Rui" }, 5);
+  rf({ tipo: "remover", id: er.itens.at(-1).id });
+  assert.throws(() => rf({ tipo: "votar", nome: "Ana", id: er.itens[1].id }, 0, AP), /a review não tem votação/);
+  assert.throws(() => rf({ tipo: "avancar", nome: "Ana", de: "ideias" }, 0, AP), /última etapa/);
+  assert.equal(visaoDe(er, {}), er);  // a review mostra tudo a todos
   const lr = linhasDaSecao(rv, er);
-  assert.deepEqual(lr, ["- AT-001 · sem retorno", "- FT-001 · Aprovado, faltou o filtro — por Cliente; Tela clara — por Cliente", "- pedido novo · Filtro por data — por Cliente"]);
-  assert.deepEqual(importarSecao(rv, trocarSecao(ler(p), "Review", lr)).map((i) => [i.grupo, i.texto, i.autor]), [["FT-001", "Aprovado, faltou o filtro", "Cliente"], ["FT-001", "Tela clara", "Cliente"], ["pedido", "Filtro por data", "Cliente"]]);
+  assert.deepEqual(lr, ["- AT-001 · Resolveu no mesmo dia — por Ana", "- FT-001 · Aprovado, faltou o filtro — por Cliente; Tela clara - e rápida — por Cliente", "- ideia ou necessidade · Filtro por data — por Cliente"]);
+  assert.deepEqual(importarSecao(rv, trocarSecao(ler(p), "Review", lr)).map((i) => [i.grupo, i.texto, i.autor]), [["AT-001", "Resolveu no mesmo dia", "Ana"], ["FT-001", "Aprovado, faltou o filtro", "Cliente"], ["FT-001", "Tela clara - e rápida", "Cliente"], ["ideia", "Filtro por data", "Cliente"]]);
+  // o id que o cadastro pôs no fim da linha não vira nome de quem levantou, e volta ao republicar
+  const cadastrada = importarSecao(rv, "## Review\n- AT-001 · sem feedback\n- FT-001 · bom — por Rui\n- ideia ou necessidade · Filtro — por Rui Prado (FT-040)\n");
+  assert.deepEqual(cadastrada.map((i) => [i.grupo, i.texto, i.autor, i.cadastrado ?? null]), [["FT-001", "bom", "Rui", null], ["ideia", "Filtro", "Rui Prado", "FT-040"]]);
+  assert.deepEqual(linhasDaSecao(rv, { itens: cadastrada }), ["- AT-001 · sem feedback", "- FT-001 · bom — por Rui", "- ideia ou necessidade · Filtro — por Rui Prado (FT-040)"]);
 });
 
 test("retrospectiva: as lições do ciclo aparecem na última etapa; quem apresenta marca Sim ou Não e só as marcadas Sim vão para o sprint-<nn>.md", () => {
@@ -233,9 +252,6 @@ test("retrospectiva: as lições do ciclo aparecem na última etapa; quem aprese
   assert.deepEqual(lido.itens.filter((i) => i.grupo === "licao").map((i) => `${i.texto} | ${i.origem ?? "-"} | ${i.manter} | ${!!i.do_ciclo}`), [
     "Conferir as colunas no banco antes do DDL de teste | FT-001 | true | true", "L-2 - JaCoCo não rodou | FT-001 | null | true", "Quebrar a extração grande em lotes | AT-001 | null | true"]);
   assert.deepEqual(linhasDaSecao(dados, lido), linhas);
-  // a lição do formato anterior, marcada por voto, é lida como Sim e regravada sem os votos
-  const antiga = importarSecao(dados, "## Retro\n- Lição: Medir antes · origem FT-009 · 2 votos (Ana, Bia)\n");
-  assert.deepEqual([antiga[0].manter, antiga[0].votos, linhasDaSecao(dados, { itens: antiga })], [true, [], ["- Lição: Medir antes · origem FT-009"]]);
 });
 
 test("cerimônia: o servidor leva a página no tema do quadro, dá a cada pessoa a visão dela, anda pelas etapas com quem abriu e só grava o sprint-<nn>.md no Publicar", async () => {
@@ -300,13 +316,24 @@ test("cerimônia: o servidor leva a página no tema do quadro, dá a cada pessoa
     const e2 = (await (await fetch(q2.url + "dados.json")).json()).estado;
     assert.deepEqual([e2.etapa, e2.itens.map((i) => `${i.autor} ${i.votos.map((v) => v.nome).join()}`)], ["licoes", ["Ana Souza ", "Bia Bia", "Bia "]]);
   } finally { q2.fechar(); await q2.fechou; }
-  // a review não tem etapas nem apresentador
+  // a review também tem etapas e apresentador, sem o agrupamento; começa no feedback e publica na última
   const q3 = await abrirCerimonia({ projeto: p, modo: "review", exec: git(), log: () => {}, porta: 0, host: "127.0.0.1", agora });
   try {
-    const h3 = await (await fetch(q3.url)).text();
-    assert.doesNotMatch(h3, /id="etapas"|id="modal-etapa"/);
-    assert.deepEqual([embutidoDe(h3).apresentador, embutidoDe(h3).estado.etapa], [false, undefined]);
+    const h3 = await (await fetch(q3.url)).text(), post3 = async (corpo) => (await fetch(q3.url + "acao", { method: "POST", headers: { "x-sabia-token": q3.token }, body: JSON.stringify(corpo) })).json();
+    assert.match(h3, /<nav class="etapas" id="etapas" aria-label="Etapas da review"/);
+    assert.match(h3, /id="modal-etapa"/);
+    assert.doesNotMatch(h3, /id="modal-grupo"/);
+    assert.deepEqual([embutidoDe(h3).apresentador, embutidoDe(h3).estado.etapa], [true, "feedback"]);
+    assert.match((await post3({ tipo: "publicar" })).erro, /a review é publicada na última etapa \(Novas ideias e necessidades\)/);
+    await post3({ tipo: "incluir", nome: "Ana Souza", autor: "Rui", grupo: "FT-001", texto: "Aprovado" });
+    assert.equal((await post3({ tipo: "avancar", nome: "Ana Souza", de: "feedback" })).estado.etapa, "ideias");
+    await post3({ tipo: "incluir", nome: "Ana Souza", autor: "Rui", grupo: "ideia", texto: "Filtro por data" });
+    assert.equal((await post3({ tipo: "publicar" })).ok, true);
+    assert.match(ler(p), /## Review\n- AT-001 · sem feedback\n- FT-001 · Aprovado — por Rui\n- ideia ou necessidade · Filtro por data — por Rui\n## Retro\n/);
   } finally { q3.fechar(); await q3.fechou; }
+  // a review já publicada abre na última etapa
+  const q4 = await abrirCerimonia({ projeto: p, modo: "review", exec: git(), log: () => {}, porta: 0, host: "127.0.0.1", agora });
+  try { assert.equal((await (await fetch(q4.url + "dados.json")).json()).estado.etapa, "ideias"); } finally { q4.fechar(); await q4.fechou; }
 });
 
 test("cerimônia: publicar faz o commit só do sprint-<nn>.md, com a mensagem do fluxo, e diz quando o push falha", () => {
@@ -316,7 +343,7 @@ test("cerimônia: publicar faz o commit só do sprint-<nn>.md, com a mensagem do
   assert.throws(() => publicar(p, dados, estado, { exec: git({ commit: { status: 1, stderr: "hook recusou" } }), usuario: ana }), /git commit: hook recusou/);
   assert.equal(ler(p), antes);  // o commit falhou: o arquivo volta ao que era
   assert.deepEqual(publicar(p, dados, estado, { exec: git({ chamadas }), usuario: ana }), { commit: "2026/Sprint 02: review" });
-  assert.ok(ler(p).endsWith("## Review\n- AT-001 · sem retorno\n- FT-001 · sem retorno\n## Retro\n"));
+  assert.ok(ler(p).endsWith("## Review\n- AT-001 · sem feedback\n- FT-001 · sem feedback\n## Retro\n"));
   assert.deepEqual(chamadas, ["pull --ff-only", `add -- ${SPRINT}`, `commit --quiet -m 2026/Sprint 02: review -- ${SPRINT}`]);
   assert.throws(() => publicar(p, dados, estado, { exec: git({ limpo: true }), usuario: ana }), /nada a publicar/);
   assert.throws(() => publicar(p, dados, estado, { exec: git({ push: { status: 1, stderr: "rejected" } }), usuario: ana, mensagem: "Task 7 - review\n" }), /o commit "Task 7 - review" ficou só nesta máquina; o push falhou: rejected/);
