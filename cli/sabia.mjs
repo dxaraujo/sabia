@@ -1346,9 +1346,10 @@ const USO = [
     "      as colunas (ordem, nome, oculta) vêm de .sabia/config/kanban.json, que a própria página gera\n" +
     "      grava (impedir, liberar, cancelar, sprint e backlog, concluir, prioridade) com commit e push na branch base,\n" +
     "      para quem é do equipe.json pelo git da máquina; fora da branch base ou com alteração pendente, só mostra"],
-  ["sabia review", "a página da review da sprint, em etapas que o apresentador libera: o feedback de cada entrega e as novas ideias e necessidades", "[--projeto <pasta>] [--porta <n>] (padrão: 4781) [--rede]\n" +
+  ["sabia review", "a página da review da sprint, em etapas que o apresentador libera: o feedback de cada entrega, as novas ideias e necessidades e a repriorização do backlog", "[--projeto <pasta>] [--porta <n>] (padrão: 4781) [--rede]\n" +
     "      o apresentador é quem abre a página nesta máquina: só ele registra, dizendo de quem é cada feedback; os demais acompanham\n" +
     "      o sprint-<nn>.md só muda no botão Publicar, na última etapa: pede a mensagem do commit, grava a seção ## Review e faz o commit e o push\n" +
+    "      na repriorização, quem apresenta e tem produto reordena o backlog e marca itens a cancelar: o backlog.md vai no mesmo commit do Publicar\n" +
     "      --rede escuta na rede local e mostra o link para os stakeholders"],
   ["sabia retrospective", "a página da retrospectiva da sprint, em etapas que o apresentador libera: pontos, agrupamento, votação, ações e lições aprendidas", "[--projeto <pasta>] [--porta <n>] (padrão: 4782) [--rede]\n" +
     "      o apresentador é quem abre a página nesta máquina; os pontos e os votos de cada pessoa ficam ocultos dos demais até ele liberar\n" +

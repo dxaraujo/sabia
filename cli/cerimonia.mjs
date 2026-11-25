@@ -5,14 +5,16 @@
 // seus), agrupamento, votação (cada um vê só o seu voto), ações e lições aprendidas. O que é oculto não sai do
 // servidor: cada pessoa recebe a visão dela (`visaoDe`). A review também anda em etapas do apresentador, com tudo à
 // vista: o feedback de cada entrega e, depois, as novas ideias e necessidades; nela, só o apresentador registra (inclui,
-// altera e remove), e os demais acompanham.
+// altera e remove), e os demais acompanham. A última etapa dela é a repriorização do backlog: quem apresenta, com
+// `produto`, reordena e marca itens a cancelar; o `backlog.md` só muda no Publicar, no mesmo commit, pelas regras do
+// quadro Kanban (`acoes.mjs`).
 // Servidor node:http sem dependências, como o do quadro; com --rede, escuta na rede local para o time abrir o link.
 import fs from "node:fs";
 import path from "node:path";
 import http from "node:http";
 import { randomUUID } from "node:crypto";
 import { statusDoProjeto, sprintsDe, tabela, semValor } from "./status.mjs";
-import { usuarioDaMaquina } from "./acoes.mjs";
+import { usuarioDaMaquina, prepararLote } from "./acoes.mjs";
 import { CSS, tema, AVE, SOL, LUA, PALETA, CERTO, esc, linksDaRede } from "./kanban.mjs";
 
 const MODOS = {
@@ -46,9 +48,23 @@ export const ETAPAS = [
 export const ETAPAS_REVIEW = [
   { id: "feedback", nome: "Feedback", dica: "Quem apresenta registra o feedback de cada entrega; os demais acompanham na página." },
   { id: "ideias", nome: "Novas ideias e necessidades", liberar: "Ir às novas ideias e necessidades", confirma: "O feedback das entregas foi registrado. Agora entram as novas ideias e necessidades.",
-    dica: "Quem apresenta registra as novas ideias e necessidades: cada uma entra no backlog como item novo, para a triagem depois. No fim, publica." },
+    dica: "Quem apresenta registra as novas ideias e necessidades: cada uma entra no backlog como item novo, para a triagem depois." },
+  { id: "backlog", nome: "Repriorização do backlog", liberar: "Ir à repriorização do backlog", confirma: "As novas ideias e necessidades foram registradas. Agora o backlog é reordenado e o que saiu do plano é cancelado.",
+    dica: "Quem apresenta, com produto no equipe.json, reordena o backlog e marca o que será cancelado. Tudo é gravado no Publicar." },
 ];
 const ETAPAS_DE = { retrospective: ETAPAS, review: ETAPAS_REVIEW };
+const TERMINAIS = ["concluida", "concluido", "cancelada", "cancelado"];
+// o que a etapa do backlog mudou na review: a nova ordem e os itens a cancelar, como ações do quadro (`acoes.mjs`)
+const mudouBacklog = (estado) => !!estado.backlog && (!!estado.backlog.ordem || Object.keys(estado.backlog.cancelar).length > 0);
+export const acoesDoBacklog = (estado) => (mudouBacklog(estado) ? [...(estado.backlog.ordem ? [{ tipo: "reordenar", ids: estado.backlog.ordem }] : []), ...Object.entries(estado.backlog.cancelar).map(([id, motivo]) => ({ tipo: "cancelar", id, motivo }))] : []);
+/** A linha `- Backlog:` da `## Review`: o rastro da repriorização, com o trecho da ordem que mudou, os cancelados com o
+ *  motivo e quem fez. O estado em si fica no `backlog.md`. */
+function linhaDoBacklog(dados, estado) {
+  const b = estado.backlog, antes = b.itens.map((i) => i.id), partes = [];
+  if (b.ordem) { const de = b.ordem.findIndex((id, k) => id !== antes[k]), ate = b.ordem.findLastIndex((id, k) => id !== antes[k]); partes.push(`ordem ${b.ordem.slice(de, ate + 1).join(", ")}`); }
+  for (const [id, motivo] of Object.entries(b.cancelar)) partes.push(`cancelada ${id} (${motivo})`);
+  return `- Backlog: ${partes.join(" · ")} — por ${dados.publicar?.usuario?.usuario ?? "?"}`;
+}
 const ETAPA_DE = { acao: "acoes", licao: "licoes" };  // a etapa em que o grupo é de todos (os pontos: a primeira)
 const linhaDe = (i) => `${RETRO.find((g) => g.id === i.grupo).linha}: ${i.texto}`;
 const votavel = (i) => PONTOS.includes(i.grupo) && !i.em_grupo;
@@ -186,6 +202,10 @@ export function cerimoniaDoProjeto({ projeto = ".", modo, exec, agora = new Date
   return { versao: 1, sabia: st.sabia, projeto: st.projeto, gerado_em: st.gerado_em, modo, titulo: MODOS[modo].titulo, secao: MODOS[modo].secao, votos: modo === "retrospective", etapas: ETAPAS_DE[modo],
     sprint: { chave: sprint.chave, inicio: sprint.inicio, fim: sprint.fim, meta: sprint.meta, arquivo: sprint.arquivo }, pessoas, grupos,
     numeros: modo === "retrospective" ? numerosDaSprint(sprint) : [], sle: st.quadro.sle ?? null,
+    // o backlog da repriorização (review): os itens abertos, na ordem do backlog.md; cancela-se aqui só o que ainda não
+    // está em andamento (o resto é da sa-status.situacao e, o épico com fatia aberta, da sa-refinar.ajustar)
+    backlog: modo !== "review" ? [] : st.quadro.itens.filter((c) => !TERMINAIS.includes(c.status) && c.status !== "sem-dados").map((c) => ({ id: c.id, titulo: c.titulo, tipo: c.tipo, status: c.status, na_sprint: c.na_sprint,
+      cancelavel: c.status !== "em-andamento" && c.motivo?.de !== "em-andamento" && !(c.tipo === "épico" && st.quadro.itens.some((f) => f.pai === c.id && !TERMINAIS.includes(f.status))) })),
     licoes: modo === "retrospective" ? licoesDoCiclo(projeto, sprint, st.quadro.itens) : [],
     resumo: modo === "retrospective" ? resumoDaSprint(sprint, { sle: st.quadro.sle ?? null, reservaPct }) : null,
     publicar: { usuario, ...podePublicar(projeto, exec, usuario) } };
@@ -222,7 +242,8 @@ const votosTxt = (i) => (votosDe(i) ? `${plural(votosDe(i))}${i.votos.length ? `
  *  pontos que ele junta (`  - <ponto> · por <autor>`); `- Lição: … · origem <id>` só para a lição marcada Sim; e
  *  `- Ação: … · sobre <Negativo: título do item> · por <autor> · dono <usuario>`. Review: `- <id> · <feedback> — por
  *  <autor>; <feedback> — por <autor>` ou `- <id> · sem feedback`, uma linha por entrega, e `- ideia ou necessidade ·
- *  … — por <autor>`, com o `(<id>)` no fim depois do cadastro. */
+ *  … — por <autor>`, com o `(<id>)` no fim depois do cadastro, e `- Backlog: ordem <ids> · cancelada <id> (<motivo>) —
+ *  por <usuario>` quando a repriorização mudou o backlog. */
 export function linhasDaSecao(dados, estado) {
   const doGrupo = (g) => (dados.votos ? ordenados : (x) => x)(estado.itens.filter((i) => i.grupo === g));
   if (dados.modo === "retrospective") return RETRO.flatMap((g) => doGrupo(g.id).filter((i) => !i.em_grupo && (g.id !== "licao" || i.manter === true)).flatMap((i) => {
@@ -232,7 +253,8 @@ export function linhasDaSecao(dados, estado) {
     return [linha, ...membros.map((m) => `  - ${m.texto}${m.autor ? ` · por ${m.autor}` : ""}`)];
   }));
   const com = (i) => `${i.texto}${i.autor ? ` — por ${i.autor}` : ""}${i.cadastrado ? ` (${i.cadastrado})` : ""}`;
-  return dados.grupos.flatMap((g) => (g.id === IDEIA ? doGrupo(IDEIA).map((i) => `- ${LINHA_IDEIA} · ${com(i)}`) : [`- ${g.id} · ${doGrupo(g.id).map(com).join("; ") || "sem feedback"}`]));
+  return [...dados.grupos.flatMap((g) => (g.id === IDEIA ? doGrupo(IDEIA).map((i) => `- ${LINHA_IDEIA} · ${com(i)}`) : [`- ${g.id} · ${doGrupo(g.id).map(com).join("; ") || "sem feedback"}`])),
+    ...(mudouBacklog(estado) ? [linhaDoBacklog(dados, estado)] : [])];
 }
 
 /** Os pontos que estão na seção do .md, com o autor e os votos de cada linha: é de onde a cerimônia parte. O voto sem
@@ -393,7 +415,8 @@ export function visaoDe(estado, { chave = null, apresentador = false } = {}) {
 
 /** A review, etapa a etapa: o feedback entra em cada entrega desde a primeira etapa e as novas ideias e necessidades a
  *  partir da segunda. Só o apresentador registra: inclui (dizendo de quem é, em `autor`), altera e remove; os demais
- *  acompanham. Não há votação. */
+ *  acompanham. Não há votação. Na última etapa, o apresentador com `produto` reordena o backlog (`ordenar`) e marca ou
+ *  desmarca itens a cancelar (`cancelar` com o motivo, `manter`): fica em `estado.backlog` até o Publicar. */
 function aplicarReview(estado, acao, dados, agora, { nome, apresentador }) {
   const n = Math.max(0, ETAPAS_REVIEW.findIndex((e) => e.id === estado.etapa)), etapa = ETAPAS_REVIEW[n].id, nDe = (g) => (g === IDEIA ? 1 : 0);
   const exige = (ok, msg) => { if (!ok) throw new Error(msg); };
@@ -417,6 +440,25 @@ function aplicarReview(estado, acao, dados, agora, { nome, apresentador }) {
     estado.itens.push({ id: randomUUID().slice(0, 8), grupo: g.id, texto, autor: nomeLimpo(acao.autor) || nome, em: agora, votos: [] });
     return;
   }
+  if (["ordenar", "cancelar", "manter"].includes(acao.tipo)) {
+    exige(etapa === "backlog", "a repriorização do backlog é a última etapa da review");
+    exige(dados.publicar.ok, `sem commit possível (${dados.publicar.motivo}): o backlog fica só para leitura`);
+    exige(dados.publicar.usuario?.produto, "a ordem do backlog e o cancelamento são de quem tem produto no equipe.json");
+    const b = estado.backlog, antes = b.itens.map((i) => i.id), it = b.itens.find((i) => i.id === acao.id);
+    exige(it, `${acao.id ?? "o item"} não está no backlog aberto`);
+    if (acao.tipo === "ordenar") {
+      const ref = acao.antes ?? acao.depois, resto = (b.ordem ?? antes).filter((id) => id !== it.id), k = resto.indexOf(ref);
+      exige(k >= 0, `${ref ?? "sem referência"} não serve de referência para a ordem`);
+      const nova = [...resto.slice(0, acao.antes ? k : k + 1), it.id, ...resto.slice(acao.antes ? k : k + 1)];
+      b.ordem = nova.join() === antes.join() ? null : nova;
+    } else if (acao.tipo === "cancelar") {
+      exige(it.cancelavel, `${it.id} não se cancela na review: em andamento, é pela sa-status.situacao; épico com fatia aberta, pela sa-refinar.ajustar`);
+      const motivo = limpo(acao.motivo).replace(/[()]/g, " ").replace(/\s+/g, " ").trim();
+      exige(motivo, "diga o motivo do cancelamento");
+      b.cancelar[it.id] = motivo;
+    } else delete b.cancelar[it.id];
+    return;
+  }
   const item = estado.itens.find((i) => i.id === acao.id);
   exige(item, "esse ponto não existe mais");
   exige(acao.tipo !== "votar", "a review não tem votação");
@@ -438,30 +480,39 @@ export function aplicar(estado, acao, dados, agora = Date.now(), { apresentador 
 
 /** O texto do `sprint-<nn>.md` com a seção da cerimônia como está na página (a linha Números da retro fica). */
 export function comASecao(dados, estado, texto) {
-  return trocarSecao(texto, dados.secao, linhasDaSecao(dados, estado), dados.modo === "retrospective" ? /^- Números:/ : null);
+  // ficam: a linha Números da retro (do passo `fechar`) e, na review sem repriorização nova, a linha Backlog já gravada
+  return trocarSecao(texto, dados.secao, linhasDaSecao(dados, estado), dados.modo === "retrospective" ? /^- Números:/ : mudouBacklog(estado) ? null : /^- Backlog:/);
 }
 
 /** A mensagem de commit que a página propõe: a do fluxo, `<AAAA>/Sprint <nn>: retrospectiva` (ou `review`). */
 export const mensagemPadrao = (dados) => `${dados.sprint.chave}: ${MODOS[dados.modo].commit}`;
 
 /** Publicar: só aqui o `sprint-<nn>.md` muda. Depois do `git pull --ff-only`, grava a seção como está na página e faz
- *  o commit só desse arquivo, com a mensagem que a pessoa confirmou, e o push na branch base. Se o commit falha, o
- *  arquivo volta ao que era; se só o push falha, o commit fica local e o erro diz isso. */
-export function publicar(raiz, dados, estado, { exec, usuario, mensagem }) {
+ *  o commit só do que a página mudou, com a mensagem que a pessoa confirmou, e o push na branch base. `acoes` são as
+ *  mudanças do backlog da review (`acoesDoBacklog`): entram no mesmo commit, pelas regras do `acoes.mjs`; a que a
+ *  regra recusa (o backlog mudou no pull) cancela o Publicar antes de gravar. Se o commit falha, tudo volta ao que era;
+ *  se só o push falha, o commit fica local e o erro diz isso. */
+export function publicar(raiz, dados, estado, { exec, usuario, mensagem, acoes = [] }) {
   const pode = podePublicar(raiz, exec, usuario);
   if (!pode.ok) throw new Error(pode.motivo);
   const git = (...a) => exec("git", ["-C", raiz, ...a]), falha = (r) => (r.stderr || r.stdout || r.error?.message || "falhou").trim().split("\n").at(-1);
-  const arquivo = dados.sprint.arquivo, caminho = path.join(raiz, arquivo), texto = String(mensagem ?? "").replace(/[\r\n]+/g, " ").trim().slice(0, 300) || mensagemPadrao(dados);
+  const arquivo = dados.sprint.arquivo, texto = String(mensagem ?? "").replace(/[\r\n]+/g, " ").trim().slice(0, 300) || mensagemPadrao(dados);
   const pull = git("pull", "--ff-only");
   if (pull.status !== 0) throw new Error(`git pull --ff-only: ${falha(pull)}`);
-  const antes = fs.readFileSync(caminho, "utf8"), depois = comASecao(dados, estado, antes);
-  if (depois === antes && !git("status", "--porcelain", "--", arquivo).stdout.trim()) throw new Error(`nada a publicar: a seção ${dados.secao} do ${path.basename(arquivo)} já está assim no repositório`);
-  fs.writeFileSync(caminho, depois);
-  const add = git("add", "--", arquivo), commit = add.status === 0 ? git("commit", "--quiet", "-m", texto, "--", arquivo) : add;
-  if (commit.status !== 0) { fs.writeFileSync(caminho, antes); git("reset", "--quiet", "--", arquivo); throw new Error(`git commit: ${falha(commit)}`); }
+  const lote = acoes.length ? prepararLote(raiz, acoes, { usuario }) : { arquivos: {}, remover: [], avisos: [] };
+  const ler = (c) => fs.readFileSync(path.join(raiz, c), "utf8"), antes = { [arquivo]: ler(arquivo) }, depois = { ...lote.arquivos, [arquivo]: comASecao(dados, estado, lote.arquivos[arquivo] ?? antes[arquivo]) };
+  const caminhos = Object.keys(depois);
+  for (const c of caminhos) antes[c] ??= ler(c);
+  if (caminhos.every((c) => depois[c] === antes[c]) && !lote.remover.length && !git("status", "--porcelain", "--", arquivo).stdout.trim()) throw new Error(`nada a publicar: a seção ${dados.secao} do ${path.basename(arquivo)} já está assim no repositório`);
+  const desfaz = () => { for (const c of caminhos) fs.writeFileSync(path.join(raiz, c), antes[c]); git("reset", "--quiet", "--", ...caminhos, ...lote.remover); for (const d of lote.remover) git("checkout", "--", d); };
+  for (const c of caminhos) fs.writeFileSync(path.join(raiz, c), depois[c]);
+  // a pasta da spec do item cancelado sai no mesmo commit
+  for (const d of lote.remover) { const r = git("rm", "-r", "--quiet", d); if (r.status !== 0) { desfaz(); throw new Error(`git rm ${d}: ${falha(r)}`); } }
+  const add = git("add", "--", ...caminhos), commit = add.status === 0 ? git("commit", "--quiet", "-m", texto, "--", ...caminhos, ...lote.remover) : add;
+  if (commit.status !== 0) { desfaz(); throw new Error(`git commit: ${falha(commit)}`); }
   const push = git("push", "--quiet");
   if (push.status !== 0) throw new Error(`o commit "${texto}" ficou só nesta máquina; o push falhou: ${falha(push)}`);
-  return { commit: texto };
+  return { commit: texto, ...(lote.avisos.length ? { avisos: lote.avisos } : {}) };
 }
 
 const CSS_CERIMONIA = `
@@ -476,6 +527,12 @@ const CSS_CERIMONIA = `
 [data-g="licao"]{--g:var(--epico)}
 [data-g="ideia"]{--g:var(--orange)}
 .bloco.filho{box-shadow:inset 4px 0 0 var(--epico)}
+/* a repriorização do backlog: a posição, os botões de subir e descer e o item marcado a cancelar */
+td.pos{width:1%;color:var(--muted);text-align:right}
+.bl-l[draggable="true"]{cursor:grab}
+.bl-l.a-cancelar .t-tit,.bl-l.a-cancelar td.id{text-decoration:line-through;color:var(--muted)}
+.ac:disabled{opacity:.35;cursor:default}
+.ac:disabled:hover{background:none}
 .bloco summary{flex-wrap:wrap}
 .bloco summary h2{box-shadow:inset 0 -2px 0 var(--g)}
 .bloco summary a{font-size:13px}
@@ -682,7 +739,8 @@ function cliente() {
     '<details class="bloco' + (g.filho ? " filho" : "") + '" open data-g="' + esc(g.cor) + '" data-grupo="' + esc(g.id) + '"><summary>' + SETA + "<h2>" + esc(g.nome) + '</h2><span class="n"></span>' + (g.sub ? "<span>" + esc(g.sub) + "</span>" : g.id === "licao" ? "<span>só as marcadas Sim viram Regra aprendida</span>" : g.id === "acao" ? "<span>as dos itens e as gerais</span>" : "")
     + (g.mr && /^https?:\/\//.test(g.mr.url) ? '<a href="' + esc(g.mr.url) + '" target="_blank" rel="noopener">MR !' + esc(g.mr.iid) + "</a>" : "")
     + '</summary><div class="rola"><table>' + (g.id === "acao" ? "<thead><tr><th>Ação</th><th>Item</th><th>Dono</th><th>Por</th><th></th></tr></thead>" : "") + '<tbody></tbody></table><form class="novo"><input name="texto" maxlength="280" autocomplete="off" placeholder="' + esc(g.id === "ideia" ? "Nova ideia ou necessidade" : D.modo === "review" ? "Feedback sobre esta entrega" : g.id === "acao" ? "Nova ação geral, sem item" : g.id === "licao" ? "Lição levantada agora" : "Novo ponto") + '" aria-label="Novo ponto em ' + esc(g.nome) + '">'
-    + (g.dono ? donos : "") + (RETRO ? "" : '<input name="autor" class="de-quem" maxlength="40" list="equipe" autocomplete="off" placeholder="De quem (se não for seu)" aria-label="De quem é">') + '<button type="submit" class="btn">Incluir</button></form></div></details>').join("");
+    + (g.dono ? donos : "") + (RETRO ? "" : '<input name="autor" class="de-quem" maxlength="40" list="equipe" autocomplete="off" placeholder="De quem (se não for seu)" aria-label="De quem é">') + '<button type="submit" class="btn">Incluir</button></form></div></details>').join("")
+    + (RETRO ? "" : '<details class="bloco" open id="bloco-backlog" hidden><summary>' + SETA + '<h2>Backlog</h2><span class="n"></span><span>' + esc(D.repriorizar ? "a nova ordem e os cancelamentos são gravados no Publicar" : "só leitura: " + D.sem_repriorizar) + '</span></summary><div class="rola"><table><tbody></tbody></table></div></details>');
 
   // a faixa das etapas: a atual em destaque, o que se faz nela e, para quem apresenta, o botão que libera a próxima
   function faixa(n, mais) {
@@ -704,6 +762,20 @@ function cliente() {
         + '<td class="quem-c"><i class="av" title="' + esc(i.autor ? "Criado por " + i.autor : "Veio do " + D.arquivo) + '">' + esc(i.autor ? iniciais(i.autor) : "md") + '</i></td><td class="fim">'
         + (AP ? '<button type="button" class="ac ed" aria-label="Alterar o texto">Alterar</button><button type="button" class="rm" title="Remover" aria-label="Remover">✕</button>' : "") + "</td></tr>").join("")
         || '<tr><td class="nada" colspan="5">' + (ideia ? "Nenhuma ideia ou necessidade nova." : "Sem feedback ainda.") + "</td></tr>";
+    }
+    // a repriorização: os itens abertos na ordem nova; quem pode sobe, desce (ou arrasta) e marca a cancelar
+    const B = estado.backlog, bl = $("#bloco-backlog"), naEtapa = D.etapas[n].id === "backlog" && !!B;
+    bl.hidden = !naEtapa;
+    if (naEtapa) {
+      const porId = Object.fromEntries(B.itens.map((i) => [i.id, i])), ids = B.ordem || B.itens.map((i) => i.id), nc = Object.keys(B.cancelar).length;
+      const bt = (cls, texto, rotulo, off) => '<button type="button" class="ac ' + cls + '" aria-label="' + rotulo + '"' + (off ? " disabled" : "") + ">" + texto + "</button>";
+      bl.querySelector("summary .n").textContent = ids.length + " " + (ids.length === 1 ? "item aberto" : "itens abertos") + (B.ordem ? " · ordem alterada" : "") + (nc ? " · " + nc + " a cancelar" : "");
+      bl.querySelector("tbody").innerHTML = ids.map((id, k) => {
+        const i = porId[id], motivo = B.cancelar[id];
+        return '<tr class="ponto-l bl-l' + (motivo ? " a-cancelar" : "") + '" data-item="' + esc(id) + '"' + (D.repriorizar ? ' draggable="true"' : "") + '><td class="pos">' + (k + 1) + '</td><td class="id">' + esc(id) + '</td><td class="tit"><span class="t-tit">' + esc(i.titulo || "") + "</span>" + (motivo ? "<small>a cancelar: " + esc(motivo) + "</small>" : "")
+          + '</td><td class="nw">' + esc([i.tipo, i.status].filter(Boolean).join(" · ")) + (i.na_sprint ? '<span class="ja">na sprint</span>' : "") + '</td><td class="fim">'
+          + (D.repriorizar ? bt("sobe", "↑", "Subir " + esc(id), k === 0) + bt("desce", "↓", "Descer " + esc(id), k === ids.length - 1) + (motivo ? bt("desfaz", "Manter", "Não cancelar " + esc(id)) : i.cancelavel ? bt("cancela", "Cancelar", "Cancelar " + esc(id)) : "") : "") + "</td></tr>";
+      }).join("") || '<tr><td class="nada" colspan="5">Nenhum item aberto no backlog.</td></tr>';
     }
     $("#pendente").hidden = !estado.nao_publicado;
     const pub = $("#publicar");
@@ -781,11 +853,12 @@ function cliente() {
   // o popup do texto: alterar um ponto, uma ação, um feedback ou uma ideia, e a ação nova de um item
   let pedido = null;
   function abrirItem(acao, item) {
-    const nova = acao.tipo === "incluir", ehAcao = nova || item.grupo === "acao";
+    const nova = acao.tipo === "incluir", cancela = acao.tipo === "cancelar", ehAcao = nova || item.grupo === "acao";
     pedido = acao;
-    $("#item-titulo").textContent = nova ? "Nova ação" : ehAcao ? "Alterar a ação" : item.grupo === "licao" ? "Alterar a lição" : item.grupo === "ideia" ? "Alterar a ideia ou necessidade" : RETRO ? "Alterar o ponto" : "Alterar o feedback";
-    $("#item-sub").textContent = nova ? "Para o item: " + item.texto : ""; $("#item-sub").hidden = !nova;
-    $("#item-texto").value = nova ? "" : item.texto;
+    $("#item-rotulo").textContent = cancela ? "Motivo do cancelamento" : "Texto";
+    $("#item-titulo").textContent = cancela ? "Cancelar " + item.id : nova ? "Nova ação" : ehAcao ? "Alterar a ação" : item.grupo === "licao" ? "Alterar a lição" : item.grupo === "ideia" ? "Alterar a ideia ou necessidade" : RETRO ? "Alterar o ponto" : "Alterar o feedback";
+    $("#item-sub").textContent = cancela ? (item.titulo || "") + " — o cancelamento é gravado no Publicar" : nova ? "Para o item: " + item.texto : ""; $("#item-sub").hidden = !nova && !cancela;
+    $("#item-texto").value = nova || cancela ? "" : item.texto;
     $("#item-dono-l").hidden = !ehAcao; $("#item-dono").innerHTML = opcoesDono; $("#item-dono").value = nova ? "" : item.dono || "";
     abrir($("#modal-item")); $("#item-texto").focus();
   }
@@ -793,7 +866,7 @@ function cliente() {
     e.preventDefault();
     const texto = $("#item-texto").value.trim();
     if (!texto) return $("#item-texto").focus();
-    noModal($("#modal-item"), { ...pedido, texto, dono: $("#item-dono-l").hidden ? null : $("#item-dono").value || null });
+    noModal($("#modal-item"), pedido.tipo === "cancelar" ? { ...pedido, motivo: texto } : { ...pedido, texto, dono: $("#item-dono-l").hidden ? null : $("#item-dono").value || null });
   });
 
   // o popup do grupo: o título começa pelo combo com os pontos e, escolhido um, fica no campo de texto para ajustar
@@ -844,7 +917,29 @@ function cliente() {
     if (c.checked) sel.add(id); else sel.delete(id);
     desenhar();
   });
+  // o backlog da review: subir, descer, cancelar com o motivo e desfazer; arrastar a linha solta antes da linha alvo
+  const idsDoBacklog = () => estado.backlog.ordem || estado.backlog.itens.map((i) => i.id);
+  let arrastado = null;
+  $("#lista").addEventListener("dragstart", (e) => { const l = e.target.closest?.("tr[data-item]"); if (l) { arrastado = l.dataset.item; e.dataTransfer.effectAllowed = "move"; } });
+  $("#lista").addEventListener("dragover", (e) => { if (arrastado && e.target.closest("tr[data-item]")) e.preventDefault(); });
+  $("#lista").addEventListener("drop", (e) => {
+    const l = e.target.closest("tr[data-item]"), id = arrastado;
+    arrastado = null;
+    if (!l || !id || l.dataset.item === id || !exigeNome()) return;
+    e.preventDefault();
+    enviar({ tipo: "ordenar", id, antes: l.dataset.item });
+  });
   $("#lista").addEventListener("click", (e) => {
+    const doBacklog = e.target.closest("tr[data-item]");
+    if (doBacklog) {
+      const b = e.target.closest("button:not(:disabled)"), id = doBacklog.dataset.item, ids = idsDoBacklog(), k = ids.indexOf(id);
+      if (!b || !exigeNome()) return;
+      if (b.classList.contains("sobe")) enviar({ tipo: "ordenar", id, antes: ids[k - 1] });
+      else if (b.classList.contains("desce")) enviar({ tipo: "ordenar", id, depois: ids[k + 1] });
+      else if (b.classList.contains("desfaz")) enviar({ tipo: "manter", id });
+      else if (b.classList.contains("cancela")) abrirItem({ tipo: "cancelar", id }, estado.backlog.itens.find((i) => i.id === id));
+      return;
+    }
     const linha = e.target.closest("tr[data-id]");
     if (!linha) return;
     const id = linha.dataset.id, item = estado.itens.find((i) => i.id === id);
@@ -898,7 +993,10 @@ function cliente() {
  *  pediu a página está na máquina do servidor: só ela vê o botão Publicar e é o apresentador, que libera as etapas e,
  *  na retrospectiva, agrupa os pontos e responde o Sim ou Não das lições; na review, só ele registra. */
 export function paginaCerimonia(dados, estado, token = "", { local = false } = {}) {
-  const arquivo = path.basename(dados.sprint.arquivo), retro = dados.modo === "retrospective", embutido = { ...dados, arquivo, apresentador: local, estado };
+  const arquivo = path.basename(dados.sprint.arquivo), retro = dados.modo === "retrospective", embutido = { ...dados, arquivo, apresentador: local, estado,
+    // repriorizar o backlog (review) é de quem apresenta, com produto no equipe.json e o commit possível
+    repriorizar: local && dados.publicar.ok && !!dados.publicar.usuario?.produto,
+    sem_repriorizar: !local ? "só quem apresenta reprioriza" : !dados.publicar.ok ? `sem commit (${dados.publicar.motivo})` : "a ordem do backlog é de quem tem produto no equipe.json" };
   const publica = local && dados.publicar.ok;
   return `<!doctype html>
 <html lang="pt-BR" data-sobria="sobria-sabia">
@@ -956,7 +1054,7 @@ export function paginaCerimonia(dados, estado, token = "", { local = false } = {
 <dialog id="modal-item" aria-labelledby="item-titulo"><form method="dialog" id="form-item">
   <h2 id="item-titulo"></h2>
   <p class="sub" id="item-sub"></p>
-  <label>Texto<input type="text" id="item-texto" maxlength="280" autocomplete="off"></label>
+  <label><span id="item-rotulo">Texto</span><input type="text" id="item-texto" maxlength="280" autocomplete="off"></label>
   <label id="item-dono-l">Dono<select id="item-dono"></select></label>
   <p class="erro" role="alert" hidden></p>
   <div class="botoes"><button type="button" class="btn" data-fechar>Cancelar</button><button type="submit" class="btn pri">Gravar</button></div>
@@ -995,6 +1093,9 @@ export async function abrirCerimonia({ projeto = ".", modo, exec, log = console.
   // (a review publicada sem feedback nenhum tem só as linhas "sem feedback": vale a seção ter linha)
   const feita = modo === "retrospective" ? estado.itens.length > 0 : lerSecao(inicial, dados.secao).length > 0;
   estado.etapa = ETAPAS_DE[modo].at(feita ? -1 : 0).id;
+  // o backlog da repriorização (review): a lista de quando a página abriu, a nova ordem e os itens a cancelar
+  const backlogNovo = () => ({ itens: dados.backlog, ordem: null, cancelar: {} });
+  if (modo === "review") estado.backlog = backlogNovo();
   juntarLicoes(estado, dados.licoes);
   // a cerimônia fica na memória: o sprint-<nn>.md só muda no Publicar; `nao_publicado` diz à página se há o que publicar
   const marcar = () => { const t = fs.readFileSync(md(), "utf8"); estado.nao_publicado = comASecao(dados, estado, t) !== t; return estado; };
@@ -1018,7 +1119,10 @@ export async function abrirCerimonia({ projeto = ".", modo, exec, log = console.
             if (!local) throw new Error("publicar é de quem abriu a cerimônia, na máquina dela");
             if (estado.etapa !== ETAPAS_DE[modo].at(-1).id) throw new Error(`a ${dados.titulo.toLowerCase()} é publicada na última etapa (${ETAPAS_DE[modo].at(-1).nome})`);
             // quem não pode fazer o commit (fora da equipe ou da branch base) ainda grava o arquivo
-            const r = dados.publicar.ok ? publicar(projeto, dados, estado, { exec, usuario, mensagem: acao.mensagem }) : (fs.writeFileSync(md(), comASecao(dados, estado, fs.readFileSync(md(), "utf8"))), { commit: null, gravado: path.basename(dados.sprint.arquivo) });
+            const acoes = modo === "review" ? acoesDoBacklog(estado) : [];
+            const r = dados.publicar.ok ? publicar(projeto, dados, estado, { exec, usuario, mensagem: acao.mensagem, acoes }) : (fs.writeFileSync(md(), comASecao(dados, estado, fs.readFileSync(md(), "utf8"))), { commit: null, gravado: path.basename(dados.sprint.arquivo) });
+            // o backlog.md mudou: a página passa a partir da ordem gravada
+            if (acoes.length) { dados = gerar(); estado.backlog = backlogNovo(); }
             marcar();
             avisar();
             return json(200, { ok: true, ...r, estado: visao() });

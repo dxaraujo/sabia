@@ -5,7 +5,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { after, test } from "node:test";
-import { abrirCerimonia, aplicar, cerimoniaDoProjeto, importarSecao, juntarLicoes, linhasDaSecao, numerosDaSprint, paginaCerimonia, publicar, trocarSecao, visaoDe } from "./cerimonia.mjs";
+import { abrirCerimonia, acoesDoBacklog, aplicar, cerimoniaDoProjeto, importarSecao, juntarLicoes, linhasDaSecao, numerosDaSprint, paginaCerimonia, publicar, trocarSecao, visaoDe } from "./cerimonia.mjs";
 
 const raiz = fs.mkdtempSync(path.join(os.tmpdir(), "sabia-cerimonia-"));
 after(() => fs.rmSync(raiz, { recursive: true, force: true }));
@@ -58,7 +58,7 @@ test("cerimônia: os números da sprint, os grupos da retro e os itens entregues
   const review = cerimoniaDoProjeto({ projeto: p, modo: "review", exec: git(), agora });
   assert.deepEqual(review.grupos.map((g) => g.id), ["AT-001", "FT-001", "ideia"]);
   assert.deepEqual([review.grupos[1].nome, review.grupos[1].tag, review.grupos[1].sub], ["FT-001 · Extrato", "Feedback", "fatia · Ana Souza · concluída em 12/11"]);
-  assert.deepEqual(review.etapas.map((e) => e.id), ["feedback", "ideias"]);
+  assert.deepEqual(review.etapas.map((e) => e.id), ["feedback", "ideias", "backlog"]);
   // o épico é entrega quando teve fatia entregue na sprint (ou foi concluído, ou a especificação dele fechou nela): vem antes das fatias dele
   const pe = projeto("epico"), bl = path.join(pe, ".sabia/planejamento/backlog.md");
   fs.writeFileSync(bl, fs.readFileSync(bl, "utf8").replace("| FT-001 | Extrato | fatia | concluida |  | M | ana |  |", "| FT-001 | Extrato | fatia | concluida |  | M | ana | EP-01 |")
@@ -68,7 +68,7 @@ test("cerimônia: os números da sprint, os grupos da retro e os itens entregues
   assert.throws(() => cerimoniaDoProjeto({ projeto: p, modo: "daily", exec: git(), agora }), /cerimônia desconhecida/);
 });
 
-test("retrospectiva: as etapas — pontos ocultos, agrupamento, votação oculta e ações por item; as linhas da Retro e a volta do .md; a review em duas etapas, em que só quem apresenta registra", () => {
+test("retrospectiva: as etapas — pontos ocultos, agrupamento, votação oculta e ações por item; as linhas da Retro e a volta do .md; a review em etapas, em que só quem apresenta registra", () => {
   const p = projeto("linhas"), dados = cerimoniaDoProjeto({ projeto: p, modo: "retrospective", exec: git(), agora }), estado = { etapa: "pontos", itens: [] };
   const AP = { apresentador: true }, faz = (acao, quando, papel) => aplicar(estado, acao, dados, quando, papel), textos = (v) => v.itens.map((i) => i.texto);
   assert.deepEqual(dados.etapas.map((e) => e.id), ["pontos", "agrupar", "votar", "acoes", "licoes"]);
@@ -200,7 +200,8 @@ test("retrospectiva: as etapas — pontos ocultos, agrupamento, votação oculta
   rf({ tipo: "incluir", grupo: "ideia", texto: "Engano", autor: "Rui" }, 5);
   rf({ tipo: "remover", id: er.itens.at(-1).id });
   assert.throws(() => rf({ tipo: "votar", nome: "Ana", id: er.itens[1].id }, 0, AP), /a review não tem votação/);
-  assert.throws(() => rf({ tipo: "avancar", nome: "Ana", de: "ideias" }, 0, AP), /última etapa/);
+  rf({ tipo: "avancar", de: "ideias" });
+  assert.throws(() => rf({ tipo: "avancar", de: "backlog" }), /última etapa/);
   assert.equal(visaoDe(er, {}), er);  // a review mostra tudo a todos
   const lr = linhasDaSecao(rv, er);
   assert.deepEqual(lr, ["- AT-001 · Resolveu no mesmo dia — por Ana", "- FT-001 · Aprovado, faltou o filtro — por Cliente; Tela clara - e rápida — por Cliente", "- ideia ou necessidade · Filtro por data — por Cliente"]);
@@ -324,16 +325,71 @@ test("cerimônia: o servidor leva a página no tema do quadro, dá a cada pessoa
     assert.match(h3, /id="modal-etapa"/);
     assert.doesNotMatch(h3, /id="modal-grupo"/);
     assert.deepEqual([embutidoDe(h3).apresentador, embutidoDe(h3).estado.etapa], [true, "feedback"]);
-    assert.match((await post3({ tipo: "publicar" })).erro, /a review é publicada na última etapa \(Novas ideias e necessidades\)/);
+    assert.match((await post3({ tipo: "publicar" })).erro, /a review é publicada na última etapa \(Repriorização do backlog\)/);
     await post3({ tipo: "incluir", nome: "Ana Souza", autor: "Rui", grupo: "FT-001", texto: "Aprovado" });
     assert.equal((await post3({ tipo: "avancar", nome: "Ana Souza", de: "feedback" })).estado.etapa, "ideias");
     await post3({ tipo: "incluir", nome: "Ana Souza", autor: "Rui", grupo: "ideia", texto: "Filtro por data" });
+    // a última etapa traz o backlog aberto; quem abriu tem produto e reordena: a ordem só vai ao backlog.md no Publicar
+    const e3 = (await post3({ tipo: "avancar", nome: "Ana Souza", de: "ideias" })).estado;
+    assert.deepEqual([e3.etapa, e3.backlog.itens.map((i) => i.id), embutidoDe(h3).repriorizar], ["backlog", ["FT-002"], true]);
     assert.equal((await post3({ tipo: "publicar" })).ok, true);
     assert.match(ler(p), /## Review\n- AT-001 · sem feedback\n- FT-001 · Aprovado — por Rui\n- ideia ou necessidade · Filtro por data — por Rui\n## Retro\n/);
   } finally { q3.fechar(); await q3.fechou; }
   // a review já publicada abre na última etapa
   const q4 = await abrirCerimonia({ projeto: p, modo: "review", exec: git(), log: () => {}, porta: 0, host: "127.0.0.1", agora });
-  try { assert.equal((await (await fetch(q4.url + "dados.json")).json()).estado.etapa, "ideias"); } finally { q4.fechar(); await q4.fechou; }
+  try { assert.equal((await (await fetch(q4.url + "dados.json")).json()).estado.etapa, "backlog"); } finally { q4.fechar(); await q4.fechou; }
+});
+
+test("review: a repriorização do backlog — quem apresenta, com produto, reordena e marca a cancelar; o backlog.md só muda no Publicar, no mesmo commit", () => {
+  const p = projeto("backlog"), BACKLOG = ".sabia/planejamento/backlog.md", ana = { usuario: "ana", nome: "Ana Souza", produto: true }, AP = { apresentador: true };
+  const l = (id, tipo, status, pai = "") => `| ${id} | ${id} | ${tipo} | ${status} |  | M |  | ${pai} |  |  |  | 2026-11-09 |  |  |\n`;
+  fs.writeFileSync(path.join(p, BACKLOG), "# Backlog\n| id | título | tipo | status | prioridade | tamanho | responsável | pai | relator | ib | obs | entrou_em | concluida_em | motivo |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n"
+    + l("FT-001", "fatia", "concluida") + l("FT-002", "fatia", "em-andamento") + l("FT-003", "fatia", "aceita") + l("FT-004", "fatia", "elegivel") + l("EP-01", "épico", "fatiado") + l("FT-006", "fatia", "aceita", "EP-01"));
+  const backlog = () => fs.readFileSync(path.join(p, BACKLOG), "utf8"), ordem = () => backlog().split("\n").filter((x) => /^\| [A-Z]+-\d+ /.test(x)).map((x) => x.split("|")[1].trim());
+  const dados = cerimoniaDoProjeto({ projeto: p, modo: "review", exec: git(), agora, usuario: ana });
+  // os itens abertos, na ordem do backlog; cancela-se aqui só o que não está em andamento nem é épico com fatia aberta
+  assert.deepEqual(dados.backlog.map((i) => `${i.id} ${i.cancelavel}`), ["FT-002 false", "FT-003 true", "FT-004 true", "EP-01 false", "FT-006 true"]);
+  const er = { etapa: "ideias", itens: [], backlog: { itens: dados.backlog, ordem: null, cancelar: {} } }, rf = (acao, d = dados, papel = AP) => aplicar(er, { nome: "Ana", ...acao }, d, 0, papel);
+  assert.throws(() => rf({ tipo: "ordenar", id: "FT-004", antes: "FT-002" }), /última etapa da review/);
+  er.etapa = "backlog";
+  assert.throws(() => rf({ tipo: "ordenar", id: "FT-004", antes: "FT-002" }, dados, {}), /só quem apresenta registra/);
+  assert.throws(() => rf({ tipo: "ordenar", id: "FT-004", antes: "FT-002" }, { ...dados, publicar: { ok: true, usuario: { ...ana, produto: false } } }), /de quem tem produto/);
+  assert.throws(() => rf({ tipo: "cancelar", id: "FT-004", motivo: "x" }, { ...dados, publicar: { ok: false, motivo: "o projeto está na branch x", usuario: ana } }), /sem commit possível \(o projeto está na branch x\)/);
+  assert.throws(() => rf({ tipo: "ordenar", id: "FT-001", antes: "FT-002" }), /FT-001 não está no backlog aberto/);
+  assert.throws(() => rf({ tipo: "ordenar", id: "FT-004", antes: "FT-004" }), /não serve de referência/);
+  rf({ tipo: "ordenar", id: "FT-004", antes: "FT-002" });
+  assert.deepEqual(er.backlog.ordem, ["FT-004", "FT-002", "FT-003", "EP-01", "FT-006"]);
+  rf({ tipo: "ordenar", id: "FT-004", depois: "FT-003" });
+  assert.equal(er.backlog.ordem, null);  // voltou ao que era: nada a gravar
+  assert.deepEqual(acoesDoBacklog(er), []);
+  rf({ tipo: "ordenar", id: "FT-006", antes: "FT-003" });
+  for (const id of ["FT-002", "EP-01"]) assert.throws(() => rf({ tipo: "cancelar", id, motivo: "x" }), /não se cancela na review/);
+  assert.throws(() => rf({ tipo: "cancelar", id: "FT-004", motivo: " " }), /diga o motivo/);
+  rf({ tipo: "cancelar", id: "FT-004", motivo: "fora (do) escopo" });
+  rf({ tipo: "cancelar", id: "FT-003", motivo: "engano" });
+  rf({ tipo: "manter", id: "FT-003" });
+  assert.deepEqual(er.backlog, { itens: dados.backlog, ordem: ["FT-002", "FT-006", "FT-003", "FT-004", "EP-01"], cancelar: { "FT-004": "fora do escopo" } });
+  // o rastro na ## Review: o trecho da ordem que mudou, o cancelado com o motivo e quem fez
+  assert.equal(linhasDaSecao(dados, er).at(-1), "- Backlog: ordem FT-006, FT-003, FT-004, EP-01 · cancelada FT-004 (fora do escopo) — por ana");
+  const acoes = acoesDoBacklog(er);
+  assert.deepEqual(acoes, [{ tipo: "reordenar", ids: er.backlog.ordem }, { tipo: "cancelar", id: "FT-004", motivo: "fora do escopo" }]);
+  // o commit que falha devolve os dois arquivos ao que eram
+  const antes = [backlog(), ler(p)];
+  assert.throws(() => publicar(p, dados, er, { exec: git({ commit: { status: 1, stderr: "hook recusou" } }), usuario: ana, acoes }), /git commit: hook recusou/);
+  assert.deepEqual([backlog(), ler(p)], antes);
+  // o item que o pull trouxe já concluído derruba o Publicar antes de gravar
+  assert.throws(() => publicar(p, dados, er, { exec: git(), usuario: ana, acoes: [...acoes, { tipo: "cancelar", id: "FT-001", motivo: "x" }] }), /FT-001 está concluida/);
+  assert.deepEqual([backlog(), ler(p)], antes);
+  const chamadas = [];
+  assert.deepEqual(publicar(p, dados, er, { exec: git({ chamadas }), usuario: ana, acoes }), { commit: "2026/Sprint 02: review" });
+  assert.deepEqual(chamadas, ["pull --ff-only", `add -- ${BACKLOG} ${SPRINT}`, `commit --quiet -m 2026/Sprint 02: review -- ${BACKLOG} ${SPRINT}`]);  // um commit só, com os dois
+  assert.deepEqual(ordem(), ["FT-001", "FT-002", "FT-006", "FT-003", "FT-004", "EP-01"]);
+  assert.match(backlog(), /\| FT-004 \| FT-004 \| fatia \| cancelada \|.*\| fora do escopo · desde \d{4}-\d{2}-\d{2} \|/);
+  assert.match(ler(p), /## Review\n- FT-001 · sem feedback\n- Backlog: ordem FT-006, FT-003, FT-004, EP-01 · cancelada FT-004 \(fora do escopo\) — por ana\n## Retro/);
+  // republicar sem mexer no backlog mantém a linha do rastro
+  const depois = cerimoniaDoProjeto({ projeto: p, modo: "review", exec: git(), agora, usuario: ana }), limpo = { etapa: "backlog", itens: [], backlog: { itens: depois.backlog, ordem: null, cancelar: {} } };
+  assert.deepEqual(depois.backlog.map((i) => i.id), ["FT-002", "FT-006", "FT-003", "EP-01"]);
+  assert.throws(() => publicar(p, depois, limpo, { exec: git({ limpo: true }), usuario: ana }), /nada a publicar/);
 });
 
 test("cerimônia: publicar faz o commit só do sprint-<nn>.md, com a mensagem do fluxo, e diz quando o push falha", () => {

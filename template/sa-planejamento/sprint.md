@@ -23,6 +23,7 @@
 - FT-031 · cliente aprovou o extrato — por Rui Prado; faltou o total no rodapé — por Ana Souza
 - FT-034 · sem feedback
 - ideia ou necessidade · filtro por data no extrato — por Rui Prado (FT-040)
+- Backlog: ordem FT-052, FT-040, FT-047 · cancelada FT-049 (fora do escopo do contrato) — por bia.lima
 
 ## Retro
 
@@ -65,7 +66,9 @@
 - Review: uma linha por entrega, `<id> · <feedback> — por <quem>; <feedback> — por <quem>` ou `<id> · sem feedback`, e
   uma por ideia ou necessidade nova, `ideia ou necessidade · <texto> — por <quem>`, que ganha o id no fim depois do
   cadastro. Entrega é a fatia, o bug ou o atendimento concluído na sprint e o épico concluído ou com entrega nela. A
-  página `sabia review` lê e grava essas linhas; a review não tem votação.
+  linha `Backlog: ordem <ids> · cancelada <id> (<motivo>) — por <usuario>` é o rastro da repriorização feita na review:
+  o trecho da ordem que mudou e os cancelados; o estado está no `backlog.md`. A página `sabia review` lê e grava essas
+  linhas; a review não tem votação.
 - Retro: uma linha por item, `- Positivo: …` · `- Negativo: …` · `- Melhoria: …` · `- Lição: …` · `- Ação: …`, e a linha
   Números. Cada linha guarda, nesta ordem e separados por ` · `: o texto, `origem <id>` (só na lição do ciclo),
   `sobre <Categoria>: <título do item>` (só na ação que nasceu de um item), `por <quem levantou>`, `dono <usuario>` (só na

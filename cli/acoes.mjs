@@ -3,6 +3,8 @@
 // faz o archive, a publicação e a worktree.
 // Cada ação altera os `.md` do projeto e vai num commit direto na branch base, com push, como o
 // `fluxo/commit-na-branch-base.md`: só na branch base, com a árvore limpa, depois do pull.
+// A página da review usa as mesmas regras em lote (`prepararLote`): a nova ordem do backlog e os cancelamentos entram
+// no commit do Publicar dela.
 import fs from "node:fs";
 import path from "node:path";
 import { celulas, semValor, lerMotivo, tabela, sprintsDe, gitlab } from "./status.mjs";
@@ -68,12 +70,25 @@ export function podeGravar(raiz, exec, usuario) {
 }
 
 /** Prepara a mudança: lê o projeto, confere a regra e devolve { arquivos: {caminho: texto}, remover: [pastas],
- *  commit, avisos }. Não grava nada. `agora` é parâmetro para o teste. */
-export function preparar(raiz, acao, { usuario, agora = new Date() }) {
-  const hoje = agora.toISOString().slice(0, 10), ler = (rel) => fs.readFileSync(path.join(raiz, rel), "utf8");
+ *  commit, avisos }. Não grava nada. `agora` é parâmetro para o teste. `textos` (caminho → texto) vale no lugar do
+ *  arquivo do disco: é como o lote encadeia as ações, cada uma sobre o que a anterior deixou. */
+export function preparar(raiz, acao, { usuario, agora = new Date(), textos = {} }) {
+  const hoje = agora.toISOString().slice(0, 10), ler = (rel) => textos[rel] ?? fs.readFileSync(path.join(raiz, rel), "utf8");
   if (!fs.existsSync(path.join(raiz, BACKLOG))) throw new Error(`${BACKLOG} não existe`);
   let backlog = ler(BACKLOG);
-  const itens = tabela(backlog, "id"), item = itens.find((l) => l.id === acao.id);
+  const itens = tabela(backlog, "id");
+  // reordenar: os itens citados trocam de lugar entre as posições que já ocupam; o que não foi citado fica onde está
+  if (acao.tipo === "reordenar") {
+    if (!usuario) throw new Error("seu usuário do git não está no equipe.json");
+    if (!usuario.produto) throw new Error("isso é de quem tem produto");
+    const ids = Array.isArray(acao.ids) ? acao.ids : [], fora = ids.find((id) => !itens.some((l) => l.id === id));
+    if (fora) throw new Error(`${fora} não está no backlog`);
+    if (new Set(ids).size !== ids.length) throw new Error("a nova ordem repete item");
+    const nova = editarTabela(backlog, "id", (ls) => { const out = [...ls], pos = ls.flatMap((l, k) => (ids.includes(l.id) ? [k] : [])); pos.forEach((k, n) => { out[k] = ls.find((l) => l.id === ids[n]); }); return out; });
+    if (nova === backlog) throw new Error("nada mudou");
+    return { arquivos: { [BACKLOG]: nova }, remover: [], commit: "backlog: ordem", avisos: [] };
+  }
+  const item = itens.find((l) => l.id === acao.id);
   if (!item) throw new Error(`${acao.id ?? "o item"} não está no backlog`);
   const sprint = sprintsDe(raiz, hoje)[0] ?? null, linhas = (sprint?.itens ?? []).filter((x) => x.Item === item.id), abertas = linhas.filter((x) => !ehData(x.concluida_em));
   const terminal = TERMINAIS.includes(item.status), impedido = IMPEDIDOS.includes(item.status), epico = item.tipo === "épico";
@@ -165,6 +180,22 @@ export function preparar(raiz, acao, { usuario, agora = new Date() }) {
 
   if (backlog !== ler(BACKLOG)) out.arquivos[BACKLOG] = backlog;
   if (!Object.keys(out.arquivos).length) throw new Error("nada mudou");
+  return out;
+}
+
+/** Prepara várias ações em sequência, cada uma sobre o resultado da anterior, sem gravar nada: devolve { arquivos,
+ *  remover, avisos, commits } com o texto final de cada arquivo. A ação que não muda nada é pulada; a que a regra
+ *  recusa derruba o lote inteiro. */
+export function prepararLote(raiz, acoes, ctx) {
+  const out = { arquivos: {}, remover: [], avisos: [], commits: [] };
+  for (const acao of acoes) {
+    let m;
+    try { m = preparar(raiz, acao, { ...ctx, textos: out.arquivos }); } catch (e) { if (e.message === "nada mudou") continue; throw e; }
+    Object.assign(out.arquivos, m.arquivos);
+    out.remover.push(...m.remover.filter((d) => !out.remover.includes(d)));
+    out.avisos.push(...m.avisos);
+    out.commits.push(m.commit);
+  }
   return out;
 }
 
